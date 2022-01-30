@@ -1,0 +1,45 @@
+#+title: "History Api vs Hash"
+#+date: 2022-01-30T22:58:38+08:00
+#+lastmod: 2022-01-30T22:58:38+08:00
+#+draft: false
+#+keywords[]:
+#+description: ""
+#+tags[]:
+#+categories[]:
+之前一直使用 [[https://router.vuejs.org/][Vue Router]], 编写路由以及路由对应的组件，当 URL 命中配置的
+路由时，就会渲染对应的组件，并且页面不会重载。为什么页面不会重载呢？在
+网页上浏览时，往往点击一个链接，都会把当前页整个刷新成新的页面，而使用
+[[https://router.vuejs.org/][Vue Router]] 去配置路由却不会，为什么呢？
+
+经过一些查阅，Vue Router 默认是 hash 模式，利用 hash 变化不会造成浏览
+器刷新的特性，实现路由变化不刷新页面的功能。
+
+#+BEGIN_QUOTE
+The default mode for vue-router is hash mode - it uses the URL hash
+to simulate a full URL so that the page won't be reloaded when the
+URL changes.
+#+END_QUOTE
+
+当路由变化的时候，使用 [[https://developer.mozilla.org/en-US/docs/Web/API/Location/hash][location.hash]] 改变 URL，监听 [[https://developer.mozilla.org/en-US/docs/Web/API/Window/hashchange_event][hashchange]] 事件，
+发现 hash 变化时，找到匹配的路由，渲染对应的组件。
+
+不过 hash 模式的一个问题是，会让 URL 看起来比较奇怪，后面有很长的 hash。
+如果想 URL 不带有 hash，Vue Router 还提供了一种 history 模式，利用
+[[https://developer.mozilla.org/en-US/docs/Web/API/History][History API]] 的 [[https://developer.mozilla.org/en-US/docs/Web/API/History/pushState][History.pushState()]] 方法，也可以实现改变 URL 但不造成页
+面重载。
+
+使用 History 模式，当 URL 变化时，使用 [[https://developer.mozilla.org/en-US/docs/Web/API/History/pushState][History.pushState()]] 改变 URL，
+监听 [[https://developer.mozilla.org/en-US/docs/Web/API/Window/popstate_event][popstate]] 事件，处理路由变化。
+
+但是使用 HIstory 模式，由于改变了 URL，又因为是 [[https://en.wikipedia.org/wiki/Single-page_application][SPA]], 应用里只有一个
+index.html, 如果此时页面刷新，浏览器就会尝试通过当前的 URL 去查找页面，
+但服务器上实际并没有这么一个资源存在，就会出现 404 的页面。
+
+为了避免这个问题，就需要配置服务器，当根据 URL 找不到资源的时候，就回
+退到 index.html，例如这是 [[https://router.vuejs.org/guide/essentials/history-mode.html#nginx][nginx]] 的配置。
+
+如果没有 Vue Router 这些库，要实现 URL 变化页面变化，一种是使用 MPA 应
+用，每个 URL 对应到一个 html 上，每次都刷新页面更新。
+
+另一种就是 SPA 的方案，使用 hash 或者 History API，改变 URL，然后监听
+变化事件，去渲染对应内容而不刷新整个页面。
