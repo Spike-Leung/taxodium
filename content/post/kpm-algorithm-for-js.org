@@ -1,0 +1,147 @@
+#+title: Kpm 算法的 JS 实现
+#+date: 2022-02-12T11:48:07+08:00
+#+lastmod: 2022-02-12T11:48:07+08:00
+#+draft: false
+#+keywords[]:
+#+description: ""
+#+tags[]: js algorithm
+#+categories[]: algorithm
+:PROPERTIES:
+:ID:       82b7d7e5-db82-4968-bc6b-c514d0aab74a
+:END:
+[[https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm][KMP (Knuth–Morris–Pratt algorithm)]] 算法是用于比较字符串的，给定字符串
+A，以及匹配字符串 B，判断 A 中是否包含 B。
+
+最直白的做法是，遍历 A 的每个字符，找到和 B 的第一个字符相同的，然后从
+这个字符开始，逐个和 B 的字符比较，看是否能完全匹配 B。
+
+当 A 中的某个字符不能匹配 B 时，则从下一个匹配字符开始，再和 B 进行匹
+配。
+
+这样的匹配过程，会造成 A 中比较过的字符重复去匹配，从而造成匹配效率的
+下降。
+
+而 KMP 的目的就是避免重复匹配，A 中的字符匹配过了就不会再进行匹配，
+B 进行移动，移动到下一个和 A 匹配的位置，继续配置。
+
+KMP 利用了匹配后的信息，把 匹配串的匹配部分的前缀 和 原串匹配部分的后
+缀 进行对齐，从而快速移动匹配串，也避免了原串遍历的回溯。
+
+* 前缀 & 后缀
+ #+BEGIN_QUOTE
+ 字符串的 *前缀* 是指不包含最后一个字符的所有以第一个字符开头的连续子串；
+
+ 字符串的 *后缀* 是指不包含第一个字符的所有以最后一个字符结尾的连续子串。
+ #+END_QUOTE
+
+ *最长公共前后缀*: 所有相同的前缀和后缀中，最长的一个前缀后缀。
+
+ 例如字符串 "abcaa",
+
+ 前缀有 ["a", "ab", "abc", "abca"]
+
+ 后缀有 ["a", "aa", "caa", "bcaa"]
+
+ 最长公共前后缀: "a"
+
+* 部分匹配表(PMT [Partial Match Table])
+  #+BEGIN_QUOTE
+  "部分匹配值" 就是 "前缀" 和 "后缀" 的 *最长* 的 *共有* 元素的 *长度* 。
+  #+END_QUOTE
+
+  PMT[i] 表示一个部分匹配值，描述的是在 0 ~ i 这个区间，最长公共前后缀
+  的长度。
+
+  计算 PMT 的过程，其实也利用了 KMP 算法。
+
+** PMT 代码实现
+   #+BEGIN_SRC js
+     function getPmt(s) {
+       const n = s.length;
+       // 初始化为 0
+       const pmt = new Array(n).fill(0);
+
+       // i 对应的是后缀(除去 0 的元素)
+       // j 对应的是前缀，错位比较，计算公共前后缀
+       let i = 1;
+       let j = 0;
+
+       while (i < n) {
+         // 如果字符相同，则有相同前后缀，统计长度
+         if (s[i] == s[j]) {
+           pmt[i++] = ++j;
+         } else {
+           // 当字符出现不匹配的时候，判断 j 前面是否还有zh公共前缀，有则移动到前缀的下一位
+           // 即 pmt[j - 1] (0 ~ j - 1 中，最长公共前后缀长度）
+           if (j > 0) {
+             j = pmt[j - 1];
+           } else {
+             // 如果 j 为 0，肯定没有公共前轴缀，此时 j 无法移动，只能移动 i
+             i++;
+           }
+         }
+       }
+
+       return pmt;
+     }
+
+     console.log(getPmt('aaabbab'));
+   #+END_SRC
+   参考 [[https://www.bilibili.com/video/av81151415/?p=1][[算法] 轻松掌握 kmp]] 的最后一个视频。
+
+* KMP 实现
+  #+BEGIN_SRC js
+    function kmp(s, p) {
+      const n = s.length;
+      const m = p.length;
+
+      const pmt = new Array(m).fill(0);
+      let i = 1, j = 0;
+
+      while (i < m) {
+        if (p[i] === p[j]) {
+          pmt[i++] = ++j;
+        } else {
+          if (j > 0) {
+            j = pmt[j - 1];
+          } else {
+            i++;
+          }
+        }
+      }
+
+      i = 0;
+      j = 0;
+
+      while (i < n) {
+        if (s[i] === p[j]) {
+          i++;
+          j++;
+
+          if (j === m) {
+            return i - j;
+          }
+        } else {
+          if (j > 0) {
+            j = pmt[j - 1];
+          } else {
+            i++;
+          }
+        }
+      }
+
+      return -1;
+    }
+  #+END_SRC
+
+  时间复杂度为 O(n + m) n 是字符串的长度，m 是匹配串的长度
+
+* leetcode 题目
+  - [[https://leetcode-cn.com/problems/implement-strstr/][28. 实现 strStr()]]
+
+* 参考
+  - [[https://www.bilibili.com/video/av81151415/?p=1][[算法] 轻松掌握 kmp]] - bilibili@邋遢大哥233
+    最容易理解的视频
+  - [[https://www.ruanyifeng.com/blog/2013/05/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm.html][字符串匹配的 KMP 算法]] - ruanyifeng
+  - [[https://leetcode-cn.com/problems/implement-strstr/solution/duo-tu-yu-jing-xiang-jie-kmp-suan-fa-by-w3c9c/][多图预警 详解 KMP 算法]] - leetcode
+  - [[https://www.zhihu.com/question/21923021/answer/281346746][如何更好地理解和掌握 KMP 算法?]] - 知乎@海纳
