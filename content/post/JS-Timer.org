@@ -1,0 +1,190 @@
+#+title: JS 中的定时任务
+#+date: 2022-02-14T23:46:53+08:00
+#+lastmod: 2022-02-14T23:46:53+08:00
+#+draft: false
+#+keywords[]:
+#+description: ""
+#+tags[js]:
+#+categories[]:
+:PROPERTIES:
+:ID:       740c7943-a2cd-49fa-99c5-a0ad537d4d80
+:END:
+* setTimeout
+  [[https://developer.mozilla.org/en-US/docs/Web/API/setTimeout][setTimeout()]] 可以设置一个延迟，延迟多少秒将一个 callback 放入到
+  [[https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide#tasks_vs_microtasks][宏任务队列]]。
+
+  虽然设置了延迟时间，但不是到了延迟时间，callback 就会马上执行，
+  callback 只是被放到了宏任务队列中，当调用栈空闲的时候，才会从宏
+  任务队列中取一个任务执行，如果调用栈的任务还没处理完，就会延迟了宏任
+  务队列中的任务的执行时间。
+* setTimeout(callback, 0) 零延迟的 setTimeout
+  由于 setTimeout 的作用是延迟一段时间，把 callback 加入到任务队列，而
+  要执行 callback，需要先等待调用栈的任务执行完。因此，就算延迟是 0，
+  callback 也是被放入了队列中，不会马上就执行，而是要等待调用栈任务(当
+  前的同步任务) 执行完成。
+* setInterval
+  [[https://developer.mozilla.org/en-US/docs/Web/API/setInterval][setInterval()]] 是每隔一段时间，就把 callback 加入到任务队列。
+
+  它只是把任务加入到了任务队列，任务未必马上就执行。 如果间隔时间小于任务执行
+  时间，例如，间隔时间为 5s，callback 执行时间需要 20s，那么，每 5s 加
+  入一个任务，假设经过了 20s， 则有四个任务 A, B, C, D, 当 A 从任务队
+  列出队执行时，A 需要执行 20s，B，C，D 都得等 A 执行完才能执行，于是
+  B, C, D 都被堆在任务队列中。
+
+  如果设想的是每隔 5s，就执行 callback，那么上面这种情况显然是不
+  符合的。A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队列
+  中。
+
+  当 callback 执行时间可能大于间隔时间时，用 setInterval 就不合适了。
+
+** 对于长时间的同步任务
+   #+BEGIN_SRC js
+     var fakeTimeIntensiveOperation = function() {
+       for (var i = 0; i< Math.pow(10, 10); i++) {}
+       let insideTimeTakingFunction  = new Date().toLocaleTimeString();
+       console.log('insideTimeTakingFunction', insideTimeTakingFunction);
+     };
+
+     var timer = setInterval(function(){
+       fakeTimeIntensiveOperation();
+       let insideSetInterval = new Date().toLocaleTimeString();
+       console.log('insideSetInterval', insideSetInterval);
+     }, 1000);
+   #+END_SRC
+   #+RESULTS:
+   : insideTimeTakingFunction 2:36:10 PM
+   : insideSetInterval 2:36:10 PM
+   : insideTimeTakingFunction 2:36:25 PM
+   : insideSetInterval 2:36:25 PM
+   : insideTimeTakingFunction 2:36:40 PM
+   : insideSetInterval 2:36:40 PM
+   : insideTimeTakingFunction 2:36:55 PM
+
+   时间很长的同步任务会阻塞 setInerval 的执行，并没有按照每一秒的频率
+   去执行。
+
+** 对于长时间的异步任务
+   #+BEGIN_SRC js
+     let counter = 0;
+     var fakeTimeIntensiveOperation = function() {
+       setTimeout(() => {
+         counter--;
+       }, 60000);
+     };
+
+     var timer = setInterval(function() {
+       counter++;
+       fakeTimeIntensiveOperation();
+       let insideSetInterval = new Date().toLocaleTimeString();
+       console.log('insideSetInterval', insideSetInterval);
+       console.log('counter', counter);
+     }, 200);
+   #+END_SRC
+   #+RESULTS:
+   : insideSetInterval 2:49:43 PM
+   : counter 1
+   : insideSetInterval 2:49:44 PM
+   : counter 2
+   : insideSetInterval 2:49:44 PM
+   : counter 3
+   : insideSetInterval 2:49:44 PM
+   : counter 4
+   : ...
+   : counter 271
+   : insideSetInterval 2:50:38 PM
+   : counter 272
+   : insideSetInterval 2:50:38 PM
+   : counter 273
+   : insideSetInterval 2:50:38 PM
+   : counter 274
+   : insideSetInterval 2:50:38 PM
+   : counter 275
+   对于执行时间长的异步任务，例如接口请求，接口的响应可能需要很长时间，
+   这就会造成大量请求的堆积。
+
+   想保持 callback 每隔一段时间执行，可以使用嵌套的 setTimeout 实现。
+* 嵌套的 setTimeout
+  #+BEGIN_SRC js
+    (function loop() {
+      setTimeout(function() {
+        // your logic here
+        loop();
+      }, delay);
+    })()
+  #+END_SRC
+
+  嵌套的 setTimeout 可以确保 callback 间隔一段时间执行，避免了
+  setInterval 的弊端。除此之外，嵌套的 setTimeout 还可以根据 callback
+  的执行情况，调整延迟时间。
+
+  例如轮询请求接口，如果发现服务器已经超过负载，没法处理更多的请求了，
+  可以延长轮询时间，降低服务器的负载。
+
+  #+BEGIN_SRC js
+    let delay = 5000;
+
+    let timerId = setTimeout(function request() {
+      // ...发送请求...
+
+      if (request failed due to server overload) {
+        // 下一次执行的间隔是当前的 2 倍
+        delay *= 2;
+      }
+
+      timerId = setTimeout(request, delay);
+
+    }, delay);
+  #+END_SRC
+* requestAnimationFrame
+  [[https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame][Window.requestAnimationFrame()]] 主要是用来做动画的。要想形成动画，就
+  需要至少每秒 24 帧，这样才能让静态的东西看起来在动。但是 24 帧其实还不够，
+  往往要达到 60 帧左右，动画才会看起来顺滑。
+
+  实现动画可以用 setInterval 或者嵌套的 setTimeout，设置 60 fps (1000
+  / 60) 的间隔，不断地进行改变。
+
+  但是这两个 api 都有一些弊端，可能会被其他同步任务阻塞，导致不能及时
+  地更新动画，而出现丢帧。而且这两个 api 也不会考虑当前的 tab 是否显示
+  去暂停或开始，导致性能消耗可能比较大。
+
+  而 requestAnimationFrame 则是为了解决这些问题出现的，它有几个优点：
+
+  1. 不会被当前的同步任务阻塞，不会出现卡帧问题，它总是在屏幕下一次重
+     绘之前去调用 callback，相对于 setInterval 更稳定
+  2. 不用指定间隔，而是根据显示器的刷新率调整 callback 的调用频率
+  3. 如果浏览器 tab 没有被激活/选中，或者元素不可见，那么
+     requestAnimationFrame 就会暂停，减少了性能消耗
+
+  当需要去实现动画时，应该优先去考虑 requestAnimationFrame 。
+* requestIdleCallback
+  [[https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback][window.requestIdleCallback()]] 当浏览器空闲的时候，去调用 callback。在
+  每一帧渲染的最后，如果完成帧的渲染，还有空余时间，就可以利用这段空余
+  的时间去执行 callback，避免影响渲染，动画等。
+
+  如果浏览器一直处于满载状态，requestIdleCallback 注册的 callback 有可
+  能一直都不会执行。
+
+  requestIdleCallback(callback, options) 中的第二个参数是 options，可
+  以指定一个 timeout，表示如果超过了 timeout 还没有找到空闲时间去执行，
+  则强制执行 callback，不再等待空闲。建议使用的时候都指定 timeout。
+
+  由于是利用帧的最后一点空闲时间去执行 callback，callback 做的事情应该
+  比较简单，耗时不要太长。例如统计数据上传、数据预加载等。
+
+  另外由于帧已经渲染完成，尽量不要在 requestIdleCallback 再去改变 DOM，
+  避免造成新的重绘，影响下一帧的渲染。
+* 参考
+  - [[https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals][Cooperative asynchronous JavaScript: Timeouts and intervals]] - MDN
+  - [[https://zh.javascript.info/settimeout-setinterval][调度：setTimeout 和 setInterval]] - javascript.info
+  - [[https://dev.to/akanksha_9560/why-not-to-use-setinterval--2na9][Why not to use setInterval]] - dev.io @ Akanksha Sharma
+    指出了setInterval 在执行一些消耗时间的任务时的问题
+  - [[http://www.javascriptkit.com/javatutors/requestanimationframe.shtml][Understanding JavaScript's requestAnimationFrame() method for
+    smooth animations ]]- javascriptkit
+    有一些例子
+  - [[https://flaviocopes.com/requestanimationframe/][The requestAnimationFrame() guide]] - flaviocopes.com
+    分析了 setTimeout, setInterval, requestAnimationFrame 在时间上的表
+    现
+  - [[https://www.kirupa.com/html5/animating_with_requestAnimationFrame.htm][Animating with requestAnimationFrame]] - kirupa.com
+    以视频的方式介绍 requestAnimationFrame 的使用。
+  - [[https://juejin.cn/post/6844903848981577735][requestIdleCallback和requestAnimationFrame详解]] - 知乎 @ DC_er
+  - [[https://zhuanlan.zhihu.com/p/39878259][网页渲染性能优化 —— 性能优化上]] - 知乎 @ 晨风明悟
