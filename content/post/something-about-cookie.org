@@ -1,0 +1,67 @@
+#+title: 关于 Cookie 的一些知识
+#+date: 2022-02-23T02:10:50+08:00
+#+lastmod: 2022-02-23T02:10:50+08:00
+#+draft: false
+#+keywords[]:
+#+description: ""
+#+tags[]: http
+#+categories[]: HTTP
+:PROPERTIES:
+:ID:       bc6f1106-90e5-45c6-8819-08162b033052
+:END:
+Cookie 是服务器发送给客户端的一小段数据（一般不超过 4K）。客户端会在
+请求时将 cookie 发送给服务器。由于 HTTP 是无状态的，服务器不会记住客户
+端，因此就通过 cookie 的字段去辨识客户端。
+
+* 作用
+  - 管理会话信息： 例如登录信息，购物车，游戏分数等服务器需要记住的东西
+  - 个性化： 例如一些用户配置，主题等
+  - 跟踪： 通过 cookie 记录和分析用户行为
+
+* 创建
+  当服务器收到请求时，可以通过一个或多个 [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie][Set-Cookie]] 头部字段设置
+  cookie。
+
+  而客户端收到返回时，则会将信息存到 cookie 中，之后请求时，通过
+  [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cookie][Cookie]] 头部传给服务器。
+
+* 属性
+  - *Expires*: cookie 过期的绝对时间，相对于客户端的时间而言
+  - *Max-Age*: cookie 过期的相对时间
+  - Expires 和 Max-Age 都不设置，则当关闭会话时，cookie 失效
+  - *Secure*: 只通过 HTTPS 传递 cookie
+  - *HttpOnly*: 不允许通过 [[https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie][Document.cookie]] 获取 cookie，客户端就无法获取
+    了
+  - *Domian*: 指定可以接收 cookie 的主机，默认和设置 cookie 的主机一样，
+    不包含子域。如果设置了 Domain，则子域都是允许访问的。如果子域需要
+    共享 cookie，可以设置。
+  - *Path*: 需要包含 path 才能发送 cookie
+  - *[[https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite][SameSite]]*: 用来限制第三方的 cookie，指定跨站时如何发送
+    - 同站： 顶级域名 + 1 层域名都相同，例如 a.hello.com 和 b.hello.com
+      属于同站，应为顶级域名(.com) + 1 层域名(.hello) 都相同
+    - 跨站： 非同站就是跨站，例如： a.hi.com & a.hello.com
+    - 第一方 cookie： 由地址栏的域名设置的 cookie
+    - 第三方 cookie： 和地址栏不同的域名所设置的 cookie
+    - SameSite: Strict: 跨站时，任何情况都不发送 cookie
+    - SameSite: Lax (默认): 大多数跨站都不发送 cookie，除了链接(a 标签)，预加载，
+      get 表单
+    - SameSite: None: 不管是否跨站都发送，但是同时要设置 Secure 属性才行, 也意味
+      着网站需要支持 https
+
+* withCredentials
+  当跨站或者跨域发送请求时，想要带上 cookie，就得设置 [[https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials][withCredentials]]
+  为 true，同时服务器要返回 [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials][Access-Control-Allow-Credentials]]，也设置为
+  true，[[https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin][Access-Control-Allow-Origin]] 不能设置为 *，得指定对应的请求的
+  origin。
+
+  #+BEGIN_QUOTE
+  For requests without credentials, the literal value "*" can be specified as a wildcard
+  #+END_QUOTE
+
+* 参考
+  - [[HTTPS://DEVELOPER.mozilla.org/en-US/docs/Web/HTTP/Cookies][Cookie]] - MDN
+  - [[https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html][Cookie 的 SameSite 属性]] - ruanyifeng
+  - [[https://zhuanlan.zhihu.com/p/121048298][SameSite小识]] - 知乎@深红
+  - [[https://zhuanlan.zhihu.com/p/34591096][你是如何被广告跟踪的？]] -知乎@巴伐利亚啤酒馆
+  - [[https://alexzhong22c.github.io/2020/05/22/cross-origin-cross-site/][01-跨域和跨站的基本概念]] @Alex Zhong
+  - [[https://web.dev/same-site-same-origin/][Understanding "same-site" and "same-origin"]] - web.dev@Eiji Kitamura
