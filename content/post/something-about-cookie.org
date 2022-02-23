@@ -19,11 +19,19 @@ Cookie 是服务器发送给客户端的一小段数据（一般不超过 4K）�
   - 跟踪： 通过 cookie 记录和分析用户行为
 
 * 创建
-  当服务器收到请求时，可以通过一个或多个 [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie][Set-Cookie]] 头部字段设置
+  当服务器收到请求时，可以通过返回一个或多个 [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie][Set-Cookie]] 头部字段设置
   cookie。
+
+  #+BEGIN_EXAMPLE
+  Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Max-Age=2592000; Domain=somecompany.co.uk
+  #+END_EXAMPLE
 
   而客户端收到返回时，则会将信息存到 cookie 中，之后请求时，通过
   [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cookie][Cookie]] 头部传给服务器。
+
+  #+BEGIN_EXAMPLE
+  Cookie: PHPSESSID=298zf09hf012fh2; csrftoken=u32t4o3tb3gg43; _gat=1
+  #+END_EXAMPLE
 
 * 属性
   - *Expires*: cookie 过期的绝对时间，相对于客户端的时间而言
@@ -44,7 +52,7 @@ Cookie 是服务器发送给客户端的一小段数据（一般不超过 4K）�
     - 第三方 cookie： 和地址栏不同的域名所设置的 cookie
     - SameSite: Strict: 跨站时，任何情况都不发送 cookie
     - SameSite: Lax (默认): 大多数跨站都不发送 cookie，除了链接(a 标签)，预加载，
-      get 表单
+      get表单
     - SameSite: None: 不管是否跨站都发送，但是同时要设置 Secure 属性才行, 也意味
       着网站需要支持 https
 
@@ -59,7 +67,8 @@ Cookie 是服务器发送给客户端的一小段数据（一般不超过 4K）�
   #+END_QUOTE
 
 * 参考
-  - [[HTTPS://DEVELOPER.mozilla.org/en-US/docs/Web/HTTP/Cookies][Cookie]] - MDN
+  - [[https://DEVELOPER.mozilla.org/en-US/docs/Web/HTTP/Cookies][Cookie]] - MDN
+  - [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie][Set-Cookie]] - MDN
   - [[https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html][Cookie 的 SameSite 属性]] - ruanyifeng
   - [[https://zhuanlan.zhihu.com/p/121048298][SameSite小识]] - 知乎@深红
   - [[https://zhuanlan.zhihu.com/p/34591096][你是如何被广告跟踪的？]] -知乎@巴伐利亚啤酒馆
