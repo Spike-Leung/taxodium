@@ -1,0 +1,228 @@
+#+title: Monorepo
+#+date: 2022-07-28T02:24:54+08:00
+#+lastmod: 2022-07-28T02:24:54+08:00
+#+draft: false
+#+keywords[]: monorepo
+#+description: ""
+#+tags[]: js monorepo
+#+categories[]: js
+#+OPTIONS: \n:t
+* Why
+  当项目变得庞大的时候，自然就会想到去拆分，以更小的单位去维护，或者复
+  用。
+
+  一种组织方式是，将项目拆成多个独立的 repo，然后通过子模块关联，
+
+  或者将某些模块发到 npm，通过 npm 去安装依赖。
+
+  这种拆分成多个 repo 的组织形式，称为 ~multirepo~ ，这种组织形式的有什
+
+  么优劣呢？
+
+** multirepo 优缺点
+*** 优点
+  - 每个仓库的大小一般不会很大
+
+
+  - 每个仓库独立，可以单独对仓库进行权限控制, 例如控制谁可以提交，PR
+
+*** 缺点
+  - 当维护多个 repo 时，需要在多个 repo 之间切换，容易混乱
+
+
+  - 每个仓库可能有一套自己的配置，仓库之间不兼容，标准不统一
+
+
+  - repo 和子模块可能存在重复的依赖，导致依赖的重复安装。\\
+    而且不在同一个 repo 中，不方便分析整个项目的所有依赖。
+
+
+  - 发布的时候，如果多个 repo 存在依赖关系，要按照依赖顺序依次构建再部
+    署
+
+
+  - repo 之间存在依赖关系，调试依赖的仓库时，需要 npm link 关联仓库
+* What
+  面对 multirepo 的这些问题，就有人提出了 ~monorepo~ 的组织方式。
+
+  #+begin_quote
+  A monorepo is a single repository containing multiple distinct
+  projects, with well-defined relationships.
+  #+end_quote
+
+  一个 monorepo 应该是：
+
+  - 单一的仓库
+
+
+  - 仓库中包含多个独立的项目
+
+
+  - 每个项目之间的关系定义清晰明确
+
+  简单的理解，monorepo 就是把原来的 multirepo 合并成一个 repo。
+
+  那是不是把每个 repo 分别放到不同的目录，建一个新的庞大的仓库，就完事
+  了呢？
+
+  这样就变成一个“大杂烩”了，被称为 ~Single-repo Monolith~, 有 monorepo 的样子了，还差些东西。
+
+  差什么了呢？
+
+  1. 每个 repo 逻辑上独立，项目之间可能是不相关的，松散连接的，或者可
+     以通过一些方式连接起来（例如一些依赖管理工具）
+
+  2. 要保证项目之间的依赖关系定义清晰
+     - *项目间的依赖关系* ：\\
+       项目之间存在依赖时，不需要人工按照拓扑排序进行 link， \\
+       而是有一定程度的自动化，通过一些简单的配置，可以自动完成 link。\\
+       例如每个项目配置好 package.json, 定义依赖关系，然后自动分析
+       package.json，自动完成项目之间的关联
+
+     - *项目第三方依赖间的关系* ：\\
+       多个项目中，相同的依赖应该只安装一次；\\
+       版本不同的依赖需要解决好冲突，例如一些对单例有要求的依赖（react）
+
+  对于 *项目间的依赖关系* ，为了实现一定程度的自动化，需要借助一些工具，如 [[https://nx.dev/][NX]]，[[https://lerna.js.org/][Lerna]]，[[https://turborepo.org/][turborepo]]。
+
+  对于 *项目第三方依赖间的关系*, 可以借助 [[https://yarnpkg.com/][yarn]]，[[https://pnpm.io/][pnpm]] 等包管理工具的 workspace 功能去实现。
+
+  所以，有别于 Single-repo Monolisth, monorepo 需要有明确清晰的依赖关系，能够很方便地管理依赖。
+
+* monorepo 优缺点
+** 优点
+  - 更容易管理依赖
+
+
+  - 源码都在一起，方便调试
+
+
+  - 既可以复用一些共享模块，也保持这些共享模块的独立性
+
+
+  - 可以在多个模块中，复用相同的配置，例如单元测试，CI/CD 相关的配置，便于保持规范一致
+
+
+  - 由于相关的项目都在一起，因此可以比较方便地编写集成测试
+
+  - 当有一个功能，牵涉多个模块时，可以在一个提交中改好，而 multirepo
+    则需要在多个 repo 做提交
+
+** 缺点
+  - 项目启动，打包构建速度变慢
+
+
+  - 当项目很庞大，提交记录很多时，git 的一些操作性能上会变慢
+
+
+  - 没法限制不同模块的访问权限。也是一个优点，开发人员能看到所有模块，
+    了解到这些模块的关联，而不是只关注自己的模块。
+
+
+  - 可能出现"幽灵"依赖，由于依赖安装在项目的 root 目录，所有模块能访问到，
+    于是即使模块中忘了声明某个依赖，但是 root 中存在，则可以使用。但实
+    际部署时，会因为没有声明依赖，导致没有安装而报错。
+
+* monorepo 应该包含的功能
+  为了让 monorepo 的开发体验更好， [[https://monorepo.tools/][monorepo.tools]] 中提出，monorepo 应
+  该包含以下功能，使得后续 monorepo 开发更加迅捷，容易理解，可控。
+
+- *Local computation caching* : \\
+   由于 monorepo 包含多个项目，每次打包都构建所有项目的话，就会很慢。\\
+   因此，需要支持本地缓存，将一些没有改动的项目缓存起来，没变动就不用
+   重新构建，节省构建时间。 \\
+   主流的工具中， NX 实现了类似 react 的 diff 算法，使得缓存速度更快。
+
+- *Local task orchestration* : \\
+  每个项目在构建时可能需要执行多个任务，例如编译，单测，lint等，工具应
+  该支持定义这些任务的顺序，以及实现任务的并行执行，提高效率。
+
+- *Distributed computation caching* : \\
+  远程缓存，把本地构建好的推送到远程进行缓存，这样子就可以利用团队中别
+  人构建好的部分，而不用本地再构建一次。\\
+  或者在不同环境中进行共享，例如本地构建好了，那么执行 CI 时可以直接
+  用，不用 CI 的时候再构建一次。
+
+- *Distributed task execution*
+   #+begin_quote
+   The ability to distribute a command across many machines, while
+   largely preserving the dev ergonomics of running it on a single
+   machine.
+   #+end_quote
+
+- *Transparent remote excution*
+   #+begin_quote
+   The ability to execute any command on multiple machines while
+   developing locally.
+   #+end_quote
+
+- *Detecting affected projects/packages* \\
+   能够检测那些项目发生了变化，然后增量地构建或者执行任务。
+
+- *Workspace analysis*
+   #+begin_quote
+   The ability to understand the project graph of the workspace
+   without extra configuration.
+   #+end_quote
+
+   不用额外配置，就可以理解项目的关系，通过扫描 package.json 等文件理
+   解不同项目是怎么组织联系在一起的。
+
+
+- *Dependency graph visualization* \\
+   依赖关系可视化，可以去查询，过滤，隐藏关系图。
+
+
+- *Code sharing*
+
+
+- *Consistent tooling* \\
+   不管你是用 JS，TS，还是 Rust，Java，都有一致的体验。\\
+   例如 NX，如果你用 JS，就配置一下 package.json, 用 Rust 就配置一下
+  Cargo.toml. \\
+   但像 Turborepo，就只支持 npm script，那想用 turborepo 给 Java 之类
+  的项目实现 monorepo, 就没办法了。
+
+
+- *Code generation*
+
+
+- *Project constrains and visibility* \\
+   支持定义规则，限制项目中的依赖关系。\\
+   例如某些项目不想被依赖，或者只能被某个项目依赖，可以通过一些配置指定去限制。
+
+* 例子
+  - [[https://codeburst.io/monorepos-by-example-part-1-3a883b49047e][Monorepos By Example: Part 1]]\\
+    一个应用 monorepo 的例子。用 Lerna 管理依赖。
+
+
+  - [[https://github.com/illa-family/illa-design][illa-design]] \\
+    一个组件库，组件之间就是以 monorepo 的形式组织的，目前
+    使用的工具是 turborepo
+
+
+  - [[https://github.com/vuejs/core][vuejs/core]] \\
+    看起来也是一个 monorepo 的组织方式，使用了 pnpm 去管理依赖
+
+* Refs
+  - [[https://monorepo.tools/][monorepo.tools]] \\
+    对 monorepo 的整体介绍，同时比对了不同 monorepo 工具之间的优缺点
+
+
+  - [[https://mp.weixin.qq.com/s/U8_30S9B0S_SU3jdgUxFGQ][Monorepo 的过去、现在、和未来]] \\
+    解释了 monolith 和 moporepo 间的差别，怎么实现这些差别，以及相关的
+    工具，比较了作者自己用到的一些工具
+
+
+  - [[https://segmentfault.com/a/1190000039814987][开源项目都在用 monorepo，但是你知道居然有那么多坑么？]] \\
+    对比了 multirepo 和 monorepo 的优缺点，较详细地分析了 monorepo 带
+    来的问题：依赖，构建，测试，发布等
+
+
+  - [[https://www.toptal.com/front-end/guide-to-monorepos][Guide to Monorepos for Front-end Code]] \\
+    讲了为什么要用 monorepo，monorepo 的优劣，以及实现 monorepo 的
+    工具链
+
+
+  - [[https://github.com/korfuri/awesome-monorepo][Awesome Monorepo]] \\
+    整理了 monorepo 相关的工具
