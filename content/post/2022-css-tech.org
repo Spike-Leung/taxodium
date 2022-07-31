@@ -1,0 +1,326 @@
+#+title: 2022 CSS 技术一瞥
+#+date: 2022-07-31
+#+draft: false
+#+keywords[]:
+#+description: ""
+#+tags[]:
+#+categories[]: CSS
+
+当前，前端开发关于 CSS 的技术有很多：
+
+- CSS Preprocessors (CSS 预处理器): Sass，Less，Stylus，PostCSS 等
+- CSS Framework: Bootstrap，Tailwind 等
+- CSS-in-JS: Emotion, Styled components
+- Atomic CSS
+
+本文尝试对这些技术做一个简单介绍。
+
+* CSS Preprocessor
+  #+begin_quote
+  A CSS preprocessor is a program that lets you generate CSS from the
+  preprocessor's own unique syntax.
+  #+end_quote
+
+  CSS 预处理器的目的是扩展一些 CSS 不具备的功能，例如，CSS Variable,
+  mixins, nesting selector(嵌套选择器), inheritancs selector(选择器继
+  承) 等。
+
+  CSS Preprocessor 有自己的语法, 需要安装 CSS compiler, 去编译出纯 CSS。
+
+  纵观常见的几个 preprocessor, 做的事情都大同小异，区别在于：
+
+  - 语法不同
+  - 支持功能的多寡
+  - 依赖的编译平台
+
+  选择上，主要还是看需要什么功能，是否便于集成到当前项目中，库是否持续维护，社区大小等。
+
+  另外，如果只是变量，简单的计算，其实 CSS 本身也具有一定功能，未必要用 preprocessor。
+
+** [[https://sass-lang.com/][SCSS / SASS (Syntactically Awesome Style Sheets)]]
+   - 支持函数
+
+   - 用 Ruby 写的，可能需要装 Ruby 相关环境，有时环境安装会有问题，碰
+     到过几次安装 node-sass 出错的情况
+
+   - SCSS 相比于 SASS，写法更接近原生的 CSS，需要写大括号，分号等
+
+** [[https://lesscss.org/][Less (Leaner Stylesheets)]]
+   - 使用 JS 编译
+
+   - 不支持函数
+
+   - 比较容易添加到已有项目中
+** [[https://stylus-lang.com/][Stylus]]
+   - 使用 JS 编译
+
+   - 支持函数
+
+   - 内置了一些处理函数，能够处理繁重的计算
+** [[https://postcss.org/][PostCSS]]
+   #+begin_quote
+   PostCSS is a JavaScript library that transforms CSS into JavaScript.
+   #+end_quote
+
+   PostCSS 和上面三者区别比较大，它会先编译出 AST，以 JS 对象形式表示，
+   然后可以基于 AST 做很多事情，可以自己写插件去扩展，最后再编译回浏览
+   器识别的 CSS。
+
+   因此，PostCSS 除了本身这个库外，还有相关的插件生态圈，可以通过插件
+   去实现类似 SCSS 的功能。
+
+   相对于上面三者，扩展性更好，可以实现更多功能。
+* CSS Frameworks
+  所谓的 CSS 框架，就是别人帮你把一些基础的，通用的样式写好，你直接拿
+  来用即可，类比组件库。
+
+  当需要扩展这些框架时，可能还需要用到 preprocessor。
+
+  框架的目的，主要是减少你需要写的 CSS，选择上可以考虑：
+
+  - 框架体积
+  - 预定义的样式是否够用, 是否符合设计的要求
+  - 可扩展性，是否容易扩展，容易维护
+  - 社区活跃度
+
+** [[https://getbootstrap.com/][Bootstrap]]
+   #+begin_quote
+   Powerful, extensible, and feature-packed frontend toolkit. Build
+   and customize with ~Sass~, utilize prebuilt grid system and
+   components, and bring projects to life with powerful JavaScript
+   plugins.
+   #+end_quote
+   基于 Sass 打造的一套 CSS 框架，也支持 Less。Bootstrap 本身还提供了一些组件。
+
+** [[https://bulma.io/][Bulma]]
+   #+begin_quote
+   Bulma is a free, open source framework that provides ready-to-use
+   frontend components that you can easily combine to build responsive
+   web interfaces.
+   #+end_quote
+   也是基于 Sass 的框架，更轻量，基于 Flexbox。
+
+   模块化的组织结构，你可以只引用某个模块，例如按钮。
+
+** [[https://tailwindcss.com/][Tailwind CSS]]
+   #+begin_quote
+   A utility-first CSS framework packed with classes like flex, pt-4,
+   text-center and rotate-90 that can be composed to build any design,
+   directly in your markup.
+   #+end_quote
+
+   它实际上是一个 PostCSS 插件。
+
+   高度可定制化，通过 *tailwind.config.js* 文件进行定制。
+
+   相比于 Bootstrap 和 Bulma，它们都是将 CSS 模板做好提供给你，而
+   Tailwind 更像是提供你制作自己模板的工具。
+
+* CSS-in-JS
+  preprocessor 的目的是为了扩展 CSS，增加一些功能特性；
+
+  CSS 框架则是预定义一套规则，不用从零开始构建 UI，便于快速开发；
+
+  那么 CSS-in-JS 是为了解决什么问题呢？
+
+  1. CSS 作用域问题，需要担心重名，覆盖，对于这个问题，目前有一些方案：
+    - 使用如 [[http://getbem.com/][BEM]] 的命名规则，避免冲突，但还是可能会冲突
+    - Vue 里可以给 style 添加 Scoped，限定作用域
+    - 如 [[https://tailwindcss.com/][Tailwind]] 的 CSS 框架，由于定义了许多原子化的类名，不太需要自
+      己定义类名写样式，也可以很大程度避免这个问题
+    - CSS-in-JS，将生成的样式限定在作用的元素上，例如 Emotion，会生成
+       一个独特的类名(基本是唯一的)
+
+  2. 集中定义 CSS JS HTML，将它们都放在一起，这样可以很方便的找到 CSS 去修改，也方便整体移动组件
+
+  3. 可以使用 JS 去写 CSS，条件语句，循环，变量等，更容易地根据状态值切换样式
+
+  4. 自动添加浏览器样式前缀
+** [[https://github.com/css-modules/css-modules][CSS modules]]
+   #+begin_quote
+   A CSS Module is a CSS file in which all class names and animation
+   names are scoped locally by default
+   #+end_quote
+
+   #+begin_quote
+   CSS Modules let you write styles in CSS files but consume them as
+   JavaScript objects for additional processing and safety.
+
+   CSS Modules are very popular because they automatically make class
+   and animation names unique so you don’t have to worry about
+   selector name collisions.
+   #+end_quote
+
+   就如名字一样，CSS modules 把 CSS 看作一个模块引入使用。
+
+   它需要把 CSS 定义到一个 css 文件中，然后引入这个文件，文件中的类名
+   会被处理成带作用域的。
+
+   引入后，相当于一个 JS 对象，通过类似 xxxStyle.title 的形式，引用对
+   应的样式。
+
+   最终会生成 .css 文件，可以预先加载，缓存。
+
+   除了全局作用域的写法特别，其它和正常写 CSS 没什么差别。
+
+   #+BEGIN_SRC css
+     /* container.module.css */
+     .container {
+       margin: 3rem auto;
+       max-width: 600px;
+     }
+   #+END_SRC
+   #+begin_src js
+     import React from "react"
+     import * as containerStyles from "./container.module.css"
+     export default function Container({ children }) {
+       return (
+         <section className={containerStyles.container}>{children}</section>
+       )
+     }
+   #+end_src
+** [[https://styled-components.com/][styled components]]
+   Styled component 会生成一个带有样式的组件。
+
+   你可以用语义更好的名字作为组件，例如写个 Title 组件，替换原来的 <h1
+   style="..." className="...">, 语义化更好。
+
+   由于样式和组件捆绑，所以要删的时候很容易删，不用怎么担心会不会影响其它。
+
+   不能生成 .css 文件，因此无法提前加载，无法缓存 CSS。
+
+   可以根据组件上的 props，决定组件怎么渲染。
+
+   #+begin_src js
+     const Button = styled.a`
+       ${props => props.primary && css`
+         background: white;
+         color: black;
+       `}
+     `
+     render(
+       <div>
+         <Button
+           href="https://github.com/styled-components/styled-components"
+           target="_blank"
+           rel="noopener"
+           primary
+         >
+           GitHub
+         </Button>
+
+         <Button as={Link} href="/docs">
+           Documentation
+         </Button>
+       </div>
+     )
+   #+end_src
+
+** [[https://emotion.sh/docs/introduction][Emotion]]
+   Emotion 通过引入 [[https://emotion.sh/docs/@emotion/styled][@emotion/styled]] 也可以支持 Styled components 的写法。
+
+   也可以不用 styled 写法，而是定义一个个 CSS 然后组合起来。
+
+   可以通过用字符串定义 ~const textColor = css`color: red;`~ 或者对象形
+   式定义 ~const textColor = css({ color: red})~ 最后会返回一个
+   className。
+
+   如果不用 styled 方式定义，就不用通过 prop 来获取状态，可以直接访问
+   外部变量。
+
+   总体上，感觉 Emotion 和 Styled component 都是不错的 CSS-in-JS 技术，
+   Emotion 语法看起来更灵活一些。
+
+   #+begin_src js
+     import { css, cx } from '@emotion/css'
+
+     const color = 'white'
+
+     render(
+       <div
+         className={css`
+           padding: 32px;
+           background-color: hotpink;
+           font-size: 24px;
+           border-radius: 4px;
+           &:hover {
+             color: ${color};
+           }
+         `}
+       >
+         Hover to change color.
+       </div>
+     )
+   #+end_src
+
+* Atomic CSS
+#+begin_quote
+Atomic CSS is the approach to CSS architecture that favors small,
+single-purpose classes with names based on visual function
+#+end_quote
+
+#+begin_quote
+原子化 CSS 是一种 CSS 的架构方式，它倾向于小巧且用途单一的 class，并且
+会以视觉效果进行命名。
+#+end_quote
+
+按照定义，其实 [[https://getbootstrap.com/][Bootstrap]], [[https://chakra-ui.com/][Chakara UI]], [[https://cn.windicss.org/][Windi CSS]], [[https://tailwindcss.com/][Tailwind]], [[https://github.com/unocss/unocss][UnoCSS]] 这些
+CSS 框架或者引擎，都算是原子化 CSS。
+
+他们会定义一些用途单一的 class, 例如 .mr (margin-right), .mr-2,
+.mt (margin-top), .mt-5。一般而言，一个 class 就对应一个 CSS 属性。
+
+#+begin_src css
+  .mt-5 {
+      margin-top: 5px;
+  }
+
+  .pt-10 {
+      padding-top: 10px;
+  }
+#+end_src
+
+原子化 CSS 定义得这么细小单一，在刚开始的时候，也许需要定义很多原子化
+CSS 以满足使用的需求，到后面当定义的 CSS 满足了大部分的需求时，就不太
+需要再定义了。
+
+它的增长曲线是一条对数曲线，随着定义的原子化 CSS 越来越多，会渐渐趋于
+平稳。
+
+[[https://miro.medium.com/max/700/1*XYBs0ZTnU5_RIO0BT4qodg.png]]
+
+此外，你不应该去改变定义好的属性值，当你需要一个不同的属性值，则定义新的类名。
+
+定义原子化 CSS 多少有些麻烦，但目前存在很多工具，可以根据一些规则自动
+生成对应的 CSS，例如  [[https://github.com/unocss/unocss][UnoCSS]] ：
+#+begin_src js
+  rules: [
+    [/^m-(\d+)$/, ([, d]) => ({ margin: `${d / 4}rem` })],
+    [/^p-(\d+)$/, match => ({ padding: `${match[1] / 4}rem` })],
+  ]
+#+end_src
+
+原子化 CSS 的好处是，一个样式由许多单一的 class 组成，class 对应的内容
+是不变的，可以很容易地知道一个样式是有哪些属性组成的，不用再去翻对应的
+CSS 定义。当需要添加样式时，也可以很容易地想到对应的类名，减少了心智负
+担。
+
+而且一些工具会按需生成 CSS，只生成你需要的 CSS，减少了 CSS 的大小。
+
+* Refs
+  - [[https://developer.mozilla.org/en-US/docs/Glossary/CSS_preprocessor][CSS preprocessor]] @MDN
+  - [[https://www.lambdatest.com/blog/css-preprocessors-sass-vs-less-vs-stylus-with-examples/][CSS Preprocessors – Sass vs LESS vs Stylus (With Examples)]]\\
+  - [[https://zerotomastery.io/blog/postcss-vs-sass/][PostCSS vs. SASS: Why You Should Use PostCSS With Vue (+ How)]]
+  - [[https://www.browserstack.com/guide/top-css-frameworks][Top 5 CSS Frameworks for Developers and Designers]]
+  - [[https://github.com/andreipfeiffer/css-in-js][A thorough analysis of CSS-in-TS]]@andreipfeiffer\\
+    很详细地对比了几个常见的 CSS-in-JS 工具
+  - [[https://sparkbox.com/foundry/css_in_js_overview_css_in_js_pros_and_cons][A Lukewarm Approval of CSS-in-JS]]
+  - [[https://webdesign.tutsplus.com/articles/an-introduction-to-css-in-js-examples-pros-and-cons--cms-33574][An Introduction to CSS-in-JS: Examples, Pros, and Cons]]
+  - [[https://www.gatsbyjs.com/docs/how-to/styling/css-modules/][Component-Scoped Styles with CSS Modules]]
+  - [[https://blog.logrocket.com/styled-components-vs-emotion-for-handling-css/][Styled-components vs. Emotion for handling CSS]]
+  - [[https://css-tricks.com/lets-define-exactly-atomic-css/][Let’s Define Exactly What Atomic CSS is]]
+  - [[https://betterprogramming.pub/an-introduction-to-atomic-css-880cb02ad57f][ An Introduction to Atomic CSS]]\\
+    解释了原子化 CSS 的作用，好处，缺点
+  - [[https://antfu.me/posts/reimagine-atomic-css-zh][重新构想原子化 CSS]]@antfu
+  - [[https://2021.stateofcss.com/en-US/][State Of CSS 2021]]\\
+    了解 2021 年这些 CSS 技术的欢迎度
