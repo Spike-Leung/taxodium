@@ -44,23 +44,23 @@ img 的 src。
   #+end_quote
 
 #+begin_src typescript
-    const imageURL = "https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png"
+  const imageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&s"
 
-    function blob2Base64(blob) {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
+  function blob2Base64(blob) {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
 
-      return new Promise((resolve) => {
-        reader.onloadend = () => {
-          resolve(reader.result)
-        };
-      })
-    }
-
-    fetch(imageURL).then((res) => {
-      return res.blob()
-    }).then(async (blob) => {
-      document.querySelector("#img").src = await blob2Base64(blob)
+    return new Promise((resolve) => {
+      reader.onloadend = () => {
+        resolve(reader.result)
+      };
     })
+  }
+
+  fetch(imageURL).then((res) => {
+    return res.blob()
+  }).then(async (blob) => {
+    document.querySelector("#img").src = await blob2Base64(blob)
+  })
   #+end_src
   [[file:/post/display-blob-as-image/FileReader.png]]
