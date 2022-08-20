@@ -10,8 +10,7 @@
 
 之前尝试过 v2ray 直连 、[[https://toutyrater.github.io/advanced/wss_and_web.html][WebSocket + TLS + Web]] 的方式。
 
-直连是比较快的，不需要进行 TLS 连接等操作，但应用 TLS 可以更好地防检
-测。
+直连是比较快的，不需要进行 TLS 连接等操作，但应用 TLS 可以更好地防检测。
 
 用了很长时间 WebSocket + TLS + Web 的组合，一直都比较稳定。
 
@@ -38,7 +37,7 @@
   这次搭建主要是参考了 [[https://guide.v2fly.org/advanced/h2_tls_web.html][HTTP/2+TLS+WEB]]，里头用到了 [[https://caddyserver.com/][Caddy ]]作为 Web 服务器，
   不过他用的是 Caddy1，而我用的是 Caddy2。
 
-  除了 Caddy， 其实还能用 Nginx，Apache 去做 Web 服务器，不够 Caddy 相
+  除了 Caddy， 其实还能用 Nginx，Apache 去做 Web 服务器，不过 Caddy 相
   对来说使用上更简单方便。
 
   之前搭建 WebSocket + TLS + Web 的时候是用的 Nginx，为了实现 TLS，需
@@ -100,7 +99,7 @@
     file_server
 
     # 反向代理，将流量代理到 VPS 上的 V2ray
-    # <path> 替换为 http2 的 path， <port> 替换为 v2ray 对应的 port
+    # <http2-path> 替换为 http2 的 path， <v2ray-port> 替换为 v2ray 对应的 port
     reverse_proxy <http2-path> localhost:<v2ray-port> {
             header_up Host {host}
             transport http {
@@ -238,7 +237,7 @@
 *** v2ray 客户端配置
   这里提供 [[https://github.com/yichengchen/clashX][ClashX]] 配置的参考，其它客户端配置类似的。
 
-  主要是配置 server， port 指向域名和对应的服务器；
+  主要是配置 server， port 指向域名和对应的服务器。
 
   配置 uuid 和服务器的 uuid 保持一致。
 
