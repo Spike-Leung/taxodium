@@ -112,6 +112,18 @@
 [[file:/post/flex-box-with-overflow/min-width.png]]
 
 * 原因
+** TL;DR
+会溢出是因为在这个例子中，flex item 的 *最小尺寸* 是文本的长度，即使
+flex item 可以缩小也只能缩小到文本长度，无法避免溢出。
+
+通过设置 =overflow= 属性，可以让最小宽度变为 0，从而让 flex item 可以缩小到容器内而不溢出；
+
+设置 =min-width:0= 同理，可以让 flex item 可以缩小到很小，避免溢出；
+
+设置 =width:0= 则也会影响最小尺寸，同时也设置了 flex item 的宽度，但因为
+宽度为 0，还需要设置 =flex-grow:1= ，让 flex item 延伸容器剩余空间。
+
+** 详细分析
 当 flex item 没有设置 flex 属性时，默认值是 =flex: initial= ，当于
 =flex: 0 1 auto=,
 
