@@ -1,0 +1,187 @@
+#+title: Windows 下开发搭建
+#+date: 2022-10-27T19:15:20+08:00
+#+lastmod: 2022-10-27T19:15:20+08:00
+#+keywords[]:
+#+description: ""
+#+tags[]:
+#+categories[]:
+* 前言
+
+工作关系，公司提供了一台 Windows 电脑进行开发，本来是用 Macbook 的，但
+懒上下班来回背，于是就得在 Windows 上配置一下开发环境。
+
+我是做前端开发的，主要是 Web 相关的开发，我需要配置的一些东西：
+
+=NodeJS= ， =Git= ， =Emacs= ， =Firefox= ， =Chrome= ， =一个好用的终端= ， =代理工具=
+
+* 代理工具
+下载 [[https://github.com/2dust/v2rayN][2dust/v2rayN]]，然后配置即可。
+
+一开始没有用代理，访问 GitHub 可能比较慢，以后找个考虑 U 盘存储一下，
+避免等待和访问不了的情况。
+
+* 浏览器
+[[https://www.mozilla.org/en-US/firefox/new/][Firefox]], [[https://www.google.com/chrome/][Chrome]], 到官网下载即可，下载 Firefox 时最好通过谷歌寻找下载链
+接，不然可能下载了国内的版本，两个版本的账号是不互通的，不太喜欢国内的
+那个版本。
+
+* Emacs & 环境
+最开始的时候，是直接下载 Windows 版本的 Git，NodeJS，Emacs，然后用
+git-bash 作为终端，但是在 Windows 下使用终端实在很别扭，Windows 下的路
+基和 MacOS，Linux 的不同，很不习惯。
+
+之后了解到 [[https://learn.microsoft.com/en-us/windows/wsl/about][WSL]](Windows Subsystem for Linux), 可以通过它在 Windows 上装
+一个 Linux 子系统，只要安装一个 Ubuntu 或者自己熟悉的 Linux 发行版，就
+能回到 Linux 那样的命令行环境了。
+
+** WSL
+按照 [[https://learn.microsoft.com/en-us/windows/wsl/install][Install Linux on Windows with WSL]] 安装即可。
+
+** Windows Terminal
+WSL 文档中推荐搭配 [[https://github.com/microsoft/terminal][microsoft/terminal]] 使用，相比于其他 Powershell，git
+bash，确实好用很多，支持了多 tab，选择不同的 Profiles, 定制主题，字体等。
+
+真感谢微软近些年开发的工具，VS Code，WSL，Windows Terminal 都是不错的
+应用。
+*** 安装字体
+参考 [[https://slmeng.medium.com/how-to-install-powerline-fonts-in-windows-b2eedecace58][How to install Powerline fonts in Windows]]，步骤如下：
+
+- 到 [[https://github.com/powerline/fonts][powerline/fonts]] 上，点击克隆的按钮，下载字体 zip 包，下载后解压 zip 包
+- WINDOW KEY + X 选择 =Windows PowerShell(Admin)=, 然后 cd 到解压的 zip
+  包中 =.../fonts-master/fonts-master= 目录
+- 执行 =Set-ExecutionPolicy Bypass= 设置可执行权限，然后执行
+  =.\install.ps1= 安装字体， 安装完成后， =Set-ExecutionPolicy Default= 将
+  执行权限重置回去
+
+*** 配置 Terminal
+- 将 Ubuntu 作为默认 Profiles
+- 设置 Ubuntu Profiles 的字体为 Fira, Nerd 之类的字体
+- 其他配置按照喜欢的设置
+
+** 按键绑定
+Windows 有一些默认的全局绑定设置，Terminal 里也有一些，按自己需要禁用。
+
+目前我的键盘可以物理切换 Ctrl 和 Caps Lock ，但可能有些键盘不支持，可
+以下载 [[https://github.com/microsoft/PowerToys][PowerToys]] 映射一下。
+
+** WSL 和 Windows 之间的复制粘贴
+*** Windows -> WSL
+Windows 上 Ctrl-c 复制，然后可以在 WSL Ctrl-v 粘贴，但是因为我使用
+Emacs，Ctrl-v 在 Emacs 中是常用的翻页，因此禁用了 Ctrl-v 的粘贴功能，
+改为通过 Terminal 的 command 去粘贴。
+
+在 Ternimal 中 =Ctrl + Shift + p= 呼出 command panel，然后找到 =paste= 命
+令执行即可。
+
+*** WSL -> Windows
+同样，在 Terminal 中用 Emacs，选中文字复制没法传递到 Windows 的剪贴板，
+目前还没找到方便的操作。
+
+当前的解决办法：
+- Emacs 中选择内容，然后写入到一个文件 =~/copy.txt=
+- 执行命令 =cat ~/copy.txt | clip.exe= 把 copy 的文本写入剪切板 (绑定 alias)
+
+后面考虑写一个 Elisp 的配置，将这个操作封装成 Emacs 的函数，只要选中文
+字然后调用函数即可。
+
+** Ubuntu 环境配置
+*** Git
+Ubuntu 自带，直接用
+
+*** systemd
+配置过程中，提示 systemd 不可用，导致一些安装无法进行。
+
+参考 [[http://wiki.webperfect.ch/index.php?title=WSL:_System_has_not_been_booted_with_systemd_as_init_system_(PID_1)][WSL: System has not been booted with systemd as init system (PID 1)]] 解决：
+
+#+begin_src bash
+  # Install git
+  sudo apt install git
+
+  # Run the script
+  git clone https://github.com/DamionGans/ubuntu-wsl2-systemd-script.git
+  cd ubuntu-wsl2-systemd-script/
+  bash ubuntu-wsl2-systemd-script.sh
+  # Enter your password and wait until the script has finished
+#+end_src
+*** zsh
+参考 [[https://www.tecmint.com/install-zsh-in-ubuntu/][How to Install and Setup Zsh in Ubuntu 20.04]]:
+
+#+begin_src bash
+  # Install
+  sudo apt install zsh
+
+  # Set zsh as default shell
+  # chsh -s $(which "SHELL NAME")
+  chsh -s $(which zsh)
+
+  # Uninstall
+  sudo apt --purge remove zsh
+#+end_src
+
+配置 [[https://ohmyz.sh/][Oh My ZSH]] & [[https://spaceship-prompt.sh/][Spaceship]]
+
+*** NodeJS
+下载 [[https://github.com/nvm-sh/nvm][nvm]] 进行配置：
+
+#+begin_src bash
+  # install
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+
+  # 在 .zshrc 或者 .bashrc 中加入配置
+  export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+#+end_src
+
+*** Emacs
+默认 apt 安装的是 26 的版本，但是我的配置需要 27 以上
+
+#+begin_src bash
+  sudo add-apt-repository ppa:kelleyk/emacs
+
+  sudo apt update && sudo apt upgrade
+
+  sudo apt install emacs27
+
+  # Uninstall
+  sudo apt autoremove --purge emacs27
+#+end_src
+
+安装 gcc，用于编译 emacsql:
+#+begin_src bash
+  sudo apt install gcc
+#+end_src
+
+下载自己的 [[https://github.com/Spike-Leung/emacs.d][emacs.d 配置]]，切换成 windows 的分支，注意要安装子模块。
+
+**** org-mode 打开链接， WSL 中找不到浏览器
+#+begin_src elisp
+  ;;; Package --- Summary
+  ;; init-wsl
+  ;;; Commentary:
+  ;;; Code:
+  ;;; https://adam.kruszewski.name/2017-09-16-emacs-in-wsl-and-opening-links.html
+
+  (let ((cmd-exe "/mnt/c/Windows/System32/cmd.exe")
+        (cmd-args '("/c" "start")))
+    (when (file-exists-p cmd-exe)
+      (setq browse-url-generic-program  cmd-exe
+            browse-url-generic-args     cmd-args
+            browse-url-browser-function 'browse-url-generic)))
+
+  (provide 'init-wsl)
+  ;;; init-wsl.el ends here
+#+end_src
+
+**** 终端没有 GUI，因此一些 GUI 相关的显示会有些问题
+- *fringe*: 左侧显示的一些标志消失了，flycheck 找不到错误标志，不过可以
+  通过其他方式显示错误，虽然不那么直观，但能接受
+
+* 碎碎念
+相对在 Windows 里开发，用 WSL 使用 Ubuntu 进行开发，要舒服很多，一些命
+令执行起来更方便，用下来速度不慢。
+
+不过仍然存在不少问题需要去解决，例如复制粘贴，还有不少的 Emacs 按键和
+其他软件似乎有冲突……
+
+以后解决了再来更新这篇文章~
