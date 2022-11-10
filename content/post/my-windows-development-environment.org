@@ -76,6 +76,16 @@ Windows 上 Ctrl-C 复制，然后可以在 WSL Ctrl-V 粘贴，但是因为我�
 
 后面考虑写一个 Elisp 的配置，将这个操作封装成 Emacs 的函数，只要选中文字然后调用函数即可。
 
+#+begin_src elisp
+  (defun spike-leung/wsl-copy ()
+    "Copy region to windows clipboard."
+    (interactive)
+    (progn
+      (write-region (mark) (point) "~/copy.txt" nil nil nil nil)
+      (shell-command "cat ~/copy.txt | clip.exe")
+      ))
+#+end_src
+
 ** Ubuntu 环境配置
 *** Git
 Ubuntu 自带，直接用
