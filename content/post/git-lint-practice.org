@@ -1,0 +1,298 @@
+#+title: Git 的校验实践
+#+date: 2022-11-17T17:00:07+08:00
+#+lastmod: 2022-11-17T17:00:07+08:00
+#+draft: false
+#+keywords[]:
+#+description: ""
+#+tags[]:
+#+categories[]:
+* 提交信息 (commit message)
+** 编写方式
+提交信息可以通过以下命令完成：
+#+begin_src bash
+  git commit -m 'your message'
+#+end_src
+
+但是它的缺点是能写的内容不多, 有时你可能有一些补充信息，或者需要附上一些 issue 链接，就不方便了。
+
+所以建议是配置好 Git 使用的编辑器，然后直接敲 =git commit=, 在编辑器中进行编写。
+
+配置 Git 编辑器：
+#+begin_src bash
+  # vim 可以换成你习惯的编辑器
+  git config --global core.editor "vim"
+
+  # 或者设置 GIT_EDITOR 变量，在你的 .bashrc / .zshrc 文件中添加即可
+  export GIT_EDITOR=vim
+#+end_src
+
+** 格式
+提交信息一般遵循[[https://www.conventionalcommits.org/zh-hans/v1.0.0-beta.4/][约定式提交]]的规范去编写，基本结构为：
+#+begin_src
+<类型>[可选的作用域]: <描述>
+
+[可选的正文]
+
+[可选的脚注]
+#+end_src
+
+其中类型的定义可以参考 [[https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#type][Angular]]:
+
+#+begin_quote
+- *build*: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+- *ci*: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+- *docs*: Documentation only changes
+- *feat*: A new feature
+- *fix*: A bug fix
+- *perf*: A code change that improves performance
+- *refactor*: A code change that neither fixes a bug nor adds a feature
+- *style*: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- *test*: Adding missing tests or correcting existing tests
+#+end_quote
+
+提交信息的编写可以参考 [[https://cbea.ms/git-commit/][Introduction: Why good commit messages matter]]：
+
+#+begin_src bash
+  Summarize changes in around 50 characters or less
+
+  More detailed explanatory text, if necessary. Wrap it to about 72
+  characters or so. In some contexts, the first line is treated as the
+  subject of the commit and the rest of the text as the body. The
+  blank line separating the summary from the body is critical (unless
+  you omit the body entirely); various tools like `log`, `shortlog`
+  and `rebase` can get confused if you run the two together.
+
+  Explain the problem that this commit is solving. Focus on why you
+  are making this change as opposed to how (the code explains that).
+  Are there side effects or other unintuitive consequences of this
+  change? Here's the place to explain them.
+
+  Further paragraphs come after blank lines.
+
+   - Bullet points are okay, too
+
+   - Typically a hyphen or asterisk is used for the bullet, preceded
+     by a single space, with blank lines in between, but conventions
+     vary here
+
+  If you use an issue tracker, put references to them at the bottom,
+  like this:
+
+  Resolves: #123
+  See also: #456, #789
+#+end_src
+
+** 工具校验
+在团队协作中，为了确保大家的提交都符合规范，最好是通过工具去约束，而不是人为检查。
+
+格式的约束可以通过 [[https://github.com/conventional-changelog/commitlint][commitlint]] 等工具实现，可以添加一个 =pre-commit= 的钩子，在提交前进行格式的校验。
+
+** 提交信息模板(commit.template)
+团队中可能有约定好的提交信息格式，也可以添加一份提交模板在项目，每次提交时都读取模板进行编写，这样也可以统一格式。
+
+可以在项目中根目录创建一份 =.gittemplate.txt= , 然后写入模板内容：
+#+begin_src bash
+Subject line (try to keep under 50 characters)
+
+Multi-line description of commit,
+feel free to be detailed.
+
+[Ticket: X]
+#+end_src
+
+然后给项目的 git 仓库配置使用这个模板(具体配置会生成在 =项目根目录/.git/config= 下)：
+#+begin_src bash
+  git config commit.template .gittemplate.txt
+#+end_src
+
+然后下次提交时，提交信息就会变成：
+#+begin_src bash
+  Subject line (try to keep under 50 characters)
+
+  Multi-line description of commit,
+  feel free to be detailed.
+
+  [Ticket: X]
+  # Please enter the commit message for your changes. Lines starting
+  # with '#' will be ignored, and an empty message aborts the commit.
+  # On branch master
+  # Changes to be committed:
+  #   (use "git reset HEAD <file>..." to unstage)
+  #
+  # modified:   lib/test.rb
+  #
+  ~
+  ~
+  ".git/COMMIT_EDITMSG" 14L, 297C
+#+end_src
+
+* githooks / husky
+前面提到，可以用 [[https://github.com/conventional-changelog/commitlint][commitlint]] 在 =pre-commit= 时进行校验， =pre-commit= 指的就是一个 [[https://git-scm.com/docs/githooks][Git 钩子]]，可以在提交前触发一些动作。
+
+你可以在提交前后，push 前后，合并前后去触发一些动作。
+
+常见的配置例如：
+
+- 在提交的时候检查代码格式，格式化代码 (执行 eslint, prettier)
+- 在确认提交信息后，校验提交信息的格式
+- 在 push 到远端时，校验代码是否有错误，跑测试用例，比对分支看是否缺少上游提交等
+- ...
+
+githooks 最早出现的版本时 =2.19.0= ，如果你的 Git 版本过低，就需要升级一下。
+
+** 配置方法
+*** githooks
+- 进入 githooks 所在的目录
+  #+begin_src bash
+    cd /project-repo/.git/hooks
+  #+end_src
+
+  你会看到有这些文件：
+
+  #+begin_src bash
+      -rwxr-xr-x 1 spike spike  478 Oct 27 19:10 applypatch-msg.sample
+      -rwxr-xr-x 1 spike spike  896 Oct 27 19:10 commit-msg.sample
+      -rwxr-xr-x 1 spike spike 3079 Oct 27 19:10 fsmonitor-watchman.sample
+      -rwxr-xr-x 1 spike spike  189 Oct 27 19:10 post-update.sample
+      -rwxr-xr-x 1 spike spike  424 Oct 27 19:10 pre-applypatch.sample
+      -rwxr-xr-x 1 spike spike 1638 Oct 27 19:10 pre-commit.sample
+      -rwxr-xr-x 1 spike spike  416 Oct 27 19:10 pre-merge-commit.sample
+      -rwxr-xr-x 1 spike spike 1348 Oct 27 19:10 pre-push.sample
+      -rwxr-xr-x 1 spike spike 4898 Oct 27 19:10 pre-rebase.sample
+      -rwxr-xr-x 1 spike spike  544 Oct 27 19:10 pre-receive.sample
+      -rwxr-xr-x 1 spike spike 1492 Oct 27 19:10 prepare-commit-msg.sample
+      -rwxr-xr-x 1 spike spike 3610 Oct 27 19:10 update.sample
+  #+end_src
+
+- 根据需要的钩子，将 =.simple= 后缀移除，例如 =pre-commit.sample= 改为 =pre-commit=
+
+- 打开文件，设置为你想写的语言
+
+如果你想用 shell:
+#+begin_src bash
+  #!/usr/bin/env sh
+#+end_src
+
+或者用 python:
+#+begin_src bash
+  #!/usr/bin python
+#+end_src
+
+- 设置好语言后，就编写脚本，例如 =pre-push=:
+  #+begin_src shell
+    #!/bin/sh
+    COMMIT_ID=$(git log -n 1 --pretty=format:"%H" main)
+
+    if git merge-base --is-ancestor $COMMIT_ID HEAD
+    then
+        exit 0
+    else
+        echo "主分支有你没有合并的提交，在提测前请合并"
+        exit 0
+    fi
+  #+end_src
+
+- 保存好脚本后, 当 push 的时候，就会执行 =pre-push= 里面的脚本，去比对分支，如果不同步则会出现提示文字
+
+但是 githooks 是 =存储在本地，不进入版本管理= 的。
+
+一个解决办法是在项目中创建一个目录存放 hooks, 同步到远端后，大家拉取下来拷贝 =.git/hooks= 目录里。
+
+*** husky
+[[https://typicode.github.io/husky/#/][husky]] 是一个方便写 githooks 的工具，目前也蛮流行的。
+
+它会在项目的根目录下创 =.husky= 目录，存放 husky 生成的所有 hooks，这样可以避免 hooks 在本地仓库没有同步的问题。
+
+它还会修改 githooks 对应的路径，改写为 =.husky= 目录, 如果你打开 =/project-root/.git/config= , 你会看到：
+
+#+begin_src bash
+  [core]
+          hooksPath = .husky
+#+end_src
+
+husky 的使用就不赘述了，如果项目可以 husky，建议还是用 husky 来维护 githooks。
+
+** 一些例子
+#+begin_src bash
+    /home/spike/git/commit-demo/.husky:
+    total used in directory 24 available 232.5 GiB
+    drwxrwxr-x 3 spike spike 4096 Nov 17 17:48 .
+    drwxrwxr-x 6 spike spike 4096 Nov 17 17:48 ..
+    drwxrwxr-x 2 spike spike 4096 Oct 25 09:14 _
+    -rwxr-xr-x 1 spike spike   88 Oct 25 09:15 commit-msg
+    -rwxr-xr-x 1 spike spike   68 Oct 25 11:06 pre-commit
+    -rwxr-xr-x 1 spike spike  218 Nov 17 17:48 pre-push
+
+#+end_src
+*** 校验提交信息 (commit-msg)
+安装  [[https://github.com/conventional-changelog/commitlint][commitlint]] 以来，然后创建 =commit-msg= 钩子，在提交后，校验提交信息是否符合规范：
+#+begin_src shell
+  #!/usr/bin/env sh
+  . "$(dirname -- "$0")/_/husky.sh"
+
+  npx --no -- commitlint --edit ${1}
+#+end_src
+*** 提交前校验&格式化代码(pre-commit)
+#+begin_src shell
+  #!/usr/bin/env sh
+  . "$(dirname -- "$0")/_/husky.sh"
+  npx lint-staged
+#+end_src
+
+这里用到了 [[https://github.com/okonet/lint-staged][okonet/lint-staged]], 它的作用是对 staged 中的内容(git add 进去的内容)进行一些处理。
+
+=.lintstagedrc.json=:
+#+begin_src json
+  {
+    "src/*.{js,vue}": ["prettier --write", "eslint"]
+  }
+#+end_src
+
+例如这里就是对 src 下的 js 和 vue 类型的文件，用 pretteir 格式化后，再用 eslint 去校验。
+
+*** 推送时判断是否合包含主分支提交(pre-push)
+#+begin_src shell
+  #!/bin/sh
+  # 获取 main 分支最新的提交
+  COMMIT_ID=$(git log -n 1 --pretty=format:"%H" main)
+
+  # 判断 main 的最新提交 是不是 当前的最新提交 (HEAD) 的上游
+  if git merge-base --is-ancestor $COMMIT_ID HEAD
+  then
+      exit 0
+  else
+      # 如果不是则提示 exit code 不为 0，会阻断 push，无法推送到远程
+      echo "主分支有你没有合并的提交，在提测前请合并"
+      exit 1
+  fi
+
+#+end_src
+当存在多条分支时，有时容易忘记合并主分支代码，导致测试时丢失主分支的提交。
+
+你就可以写一个 =pre-push= 钩子，再 push 的时候去校验一下。
+
+* changelog
+涉及到版本控制，自然也有版本号和发布日志，一般而言，版本号应该遵循[[https://semver.org/lang/zh-CN/][语义化版本 2.0.0]]的规范。
+
+而发布日志，一般而言也可以用一个 =CHANGELOG.md= 文件去编写和维护。
+
+而 [[https://github.com/changesets/changesets][changesets]] 可以方便地让你按照语义化的规范去编写 changelog。
+
+当做了一些修改，觉得有必要再发布日志里说明，就可以添加一条 changeset：
+#+begin_src bash
+  npx changeset
+#+end_src
+
+changeset 会要求你选择当前这条记录对应的语义化版本，从而约束你去遵守语义化。
+
+在发布前可以不断地添加 changeset，等到要发布时，执行：
+#+begin_src bash
+  npx changeset version
+#+end_src
+
+changeset 就会帮你把所有的 changeset 合并到 =CHANGELOG.md= 中，同时根据你之前的选择计算对应的版本号。
+
+* Refs
+- [[https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration][8.1 Customizing Git - Git Configuration]]
+- [[https://stackoverflow.com/questions/2596805/how-do-i-make-git-use-the-editor-of-my-choice-for-editing-commit-messages][How do I make git use the editor of my choice for editing commit messages?]]
+- [[https://medium.com/@f3igao/get-started-with-git-hooks-5a489725c639][Get Started with Git Hooks]]
