@@ -74,7 +74,7 @@ Windows 上 Ctrl-C 复制，然后可以在 WSL Ctrl-V 粘贴，但是因为我�
 
 - 执行命令 =cat ~/copy.txt | clip.exe= 把 copy 的文本写入剪切板 (可以绑定 alias 方便调用)
 
-后面考虑写一个 Elisp 的配置，将这个操作封装成 Emacs 的函数，只要选中文字然后调用函数即可。
+将以上流程封装为函数：
 
 #+begin_src elisp
   (defun spike-leung/wsl-copy ()
@@ -85,6 +85,8 @@ Windows 上 Ctrl-C 复制，然后可以在 WSL Ctrl-V 粘贴，但是因为我�
       (shell-command "cat ~/copy.txt | clip.exe")
       ))
 #+end_src
+
+之后有时间把这个操作添加到 Emacs 的复制钩子里，这样 Emacs 复制时就能复制到 Windows 上了。
 
 ** Ubuntu 环境配置
 *** Git
@@ -120,7 +122,7 @@ Ubuntu 自带，直接用
   sudo apt --purge remove zsh
 #+end_src
 
-配置 [[https://ohmyz.sh/][Oh My ZSH]] & [[https://spaceship-prompt.sh/][Spaceship]]，一些插件参考: [[https://github.com/antfu/dotfiles/blob/main/.zshrc][antfu/dotfiles]]
+配置 [[https://ohmyz.sh/][Oh My ZSH]] & [[https://starship.rs][Starship]], 一些插件参考: [[https://github.com/antfu/dotfiles/blob/main/.zshrc][antfu/dotfiles]]
 
 *** NodeJS
 下载 [[https://github.com/nvm-sh/nvm][nvm]] 进行配置：
