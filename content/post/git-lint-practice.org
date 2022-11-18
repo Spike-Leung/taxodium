@@ -257,7 +257,8 @@ husky 的使用就不赘述了，如果项目可以 husky，建议还是用 husk
 #+begin_src shell
   #!/bin/sh
   # 获取 main 分支最新的提交
-  COMMIT_ID=$(git log -n 1 --pretty=format:"%H" main)
+  git fetch
+  COMMIT_ID=$(git log -n 1 --pretty=format:"%H" origin/main)
 
   # 判断 main 的最新提交 是不是 当前的最新提交 (HEAD) 的上游
   if git merge-base --is-ancestor $COMMIT_ID HEAD
