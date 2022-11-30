@@ -34,6 +34,8 @@
 ** WSL
 按照 [[https://learn.microsoft.com/en-us/windows/wsl/install][Install Linux on Windows with WSL]] 安装即可，看看文档了解点基本用法。
 
+建议使用 Windows 的  =Microsoft Store= 搜索 wsl 进行安装，然后根据 [[https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/][Systemd support is now available in WSL!]] 配置好 systemd。
+
 ** Windows Terminal
 WSL 文档中推荐搭配 [[https://github.com/microsoft/terminal][microsoft/terminal]] 使用，相比于 Powershell，git bash，确实好用很多。
 
@@ -157,6 +159,20 @@ Ubuntu 自带，直接用
 #+end_src
 
 下载自己的 [[https://github.com/Spike-Leung/emacs.d][emacs.d 配置]]，切换成 windows 的分支，注意要安装子模块。
+
+如果需要安装最新的 Emacs 版本，可以参考 [[https://learnubuntu.com/install-emacs/][How to Install Emacs on Ubuntu]]:
+#+begin_src bash
+  # install
+  sudo apt-add-repository ppa:ubuntu-elisp/ppa
+
+  sudo apt update && sudo apt upgrade
+
+  sudo apt-get install emacs-snapshot
+
+  # uninstall
+  sudo add-apt-repository --remove ppa:ubuntu-elisp/ppa
+  sudo apt remove emacs-snapshot
+#+end_src
 
 **** org-mode 打开链接， WSL 中找不到浏览器
 #+begin_src elisp
