@@ -17,6 +17,8 @@ print() 方法默认是打印当前页面的整个 HTML。
 
 通过创建一个 iframe，将打印的内容、样式等写入到 iframe 中，再通过 iframe 去调用 print 方法即可。
 
+你也可以参考 [[https://github.com/x-extends/vxe-table][vxe-table]] 的实现： [[https://github.com/x-extends/vxe-table/blob/574c2130e1acc8ad28724ccbfc8b60ba4c5f7fc3/packages/export/src/util.ts][packages/export/src/util.ts]]。
+
 * Style
 打印的样式，可以通过 =@media print= 设置。
 #+begin_src css
@@ -28,20 +30,20 @@ print() 方法默认是打印当前页面的整个 HTML。
   }
 #+end_src
 
-或者 print style sheet，不过这需要多发一次请求获取 css 文件。
+或者 =print style sheet= ，不过这需要多发一次请求去获取 css 文件。
 #+begin_src html
   <link href="/path/to/print.css" media="print" rel="stylesheet" />
 #+end_src
 
-你还可以利用 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Paged_Media][Paged Media]] 中的属性，打印页的表现：
-- [[https://developer.mozilla.org/en-US/docs/Web/CSS/break-before][break-before]], [[https://developer.mozilla.org/en-US/docs/Web/CSS/break-inside][break-inside]], [[https://developer.mozilla.org/en-US/docs/Web/CSS/break-after][break-after]]: 控制在什么地方插入分页符号
+你还可以利用 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Paged_Media][Paged Media]] 中的属性，控制打印页的表现：
+- [[https://developer.mozilla.org/en-US/docs/Web/CSS/break-before][break-before]], [[https://developer.mozilla.org/en-US/docs/Web/CSS/break-inside][break-inside]], [[https://developer.mozilla.org/en-US/docs/Web/CSS/break-after][break-after]]： 控制在什么地方插入分页符号
 - [[https://developer.mozilla.org/en-US/docs/Web/CSS/@page][@page]]：设置页面边距，大小
-- [[https://developer.mozilla.org/en-US/docs/Web/CSS/widows][widows]]: 当需要分页时，下一页至少要有多少行内容
+- [[https://developer.mozilla.org/en-US/docs/Web/CSS/widows][widows]]： 当需要分页时，下一页至少要有多少行内容
 - ...
 
 除了样式，你还需要考虑打印的内容：
 
-- 通过 =display: none;= 隐藏一些不需要的内容，如头部，侧边栏等。
+- 通过 =display: none;= 隐藏一些不需要的内容，如头部、侧边栏等。
 #+begin_src css
   /* print.css */
   header, footer, aside, nav, form, iframe, .menu, .hero, .adslot {
@@ -74,7 +76,7 @@ print() 方法默认是打印当前页面的整个 HTML。
   <p class="print">Some print info.</p>
 #+end_src
 
-- 通过 =:after,:before= 增加额外的信息，如显示 a 标签对应的链接。
+- 通过 =:after,:before= 增加额外的信息，如显示 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a][<a>]] 对应的链接。
 #+begin_src css
   /* 显示链接 */
   a::after {
@@ -91,7 +93,7 @@ print() 方法默认是打印当前页面的整个 HTML。
 
 - 使用打印机打印的时，大量背景会耗费很多墨水，可以考虑移除大面积地背景色，参考 [[https://www.sitepoint.com/css-printer-friendly-pages/][How to Create Printer-friendly Pages with CSS]] 。
 
-- 页眉页脚，可以用 =position: fixed;= 实现
+- 页眉页脚，可以用 =position: fixed;= 实现，固定定位的元素会出现在每一页。
 
 * Debug
 以 Chrome 为例，你可以打开 =Developer tools= ，在更多工具中找到 =rendering= ，设置 =Emulate CSS media type= 为 =print= ，可以模拟 =@media print= ，从而调试打印样式。
