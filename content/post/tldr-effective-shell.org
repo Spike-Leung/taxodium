@@ -1,0 +1,2125 @@
+#+title: TLDR; Effective Shell
+#+date: 2023-09-21T02:18:21+08:00
+#+lastmod: 2023-09-21T02:18:21+08:00
+#+draft: true
+#+keywords[]:
+#+description: ""
+#+tags[]:
+#+categories[]:
+:PROPERTIES:
+:ID:       7f0a5584-0e6f-4352-a208-20ae9ccc5f46
+:END:
+* 前言
+
+这是之前做的一个关于 shell 的方向，内容基本来自 [[https://effective-shell.com/][effective-shell]]，这是
+一个非常好的 shell 入门教程，感兴趣的话建议去看看。
+
+你可以把这篇文章当作是它的 TLDR。
+
+* 为什么学
+
+#+begin_quote
+熟练使用命令行是一种常常被忽视，或被认为难以掌握的技能，但实际上，它会
+提高你作为工程师的灵活性以及生产力。 -- [[https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md][命令行的艺术]]
+#+end_quote
+
+- 提高效率， 某些场景下，shell 操作比图形界面更高效
+- 某些场景下，只有 shell 能用，没有 GUI
+- 可编程扩展
+- 帮助你更好地理解计算机是如何运作的
+- 有趣
+- 通用技能
+
+* [[https://effective-shell.com/part-2-core-skills/what-is-a-shell][什么是 shell]]
+
+#+attr_html: :width 100%
+https://effective-shell.com/assets/images/image-walnut-93cb9b0e2b015cbc5de26cd2c4483ecd.jpg
+
+我们平时说的 ~shell~ ，一般指的就是命令行。
+
+#+begin_quote
+When we talk about "The Shell", we're normally referring to the
+simple, text-based interface which is used to control a computer or
+about program.
+#+end_quote
+
+更具体的，shell 就是调用系统 kernel 的程序，他们的关系好比果核和果壳。
+
+#+attr_html: :width 100%
+[[https://effective-shell.com/assets/images/diagram3-terminal-and-shell-31620f593a4c3838051a5a6dcea17577.png]]
+
+- [[https://effective-shell.com/part-2-core-skills/what-is-a-shell/#the-operating-system][The Operating System]]
+- =pstree -psa $$=
+
+#+begin_quote
+So what is the shell? The shell is just a general name for any user
+space program that allows access to resources in the system, via
+some kind of interface.
+
+Shells come in many different flavours but are generally provided to
+aid a human operator in accessing the system. This could be
+interactively, by typing at a terminal, or via scripts, which are
+files that contain a sequence of commands.
+
+For example, to see all of the files in a folder, the human operator
+could write a program in a language such as C, making system calls to
+do what they want. But for day-to-day tasks, this would be
+repetitive. A shell will normally offer us a quick way to do that
+exact task, without having to manually write a program to do it.
+#+end_quote
+
+什么是 terminal (终端)？
+
+一般是指用于和 shell 交互，给 shell 提供输入， 显示 shell 执行后的结果的程序。
+
+#+begin_quote
+We're not directly interacting with the 'shell' in this
+diagram. We're actually using a terminal. When a user wants to work
+with a shell interactively, using a keyboard to provide input and a
+display to see the output on the screen, the user uses a terminal.
+
+The shell is the program that is going to take input from somewhere
+and run a series of commands. When the shell is running in a
+terminal, it is normally taking input interactively from the
+user. As the user types in commands, the terminal feeds the input to
+the shell and presents the output of the shell on the screen.
+#+end_quote
+
+常见的 shell: [[https://en.wikipedia.org/wiki/Bourne_shell][sh(Bourne Shell)]], [[https://en.wikipedia.org/wiki/Bash_(Unix_shell)][bash (Bourne Again Shell)]], =zsh=, =fish=, =ksh=
+
+常见的 terminal: =iTerm2=, =Windows Terminal=, =xterm=, =tabby=
+
+* 常用命令
+** [[https://effective-shell.com/part-2-core-skills/understanding-commands][Understanding Commands]]
+#+begin_quote
+A command in a shell is something you execute. It might take
+parameters. Generally it'll have a form like this: =command param1
+param2=
+#+end_quote
+
+** [[https://effective-shell.com/part-2-core-skills/understanding-commands][The Different Types of Commands]]
+
+=type= 指令可以查看指令的类型。
+
+*** Executables
+
+#+begin_quote
+Executables are programs your system can use; your shell just calls
+out to them.
+
+Executables are just files with ~the 'executable' bit set~. If I
+execute the cat command, the shell will search for an executable named
+cat in my =$PATH=. If it finds it, it will run the program.
+
+=$PATH= is the standard environment variable used to define where the
+shell should search for programs.
+
+The shell will start with the earlier locations and move to the later
+ones. This allows local flavours of tools to be installed for users,
+which will take precedence over general versions of tools.
+
+Executables don't have to be compiled program code, they can be
+scripts. If a file starts with =#! (the 'shebang')=, then the system
+will try to run the contents of the file with the program specified in
+the shebang.
+#+end_quote
+
+*** "Built-Ins"
+
+#+begin_quote
+Builtins are /very/ shell-specific and usually control the shell itself
+#+end_quote
+
+"Built-Ins" 的指令是和 shell 强相关的，换言之，某个命令，可能 bash 有，但 zsh 就没有。
+
+之所以需要有 "Built-Ins" 命令，是因为内建的会执行得更快，而且作用的范围更广。
+
+#+begin_quote
+Some commands are a builtin so that they can function in a sensible
+manner. For example, =cd= command changes the current directory - if we
+executed it as a process, it would change only the directory for the
+=cd= process itself, not the shell, making it much less useful.
+
+Echo is builtin because the shell can run much more quickly by not
+actually running a program if it has its own built in implementation.
+#+end_quote
+
+*** Functions
+
+#+begin_quote
+Functions are powerful ways to write logic but will normally be shell-specific.
+#+end_quote
+
+#+begin_src bash
+  concatGyennoDeployCommand() {
+      # 第一个参数，环境
+      local env=$1
+      # 第二个参数，版本号
+      local version=$2
+      local hash=$(git rev-parse HEAD)
+      # 获取提交信息
+      local msg=$(git log --pretty=format:"%s" -n 1 $hash)
+      # 获取当前远程分支的项目名称，返回如 ruiyun-web, scroring 等
+      local repo=$(git remote -v | grep "(fetch)" | awk '{print $2}' | awk -F/ '{print $NF}' | cut -d'.' -f 1)
+
+      # 拼接信息
+      local command="2 $env,$repo,$version,$hash"
+
+      echo "$msg"
+      echo "$command"
+  }
+#+end_src
+
+*** Aliases
+
+#+begin_quote
+Aliases are conveniences for human operators, but only in the context of an interactive shell.
+#+end_quote
+
+#+begin_src bash
+  # ---------------------------------------------------------------- #
+  # alias
+  # ---------------------------------------------------------------- #
+  alias dd=getGyennoDeployCommand
+  alias dc=getGyennoDeployComment
+#+end_src
+
+** [[https://effective-shell.com/part-1-transitioning-to-the-shell/getting-help/][如何了解命令的用法]]
+
+*** man
+
+- [[https://effective-shell.com/part-1-transitioning-to-the-shell/getting-help/#manual-sections][manutal sections]]: ~man 1 intro~
+
+  + Section 1 :: Executable programs or shell commands
+  + Section 2 :: System calls (functions provided by the kernel)
+  + Section 3 :: Library calls (functions within program libraries)
+  + Section 4 :: Special files (usually found in /dev)
+  + Section 5 :: File formats and conventions (e.g. /etc/passwd)
+  + Section 6 :: Games
+  + Section 7 :: Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
+  + Section 8 :: System administration commands (usually only for root)
+  + Section 9 :: Kernel routines (Non standard)
+
+- ~man -k~ : 模糊搜索
+
+*** [[https://github.com/tldr-pages/tldr][tldr]]
+
+#+begin_src bash
+  # install
+  # use npm
+  npm install -g tldr
+
+  # use python
+  pip3 install tldr
+
+  # use Homebrew
+  brew install tldr
+
+  # how to use
+  tldr git
+#+end_src
+
+*** [[https://github.com/chubin/cheat.sh][cht.sh]]
+
+#+begin_src bash
+  curl cheat.sh/tar
+  curl cht.sh/curl
+  curl https://cheat.sh/rsync
+  curl https://cht.sh/tr
+
+  # keyword
+  curl cht.sh/~snapshot
+
+  # language name space
+  curl cht.sh/go/Pointers
+  curl cht.sh/scala/Functions
+  curl cht.sh/python/lambda
+
+  curl cht.sh/go/reverse+a+list
+  curl cht.sh/python/random+list+elements
+  curl cht.sh/js/parse+json
+  curl cht.sh/lua/merge+tables
+  curl cht.sh/clojure/variadic+function
+
+  # ask question
+  curl cht.sh/"How do I copy a folder in bash?"
+
+  # pick another answer
+  curl cht.sh/python/random+string
+  curl cht.sh/python/random+string/1
+  curl cht.sh/python/random+string/2
+#+end_src
+
+** 命令
+
+*** 导航
+
+- ~pwd~ :: Print Working Directory
+- ~ls~ :: List Directory Contents
+- ~cd~ :: Change Directory
+  + =.= :: This folder
+  + =..= :: The parent folder
+  + =~= :: Home (cd without any parameters)
+  + =-= :: Go back to the last location you moved to
+
+#+BEGIN_SRC  bash
+  alias ..="cd .."
+  alias ...="cd ../.."
+  alias ....="cd ../../.."
+  alias .....="cd ../../../.."
+  alias ......="cd ../../../../.."
+  alias .......="cd ../../../../../.."
+  alias ........="cd ../../../../../../.."
+#+END_SRC
+
+#+begin_quote
+One thing we might want to do is quickly move from one location to another, then go back again.
+#+end_quote
+
+- ~pushd~ :: '[[https://effective-shell.com/part-1-transitioning-to-the-shell/navigating-your-system/#pushing-and-popping-the-working-directory][pushes]]' a new working directory onto a stack - moving you there.
+- ~popd~ :: 'pops' the working directory off the top of the stack
+- ~dirs~ :: 查看 poshd 和 popd 操作后的堆栈情况
+
+#+attr_html: :width 100%
+https://effective-shell.com/assets/images/pushd-popd-stack-ccd34132d513841c5b1d97c842b0413f.png
+
+*** 文件 CRUD
+
+- ~ls~
+- ~rm~
+- ~rmdir~
+- ~cp~
+- ~mv~
+- ~mkdir~
+- ~tree~
+- ~file~
+- [[https://effective-shell.com/part-2-core-skills/finding-files][find]]
+
+  #+begin_quote
+  您当然可以使用 alias 设置别名来简化上述操作，但 *shell 的哲学之一便是
+  寻找（更好用的）替代方案。*
+
+  记住，shell 最好的特性就是您只是在调用程序，因此您只要找到合适的替
+  代程序即可（甚至自己编写）。
+
+  例如，[[https://github.com/sharkdp/fd][fd]] 就是一个更简单、更快速、更友好的程序，它可以用来作为 =find= 的
+  替代品。它有很多不错的默认设置，例如输出着色、默认支持正则匹配、支持
+  unicode 并且我认为它的语法更符合直觉。以模式 PATTERN 搜索的语法是 =fd
+  PATTERN= 。 -- [[https://missing-semester-cn.github.io/2020/shell-tools/][Shell 工具和脚本]]
+  #+end_quote
+*** 剪贴板体操运动员 (Clipboard Gymnast)
+
+#+begin_quote
+=Ctrl= key is called the Control Key is that it is used to send control sequences to the computer.
+#+end_quote
+
++ ~Ctrl-C~ :: Terminates the current program
++ ~Ctrl-V~ :: Verbatim Insert, it tells the shell to write out the next keystroke you give it.
+
+熟悉的 cv 是 shell 中的控制指令，没法完成粘贴复制，换成 =Ctrl + Shift + C= 和 =Ctrl + Shift + V=
+
+- [[https://effective-shell.com/part-1-transitioning-to-the-shell/become-a-clipboard-gymnast/#preparing-the-clipboard-commands][pbpaste | pbcopy]] : 可以移除格式
+
+- [[https://effective-shell.com/part-1-transitioning-to-the-shell/become-a-clipboard-gymnast/#preparing-the-clipboard-commands][pbpaste | sort | uniq | tr ' ' '_' | sed 's/$/@simpsons.com/' | pbcopy]] : 快速转换 excel 表格的内容
+
+- ~pbpaste | grep 评选中 | grep 前端 | sort -g | cut  -f 1,4~ : 快速查看评选的改进项
+
+*** 文本操作
+- [[https://effective-shell.com/part-3-manipulating-text/get-to-grips-with-grep/][grep]] :: =g/re/p= , This command ran on all lines (=g=, for global),
+  applied a regular expression (=re=, for regular expression) and then
+  printed (=p= for print) the results.
+
+  + 结合多个管道过滤内容
+
+  + =-v= 排除 grep 的内容
+
+- [[https://effective-shell.com/part-3-manipulating-text/slice-and-dice-text/#heads-and-tails][head / tails]] :: =head= is used to extract part of the top of a file
+  and =tail= is used to extract part of the end of a file.
+
+  + =head ~/effective-shell/data/top100.csv=
+
+  + =head -n 3 ~/effective-shell/data/top100.csv=
+
+  + =tail $HISTFILE=
+
+  + =tail -f $HISTFILE=
+
+  + =head ~/effective-shell/data/top100.csv | tail -n +2= 去掉表头，从第二行开始输出
+
+- [[https://effective-shell.com/part-3-manipulating-text/slice-and-dice-text/#replacing-text][tr (translate characters)]] :: Perform a simple substitution of characters.
+
+  + =head -n 1 ~/effective-shell/data/top100.csv | tr ',' '\n'=
+
+  + =head -n 1 ~/effective-shell/data/top100.csv | tr ',' '\n' | tr -d '"'=
+
+  + =echo "Welcome to the shell" | tr 'shell' 'machine'=
+
+  + =echo "Use your inside voice..." | tr '[[:lower:]]' '[[:upper:]]'=
+
+- [[https://effective-shell.com/part-3-manipulating-text/slice-and-dice-text/#how-to-cut][cut]] :: The =cut= command splits a line of text, using a given delimiter.
+
+  + =cut -d',' -f 3 ~/effective-shell/data/top100.csv | head=
+
+  + =echo "2020-11-29T12:50:52.762Z: info - Request: GET /svg/menu.svg" | cut -c 12-19=
+
+  + =echo "2020-11-29T12:50:52.762Z: info - Request: GET /svg/menu.svg" | cut -c 27-=
+
+- [[https://effective-shell.com/part-3-manipulating-text/slice-and-dice-text/#a-trick-with-rev][rev]] :: Reverse the given input.
+
+  + =pwd | rev | cut -d'/' -f 1 | rev=
+
+- [[https://effective-shell.com/part-3-manipulating-text/slice-and-dice-text/#sort-and-unique][sort and uniq]] :: The =uniq= command removes duplicate lines from a stream of text.
+
+  + =cut -c 27- ~/effective-shell/logs/web-server-logs.txt | grep error | sort | uniq=
+
+- less :: Open a file for interactive reading, allowing scrolling and search.
+
+- [[https://effective-shell.com/part-3-manipulating-text/build-commands-on-the-fly/][Xargs]] :: The xargs /[build and execute commands]/ command takes input,
+  uses the input to create commands, then executes the commands. I
+  tend to remember it as ~"Execute with Arguments"~ as the name xargs
+  sounds a little odd!
+
+  #+begin_quote
+  By default =xargs= take the input, joins each line together with a
+  space and then passes it to the =echo= command.
+  #+end_quote
+
+#+begin_src shell
+  # 将找到的文件通过 xargs 拼接后，传给 rm 执行
+  touch file{1..100}.txt
+  # fail
+  find . -empty | rm
+  # success
+  find . -empty | xargs rm
+
+  touch "chapter "{1,2,3}.md
+  find . -type f
+  # ./chapter 1.md
+  # ./chapter 2.md
+  # ./chapter 3.md
+
+  # 上面的文件名有空格
+  # -print0 给每一个 item 追加一个特殊 'null' 字符
+  # -0 告诉 xargs 每个元素是用特殊的 'null' 字符分隔的（而不是空格）
+  # 这么做，可以避免一些空格，tab，引号造成的问题，建议总是带上这两个选项
+  find . -type f -print0 | xargs -0 -t rm
+
+  touch file{1..5}
+  # 告诉 xargs 最多用多少行去执行命令
+  find . -type f | xargs -L 3 echo
+  ./file1 ./file2 ./file3
+  ./file4 ./file5
+
+  # 默认 xargs 将参数放到最后
+  # 有时想把参数放在别的地方，可以使用 -I 选项
+  # -I {} 表示将参数把 {} 当作 placeholder，然后可以在后面任何地方多次去用
+  find . -name "*.txt" -print0 | xargs -0 -t -I {} cp {} ~/backups
+  cp ./file2.txt /home/dwmkerr/backups
+  cp ./file3.txt /home/dwmkerr/backups
+  cp ./file1.txt /home/dwmkerr/backups
+
+  # -p 在执行命令时进行询问
+  kubectl get pods -o name | xargs -L 1 -p kubectl delete
+
+  # -d (delimiter) 告诉 xargs ，输入是通过什么分隔符，分割成多个参数的
+  echo $PATH | xargs -d ':' -p -L 1 ls
+#+end_src
+
+*** [[https://effective-shell.com/part-3-manipulating-text/regex-essentials/][正则表达式]]
+- [[https://regex101.com/][regex101]]
+
+#+begin_quote
+*My general advice for regular expressions is start simple and add complexity only if you need it.*
+
+We can build regular expressions using an 'iterative' process,
+starting with the basics, then adding more features as we need them.
+
+Let's take validating an email address as an example. The way I would
+build a regular expression to validate an email address would be to
+use the following steps:
+
++ Create a small list of valid email address
+
++ Add some items to the list which look 'kind of' valid but are not quite right
+
++ Build a regular expression which matches the correct email address
+
++ Refine the expression to eliminate the invalid addresses
+
+
+In most cases this will be sufficient.
+
+I would advise that you keep expressions simple if possible - if they
+are getting too complex then break up your input or break up the
+processing into smaller chunks of work!
+
+Remember that a regular expression does not have to be the only way
+you validate input. You might use a regular expression to do a quick
+check on a form on a website to make sure that an email address has at
+least the correct structure, but you might then use a more
+sophisticated check later on (such as sending the user an activation
+email) to actually confirm that the address actually belongs to the
+user.
+#+end_quote
+
+* [[https://effective-shell.com/part-2-core-skills/thinking-in-pipelines/][Thinking in Pipelines]]
+
+#+attr_html: :width 100%
+https://effective-shell.com/assets/images/diagram-stdin-stdout-stderr-702e578630d8d39c813d7d88c270c339.png
+
+#+attr_html: :width 100%
+https://effective-shell.com/assets/images/diagram-shell-keyboard-terminal-0475940cdf40bbcc8a329c090aa9e76a.png
+
+#+begin_src bash
+  cat ~/effective-shell/text/simpsons-characters.txt | sort | uniq
+#+end_src
+
+#+attr_html: :width 100%
+https://effective-shell.com/assets/images/diagram-cat-sort-uniq-pipeline-8c8d76566f351b4b9b900dde52af86b3.png
+
+#+attr_html: :width 100%
+| operator | meaning                                                                 |
+|----------+-------------------------------------------------------------------------|
+| =>=        | redirect the standard output of a program to create or *overwrite* a file |
+| =>>=       | redirect the standard output of a program to create or *append* to a file |
+| =<=        | redirect a file to the *standard input* of a program                      |
+
+** [[https://effective-shell.com/part-2-core-skills/thinking-in-pipelines/#common-patterns---standard-input][Common Patterns - Standard Input]]
+
+#+attr_html: :width 100%
+https://effective-shell.com/assets/images/diagram-input-examples-e014dd4998bee0b50a94849ad55b01ce.png
+
+** [[https://effective-shell.com/part-2-core-skills/thinking-in-pipelines/#common-patterns---standard-output][Common Patterns - Standard Output]]
+
+#+attr_html: :width 100%
+https://effective-shell.com/assets/images/diagram-output-examples-27e30c4a4036b2591e10e8c4fca7dc73.png
+
+** [[https://effective-shell.com/part-2-core-skills/thinking-in-pipelines/#common-patterns---standard-error][Common Patterns - Standard Error]]
+
+#+attr_html: :width 100%
+https://effective-shell.com/assets/images/diagram-stderr-options-a2cde4aa6177249c25dd9e5c0c62667a.png
+
+#+begin_src bash
+  mkdir ~/effective-shell/new-folder | tr '[:lower:]' '[:upper:]'
+#+end_src
+
+#+attr_html: :width 100%
+https://effective-shell.com/assets/images/diagram-stderr-d0845508087975a7d58ebac63e3a8cd5.png
+
+#+begin_src bash
+  mkdir ~/effective-shell/new-folder 2>&1 | tr '[:lower:]' '[:upper:]'
+#+end_src
+
+#+attr_html: :width 100%
+https://effective-shell.com/assets/images/diagram-stderr-redirect-c7d8fe2d93a8cdb248924cc13027b59e.png
+
+*** [[https://stackoverflow.com/questions/818255/what-does-21-mean][2>&1]]
+
+为什么不是 =2>1= ? 这样实际是将 =stderr= 重定向到文件 =1= 中，而不是重定向到 =stdout= 。
+
+如果想重定向到 =stdout= ，就需要使用 =&1=, 表达 =stdout= 的 file descriptor。
+
+=2 >&1, 2> &1= 也是不对的，不能有空格, 两者都会被当作命令执行。
+
+对于前者， 2 会被当作命令执行，可以通过 =type 2= 看看对应的是什么命令；
+
+对于后者，&1 也会被当作命令解析，此时 & 无法解析对应的命令，就会报错。
+
+
+**** 2>&1 的位置
+
+#+begin_quote
+Bash (and most bash-like shells) process redirections from /left to
+right/, [[https://www.brianstorti.com/understanding-shell-script-idiom-redirect/][and when we redirect we duplicate the source.]]
+#+end_quote
+
+如果想将所有的输出 (包括 =stderr=) 重定向到一个文件，以下顺序得到的结果是不同的：
+
+- =ls /usr/bin /nothing 2>&1 > all-output.txt=
+
+  + =2>&1= ::  duplicate file descriptor =2= (=stderr=) and write it to =1= - /which is currently the terminal!/
+
+  + => all-output.txt= ::  duplicate file descriptor =1= (=stdout=) and write it to a file called =all-output.txt=
+
+- =ls /usr/bin /nothing > all-output.txt 2>&1=
+
+  + Redirect =stdout= to the file =all-output.txt=
+
+  + Now redirect =stderr= to =stdout= - which by this point has already been redirected to a file
+
+** [[https://effective-shell.com/part-2-core-skills/thinking-in-pipelines/#one-last-trick---the-t-pipe][The T Pipe]]
+
+#+attr_html: :width 100%
+https://effective-shell.com/assets/images/diagram-tee-6ad6dadcfa804f75f96b36807ffd688b.png
+
+#+begin_src bash
+  cat ~/effective-shell/text/simpsons-characters.txt | sort | tee sorted.txt | uniq | grep '^A'
+#+end_src
+
+#+begin_quote
+This command sorts the list of Simpsons characters, removes duplicates and filters down to ones which start with the letter A.
+
+The =tee= command is like a T-pipe in plumbing - it lets the stream of data go in two directions!
+#+end_quote
+
+* [[https://effective-shell.com/part-2-core-skills/fly-on-the-command-line][Fly on the Command Line]]
+
+#+attr_html: :width 100%
+[[https://effective-shell.com/assets/images/command-line-a47c08acd86b732173b3f6dfc1955bb1.png]]
+
+* [[https://effective-shell.com/part-2-core-skills/job-control][Job Control]]
+
+当命令在前台执行，此时又需要在命令行做别的事情，就得先关掉前台运行的程
+序，完成要做的事情，再重新运行，比较麻烦。
+
+当然也可以直接另起一个终端，或者用 tmux。
+
+但如果想在一个命令窗口比较方便地处理任务，就需要学习 Job 的操作。
+
+** Run in the Background
+
+=browser-sync start -s . -f . --directory --no-notify --no-ui &=
+
+** Move to Background
+
+- =browser-sync start -s . -f . --directory --no-notify --no-ui=
+
+- =Ctrl + Z=  挂起任务, 页面无法访问了
+
+- =bg %1= 丢到后台执行
+
+- =jobs= 查看当前 shell 运行的任务
+
+- =%n &= 将数字为 ~n~ 的任务放到后台执行
+
+** Moving Background Jobs to the Foreground
+
+- =fg %n= 唤起到前台行
+
+** Cleaning Up Jobs
+
+- =jobs=
+
+- =kill %1=
+
+** Why You Shouldn't Use Jobs
+
+#+begin_quote
+The most obvious one is that all jobs write to the same output,
+meaning you can quickly get garbled output like this:
+
+#+attr_html: :width 100%
+https://effective-shell.com/assets/images/output-c59dac752d60566d856c3f01b4ef0ffb.png
+#+end_quote
+
+推荐学会 ~CTRL + Z~ 和 ~fg~ 将任务快速来回切换，解决一些临时需要解决的任务即可。
+
+* Shell Scripting Essentials
+
+** [[https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#what-is-a-shell-script][什么是 Shell Script]]
+
+#+begin_quote
+A shell script is just a text file which contains a set of commands.
+#+end_quote
+
+当你发现总是重复敲一系列命令的时候，就可以考虑将这些重复的序列写脚本，这样有几个好处：
+
+- 节省时间，不用每次敲一些重复的命令
+
+- 可以使用你喜欢的编辑器编辑脚本，添加注释描述你想实现的事情，可以利用 git 管理版本
+
+- 作为脚本文件，便于机器之间的分享，与人之间的分享
+
+** 实现一个 'common' 命令
+
+- Read a large number of commands from the history
+
+- Sort the commands, then count the number of duplicates
+
+- Sort this list showing the most commonly run commands first
+
+- Print the results to the screen.
+
+#+begin_src zsh
+  # Write the title of our command.
+  echo "common commands:"
+
+  # Show the most commonly used commands.
+  tail ~/.bash_history -n 1000 | sort | uniq -c | sed 's/^ *//' | sort -n -r | head -n 10
+#+end_src
+
+*** [[https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#multi-line-commands][命令过长时如何换行]]
+
+#+begin_src zsh
+  # Show the most commonly used commands.
+  tail ~/.bash_history -n 1000 \
+      | sort \
+      | uniq -c \
+      | sed 's/^ *//' \
+      | sort -n -r \
+      | head -n 10
+#+end_src
+
+#+begin_quote
+Be careful when you split lines up - the continuation character must
+be *the last character on the line*. If you add something after it (such
+as a comment) then the command will fail.
+#+end_quote
+
+** [[https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#running-a-shell-script][如何运行脚本]]
+
+*** 通过 shell 程序执行
+
+#+begin_src shell
+  bash ~/scripts/common.sh
+
+  sh ~/scripts/common.sh
+#+end_src
+
+*** 让脚本可执行，通过脚本的路径执行
+
+#+begin_src shell
+  chmod +x ~/scripts/common.sh
+
+  ~/scripts/common.v1.sh
+#+end_src
+
+但这种方式由于没有指定执行脚本的 shell 程序，如果你用的是 Bash，那就是
+用 Bash 执行，如果用的是 zsh，那就是 zsh 执行。
+
+** [[https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#using-shebangs][shebangs]]
+
+让脚本可执行后，它最终使用什么执行，是取决于执行环境的，这就容易产生歧义。
+
+例如是用 Bash 相关语法写的脚本，如果是由 zsh 执行，就有可能出错。
+
+为了避免歧义，需要指定执行脚本的 shell，这就是 =shebangs= 的作用。
+
+#+begin_quote
+A *shebang* is a special set of symbols at the beginning of a file that
+tells the system what program should be used to run the file.
+
+The shebang is the two characters - =#!=. The name 'shebang' comes from
+the names of the symbols. The first symbol is a 'sharp' symbol
+(sometimes it is called a hash, it depends a little on context). The
+second symbol is an exclamation point. In programming the exclamation
+point is sometimes called the 'bang' symbol. When we put the two
+together, we get 'sharp bang', which is shortened to 'shebang'.
+#+end_quote
+
+之前的脚本，可以加上 =shebangs=:
+
+#+begin_src bash
+  #!/usr/bin/sh
+
+  # Write the title of our command.
+  echo "common commands:"
+
+  # Show the most commonly used commands.
+  tail ~/.bash_history -n 1000 | sort | uniq -c | sed 's/^ *//' | sort -n -r | head -n 10
+#+end_src
+
+也可以指定其他执行脚本的程序:
+
+#+begin_src bash
+#!/usr/bin/python3
+
+print('Hello from Python')
+#+end_src
+
+#+begin_src bash
+  #!/usr/bin/bash
+
+  echo "Hello from Bash"
+#+end_src
+
+#+begin_src bash
+  #!/usr/bin/node
+
+  console.log("Hello from Node.js");
+#+end_src
+
+*** [[https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#shebangs---dealing-with-paths][env]]
+
+=shebangs= 指定的程序，需要通过完整路径指向程序的可执行文件，而如果指向的程序不存在，就会出错。
+
+你可以 =type= 命令找到某个程序的路径，但会有些麻烦。
+
+此时就可以利用 =env= (/set environment and execute command/) ，它会去执行命令，并从 =$PATH= 上找到命令所在的路径。
+
+#+begin_src bash
+  #!/usr/bin/env bash
+
+  echo "Hello from Bash"
+#+end_src
+
+#+begin_quote
+Using a shebang to specify the exact command to run, and then using
+the =env= command to allow the $PATH to be searched is generally the
+safest and most portable way to specify how a shell script should run.
+#+end_quote
+
+** [[https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#sourcing-shell-scripts][Sourcing Shell Scripts]]
+
+#+begin_quote
+ You can also use the =source= (execute commands from a file) command to
+ load the contents of a file into the *current* shell.
+
+ Remember that when we run a shell script, a new shell is created as a
+ child process of the current shell. This means that if you change
+ something in the environment, such as a variable, it will not affect
+ the environment of the shell that ran the script.
+#+end_quote
+
+当执行 shell 脚本的时候，实际上会创建一个 *新的 shell* 去执行，和当前的 shell 环境是分开的。
+
+如果想将 shell 脚本的改动作用在当前 shell 环境，则可以用 =source=.
+
+#+begin_src bash
+  source ~/effective-shell/scripts/show-info.sh
+
+  # dot sourcing
+  . ~/effective-shell/scripts/show-info.sh
+#+end_src
+
+** 如何安装脚本
+
+#+begin_quote
+This works because when the shell sees a command, it searches through
+the folders in the =$PATH= environment variable to find out where the
+command is. And the =/usr/local/bin= folder is in this list of paths.
+
+Why do we use the =/usr/local/bin= folder rather than the =/usr/bin=
+folder? This is just a convention. In general, the =/usr/bin= folder is
+for commands which are install  ed with package manager tools like apt
+or Homebrew (on MacOS). The =/usr/local/bin= folder is used for commands
+which you create for yourself on your local machine and manage
+yourself.
+#+end_quote
+
+通过软链接(=ln -s=)将脚本放到 =/usr/local/bin=, 就可以直接通过脚本名执行脚本。
+
+#+begin_src bash
+ln -s ~/scripts/common.v1.sh /usr/local/bin/common
+#+end_src
+
+* Shell Scripting 语法
+
+** [[https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/][变量]]
+
+#+begin_quote
+*Variables* are places where the system, the shell, or shell users like
+ourselves can store data.
+
+By convention, if a variable is in *uppercase* then it is an *environment
+variable* or a built in variable that comes from the shell.
+
+An environment variable is a variable that is set by the system. They
+often contain useful values to help configure your system.
+
+Variables that you define yourself should be *lowercase*.
+
+This helps to distinguish between environment variables and your own
+variables.
+
+It is a good habit to use lowercase for variable names. Using
+uppercase will work, but when you use uppercase you run the risk of
+'overwriting' the value of an environment variable and causing
+unexpected results later.
+
+The variables we create in the Shell are called *Shell Variables*. They
+are accessible in the *current shell session* that we are running.
+
+Shell variables are *isolated to the current process*.
+
+If we run another process from our shell, such as another shell script
+or program, our shell variables are not inherited by this
+process.
+
+This is by design - these shell variables are expected to be used for
+our local session only.
+
+If you want to ensure that a variable is available to all child
+processes, you can use the =export= (set export attribute) builtin to
+tell the shell to export the variable as an Environment Variable.
+
+*Environment Variables are always inherited by child processes* - so if
+you need to provide some kind of configuration or context to a child
+process, you will likely want to export your variable.
+#+end_quote
+
+*** 赋值和引用
+
+#+begin_src bash
+  # 通过 `=` 赋值变量，注意没有空格
+  password="somethingsecret"
+
+  # $(...) execute a set of commands in a 'sub shell'
+  masked_password=$(echo "$password" | sed 's/./*/g')
+
+  echo "Setting password '${masked_password}'..."
+
+  # 显示引用变量 ${variable}
+
+  # wrong，会找 USER_backup 变量，但找不到
+  echo "Creating backup folder at: '$USER_backup'"
+  mkdir $USER_backup
+
+  # correct
+  echo "Creating backup folder at: '${USER}_backup'"
+  mkdir "${USER}_backup"
+#+end_src
+
+*** [[https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#arrays][数组]]
+
+#+begin_quote
+Arrays in *Bash* start at index *zero*. Arrays in the *Z-Shell* start at
+index *one* - this can cause confusion and mistakes in scripts so it is
+something you might have to consider if you are writing scripts that
+can be used by either shell.
+
+*It's important to use curly braces around your array expressions.*
+#+end_quote
+
+#+begin_src bash
+  days=("Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")
+
+  echo "The first day is: ${days[0]}"
+  echo "The last day is: ${days[6]}"
+#+end_src
+
+#+attr_html: :width 100%
+| Operation                | Syntax                   | Syntax                                                                                                      |
+|--------------------------+--------------------------+-------------------------------------------------------------------------------------------------------------|
+| Create Array             | array=()                 | days=("Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")                               |
+| Get Array Element        | ${array[index]}          | echo ${days[2]} # prints 'Wednesday'                                                                        |
+| Get All Elements         | ${array[@]}              | echo ${days[@]} # prints 'Monday Tuesday Wednesday Thursday Friday Saturday Sunday'                         |
+| Set Array Element        | array[index]=value       | days[0]="Mon"                                                                                               |
+| Get Array Indexes        | ${!array[@]}             | arr=(); arr[3]="apple"; arr[5]="pear"; echo ${!arr[@]} # prints 3 5                                         |
+| Get Array Length         | ${#array[@]}             | echo ${#days[@]} # Prints 7                                                                                 |
+| Append to Array          | array+=(val1 val2 valN)  | fruits=(); fruits+=("Apples"); fruits+=("Pears" "Grapes"); echo ${fruits[@]} # prints 'Apples Pears Grapes' |
+| Get a subset of elements | ${array[@]:start:number} | echo ${days[@]:5:2} # prints 'Saturday Sunday'                                                              |
+
+*** [[https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#associative-arrays][对象 (Associative Arrays)]]
+
+#+begin_src bash
+  # Create an associative array called 'book'.
+  declare -A book
+
+  # Set some values on the array.
+  book[title]="Effective Shell"
+  book[author]="Dave Kerr"
+
+  # Show one of the values.
+  echo "Book details: ${book[title]} - ${book[author]}"
+#+end_src
+
+#+begin_quote
+If you find yourself using associative arrays, I expect that there is
+a good chance you are [[https://effective-shell.com/part-6-advanced-techniques/how-to-avoid-scripting/][trying to do something that is more complex than
+is suitable for a shell script.]]
+#+end_quote
+
+*** [[https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#quoting-variables-and-values][关于引号]]
+
+#+begin_quote
+There is often a lot of confusion about a specific topic in the
+shell - when should you surround a variable in quotes?
+
+This might sound like a purely stylistic question, but surrounding a
+variable in quotes can dramatically change how your script works.
+
+Quoting Tips:
+
++ Use *double quotes* most of the time - they will handle variables and
+  sub-shells for you and not do weird things like word splitting
+
++ Use *single quotes* for literal values
+
++ Use *no quotes* if you want to expand wildcards
+#+end_quote
+
+**** Single Quotes - Literal Values
+
+#+begin_quote
+Single quotes should be used when you want to put *special characters*
+into a variable, or call a command that includes whitespace or special
+characters.
+#+end_quote
+
+#+begin_src bash
+  message='   ~~ Save $$$ on with ** "this deal" ** ! ~~   '
+  echo "$message"
+#+end_src
+
+**** Double Quotes - Parameter Expansion
+
+#+begin_quote
+Double quotes work in a very similar way to single quotes except that
+they allow you to *use parameter expansion* with the =$= dollar symbol and
+*escaping with the =\= symbol*.
+#+end_quote
+
+#+begin_src bash
+  deal="Buy one get one free"
+  message="Deal is '$deal' - save \$"
+  echo "$message"
+
+  # `` 内的也在一个 sub-shell 执行，但应该避免使用，统一使用 $() 的形式
+  echo "The date is `date`"
+#+end_src
+
+**** [[https://effective-shell.com/part-6-advanced-techniques/understanding-shell-expansion/][No Qoutes - Shell Expansion]]
+
+#+begin_quote
+If you don't include quotes around a variable or value, then the shell
+will perform a series of operations called *Shell Expansion*.
+#+end_quote
+
++ =Brace expansion= :: =touch file{1,2,3}= is expanded to =touch file1
+  file2 file3=
+
++ =Tilde expansion= :: =cd ~= is expanded to =cd /home/dwmkerr=
+
++ =Parameter and variable expansion= :: =echo $SHELL= is expanded to =echo
+  /usr/bin/sh= (note that this expansion also occurs with double
+  quotes)
+
++ =Command substitution= :: =echo $(date)= is expanded to echo the results
+  of the date command (this also occurs with double quotes)
+
++ =Arithmetic expansion= :: =square=$((4 * 4))= has the value =4 * 4=
+  evaluated mathematically (we see this at the end of this chapter)
+
++ =Word splitting= :: see [[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders][Loops and working with Files and Folders]]
+
++ =Pathname expansion= :: =ls *.txt= is expanded to all filename that
+  match the wildcard pattern *.txt
+
+**** [[https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#shell-parameter-expansion][Shell Parameter Expansion]]
+
+#+begin_quote
+Shell Parameter Expansion is the process by which the shell evaluates
+a variable that follows the =$= dollar symbol.
+
+But there are a number of special features we can use when expanding
+parameters. There are many options available and you can find them all
+by running =man bash= and searching for the text =EXPANSION=.
+
+I would avoid these techniques if possible as they are fairly
+specific to Bash and likely will be confusing to readers.
+
+It is generally enough to know that if you see special symbols inside
+a ${variable} expression then the writer is performing some kind of
+string manipulation.
+#+end_quote
+
++ Length: =${#var}=
+
++ Set Default Value: =${var:-default}=
+
++ Substring: =${var:start:count}=
+
++ Make Uppercase: =${var^^}=
+
++ Make Lowercase: =${var,,}=
+
++ ...
+
+*** [[https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#the-read-command][The Read Command]]
+
+#+begin_quote
+The =read= (/read from standard input/) command can be used to read a line
+of text from standard input. When the text is read it is put into a
+variable, allowing it to be used in our scripts.
+
+The =read= command reads a line of text from standard input and stores
+the result in a variable called =REPLY=. We can then use this variable
+to use the text that was read.
+
+In general you should provide a variable name for =read= - it will make
+your script a little easier to understand. Not every user will know
+that the =$REPLY= variable is the default location, so they might find
+it confusing if you don't provide a variable name. By specifying a
+variable name explicitly we make our script easier to follow.
+#+end_quote
+
+
+#+begin_src bash
+  # 默认存在 $REPLY
+  echo "What is your name?"
+  read
+  echo "Hello, $REPLY"
+
+  # 指定存值的变量
+  echo "What is your name?"
+  read name
+  echo "Hello, ${name}"
+
+  # prompt (bash)
+  read -p "Please enter your name: " name
+  echo "Hello, $name"
+
+  # prompt (zsh)
+  read "?Please enter your name: "
+  echo "Hello, $REPLY"
+
+  # The -s (silent) flag can be used to hide the input as it is being written.
+  read -s -p "Enter a new password: " password
+  masked_password=$(echo "$password" | sed 's/./*/g')
+  echo ""
+  echo "Your password is: $masked_password"
+
+  # Limiting the Input
+  # Use the -n flag with the value 1 to specify that we want to read a single character only.
+  read -n 1 -p "Continue? (y/n): " yesorno
+  echo ""
+  echo "You typed: ${yesorno}"
+#+end_src
+
+[[https://wangdoc.com/bash/quotation#here-%E6%96%87%E6%A1%A3][Here 文档]], 一种输入多行字符串的方法。
+
+*** [[https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#mathematics][Mathematics]]
+
+格式： =$((expression))=
+
+#+attr_html: :width 100%
+| Operator | Meaning           | Example                                       |
+|----------+-------------------+-----------------------------------------------|
+| +        | Addition          | echo $((3+4)) # prints 7                      |
+| -        | Subtraction       | echo $((4-2)) # prints 2                      |
+| *        | Multiplication    | echo $((4*2)) # prints 8                      |
+| /        | Division          | echo $((4/2)) # prints 2                      |
+| **       | Exponent          | echo $((4**3)) # prints 64                    |
+| %        | Modulus           | echo $((7%3)) # prints 1                      |
+| ++i      | Prefix Increment  | i=1; echo $((++i)) # prints 1, i is set to 2  |
+| i++      | Postfix Increment | i=1; echo $((i++)) # prints 2, i is set to 2  |
+| --i      | Prefix Decrement  | i=3; echo $((--i)) # prints 3, i is set to 2  |
+| i--      | Postfix Decrement | i=3; echo $((i--)) # prints 2, i is set to 2  |
+| i+=n     | Increment         | i=3; echo $((i+=3)) # prints 6, i is set to 6 |
+| i-=n     | Decrement         | i=3; echo $((i-=2)) # prints 1, i is set to 1 |
+
+** [[https://effective-shell.com/part-4-shell-scripting/mastering-conditional-logic][条件]]
+
+语法结构：
+
+#+begin_src bash
+  if <test-commands>
+  then
+      <conditional-command 1>
+      <conditional-command 2>
+      <conditional-command n>
+  fi
+
+  # 写在一行, 用 `;` 分隔
+  if <test-commands>; then <conditional-command 1> <conditional-command 2> <conditional-command n>; fi
+
+#+end_src
+
+#+begin_quote
+The if statement will run the 'test commands'. If the result of the
+commands are all *zero* (which means 'success'), then each of the
+'conditional' commands will be run. We 'close' the if statement with
+the =fi= keyword, which is =if= written backwards.
+#+end_quote
+
+*** [[https://effective-shell.com/part-4-shell-scripting/mastering-conditional-logic#the-test-command][The Test Command]]
+
+#+begin_src bash
+  if ! test -d ~/backups
+  then
+      echo "Creating backups folder"
+      mkdir ~/backups
+  fi
+
+  # 简写
+  if ! [ -d ~/backups ]
+  then
+      echo "Creating backups folder"
+      mkdir ~/backups
+  fi
+#+end_src
+
+#+begin_src bash
+  if [ -x /usr/local/bin/common ]; then
+      echo "The 'common' command has been installed and is executable."
+  elif [ -e /usr/local/bin/common ]; then
+      echo "The 'common' command has been installed and is not executable."
+  else
+      echo "The 'common' command has not been installed."
+  fi
+#+end_src
+
+#+begin_src bash
+  # && 'and' || 'or'
+  if [ $year -ge 1980 ] && [ $year -lt 1990 ]; then
+      echo "$year is in the 1980s"
+  fi
+
+  # -a 'and' -o 'or'
+  if [ $year -ge 1980 ] && [ $year -lt 1990 ]; then
+      echo "$year is in the 1980s"
+  fi
+
+  # Chaining
+  # Run command1, if it succeeds run command2.
+  command1 && command2
+
+  # Run command1, if it does not succeed run command2.
+  command1 || command2
+#+end_src
+
+#+attr_html: :width 100%
+| Operator        | Usage                                                                                               |
+|-----------------+-----------------------------------------------------------------------------------------------------|
+| =-n=              | True if the length of a string is non-zero.                                                         |
+| =-z=              | True if the length of a string is zero.                                                             |
+| =-d=            | True if the file exists and is a folder.                                                            |
+| =-e=            | True if the file exists, regardless of the file type.                                               |
+| =-f=            | True if the file exists and is a regular file.                                                      |
+| =-L=            | True if the file exists and is a symbolic link.                                                     |
+| =-r=            | True if the file exists and is readable.                                                            |
+| =-s=            | True if the file exists and has a size greater than zero.                                           |
+| =-w=            | True if the file exists and is writable.                                                            |
+| =-x=            | True if the file exists and is executable - if it is a directory this checks if it can be searched. |
+| =file1 -nt file2= | True if file1 exists and is newer than file2.                                                       |
+| =file1 -ot file2= | True if file1 exists and is older than file2.                                                       |
+| =file1 -ef file2= | True if file1 and file2 exist and are the same file.                                                |
+| =var=             | True if the variable var is set and is not empty.                                                   |
+| =s1 = s2=         | True if the strings s1 and s2 are identical.                                                        |
+| =s1 !​= s2=        | True if the strings s1 and s2 are not identical.                                                    |
+| =n1 -eq n2=       | True if the numbers n1 and n2 are equal.                                                            |
+| =n1 -ne n2=       | True if the numbers n1 and n2 are not equal.                                                        |
+| =n1 -lt n2=       | True if the number n1 is less than n2.                                                              |
+| =n1 -le n2=       | True if the number n1 is less than or equal to n2.                                                  |
+| =n1 -gt n2=       | True if the number n1 is greater than n2.                                                           |
+| =n1 -ge n2=       | True if the number n1 is greater than or equal to n2.                                               |
+
+*** [[https://effective-shell.com/part-4-shell-scripting/mastering-conditional-logic#case-statements][Case Statements]]
+
+#+begin_src bash
+  case <expression> in
+      pattern1)
+          <pattern1-commands>
+          ;;
+      pattern2 | pattern3)
+          <pattern2and3-commands>
+          ;;
+      ,*)
+          <default-commands>
+          ;;
+  esac
+#+end_src
+
+以 =case= 开头，以 =esac= 结束（反转了词序）。
+
+#+begin_src bash
+  read -p "Yes or no: " response
+  case "${response}" in
+      y | Y | yes | ok)
+          echo "You have confirmed"
+          ;;
+      n | N | no)
+          echo "You have denied"
+          ;;
+      ,*)
+          echo "'${response}' is not a valid response"
+          ;;
+  esac
+
+  read -p "Yes or no: " response
+  case "${response}" in
+      [yY]*)
+          echo "You have (probably) confirmed"
+          ;;
+      [nN]*)
+          echo "You have (probably) denied"
+          ;;
+      ,*)
+          echo "'${response}' is not a valid response"
+      ;;
+  esac
+#+end_src
+
+** [[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/][循环]]
+
+*** [[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#the-for-loop-index-][The For Loop]]
+
+#+begin_src bash
+  for <name> in <words>
+  do
+      <conditional-command 1>
+      <conditional-command 2>
+      <conditional-command n>
+  done
+#+end_src
+
+#+begin_src bash
+  for item in ./*
+  do
+      echo "Found: $item"
+  done
+#+end_src
+
+**** [[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---arrays][For Loops - Arrays]]
+
+#+begin_src bash
+  days=("Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")
+  for day in ${days[@]}
+  do
+      echo -n "$day, "
+  done
+  echo "happy days!"
+#+end_src
+
+**** [[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---words][For Loops - Words]]
+
+#+begin_src bash
+  sentence="What can the harvest hope for, if not for the care of the Reaper Man?"
+  for word in $sentence
+  do
+      echo "$word"
+  done
+#+end_src
+
+#+begin_quote
+The reason is that the shell is a *text based* environment and the
+designers have taken this into account. Most of the time when we are
+running shell commands in a terminal we are running commands that
+simply output text. If we want to be able to use the output of these
+commands in constructs like loops, the shell has to decide how to
+split the output up.
+#+end_quote
+
+**** [[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---files-with-wildcards][For Loops - Files with Wildcards]]
+:PROPERTIES:
+:ID:       587028cc-311e-46ef-a936-eaf0200b5662
+:END:
+
+#+begin_src bash
+  for script in ~/effective-shell/scripts/*.sh
+  do
+      echo "Found script: $script"
+  done
+#+end_src
+
+#+begin_quote
+By default, if the shell doesn't find anything with a wildcard pattern
+it *does not expand* it. This is very confusing.
+
+By default, if a shell 'glob' (a pattern that includes a wildcard)
+does not match any files, the shell simply leaves the pattern as-is.
+#+end_quote
+
+***** nullglob (return null for unmatched globs)
+
+#+begin_src bash
+  shopt -s nullglob
+  for script in ~/bad-shell/scripts/*.sh
+  do
+      echo "Found: $script"
+  done
+#+end_src
+
+***** test
+
+#+begin_src bash
+  for script in ~/bad-shell/scripts/*.sh
+  do
+      # If the file / folder doesn't exist, skip it.
+      if ! [ -e "$script" ]; then continue; fi
+      echo "Found: $script"
+  done
+#+end_src
+
+**** [[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---files-with-find][For Loops - Files with Find]]
+
+#+begin_quote
+If the files that you are trying to loop through are too complex to
+match with a shell pattern, you can use the =find= command to search for
+files, then loop through the results.
+#+end_quote
+
+#+begin_src bash
+  # Create a symlink to 'effective-shell' that has a space in it...
+  ln -s ~/effective shell ~/effective\ shell
+
+  # Find all symlinks and print each one.
+  links=$(find ~ -type l)
+  for link in $links
+  do
+      echo "Found Link: $link"
+  done
+#+end_src
+
+在 [[id:587028cc-311e-46ef-a936-eaf0200b5662][For Loops - Files with Wildcards]] 中看到，shell 会按照空格分割文本，
+此时 find 找到的文件如果带有空格，也会被分割，导致文件名不对。
+
+一种解决办法时临时改变 shell 使用的分割符，由于 find 找回来的文件都是
+以换行符分割的，因此，可以将分割符临时从空格设置为换行符。
+
+#+begin_src bash
+  # Save the current value of IFS - so we can restore it later. Split on newlines.
+  old_ifs=$IFS
+  # We have to use the complex looking 'ANSI C Quoting' syntax to set $IFS to a newline
+  IFS=$'\n'
+
+  # Find all symlinks and print each one.
+  links=$(find ~ -type l)
+  for link in $links
+  do
+      echo "Found Link: $link"
+  done
+
+  # Restore the original value of IFS.
+  IFS=$old_ifs
+#+end_src
+
+#+begin_quote
+The =$IFS= variable is the '[[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#word-splitting-and-ifsindex][internal field separator]]' variable. It is
+what the shell uses to decide what characters should be used to split
+up text into words. By default, this variable includes the space
+character, the tab character and the newline character.
+#+end_quote
+
+#+begin_quote
+I believe that in this case it is probably best to not use a shell
+script. There is no solution that is particularly clean or simple. In
+this case I think you might be better off using a programming
+language.
+#+end_quote
+
+**** [[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---looping-over-sequences][For Loops - Looping over Sequences]]
+
+#+begin_quote
+Another common way to use a for loop is with =brace expansion=. Brace
+expansion we have already seen a number of times so far - we can use
+it to generate a sequence of values.
+#+end_quote
+
+#+begin_src bash
+  touch {coffee,tea,milkshake}-menu.txt
+
+  # loop through a sequence of values or a range of numbers with 'increment'
+  for i in {0..25..5}
+  do
+      echo "Loop ${i}"
+  done
+#+end_src
+
+*** [[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#the-while-loop][The While Loop]]
+
+#+begin_quote
+The =while= loop is a loop that executes commands until a certain
+condition is met.
+#+end_quote
+
+基本结构：
+
+#+begin_src bash
+  while <test-commands>
+  do
+      <conditional-command 1>
+      <conditional-command 2>
+      <conditional-command n>
+  done
+#+end_src
+
+例子：
+
+#+begin_src bash
+  # Create an empty array of random numbers.
+  random_numbers=()
+
+  # As long as the length of the array is less than five, continue to loop.
+  while [ ${#random_numbers[@]} -lt 5 ]
+  do
+      # Get a random number, ask the user if they want to add it to the array.
+      random_number=$RANDOM
+      read -p "Add $random_number to the list? (y/n): " choice
+
+      # If the user chose 'y' add the random number to the array.
+      if [ "$choice" = "y" ]; then random_numbers+=($random_number); fi
+  done
+
+  # Show the contents of the array.
+  echo "Random Numbers: ${random_numbers[@]}"
+#+end_src
+
+**** [[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#while-loops---looping-through-the-lines-in-a-file][While Loops - Looping through the lines in a file]]
+
+#+begin_src bash
+  while read line; do
+      echo "Read: $line"
+  done < ~/effective-shell/data/top100.csv
+#+end_src
+
+[[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#while-loops---looping-through-the-lines-in-a-file][存在问题，避免使用]]。
+
+**** [[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#while-loops---looping-through-the-lines-in-a-file][While Loops - The Infinite Loop]]
+
+#+begin_quote
+There are times that you may want to loop forever. For example you
+might be writing a script that reads an option from the user,
+processes it, and then starts again.
+#+end_quote
+
+#+begin_src bash
+  while true
+  do
+      echo "1) Move forwards"
+      echo "2) Move backwards"
+      echo "3) Turn Left"
+      echo "4) Turn Right"
+      echo "5) Explore"
+      echo "0) Quit"
+
+      read -p "What will you do: " choice
+      if [ $choice -eq 0 ]; then
+          exit
+      fi
+      # The rest of the game logic would go here!
+      # ...
+  done
+#+end_src
+
+*** [[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#the-until-loop][The Until Loop]]
+
+#+begin_quote
+The until loop operates just like the while loop, except that it runs
+*until* the test commands return success.
+
+As long as the *test commands* do not return success, the loop will run
+the *conditional commands*. After the *conditional commands* have been
+run, the loop goes 'back to the start' and evaluates the test commands
+again.
+
+In general I would recommend using while loops rather than until
+loops. While loops are going to be more familiar to readers as they
+exist in many programming languages - until loops are a little more
+rare. And you can easily turn any until loop into a while loop by
+simply inverting the test commands you are running.
+#+end_quote
+
+#+begin_src bash
+  until <test-commands>
+  do
+      <conditional-command 1>
+      <conditional-command 2>
+      <conditional-command n>
+  done
+#+end_src
+
+#+begin_src bash
+  # until loop
+  # Create an empty random number string - we're going to build it up in the loop.
+  random_number=""
+
+  # Keep on looping until the random number is at least 15 characters long.
+  until [ "${#random_number}" -ge 15 ]
+  do
+      random_number+=$RANDOM
+  done
+  echo "Random Number: ${random_number}"
+
+  # while loop
+  random_number=""
+  while [ "${#random_number}" -lt 15 ]
+  do
+      random_number+=$RANDOM
+  done
+  echo "Random Number: ${random_number}"
+#+end_src
+
+*** [[https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#continue-and-break][Continue and Break]]
+
+#+begin_src bash
+  echo "For each folder, choose y/n to show contents, or c to cancel."
+  for file in ~/*
+  do
+      # If the file is not a directory, or it cannot be searched, skip it.
+      if ! [ -d "$file" ] || ! [ -x "$file" ]; then continue; fi
+
+      # Ask the user if they want to see the contents.
+      read -p "Show: $file? [y/n/c]: " choice
+
+      # If the user chose 'c' for cancel, break.
+      if [ "$choice" = "c" ]; then break; fi
+
+      # If the user choice 'y' to show contents, list them.
+      if [ "$choice" = "y" ]; then ls "$file"; fi
+  done
+#+end_src
+
+** [[https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling][函数]]
+
+#+begin_quote
+The shell allows you to create functions - a set of commands that you
+can call at any time.
+#+end_quote
+
+基本格式：
+
+#+begin_src bash
+  <function-name> {
+      <function-command 1>
+      <function-command 2>
+      <function-command n>
+  }
+#+end_src
+
+#+begin_src bash
+  title() {
+      echo "My Script version 1.0"
+  }
+#+end_src
+
+[[https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#the-function-keyword][function 关键字]] 可有可无，不建议使用。
+
+*** [[https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#variables-in-functions][变量]]
+
+#+begin_src bash
+  # Set some variables.
+  title="My Cool Script"
+  version="1.2"
+  succeeded=0
+
+  # Create a function that writes a message and changes a variable.
+  title() {
+      # Note that we can read variables...
+      title_message="${title} - version ${version}"
+      echo "${title_message}"
+
+      # ...and set them as well.
+      succeeded=1
+  }
+
+  # Show the value of 'succeeded' before and after the function call.
+  echo "Succeeded: ${succeeded}"
+  title
+  echo "Succeeded: ${succeeded}"
+  echo "Title Message: ${title_message}"
+#+end_src
+
+**** [[https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#variable-scoping-index][作用域]]
+
+#+begin_quote
+If you come from a programming background you might find it odd that
+you can create a variable in a function and use it outside of the
+function. This is a feature known as *dynamic scoping*. Many common
+programming languages like Python, JavaScript, C, Java and others use
+an alternative mechanism called *lexical scoping*.
+
+*Lexical scoping* is a feature that ensures that you can only use a
+variable from within the 'scope' that it is defined. This can reduce
+errors - because it means that if you define a variable in a function
+you don't accidentally 'overwrite' the value of another variable that
+is used elsewhere.
+
+You can use the =local= keyword to define a variable that is only
+available in the 'local' scope, i.e. the function that it is defined
+in. This allows you to use lexical scoping and can reduce the risk of
+errors.
+#+end_quote
+
+#+begin_src bash
+  run_loop() {
+      local count=0
+      for i in {1..10}; do
+          # Update our counter.
+          count=$((count + 1))
+      done
+      echo "Count is: ${count}"
+  }
+#+end_src
+
+#+begin_quote
+In general, you should use 'local' variables inside functions. This
+can help to avoid problems where calling a function can have an
+unintended side effects:
+#+end_quote
+
+#+begin_src bash
+  # 比较用 local 和不用的区别
+  # Set a count variable somewhere in our script...
+  count=3
+
+  # Call our 'run_loop' function.
+  run_loop
+
+  # Write out the value of 'count'.
+  echo "The 'count' variable is: ${count}"
+#+end_src
+
+*** [[https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#passing-parameters-to-functions][传参]]
+
+#+begin_src bash
+  sum() {
+      local value1=$1
+      local value2=$2
+      local result=$((value1 + value2))
+      echo "The sum of ${value1} and ${value2} is ${result}"
+  }
+
+  # Create a function that calculates the sum of two numbers.
+  sum() {
+      echo "The sum of $1 and $2 is $(($1 + $2))"
+  }
+
+  # usage
+  # sum 3 6
+  # sum 10 33
+#+end_src
+
+#+attr_html: :width 100%
+| Variable         | Description                                                                                   |
+|------------------+-----------------------------------------------------------------------------------------------|
+| $0               | path that called the script (使用 =curl cht.sh/'bash parameter $0'= 查阅用法)                                                                  |
+| $1               | The first parameter                                                                           |
+| $2               | The second parameter                                                                          |
+| ${11}            | The 11th parameter - if the parameter is more than one digit you must surround it with braces |
+| $#               | The number of parameters                                                                      |
+| $@               | The full set of parameters as an array                                                        |
+| $*               | The full set of parameters as a string separated by the first value in the $IFS variable      |
+| ${@:start:count} | A subset of 'count' parameters starting at parameter number 'start'                           |
+
+**** [[https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#parameter-shifting][Parameter Shifting]]
+
+#+begin_src bash
+  # Show the top 'n' values of a set.
+  show_top() {
+      # Grab the number of values to show, then shift.
+      local n=$1
+      shift
+
+      # Get the set of values to show. Notice that we start in position 1 now.
+      local values=${@:1:n}
+      echo "Top ${n} values: ${values}"
+  }
+#+end_src
+
+*** [[https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#return-values][返回值]]
+
+**** 通过设置变量值
+
+#+begin_src bash
+  is_even() {
+      local number=$1
+
+      # A number is even if when we divide it by 2 there is no remainder.
+      # Set 'result' to 1 if the parameter is even and 0 otherwise.
+      if [ $((number % 2)) -eq 0 ]; then
+          result=1
+      else
+          result=0
+      fi
+  }
+#+end_src
+
+#+begin_src bash
+  $ number=33
+  $ is_even $number
+  $ echo "Result is: $result"
+  Result is: 0
+#+end_src
+
+#+begin_quote
+In general, this method of returning values from a function should be
+avoided. It overwrites the value of a global variable and that can be
+confusing for the operator.
+
+A more common way to return a value from a function is to write its
+result to *stdout*
+#+end_quote
+
+**** 输出到 stdout
+
+#+begin_src bash
+  lowercase() {
+      local params="$@"
+      # Translate all uppercase characters to lowercase characters.
+      echo "$params" | tr '[:upper:]' '[:lower:]'
+  }
+#+end_src
+
+#+begin_src bash
+  $ result=$(lowercase "Don't SHOUT!")
+  $ echo "$result"
+  don't shout!
+#+end_src
+
+#+begin_quote
+If you have a programming background it might seem very strange that
+you write results in a function by writing to *stdout*. Remember - the
+shell is a text based interface to the computer system. The majority
+of commands that we have seen so far that provide output write their
+output to the screen. This is what =ls= does, what =find= does, what =cat=
+does and so on. When we =echo= a result from a function, we are really
+just following the Unix standard of writing the results of a program
+to the screen.
+
+Remember - shell functions are designed to behave in a similar way to
+shell commands. They write their output to stdout.
+
+Although it might feel a bit clunky, writing the results of a command
+to stdout is a tried and tested method of returning results.
+#+end_quote
+
+但是，如果脚本中有很多次输出，最终的结果可能不是我们期待的。
+
+#+begin_src bash
+  command_exists() {
+      if type "$1"; then
+          echo "1"
+      else
+          echo "0"
+      fi
+  }
+
+  # result=$(command_exists "touch")
+  # echo "Result is: ${result}"
+#+end_src
+
+解决办法就是移除调不需要的输出，输出到 =/dev/null=
+
+#+begin_src bash
+  command_exists() {
+      if type "$1" >> /dev/null; then
+          echo "1"
+      else
+          echo "0"
+      fi
+  }
+#+end_src
+
+**** [[https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#returning-status-codes][Returning Status Codes]]
+
+#+begin_quote
+The =return= (return from shell function) command causes a function to
+exit with a given status code.
+
+This is something that often causes confusion in shell scripts. The
+reason is that in most programming languages, you would use a 'return'
+statement to return the result of a function. But in the shell, when
+we return, we set the status code of the function.
+
+What is a status code?  When a command runs, we expect it to return a
+status code of 'zero' to indicate success. Any non-zero status code is
+used to specify an error code.
+
+Remember - only use the 'return' command to set a status code. Many
+shells will only allow values from *0-255* to be set, and most users
+will expect that a command should return zero for success and that any
+non-zero value is an error code. If you need to provide output for a
+command that is not just a status code, you should write it to stdout
+or if you must, set the value of a global variable.
+#+end_quote
+
+#+begin_src bash
+  command_exists() {
+      if type "$1" >> /dev/null; then
+          return 0
+      else
+          return 1
+      fi
+  }
+#+end_src
+
+#+begin_src bash
+  if command_exists "common"; then
+      echo "The 'common' command is installed on your system"
+  else
+      echo "The 'common' command is not installed on your system"
+  fi
+#+end_src
+
+** [[https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#error-handling][错误处理]]
+
+#+begin_quote
+When you run a shell script, if a command in the script fails, the
+script will *continue to run*. Like many other points in this chapter
+this might seem unintuitive if you come from a programming background,
+but this makes sense in the shell - if the shell was to terminate
+whenever a command fails it would be very difficult to use
+interactively.
+
+In general in your shell scripts if a command fails you probably want
+the entire script to stop executing. Otherwise you can get this
+cascading effect as commands continue to return even after there was a
+failure, which can lead to all sorts of unexpected behaviour.
+#+end_quote
+
+如果先创建一个文件, 在执行脚本:
+
+: touch "/tmp/$(date +"%Y-%m-%d")"
+
+#+begin_src sh
+  #!/usr/bin/env sh
+
+  # Get today's date in the format YYYY-MM-DD.
+  today=$(date +"%Y-%m-%d")
+
+  # Create the path to today's temp folder and then make sure the folder exists.
+  temp_path="/tmp/${today}"
+  mkdir -p "${temp_path}"
+
+  # Now that we've created the folder, make a symlink to it in our homedir.
+  ln -sf "${temp_path}" "${HOME}/today"
+
+  # Write out the path we created.
+  echo "${temp_path}"
+#+end_src
+
+*** [[https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#ensuring-exit-on-failure][出错后退出]]
+
+#+begin_quote
+You can use the =set= (set option) command to set an option in the
+shell. There is an option that tells the shell to exit when a command
+fails.
+
+The 'set' command allows you to turn on and turn off shell
+options. The 'e' option means 'exit if any command exits with a
+non-zero status'.
+#+end_quote
+
+#+begin_src bash
+  #!/usr/bin/env sh
+
+  # Exit if any command fails.
+  set -e
+
+  # ...
+#+end_src
+
+#+begin_quote
+One thing to be aware of is that the =set -e= option only affects the
+*final* command of a pipeline.
+
+To ensure that the shell terminates if a command in a pipeline fails
+we must set the pipefail option: =set -o pipefail=
+#+end_quote
+
+#+begin_src bash
+  grep '[:space:]*#' ~/effective-shell/scripts/common.sh | tr 'a-z' 'A-Z'
+#+end_src
+
+** [[https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#debugging-shell-scripts][debug]]
+
+#+begin_quote
+You can use the =set= (set option) command to set the trace option (=set -x=). This
+option is incredibly useful for debugging shell scripts. When the
+trace option is set, the shell will write out each statement before it
+is evaluated.
+#+end_quote
+
+#+begin_src bash
+  # today.sh - creates a 'today' symlink in the home directory folder to a fresh
+  # temporary folder each day.
+
+  # Enable tracing in the script.
+  set -x
+
+  # Get today's date in the format YYYY-MM-DD.
+  today=$(date +"%Y-%m-%d")
+
+  # Create the path to today's temp folder and then make sure the folder exists.
+  temp_path="/tmp/${today}"
+  mkdir -p "${temp_path}"
+
+  # Now that we've created the folder, make a symlink to it in our homedir.
+  ln -sf "${temp_path}" "${HOME}/today"
+
+  # Disable tracing now that we are done with the work.
+  set +x
+
+  # Write out the path we created.
+  echo "${temp_path}"
+#+end_src
+
+#+begin_quote
+*Each command that the shell executes is written to stdout before it is
+executed.* The parameters are expanded, which can make it far easier to
+see what is going on and troubleshoot issues.
+
+The =+= symbol is written at the start of each trace line, so that you
+can differentiate it from normal output that you write in your
+script1. The final line of output in the example above does not have
+a + in front of it - because it is actual output from an echo command,
+rather than a trace line.
+
+The number of + symbols indicates the *'level of indirection'*
+#+end_quote
+
+#+begin_src bash
+  set -x
+  echo "Name of home folder is $(basename $(echo ~) )"
+#+end_src
+
+推荐的设置：
+
+#+begin_src bash
+  # Fail on errors in commands or in pipelines.
+  set -e
+  set -o pipefail
+
+  # Uncomment the below if you want to enable tracing to debug the script.
+  # set -x
+#+end_src
+
+** [[https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts][一些技巧]]
+
+*** [[https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#checking-for-existing-variables-or-functions][Checking for Existing Variables or Functions]]
+
+*** [[https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#unsetting-values][Unsetting Values]]
+
+#+begin_src bash
+  # Remove the 'is_even' function from the shell session.
+  unset -f is_even
+#+end_src
+
+*** [[https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#traps][Traps]]
+
+#+begin_quote
+You can use the =trap= (trap signals and events) command to specify a
+set of commands to run when the shell receives signals, or at certain
+points such as when the script exits or a function returns.
+#+end_quote
+
+#+begin_src bash
+  # Create a temporary folder for the effective shell download.
+  source="https://effective-shell.com/downloads/effective-shell-samples.tar.gz"
+  tmp_dir=$(mktemp -d 2>/dev/null || mktemp -d -t 'effective-shell')
+  tmp_tar="${tmp_dir}/effective-shell.tar.gz"
+
+  # Define a cleanup function that we will call when the script exits or if
+  # it is aborted.
+  cleanup () {
+      if [ -e "${tmp_tar}" ]; then rm "$tmp_tar}"; fi
+      if [ -d "${tmp_dir}" ]; then rm -rf "${tmp_dir}"; fi
+  }
+
+  # Cleanup on interrupt or terminate signals and on exit.
+  trap "cleanup" INT TERM EXIT
+
+  # Download the samples.
+  curl --fail --compressed -q -s "${source}" -o "${tmp_tar}"
+
+  # Extract the samples.
+  tar -xzf "${tmp_tar}" -C "${tmp_dir}"
+#+end_src
+
+*** [[https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#handling-options][Handling Options]]
+
+#+begin_quote
+You can use the =getopts= (parse option arguments) command to process
+the arguments for a script or function.
+#+end_quote
+
+处理 =-h=, =-e= 等选项
+
+*** [[https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#using-select-to-show-a-menu][Using 'Select' to Show a Menu]]
+
+#+begin_quote
+The =select= compound command prints a menu and allows the user to make
+a selection. It is not part of the Posix standard, but is available in
+Bash and most Bash-like shells.
+#+end_quote
+
+#+begin_src bash
+  select fruit in Apple Banana Cherry Durian
+  do
+      echo "You chose: $fruit"
+      echo "This is item number: $REPLY"
+  done
+#+end_src
+
+*** [[https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#running-commands-in-subshells][Running Commands in Subshells]]
+
+#+begin_quote
+You will often see a nice little trick that allows you to change the
+current directory for a specific command, without affecting the
+current directory for the shell.
+
+The brackets around the statements mean that these commands are run in
+a sub-shell. Because they run in a sub-shell, they change the
+directory in the sub-shell only, not the current shell. This means we
+don't need to change back to the previous directory after the commands
+have completed.
+#+end_quote
+
+#+begin_src bash
+  (mkdir -p ~/new-project; cd ~/new-project; touch README.md)
+#+end_src
+
+* 我的推荐
+** history
+- =echo $HISTFILE= : 查看 history 写入的文件
+- =history= : 查看输入的命令历史记录
+- =!n= : 使用 id 为 n 的历史记录
+- =Ctrl-r= : 搜索历史记录
+- [[https://github.com/junegunn/fzf][fzf]] : 结合模糊匹配使用
+
+** [[https://effective-shell.com/part-6-advanced-techniques/master-the-multiplexer/][tmux]]
+
+** [[https://ohmyz.sh/][oh my zsh]]
+
+- [[https://www.zsh.org/][zsh]] :: Zsh is a shell designed for interactive use, although it is
+  also a powerful scripting language.
+
+- [[https://starship.rs/][starship]] :: Cross-shell [[https://effective-shell.com/part-5-building-your-toolkit/customising-your-command-prompt][Propmt]].
+
+推荐的[[https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins][插件]]:
+
+#+begin_src sh
+  # ------------------------------- #
+  # Prerequire:
+  # oh my zsh: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  # starship: curl -sS https://starship.rs/install.sh | sh
+  # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  # ------------------------------- #
+
+  # Path to your oh-my-zsh installation.
+  export ZSH="$HOME/.oh-my-zsh"
+
+  plugins=(
+      aliases # 推荐
+      common-aliases # 推荐
+      deno
+      docker
+      git # 推荐
+      gulp
+      history # 推荐
+      jira # 推荐
+      jsontools
+      node
+      npm
+      nvm
+      ripgrep
+      thefuck
+      tmux
+      ubuntu
+      web-search
+      yarn
+      z # 极力推荐
+      zbell
+      zsh-autosuggestions # 极力推荐
+      zsh-syntax-highlighting
+  )
+
+  source $ZSH/oh-my-zsh.sh
+#+end_src
+
+** [[https://effective-shell.com/part-5-building-your-toolkit/managing-your-dotfiles][Managing your Dotfiles]]
+
+** [[https://poe.com/ChatGPT][还有不懂就问 GPT]]
+
+* Refs
+
+- [[https://effective-shell.com/][effective-shell]]
+- [[https://missing-semester-cn.github.io/][计算机教育中缺失的一课]]
+- [[https://github.com/jlevy/the-art-of-command-line][The Art of Command Line]]
+- [[https://wangdoc.com/bash/][Bash 脚本教程]]
+- [[https://learnxinyminutes.com/docs/bash/][Learn X in Y minutes [bash]​]]
+- [[https://prithu.dev/posts/unix-pipeline/][The beauty of Unix pipelines]]
+- [[https://www.brianstorti.com/understanding-shell-script-idiom-redirect/][Understanding Shell Script's idiom: 2>&1]]
