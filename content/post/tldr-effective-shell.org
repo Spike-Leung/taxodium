@@ -149,22 +149,20 @@ Functions are powerful ways to write logic but will normally be shell-specific.
 #+end_quote
 
 #+begin_src bash
-  concatGyennoDeployCommand() {
-      # 第一个参数，环境
-      local env=$1
-      # 第二个参数，版本号
-      local version=$2
-      local hash=$(git rev-parse HEAD)
-      # 获取提交信息
-      local msg=$(git log --pretty=format:"%s" -n 1 $hash)
-      # 获取当前远程分支的项目名称，返回如 ruiyun-web, scroring 等
-      local repo=$(git remote -v | grep "(fetch)" | awk '{print $2}' | awk -F/ '{print $NF}' | cut -d'.' -f 1)
+  wsl_proxy_on() {
+      local port=10810
+      export windows_host=`cat /etc/resolv.conf | grep nameserver | cut -d' ' -f 2`
+      export ALL_PROXY=socks5://$windows_host:$port
+      export HTTP_PROXY=$ALL_PROXY
+      export http_proxy=$ALL_PROXY
+      export HTTPS_PROXY=$ALL_PROXY
+      export https_proxy=$ALL_PROXY
+      echo -e "proxy on"
+  }
 
-      # 拼接信息
-      local command="2 $env,$repo,$version,$hash"
-
-      echo "$msg"
-      echo "$command"
+  wsl_proxy_off() {
+      unset ALL_PROXY HTTPS_PROXY https_proxy HTTP_PROXY http_proxy
+      echo -e "proxy off"
   }
 #+end_src
 
@@ -178,8 +176,9 @@ Aliases are conveniences for human operators, but only in the context of an inte
   # ---------------------------------------------------------------- #
   # alias
   # ---------------------------------------------------------------- #
-  alias dd=getGyennoDeployCommand
-  alias dc=getGyennoDeployComment
+  alias wpon=wsl_proxy_on
+  alias pbcopy='clip.exe'
+  alias pbpaste="powershell.exe -command 'Get-Clipboard' | tr -d '\r' | head -n -1"
 #+end_src
 
 ** [[https://effective-shell.com/part-1-transitioning-to-the-shell/getting-help/][如何了解命令的用法]]
