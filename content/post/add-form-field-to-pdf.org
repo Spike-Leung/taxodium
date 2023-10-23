@@ -1,0 +1,81 @@
+#+title: 往 PDF 上添加 form field
+#+date: 2023-10-23T22:49:47+08:00
+#+lastmod: 2023-10-23T22:49:47+08:00
+#+draft: false
+#+keywords[]:
+#+description: ""
+#+tags[]:
+#+categories[]:
+* 前言
+
+前阵子需要实现一个需求：
+
+拿到一份原始的 PDF，PDF 上会有一些空需要填充字段，需要用户自己去选择字段，放到对应位置，生成携带字段的 PDF。
+
+生成的 PDF 再给后端解析，填充实际的字段值，生成得到一份带有实际值的 PDF。
+
+实现之初碰到几个难点：
+
+- 如何将 PDF 渲染出来
+
+- 如何将字段放到 PDF 上对应的位置
+
+- 字段如何写入到 PDF 中
+
+* 如何将 PDF 渲染出来
+
+我想这类需求，应该别人也碰到过，说不定有现成的方案，果不其然，找到了 [[https://github.com/ShizukuIchi/pdf-editor][pdf-editor]] 这个仓库。
+
+渲染的思路是：
+
+- 用 [[https://github.com/mozilla/pdf.js][pdf.js]] 去解析 PDF 文件，得到一个解析后的 PDF 对象，通过它可以得到 PDF 的每一页
+
+
+- 接着用 Canvas 去将每一页 PDF 画出来，可以参考官方的 [[https://mozilla.github.io/pdf.js/examples/][Hello World Walkthrough]]。
+
+这样就完成了 PDF 的渲染。
+
+在使用 pdf.js 的时候，由于实际开发的技术栈比较旧，不支持 ES6 的一些语法，配置和调整 babel 也没整明白，还需要升级 NodeJS 版本。
+
+虽然官方提供了 Legend biuld，但依然是包含了不支持的语法，甚至提了一个 [[https://github.com/mozilla/pdf.js/issues/17082][issue]] 去问。
+
+后来是一直降低 pdf.js 的版本，下了一个和 [[https://github.com/ShizukuIchi/pdf-editor][pdf-editor]] 一样的版本 (2.3.2)，终于是能集成到项目了。
+
+所幸功能基本够用。
+
+* 如何将字段放到 PDF 上对应的位置
+
+可以参考 [[https://github.com/ShizukuIchi/pdf-editor][pdf-editor]] 的实现，也可以使用 [[https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations#draggableattribute][Drag and Drop API]] 将需要的元素拖拽到 PDF 上。
+
+我的实现思路是：
+
+- 将每一页 PDF 看作一个容器，设置 ~position: relative;~
+
+
+- 通过 [[https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations#draggableattribute][Drag and Drop API]] 将字段元素，拖拽到对应的页上，计算对应的 x，y 坐标，设置 ~positon: absolute;~ ，这样元素就能相对每一页的 PDF 定位。
+  在实现时，借助 [[https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect][getBoundingClientRect()]] 以及鼠标事件返回的位置，可以很容易的计算到 x，y。
+
+
+- 接着将拖拽到 PDF 上的元素，以二维数组的形式存储， 数组元素对应每一页包含的字段。
+
+实现的时候，碰到一个问题，当将元素拖拽到和自身重合的时候，会导致位置计算错误，元素被挪动到页面的左上角。
+
+原因是我基于 [[https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/drop_event][drop 事件]] 返回的 target 计算 x，y，而我实际的 target 应该是对应的 PDF 页容器。
+
+因此，只需要找到对应的 PDF 页元素作为 target，再使用 [[https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect][getBoundingClientRect()]] 去计算一个准确的 x，y 就能解决了。
+
+* 字段如何写入到 PDF 中
+
+经过上面两步，现在有一个数组，包含 PDF 的每一页。
+
+另一个数组，包含每一页上的字段信息(坐标，宽度，及其他值)。
+
+两个数组的下标是一一对应的。
+
+只需要遍历其中一个数组，使用 [[https://github.com/Hopding/pdf-lib][pdf-lib]] 这个库，就可以将元素写入到 PDF 中。
+
+这里我是用 [[https://pdf-lib.js.org/docs/api/classes/pdfform#createtextfield][createTextField]] API 添加字段，后端可以根据字段的 id 找到对应的字段，得到字段信息 (x, y, id 等)。
+
+需要注意的是，使用 createTextField 生成的 text field 自带一个白色背景，可能会覆盖 PDF 的文字。
+
+参考 [[https://github.com/Hopding/pdf-lib/issues/605][[Feature Request] Transparent Fields #605]]，将 backgroundColor 和 borderColor 置为 undefined 就好了。
