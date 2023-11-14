@@ -3,11 +3,13 @@
 #+lastmod: 2021-08-15T11:29:49+08:00
 #+draft: false
 * 前言
+
 项目中，要根据返回的国家名称显示对应的国旗图标。
 
 实现思路很简单，找到对应的国旗图片，然后根据返回的国家名匹配对应的图片就可以了。
 
 * 获取国旗图标
+
 一开始，打算在网上找点相关的 Icon，有的要付费如 [[https://www.flaticon.com/search?word=country%20flag][flaticon]]，而不付费的又不好看。
 
 后来，找到了 [[https://www.countryflags.com/en/][COUNTRYFLAGS]] 这个网站，国旗比较齐全也美观，可以选择下载的类型和尺寸也很多。
@@ -21,6 +23,7 @@
 所以是不是可以用 Emoji 实现呢？
 
 * Emoji 实现国旗图标
+
 简单的说，Emoji 本质是一些字符，可能是多个字符组合出来。
 
 例如中国国旗，其实是 ~🇨🇳~ ( ~CN~ )这两个字符组合而成的。
@@ -39,6 +42,7 @@
 [[https://github.com/thekelvinliu/country-code-emoji/blob/master/src/index.js][Country Code Emoji]] 中的方法可以帮我们根据国家编号 (~CN~) 找到其在 Unicode 中对应的位置。
 
 * Emoji 存在的问题
+
 用 Emoji 实现国旗是很方便的，不需要下载图片，只要去找国家代码对应的 Unicode 然后进行渲染即可。
 
 但是遗憾的是，Window 系统下，并不支持国旗的 Emoji ，就 Mac 的系统支持。
@@ -46,14 +50,14 @@
 为了在不同的系统都能显示, 还是得使用 PNG 图片的形式。
 
 * 最终解决方案
+
 到 [[https://www.countryflags.com/en/][ COUNTRYFLAGS ]]下载对应的国旗 PNG 图片，按照 [[https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2][ISO 3166-1 alpha-2]] 进行命名，然后根据国家编码去对应获取就好。
 
 如中国( ~CN~ )就渲染 ~CN.png~.
 
 ** Tips
+
 在 [[https://www.countryflags.com/en/][ COUNTRYFLAGS ]] 一张张点下载太慢了，可以写个小脚本（如 [[https://github.com/Spike-Leung/flag-download][flag-download]]），批量下载。
-
-
 
 * 参考链接
 - [[https://www.countryflags.com/en/][COUNTRYFLAGS]]
@@ -62,3 +66,4 @@
 - [[https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2][ISO 3166-1 alpha-2]]
 - [[https://github.com/thekelvinliu/country-code-emoji/blob/master/src/index.js][country-code-emoji]]
 - [[https://stackoverflow.com/questions/54519758/flag-emojis-not-rendering][Flag Emojis not rendering]]
+- [[https://github.com/lipis/flag-icons][flag-icons]] :: 🎏 A curated collection of all country flags in SVG — plus the CSS for easier integration
