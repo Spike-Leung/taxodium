@@ -9,11 +9,7 @@
 
 * new Date() 使用 date string 返回时间格式不同
 
-碰到一个问题，计算两个时间之间包含的月份：
-
-- 通过 *new Date(time).getTime() / 1000* 获取秒数，然后开始结束秒数相减，获取差值
-
-- 差值除以 *30* 天的秒数， *向下* 取整
+有个需求，需要计算两个日期之间包含的月份，实现如下：
 
 #+begin_src typescript
   function getMonth(startDate, endDate) {
@@ -28,12 +24,20 @@
   getMonth('2023-03', '2024-03-25 08:00:00') // 13
 #+end_src
 
-按理说，开始结束的日期相同，计算出来的月份数应该是一样的，但是发现结果相差了一个月。
+开始日期和结束日期都相同，预期得到的月份数也是相同的，但是实际结果却相差了一个月。
+
+观察代码发现，开始日期和结束日期传入的 date string 不一样，开始时期只包含年月，而结束日期则具体到时分秒。
+
+是不是因为 date string 不同，导致得到的时间存在差异呢？
+
+尝试相同的日期，不同的 date string 表示，看看结果，得到的结果确实不同，相差了 8 小时。
 
 #+begin_src typescript
   new Date('2024-01-01') // Mon Jan 01 2024 08:00:00 GMT+0800 (China Standard Time)
   new Date('2024-01-01 00:00:00') // Mon Jan 01 2024 00:00:00 GMT+0800 (China Standard Time)
 #+end_src
+
+查阅 Date 的文档，发现：
 
 #+begin_quote
 When the time zone offset is absent, *date-only forms are interpreted
@@ -45,11 +49,22 @@ Parser – A Web Reality Issue.
 --- [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format][Date time string format]]
 #+end_quote
 
-这是因为开始时间是 *2023-03*, 是 =date-only= 格式，返回的是 UTC 时间，2023-03-01 00:00:00 。
+对于 *2024-01-01*
 
-而结束时间是 *2024-01-01 00:00:00* (实际上，date string 应该写成 *2024-01-01T00:00:00*) 指定了时分秒，属于 =date-time= 格式，返回的是本地时间。
+- 时分省略了，默认是 00:00:00
+- 它是 =date-only= 格式，会被当作是 UTC 时间
+- 它实际会被解释成 UTC 时间的 2024-01-01 00:00:00
+- new Date() 返回的是本地时间，我当前是在北京时区(+8h)，所以最后得到的是 Mon Jan 01 2024 *08*:00:00 GMT+0800 (China Standard Time)
+
+对于 *2024-01-01 00:00:00*
+
+- 它是 =date-time= 格式，会被当作本地时间，所以最终返回的是 Mon Jan 01 2024 *00*:00:00 GMT+0800 (China Standard Time)
+
+
+通过不同的输入，可以比较一下不同 date string 的返回值：
 
 #+begin_src typescript
+  // 返回本地时间
   // date-only forms are interpreted as a UTC time
   new Date('2023-03') // Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard Time)
   new Date('2023-03-01') // Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard Time)
@@ -58,6 +73,7 @@ Parser – A Web Reality Issue.
   new Date('2023-03-01T00:00:00') // Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard Time)
   new Date('2023-03-01 00:00:00') // Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard Time)
 
+  // 返回 UTC 时间
   // date-only forms are interpreted as a UTC time
   new Date('2023-03').toUTCString() // 'Wed, 01 Mar 2023 00:00:00 GMT'
   new Date('2023-03-01').toUTCString() // 'Wed, 01 Mar 2023 00:00:00 GMT'
@@ -67,9 +83,7 @@ Parser – A Web Reality Issue.
   new Date('2023-03-01 00:00:00').toUTCString() // 'Tue, 28 Feb 2023 16:00:00 GMT'
 #+end_src
 
-上面计算月份的代码会有偏差，是因为开始时间返回的是 *UTC 时间* ，而结束时间返回的是 *本地时间* 。
-
-而 getTime() 都是按照 UTC 时间处理：
+回到最开始的问题，代码中使用 =getTime()= 获取时间戳，getTime 获取的是 UTC 时间戳：
 
 #+begin_quote
 The getTime() method of Date instances returns the number of
@@ -78,20 +92,23 @@ midnight at the beginning of January 1, 1970, UTC.
 --- [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime][Date.prototype.getTime()]]
 #+end_quote
 
+通过 =toUTCString()= 可以看到代码中开始时间，结束时间的返回的 UTC 时间:
+
 #+begin_src typescript
   new Date('2023-03').toUTCString() // 'Wed, 01 Mar 2023 00:00:00 GMT'
   new Date('2024-03-25 01:00:00').toUTCString() // 'Sun, 24 Mar 2024 17:00:00 GMT'
   new Date('2024-03-25 08:00:00').toUTCString() // 'Mon, 25 Mar 2024 00:00:00 GMT'
 #+end_src
 
-2024-03-25 01:00:00 和 2024-03-25 08:00:00 相差了一天，这一天的差异，导致了计算结果的差异。
+可以看到，2024-03-25 01:00:00 和 2024-03-25 08:00:00 在 UTC 时间中相差了一天，就是这一天的差异，导致了计算结果的差异。
+
+** 如何规避
 
 由于以 date string 形式创建 Date，得到的结果可能不同，因此最好避免用 date string ，而是用参数的形式创建:
 
 #+begin_src typescript
   // Remember (and accept) that month is zero-indexed in JavaScript.
   new Date(2023, 02, 01) // Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard Time)
-  new Date('2023-03-01') // Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard Time)
 #+end_src
 
 * Refs
