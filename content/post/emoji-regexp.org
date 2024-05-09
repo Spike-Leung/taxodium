@@ -1,0 +1,89 @@
+#+title: Emoji 正则匹配
+#+date: 2024-05-09T20:28:46+08:00
+#+lastmod: 2024-05-09T20:28:46+08:00
+#+draft: true
+#+keywords[]:
+#+description: ""
+#+tags[]:
+#+categories[]:
+
+* 前言
+
+要求输入框能输入除了特殊表情外的任意字符。
+
+我的理解就是将 Emoji 排除掉，通过 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp][RegExp]] 匹配到 Emoji，如果匹配到则说明存在特殊字符，匹配不到则认为通过。
+
+* TL;DR
+
+如果你只是想要一个能够匹配表情的正则，下面这个应该就满足👇：
+
+#+begin_src typescript
+    /\p{Extended_Pictographic}/gu.test("你好hello123😄hi🌷456🉐") // true
+    /\p{Extended_Pictographic}/gu.test("你好hello123") // false
+#+end_src
+
+[[file:/post/emoji-regexp/regexp101-emoji-corret.png]]
+
+* 解决过程
+
+对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道是用 Unicode 编码表示的，但怎么用正则描述它呢？
+
+所以我的第一步是 Google，得到一个这样的正则：
+
+#+begin_src typescript
+    /(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]/
+#+end_src
+
+拿去 [[https://regex101.com/][regex101]] 测试了一下，虽然能匹配到一些 Emoji，但是还是有部分 Emoji 匹配不到。
+
+[[file:/post/emoji-regexp/regexp101-emoji-wrong.png]]
+
+上面的正则表达式应该是表示的是一个 Unicode 字符范围，部分 Emoji (🉐)没匹配上，说明这个范围小了，没有囊括所有的 Emoji。
+
+那么 Emoji 的 Unicode 范围是多少？是不是穷举就行了？
+
+其实没办法用一个固定的范围去表达，因为 Emoji 是持续增加的，每增加一个就会多一个 Unicode 去承载，没办法用一个固定的范围去表达所有的 Emoji。
+
+于是又搜索了一下，StackOverflow 有一个[[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][提问]]，里面提到了用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape]] 进行匹配，也就是:
+
+- ~/\p{Emoji}/u~ :: 既然是匹配 Emoji，那么 loneProperty 就应该是 Emoji ? 实际测试并不符合需求，因为在 [[https://www.unicode.org/Public/15.1.0/ucd/emoji/emoji-data.txt][Emoji 官方文档]]中， =123456789*#= 也是被看作是 Emoji，
+  如果用这个正则的话，就会把数字也认为是 Emoji，不符合只排除特殊表情的条件。
+
+- ~/\p{Extended_Pictographic}/u~ :: 而 Extended_Pictographic 表示的 Emoji 才是我们认为的那些表情符号。
+
+#+begin_src typescript
+  console.log(
+    /\p{Emoji}/u.test('flowers'), // false :)
+    /\p{Emoji}/u.test('flowers 🌼🌺🌸'), // true :)
+    /\p{Emoji}/u.test('flowers 123'), // true :(
+  )
+  console.log(
+    /\p{Extended_Pictographic}/u.test('flowers'), // false :)
+    /\p{Extended_Pictographic}/u.test('flowers 🌼🌺🌸'), // true :)
+    /\p{Extended_Pictographic}/u.test('flowers 123'), // false :)
+  )
+#+end_src
+
+* Unicode character class escpae
+
+[[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape: \p{...}, \P{...}]] 是 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_class_escape][Character class escape]] 中的一种。
+
+平时正则中常用的 \d,\D,\w,\W 就是 Character class escape，就是用来表达一组字符的转义序列(escape sequence)。
+
+例如 =\d= 表达的就是 =[0-9]=  。
+
+而 =\p{...}= , =\P{...}= 也是类似的，只是他们用来表达一组 Unicdoe 字符，通过指定 [[https://tc39.es/ecma262/multipage/text-processing.html#sec-runtime-semantics-unicodematchproperty-p][Unicode property]] 决定匹配什么 Unicode。
+
+例如可以用 =/\p{Hex_Digit}/u= 去匹配 16 进制的字符：
+
+[[file:/post/emoji-regexp/regexp101-emoji-hex-digit.png]]
+
+需要注意的是，使用 Unicode character class escpae 要启用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode#unicode-aware_mode][unicode-aware mode]]，即加上 =/u= 标记。
+
+* Refs
+
+- [[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][How to detect emoji using javascript]]
+
+- [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape: \p{...}, \P{...}]]
+
+- [[https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties][Binary Unicode property aliases and their canonical property names]]
