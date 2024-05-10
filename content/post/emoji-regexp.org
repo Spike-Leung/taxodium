@@ -80,6 +80,53 @@
 
 需要注意的是，使用 Unicode character class escpae 要启用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode#unicode-aware_mode][unicode-aware mode]]，即加上 =/u= 标记。
 
+* String & Unicode
+
+#+begin_quote
+Strings are represented fundamentally as sequences of [[https://en.wikipedia.org/wiki/UTF-16][UTF-16]] code
+units. In UTF-16 encoding, every code unit is exact 16 bits long. This
+means there are a maximum of 2^16, or 65536 possible characters
+representable as single UTF-16 code units.
+
+...
+
+However, the entire Unicode character set is much, much bigger
+than 65536. The extra characters are stored in UTF-16 as surrogate
+pairs, which are pairs of 16-bit code units that represent a single
+character.To avoid ambiguity, the two parts of the pair must be
+between 0xD800 and 0xDFFF, and these code units are not used to encode
+single-code-unit characters. (More precisely, leading surrogates, also
+called *high-surrogate* code units, have values between *0xD800 and
+0xDBFF*, inclusive, while trailing surrogates, also called
+*low-surrogate* code units, have values between *0xDC00 and 0xDFFF*,
+inclusive.) Each Unicode character, comprised of one or two UTF-16
+code units, is also called a *Unicode code point*. Each Unicode code
+point can be written in a string with \u{xxxxxx} where xxxxxx
+represents 1–6 hex digits.
+
+—— [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters][UTF-16 characters, Unicode code points, and grapheme clusters]]
+#+end_quote
+
+在 JavaScript 中，String 是 UTF-16 (16-bit Unicode Transformation Format) 编码的，它以 16 位去表示一个字符（code unit），最多可以表示 65536 个字符。
+
+这 65535 个字符中包含了大部分常用字符，例如字母，数字，拉丁字符，以及一些东亚文字字符。
+
+但是后来发现 65535 并不足以表达所有字符，16 位不够，就扩大到了 20 位。
+
+规定前 10 位作为 *高代理位 (high-surrogate)* ，取值范围是 0xD800 - 0xDBFF。
+
+后 10 位为 *低代理位 (low-surrogate)* ，取值范围是 0xDC00 - 0xDFFF。
+
+高代理位和低代理位组成 *代理对 (surrogate pairs)* 。
+
+由于有 20 位的长度，因此可以表达 1048576 个字符，也就是多可以在原来 65536 个字符之上，再增加 1048576 个补充字符。
+
+为什么 Unicode 要这么设计，可以参考 [[https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm][Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?]]
+
+为什么高代理和低代理这么取值，可以参考 [[https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen][How was the position of the Surrogates Area (UTF-16) chosen?]]）
+
+*概括来说，就是在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）可以用 1 个 UTF-16 编码单元表示，但是超出 65535 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），就需要由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。*
+
 * Refs
 
 - [[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][How to detect emoji using javascript]]
