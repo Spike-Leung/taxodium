@@ -1,7 +1,6 @@
 #+title: Emoji 正则匹配
 #+date: 2024-05-09T20:28:46+08:00
 #+lastmod: 2024-05-09T20:28:46+08:00
-#+draft: true
 #+keywords[]:
 #+description: ""
 #+tags[]:
@@ -125,7 +124,149 @@ represents 1–6 hex digits.
 
 为什么高代理和低代理这么取值，可以参考 [[https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen][How was the position of the Surrogates Area (UTF-16) chosen?]]）
 
-*概括来说，就是在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）可以用 1 个 UTF-16 编码单元表示，但是超出 65535 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），就需要由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。*
+概括来说，就是在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）可以用 1 个 UTF-16 编码单元表示。
+
+而超出 65535 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），就需要由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
+
+* 为什么 /(\ud83c[\udf00-\udfff].../u 的正则无法匹配🉐
+
+现在已经知道 Emoji 是通过代理对表示的，那么 🉐 的代理对是什么呢？
+
+可以通过 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charAt][String.prototype.chartAt()]] 或 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split][String.prototype.split()]] 获得。
+
+#+begin_src typescript
+  '🉐'.charAt(0) // '\uD83C'
+  '🉐'.charAt(1) // '\uDE50'
+  '🉐'.split("") // ['\uD83C', '\uDE50']
+#+end_src
+
+所以 🉐 的高代理是 \uD83C，低代理是 \uDE50。
+
+和 =(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]= 对比可以发现，正则的范围不包括 \uD83C\uDE50，所以匹配不到🉐。
+
+* String 中的相关方法
+
+- [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charAt][String.prototype.charAt()]] ::
+
+  #+begin_quote
+    The charAt() method of String values returns a new string consisting of the single UTF-16 code unit at the given index.
+  #+end_quote
+
+  charAt() 返回字符串对应下标的单个 UTF-16 编码单元
+
+  #+begin_src typescript
+      '🉐'.charAt(0) // '\uD83C'
+      '🉐'.charAt(1) // '\uDE50'
+
+      'a'.charAt(0) // 'a'
+      'a'.charAt(1) // ''
+
+      'apple'.charAt(0) // 'a'
+      'apple'.charAt(1) // 'p'
+  #+end_src
+
+- [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt][String.property.charCodeAt()]] ::
+
+  #+begin_quote
+  The charCodeAt() method of String values returns an integer between 0 and 65535 representing the UTF-16 code unit at the given index.
+  #+end_quote
+
+  charCodeAt() 返回字符一个 =0-65535= 之间的 =数字(integer)= , 是字符串对应下标的 UTF-16 编码单元对应的数值。
+
+  #+begin_src typescript
+      '🉐'.charCodeAt(0) // 55356
+      '🉐'.charCodeAt(1) // 56912
+
+      'a'.charCodeAt(0) // 97
+      'a'.charCodeAt(1) // NaN
+
+      'apple'.charCodeAt(0) // 97
+      'apple'.charCodeAt(1) // 112
+  #+end_src
+
+- [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode][String.fromCharCode()]] ::
+
+  #+begin_quote
+  The String.fromCharCode() static method returns a string created from the specified sequence of UTF-16 code units.
+  #+end_quote
+
+  fromCharCode 可以接受多个 0-65535 直接的数字，返回这些 char code 组成的字符串。
+
+  fromCharCode() 和 charCodeAt() 是对应的。
+
+  #+begin_src typescript
+      '🉐'.charCodeAt(0) // 55356
+      '🉐'.charCodeAt(1) // 56912
+      String.fromCharCode(55356, 56912) // '🉐'
+
+      'apple'.charCodeAt(0) // 97
+      'apple'.charCodeAt(1) // 112
+      'apple'.charCodeAt(2) // 112
+      'apple'.charCodeAt(3) // 108
+      'apple'.charCodeAt(4) // 101
+      String.fromCharCode(97, 112, 112, 108, 101) // 'apple'
+  #+end_src
+
+- [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/codePointAt][String.prototype.codePointAt()]] ::
+
+  #+begin_quote
+  The codePointAt() method of String values returns a non-negative integer that is the Unicode code point value of the character starting at the given index.
+
+  Note that the index is still based on UTF-16 code units, not Unicode code points.
+  #+end_quote
+
+  codePointAt() 返回的是一个数字，是字符串对应下标的对应的 Unicode code point(不局限在 0-65535, 而是 0-1114111 (0x10FFFF))。
+
+  #+begin_src typescript
+    '🉐'.charCodeAt(0) // 55356
+    '🉐'.charCodeAt(1) // 56912
+
+    '🉐'.codePointAt(0) // 127568
+    // 需要注意的是，下标是基于 UTF-16 计算的，🉐 是由两个 UTF-16 组成的
+    // 对于下标 0，可以找到一个代理对，对应 Unicode code point，所以返回了 127568
+    // 对于下标 1，由于只有低代理位，无法组成代理对，就返回低代理位对应的 Unicode Code Point
+    '🉐'.codePointAt(1) // 56912
+  #+end_src
+
+- [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint][String.fromCodePoint()]] ::
+
+  #+begin_quote
+The String.fromCodePoint() static method returns a string created from the specified sequence of code points.
+  #+end_quote
+
+  fromCodePoint() 可以接受多个 codePoint 数字，返回对应的字符串。
+
+  fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePoint() 则可以输入 0-1114111 范围的数字。
+
+  #+begin_src typescript
+    // fromCodePoint
+    String.fromCodePoint(127568) // '🉐'
+    String.fromCodePoint(55356, 56912) // '🉐'
+
+    // fromCharCode
+    String.fromCharCode(55356, 56912) // '🉐'
+  #+end_src
+
+
+* 注意点
+
+** 字符串长度
+
+有的字符是由代理对组成的，是两个 UTF-16 编码单元，例如 Emoji。
+
+当需要计算他们长度的时候，需要意识到他们是代理对，取决于具体需求去统计长度。
+
+#+begin_src typescript
+  'a'.length // 1
+
+  '🉐'.length // 2
+#+end_src
+
+** Lone surrogates
+
+代理对是由高代理和低代理组成的，如果单独把高代理拎出来，或者高代理和高代理组成代理对，是无法表达有含意的 Unicode 字符的。
+
+具体可以参考 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters][UTF-16 characters, Unicode code points, and grapheme clusters]]。
 
 * Refs
 
