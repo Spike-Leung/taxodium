@@ -10,7 +10,7 @@
 
 要求输入框能输入除了特殊表情外的任意字符。
 
-我的理解就是将 Emoji 排除掉，通过 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp][RegExp]] 匹配到 Emoji，如果匹配到则说明存在特殊字符，匹配不到则认为通过。
+我的理解就是将 Emoji 排除掉，通过 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp][RegExp]] 匹配 Emoji 判断是否存在特殊表情。
 
 * TL;DR
 
@@ -25,7 +25,7 @@
 
 * 解决过程
 
-对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道是用 Unicode 编码表示的，但怎么用正则描述它呢？
+对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道 Emoji 和 Unicode 相关，但怎么用正则描述它呢？
 
 所以我的第一步是 Google，得到一个这样的正则：
 
@@ -37,16 +37,16 @@
 
 [[file:/post/emoji-regexp/regexp101-emoji-wrong.png]]
 
-上面的正则表达式应该是表示的是一个 Unicode 字符范围，部分 Emoji (🉐)没匹配上，说明这个范围小了，没有囊括所有的 Emoji。
+上面的正则表达式应该是表示的是一个 Unicode 范围，部分 Emoji (🉐)没匹配上，说明这个范围小了，没有囊括所有的 Emoji。
 
 那么 Emoji 的 Unicode 范围是多少？是不是穷举就行了？
 
-其实没办法用一个固定的范围去表达，因为 Emoji 是持续增加的，每增加一个就会多一个 Unicode 去承载，没办法用一个固定的范围去表达所有的 Emoji。
+其实没办法用一个固定的范围去表达，因为 Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicode ，没办法用一个固定的范围去表达所有的 Emoji。
 
-于是又搜索了一下，StackOverflow 有一个[[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][提问]]，里面提到了用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape]] 进行匹配，也就是:
+于是又搜索了一下，StackOverflow 有一个[[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][回答]]，里面提到了用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape]] 进行匹配，也就是  ~/\p{Emoji}/u~ 和 ~/\p{Extended_Pictographic}/u~ 。
 
-- ~/\p{Emoji}/u~ :: 既然是匹配 Emoji，那么 loneProperty 就应该是 Emoji ? 实际测试并不符合需求，因为在 [[https://www.unicode.org/Public/15.1.0/ucd/emoji/emoji-data.txt][Emoji 官方文档]]中， =123456789*#= 也是被看作是 Emoji，
-  如果用这个正则的话，就会把数字也认为是 Emoji，不符合只排除特殊表情的条件。
+- ~/\p{Emoji}/u~ :: 既然是匹配 Emoji，那么 loneProperty (\p{loneProperty}) 就应该是 Emoji ? 实际测试并不符合需求，因为在[[https://www.unicode.org/Public/15.1.0/ucd/emoji/emoji-data.txt][Emoji 官方文档]]中， =123456789*#= 也是被看作是 Emoji，
+  如果用这个正则的话，就会把数字也认为是 Emoji，不符合只排除特殊表情的要求。
 
 - ~/\p{Extended_Pictographic}/u~ :: 而 Extended_Pictographic 表示的 Emoji 才是我们认为的那些表情符号。
 
@@ -69,9 +69,9 @@
 
 平时正则中常用的 \d,\D,\w,\W 就是 Character class escape，就是用来表达一组字符的转义序列(escape sequence)。
 
-例如 =\d= 表达的就是 =[0-9]=  。
+例如 =\d= 这个转义序列表达的就是 =[0-9]= 的一组字符 。
 
-而 =\p{...}= , =\P{...}= 也是类似的，只是他们用来表达一组 Unicdoe 字符，通过指定 [[https://tc39.es/ecma262/multipage/text-processing.html#sec-runtime-semantics-unicodematchproperty-p][Unicode property]] 决定匹配什么 Unicode。
+而 =\p{...}= , =\P{...}= 也是类似的，只是他们用来表达一组 Unicdoe 字符，通过指定 [[https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties][Unicode property]] 决定匹配什么 Unicode。
 
 例如可以用 =/\p{Hex_Digit}/u= 去匹配 16 进制的字符：
 
@@ -106,27 +106,29 @@ represents 1–6 hex digits.
 —— [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters][UTF-16 characters, Unicode code points, and grapheme clusters]]
 #+end_quote
 
-在 JavaScript 中，String 是 UTF-16 (16-bit Unicode Transformation Format) 编码的，它以 16 位去表示一个字符（code unit），最多可以表示 65536 个字符。
+在 JavaScript 中，String 实际是 UTF-16  (16-bit Unicode Transformation Format) 编码的，它以 16 位去表示一个字符（code unit），最多可以表示 65536 (0x0000 - 0xFFFF) 个字符。
 
 这 65535 个字符中包含了大部分常用字符，例如字母，数字，拉丁字符，以及一些东亚文字字符。
 
-但是后来发现 65535 并不足以表达所有字符，16 位不够，就扩大到了 20 位。
+但是后来发现 65535 并不足以表达所有字符，16 位不够，那就需要增加 Unicode 去表达更多字符。
+
+实现的方法就是定义了 *代理对 (Surrogates pairs)*  , 代理对由 20 位组成。
 
 规定前 10 位作为 *高代理位 (high-surrogate)* ，取值范围是 0xD800 - 0xDBFF。
 
 后 10 位为 *低代理位 (low-surrogate)* ，取值范围是 0xDC00 - 0xDFFF。
 
-高代理位和低代理位组成 *代理对 (surrogate pairs)* 。
+高代理位和低代理位组成代理对 (surrogate pairs) 。
 
-由于有 20 位的长度，因此可以表达 1048576 个字符，也就是多可以在原来 65536 个字符之上，再增加 1048576 个补充字符。
+由于有 20 位的长度，因此可以表达 1048576 个字符，可以在原来 65536 个字符之上，再增加 1048576 个字符。
 
 为什么 Unicode 要这么设计，可以参考 [[https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm][Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?]]
 
 为什么高代理和低代理这么取值，可以参考 [[https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen][How was the position of the Surrogates Area (UTF-16) chosen?]]）
 
-概括来说，就是在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）可以用 1 个 UTF-16 编码单元表示。
+概括来说，就是在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。
 
-而超出 65535 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），就需要由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
+而超出 65535 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
 
 * 为什么 /(\ud83c[\udf00-\udfff].../u 的正则无法匹配🉐
 
@@ -152,7 +154,7 @@ represents 1–6 hex digits.
     The charAt() method of String values returns a new string consisting of the single UTF-16 code unit at the given index.
   #+end_quote
 
-  charAt() 返回字符串对应下标的单个 UTF-16 编码单元
+  charAt() 返回字符串对应下标的单个 UTF-16 编码单元。
 
   #+begin_src typescript
       '🉐'.charAt(0) // '\uD83C'
@@ -190,7 +192,7 @@ represents 1–6 hex digits.
   The String.fromCharCode() static method returns a string created from the specified sequence of UTF-16 code units.
   #+end_quote
 
-  fromCharCode 可以接受多个 0-65535 直接的数字，返回这些 char code 组成的字符串。
+  fromCharCode 可以接受多个 0-65535 之间的数字，返回这些 char code 组成的字符串。
 
   fromCharCode() 和 charCodeAt() 是对应的。
 
@@ -244,6 +246,11 @@ The String.fromCodePoint() static method returns a string created from the speci
     String.fromCodePoint(55356, 56912) // '🉐'
 
     // fromCharCode
+    // fromCharCode 只能处理 0-65535 之间的数字，对于超过 65535 的数字，则截断到最后的 16 位数字
+    // 等同于 String.fromCharCode(62032)
+    // Number(127568).toString(16) -> '1f250' -> 截取最后的 16 位，即 f250
+    // Number.parseInt('f250', 16) -> 62032
+    String.fromCharCode(127568) // ''
     String.fromCharCode(55356, 56912) // '🉐'
   #+end_src
 
