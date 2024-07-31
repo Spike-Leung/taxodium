@@ -1,0 +1,38 @@
+#+title: word-break: break-all
+#+date: 2024-07-31T20:20:59+08:00
+#+lastmod: 2024-07-31T20:20:59+08:00
+#+draft: true
+#+keywords[]:
+#+description: ""
+#+tags[]: css
+#+categories[]: blog
+
+开发中碰到一个问题，有一个信息字段，label 不换行，value 如果比较长就换行。
+
+一直以为只要设置 [[https://developer.mozilla.org/en-US/docs/Web/CSS/word-break#break-all][word-break: break-all;]] 就万事大吉，但碰到恰好全是英文句号(=.= )的时候，失效了。
+#+begin_src html
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <style>
+      .box {
+        width: 200px;
+        border: 1px solid #000;
+      }
+
+      .value {
+        word-break: break-all;
+      }
+      </style>
+    </head>
+    <body>
+      <div class="box">
+        <span class="label">label:</span><span class="value">...................................................................................</span>
+      </div>
+    </body>
+  </html>
+#+end_src
+
+#+BEGIN_EXPORT html
+<iframe style="width: 500px" srcdoc="&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .box {width: 200px; border: 1px solid #000;} .value {word-break: break-all;} &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;box&#34;&gt; &lt;span class=&#34;label&#34;&gt;label:&lt;/span&gt;&lt;span class=&#34;value&#34;&gt;...................................................................................&lt;/span&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;">
+#+END_EXPORT
