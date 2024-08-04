@@ -1,7 +1,6 @@
-#+title: word-break: break-all
-#+date: 2024-07-31T20:20:59+08:00
+#+Title: word-break: break-all;
+#+date: 2024-08-04
 #+lastmod: 2024-07-31T20:20:59+08:00
-#+draft: true
 #+keywords[]:
 #+description: ""
 #+tags[]: css
@@ -10,6 +9,7 @@
 开发中碰到一个问题，有一个信息字段，label 不换行，value 如果比较长就换行。
 
 一直以为只要设置 [[https://developer.mozilla.org/en-US/docs/Web/CSS/word-break#break-all][word-break: break-all;]] 就万事大吉，但碰到恰好全是英文句号(=.= )的时候，失效了。
+
 #+begin_src html
   <!DOCTYPE html>
   <html>
@@ -33,6 +33,113 @@
   </html>
 #+end_src
 
-#+BEGIN_EXPORT html
-<iframe style="width: 500px" srcdoc="&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .box {width: 200px; border: 1px solid #000;} .value {word-break: break-all;} &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;box&#34;&gt; &lt;span class=&#34;label&#34;&gt;label:&lt;/span&gt;&lt;span class=&#34;value&#34;&gt;...................................................................................&lt;/span&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;">
-#+END_EXPORT
+#+begin_export html
+<iframe style="width: 100%" srcdoc="&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .box {width: 200px; border: 1px solid #000;} .value {word-break: break-all;} &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;box&#34;&gt; &lt;span class=&#34;label&#34;&gt;label:&lt;/span&gt;&lt;span class=&#34;value&#34;&gt;...................................................................................&lt;/span&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;"></iframe>
+#+end_export
+
+其实这是一个边界场景，因为内容都是标点符号(=.=)，规范中规定，对于 =word-break: break-all;= 在标点之间不会考虑换行：
+
+#+begin_quote
+ This value does not affect whether there are soft wrap opportunities around punctuation characters.
+ To allow breaks anywhere, see line-break: anywhere. [[https://drafts.csswg.org/css-text/#word-break-property][Source]]
+#+end_quote
+
+为了解决，可以使用 [[https://developer.mozilla.org/en-US/docs/Web/CSS/line-break#anywhere][line-break: anywhere;]] 或者 [[https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-wrap#anywhere][overflow-wrap: anywhere;]]。
+
+#+begin_src html
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <style>
+      .box {
+        width: 200px;
+        border: 1px solid #000;
+      }
+
+      .value {
+        word-break: break-all;
+        line-break: anywhere;
+      }
+      </style>
+    </head>
+    <body>
+      <div class="box">
+        <span class="label">label:</span><span class="value">...................................................................................</span>
+      </div>
+    </body>
+  </html>
+#+end_src
+
+#+begin_export html
+<iframe style="width:100%" srcdoc="&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .box {width: 200px; border: 1px solid #000;} .value {word-break: break-all; line-break: anywhere;} &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;box&#34;&gt; &lt;span class=&#34;label&#34;&gt;label:&lt;/span&gt;&lt;span class=&#34;value&#34;&gt;...................................................................................&lt;/span&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;"></iframe>
+#+end_export
+
+对于普通的内容，其实 =word-break: break-all;= 是没问题的。
+
+#+begin_src html
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <style>
+      .box {
+        width: 200px;
+        border: 1px solid #000;
+      }
+
+      .value {
+        word-break: break-all;
+      }
+      </style>
+    </head>
+    <body>
+      <div class="box">
+        <span class="label">label:</span><span class="value">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+      </div>
+    </body>
+  </html>
+#+end_src
+#+begin_export html
+<iframe style="width: 100%" srcdoc="&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .box {width: 200px; border: 1px solid #000;} .value {word-break: break-all;} &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;box&#34;&gt; &lt;span class=&#34;label&#34;&gt;label:&lt;/span&gt;&lt;span class=&#34;value&#34;&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/span&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;"></iframe>
+#+end_export
+
+另外，如果设置为 =word-break: break-word;= 也是没问题的。
+
+#+begin_src html
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <style>
+      .box {
+        width: 200px;
+        border: 1px solid #000;
+      }
+
+      .value {
+        word-break: break-word;
+      }
+      </style>
+    </head>
+    <body>
+      <div class="box">
+        <span class="label">label:</span><span class="value">...................................................................................</span>
+      </div>
+    </body>
+  </html>
+#+end_src
+
+#+begin_export html
+<iframe style="width: 100%" srcdoc="&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .box {width: 200px; border: 1px solid #000;} .value {word-break: break-word;} &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;box&#34;&gt; &lt;span class=&#34;label&#34;&gt;label:&lt;/span&gt;&lt;span class=&#34;value&#34;&gt;...................................................................................&lt;/span&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;"></iframe>
+#+end_export
+
+因为规范中对于 =word-break: break-word;= 的描述是这样的：
+
+#+begin_quote
+For compatibility with legacy content, the word-break property also
+supports a deprecated break-word keyword. When specified, this has =the
+same effect as word-break: normal and overflow-wrap: anywhere=,
+regardless of the actual value of the overflow-wrap property.  [[https://drafts.csswg.org/css-text/#word-break-property][Source]]
+#+end_quote
+
+也就是说， =word-break: break-word;= 相当于设置了 =overflow-wrap: anywhere;= ，所以即使是标点符号，也能换行。
+
+关于文本换行，[[https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_text/Wrapping_breaking_text][Wrapping and breaking text]] 讲得很详细，里面还介绍了 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/wbr][<wbr>]] (标记一个可换行的位置)，[[https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens][hyphens]] (换行增加连接符 =-=)，推荐阅读一下。
