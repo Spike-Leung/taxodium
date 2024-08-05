@@ -1,0 +1,100 @@
+#+title: 用 iframe 显示 HTML 例子
+#+date: 2024-08-05T22:21:36+08:00
+#+lastmod: 2024-08-05T22:21:36+08:00
+#+keywords[]:
+#+description: ""
+#+tags[]:
+#+categories[]: blog
+
+#+begin_src html
+  <!DOCTYPE>
+  <html>
+    <body>hello world</body>
+  </html>
+#+end_src
+
+#+begin_export html
+<iframe style="width: 100%;" srcdoc="&lt;!DOCTYPE&gt; &lt;html&gt; &lt;body&gt;hello world&lt;/body&gt; &lt;/html&gt;"></iframe>
+#+end_export
+
+
+在 [[http://localhost:1313/post/weekly/1/][weekly#1]] 中分享了一篇关于 CSS 布局的小册子: [[https://book.mixu.net/css/][Learn CSS Layout]]，作者写得很好，虽然引用了很多规范，但是看起来不枯燥，反倒挺有趣，有一种醍醐灌顶的感觉。
+
+对于用了一段时间 CSS 的人来说，是很好的学习 CSS Layout 的教程。
+
+作者文中有很多例子，方便读者直观地看到对应的 CSS 的作用。
+
+好奇作者是用什么写的例子，发现就是简单的 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe][<iframe>]], 然后把示例代码作为 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#srcdoc][srcdoc]] 传入。
+
+觉得这样的形式挺简单方便的，不需要引用一些第三方的网站，适合一些简单的前端示例。
+
+示例代码就是实际运行的代码，唯一不同就是对一些字符(如 <, >)进行了转义， 从而可以传入给 srcdoc。
+
+于是我也依葫芦画瓢，在 [[https://taxodium.ink/post/word-break/][work-break: break-all;]] 这篇文章使用了。
+
+而我的博客本身使用 [[https://orgmode.org/][Org Mode]] 写的，代码块是：
+
+#+begin_example
+  ,#+begin_src html
+  <!DOCTYPE>
+  <html>
+    <body>hello world</body>
+  </html>
+  ,#+end_src
+#+end_example
+
+iframe 实例是：
+
+#+begin_example
+#+begin_export html
+<iframe style="width: 100%;" srcdoc="&lt;!DOCTYPE&gt; &lt;html&gt; &lt;body&gt;hello world&lt;/body&gt; &lt;/html&gt;"></iframe>
+#+end_export
+#+end_example
+
+我可以编写一个 Elisp 函数，在需要生成例子的时候执行，将 =#+begin_src... #+end_src= 的代码转换成示例代码的格式：
+
+#+begin_src elisp
+(defun spike-leung/process-next-html-src-block ()
+  "Process the next HTML block from the current position, escape it, compress it, and generate a #+begin_export html block with an iframe, replacing any existing export block."
+  (interactive)
+  (let (html-content escaped-html srcdoc start end export-start export-end)
+    ;; Search for the next #+begin_src html block from the current position
+    (save-excursion
+      (when (re-search-forward "^#\\+begin_src html" nil t)
+        (setq start (match-end 0))
+        (when (re-search-forward "^#\\+end_src" nil t)
+          (setq end (match-beginning 0))
+          (setq html-content (buffer-substring-no-properties start end))
+          ;; Process the HTML content
+          (when html-content
+            ;; Escape HTML characters using sgml-quote in a temporary buffer
+            (setq escaped-html
+                  (with-temp-buffer
+                    (insert html-content)
+                    (sgml-mode) ;; Switch to sgml-mode to enable sgml-quote
+                    (sgml-quote (point-min) (point-max))
+                    (buffer-string)))
+
+            ;; Compress into a single line and remove extra spaces
+            (setq srcdoc (replace-regexp-in-string "[\n\r]+" " " escaped-html))
+            (setq srcdoc (replace-regexp-in-string "[ \t]+" " " srcdoc))
+
+            ;; Move to the end of the block and check for existing export block
+            (goto-char end)
+            (forward-line 1) ;; Move to the line after #+end_src
+
+            ;; Check if there's an existing #+begin_export html block
+            (when (looking-at "^#\\+begin_export html")
+              (setq export-start (point))
+              (when (re-search-forward "^#\\+end_export" nil t)
+                (setq export-end (point))
+                ;; Delete the existing export block
+                (delete-region export-start export-end)))
+
+            ;; Insert the new #+begin_export html block
+            (insert (format "#+begin_export html\n<iframe style=\"width:100%%\" srcdoc=\"%s\"></iframe>\n#+end_export\n" srcdoc))))))))
+#+end_src
+
+这样，我只需要编写好源码，然后执行一下函数，就能得到对应的 iframe 示例，平时写一些简单的例子时就很方便了。
+
+对了，上面的 Elisp 代码都是 ChatGPT 写的，相关的对话在这： https://chatgpt.com/share/fd2bfa45-fbfd-492a-aa6b-6b3023f76772。
