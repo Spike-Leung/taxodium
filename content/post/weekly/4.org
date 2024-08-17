@@ -1,0 +1,157 @@
+#+title: Weekly#4
+#+date: 2024-08-17T18:53:40+08:00
+#+lastmod: 2024-08-17T18:53:40+08:00
+#+keywords[]:
+#+description: ""
+#+tags[]: weekly
+#+categories[]: weekly
+
+* News | Article
+
+** [[https://github.com/trimstray/the-book-of-secret-knowledge][The Book of Secret Knowledge]]
+
+一个收集了很多东西的 awesome-list, 包括 CLI 工具，GUI 工具，Web 工具，网络，容器，博客，黑客，Shell 等相关的内容。
+
+** [[https://blog.alexwendland.com/2024-07-07-holding-pens/][How to avoid losing items? Holding pens.]]
+
+你会不会经常忘了东西放在哪？
+
+可能是因为东西随手一放，没有放在特定的地方，再次找的时候就忘了之前放在哪了。
+
+理想情况下就是总是把东西放回原来的地方，那么每次都去相同地方找就好了，但有时可能放的地方远，拿过去麻烦又放弃了。
+
+作者建议在每个区域放一个专门用于放杂物的，提供一个集中的，轻松的放置点，定期清理，从而避免忘记东西在哪。
+
+** [[https://chevyray.dev/blog/creating-175-fonts/][How I Created 175 Fonts Using Rust]]
+
+作者使用 Rust 创建 175 种字体的过程。
+
+** [[https://newsletter.techworld-with-milan.com/p/learn-things-that-dont-change][Learn things that don't change]]
+
+作者推荐了 [[?open=false#%C2%A7books-every-software-engineer-must-read-in][24 本程序员应该一读的书]]，涉及到基础，算法，分布式系统，领导力，代码最佳实践，数据库，DevOps，高效工作，测试，架构，机器学习。
+
+** [[https://dynomight.net/travel/][Obvious travel advice]]
+
+作者的一些旅行建议和看法：
+
+- 和谁一起去比去哪里更重要。
+- 人在喝了液体后必须要小便。所以如果你即将去一个无法小便的地方，也许不要喝太多液体。
+- 公交车上的风景比地铁有趣得多。
+- 旅行揭示了稳定、根基、日常生活、社区、人际关系和家庭烹饪的价值。
+- ...
+
+** [[https://github.com/arthurfiorette/proposal-safe-assignment-operator][ECMAScript Safe Assignment Operator Proposal]]
+
+Safe Assignment Operator:
+
+#+begin_example typescript
+const [error, response] ?= await fetch("https://arthur.place")
+#+end_example
+
+有了 ~?=~ ，用 await 的时候就不用写很长的 try...catch... 处理了，也不用嵌套 try...catch... 处理一些错误，代码阅读下来整体会简洁清晰一些。
+
+期待这个操作符正式加入规范。
+
+* Tutorial
+
+** [[https://vue-compiler.iamouyang.cn/][Vue3 编译原理揭秘]]
+
+#+begin_quote
+通过 debug 的方式带你搞清楚 Vue3 中的编译黑魔法。
+#+end_quote
+
+** [[https://zxyle.github.io/PDF-Explained/][PDF Explained （译作《PDF 解析》）]]
+
+一本解释 PDF 格式的小册子。
+
+之前做一个需求，需要将页面打印成 PDF。
+
+页面转换的 PDF 打印后，和从设计稿导出的 PDF 打印比较，发现字体存在差异， 设计稿的字体比页面实现的看起来更大一些， 页面的一些高度也不对。
+
+排除了不是页面样式实现问题后，猜测可能是设计稿导出的 PDF 有什么不一样。
+
+比较了两份 PDF，页面实现的是 type0 字体，PDF 中内嵌了 font-family 指定的字体。
+
+而设计稿导出的 PDF 是 type3 字体，相比 type0，可以实现更复杂的样式，但是实际打印可能不如 type0 兼容性好。
+
+目前还不是很确定是不是字体原因，后续如果弄明白了再写篇博客整理一下。
+
+** [[https://lit.how/][Learn Lit]]
+
+一个介绍 [[https://github.com/lit/lit/][Lit]] 基本使用的网站，Lit 是用来构建 web components 的库。
+
+** [[https://learn-wcs.com/][Learn web components]]
+
+一个 web components 教程，介绍了开发 web components 需要涉及的相关知识。
+
+* Code
+
+** [[https://kettanaito.com/blog/one-thing-nobody-explained-to-you-about-typescript][One Thing Nobody Explained To You About TypeScript]]
+
+作者指出了 =tsconfig.json= 中 =include= 字段理解上的一些误解。
+
+#+begin_quote
+The include option controls what modules to apply this TypeScript configuration to.
+#+end_quote
+
+=include= 字段指的是 tsconfig.json 对什么文件起作用，但是如果这里面包含的文件比较多，有时候可能会出现一些意外的类型。
+
+例如开发时只希望提示 src 中文件的类型，但是如果 include 了 test 目录，可能在开发时会出现 test 目录的类型。
+
+相当于将 test 目录中的类型，泄露到了 src 目录中。
+
+当在 src 中编写了一个不存在于 src 的类型，但是存在 test 中，就不会报错，这可能并不是想要的表现。
+
+解决办法就是针对不同目录，使用不同的 tsconfig.json ，然后通过 =reference= 字段链接不同目录的 tsconfig.json 。
+
+** [[https://www.trevorlasn.com/blog/common-causes-of-memory-leaks-in-javascript][Common Causes of Memory Leaks in JavaScript]]
+
+一些常见的造成 JS 内存泄露的场景。
+
+** [[https://frontendmasters.com/blog/patterns-for-memory-efficient-dom-manipulation/][Patterns for Memory Efficient DOM Manipulation with Modern Vanilla JavaScript]]
+
+一些操作 DOM 的高效的技巧，这些技巧的性能损耗相对比较小。
+
+** [[https://blog.css-weekly.com/transition-to-height-auto-display-none-using-pure-css?utm_source=CSS-Weekly&utm_campaign=Issue-589&utm_medium=web][Transition to `height: auto` & `display: none` Using Pure CSS]]
+
+你有没有碰到过对 =height:auto= 和 =display: none= ，设置了 transition 实现过渡效果，但是不生效？
+
+作者介绍了两个较新的 CSS 语法， =calc-size= 和 =interpolate-size= 来解决，同时也提供了 JavaScript 实现的替代方法。
+
+** [[https://ishadeed.com/article/css-grid-area][CSS Grid Areas]]
+
+当使用 [[https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout][grid]] 布局的时候，需要将元素放到对应的格子中，一种办法是指定对应的 column 和 row，但数起来会比较麻烦。
+
+作者推荐使用 [[https://developer.mozilla.org/en-US/docs/Web/CSS/grid-area][grid-area]]，通过区域指定位置，文中讲了作者使用 area 的技巧。
+
+** [[https://www.oddbird.net/2024/07/09/zoomies/][Zoom, zoom, and zoom (The three types of browser (and CSS!) magnification)]]
+
+文章介绍了浏览器三种缩放方式对于页面的影响。
+
+* Cool Bit
+
+** [[https://github.com/mawise/bookshelf][3D Bookshelf]]
+
+作者给他的电子书做了一个 3D 电子书架。
+
+好看是好看，书找起来，还是不如看书的封面来得快。
+
+* Tool | Library
+
+** [[https://ray.so/icon][Icon Maker]]
+
+Raycast 提供的一个 Icon 制作工具。
+
+** [[https://www.learnui.design/tools/gradient-generator.html?ck_subscriber_id=2572000771][Gradient Generator – CSS & SVG Export]]
+
+渐变色生成器，可以导出 CSS，功能很丰富。
+
+* Music
+
+本周推荐一个日本的爵士钢琴家: [[https://music.163.com/#/artist?id=30107605][福居良(Ryo Fukui)]]，他的爵士钢琴感觉比较容易欣赏。
+
+类比的话，就像是听古典钢琴曲和久石让宫崎骏动画钢琴曲的差别，前者需要比较高的鉴赏能力，后者旋律光是旋律就很抓耳，容易听下去。
+
+福居良的爵士钢琴，就像是久石让那些动画钢琴曲一样，会让我很轻松地欣赏，反反复复地听。
+
+他的所有专辑都推荐一听，其中我听的最多的是 《[[https://music.163.com/#/song?id=1313897920][My Back Pages(Live)]]》，整首曲子近 19 分钟，但是听起来一点不枯燥，当钢琴旋律流动时，果断点击红心收藏了。
