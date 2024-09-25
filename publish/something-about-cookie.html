@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-25 Wed 17:42 -->
+<!-- 2024-09-26 Thu 00:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>关于 Cookie 的一些知识</title>
-<meta name="author" content="localhost" />
+<meta name="author" content="Spike Leung" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -193,21 +193,33 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { }
 </style>
-<link rel="stylesheet"
-                       href="../styles/style.css" type="text/css"/>
+
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
+<div id="preamble" class="status">
+
+ <nav>
+  <ul>
+    <li><a href="/theindex.html">Home</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/rss.xml">RSS</a></li>
+    <li><a href="https://github.com/Spike-Leung">GitHub</a></li>
+  </ul>
+</nav>
+</div>
 <div id="content" class="content">
 <h1 class="title">关于 Cookie 的一些知识</h1>
 <div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgb3ddb1c">作用</a></li>
-<li><a href="#orge4858e6">创建</a></li>
-<li><a href="#org75ef3f1">属性</a></li>
-<li><a href="#org15033f7">withCredentials</a></li>
-<li><a href="#orgd4cdeca">参考</a></li>
+<li><a href="#org7b9b28e">作用</a></li>
+<li><a href="#org54b7538">创建</a></li>
+<li><a href="#org5342f37">属性</a></li>
+<li><a href="#orgb25d1c2">withCredentials</a></li>
+<li><a href="#orgdab1ee4">参考</a></li>
 </ul>
 </div>
 </div>
@@ -216,10 +228,9 @@ Cookie 是服务器发送给客户端的一小段数据（一般不超过 4K）�
 请求时将 cookie 发送给服务器。由于 HTTP 是无状态的，服务器不会记住客户
 端，因此就通过 cookie 的字段去辨识客户端。
 </p>
-
-<div id="outline-container-orgb3ddb1c" class="outline-2">
-<h2 id="orgb3ddb1c">作用</h2>
-<div class="outline-text-2" id="text-orgb3ddb1c">
+<div id="outline-container-org7b9b28e" class="outline-2">
+<h2 id="org7b9b28e">作用</h2>
+<div class="outline-text-2" id="text-org7b9b28e">
 <ul class="org-ul">
 <li>管理会话信息： 例如登录信息，购物车，游戏分数等服务器需要记住的东西</li>
 <li>个性化： 例如一些用户配置，主题等</li>
@@ -227,16 +238,15 @@ Cookie 是服务器发送给客户端的一小段数据（一般不超过 4K）�
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orge4858e6" class="outline-2">
-<h2 id="orge4858e6">创建</h2>
-<div class="outline-text-2" id="text-orge4858e6">
+<div id="outline-container-org54b7538" class="outline-2">
+<h2 id="org54b7538">创建</h2>
+<div class="outline-text-2" id="text-org54b7538">
 <p>
 当服务器收到请求时，可以通过返回一个或多个 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a> 头部字段设置
 cookie。
 </p>
 
-<pre class="example" id="orgb881a58">
+<pre class="example" id="orgbd522e2">
 Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Max-Age=2592000; Domain=somecompany.co.uk
 </pre>
 
@@ -245,15 +255,14 @@ Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Max-Age=2592000; Do
 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cookie">Cookie</a> 头部传给服务器。
 </p>
 
-<pre class="example" id="org7e3cdb1">
+<pre class="example" id="org8ba26af">
 Cookie: PHPSESSID=298zf09hf012fh2; csrftoken=u32t4o3tb3gg43; _gat=1
 </pre>
 </div>
 </div>
-
-<div id="outline-container-org75ef3f1" class="outline-2">
-<h2 id="org75ef3f1">属性</h2>
-<div class="outline-text-2" id="text-org75ef3f1">
+<div id="outline-container-org5342f37" class="outline-2">
+<h2 id="org5342f37">属性</h2>
+<div class="outline-text-2" id="text-org5342f37">
 <ul class="org-ul">
 <li><b>Expires</b>: cookie 过期的绝对时间，相对于客户端的时间而言</li>
 <li><b>Max-Age</b>: cookie 过期的相对时间</li>
@@ -281,10 +290,9 @@ get表单</li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org15033f7" class="outline-2">
-<h2 id="org15033f7">withCredentials</h2>
-<div class="outline-text-2" id="text-org15033f7">
+<div id="outline-container-orgb25d1c2" class="outline-2">
+<h2 id="orgb25d1c2">withCredentials</h2>
+<div class="outline-text-2" id="text-orgb25d1c2">
 <p>
 当跨站或者跨域发送请求时，想要带上 cookie，就得设置 <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials">withCredentials</a>
 为 true，同时服务器要返回 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials">Access-Control-Allow-Credentials</a>，也设置为
@@ -299,10 +307,9 @@ For requests without credentials, the literal value "*" can be specified as a wi
 </blockquote>
 </div>
 </div>
-
-<div id="outline-container-orgd4cdeca" class="outline-2">
-<h2 id="orgd4cdeca">参考</h2>
-<div class="outline-text-2" id="text-orgd4cdeca">
+<div id="outline-container-orgdab1ee4" class="outline-2">
+<h2 id="orgdab1ee4">参考</h2>
+<div class="outline-text-2" id="text-orgdab1ee4">
 <ul class="org-ul">
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies">Cookie</a> - MDN</li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a> - MDN</li>
@@ -316,9 +323,9 @@ For requests without credentials, the literal value "*" can be specified as a wi
 </div>
 </div>
 <div id="postamble" class="status">
+
+<p class="author">Author: Spike Leung (<a href="mailto:l-yanlei@hotmail.com">l-yanlei@hotmail.com</a>)</p>
 <p class="date">Date: 2022-02-23T02:10:50+08:00</p>
-<p class="author">Author: localhost</p>
-<p class="date">Created: 2024-09-25 Wed 17:42</p>
 </div>
 </body>
 </html>

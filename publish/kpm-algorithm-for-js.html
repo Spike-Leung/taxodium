@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-25 Wed 17:42 -->
+<!-- 2024-09-26 Thu 00:31 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KPM 算法的 JS 实现</title>
-<meta name="author" content="localhost" />
+<meta name="author" content="Spike Leung" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -193,25 +193,37 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { }
 </style>
-<link rel="stylesheet"
-                       href="../styles/style.css" type="text/css"/>
+
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
+<div id="preamble" class="status">
+
+ <nav>
+  <ul>
+    <li><a href="/theindex.html">Home</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/rss.xml">RSS</a></li>
+    <li><a href="https://github.com/Spike-Leung">GitHub</a></li>
+  </ul>
+</nav>
+</div>
 <div id="content" class="content">
 <h1 class="title">KPM 算法的 JS 实现</h1>
 <div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org4b178e2">前缀 &amp; 后缀</a></li>
-<li><a href="#org418da0e">部分匹配表(PMT [Partial Match Table])</a>
+<li><a href="#org885c4b9">前缀 &amp; 后缀</a></li>
+<li><a href="#org0bd072d">部分匹配表(PMT [Partial Match Table])</a>
 <ul>
-<li><a href="#orgd6e5343">PMT 代码实现</a></li>
+<li><a href="#orgfea3e20">PMT 代码实现</a></li>
 </ul>
 </li>
-<li><a href="#orgbb7394a">KMP 实现</a></li>
-<li><a href="#org8d23396">leetcode 题目</a></li>
-<li><a href="#org5a23af2">参考</a></li>
+<li><a href="#orgae7656c">KMP 实现</a></li>
+<li><a href="#org6cc8c2b">leetcode 题目</a></li>
+<li><a href="#org399a491">参考</a></li>
 </ul>
 </div>
 </div>
@@ -238,10 +250,9 @@
 <p>
 KMP 利用了匹配后的信息，把 <code>匹配串(B)的匹配部分的前缀</code> 和 <code>原串(A)匹配部分的后缀</code> 进行对齐，从而快速移动匹配串，避免了原串遍历的回溯。
 </p>
-
-<div id="outline-container-org4b178e2" class="outline-2">
-<h2 id="org4b178e2">前缀 &amp; 后缀</h2>
-<div class="outline-text-2" id="text-org4b178e2">
+<div id="outline-container-org885c4b9" class="outline-2">
+<h2 id="org885c4b9">前缀 &amp; 后缀</h2>
+<div class="outline-text-2" id="text-org885c4b9">
 <blockquote>
 <p>
 字符串的 <b>前缀</b> 是指不包含最后一个字符的所有以第一个字符开头的连续子串；
@@ -273,10 +284,9 @@ KMP 利用了匹配后的信息，把 <code>匹配串(B)的匹配部分的前缀
 </p>
 </div>
 </div>
-
-<div id="outline-container-org418da0e" class="outline-2">
-<h2 id="org418da0e">部分匹配表(PMT [Partial Match Table])</h2>
-<div class="outline-text-2" id="text-org418da0e">
+<div id="outline-container-org0bd072d" class="outline-2">
+<h2 id="org0bd072d">部分匹配表(PMT [Partial Match Table])</h2>
+<div class="outline-text-2" id="text-org0bd072d">
 <blockquote>
 <p>
 "部分匹配值" 就是 "前缀" 和 "后缀" 的 <b>最长</b> 的 <b>共有</b> 元素的 <b>长度</b> 。
@@ -291,41 +301,40 @@ PMT[i] 表示一个部分匹配值，描述的是在 0 ~ i 这个区间，最长
 计算 PMT 的过程，其实也利用了 KMP 算法。
 </p>
 </div>
-
-<div id="outline-container-orgd6e5343" class="outline-3">
-<h3 id="orgd6e5343">PMT 代码实现</h3>
-<div class="outline-text-3" id="text-orgd6e5343">
+<div id="outline-container-orgfea3e20" class="outline-3">
+<h3 id="orgfea3e20">PMT 代码实现</h3>
+<div class="outline-text-3" id="text-orgfea3e20">
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db6e8f;">function</span> <span style="color: #88c0d0;">getPmt</span><span style="color: #6e94b9;">(</span><span style="color: #c6797e;">s</span><span style="color: #6e94b9;">)</span> <span style="color: #6e94b9;">{</span>
-  <span style="color: #db6e8f;">const</span> <span style="color: #c6797e;">n</span> = s.length;
-  <span style="color: #64727d;">// </span><span style="color: #64727d;">&#21021;&#22987;&#21270;&#20026; 0</span>
-  <span style="color: #db6e8f;">const</span> <span style="color: #c6797e;">pmt</span> = <span style="color: #db6e8f;">new</span> <span style="color: #f7e3af;">Array</span><span style="color: #5d80ae;">(</span>n<span style="color: #5d80ae;">)</span>.fill<span style="color: #5d80ae;">(</span>0<span style="color: #5d80ae;">)</span>;
+<pre class="src src-js"><span style="color: #531ab6;">function</span> <span style="color: #721045;">getPmt</span><span style="color: #000000;">(</span><span style="color: #005e8b;">s</span><span style="color: #000000;">)</span> <span style="color: #000000;">{</span>
+  <span style="color: #531ab6;">const</span> <span style="color: #005e8b;">n</span> = s.length;
+  <span style="color: #595959;">// </span><span style="color: #595959;">&#21021;&#22987;&#21270;&#20026; 0</span>
+  <span style="color: #531ab6;">const</span> <span style="color: #005e8b;">pmt</span> = <span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Array</span><span style="color: #dd22dd;">(</span>n<span style="color: #dd22dd;">)</span>.fill<span style="color: #dd22dd;">(</span>0<span style="color: #dd22dd;">)</span>;
 
-  <span style="color: #64727d;">// </span><span style="color: #64727d;">i &#23545;&#24212;&#30340;&#26159;&#21518;&#32512;(&#38500;&#21435; 0 &#30340;&#20803;&#32032;)</span>
-  <span style="color: #64727d;">// </span><span style="color: #64727d;">j &#23545;&#24212;&#30340;&#26159;&#21069;&#32512;&#65292;&#38169;&#20301;&#27604;&#36739;&#65292;&#35745;&#31639;&#20844;&#20849;&#21069;&#21518;&#32512;</span>
-  <span style="color: #db6e8f;">let</span> <span style="color: #c6797e;">i</span> = 1;
-  <span style="color: #db6e8f;">let</span> <span style="color: #c6797e;">j</span> = 0;
+  <span style="color: #595959;">// </span><span style="color: #595959;">i &#23545;&#24212;&#30340;&#26159;&#21518;&#32512;(&#38500;&#21435; 0 &#30340;&#20803;&#32032;)</span>
+  <span style="color: #595959;">// </span><span style="color: #595959;">j &#23545;&#24212;&#30340;&#26159;&#21069;&#32512;&#65292;&#38169;&#20301;&#27604;&#36739;&#65292;&#35745;&#31639;&#20844;&#20849;&#21069;&#21518;&#32512;</span>
+  <span style="color: #531ab6;">let</span> <span style="color: #005e8b;">i</span> = 1;
+  <span style="color: #531ab6;">let</span> <span style="color: #005e8b;">j</span> = 0;
 
-  <span style="color: #db6e8f;">while</span> <span style="color: #5d80ae;">(</span>i &lt; n<span style="color: #5d80ae;">)</span> <span style="color: #5d80ae;">{</span>
-    <span style="color: #64727d;">// </span><span style="color: #64727d;">&#22914;&#26524;&#23383;&#31526;&#30456;&#21516;&#65292;&#21017;&#26377;&#30456;&#21516;&#21069;&#21518;&#32512;&#65292;&#32479;&#35745;&#38271;&#24230;</span>
-    <span style="color: #db6e8f;">if</span> <span style="color: #a3b09a;">(</span>s<span style="color: #c6797e;">[</span>i<span style="color: #c6797e;">]</span> == s<span style="color: #c6797e;">[</span>j<span style="color: #c6797e;">]</span><span style="color: #a3b09a;">)</span> <span style="color: #a3b09a;">{</span>
-      pmt<span style="color: #c6797e;">[</span>i++<span style="color: #c6797e;">]</span> = ++j;
-    <span style="color: #a3b09a;">}</span> <span style="color: #db6e8f;">else</span> <span style="color: #a3b09a;">{</span>
-      <span style="color: #64727d;">// </span><span style="color: #64727d;">&#24403;&#23383;&#31526;&#20986;&#29616;&#19981;&#21305;&#37197;&#30340;&#26102;&#20505;&#65292;&#21028;&#26029; j &#21069;&#38754;&#26159;&#21542;&#36824;&#26377;zh&#20844;&#20849;&#21069;&#32512;&#65292;&#26377;&#21017;&#31227;&#21160;&#21040;&#21069;&#32512;&#30340;&#19979;&#19968;&#20301;</span>
-      <span style="color: #64727d;">// </span><span style="color: #64727d;">&#21363; pmt[j - 1] (0 ~ j - 1 &#20013;&#65292;&#26368;&#38271;&#20844;&#20849;&#21069;&#21518;&#32512;&#38271;&#24230;&#65289;</span>
-      <span style="color: #db6e8f;">if</span> <span style="color: #c6797e;">(</span>j &gt; 0<span style="color: #c6797e;">)</span> <span style="color: #c6797e;">{</span>
-        j = pmt<span style="color: #b18bb1;">[</span>j - 1<span style="color: #b18bb1;">]</span>;
-      <span style="color: #c6797e;">}</span> <span style="color: #db6e8f;">else</span> <span style="color: #c6797e;">{</span>
-        <span style="color: #64727d;">// </span><span style="color: #64727d;">&#22914;&#26524; j &#20026; 0&#65292;&#32943;&#23450;&#27809;&#26377;&#20844;&#20849;&#21069;&#36724;&#32512;&#65292;&#27492;&#26102; j &#26080;&#27861;&#31227;&#21160;&#65292;&#21482;&#33021;&#31227;&#21160; i</span>
+  <span style="color: #531ab6;">while</span> <span style="color: #dd22dd;">(</span>i &lt; n<span style="color: #dd22dd;">)</span> <span style="color: #dd22dd;">{</span>
+    <span style="color: #595959;">// </span><span style="color: #595959;">&#22914;&#26524;&#23383;&#31526;&#30456;&#21516;&#65292;&#21017;&#26377;&#30456;&#21516;&#21069;&#21518;&#32512;&#65292;&#32479;&#35745;&#38271;&#24230;</span>
+    <span style="color: #531ab6;">if</span> <span style="color: #008899;">(</span>s<span style="color: #972500;">[</span>i<span style="color: #972500;">]</span> == s<span style="color: #972500;">[</span>j<span style="color: #972500;">]</span><span style="color: #008899;">)</span> <span style="color: #008899;">{</span>
+      pmt<span style="color: #972500;">[</span>i++<span style="color: #972500;">]</span> = ++j;
+    <span style="color: #008899;">}</span> <span style="color: #531ab6;">else</span> <span style="color: #008899;">{</span>
+      <span style="color: #595959;">// </span><span style="color: #595959;">&#24403;&#23383;&#31526;&#20986;&#29616;&#19981;&#21305;&#37197;&#30340;&#26102;&#20505;&#65292;&#21028;&#26029; j &#21069;&#38754;&#26159;&#21542;&#36824;&#26377;zh&#20844;&#20849;&#21069;&#32512;&#65292;&#26377;&#21017;&#31227;&#21160;&#21040;&#21069;&#32512;&#30340;&#19979;&#19968;&#20301;</span>
+      <span style="color: #595959;">// </span><span style="color: #595959;">&#21363; pmt[j - 1] (0 ~ j - 1 &#20013;&#65292;&#26368;&#38271;&#20844;&#20849;&#21069;&#21518;&#32512;&#38271;&#24230;&#65289;</span>
+      <span style="color: #531ab6;">if</span> <span style="color: #972500;">(</span>j &gt; 0<span style="color: #972500;">)</span> <span style="color: #972500;">{</span>
+        j = pmt<span style="color: #808000;">[</span>j - 1<span style="color: #808000;">]</span>;
+      <span style="color: #972500;">}</span> <span style="color: #531ab6;">else</span> <span style="color: #972500;">{</span>
+        <span style="color: #595959;">// </span><span style="color: #595959;">&#22914;&#26524; j &#20026; 0&#65292;&#32943;&#23450;&#27809;&#26377;&#20844;&#20849;&#21069;&#36724;&#32512;&#65292;&#27492;&#26102; j &#26080;&#27861;&#31227;&#21160;&#65292;&#21482;&#33021;&#31227;&#21160; i</span>
         i++;
-      <span style="color: #c6797e;">}</span>
-    <span style="color: #a3b09a;">}</span>
-  <span style="color: #5d80ae;">}</span>
+      <span style="color: #972500;">}</span>
+    <span style="color: #008899;">}</span>
+  <span style="color: #dd22dd;">}</span>
 
-  <span style="color: #db6e8f;">return</span> pmt;
-<span style="color: #6e94b9;">}</span>
+  <span style="color: #531ab6;">return</span> pmt;
+<span style="color: #000000;">}</span>
 
-console.log<span style="color: #6e94b9;">(</span>getPmt<span style="color: #5d80ae;">(</span><span style="color: #eabe9a;">'aaabbab'</span><span style="color: #5d80ae;">)</span><span style="color: #6e94b9;">)</span>;
+console.log<span style="color: #000000;">(</span>getPmt<span style="color: #dd22dd;">(</span><span style="color: #3548cf;">'aaabbab'</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>;
 </pre>
 </div>
 <p>
@@ -334,52 +343,51 @@ console.log<span style="color: #6e94b9;">(</span>getPmt<span style="color: #5d80
 </div>
 </div>
 </div>
-
-<div id="outline-container-orgbb7394a" class="outline-2">
-<h2 id="orgbb7394a">KMP 实现</h2>
-<div class="outline-text-2" id="text-orgbb7394a">
+<div id="outline-container-orgae7656c" class="outline-2">
+<h2 id="orgae7656c">KMP 实现</h2>
+<div class="outline-text-2" id="text-orgae7656c">
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db6e8f;">function</span> <span style="color: #88c0d0;">kmp</span><span style="color: #6e94b9;">(</span><span style="color: #c6797e;">s</span>, <span style="color: #c6797e;">p</span><span style="color: #6e94b9;">)</span> <span style="color: #6e94b9;">{</span>
-  <span style="color: #db6e8f;">const</span> <span style="color: #c6797e;">n</span> = s.length;
-  <span style="color: #db6e8f;">const</span> <span style="color: #c6797e;">m</span> = p.length;
+<pre class="src src-js"><span style="color: #531ab6;">function</span> <span style="color: #721045;">kmp</span><span style="color: #000000;">(</span><span style="color: #005e8b;">s</span>, <span style="color: #005e8b;">p</span><span style="color: #000000;">)</span> <span style="color: #000000;">{</span>
+  <span style="color: #531ab6;">const</span> <span style="color: #005e8b;">n</span> = s.length;
+  <span style="color: #531ab6;">const</span> <span style="color: #005e8b;">m</span> = p.length;
 
-  <span style="color: #db6e8f;">const</span> <span style="color: #c6797e;">pmt</span> = <span style="color: #db6e8f;">new</span> <span style="color: #f7e3af;">Array</span><span style="color: #5d80ae;">(</span>m<span style="color: #5d80ae;">)</span>.fill<span style="color: #5d80ae;">(</span>0<span style="color: #5d80ae;">)</span>;
-  <span style="color: #db6e8f;">let</span> <span style="color: #c6797e;">i</span> = 1, <span style="color: #c6797e;">j</span> = 0;
+  <span style="color: #531ab6;">const</span> <span style="color: #005e8b;">pmt</span> = <span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Array</span><span style="color: #dd22dd;">(</span>m<span style="color: #dd22dd;">)</span>.fill<span style="color: #dd22dd;">(</span>0<span style="color: #dd22dd;">)</span>;
+  <span style="color: #531ab6;">let</span> <span style="color: #005e8b;">i</span> = 1, <span style="color: #005e8b;">j</span> = 0;
 
-  <span style="color: #db6e8f;">while</span> <span style="color: #5d80ae;">(</span>i &lt; m<span style="color: #5d80ae;">)</span> <span style="color: #5d80ae;">{</span>
-    <span style="color: #db6e8f;">if</span> <span style="color: #a3b09a;">(</span>p<span style="color: #c6797e;">[</span>i<span style="color: #c6797e;">]</span> === p<span style="color: #c6797e;">[</span>j<span style="color: #c6797e;">]</span><span style="color: #a3b09a;">)</span> <span style="color: #a3b09a;">{</span>
-      pmt<span style="color: #c6797e;">[</span>i++<span style="color: #c6797e;">]</span> = ++j;
-    <span style="color: #a3b09a;">}</span> <span style="color: #db6e8f;">else</span> <span style="color: #a3b09a;">{</span>
-      <span style="color: #db6e8f;">if</span> <span style="color: #c6797e;">(</span>j &gt; 0<span style="color: #c6797e;">)</span> <span style="color: #c6797e;">{</span>
-        j = pmt<span style="color: #b18bb1;">[</span>j - 1<span style="color: #b18bb1;">]</span>;
-      <span style="color: #c6797e;">}</span> <span style="color: #db6e8f;">else</span> <span style="color: #c6797e;">{</span>
+  <span style="color: #531ab6;">while</span> <span style="color: #dd22dd;">(</span>i &lt; m<span style="color: #dd22dd;">)</span> <span style="color: #dd22dd;">{</span>
+    <span style="color: #531ab6;">if</span> <span style="color: #008899;">(</span>p<span style="color: #972500;">[</span>i<span style="color: #972500;">]</span> === p<span style="color: #972500;">[</span>j<span style="color: #972500;">]</span><span style="color: #008899;">)</span> <span style="color: #008899;">{</span>
+      pmt<span style="color: #972500;">[</span>i++<span style="color: #972500;">]</span> = ++j;
+    <span style="color: #008899;">}</span> <span style="color: #531ab6;">else</span> <span style="color: #008899;">{</span>
+      <span style="color: #531ab6;">if</span> <span style="color: #972500;">(</span>j &gt; 0<span style="color: #972500;">)</span> <span style="color: #972500;">{</span>
+        j = pmt<span style="color: #808000;">[</span>j - 1<span style="color: #808000;">]</span>;
+      <span style="color: #972500;">}</span> <span style="color: #531ab6;">else</span> <span style="color: #972500;">{</span>
         i++;
-      <span style="color: #c6797e;">}</span>
-    <span style="color: #a3b09a;">}</span>
-  <span style="color: #5d80ae;">}</span>
+      <span style="color: #972500;">}</span>
+    <span style="color: #008899;">}</span>
+  <span style="color: #dd22dd;">}</span>
 
   i = 0;
   j = 0;
 
-  <span style="color: #db6e8f;">while</span> <span style="color: #5d80ae;">(</span>i &lt; n<span style="color: #5d80ae;">)</span> <span style="color: #5d80ae;">{</span>
-    <span style="color: #db6e8f;">if</span> <span style="color: #a3b09a;">(</span>s<span style="color: #c6797e;">[</span>i<span style="color: #c6797e;">]</span> === p<span style="color: #c6797e;">[</span>j<span style="color: #c6797e;">]</span><span style="color: #a3b09a;">)</span> <span style="color: #a3b09a;">{</span>
+  <span style="color: #531ab6;">while</span> <span style="color: #dd22dd;">(</span>i &lt; n<span style="color: #dd22dd;">)</span> <span style="color: #dd22dd;">{</span>
+    <span style="color: #531ab6;">if</span> <span style="color: #008899;">(</span>s<span style="color: #972500;">[</span>i<span style="color: #972500;">]</span> === p<span style="color: #972500;">[</span>j<span style="color: #972500;">]</span><span style="color: #008899;">)</span> <span style="color: #008899;">{</span>
       i++;
       j++;
 
-      <span style="color: #db6e8f;">if</span> <span style="color: #c6797e;">(</span>j === m<span style="color: #c6797e;">)</span> <span style="color: #c6797e;">{</span>
-        <span style="color: #db6e8f;">return</span> i - j;
-      <span style="color: #c6797e;">}</span>
-    <span style="color: #a3b09a;">}</span> <span style="color: #db6e8f;">else</span> <span style="color: #a3b09a;">{</span>
-      <span style="color: #db6e8f;">if</span> <span style="color: #c6797e;">(</span>j &gt; 0<span style="color: #c6797e;">)</span> <span style="color: #c6797e;">{</span>
-        j = pmt<span style="color: #b18bb1;">[</span>j - 1<span style="color: #b18bb1;">]</span>;
-      <span style="color: #c6797e;">}</span> <span style="color: #db6e8f;">else</span> <span style="color: #c6797e;">{</span>
+      <span style="color: #531ab6;">if</span> <span style="color: #972500;">(</span>j === m<span style="color: #972500;">)</span> <span style="color: #972500;">{</span>
+        <span style="color: #531ab6;">return</span> i - j;
+      <span style="color: #972500;">}</span>
+    <span style="color: #008899;">}</span> <span style="color: #531ab6;">else</span> <span style="color: #008899;">{</span>
+      <span style="color: #531ab6;">if</span> <span style="color: #972500;">(</span>j &gt; 0<span style="color: #972500;">)</span> <span style="color: #972500;">{</span>
+        j = pmt<span style="color: #808000;">[</span>j - 1<span style="color: #808000;">]</span>;
+      <span style="color: #972500;">}</span> <span style="color: #531ab6;">else</span> <span style="color: #972500;">{</span>
         i++;
-      <span style="color: #c6797e;">}</span>
-    <span style="color: #a3b09a;">}</span>
-  <span style="color: #5d80ae;">}</span>
+      <span style="color: #972500;">}</span>
+    <span style="color: #008899;">}</span>
+  <span style="color: #dd22dd;">}</span>
 
-  <span style="color: #db6e8f;">return</span> -1;
-<span style="color: #6e94b9;">}</span>
+  <span style="color: #531ab6;">return</span> -1;
+<span style="color: #000000;">}</span>
 </pre>
 </div>
 
@@ -388,19 +396,17 @@ console.log<span style="color: #6e94b9;">(</span>getPmt<span style="color: #5d80
 </p>
 </div>
 </div>
-
-<div id="outline-container-org8d23396" class="outline-2">
-<h2 id="org8d23396">leetcode 题目</h2>
-<div class="outline-text-2" id="text-org8d23396">
+<div id="outline-container-org6cc8c2b" class="outline-2">
+<h2 id="org6cc8c2b">leetcode 题目</h2>
+<div class="outline-text-2" id="text-org6cc8c2b">
 <ul class="org-ul">
 <li><a href="https://leetcode-cn.com/problems/implement-strstr/">28. 实现 strStr()</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org5a23af2" class="outline-2">
-<h2 id="org5a23af2">参考</h2>
-<div class="outline-text-2" id="text-org5a23af2">
+<div id="outline-container-org399a491" class="outline-2">
+<h2 id="org399a491">参考</h2>
+<div class="outline-text-2" id="text-org399a491">
 <ul class="org-ul">
 <li><a href="https://www.bilibili.com/video/av81151415/?p=1">[算法] 轻松掌握 kmp</a> - bilibili@邋遢大哥233
 最容易理解的视频</li>
@@ -412,9 +418,9 @@ console.log<span style="color: #6e94b9;">(</span>getPmt<span style="color: #5d80
 </div>
 </div>
 <div id="postamble" class="status">
+
+<p class="author">Author: Spike Leung (<a href="mailto:l-yanlei@hotmail.com">l-yanlei@hotmail.com</a>)</p>
 <p class="date">Date: 2022-02-12T11:48:07+08:00</p>
-<p class="author">Author: localhost</p>
-<p class="date">Created: 2024-09-25 Wed 17:42</p>
 </div>
 </body>
 </html>

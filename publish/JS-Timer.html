@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-25 Wed 17:42 -->
+<!-- 2024-09-26 Thu 00:31 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>JS 中的定时任务</title>
-<meta name="author" content="localhost" />
+<meta name="author" content="Spike Leung" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -193,35 +193,46 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { }
 </style>
-<link rel="stylesheet"
-                       href="../styles/style.css" type="text/css"/>
+
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
+<div id="preamble" class="status">
+
+ <nav>
+  <ul>
+    <li><a href="/theindex.html">Home</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/rss.xml">RSS</a></li>
+    <li><a href="https://github.com/Spike-Leung">GitHub</a></li>
+  </ul>
+</nav>
+</div>
 <div id="content" class="content">
 <h1 class="title">JS 中的定时任务</h1>
 <div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgae80573">setTimeout</a></li>
-<li><a href="#orgd78b634">setTimeout(callback, 0) 零延迟的 setTimeout</a></li>
-<li><a href="#org33bc8e6">setInterval</a>
+<li><a href="#org75d5262">setTimeout</a></li>
+<li><a href="#orgea63702">setTimeout(callback, 0) 零延迟的 setTimeout</a></li>
+<li><a href="#org02168b0">setInterval</a>
 <ul>
-<li><a href="#orgdc0a45b">对于长时间的同步任务</a></li>
-<li><a href="#org9b3eb4f">对于长时间的异步任务</a></li>
+<li><a href="#org44d3558">对于长时间的同步任务</a></li>
+<li><a href="#org37b9976">对于长时间的异步任务</a></li>
 </ul>
 </li>
-<li><a href="#orga55f2ad">嵌套的 setTimeout</a></li>
-<li><a href="#orgce0f002">requestAnimationFrame</a></li>
-<li><a href="#org37bb4f4">requestIdleCallback</a></li>
-<li><a href="#orgbf14f57">参考</a></li>
+<li><a href="#orgd559a6c">嵌套的 setTimeout</a></li>
+<li><a href="#org403b22c">requestAnimationFrame</a></li>
+<li><a href="#orgaf704f4">requestIdleCallback</a></li>
+<li><a href="#org60271b7">参考</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgae80573" class="outline-2">
-<h2 id="orgae80573">setTimeout</h2>
-<div class="outline-text-2" id="text-orgae80573">
+<div id="outline-container-org75d5262" class="outline-2">
+<h2 id="org75d5262">setTimeout</h2>
+<div class="outline-text-2" id="text-org75d5262">
 <p>
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/setTimeout">setTimeout()</a> 可以设置一个延迟，延迟多少秒将一个 callback 放入到<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide#tasks_vs_microtasks">宏任务队列</a>。
 </p>
@@ -239,10 +250,9 @@ callback 只是被放到了宏任务队列中，当调用栈空闲的时候，�
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgd78b634" class="outline-2">
-<h2 id="orgd78b634">setTimeout(callback, 0) 零延迟的 setTimeout</h2>
-<div class="outline-text-2" id="text-orgd78b634">
+<div id="outline-container-orgea63702" class="outline-2">
+<h2 id="orgea63702">setTimeout(callback, 0) 零延迟的 setTimeout</h2>
+<div class="outline-text-2" id="text-orgea63702">
 <p>
 这里的 0 其实是放入到宏任务队列的延迟，而不是放入调用栈的延迟。
 </p>
@@ -256,10 +266,9 @@ callback 只是被放到了宏任务队列中，当调用栈空闲的时候，�
 </p>
 </div>
 </div>
-
-<div id="outline-container-org33bc8e6" class="outline-2">
-<h2 id="org33bc8e6">setInterval</h2>
-<div class="outline-text-2" id="text-org33bc8e6">
+<div id="outline-container-org02168b0" class="outline-2">
+<h2 id="org02168b0">setInterval</h2>
+<div class="outline-text-2" id="text-org02168b0">
 <p>
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/setInterval">setInterval()</a> 是每隔一段时间，就把 callback 加入到任务队列。
 </p>
@@ -296,22 +305,21 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 当 callback 执行时间可能大于间隔时间时，用 setInterval 就不合适了。
 </p>
 </div>
-
-<div id="outline-container-orgdc0a45b" class="outline-3">
-<h3 id="orgdc0a45b">对于长时间的同步任务</h3>
-<div class="outline-text-3" id="text-orgdc0a45b">
+<div id="outline-container-org44d3558" class="outline-3">
+<h3 id="org44d3558">对于长时间的同步任务</h3>
+<div class="outline-text-3" id="text-org44d3558">
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db6e8f;">var</span> <span style="color: #c6797e;">fakeTimeIntensiveOperation</span> = <span style="color: #db6e8f;">function</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
-  <span style="color: #db6e8f;">for</span> <span style="color: #5d80ae;">(</span><span style="color: #db6e8f;">var</span> <span style="color: #c6797e;">i</span> = 0; i&lt; Math.pow<span style="color: #a3b09a;">(</span>10, 10<span style="color: #a3b09a;">)</span>; i++<span style="color: #5d80ae;">)</span> <span style="color: #5d80ae;">{}</span>
-  <span style="color: #db6e8f;">let</span> <span style="color: #c6797e;">insideTimeTakingFunction</span>  = <span style="color: #db6e8f;">new</span> <span style="color: #f7e3af;">Date</span><span style="color: #5d80ae;">()</span>.toLocaleTimeString<span style="color: #5d80ae;">()</span>;
-  console.log<span style="color: #5d80ae;">(</span><span style="color: #eabe9a;">'insideTimeTakingFunction'</span>, insideTimeTakingFunction<span style="color: #5d80ae;">)</span>;
-<span style="color: #6e94b9;">}</span>;
+<pre class="src src-js"><span style="color: #531ab6;">var</span> <span style="color: #005e8b;">fakeTimeIntensiveOperation</span> = <span style="color: #531ab6;">function</span><span style="color: #000000;">()</span> <span style="color: #000000;">{</span>
+  <span style="color: #531ab6;">for</span> <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">var</span> <span style="color: #005e8b;">i</span> = 0; i&lt; Math.pow<span style="color: #008899;">(</span>10, 10<span style="color: #008899;">)</span>; i++<span style="color: #dd22dd;">)</span> <span style="color: #dd22dd;">{}</span>
+  <span style="color: #531ab6;">let</span> <span style="color: #005e8b;">insideTimeTakingFunction</span>  = <span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #dd22dd;">()</span>.toLocaleTimeString<span style="color: #dd22dd;">()</span>;
+  console.log<span style="color: #dd22dd;">(</span><span style="color: #3548cf;">'insideTimeTakingFunction'</span>, insideTimeTakingFunction<span style="color: #dd22dd;">)</span>;
+<span style="color: #000000;">}</span>;
 
-<span style="color: #db6e8f;">var</span> <span style="color: #c6797e;">timer</span> = setInterval<span style="color: #6e94b9;">(</span><span style="color: #db6e8f;">function</span><span style="color: #5d80ae;">(){</span>
-  fakeTimeIntensiveOperation<span style="color: #a3b09a;">()</span>;
-  <span style="color: #db6e8f;">let</span> <span style="color: #c6797e;">insideSetInterval</span> = <span style="color: #db6e8f;">new</span> <span style="color: #f7e3af;">Date</span><span style="color: #a3b09a;">()</span>.toLocaleTimeString<span style="color: #a3b09a;">()</span>;
-  console.log<span style="color: #a3b09a;">(</span><span style="color: #eabe9a;">'insideSetInterval'</span>, insideSetInterval<span style="color: #a3b09a;">)</span>;
-<span style="color: #5d80ae;">}</span>, 1000<span style="color: #6e94b9;">)</span>;
+<span style="color: #531ab6;">var</span> <span style="color: #005e8b;">timer</span> = setInterval<span style="color: #000000;">(</span><span style="color: #531ab6;">function</span><span style="color: #dd22dd;">(){</span>
+  fakeTimeIntensiveOperation<span style="color: #008899;">()</span>;
+  <span style="color: #531ab6;">let</span> <span style="color: #005e8b;">insideSetInterval</span> = <span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #008899;">()</span>.toLocaleTimeString<span style="color: #008899;">()</span>;
+  console.log<span style="color: #008899;">(</span><span style="color: #3548cf;">'insideSetInterval'</span>, insideSetInterval<span style="color: #008899;">)</span>;
+<span style="color: #dd22dd;">}</span>, 1000<span style="color: #000000;">)</span>;
 </pre>
 </div>
 
@@ -320,25 +328,24 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 </p>
 </div>
 </div>
-
-<div id="outline-container-org9b3eb4f" class="outline-3">
-<h3 id="org9b3eb4f">对于长时间的异步任务</h3>
-<div class="outline-text-3" id="text-org9b3eb4f">
+<div id="outline-container-org37b9976" class="outline-3">
+<h3 id="org37b9976">对于长时间的异步任务</h3>
+<div class="outline-text-3" id="text-org37b9976">
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db6e8f;">let</span> <span style="color: #c6797e;">counter</span> = 0;
-<span style="color: #db6e8f;">var</span> <span style="color: #c6797e;">fakeTimeIntensiveOperation</span> = <span style="color: #db6e8f;">function</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
-  setTimeout<span style="color: #5d80ae;">(</span><span style="color: #a3b09a;">()</span> =&gt; <span style="color: #a3b09a;">{</span>
+<pre class="src src-js"><span style="color: #531ab6;">let</span> <span style="color: #005e8b;">counter</span> = 0;
+<span style="color: #531ab6;">var</span> <span style="color: #005e8b;">fakeTimeIntensiveOperation</span> = <span style="color: #531ab6;">function</span><span style="color: #000000;">()</span> <span style="color: #000000;">{</span>
+  setTimeout<span style="color: #dd22dd;">(</span><span style="color: #008899;">()</span> =&gt; <span style="color: #008899;">{</span>
     counter--;
-  <span style="color: #a3b09a;">}</span>, 60000<span style="color: #5d80ae;">)</span>;
-<span style="color: #6e94b9;">}</span>;
+  <span style="color: #008899;">}</span>, 60000<span style="color: #dd22dd;">)</span>;
+<span style="color: #000000;">}</span>;
 
-<span style="color: #db6e8f;">var</span> <span style="color: #c6797e;">timer</span> = setInterval<span style="color: #6e94b9;">(</span><span style="color: #db6e8f;">function</span><span style="color: #5d80ae;">()</span> <span style="color: #5d80ae;">{</span>
+<span style="color: #531ab6;">var</span> <span style="color: #005e8b;">timer</span> = setInterval<span style="color: #000000;">(</span><span style="color: #531ab6;">function</span><span style="color: #dd22dd;">()</span> <span style="color: #dd22dd;">{</span>
   counter++;
-  fakeTimeIntensiveOperation<span style="color: #a3b09a;">()</span>;
-  <span style="color: #db6e8f;">let</span> <span style="color: #c6797e;">insideSetInterval</span> = <span style="color: #db6e8f;">new</span> <span style="color: #f7e3af;">Date</span><span style="color: #a3b09a;">()</span>.toLocaleTimeString<span style="color: #a3b09a;">()</span>;
-  console.log<span style="color: #a3b09a;">(</span><span style="color: #eabe9a;">'insideSetInterval'</span>, insideSetInterval<span style="color: #a3b09a;">)</span>;
-  console.log<span style="color: #a3b09a;">(</span><span style="color: #eabe9a;">'counter'</span>, counter<span style="color: #a3b09a;">)</span>;
-<span style="color: #5d80ae;">}</span>, 200<span style="color: #6e94b9;">)</span>;
+  fakeTimeIntensiveOperation<span style="color: #008899;">()</span>;
+  <span style="color: #531ab6;">let</span> <span style="color: #005e8b;">insideSetInterval</span> = <span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #008899;">()</span>.toLocaleTimeString<span style="color: #008899;">()</span>;
+  console.log<span style="color: #008899;">(</span><span style="color: #3548cf;">'insideSetInterval'</span>, insideSetInterval<span style="color: #008899;">)</span>;
+  console.log<span style="color: #008899;">(</span><span style="color: #3548cf;">'counter'</span>, counter<span style="color: #008899;">)</span>;
+<span style="color: #dd22dd;">}</span>, 200<span style="color: #000000;">)</span>;
 </pre>
 </div>
 <p>
@@ -351,16 +358,16 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 </div>
 </div>
 </div>
-<div id="outline-container-orga55f2ad" class="outline-2">
-<h2 id="orga55f2ad">嵌套的 setTimeout</h2>
-<div class="outline-text-2" id="text-orga55f2ad">
+<div id="outline-container-orgd559a6c" class="outline-2">
+<h2 id="orgd559a6c">嵌套的 setTimeout</h2>
+<div class="outline-text-2" id="text-orgd559a6c">
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #6e94b9;">(</span><span style="color: #db6e8f;">function</span> loop<span style="color: #5d80ae;">()</span> <span style="color: #5d80ae;">{</span>
-  setTimeout<span style="color: #a3b09a;">(</span><span style="color: #db6e8f;">function</span><span style="color: #c6797e;">()</span> <span style="color: #c6797e;">{</span>
-    <span style="color: #64727d;">// </span><span style="color: #64727d;">your logic here</span>
-    loop<span style="color: #b18bb1;">()</span>;
-  <span style="color: #c6797e;">}</span>, delay<span style="color: #a3b09a;">)</span>;
-<span style="color: #5d80ae;">}</span><span style="color: #6e94b9;">)()</span>
+<pre class="src src-js"><span style="color: #000000;">(</span><span style="color: #531ab6;">function</span> loop<span style="color: #dd22dd;">()</span> <span style="color: #dd22dd;">{</span>
+  setTimeout<span style="color: #008899;">(</span><span style="color: #531ab6;">function</span><span style="color: #972500;">()</span> <span style="color: #972500;">{</span>
+    <span style="color: #595959;">// </span><span style="color: #595959;">your logic here</span>
+    loop<span style="color: #808000;">()</span>;
+  <span style="color: #972500;">}</span>, delay<span style="color: #008899;">)</span>;
+<span style="color: #dd22dd;">}</span><span style="color: #000000;">)()</span>
 </pre>
 </div>
 
@@ -377,26 +384,26 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db6e8f;">let</span> <span style="color: #c6797e;">delay</span> = 5000;
+<pre class="src src-js"><span style="color: #531ab6;">let</span> <span style="color: #005e8b;">delay</span> = 5000;
 
-<span style="color: #db6e8f;">let</span> <span style="color: #c6797e;">timerId</span> = setTimeout<span style="color: #6e94b9;">(</span><span style="color: #db6e8f;">function</span> request<span style="color: #5d80ae;">()</span> <span style="color: #5d80ae;">{</span>
-  <span style="color: #64727d;">// </span><span style="color: #64727d;">...&#21457;&#36865;&#35831;&#27714;...</span>
+<span style="color: #531ab6;">let</span> <span style="color: #005e8b;">timerId</span> = setTimeout<span style="color: #000000;">(</span><span style="color: #531ab6;">function</span> request<span style="color: #dd22dd;">()</span> <span style="color: #dd22dd;">{</span>
+  <span style="color: #595959;">// </span><span style="color: #595959;">...&#21457;&#36865;&#35831;&#27714;...</span>
 
-  <span style="color: #db6e8f;">if</span> <span style="color: #a3b09a;">(</span>request failed due to server overload<span style="color: #a3b09a;">)</span> <span style="color: #a3b09a;">{</span>
-    <span style="color: #64727d;">// </span><span style="color: #64727d;">&#19979;&#19968;&#27425;&#25191;&#34892;&#30340;&#38388;&#38548;&#26159;&#24403;&#21069;&#30340; 2 &#20493;</span>
+  <span style="color: #531ab6;">if</span> <span style="color: #008899;">(</span>request failed due to server overload<span style="color: #008899;">)</span> <span style="color: #008899;">{</span>
+    <span style="color: #595959;">// </span><span style="color: #595959;">&#19979;&#19968;&#27425;&#25191;&#34892;&#30340;&#38388;&#38548;&#26159;&#24403;&#21069;&#30340; 2 &#20493;</span>
     delay *= 2;
-  <span style="color: #a3b09a;">}</span>
+  <span style="color: #008899;">}</span>
 
-  timerId = setTimeout<span style="color: #a3b09a;">(</span>request, delay<span style="color: #a3b09a;">)</span>;
+  timerId = setTimeout<span style="color: #008899;">(</span>request, delay<span style="color: #008899;">)</span>;
 
-<span style="color: #5d80ae;">}</span>, delay<span style="color: #6e94b9;">)</span>;
+<span style="color: #dd22dd;">}</span>, delay<span style="color: #000000;">)</span>;
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgce0f002" class="outline-2">
-<h2 id="orgce0f002">requestAnimationFrame</h2>
-<div class="outline-text-2" id="text-orgce0f002">
+<div id="outline-container-org403b22c" class="outline-2">
+<h2 id="org403b22c">requestAnimationFrame</h2>
+<div class="outline-text-2" id="text-org403b22c">
 <p>
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame">Window.requestAnimationFrame()</a> 主要是用来做动画的。
 </p>
@@ -438,9 +445,9 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 </ol>
 </div>
 </div>
-<div id="outline-container-org37bb4f4" class="outline-2">
-<h2 id="org37bb4f4">requestIdleCallback</h2>
-<div class="outline-text-2" id="text-org37bb4f4">
+<div id="outline-container-orgaf704f4" class="outline-2">
+<h2 id="orgaf704f4">requestIdleCallback</h2>
+<div class="outline-text-2" id="text-orgaf704f4">
 <p>
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback">window.requestIdleCallback()</a> 用于在浏览器空闲的时候，去调用 callback。
 </p>
@@ -478,10 +485,9 @@ requestIdleCallback(callback, options) 中的第二个参数是 options。
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgbf14f57" class="outline-2">
-<h2 id="orgbf14f57">参考</h2>
-<div class="outline-text-2" id="text-orgbf14f57">
+<div id="outline-container-org60271b7" class="outline-2">
+<h2 id="org60271b7">参考</h2>
+<div class="outline-text-2" id="text-org60271b7">
 <ul class="org-ul">
 <li><a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals">Cooperative asynchronous JavaScript: Timeouts and intervals</a> - MDN</li>
 <li><a href="https://zh.javascript.info/settimeout-setinterval">调度：setTimeout 和 setInterval</a> - javascript.info</li>
@@ -502,9 +508,9 @@ smooth animations </a>- javascriptkit
 </div>
 </div>
 <div id="postamble" class="status">
+
+<p class="author">Author: Spike Leung (<a href="mailto:l-yanlei@hotmail.com">l-yanlei@hotmail.com</a>)</p>
 <p class="date">Date: 2022-02-14T23:46:53+08:00</p>
-<p class="author">Author: localhost</p>
-<p class="date">Created: 2024-09-25 Wed 17:42</p>
 </div>
 </body>
 </html>

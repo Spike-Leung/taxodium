@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-25 Wed 17:42 -->
+<!-- 2024-09-26 Thu 00:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>使用 GitHub Actions 部署博客到 GitHub Pages</title>
-<meta name="author" content="localhost" />
+<meta name="author" content="Spike Leung" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -193,28 +193,40 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { }
 </style>
-<link rel="stylesheet"
-                       href="../styles/style.css" type="text/css"/>
+
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
+<div id="preamble" class="status">
+
+ <nav>
+  <ul>
+    <li><a href="/theindex.html">Home</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/rss.xml">RSS</a></li>
+    <li><a href="https://github.com/Spike-Leung">GitHub</a></li>
+  </ul>
+</nav>
+</div>
 <div id="content" class="content">
 <h1 class="title">使用 GitHub Actions 部署博客到 GitHub Pages</h1>
 <div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf43ff72">GitHub Actions</a>
+<li><a href="#org7a32833">GitHub Actions</a>
 <ul>
-<li><a href="#orgb2e9906">为什么用 GitHub Actions</a></li>
-<li><a href="#orge83e73c">什么是 GitHub Actions</a>
+<li><a href="#org450b36b">为什么用 GitHub Actions</a></li>
+<li><a href="#org6beeea0">什么是 GitHub Actions</a>
 <ul>
-<li><a href="#orgbbf3139">Event-Driven</a></li>
-<li><a href="#org6e9a2b3">创建 GitHub Actions</a></li>
+<li><a href="#org3ba53ec">Event-Driven</a></li>
+<li><a href="#org0569080">创建 GitHub Actions</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgf30eb04">参考链接</a></li>
+<li><a href="#org934a82d">参考链接</a></li>
 </ul>
 </div>
 </div>
@@ -229,14 +241,13 @@
 <p>
 本文将简单介绍 <code>GitHub Actions</code> 以及笔者博客如何实现自动部署。
 </p>
-
-<div id="outline-container-orgf43ff72" class="outline-2">
-<h2 id="orgf43ff72">GitHub Actions</h2>
-<div class="outline-text-2" id="text-orgf43ff72">
+<div id="outline-container-org7a32833" class="outline-2">
+<h2 id="org7a32833">GitHub Actions</h2>
+<div class="outline-text-2" id="text-org7a32833">
 </div>
-<div id="outline-container-orgb2e9906" class="outline-3">
-<h3 id="orgb2e9906">为什么用 GitHub Actions</h3>
-<div class="outline-text-3" id="text-orgb2e9906">
+<div id="outline-container-org450b36b" class="outline-3">
+<h3 id="org450b36b">为什么用 GitHub Actions</h3>
+<div class="outline-text-3" id="text-org450b36b">
 <ul class="org-ul">
 <li><del>尝鲜</del></li>
 <li>它和 `GitHub` 集成到一起，方便</li>
@@ -245,14 +256,13 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orge83e73c" class="outline-3">
-<h3 id="orge83e73c">什么是 GitHub Actions</h3>
-<div class="outline-text-3" id="text-orge83e73c">
+<div id="outline-container-org6beeea0" class="outline-3">
+<h3 id="org6beeea0">什么是 GitHub Actions</h3>
+<div class="outline-text-3" id="text-org6beeea0">
 </div>
-<div id="outline-container-orgbbf3139" class="outline-4">
-<h4 id="orgbbf3139">Event-Driven</h4>
-<div class="outline-text-4" id="text-orgbbf3139">
+<div id="outline-container-org3ba53ec" class="outline-4">
+<h4 id="org3ba53ec">Event-Driven</h4>
+<div class="outline-text-4" id="text-org3ba53ec">
 <blockquote>
 <p>
 GitHub Actions are event-driven, meaning that you can run a series of commands after a specified event has occurred
@@ -264,10 +274,9 @@ GitHub Actions are event-driven, meaning that you can run a series of commands a
 </p>
 </div>
 </div>
-
-<div id="outline-container-org6e9a2b3" class="outline-4">
-<h4 id="org6e9a2b3">创建 GitHub Actions</h4>
-<div class="outline-text-4" id="text-org6e9a2b3">
+<div id="outline-container-org0569080" class="outline-4">
+<h4 id="org0569080">创建 GitHub Actions</h4>
+<div class="outline-text-4" id="text-org0569080">
 <ol class="org-ol">
 <li>在 Git 仓库下创建 <code>.github/workflows</code> 目录， 目录下创建一个对应的 <code>xxxx.yaml</code> 配置文件，每个 <code>yaml</code> 文件对应一个 <code>workflows</code></li>
 <li><p>
@@ -275,39 +284,39 @@ GitHub Actions are event-driven, meaning that you can run a series of commands a
 </p>
 
 <div class="org-src-container">
-<pre class="src src-yaml"><span style="color: #64727d;"># </span><span style="color: #64727d;">Optional - The name of the workflow as it will appear in the Actions tab of the GitHub repository.</span>
-<span style="color: #64727d;"># </span><span style="color: #64727d;">workflows &#30340;&#21517;&#31216;</span>
-<span style="color: #c6797e;">name</span>: deploy-to-github-page
-<span style="color: #64727d;"># </span><span style="color: #64727d;">Specify the event that automatically triggers the workflow file.</span>
-<span style="color: #64727d;"># </span><span style="color: #64727d;">&#30417;&#21548;&#20160;&#20040;&#20107;&#20214;&#26102;&#35302;&#21457;&#36825;&#20010;workflows, &#36825;&#37324;&#30417;&#21548;push</span>
-<span style="color: #c6797e;">on</span>: [push]
-<span style="color: #64727d;"># </span><span style="color: #64727d;">Groups together all the jobs that run in the workflow file</span>
-<span style="color: #64727d;"># </span><span style="color: #64727d;">&#36825;&#20010;workflows&#20855;&#20307;&#26159;&#30001;&#21738;&#20123;&#20219;&#21153;&#32452;&#25104;&#30340;</span>
-<span style="color: #c6797e;">jobs</span>:
-  <span style="color: #64727d;"># </span><span style="color: #64727d;">define job name</span>
-  <span style="color: #64727d;"># </span><span style="color: #64727d;">&#20219;&#21153;1, `deploy`&#26159;&#20219;&#21153;&#30340;&#21517;&#31216;</span>
-  <span style="color: #c6797e;">deploy</span>:
-    <span style="color: #64727d;"># </span><span style="color: #64727d;">Configures the job to run on an Ubuntu Linux runner</span>
-    <span style="color: #64727d;"># </span><span style="color: #64727d;">&#22312;&#20160;&#20040;&#29615;&#22659;&#19979;&#25191;&#34892;&#36825;&#20010;&#20219;&#21153;</span>
-    <span style="color: #c6797e;">runs-on</span>: ubuntu-latest
-    <span style="color: #64727d;"># </span><span style="color: #64727d;">Groups together all the steps that run in the job</span>
-    <span style="color: #64727d;"># </span><span style="color: #64727d;">Each item nested under this section is a separate action or shell command.</span>
-    <span style="color: #64727d;"># </span><span style="color: #64727d;">&#20219;&#21153;&#20855;&#20307;&#21253;&#21547;&#20160;&#20040;&#27493;&#39588;</span>
-    <span style="color: #c6797e;">steps</span>:
-      <span style="color: #64727d;"># </span><span style="color: #64727d;">actions The uses keyword tells the job to retrieve v2 of the community action named actions/checkout@v2</span>
-      <span style="color: #64727d;"># </span><span style="color: #64727d;">&#27599;&#20010;&#27493;&#39588;&#65292;&#21363;&#21487;&#20197;&#20351;&#29992;(`uses`)&#21035;&#20154;&#20889;&#22909;&#30340;`actions`, &#20063;&#21487;&#20197;&#36305;&#33258;&#24049;&#20889;&#30340;&#21629;&#20196;(`run`)</span>
-      - <span style="color: #c6797e;">uses</span>: actions/checkout@v2 <span style="color: #64727d;"># </span><span style="color: #64727d;">&#25289;&#21462;&#20195;&#30721;</span>
-        - <span style="color: #c6797e;">uses</span>: actions/setup-node@v2 <span style="color: #64727d;"># </span><span style="color: #64727d;">&#35013;node.js&#29615;&#22659;</span>
-          <span style="color: #c6797e;">with</span>: <span style="color: #64727d;"># </span><span style="color: #64727d;">&#36755;&#20837;&#36825;&#20010;`actions`&#38656;&#35201;&#30340;&#21442;&#25968;&#65292;&#20363;&#22914;&#29256;&#26412;&#21495;</span>
-          <span style="color: #c6797e;">node-version</span>: <span style="color: #eabe9a;">'14'</span>
-          <span style="color: #64727d;"># </span><span style="color: #64727d;">shell command, The run keyword tells the job to execute a command on the runner.</span>
-          - <span style="color: #c6797e;">run</span>: yarn install <span style="color: #64727d;"># </span><span style="color: #64727d;">&#23433;&#35013;&#21338;&#23458;&#30340;&#20381;&#36182;</span>
-            - <span style="color: #c6797e;">run</span>: yarn build <span style="color: #64727d;"># </span><span style="color: #64727d;">&#26500;&#24314;&#21338;&#23458;&#30340;&#38745;&#24577;&#25991;&#20214;</span>
-              - <span style="color: #c6797e;">name</span>: Deploy
-                <span style="color: #c6797e;">uses</span>: peaceiris/actions-gh-pages@v3 <span style="color: #64727d;"># </span><span style="color: #64727d;">&#20351;&#29992;&#21035;&#20154;&#20889;&#22909;&#25226;&#38745;&#24577;&#25991;&#20214;&#21457;&#24067;&#21040;`GitHub Pages`&#30340;`actions`</span>
-                <span style="color: #c6797e;">with</span>:
-                  <span style="color: #c6797e;">github_token</span>: ${{ secrets.GITHUB_TOKEN }}
-                  <span style="color: #c6797e;">publish_dir</span>: docs/.vuepress/dist
+<pre class="src src-yaml"><span style="color: #595959;"># </span><span style="color: #595959;">Optional - The name of the workflow as it will appear in the Actions tab of the GitHub repository.</span>
+<span style="color: #595959;"># </span><span style="color: #595959;">workflows &#30340;&#21517;&#31216;</span>
+<span style="color: #005e8b;">name</span>: deploy-to-github-page
+<span style="color: #595959;"># </span><span style="color: #595959;">Specify the event that automatically triggers the workflow file.</span>
+<span style="color: #595959;"># </span><span style="color: #595959;">&#30417;&#21548;&#20160;&#20040;&#20107;&#20214;&#26102;&#35302;&#21457;&#36825;&#20010;workflows, &#36825;&#37324;&#30417;&#21548;push</span>
+<span style="color: #0000b0;">on</span>: [push]
+<span style="color: #595959;"># </span><span style="color: #595959;">Groups together all the jobs that run in the workflow file</span>
+<span style="color: #595959;"># </span><span style="color: #595959;">&#36825;&#20010;workflows&#20855;&#20307;&#26159;&#30001;&#21738;&#20123;&#20219;&#21153;&#32452;&#25104;&#30340;</span>
+<span style="color: #005e8b;">jobs</span>:
+  <span style="color: #595959;"># </span><span style="color: #595959;">define job name</span>
+  <span style="color: #595959;"># </span><span style="color: #595959;">&#20219;&#21153;1, `deploy`&#26159;&#20219;&#21153;&#30340;&#21517;&#31216;</span>
+  <span style="color: #005e8b;">deploy</span>:
+    <span style="color: #595959;"># </span><span style="color: #595959;">Configures the job to run on an Ubuntu Linux runner</span>
+    <span style="color: #595959;"># </span><span style="color: #595959;">&#22312;&#20160;&#20040;&#29615;&#22659;&#19979;&#25191;&#34892;&#36825;&#20010;&#20219;&#21153;</span>
+    <span style="color: #005e8b;">runs-on</span>: ubuntu-latest
+    <span style="color: #595959;"># </span><span style="color: #595959;">Groups together all the steps that run in the job</span>
+    <span style="color: #595959;"># </span><span style="color: #595959;">Each item nested under this section is a separate action or shell command.</span>
+    <span style="color: #595959;"># </span><span style="color: #595959;">&#20219;&#21153;&#20855;&#20307;&#21253;&#21547;&#20160;&#20040;&#27493;&#39588;</span>
+    <span style="color: #005e8b;">steps</span>:
+      <span style="color: #595959;"># </span><span style="color: #595959;">actions The uses keyword tells the job to retrieve v2 of the community action named actions/checkout@v2</span>
+      <span style="color: #595959;"># </span><span style="color: #595959;">&#27599;&#20010;&#27493;&#39588;&#65292;&#21363;&#21487;&#20197;&#20351;&#29992;(`uses`)&#21035;&#20154;&#20889;&#22909;&#30340;`actions`, &#20063;&#21487;&#20197;&#36305;&#33258;&#24049;&#20889;&#30340;&#21629;&#20196;(`run`)</span>
+      - <span style="color: #005e8b;">uses</span>: actions/checkout@v2 <span style="color: #595959;"># </span><span style="color: #595959;">&#25289;&#21462;&#20195;&#30721;</span>
+        - <span style="color: #005e8b;">uses</span>: actions/setup-node@v2 <span style="color: #595959;"># </span><span style="color: #595959;">&#35013;node.js&#29615;&#22659;</span>
+          <span style="color: #005e8b;">with</span>: <span style="color: #595959;"># </span><span style="color: #595959;">&#36755;&#20837;&#36825;&#20010;`actions`&#38656;&#35201;&#30340;&#21442;&#25968;&#65292;&#20363;&#22914;&#29256;&#26412;&#21495;</span>
+          <span style="color: #005e8b;">node-version</span>: <span style="color: #3548cf;">'14'</span>
+          <span style="color: #595959;"># </span><span style="color: #595959;">shell command, The run keyword tells the job to execute a command on the runner.</span>
+          - <span style="color: #005e8b;">run</span>: yarn install <span style="color: #595959;"># </span><span style="color: #595959;">&#23433;&#35013;&#21338;&#23458;&#30340;&#20381;&#36182;</span>
+            - <span style="color: #005e8b;">run</span>: yarn build <span style="color: #595959;"># </span><span style="color: #595959;">&#26500;&#24314;&#21338;&#23458;&#30340;&#38745;&#24577;&#25991;&#20214;</span>
+              - <span style="color: #005e8b;">name</span>: Deploy
+                <span style="color: #005e8b;">uses</span>: peaceiris/actions-gh-pages@v3 <span style="color: #595959;"># </span><span style="color: #595959;">&#20351;&#29992;&#21035;&#20154;&#20889;&#22909;&#25226;&#38745;&#24577;&#25991;&#20214;&#21457;&#24067;&#21040;`GitHub Pages`&#30340;`actions`</span>
+                <span style="color: #005e8b;">with</span>:
+                  <span style="color: #005e8b;">github_token</span>: ${{ secrets.GITHUB_TOKEN }}
+                  <span style="color: #005e8b;">publish_dir</span>: docs/.vuepress/dist
 
 </pre>
 </div></li>
@@ -350,11 +359,9 @@ GitHub Actions are event-driven, meaning that you can run a series of commands a
 </div>
 </div>
 </div>
-
-
-<div id="outline-container-orgf30eb04" class="outline-2">
-<h2 id="orgf30eb04">参考链接</h2>
-<div class="outline-text-2" id="text-orgf30eb04">
+<div id="outline-container-org934a82d" class="outline-2">
+<h2 id="org934a82d">参考链接</h2>
+<div class="outline-text-2" id="text-org934a82d">
 <ul class="org-ul">
 <li><a href="https://www.devopsauthority.tech/2021/02/09/github-actions-vs-travis-ci/">GitHub Actions vs Travis CI – Comparing CI/CD Platforms</a></li>
 <li><a href="https://docs.github.com/en/actions/learn-github-actions/introduction-to-github-actions">Introduction to GitHub Actions</a></li>
@@ -364,9 +371,9 @@ GitHub Actions are event-driven, meaning that you can run a series of commands a
 </div>
 </div>
 <div id="postamble" class="status">
+
+<p class="author">Author: Spike Leung (<a href="mailto:l-yanlei@hotmail.com">l-yanlei@hotmail.com</a>)</p>
 <p class="date">Date: 2021-08-15T12:29:15+08:00</p>
-<p class="author">Author: localhost</p>
-<p class="date">Created: 2024-09-25 Wed 17:42</p>
 </div>
 </body>
 </html>
