@@ -1,0 +1,3589 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-09-25 Wed 17:42 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>tldr effective-shell</title>
+<meta name="author" content="localhost" />
+<meta name="description" content="&quot;&quot;" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<link rel="stylesheet"
+                       href="../styles/style.css" type="text/css"/>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">tldr effective-shell</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org4aa11e6">前言</a></li>
+<li><a href="#org263beb1">为什么学</a></li>
+<li><a href="#orga698963">什么是 shell</a></li>
+<li><a href="#org9ec0b98">常用命令</a>
+<ul>
+<li><a href="#orgb3c5145">Understanding Commands</a></li>
+<li><a href="#orgf33b7a0">The Different Types of Commands</a>
+<ul>
+<li><a href="#orga90c9b9">Executables</a></li>
+<li><a href="#orge9506e0">"Built-Ins"</a></li>
+<li><a href="#org4bdca13">Functions</a></li>
+<li><a href="#org952ea4a">Aliases</a></li>
+</ul>
+</li>
+<li><a href="#orgd3c8df9">如何了解命令的用法</a>
+<ul>
+<li><a href="#org8355a12">man</a></li>
+<li><a href="#org568e685">tldr</a></li>
+<li><a href="#orgf75ce29">cht.sh</a></li>
+</ul>
+</li>
+<li><a href="#org6a67e4e">命令</a>
+<ul>
+<li><a href="#orgb17ca50">导航</a></li>
+<li><a href="#orgaaa9eed">文件 CRUD</a></li>
+<li><a href="#orge4f1897">剪贴板体操运动员 (Clipboard Gymnast)</a></li>
+<li><a href="#orgb1e3d96">文本操作</a></li>
+<li><a href="#org4690f13">正则表达式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org50f87cd">Thinking in Pipelines</a>
+<ul>
+<li><a href="#org11b7250">Common Patterns - Standard Input</a></li>
+<li><a href="#orgb3a5cf6">Common Patterns - Standard Output</a></li>
+<li><a href="#orgb080675">Common Patterns - Standard Error</a>
+<ul>
+<li><a href="#orgf99ebbc">2&gt;&amp;1</a></li>
+</ul>
+</li>
+<li><a href="#org5c47f20">The T Pipe</a></li>
+</ul>
+</li>
+<li><a href="#org8e9f896">Fly on the Command Line</a></li>
+<li><a href="#org273a315">Job Control</a>
+<ul>
+<li><a href="#org3468c4f">Run in the Background</a></li>
+<li><a href="#org6bc9397">Move to Background</a></li>
+<li><a href="#org0c9245d">Moving Background Jobs to the Foreground</a></li>
+<li><a href="#org6c6b3ef">Cleaning Up Jobs</a></li>
+<li><a href="#org100bb18">Why You Shouldn't Use Jobs</a></li>
+</ul>
+</li>
+<li><a href="#orgd3ec4c9">Shell Scripting Essentials</a>
+<ul>
+<li><a href="#org6eb7ba6">什么是 Shell Script</a></li>
+<li><a href="#org9f88ffc">实现一个 'common' 命令</a>
+<ul>
+<li><a href="#orgef73bdf">命令过长时如何换行</a></li>
+</ul>
+</li>
+<li><a href="#org98cbc03">如何运行脚本</a>
+<ul>
+<li><a href="#org1566aa3">通过 shell 程序执行</a></li>
+<li><a href="#orge04d1e4">让脚本可执行，通过脚本的路径执行</a></li>
+</ul>
+</li>
+<li><a href="#orgc314059">shebangs</a>
+<ul>
+<li><a href="#org7791223">env</a></li>
+</ul>
+</li>
+<li><a href="#orgf95db74">Sourcing Shell Scripts</a></li>
+<li><a href="#orgc4dd061">如何安装脚本</a></li>
+</ul>
+</li>
+<li><a href="#org77162bb">Shell Scripting 语法</a>
+<ul>
+<li><a href="#org997c897">变量</a>
+<ul>
+<li><a href="#org38de58d">赋值和引用</a></li>
+<li><a href="#org66bf2f2">数组</a></li>
+<li><a href="#orgba1313f">对象 (Associative Arrays)</a></li>
+<li><a href="#org6f59f1a">关于引号</a></li>
+<li><a href="#org04a11b5">The Read Command</a></li>
+<li><a href="#orgbaa45c9">Mathematics</a></li>
+</ul>
+</li>
+<li><a href="#org3403c33">条件</a>
+<ul>
+<li><a href="#org54c782e">The Test Command</a></li>
+<li><a href="#org1c1f23d">Case Statements</a></li>
+</ul>
+</li>
+<li><a href="#org5dcf90b">循环</a>
+<ul>
+<li><a href="#orgc49df25">The For Loop</a></li>
+<li><a href="#org369b849">The While Loop</a></li>
+<li><a href="#org6039663">The Until Loop</a></li>
+<li><a href="#org7f2fe0b">Continue and Break</a></li>
+</ul>
+</li>
+<li><a href="#org27d9ace">函数</a>
+<ul>
+<li><a href="#org40e02f8">变量</a></li>
+<li><a href="#orgdeafef9">传参</a></li>
+<li><a href="#orgb599cc1">返回值</a></li>
+</ul>
+</li>
+<li><a href="#orge31f5ec">错误处理</a>
+<ul>
+<li><a href="#org4bbbc8e">出错后退出</a></li>
+</ul>
+</li>
+<li><a href="#org7ce8b4c">debug</a></li>
+<li><a href="#org8336513">一些技巧</a>
+<ul>
+<li><a href="#org5c752aa">Checking for Existing Variables or Functions</a></li>
+<li><a href="#org67f3399">Unsetting Values</a></li>
+<li><a href="#org6cccd34">Traps</a></li>
+<li><a href="#orgc6667ff">Handling Options</a></li>
+<li><a href="#org0e4d4d4">Using 'Select' to Show a Menu</a></li>
+<li><a href="#orga7d6181">Running Commands in Subshells</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org6f91d01">我的推荐</a>
+<ul>
+<li><a href="#org89ffb09">history</a></li>
+<li><a href="#orgb16642f">tmux</a></li>
+<li><a href="#orga7a1c75">oh my zsh</a></li>
+<li><a href="#org3648081">Managing your Dotfiles</a></li>
+<li><a href="#orga2cbe76">还有不懂就问 GPT</a></li>
+</ul>
+</li>
+<li><a href="#org30aa300">Refs</a></li>
+</ul>
+</div>
+</div>
+<p>
+:ID:       7f0a5584-0e6f-4352-a208-20ae9ccc5f46
+</p>
+<div id="outline-container-org4aa11e6" class="outline-2">
+<h2 id="org4aa11e6">前言</h2>
+<div class="outline-text-2" id="text-org4aa11e6">
+<p>
+这是之前做的一个关于 shell 的分享，内容基本来自 <a href="https://effective-shell.com/">effective-shell</a>，这是
+一个非常好的 shell 入门教程， 你可以把这篇文章当作是它的 TLDR。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org263beb1" class="outline-2">
+<h2 id="org263beb1">为什么学</h2>
+<div class="outline-text-2" id="text-org263beb1">
+<blockquote>
+<p>
+熟练使用命令行是一种常常被忽视，或被认为难以掌握的技能，但实际上，它会
+提高你作为工程师的灵活性以及生产力。 &#x2013; <a href="https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md">命令行的艺术</a>
+</p>
+</blockquote>
+
+<ul class="org-ul">
+<li>提高效率， 某些场景下，shell 操作比图形界面更高效</li>
+<li>某些场景下，只有 shell 能用，没有 GUI</li>
+<li>可编程扩展</li>
+<li>帮助你更好地理解计算机是如何运作的</li>
+<li>有趣</li>
+<li>通用技能</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga698963" class="outline-2">
+<h2 id="orga698963"><a href="https://effective-shell.com/part-2-core-skills/what-is-a-shell">什么是 shell</a></h2>
+<div class="outline-text-2" id="text-orga698963">
+
+<div id="org0810c12" class="figure">
+<p><img src="https://effective-shell.com/assets/images/image-walnut-93cb9b0e2b015cbc5de26cd2c4483ecd.jpg" alt="image-walnut-93cb9b0e2b015cbc5de26cd2c4483ecd.jpg" width="100%" />
+</p>
+</div>
+
+<p>
+我们平时说的 <code>shell</code> ，一般指的就是命令行。
+</p>
+
+<blockquote>
+<p>
+When we talk about "The Shell", we're normally referring to the
+simple, text-based interface which is used to control a computer or
+about program.
+</p>
+</blockquote>
+
+<p>
+更具体的，shell 就是调用系统 kernel 的程序，他们的关系好比果核和果壳。
+</p>
+
+
+<div id="orge53e107" class="figure">
+<p><img src="https://effective-shell.com/assets/images/diagram3-terminal-and-shell-31620f593a4c3838051a5a6dcea17577.png" alt="diagram3-terminal-and-shell-31620f593a4c3838051a5a6dcea17577.png" width="100%" />
+</p>
+</div>
+
+<ul class="org-ul">
+<li><a href="https://effective-shell.com/part-2-core-skills/what-is-a-shell/#the-operating-system">The Operating System</a></li>
+<li><code>pstree -psa $$</code></li>
+</ul>
+
+<blockquote>
+<p>
+So what is the shell? The shell is just a general name for any user
+space program that allows access to resources in the system, via
+some kind of interface.
+</p>
+
+<p>
+Shells come in many different flavours but are generally provided to
+aid a human operator in accessing the system. This could be
+interactively, by typing at a terminal, or via scripts, which are
+files that contain a sequence of commands.
+</p>
+
+<p>
+For example, to see all of the files in a folder, the human operator
+could write a program in a language such as C, making system calls to
+do what they want. But for day-to-day tasks, this would be
+repetitive. A shell will normally offer us a quick way to do that
+exact task, without having to manually write a program to do it.
+</p>
+</blockquote>
+
+<p>
+什么是 terminal (终端)？
+</p>
+
+<p>
+一般是指用于和 shell 交互，给 shell 提供输入， 显示 shell 执行后的结果的程序。
+</p>
+
+<blockquote>
+<p>
+We're not directly interacting with the 'shell' in this
+diagram. We're actually using a terminal. When a user wants to work
+with a shell interactively, using a keyboard to provide input and a
+display to see the output on the screen, the user uses a terminal.
+</p>
+
+<p>
+The shell is the program that is going to take input from somewhere
+and run a series of commands. When the shell is running in a
+terminal, it is normally taking input interactively from the
+user. As the user types in commands, the terminal feeds the input to
+the shell and presents the output of the shell on the screen.
+</p>
+</blockquote>
+
+<p>
+常见的 shell: <a href="https://en.wikipedia.org/wiki/Bourne_shell">sh(Bourne Shell)</a>, <a href="https://en.wikipedia.org/wiki/Bash_(Unix_shell)">bash (Bourne Again Shell)</a>, <code>zsh</code>, <code>fish</code>, <code>ksh</code>
+</p>
+
+<p>
+常见的 terminal: <code>iTerm2</code>, <code>Windows Terminal</code>, <code>xterm</code>, <code>tabby</code>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9ec0b98" class="outline-2">
+<h2 id="org9ec0b98">常用命令</h2>
+<div class="outline-text-2" id="text-org9ec0b98">
+</div>
+<div id="outline-container-orgb3c5145" class="outline-3">
+<h3 id="orgb3c5145"><a href="https://effective-shell.com/part-2-core-skills/understanding-commands">Understanding Commands</a></h3>
+<div class="outline-text-3" id="text-orgb3c5145">
+<blockquote>
+<p>
+A command in a shell is something you execute. It might take
+parameters. Generally it'll have a form like this: <code>command param1
+param2</code>
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-orgf33b7a0" class="outline-3">
+<h3 id="orgf33b7a0"><a href="https://effective-shell.com/part-2-core-skills/understanding-commands">The Different Types of Commands</a></h3>
+<div class="outline-text-3" id="text-orgf33b7a0">
+<p>
+<code>type</code> 指令可以查看指令的类型。
+</p>
+</div>
+
+<div id="outline-container-orga90c9b9" class="outline-4">
+<h4 id="orga90c9b9">Executables</h4>
+<div class="outline-text-4" id="text-orga90c9b9">
+<blockquote>
+<p>
+Executables are programs your system can use; your shell just calls
+out to them.
+</p>
+
+<p>
+Executables are just files with <code>the 'executable' bit set</code>. If I
+execute the cat command, the shell will search for an executable named
+cat in my <code>$PATH</code>. If it finds it, it will run the program.
+</p>
+
+<p>
+<code>$PATH</code> is the standard environment variable used to define where the
+shell should search for programs.
+</p>
+
+<p>
+The shell will start with the earlier locations and move to the later
+ones. This allows local flavours of tools to be installed for users,
+which will take precedence over general versions of tools.
+</p>
+
+<p>
+Executables don't have to be compiled program code, they can be
+scripts. If a file starts with <code>#! (the 'shebang')</code>, then the system
+will try to run the contents of the file with the program specified in
+the shebang.
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-orge9506e0" class="outline-4">
+<h4 id="orge9506e0">"Built-Ins"</h4>
+<div class="outline-text-4" id="text-orge9506e0">
+<blockquote>
+<p>
+Builtins are <i>very</i> shell-specific and usually control the shell itself
+</p>
+</blockquote>
+
+<p>
+"Built-Ins" 的指令是和 shell 强相关的，换言之，某个命令，可能 bash 有，但 zsh 就没有。
+</p>
+
+<p>
+之所以需要有 "Built-Ins" 命令，是因为内建的会执行得更快，而且作用的范围更广。
+</p>
+
+<blockquote>
+<p>
+Some commands are a builtin so that they can function in a sensible
+manner. For example, <code>cd</code> command changes the current directory - if we
+executed it as a process, it would change only the directory for the
+<code>cd</code> process itself, not the shell, making it much less useful.
+</p>
+
+<p>
+Echo is builtin because the shell can run much more quickly by not
+actually running a program if it has its own built in implementation.
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-org4bdca13" class="outline-4">
+<h4 id="org4bdca13">Functions</h4>
+<div class="outline-text-4" id="text-org4bdca13">
+<blockquote>
+<p>
+Functions are powerful ways to write logic but will normally be shell-specific.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #88c0d0;">wsl_proxy_on</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #db6e8f;">local</span> <span style="color: #c6797e;">port</span>=10810
+    <span style="color: #db6e8f;">export</span> <span style="color: #c6797e;">windows_host</span>=<span style="color: #fafff6; font-weight: bold;">`cat /etc/resolv.conf | grep nameserver | cut -d' ' -f 2`</span>
+    <span style="color: #db6e8f;">export</span> <span style="color: #c6797e;">ALL_PROXY</span>=socks5://$<span style="color: #c6797e;">windows_host</span>:$<span style="color: #c6797e;">port</span>
+    <span style="color: #db6e8f;">export</span> <span style="color: #c6797e;">HTTP_PROXY</span>=$<span style="color: #c6797e;">ALL_PROXY</span>
+    <span style="color: #db6e8f;">export</span> <span style="color: #c6797e;">http_proxy</span>=$<span style="color: #c6797e;">ALL_PROXY</span>
+    <span style="color: #db6e8f;">export</span> <span style="color: #c6797e;">HTTPS_PROXY</span>=$<span style="color: #c6797e;">ALL_PROXY</span>
+    <span style="color: #db6e8f;">export</span> <span style="color: #c6797e;">https_proxy</span>=$<span style="color: #c6797e;">ALL_PROXY</span>
+    <span style="color: #db6e8f;">echo</span> -e <span style="color: #eabe9a;">"proxy on"</span>
+<span style="color: #6e94b9;">}</span>
+
+<span style="color: #88c0d0;">wsl_proxy_off</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #db6e8f;">unset</span> ALL_PROXY HTTPS_PROXY https_proxy HTTP_PROXY http_proxy
+    <span style="color: #db6e8f;">echo</span> -e <span style="color: #eabe9a;">"proxy off"</span>
+<span style="color: #6e94b9;">}</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org952ea4a" class="outline-4">
+<h4 id="org952ea4a">Aliases</h4>
+<div class="outline-text-4" id="text-org952ea4a">
+<blockquote>
+<p>
+Aliases are conveniences for human operators, but only in the context of an interactive shell.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">---------------------------------------------------------------- #</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">alias</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">---------------------------------------------------------------- #</span>
+<span style="color: #db6e8f;">alias</span> <span style="color: #c6797e;">wpon</span>=wsl_proxy_on
+<span style="color: #db6e8f;">alias</span> <span style="color: #c6797e;">pbcopy</span>=<span style="color: #eabe9a;">'clip.exe'</span>
+<span style="color: #db6e8f;">alias</span> <span style="color: #c6797e;">pbpaste</span>=<span style="color: #eabe9a;">"powershell.exe -command 'Get-Clipboard' | tr -d '\r' | head -n -1"</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd3c8df9" class="outline-3">
+<h3 id="orgd3c8df9"><a href="https://effective-shell.com/part-1-transitioning-to-the-shell/getting-help/">如何了解命令的用法</a></h3>
+<div class="outline-text-3" id="text-orgd3c8df9">
+</div>
+<div id="outline-container-org8355a12" class="outline-4">
+<h4 id="org8355a12">man</h4>
+<div class="outline-text-4" id="text-org8355a12">
+<ul class="org-ul">
+<li><a href="https://effective-shell.com/part-1-transitioning-to-the-shell/getting-help/#manual-sections">manutal sections</a>: <code>man 1 intro</code>
+
+<dl class="org-dl">
+<dt>Section 1</dt><dd>Executable programs or shell commands</dd>
+<dt>Section 2</dt><dd>System calls (functions provided by the kernel)</dd>
+<dt>Section 3</dt><dd>Library calls (functions within program libraries)</dd>
+<dt>Section 4</dt><dd>Special files (usually found in /dev)</dd>
+<dt>Section 5</dt><dd>File formats and conventions (e.g. /etc/passwd)</dd>
+<dt>Section 6</dt><dd>Games</dd>
+<dt>Section 7</dt><dd>Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)</dd>
+<dt>Section 8</dt><dd>System administration commands (usually only for root)</dd>
+<dt>Section 9</dt><dd>Kernel routines (Non standard)</dd>
+</dl></li>
+
+<li><code>man -k</code> : 模糊搜索</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org568e685" class="outline-4">
+<h4 id="org568e685"><a href="https://github.com/tldr-pages/tldr">tldr</a></h4>
+<div class="outline-text-4" id="text-org568e685">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">install</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">use npm</span>
+npm install -g tldr
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">use python</span>
+pip3 install tldr
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">use Homebrew</span>
+brew install tldr
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">how to use</span>
+tldr git
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf75ce29" class="outline-4">
+<h4 id="orgf75ce29"><a href="https://github.com/chubin/cheat.sh">cht.sh</a></h4>
+<div class="outline-text-4" id="text-orgf75ce29">
+<div class="org-src-container">
+<pre class="src src-bash">curl cheat.sh/tar
+curl cht.sh/curl
+curl https://cheat.sh/rsync
+curl https://cht.sh/tr
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">keyword</span>
+curl cht.sh/~snapshot
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">language name space</span>
+curl cht.sh/go/Pointers
+curl cht.sh/scala/Functions
+curl cht.sh/python/lambda
+
+curl cht.sh/go/reverse+a+list
+curl cht.sh/python/random+list+elements
+curl cht.sh/js/parse+json
+curl cht.sh/lua/merge+tables
+curl cht.sh/clojure/variadic+<span style="color: #db6e8f;">function</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">ask question</span>
+curl cht.sh/<span style="color: #eabe9a;">"How do I copy a folder in bash?"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">pick another answer</span>
+curl cht.sh/python/random+string
+curl cht.sh/python/random+string/1
+curl cht.sh/python/random+string/2
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6a67e4e" class="outline-3">
+<h3 id="org6a67e4e">命令</h3>
+<div class="outline-text-3" id="text-org6a67e4e">
+</div>
+<div id="outline-container-orgb17ca50" class="outline-4">
+<h4 id="orgb17ca50">导航</h4>
+<div class="outline-text-4" id="text-orgb17ca50">
+<dl class="org-dl">
+<dt><code>pwd</code></dt><dd>Print Working Directory</dd>
+<dt><code>ls</code></dt><dd>List Directory Contents</dd>
+<dt><code>cd</code></dt><dd>Change Directory
+<dl class="org-dl">
+<dt><code>.</code></dt><dd>This folder</dd>
+<dt><code>..</code></dt><dd>The parent folder</dd>
+<dt><code>~</code></dt><dd>Home (cd without any parameters)</dd>
+<dt><code>-</code></dt><dd>Go back to the last location you moved to</dd>
+</dl></dd>
+</dl>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">alias</span> ..=<span style="color: #eabe9a;">"cd .."</span>
+<span style="color: #db6e8f;">alias</span> ...=<span style="color: #eabe9a;">"cd ../.."</span>
+<span style="color: #db6e8f;">alias</span> ....=<span style="color: #eabe9a;">"cd ../../.."</span>
+<span style="color: #db6e8f;">alias</span> .....=<span style="color: #eabe9a;">"cd ../../../.."</span>
+<span style="color: #db6e8f;">alias</span> ......=<span style="color: #eabe9a;">"cd ../../../../.."</span>
+<span style="color: #db6e8f;">alias</span> .......=<span style="color: #eabe9a;">"cd ../../../../../.."</span>
+<span style="color: #db6e8f;">alias</span> ........=<span style="color: #eabe9a;">"cd ../../../../../../.."</span>
+</pre>
+</div>
+
+<blockquote>
+<p>
+One thing we might want to do is quickly move from one location to another, then go back again.
+</p>
+</blockquote>
+
+<dl class="org-dl">
+<dt><code>pushd</code></dt><dd>'<a href="https://effective-shell.com/part-1-transitioning-to-the-shell/navigating-your-system/#pushing-and-popping-the-working-directory">pushes</a>' a new working directory onto a stack - moving you there.</dd>
+<dt><code>popd</code></dt><dd>'pops' the working directory off the top of the stack</dd>
+<dt><code>dirs</code></dt><dd>查看 poshd 和 popd 操作后的堆栈情况</dd>
+</dl>
+
+
+<div id="org5c0dbcc" class="figure">
+<p><img src="https://effective-shell.com/assets/images/pushd-popd-stack-ccd34132d513841c5b1d97c842b0413f.png" alt="pushd-popd-stack-ccd34132d513841c5b1d97c842b0413f.png" width="100%" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaaa9eed" class="outline-4">
+<h4 id="orgaaa9eed">文件 CRUD</h4>
+<div class="outline-text-4" id="text-orgaaa9eed">
+<ul class="org-ul">
+<li><code>ls</code></li>
+<li><code>rm</code></li>
+<li><code>rmdir</code></li>
+<li><code>cp</code></li>
+<li><code>mv</code></li>
+<li><code>mkdir</code></li>
+<li><code>tree</code></li>
+<li><code>file</code></li>
+<li><p>
+<a href="https://effective-shell.com/part-2-core-skills/finding-files">find</a>
+</p>
+
+<blockquote>
+<p>
+您当然可以使用 alias 设置别名来简化上述操作，但 <b>shell 的哲学之一便是
+寻找（更好用的）替代方案。</b>
+</p>
+
+<p>
+记住，shell 最好的特性就是您只是在调用程序，因此您只要找到合适的替
+代程序即可（甚至自己编写）。
+</p>
+
+<p>
+例如，<a href="https://github.com/sharkdp/fd">fd</a> 就是一个更简单、更快速、更友好的程序，它可以用来作为 <code>find</code> 的
+替代品。它有很多不错的默认设置，例如输出着色、默认支持正则匹配、支持
+unicode 并且我认为它的语法更符合直觉。以模式 PATTERN 搜索的语法是 <code>fd
+  PATTERN</code> 。 &#x2013; <a href="https://missing-semester-cn.github.io/2020/shell-tools/">Shell 工具和脚本</a>
+</p>
+</blockquote></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge4f1897" class="outline-4">
+<h4 id="orge4f1897">剪贴板体操运动员 (Clipboard Gymnast)</h4>
+<div class="outline-text-4" id="text-orge4f1897">
+<blockquote>
+<p>
+<code>Ctrl</code> key is called the Control Key is that it is used to send control sequences to the computer.
+</p>
+</blockquote>
+
+<dl class="org-dl">
+<dt><code>Ctrl-C</code></dt><dd>Terminates the current program</dd>
+<dt><code>Ctrl-V</code></dt><dd>Verbatim Insert, it tells the shell to write out the next keystroke you give it.</dd>
+</dl>
+
+<p>
+熟悉的 cv 是 shell 中的控制指令，没法完成粘贴复制，换成 <code>Ctrl + Shift + C</code> 和 <code>Ctrl + Shift + V</code>
+</p>
+
+<ul class="org-ul">
+<li><a href="https://effective-shell.com/part-1-transitioning-to-the-shell/become-a-clipboard-gymnast/#preparing-the-clipboard-commands">pbpaste | pbcopy</a> : 可以移除格式</li>
+
+<li><a href="https://effective-shell.com/part-1-transitioning-to-the-shell/become-a-clipboard-gymnast/#preparing-the-clipboard-commands">pbpaste | sort | uniq | tr ' ' '_' | sed 's/$/@simpsons.com/' | pbcopy</a> : 快速转换 excel 表格的内容</li>
+
+<li><code>pbpaste | grep 评选中 | grep 前端 | sort -g | cut  -f 1,4</code> : 快速查看评选的改进项</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb1e3d96" class="outline-4">
+<h4 id="orgb1e3d96">文本操作</h4>
+<div class="outline-text-4" id="text-orgb1e3d96">
+<dl class="org-dl">
+<dt><a href="https://effective-shell.com/part-3-manipulating-text/get-to-grips-with-grep/">grep</a></dt><dd><code>g/re/p</code> , This command ran on all lines (<code>g</code>, for global),
+applied a regular expression (<code>re</code>, for regular expression) and then
+printed (<code>p</code> for print) the results.
+
+<ul class="org-ul">
+<li>结合多个管道过滤内容</li>
+
+<li><code>-v</code> 排除 grep 的内容</li>
+</ul></dd>
+
+<dt><a href="https://effective-shell.com/part-3-manipulating-text/slice-and-dice-text/#heads-and-tails">head / tails</a></dt><dd><code>head</code> is used to extract part of the top of a file
+and <code>tail</code> is used to extract part of the end of a file.
+
+<ul class="org-ul">
+<li><code>head ~/effective-shell/data/top100.csv</code></li>
+
+<li><code>head -n 3 ~/effective-shell/data/top100.csv</code></li>
+
+<li><code>tail $HISTFILE</code></li>
+
+<li><code>tail -f $HISTFILE</code></li>
+
+<li><code>head ~/effective-shell/data/top100.csv | tail -n +2</code> 去掉表头，从第二行开始输出</li>
+</ul></dd>
+
+<dt><a href="https://effective-shell.com/part-3-manipulating-text/slice-and-dice-text/#replacing-text">tr (translate characters)</a></dt><dd>Perform a simple substitution of characters.
+
+<ul class="org-ul">
+<li><code>head -n 1 ~/effective-shell/data/top100.csv | tr ',' '\n'</code></li>
+
+<li><code>head -n 1 ~/effective-shell/data/top100.csv | tr ',' '\n' | tr -d '"'</code></li>
+
+<li><code>echo "Welcome to the shell" | tr 'shell' 'machine'</code></li>
+
+<li><code>echo "Use your inside voice..." | tr '[[:lower:]]' '[[:upper:]]'</code></li>
+</ul></dd>
+
+<dt><a href="https://effective-shell.com/part-3-manipulating-text/slice-and-dice-text/#how-to-cut">cut</a></dt><dd>The <code>cut</code> command splits a line of text, using a given delimiter.
+
+<ul class="org-ul">
+<li><code>cut -d',' -f 3 ~/effective-shell/data/top100.csv | head</code></li>
+
+<li><code>echo "2020-11-29T12:50:52.762Z: info - Request: GET /svg/menu.svg" | cut -c 12-19</code></li>
+
+<li><code>echo "2020-11-29T12:50:52.762Z: info - Request: GET /svg/menu.svg" | cut -c 27-</code></li>
+</ul></dd>
+
+<dt><a href="https://effective-shell.com/part-3-manipulating-text/slice-and-dice-text/#a-trick-with-rev">rev</a></dt><dd>Reverse the given input.
+
+<ul class="org-ul">
+<li><code>pwd | rev | cut -d'/' -f 1 | rev</code></li>
+</ul></dd>
+
+<dt><a href="https://effective-shell.com/part-3-manipulating-text/slice-and-dice-text/#sort-and-unique">sort and uniq</a></dt><dd>The <code>uniq</code> command removes duplicate lines from a stream of text.
+
+<ul class="org-ul">
+<li><code>cut -c 27- ~/effective-shell/logs/web-server-logs.txt | grep error | sort | uniq</code></li>
+</ul></dd>
+
+<dt>less</dt><dd>Open a file for interactive reading, allowing scrolling and search.</dd>
+
+<dt><a href="https://effective-shell.com/part-3-manipulating-text/build-commands-on-the-fly/">Xargs</a></dt><dd><p>
+The xargs <i>[build and execute commands]</i> command takes input,
+uses the input to create commands, then executes the commands. I
+tend to remember it as <code>"Execute with Arguments"</code> as the name xargs
+sounds a little odd!
+</p>
+
+<blockquote>
+<p>
+By default <code>xargs</code> take the input, joins each line together with a
+space and then passes it to the <code>echo</code> command.
+</p>
+</blockquote></dd>
+</dl>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #64727d;"># </span><span style="color: #64727d;">&#23558;&#25214;&#21040;&#30340;&#25991;&#20214;&#36890;&#36807; xargs &#25340;&#25509;&#21518;&#65292;&#20256;&#32473; rm &#25191;&#34892;</span>
+touch file<span style="color: #6e94b9;">{</span>1..100<span style="color: #6e94b9;">}</span>.txt
+<span style="color: #64727d;"># </span><span style="color: #64727d;">fail</span>
+find . -empty | rm
+<span style="color: #64727d;"># </span><span style="color: #64727d;">success</span>
+find . -empty | xargs rm
+
+touch <span style="color: #eabe9a;">"chapter "</span><span style="color: #6e94b9;">{</span>1,2,3<span style="color: #6e94b9;">}</span>.md
+find . -type f
+<span style="color: #64727d;"># </span><span style="color: #64727d;">./chapter 1.md</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">./chapter 2.md</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">./chapter 3.md</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">&#19978;&#38754;&#30340;&#25991;&#20214;&#21517;&#26377;&#31354;&#26684;</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">-print0 &#32473;&#27599;&#19968;&#20010; item &#36861;&#21152;&#19968;&#20010;&#29305;&#27530; 'null' &#23383;&#31526;</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">-0 &#21578;&#35785; xargs &#27599;&#20010;&#20803;&#32032;&#26159;&#29992;&#29305;&#27530;&#30340; 'null' &#23383;&#31526;&#20998;&#38548;&#30340;&#65288;&#32780;&#19981;&#26159;&#31354;&#26684;&#65289;</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">&#36825;&#20040;&#20570;&#65292;&#21487;&#20197;&#36991;&#20813;&#19968;&#20123;&#31354;&#26684;&#65292;tab&#65292;&#24341;&#21495;&#36896;&#25104;&#30340;&#38382;&#39064;&#65292;&#24314;&#35758;&#24635;&#26159;&#24102;&#19978;&#36825;&#20004;&#20010;&#36873;&#39033;</span>
+find . -type f -print0 | xargs -0 -t rm
+
+touch file<span style="color: #6e94b9;">{</span>1..5<span style="color: #6e94b9;">}</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">&#21578;&#35785; xargs &#26368;&#22810;&#29992;&#22810;&#23569;&#34892;&#21435;&#25191;&#34892;&#21629;&#20196;</span>
+find . -type f | xargs -L 3 echo
+./file1 ./file2 ./file3
+./file4 ./file5
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">&#40664;&#35748; xargs &#23558;&#21442;&#25968;&#25918;&#21040;&#26368;&#21518;</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">&#26377;&#26102;&#24819;&#25226;&#21442;&#25968;&#25918;&#22312;&#21035;&#30340;&#22320;&#26041;&#65292;&#21487;&#20197;&#20351;&#29992; -I &#36873;&#39033;</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">-I {} &#34920;&#31034;&#23558;&#21442;&#25968;&#25226; {} &#24403;&#20316; placeholder&#65292;&#28982;&#21518;&#21487;&#20197;&#22312;&#21518;&#38754;&#20219;&#20309;&#22320;&#26041;&#22810;&#27425;&#21435;&#29992;</span>
+find . -name <span style="color: #eabe9a;">"*.txt"</span> -print0 | xargs -0 -t -I <span style="color: #6e94b9;">{}</span> cp <span style="color: #6e94b9;">{}</span> ~/backups
+cp ./file2.txt /home/dwmkerr/backups
+cp ./file3.txt /home/dwmkerr/backups
+cp ./file1.txt /home/dwmkerr/backups
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">-p &#22312;&#25191;&#34892;&#21629;&#20196;&#26102;&#36827;&#34892;&#35810;&#38382;</span>
+kubectl get pods -o name | xargs -L 1 -p kubectl delete
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">-d (delimiter) &#21578;&#35785; xargs &#65292;&#36755;&#20837;&#26159;&#36890;&#36807;&#20160;&#20040;&#20998;&#38548;&#31526;&#65292;&#20998;&#21106;&#25104;&#22810;&#20010;&#21442;&#25968;&#30340;</span>
+<span style="color: #db6e8f;">echo</span> $<span style="color: #c6797e;">PATH</span> | xargs -d <span style="color: #eabe9a;">':'</span> -p -L 1 ls
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4690f13" class="outline-4">
+<h4 id="org4690f13"><a href="https://effective-shell.com/part-3-manipulating-text/regex-essentials/">正则表达式</a></h4>
+<div class="outline-text-4" id="text-org4690f13">
+<ul class="org-ul">
+<li><a href="https://regex101.com/">regex101</a></li>
+</ul>
+
+<blockquote>
+<p>
+<b>My general advice for regular expressions is start simple and add complexity only if you need it.</b>
+</p>
+
+<p>
+We can build regular expressions using an 'iterative' process,
+starting with the basics, then adding more features as we need them.
+</p>
+
+<p>
+Let's take validating an email address as an example. The way I would
+build a regular expression to validate an email address would be to
+use the following steps:
+</p>
+
+<ul class="org-ul">
+<li>Create a small list of valid email address</li>
+
+<li>Add some items to the list which look 'kind of' valid but are not quite right</li>
+
+<li>Build a regular expression which matches the correct email address</li>
+
+<li>Refine the expression to eliminate the invalid addresses</li>
+</ul>
+
+
+<p>
+In most cases this will be sufficient.
+</p>
+
+<p>
+I would advise that you keep expressions simple if possible - if they
+are getting too complex then break up your input or break up the
+processing into smaller chunks of work!
+</p>
+
+<p>
+Remember that a regular expression does not have to be the only way
+you validate input. You might use a regular expression to do a quick
+check on a form on a website to make sure that an email address has at
+least the correct structure, but you might then use a more
+sophisticated check later on (such as sending the user an activation
+email) to actually confirm that the address actually belongs to the
+user.
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org50f87cd" class="outline-2">
+<h2 id="org50f87cd"><a href="https://effective-shell.com/part-2-core-skills/thinking-in-pipelines/">Thinking in Pipelines</a></h2>
+<div class="outline-text-2" id="text-org50f87cd">
+
+<div id="orgd6099ee" class="figure">
+<p><img src="https://effective-shell.com/assets/images/diagram-stdin-stdout-stderr-702e578630d8d39c813d7d88c270c339.png" alt="diagram-stdin-stdout-stderr-702e578630d8d39c813d7d88c270c339.png" width="100%" />
+</p>
+</div>
+
+
+<div id="org9c1db5c" class="figure">
+<p><img src="https://effective-shell.com/assets/images/diagram-shell-keyboard-terminal-0475940cdf40bbcc8a329c090aa9e76a.png" alt="diagram-shell-keyboard-terminal-0475940cdf40bbcc8a329c090aa9e76a.png" width="100%" />
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash">cat ~/effective-shell/text/simpsons-characters.txt | sort | uniq
+</pre>
+</div>
+
+
+<div id="org48bd79e" class="figure">
+<p><img src="https://effective-shell.com/assets/images/diagram-cat-sort-uniq-pipeline-8c8d76566f351b4b9b900dde52af86b3.png" alt="diagram-cat-sort-uniq-pipeline-8c8d76566f351b4b9b900dde52af86b3.png" width="100%" />
+</p>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="100%">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">operator</th>
+<th scope="col" class="org-left">meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>&gt;</code></td>
+<td class="org-left">redirect the standard output of a program to create or <b>overwrite</b> a file</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>&gt;&gt;</code></td>
+<td class="org-left">redirect the standard output of a program to create or <b>append</b> to a file</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>&lt;</code></td>
+<td class="org-left">redirect a file to the <b>standard input</b> of a program</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div id="outline-container-org11b7250" class="outline-3">
+<h3 id="org11b7250"><a href="https://effective-shell.com/part-2-core-skills/thinking-in-pipelines/#common-patterns---standard-input">Common Patterns - Standard Input</a></h3>
+<div class="outline-text-3" id="text-org11b7250">
+
+<div id="orgee1d3e7" class="figure">
+<p><img src="https://effective-shell.com/assets/images/diagram-input-examples-e014dd4998bee0b50a94849ad55b01ce.png" alt="diagram-input-examples-e014dd4998bee0b50a94849ad55b01ce.png" width="100%" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb3a5cf6" class="outline-3">
+<h3 id="orgb3a5cf6"><a href="https://effective-shell.com/part-2-core-skills/thinking-in-pipelines/#common-patterns---standard-output">Common Patterns - Standard Output</a></h3>
+<div class="outline-text-3" id="text-orgb3a5cf6">
+
+<div id="org2d93988" class="figure">
+<p><img src="https://effective-shell.com/assets/images/diagram-output-examples-27e30c4a4036b2591e10e8c4fca7dc73.png" alt="diagram-output-examples-27e30c4a4036b2591e10e8c4fca7dc73.png" width="100%" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb080675" class="outline-3">
+<h3 id="orgb080675"><a href="https://effective-shell.com/part-2-core-skills/thinking-in-pipelines/#common-patterns---standard-error">Common Patterns - Standard Error</a></h3>
+<div class="outline-text-3" id="text-orgb080675">
+
+<div id="org4824c3c" class="figure">
+<p><img src="https://effective-shell.com/assets/images/diagram-stderr-options-a2cde4aa6177249c25dd9e5c0c62667a.png" alt="diagram-stderr-options-a2cde4aa6177249c25dd9e5c0c62667a.png" width="100%" />
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash">mkdir ~/effective-shell/new-folder | tr <span style="color: #eabe9a;">'[:lower:]'</span> <span style="color: #eabe9a;">'[:upper:]'</span>
+</pre>
+</div>
+
+
+<div id="orgbc00494" class="figure">
+<p><img src="https://effective-shell.com/assets/images/diagram-stderr-d0845508087975a7d58ebac63e3a8cd5.png" alt="diagram-stderr-d0845508087975a7d58ebac63e3a8cd5.png" width="100%" />
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash">mkdir ~/effective-shell/new-folder 2&gt;&amp;1 | tr <span style="color: #eabe9a;">'[:lower:]'</span> <span style="color: #eabe9a;">'[:upper:]'</span>
+</pre>
+</div>
+
+
+<div id="org5df11d6" class="figure">
+<p><img src="https://effective-shell.com/assets/images/diagram-stderr-redirect-c7d8fe2d93a8cdb248924cc13027b59e.png" alt="diagram-stderr-redirect-c7d8fe2d93a8cdb248924cc13027b59e.png" width="100%" />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf99ebbc" class="outline-4">
+<h4 id="orgf99ebbc"><a href="https://stackoverflow.com/questions/818255/what-does-21-mean">2&gt;&amp;1</a></h4>
+<div class="outline-text-4" id="text-orgf99ebbc">
+<p>
+为什么不是 <code>2&gt;1</code> ? 这样实际是将 <code>stderr</code> 重定向到文件 <code>1</code> 中，而不是重定向到 <code>stdout</code> 。
+</p>
+
+<p>
+如果想重定向到 <code>stdout</code> ，就需要使用 <code>&amp;1</code>, 表达 <code>stdout</code> 的 file descriptor。
+</p>
+
+<p>
+<code>2 &gt;&amp;1, 2&gt; &amp;1</code> 也是不对的，不能有空格, 两者都会被当作命令执行。
+</p>
+
+<p>
+对于前者， 2 会被当作命令执行，可以通过 <code>type 2</code> 看看对应的是什么命令；
+</p>
+
+<p>
+对于后者，&amp;1 也会被当作命令解析，此时 &amp; 无法解析对应的命令，就会报错。
+</p>
+</div>
+
+
+<ul class="org-ul">
+<li><a id="org960d9cc"></a>2&gt;&amp;1 的位置<br />
+<div class="outline-text-5" id="text-org960d9cc">
+<blockquote>
+<p>
+Bash (and most bash-like shells) process redirections from <i>left to
+right</i>, <a href="https://www.brianstorti.com/understanding-shell-script-idiom-redirect/">and when we redirect we duplicate the source.</a>
+</p>
+</blockquote>
+
+<p>
+如果想将所有的输出 (包括 <code>stderr</code>) 重定向到一个文件，以下顺序得到的结果是不同的：
+</p>
+
+<ul class="org-ul">
+<li><code>ls /usr/bin /nothing 2&gt;&amp;1 &gt; all-output.txt</code>
+
+<dl class="org-dl">
+<dt><code>2&gt;&amp;1</code></dt><dd>duplicate file descriptor <code>2</code> (<code>stderr</code>) and write it to <code>1</code> - <i>which is currently the terminal!</i></dd>
+
+<dt><code>&gt; all-output.txt</code></dt><dd>duplicate file descriptor <code>1</code> (<code>stdout</code>) and write it to a file called <code>all-output.txt</code></dd>
+</dl></li>
+
+<li><code>ls /usr/bin /nothing &gt; all-output.txt 2&gt;&amp;1</code>
+
+<ul class="org-ul">
+<li>Redirect <code>stdout</code> to the file <code>all-output.txt</code></li>
+
+<li>Now redirect <code>stderr</code> to <code>stdout</code> - which by this point has already been redirected to a file</li>
+</ul></li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5c47f20" class="outline-3">
+<h3 id="org5c47f20"><a href="https://effective-shell.com/part-2-core-skills/thinking-in-pipelines/#one-last-trick---the-t-pipe">The T Pipe</a></h3>
+<div class="outline-text-3" id="text-org5c47f20">
+
+<div id="org82eba4f" class="figure">
+<p><img src="https://effective-shell.com/assets/images/diagram-tee-6ad6dadcfa804f75f96b36807ffd688b.png" alt="diagram-tee-6ad6dadcfa804f75f96b36807ffd688b.png" width="100%" />
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash">cat ~/effective-shell/text/simpsons-characters.txt | sort | tee sorted.txt | uniq | grep <span style="color: #eabe9a;">'^A'</span>
+</pre>
+</div>
+
+<blockquote>
+<p>
+This command sorts the list of Simpsons characters, removes duplicates and filters down to ones which start with the letter A.
+</p>
+
+<p>
+The <code>tee</code> command is like a T-pipe in plumbing - it lets the stream of data go in two directions!
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8e9f896" class="outline-2">
+<h2 id="org8e9f896"><a href="https://effective-shell.com/part-2-core-skills/fly-on-the-command-line">Fly on the Command Line</a></h2>
+<div class="outline-text-2" id="text-org8e9f896">
+
+<div id="orge19c8de" class="figure">
+<p><img src="https://effective-shell.com/assets/images/command-line-a47c08acd86b732173b3f6dfc1955bb1.png" alt="command-line-a47c08acd86b732173b3f6dfc1955bb1.png" width="100%" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org273a315" class="outline-2">
+<h2 id="org273a315"><a href="https://effective-shell.com/part-2-core-skills/job-control">Job Control</a></h2>
+<div class="outline-text-2" id="text-org273a315">
+<p>
+当命令在前台执行，此时又需要在命令行做别的事情，就得先关掉前台运行的程
+序，完成要做的事情，再重新运行，比较麻烦。
+</p>
+
+<p>
+当然也可以直接另起一个终端，或者用 tmux。
+</p>
+
+<p>
+但如果想在一个命令窗口比较方便地处理任务，就需要学习 Job 的操作。
+</p>
+</div>
+
+<div id="outline-container-org3468c4f" class="outline-3">
+<h3 id="org3468c4f">Run in the Background</h3>
+<div class="outline-text-3" id="text-org3468c4f">
+<p>
+<code>browser-sync start -s . -f . --directory --no-notify --no-ui &amp;</code>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6bc9397" class="outline-3">
+<h3 id="org6bc9397">Move to Background</h3>
+<div class="outline-text-3" id="text-org6bc9397">
+<ul class="org-ul">
+<li><code>browser-sync start -s . -f . --directory --no-notify --no-ui</code></li>
+
+<li><code>Ctrl + Z</code>  挂起任务, 页面无法访问了</li>
+
+<li><code>bg %1</code> 丢到后台执行</li>
+
+<li><code>jobs</code> 查看当前 shell 运行的任务</li>
+
+<li><code>%n &amp;</code> 将数字为 <code>n</code> 的任务放到后台执行</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0c9245d" class="outline-3">
+<h3 id="org0c9245d">Moving Background Jobs to the Foreground</h3>
+<div class="outline-text-3" id="text-org0c9245d">
+<ul class="org-ul">
+<li><code>fg %n</code> 唤起到前台行</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6c6b3ef" class="outline-3">
+<h3 id="org6c6b3ef">Cleaning Up Jobs</h3>
+<div class="outline-text-3" id="text-org6c6b3ef">
+<ul class="org-ul">
+<li><code>jobs</code></li>
+
+<li><code>kill %1</code></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org100bb18" class="outline-3">
+<h3 id="org100bb18">Why You Shouldn't Use Jobs</h3>
+<div class="outline-text-3" id="text-org100bb18">
+<blockquote>
+<p>
+The most obvious one is that all jobs write to the same output,
+meaning you can quickly get garbled output like this:
+</p>
+
+
+<div id="org5d44deb" class="figure">
+<p><img src="https://effective-shell.com/assets/images/output-c59dac752d60566d856c3f01b4ef0ffb.png" alt="output-c59dac752d60566d856c3f01b4ef0ffb.png" width="100%" />
+</p>
+</div>
+</blockquote>
+
+<p>
+推荐学会 <code>CTRL + Z</code> 和 <code>fg</code> 将任务快速来回切换，解决一些临时需要解决的任务即可。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd3ec4c9" class="outline-2">
+<h2 id="orgd3ec4c9">Shell Scripting Essentials</h2>
+<div class="outline-text-2" id="text-orgd3ec4c9">
+</div>
+<div id="outline-container-org6eb7ba6" class="outline-3">
+<h3 id="org6eb7ba6"><a href="https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#what-is-a-shell-script">什么是 Shell Script</a></h3>
+<div class="outline-text-3" id="text-org6eb7ba6">
+<blockquote>
+<p>
+A shell script is just a text file which contains a set of commands.
+</p>
+</blockquote>
+
+<p>
+当你发现总是重复敲一系列命令的时候，就可以考虑将这些重复的序列写脚本，这样有几个好处：
+</p>
+
+<ul class="org-ul">
+<li>节省时间，不用每次敲一些重复的命令</li>
+
+<li>可以使用你喜欢的编辑器编辑脚本，添加注释描述你想实现的事情，可以利用 git 管理版本</li>
+
+<li>作为脚本文件，便于机器之间的分享，与人之间的分享</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9f88ffc" class="outline-3">
+<h3 id="org9f88ffc">实现一个 'common' 命令</h3>
+<div class="outline-text-3" id="text-org9f88ffc">
+<ul class="org-ul">
+<li>Read a large number of commands from the history</li>
+
+<li>Sort the commands, then count the number of duplicates</li>
+
+<li>Sort this list showing the most commonly run commands first</li>
+
+<li>Print the results to the screen.</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-zsh"># Write the title of our command.
+echo "common commands:"
+
+# Show the most commonly used commands.
+tail ~/.bash_history -n 1000 | sort | uniq -c | sed 's/^ *//' | sort -n -r | head -n 10
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgef73bdf" class="outline-4">
+<h4 id="orgef73bdf"><a href="https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#multi-line-commands">命令过长时如何换行</a></h4>
+<div class="outline-text-4" id="text-orgef73bdf">
+<div class="org-src-container">
+<pre class="src src-zsh"># Show the most commonly used commands.
+tail ~/.bash_history -n 1000 \
+    | sort \
+    | uniq -c \
+    | sed 's/^ *//' \
+    | sort -n -r \
+    | head -n 10
+</pre>
+</div>
+
+<blockquote>
+<p>
+Be careful when you split lines up - the continuation character must
+be <b>the last character on the line</b>. If you add something after it (such
+as a comment) then the command will fail.
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org98cbc03" class="outline-3">
+<h3 id="org98cbc03"><a href="https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#running-a-shell-script">如何运行脚本</a></h3>
+<div class="outline-text-3" id="text-org98cbc03">
+</div>
+<div id="outline-container-org1566aa3" class="outline-4">
+<h4 id="org1566aa3">通过 shell 程序执行</h4>
+<div class="outline-text-4" id="text-org1566aa3">
+<div class="org-src-container">
+<pre class="src src-shell">bash ~/scripts/common.sh
+
+sh ~/scripts/common.sh
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge04d1e4" class="outline-4">
+<h4 id="orge04d1e4">让脚本可执行，通过脚本的路径执行</h4>
+<div class="outline-text-4" id="text-orge04d1e4">
+<div class="org-src-container">
+<pre class="src src-shell">chmod +x ~/scripts/common.sh
+
+~/scripts/common.v1.sh
+</pre>
+</div>
+
+<p>
+但这种方式由于没有指定执行脚本的 shell 程序，如果你用的是 Bash，那就是
+用 Bash 执行，如果用的是 zsh，那就是 zsh 执行。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc314059" class="outline-3">
+<h3 id="orgc314059"><a href="https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#using-shebangs">shebangs</a></h3>
+<div class="outline-text-3" id="text-orgc314059">
+<p>
+让脚本可执行后，它最终使用什么执行，是取决于执行环境的，这就容易产生歧义。
+</p>
+
+<p>
+例如是用 Bash 相关语法写的脚本，如果是由 zsh 执行，就有可能出错。
+</p>
+
+<p>
+为了避免歧义，需要指定执行脚本的 shell，这就是 <code>shebangs</code> 的作用。
+</p>
+
+<blockquote>
+<p>
+A <b>shebang</b> is a special set of symbols at the beginning of a file that
+tells the system what program should be used to run the file.
+</p>
+
+<p>
+The shebang is the two characters - <code>#!</code>. The name 'shebang' comes from
+the names of the symbols. The first symbol is a 'sharp' symbol
+(sometimes it is called a hash, it depends a little on context). The
+second symbol is an exclamation point. In programming the exclamation
+point is sometimes called the 'bang' symbol. When we put the two
+together, we get 'sharp bang', which is shortened to 'shebang'.
+</p>
+</blockquote>
+
+<p>
+之前的脚本，可以加上 <code>shebangs</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;">#</span><span style="color: #64727d;">!/usr/bin/</span><span style="color: #db6e8f;">sh</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Write the title of our command.</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"common commands:"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Show the most commonly used commands.</span>
+tail ~/.bash_history -n 1000 | sort | uniq -c | sed <span style="color: #eabe9a;">'s/^ *//'</span> | sort -n -r | head -n 10
+</pre>
+</div>
+
+<p>
+也可以指定其他执行脚本的程序:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;">#</span><span style="color: #64727d;">!/usr/bin/</span><span style="color: #db6e8f;">python3</span>
+
+<span style="color: #db6e8f;">print</span><span style="color: #6e94b9;">(</span><span style="color: #eabe9a;">'Hello from Python'</span><span style="color: #6e94b9;">)</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;">#</span><span style="color: #64727d;">!/usr/bin/</span><span style="color: #db6e8f;">bash</span>
+
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Hello from Bash"</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;">#</span><span style="color: #64727d;">!/usr/bin/</span><span style="color: #db6e8f;">node</span>
+
+<span style="color: #88c0d0;">console.log</span><span style="color: #6e94b9;">(</span><span style="color: #eabe9a;">"Hello from Node.js"</span><span style="color: #6e94b9;">)</span>;
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org7791223" class="outline-4">
+<h4 id="org7791223"><a href="https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#shebangs---dealing-with-paths">env</a></h4>
+<div class="outline-text-4" id="text-org7791223">
+<p>
+<code>shebangs</code> 指定的程序，需要通过完整路径指向程序的可执行文件，而如果指向的程序不存在，就会出错。
+</p>
+
+<p>
+你可以 <code>type</code> 命令找到某个程序的路径，但会有些麻烦。
+</p>
+
+<p>
+此时就可以利用 <code>env</code> (<i>set environment and execute command</i>) ，它会去执行命令，并从 <code>$PATH</code> 上找到命令所在的路径。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;">#</span><span style="color: #64727d;">!/usr/bin/</span><span style="color: #db6e8f;">env</span><span style="color: #64727d;"> bash</span>
+
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Hello from Bash"</span>
+</pre>
+</div>
+
+<blockquote>
+<p>
+Using a shebang to specify the exact command to run, and then using
+the <code>env</code> command to allow the $PATH to be searched is generally the
+safest and most portable way to specify how a shell script should run.
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf95db74" class="outline-3">
+<h3 id="orgf95db74"><a href="https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#sourcing-shell-scripts">Sourcing Shell Scripts</a></h3>
+<div class="outline-text-3" id="text-orgf95db74">
+<blockquote>
+<p>
+You can also use the <code>source</code> (execute commands from a file) command to
+load the contents of a file into the <b>current</b> shell.
+</p>
+
+<p>
+Remember that when we run a shell script, a new shell is created as a
+child process of the current shell. This means that if you change
+something in the environment, such as a variable, it will not affect
+the environment of the shell that ran the script.
+</p>
+</blockquote>
+
+<p>
+当执行 shell 脚本的时候，实际上会创建一个 <b>新的 shell</b> 去执行，和当前的 shell 环境是分开的。
+</p>
+
+<p>
+如果想将 shell 脚本的改动作用在当前 shell 环境，则可以用 <code>source</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">source</span> ~/effective-shell/scripts/show-info.sh
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">dot sourcing</span>
+. ~/effective-shell/scripts/show-info.sh
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc4dd061" class="outline-3">
+<h3 id="orgc4dd061">如何安装脚本</h3>
+<div class="outline-text-3" id="text-orgc4dd061">
+<blockquote>
+<p>
+This works because when the shell sees a command, it searches through
+the folders in the <code>$PATH</code> environment variable to find out where the
+command is. And the <code>/usr/local/bin</code> folder is in this list of paths.
+</p>
+
+<p>
+Why do we use the <code>/usr/local/bin</code> folder rather than the <code>/usr/bin</code>
+folder? This is just a convention. In general, the <code>/usr/bin</code> folder is
+for commands which are install  ed with package manager tools like apt
+or Homebrew (on MacOS). The <code>/usr/local/bin</code> folder is used for commands
+which you create for yourself on your local machine and manage
+yourself.
+</p>
+</blockquote>
+
+<p>
+通过软链接(<code>ln -s</code>)将脚本放到 <code>/usr/local/bin</code>, 就可以直接通过脚本名执行脚本。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">ln -s ~/scripts/common.v1.sh /usr/local/bin/common
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org77162bb" class="outline-2">
+<h2 id="org77162bb">Shell Scripting 语法</h2>
+<div class="outline-text-2" id="text-org77162bb">
+</div>
+<div id="outline-container-org997c897" class="outline-3">
+<h3 id="org997c897"><a href="https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/">变量</a></h3>
+<div class="outline-text-3" id="text-org997c897">
+<blockquote>
+<p>
+<b>Variables</b> are places where the system, the shell, or shell users like
+ourselves can store data.
+</p>
+
+<p>
+By convention, if a variable is in <b>uppercase</b> then it is an <b>environment
+variable</b> or a built in variable that comes from the shell.
+</p>
+
+<p>
+An environment variable is a variable that is set by the system. They
+often contain useful values to help configure your system.
+</p>
+
+<p>
+Variables that you define yourself should be <b>lowercase</b>.
+</p>
+
+<p>
+This helps to distinguish between environment variables and your own
+variables.
+</p>
+
+<p>
+It is a good habit to use lowercase for variable names. Using
+uppercase will work, but when you use uppercase you run the risk of
+'overwriting' the value of an environment variable and causing
+unexpected results later.
+</p>
+
+<p>
+The variables we create in the Shell are called <b>Shell Variables</b>. They
+are accessible in the <b>current shell session</b> that we are running.
+</p>
+
+<p>
+Shell variables are <b>isolated to the current process</b>.
+</p>
+
+<p>
+If we run another process from our shell, such as another shell script
+or program, our shell variables are not inherited by this
+process.
+</p>
+
+<p>
+This is by design - these shell variables are expected to be used for
+our local session only.
+</p>
+
+<p>
+If you want to ensure that a variable is available to all child
+processes, you can use the <code>export</code> (set export attribute) builtin to
+tell the shell to export the variable as an Environment Variable.
+</p>
+
+<p>
+<b>Environment Variables are always inherited by child processes</b> - so if
+you need to provide some kind of configuration or context to a child
+process, you will likely want to export your variable.
+</p>
+</blockquote>
+</div>
+
+<div id="outline-container-org38de58d" class="outline-4">
+<h4 id="org38de58d">赋值和引用</h4>
+<div class="outline-text-4" id="text-org38de58d">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">&#36890;&#36807; `=` &#36171;&#20540;&#21464;&#37327;&#65292;&#27880;&#24847;&#27809;&#26377;&#31354;&#26684;</span>
+<span style="color: #c6797e;">password</span>=<span style="color: #eabe9a;">"somethingsecret"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">$(...) execute a set of commands in a 'sub shell'</span>
+<span style="color: #c6797e;">masked_password</span>=$<span style="color: #6e94b9;">(</span><span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"$password"</span> | sed <span style="color: #eabe9a;">'s/./*/g'</span><span style="color: #6e94b9;">)</span>
+
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Setting password '${masked_password}'..."</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">&#26174;&#31034;&#24341;&#29992;&#21464;&#37327; ${variable}</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">wrong&#65292;&#20250;&#25214; USER_backup &#21464;&#37327;&#65292;&#20294;&#25214;&#19981;&#21040;</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Creating backup folder at: '$USER_backup'"</span>
+mkdir $<span style="color: #c6797e;">USER_backup</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">correct</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Creating backup folder at: '${USER}_backup'"</span>
+mkdir <span style="color: #eabe9a;">"${USER}_backup"</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org66bf2f2" class="outline-4">
+<h4 id="org66bf2f2"><a href="https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#arrays">数组</a></h4>
+<div class="outline-text-4" id="text-org66bf2f2">
+<blockquote>
+<p>
+Arrays in <b>Bash</b> start at index <b>zero</b>. Arrays in the <b>Z-Shell</b> start at
+index <b>one</b> - this can cause confusion and mistakes in scripts so it is
+something you might have to consider if you are writing scripts that
+can be used by either shell.
+</p>
+
+<p>
+<b>It's important to use curly braces around your array expressions.</b>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #c6797e;">days</span>=<span style="color: #6e94b9;">(</span><span style="color: #eabe9a;">"Monday"</span> <span style="color: #eabe9a;">"Tuesday"</span> <span style="color: #eabe9a;">"Wednesday"</span> <span style="color: #eabe9a;">"Thursday"</span> <span style="color: #eabe9a;">"Friday"</span> <span style="color: #eabe9a;">"Saturday"</span> <span style="color: #eabe9a;">"Sunday"</span><span style="color: #6e94b9;">)</span>
+
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"The first day is: ${days[0]}"</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"The last day is: ${days[6]}"</span>
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="100%">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Operation</th>
+<th scope="col" class="org-left">Syntax</th>
+<th scope="col" class="org-left">Syntax</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Create Array</td>
+<td class="org-left">array=()</td>
+<td class="org-left">days=("Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")</td>
+</tr>
+
+<tr>
+<td class="org-left">Get Array Element</td>
+<td class="org-left">${array[index]}</td>
+<td class="org-left">echo ${days[2]} # prints 'Wednesday'</td>
+</tr>
+
+<tr>
+<td class="org-left">Get All Elements</td>
+<td class="org-left">${array[@]}</td>
+<td class="org-left">echo ${days[@]} # prints 'Monday Tuesday Wednesday Thursday Friday Saturday Sunday'</td>
+</tr>
+
+<tr>
+<td class="org-left">Set Array Element</td>
+<td class="org-left">array[index]=value</td>
+<td class="org-left">days[0]="Mon"</td>
+</tr>
+
+<tr>
+<td class="org-left">Get Array Indexes</td>
+<td class="org-left">${!array[@]}</td>
+<td class="org-left">arr=(); arr[3]="apple"; arr[5]="pear"; echo ${!arr[@]} # prints 3 5</td>
+</tr>
+
+<tr>
+<td class="org-left">Get Array Length</td>
+<td class="org-left">${#array[@]}</td>
+<td class="org-left">echo ${#days[@]} # Prints 7</td>
+</tr>
+
+<tr>
+<td class="org-left">Append to Array</td>
+<td class="org-left">array+=(val1 val2 valN)</td>
+<td class="org-left">fruits=(); fruits+=("Apples"); fruits+=("Pears" "Grapes"); echo ${fruits[@]} # prints 'Apples Pears Grapes'</td>
+</tr>
+
+<tr>
+<td class="org-left">Get a subset of elements</td>
+<td class="org-left">${array[@]:start:number}</td>
+<td class="org-left">echo ${days[@]:5:2} # prints 'Saturday Sunday'</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgba1313f" class="outline-4">
+<h4 id="orgba1313f"><a href="https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#associative-arrays">对象 (Associative Arrays)</a></h4>
+<div class="outline-text-4" id="text-orgba1313f">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">Create an associative array called 'book'.</span>
+<span style="color: #db6e8f;">declare</span> -A book
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Set some values on the array.</span>
+<span style="color: #c6797e;">book</span><span style="color: #6e94b9;">[</span>title<span style="color: #6e94b9;">]</span>=<span style="color: #eabe9a;">"Effective Shell"</span>
+<span style="color: #c6797e;">book</span><span style="color: #6e94b9;">[</span>author<span style="color: #6e94b9;">]</span>=<span style="color: #eabe9a;">"Dave Kerr"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Show one of the values.</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Book details: ${book[title]} - ${book[author]}"</span>
+</pre>
+</div>
+
+<blockquote>
+<p>
+If you find yourself using associative arrays, I expect that there is
+a good chance you are <a href="https://effective-shell.com/part-6-advanced-techniques/how-to-avoid-scripting/">trying to do something that is more complex than
+is suitable for a shell script.</a>
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-org6f59f1a" class="outline-4">
+<h4 id="org6f59f1a"><a href="https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#quoting-variables-and-values">关于引号</a></h4>
+<div class="outline-text-4" id="text-org6f59f1a">
+<blockquote>
+<p>
+There is often a lot of confusion about a specific topic in the
+shell - when should you surround a variable in quotes?
+</p>
+
+<p>
+This might sound like a purely stylistic question, but surrounding a
+variable in quotes can dramatically change how your script works.
+</p>
+
+<p>
+Quoting Tips:
+</p>
+
+<ul class="org-ul">
+<li>Use <b>double quotes</b> most of the time - they will handle variables and
+sub-shells for you and not do weird things like word splitting</li>
+
+<li>Use <b>single quotes</b> for literal values</li>
+
+<li>Use <b>no quotes</b> if you want to expand wildcards</li>
+</ul>
+</blockquote>
+</div>
+
+<ul class="org-ul">
+<li><a id="org85c789b"></a>Single Quotes - Literal Values<br />
+<div class="outline-text-5" id="text-org85c789b">
+<blockquote>
+<p>
+Single quotes should be used when you want to put <b>special characters</b>
+into a variable, or call a command that includes whitespace or special
+characters.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #c6797e;">message</span>=<span style="color: #eabe9a;">'   ~~ Save $$$ on with ** "this deal" ** ! ~~   '</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"$message"</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org03c68ad"></a>Double Quotes - Parameter Expansion<br />
+<div class="outline-text-5" id="text-org03c68ad">
+<blockquote>
+<p>
+Double quotes work in a very similar way to single quotes except that
+they allow you to <b>use parameter expansion</b> with the <code>$</code> dollar symbol and
+<b>escaping with the <code>\</code> symbol</b>.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #c6797e;">deal</span>=<span style="color: #eabe9a;">"Buy one get one free"</span>
+<span style="color: #c6797e;">message</span>=<span style="color: #eabe9a;">"Deal is '$deal' - save \$"</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"$message"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">`` &#20869;&#30340;&#20063;&#22312;&#19968;&#20010; sub-shell &#25191;&#34892;&#65292;&#20294;&#24212;&#35813;&#36991;&#20813;&#20351;&#29992;&#65292;&#32479;&#19968;&#20351;&#29992; $() &#30340;&#24418;&#24335;</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"The date is `date`"</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orgcc8eead"></a><a href="https://effective-shell.com/part-6-advanced-techniques/understanding-shell-expansion/">No Qoutes - Shell Expansion</a><br />
+<div class="outline-text-5" id="text-orgcc8eead">
+<blockquote>
+<p>
+If you don't include quotes around a variable or value, then the shell
+will perform a series of operations called <b>Shell Expansion</b>.
+</p>
+</blockquote>
+
+<dl class="org-dl">
+<dt><code>Brace expansion</code></dt><dd><code>touch file{1,2,3}</code> is expanded to <code>touch file1
+  file2 file3</code></dd>
+
+<dt><code>Tilde expansion</code></dt><dd><code>cd ~</code> is expanded to <code>cd /home/dwmkerr</code></dd>
+
+<dt><code>Parameter and variable expansion</code></dt><dd><code>echo $SHELL</code> is expanded to <code>echo
+  /usr/bin/sh</code> (note that this expansion also occurs with double
+quotes)</dd>
+
+<dt><code>Command substitution</code></dt><dd><code>echo $(date)</code> is expanded to echo the results
+of the date command (this also occurs with double quotes)</dd>
+
+<dt><code>Arithmetic expansion</code></dt><dd><code>square=$((4 * 4))</code> has the value <code>4 * 4</code>
+evaluated mathematically (we see this at the end of this chapter)</dd>
+
+<dt><code>Word splitting</code></dt><dd>see <a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders">Loops and working with Files and Folders</a></dd>
+
+<dt><code>Pathname expansion</code></dt><dd><code>ls *.txt</code> is expanded to all filename that
+match the wildcard pattern *.txt</dd>
+</dl>
+</div>
+</li>
+
+<li><a id="org7e7f070"></a><a href="https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#shell-parameter-expansion">Shell Parameter Expansion</a><br />
+<div class="outline-text-5" id="text-org7e7f070">
+<blockquote>
+<p>
+Shell Parameter Expansion is the process by which the shell evaluates
+a variable that follows the <code>$</code> dollar symbol.
+</p>
+
+<p>
+But there are a number of special features we can use when expanding
+parameters. There are many options available and you can find them all
+by running <code>man bash</code> and searching for the text <code>EXPANSION</code>.
+</p>
+
+<p>
+I would avoid these techniques if possible as they are fairly
+specific to Bash and likely will be confusing to readers.
+</p>
+
+<p>
+It is generally enough to know that if you see special symbols inside
+a ${variable} expression then the writer is performing some kind of
+string manipulation.
+</p>
+</blockquote>
+
+<ul class="org-ul">
+<li>Length: <code>${#var}</code></li>
+
+<li>Set Default Value: <code>${var:-default}</code></li>
+
+<li>Substring: <code>${var:start:count}</code></li>
+
+<li>Make Uppercase: <code>${var^^}</code></li>
+
+<li>Make Lowercase: <code>${var,,}</code></li>
+
+<li>&#x2026;</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+
+<div id="outline-container-org04a11b5" class="outline-4">
+<h4 id="org04a11b5"><a href="https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#the-read-command">The Read Command</a></h4>
+<div class="outline-text-4" id="text-org04a11b5">
+<blockquote>
+<p>
+The <code>read</code> (<i>read from standard input</i>) command can be used to read a line
+of text from standard input. When the text is read it is put into a
+variable, allowing it to be used in our scripts.
+</p>
+
+<p>
+The <code>read</code> command reads a line of text from standard input and stores
+the result in a variable called <code>REPLY</code>. We can then use this variable
+to use the text that was read.
+</p>
+
+<p>
+In general you should provide a variable name for <code>read</code> - it will make
+your script a little easier to understand. Not every user will know
+that the <code>$REPLY</code> variable is the default location, so they might find
+it confusing if you don't provide a variable name. By specifying a
+variable name explicitly we make our script easier to follow.
+</p>
+</blockquote>
+
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">&#40664;&#35748;&#23384;&#22312; $REPLY</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"What is your name?"</span>
+<span style="color: #db6e8f;">read</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Hello, $REPLY"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">&#25351;&#23450;&#23384;&#20540;&#30340;&#21464;&#37327;</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"What is your name?"</span>
+<span style="color: #db6e8f;">read</span> name
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Hello, ${name}"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">prompt (bash)</span>
+<span style="color: #db6e8f;">read</span> -p <span style="color: #eabe9a;">"Please enter your name: "</span> name
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Hello, $name"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">prompt (zsh)</span>
+<span style="color: #db6e8f;">read</span> <span style="color: #eabe9a;">"?Please enter your name: "</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Hello, $REPLY"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">The -s (silent) flag can be used to hide the input as it is being written.</span>
+<span style="color: #db6e8f;">read</span> -s -p <span style="color: #eabe9a;">"Enter a new password: "</span> password
+<span style="color: #c6797e;">masked_password</span>=$<span style="color: #6e94b9;">(</span><span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"$password"</span> | sed <span style="color: #eabe9a;">'s/./*/g'</span><span style="color: #6e94b9;">)</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">""</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Your password is: $masked_password"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Limiting the Input</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Use the -n flag with the value 1 to specify that we want to read a single character only.</span>
+<span style="color: #db6e8f;">read</span> -n 1 -p <span style="color: #eabe9a;">"Continue? (y/n): "</span> yesorno
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">""</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"You typed: ${yesorno}"</span>
+</pre>
+</div>
+
+<p>
+<a href="https://wangdoc.com/bash/quotation#here-%E6%96%87%E6%A1%A3">Here 文档</a>, 一种输入多行字符串的方法。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbaa45c9" class="outline-4">
+<h4 id="orgbaa45c9"><a href="https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#mathematics">Mathematics</a></h4>
+<div class="outline-text-4" id="text-orgbaa45c9">
+<p>
+格式： <code>$((expression))</code>
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="100%">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Operator</th>
+<th scope="col" class="org-left">Meaning</th>
+<th scope="col" class="org-left">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">+</td>
+<td class="org-left">Addition</td>
+<td class="org-left">echo $((3+4)) # prints 7</td>
+</tr>
+
+<tr>
+<td class="org-left">-</td>
+<td class="org-left">Subtraction</td>
+<td class="org-left">echo $((4-2)) # prints 2</td>
+</tr>
+
+<tr>
+<td class="org-left">*</td>
+<td class="org-left">Multiplication</td>
+<td class="org-left">echo $((4*2)) # prints 8</td>
+</tr>
+
+<tr>
+<td class="org-left">**</td>
+<td class="org-left">Exponent</td>
+<td class="org-left">echo $((4**3)) # prints 64</td>
+</tr>
+
+<tr>
+<td class="org-left">%</td>
+<td class="org-left">Modulus</td>
+<td class="org-left">echo $((7%3)) # prints 1</td>
+</tr>
+
+<tr>
+<td class="org-left">++i</td>
+<td class="org-left">Prefix Increment</td>
+<td class="org-left">i=1; echo $((++i)) # prints 1, i is set to 2</td>
+</tr>
+
+<tr>
+<td class="org-left">i++</td>
+<td class="org-left">Postfix Increment</td>
+<td class="org-left">i=1; echo $((i++)) # prints 2, i is set to 2</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x2013;i</td>
+<td class="org-left">Prefix Decrement</td>
+<td class="org-left">i=3; echo $((&#x2013;i)) # prints 3, i is set to 2</td>
+</tr>
+
+<tr>
+<td class="org-left">i--</td>
+<td class="org-left">Postfix Decrement</td>
+<td class="org-left">i=3; echo $((i&#x2013;)) # prints 2, i is set to 2</td>
+</tr>
+
+<tr>
+<td class="org-left">i+=n</td>
+<td class="org-left">Increment</td>
+<td class="org-left">i=3; echo $((i+=3)) # prints 6, i is set to 6</td>
+</tr>
+
+<tr>
+<td class="org-left">i-=n</td>
+<td class="org-left">Decrement</td>
+<td class="org-left">i=3; echo $((i-=2)) # prints 1, i is set to 1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3403c33" class="outline-3">
+<h3 id="org3403c33"><a href="https://effective-shell.com/part-4-shell-scripting/mastering-conditional-logic">条件</a></h3>
+<div class="outline-text-3" id="text-org3403c33">
+<p>
+语法结构：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">if</span> &lt;test-commands&gt;
+<span style="color: #db6e8f;">then</span>
+    &lt;conditional-command 1&gt;
+    &lt;conditional-command 2&gt;
+    &lt;conditional-command n&gt;
+<span style="color: #db6e8f;">fi</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">&#20889;&#22312;&#19968;&#34892;, &#29992; `;` &#20998;&#38548;</span>
+<span style="color: #db6e8f;">if</span> &lt;test-commands&gt;; <span style="color: #db6e8f;">then</span> &lt;conditional-command 1&gt; &lt;conditional-command 2&gt; &lt;conditional-command n&gt;; <span style="color: #db6e8f;">fi</span>
+
+</pre>
+</div>
+
+<blockquote>
+<p>
+The if statement will run the 'test commands'. If the result of the
+commands are all <b>zero</b> (which means 'success'), then each of the
+'conditional' commands will be run. We 'close' the if statement with
+the <code>fi</code> keyword, which is <code>if</code> written backwards.
+</p>
+</blockquote>
+</div>
+
+<div id="outline-container-org54c782e" class="outline-4">
+<h4 id="org54c782e"><a href="https://effective-shell.com/part-4-shell-scripting/mastering-conditional-logic#the-test-command">The Test Command</a></h4>
+<div class="outline-text-4" id="text-org54c782e">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">if</span> <span style="color: #fafff6; font-weight: bold;">!</span> test -d ~/backups
+<span style="color: #db6e8f;">then</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Creating backups folder"</span>
+    mkdir ~/backups
+<span style="color: #db6e8f;">fi</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">&#31616;&#20889;</span>
+<span style="color: #db6e8f;">if</span> <span style="color: #fafff6; font-weight: bold;">!</span> <span style="color: #6e94b9;">[</span> -d ~/backups <span style="color: #6e94b9;">]</span>
+<span style="color: #db6e8f;">then</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Creating backups folder"</span>
+    mkdir ~/backups
+<span style="color: #db6e8f;">fi</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">if</span> <span style="color: #6e94b9;">[</span> -x /usr/local/bin/common <span style="color: #6e94b9;">]</span>; <span style="color: #db6e8f;">then</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"The 'common' command has been installed and is executable."</span>
+<span style="color: #db6e8f;">elif</span> <span style="color: #6e94b9;">[</span> -e /usr/local/bin/common <span style="color: #6e94b9;">]</span>; <span style="color: #db6e8f;">then</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"The 'common' command has been installed and is not executable."</span>
+<span style="color: #db6e8f;">else</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"The 'common' command has not been installed."</span>
+<span style="color: #db6e8f;">fi</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">&amp;&amp; 'and' || 'or'</span>
+<span style="color: #db6e8f;">if</span> <span style="color: #6e94b9;">[</span> $<span style="color: #c6797e;">year</span> -ge 1980 <span style="color: #6e94b9;">]</span> &amp;&amp; <span style="color: #6e94b9;">[</span> $<span style="color: #c6797e;">year</span> -lt 1990 <span style="color: #6e94b9;">]</span>; <span style="color: #db6e8f;">then</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"$year is in the 1980s"</span>
+<span style="color: #db6e8f;">fi</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">-a 'and' -o 'or'</span>
+<span style="color: #db6e8f;">if</span> <span style="color: #6e94b9;">[</span> $<span style="color: #c6797e;">year</span> -ge 1980 <span style="color: #6e94b9;">]</span> &amp;&amp; <span style="color: #6e94b9;">[</span> $<span style="color: #c6797e;">year</span> -lt 1990 <span style="color: #6e94b9;">]</span>; <span style="color: #db6e8f;">then</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"$year is in the 1980s"</span>
+<span style="color: #db6e8f;">fi</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Chaining</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Run command1, if it succeeds run command2.</span>
+command1 &amp;&amp; command2
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Run command1, if it does not succeed run command2.</span>
+command1 || command2
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="100%">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Operator</th>
+<th scope="col" class="org-left">Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>-n</code></td>
+<td class="org-left">True if the length of a string is non-zero.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>-z</code></td>
+<td class="org-left">True if the length of a string is zero.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>-d</code></td>
+<td class="org-left">True if the file exists and is a folder.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>-e</code></td>
+<td class="org-left">True if the file exists, regardless of the file type.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>-f</code></td>
+<td class="org-left">True if the file exists and is a regular file.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>-L</code></td>
+<td class="org-left">True if the file exists and is a symbolic link.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>-r</code></td>
+<td class="org-left">True if the file exists and is readable.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>-s</code></td>
+<td class="org-left">True if the file exists and has a size greater than zero.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>-w</code></td>
+<td class="org-left">True if the file exists and is writable.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>-x</code></td>
+<td class="org-left">True if the file exists and is executable - if it is a directory this checks if it can be searched.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>file1 -nt file2</code></td>
+<td class="org-left">True if file1 exists and is newer than file2.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>file1 -ot file2</code></td>
+<td class="org-left">True if file1 exists and is older than file2.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>file1 -ef file2</code></td>
+<td class="org-left">True if file1 and file2 exist and are the same file.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>var</code></td>
+<td class="org-left">True if the variable var is set and is not empty.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>s1 = s2</code></td>
+<td class="org-left">True if the strings s1 and s2 are identical.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>s1 !​= s2</code></td>
+<td class="org-left">True if the strings s1 and s2 are not identical.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>n1 -eq n2</code></td>
+<td class="org-left">True if the numbers n1 and n2 are equal.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>n1 -ne n2</code></td>
+<td class="org-left">True if the numbers n1 and n2 are not equal.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>n1 -lt n2</code></td>
+<td class="org-left">True if the number n1 is less than n2.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>n1 -le n2</code></td>
+<td class="org-left">True if the number n1 is less than or equal to n2.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>n1 -gt n2</code></td>
+<td class="org-left">True if the number n1 is greater than n2.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>n1 -ge n2</code></td>
+<td class="org-left">True if the number n1 is greater than or equal to n2.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org1c1f23d" class="outline-4">
+<h4 id="org1c1f23d"><a href="https://effective-shell.com/part-4-shell-scripting/mastering-conditional-logic#case-statements">Case Statements</a></h4>
+<div class="outline-text-4" id="text-org1c1f23d">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">case</span> &lt;expression&gt;<span style="color: #db6e8f;"> in</span>
+    pattern1)
+        &lt;pattern1-commands&gt;
+        ;;
+    pattern2 | pattern3)
+        &lt;pattern2and3-commands&gt;
+        ;;
+    *)
+        &lt;default-commands&gt;
+        ;;
+<span style="color: #db6e8f;">esac</span>
+</pre>
+</div>
+
+<p>
+以 <code>case</code> 开头，以 <code>esac</code> 结束（反转了词序）。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">read</span> -p <span style="color: #eabe9a;">"Yes or no: "</span> response
+<span style="color: #db6e8f;">case</span> <span style="color: #eabe9a;">"${response}"</span><span style="color: #db6e8f;"> in</span>
+    y | Y | yes | ok)
+        <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"You have confirmed"</span>
+        ;;
+    n | N | no)
+        <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"You have denied"</span>
+        ;;
+    *)
+        <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"'${response}' is not a valid response"</span>
+        ;;
+<span style="color: #db6e8f;">esac</span>
+
+<span style="color: #db6e8f;">read</span> -p <span style="color: #eabe9a;">"Yes or no: "</span> response
+<span style="color: #db6e8f;">case</span> <span style="color: #eabe9a;">"${response}"</span><span style="color: #db6e8f;"> in</span>
+    <span style="color: #6e94b9;">[</span>yY<span style="color: #6e94b9;">]</span>*)
+        <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"You have (probably) confirmed"</span>
+        ;;
+    <span style="color: #6e94b9;">[</span>nN<span style="color: #6e94b9;">]</span>*)
+        <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"You have (probably) denied"</span>
+        ;;
+    *)
+        <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"'${response}' is not a valid response"</span>
+    ;;
+<span style="color: #db6e8f;">esac</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5dcf90b" class="outline-3">
+<h3 id="org5dcf90b"><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/">循环</a></h3>
+<div class="outline-text-3" id="text-org5dcf90b">
+</div>
+<div id="outline-container-orgc49df25" class="outline-4">
+<h4 id="orgc49df25"><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#the-for-loop-index-">The For Loop</a></h4>
+<div class="outline-text-4" id="text-orgc49df25">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">for</span> &lt;name&gt;<span style="color: #db6e8f;"> in</span> &lt;words&gt;
+<span style="color: #db6e8f;">do</span>
+    &lt;conditional-command 1&gt;
+    &lt;conditional-command 2&gt;
+    &lt;conditional-command n&gt;
+<span style="color: #db6e8f;">done</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">for</span> item<span style="color: #db6e8f;"> in</span> ./*
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Found: $item"</span>
+<span style="color: #db6e8f;">done</span>
+</pre>
+</div>
+</div>
+
+<ul class="org-ul">
+<li><a id="org91eaea2"></a><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---arrays">For Loops - Arrays</a><br />
+<div class="outline-text-5" id="text-org91eaea2">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #c6797e;">days</span>=<span style="color: #6e94b9;">(</span><span style="color: #eabe9a;">"Monday"</span> <span style="color: #eabe9a;">"Tuesday"</span> <span style="color: #eabe9a;">"Wednesday"</span> <span style="color: #eabe9a;">"Thursday"</span> <span style="color: #eabe9a;">"Friday"</span> <span style="color: #eabe9a;">"Saturday"</span> <span style="color: #eabe9a;">"Sunday"</span><span style="color: #6e94b9;">)</span>
+<span style="color: #db6e8f;">for</span> day<span style="color: #db6e8f;"> in</span> $<span style="color: #6e94b9;">{</span><span style="color: #c6797e;">days</span><span style="color: #5d80ae;">[</span>@<span style="color: #5d80ae;">]</span><span style="color: #6e94b9;">}</span>
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #db6e8f;">echo</span> -n <span style="color: #eabe9a;">"$day, "</span>
+<span style="color: #db6e8f;">done</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"happy days!"</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orgc2c517d"></a><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---words">For Loops - Words</a><br />
+<div class="outline-text-5" id="text-orgc2c517d">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #c6797e;">sentence</span>=<span style="color: #eabe9a;">"What can the harvest hope for, if not for the care of the Reaper Man?"</span>
+<span style="color: #db6e8f;">for</span> word<span style="color: #db6e8f;"> in</span> $<span style="color: #c6797e;">sentence</span>
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"$word"</span>
+<span style="color: #db6e8f;">done</span>
+</pre>
+</div>
+
+<blockquote>
+<p>
+The reason is that the shell is a <b>text based</b> environment and the
+designers have taken this into account. Most of the time when we are
+running shell commands in a terminal we are running commands that
+simply output text. If we want to be able to use the output of these
+commands in constructs like loops, the shell has to decide how to
+split the output up.
+</p>
+</blockquote>
+</div>
+</li>
+
+<li><a id="org763a513"></a><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---files-with-wildcards">For Loops - Files with Wildcards</a><br />
+<div class="outline-text-5" id="text-org763a513">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">for</span> script<span style="color: #db6e8f;"> in</span> ~/effective-shell/scripts/*.sh
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Found script: $script"</span>
+<span style="color: #db6e8f;">done</span>
+</pre>
+</div>
+
+<blockquote>
+<p>
+By default, if the shell doesn't find anything with a wildcard pattern
+it <b>does not expand</b> it. This is very confusing.
+</p>
+
+<p>
+By default, if a shell 'glob' (a pattern that includes a wildcard)
+does not match any files, the shell simply leaves the pattern as-is.
+</p>
+</blockquote>
+</div>
+
+<ul class="org-ul">
+<li><a id="org6a8875d"></a>nullglob (return null for unmatched globs)<br />
+<div class="outline-text-6" id="text-org6a8875d">
+<div class="org-src-container">
+<pre class="src src-bash">shopt -s nullglob
+<span style="color: #db6e8f;">for</span> script<span style="color: #db6e8f;"> in</span> ~/bad-shell/scripts/*.sh
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Found: $script"</span>
+<span style="color: #db6e8f;">done</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org66cc662"></a>test<br />
+<div class="outline-text-6" id="text-org66cc662">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">for</span> script<span style="color: #db6e8f;"> in</span> ~/bad-shell/scripts/*.sh
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">If the file / folder doesn't exist, skip it.</span>
+    <span style="color: #db6e8f;">if</span> <span style="color: #fafff6; font-weight: bold;">!</span> <span style="color: #6e94b9;">[</span> -e <span style="color: #eabe9a;">"$script"</span> <span style="color: #6e94b9;">]</span>; <span style="color: #db6e8f;">then continue</span>; <span style="color: #db6e8f;">fi</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Found: $script"</span>
+<span style="color: #db6e8f;">done</span>
+</pre>
+</div>
+</div>
+</li>
+</ul>
+</li>
+
+<li><a id="orgb7111e8"></a><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---files-with-find">For Loops - Files with Find</a><br />
+<div class="outline-text-5" id="text-orgb7111e8">
+<blockquote>
+<p>
+If the files that you are trying to loop through are too complex to
+match with a shell pattern, you can use the <code>find</code> command to search for
+files, then loop through the results.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">Create a symlink to 'effective-shell' that has a space in it...</span>
+ln -s ~/effective shell ~/effective<span style="color: #eabe9a;">\ </span>shell
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Find all symlinks and print each one.</span>
+<span style="color: #c6797e;">links</span>=$<span style="color: #6e94b9;">(</span>find ~ -type l<span style="color: #6e94b9;">)</span>
+<span style="color: #db6e8f;">for</span> link<span style="color: #db6e8f;"> in</span> $<span style="color: #c6797e;">links</span>
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Found Link: $link"</span>
+<span style="color: #db6e8f;">done</span>
+</pre>
+</div>
+
+<p>
+在 <a href="#org763a513">For Loops - Files with Wildcards</a> 中看到，shell 会按照空格分割文本，
+此时 find 找到的文件如果带有空格，也会被分割，导致文件名不对。
+</p>
+
+<p>
+一种解决办法时临时改变 shell 使用的分割符，由于 find 找回来的文件都是
+以换行符分割的，因此，可以将分割符临时从空格设置为换行符。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">Save the current value of IFS - so we can restore it later. Split on newlines.</span>
+<span style="color: #c6797e;">old_ifs</span>=$<span style="color: #c6797e;">IFS</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">We have to use the complex looking 'ANSI C Quoting' syntax to set $IFS to a newline</span>
+<span style="color: #c6797e;">IFS</span>=$<span style="color: #eabe9a;">'\n'</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Find all symlinks and print each one.</span>
+<span style="color: #c6797e;">links</span>=$<span style="color: #6e94b9;">(</span>find ~ -type l<span style="color: #6e94b9;">)</span>
+<span style="color: #db6e8f;">for</span> link<span style="color: #db6e8f;"> in</span> $<span style="color: #c6797e;">links</span>
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Found Link: $link"</span>
+<span style="color: #db6e8f;">done</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Restore the original value of IFS.</span>
+<span style="color: #c6797e;">IFS</span>=$<span style="color: #c6797e;">old_ifs</span>
+</pre>
+</div>
+
+<blockquote>
+<p>
+The <code>$IFS</code> variable is the '<a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#word-splitting-and-ifsindex">internal field separator</a>' variable. It is
+what the shell uses to decide what characters should be used to split
+up text into words. By default, this variable includes the space
+character, the tab character and the newline character.
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+I believe that in this case it is probably best to not use a shell
+script. There is no solution that is particularly clean or simple. In
+this case I think you might be better off using a programming
+language.
+</p>
+</blockquote>
+</div>
+</li>
+
+<li><a id="org763f4b5"></a><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---looping-over-sequences">For Loops - Looping over Sequences</a><br />
+<div class="outline-text-5" id="text-org763f4b5">
+<blockquote>
+<p>
+Another common way to use a for loop is with <code>brace expansion</code>. Brace
+expansion we have already seen a number of times so far - we can use
+it to generate a sequence of values.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash">touch <span style="color: #6e94b9;">{</span>coffee,tea,milkshake<span style="color: #6e94b9;">}</span>-menu.txt
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">loop through a sequence of values or a range of numbers with 'increment'</span>
+<span style="color: #db6e8f;">for</span> i<span style="color: #db6e8f;"> in</span> <span style="color: #6e94b9;">{</span>0..25..5<span style="color: #6e94b9;">}</span>
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Loop ${i}"</span>
+<span style="color: #db6e8f;">done</span>
+</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+
+<div id="outline-container-org369b849" class="outline-4">
+<h4 id="org369b849"><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#the-while-loop">The While Loop</a></h4>
+<div class="outline-text-4" id="text-org369b849">
+<blockquote>
+<p>
+The <code>while</code> loop is a loop that executes commands until a certain
+condition is met.
+</p>
+</blockquote>
+
+<p>
+基本结构：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">while</span> &lt;test-commands&gt;
+<span style="color: #db6e8f;">do</span>
+    &lt;conditional-command 1&gt;
+    &lt;conditional-command 2&gt;
+    &lt;conditional-command n&gt;
+<span style="color: #db6e8f;">done</span>
+</pre>
+</div>
+
+<p>
+例子：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">Create an empty array of random numbers.</span>
+<span style="color: #c6797e;">random_numbers</span>=<span style="color: #6e94b9;">()</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">As long as the length of the array is less than five, continue to loop.</span>
+<span style="color: #db6e8f;">while</span> <span style="color: #6e94b9;">[</span> $<span style="color: #5d80ae;">{</span>#<span style="color: #c6797e;">random_numbers</span><span style="color: #a3b09a;">[</span>@<span style="color: #a3b09a;">]</span><span style="color: #5d80ae;">}</span> -lt 5 <span style="color: #6e94b9;">]</span>
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">Get a random number, ask the user if they want to add it to the array.</span>
+    <span style="color: #c6797e;">random_number</span>=$<span style="color: #c6797e;">RANDOM</span>
+    <span style="color: #db6e8f;">read</span> -p <span style="color: #eabe9a;">"Add $random_number to the list? (y/n): "</span> choice
+
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">If the user chose 'y' add the random number to the array.</span>
+    <span style="color: #db6e8f;">if</span> <span style="color: #6e94b9;">[</span> <span style="color: #eabe9a;">"$choice"</span> = <span style="color: #eabe9a;">"y"</span> <span style="color: #6e94b9;">]</span>; <span style="color: #db6e8f;">then</span> <span style="color: #c6797e;">random_numbers</span>+=<span style="color: #6e94b9;">(</span>$<span style="color: #c6797e;">random_number</span><span style="color: #6e94b9;">)</span>; <span style="color: #db6e8f;">fi</span>
+<span style="color: #db6e8f;">done</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Show the contents of the array.</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Random Numbers: ${random_numbers[@]}"</span>
+</pre>
+</div>
+</div>
+
+<ul class="org-ul">
+<li><a id="org6adbf29"></a><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#while-loops---looping-through-the-lines-in-a-file">While Loops - Looping through the lines in a file</a><br />
+<div class="outline-text-5" id="text-org6adbf29">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">while </span><span style="color: #db6e8f;">read</span> line; <span style="color: #db6e8f;">do</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Read: $line"</span>
+<span style="color: #db6e8f;">done</span> &lt; ~/effective-shell/data/top100.csv
+</pre>
+</div>
+
+<p>
+<a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#while-loops---looping-through-the-lines-in-a-file">存在问题，避免使用</a>。
+</p>
+</div>
+</li>
+
+<li><a id="orgd9774d3"></a><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#while-loops---looping-through-the-lines-in-a-file">While Loops - The Infinite Loop</a><br />
+<div class="outline-text-5" id="text-orgd9774d3">
+<blockquote>
+<p>
+There are times that you may want to loop forever. For example you
+might be writing a script that reads an option from the user,
+processes it, and then starts again.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">while </span><span style="color: #db6e8f;">true</span>
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"1) Move forwards"</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"2) Move backwards"</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"3) Turn Left"</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"4) Turn Right"</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"5) Explore"</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"0) Quit"</span>
+
+    <span style="color: #db6e8f;">read</span> -p <span style="color: #eabe9a;">"What will you do: "</span> choice
+    <span style="color: #db6e8f;">if</span> <span style="color: #6e94b9;">[</span> $<span style="color: #c6797e;">choice</span> -eq 0 <span style="color: #6e94b9;">]</span>; <span style="color: #db6e8f;">then</span>
+        <span style="color: #db6e8f;">exit</span>
+    <span style="color: #db6e8f;">fi</span>
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">The rest of the game logic would go here!</span>
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">...</span>
+<span style="color: #db6e8f;">done</span>
+</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+
+<div id="outline-container-org6039663" class="outline-4">
+<h4 id="org6039663"><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#the-until-loop">The Until Loop</a></h4>
+<div class="outline-text-4" id="text-org6039663">
+<blockquote>
+<p>
+The until loop operates just like the while loop, except that it runs
+<b>until</b> the test commands return success.
+</p>
+
+<p>
+As long as the <b>test commands</b> do not return success, the loop will run
+the <b>conditional commands</b>. After the <b>conditional commands</b> have been
+run, the loop goes 'back to the start' and evaluates the test commands
+again.
+</p>
+
+<p>
+In general I would recommend using while loops rather than until
+loops. While loops are going to be more familiar to readers as they
+exist in many programming languages - until loops are a little more
+rare. And you can easily turn any until loop into a while loop by
+simply inverting the test commands you are running.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">until</span> &lt;test-commands&gt;
+<span style="color: #db6e8f;">do</span>
+    &lt;conditional-command 1&gt;
+    &lt;conditional-command 2&gt;
+    &lt;conditional-command n&gt;
+<span style="color: #db6e8f;">done</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">until loop</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Create an empty random number string - we're going to build it up in the loop.</span>
+<span style="color: #c6797e;">random_number</span>=<span style="color: #eabe9a;">""</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Keep on looping until the random number is at least 15 characters long.</span>
+<span style="color: #db6e8f;">until</span> <span style="color: #6e94b9;">[</span> <span style="color: #eabe9a;">"${#random_number}"</span> -ge 15 <span style="color: #6e94b9;">]</span>
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #c6797e;">random_number</span>+=$<span style="color: #c6797e;">RANDOM</span>
+<span style="color: #db6e8f;">done</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Random Number: ${random_number}"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">while loop</span>
+<span style="color: #c6797e;">random_number</span>=<span style="color: #eabe9a;">""</span>
+<span style="color: #db6e8f;">while</span> <span style="color: #6e94b9;">[</span> <span style="color: #eabe9a;">"${#random_number}"</span> -lt 15 <span style="color: #6e94b9;">]</span>
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #c6797e;">random_number</span>+=$<span style="color: #c6797e;">RANDOM</span>
+<span style="color: #db6e8f;">done</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Random Number: ${random_number}"</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7f2fe0b" class="outline-4">
+<h4 id="org7f2fe0b"><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#continue-and-break">Continue and Break</a></h4>
+<div class="outline-text-4" id="text-org7f2fe0b">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"For each folder, choose y/n to show contents, or c to cancel."</span>
+<span style="color: #db6e8f;">for</span> file<span style="color: #db6e8f;"> in</span> ~/*
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">If the file is not a directory, or it cannot be searched, skip it.</span>
+    <span style="color: #db6e8f;">if</span> <span style="color: #fafff6; font-weight: bold;">!</span> <span style="color: #6e94b9;">[</span> -d <span style="color: #eabe9a;">"$file"</span> <span style="color: #6e94b9;">]</span> || <span style="color: #fafff6; font-weight: bold;">!</span> <span style="color: #6e94b9;">[</span> -x <span style="color: #eabe9a;">"$file"</span> <span style="color: #6e94b9;">]</span>; <span style="color: #db6e8f;">then continue</span>; <span style="color: #db6e8f;">fi</span>
+
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">Ask the user if they want to see the contents.</span>
+    <span style="color: #db6e8f;">read</span> -p <span style="color: #eabe9a;">"Show: $file? [y/n/c]: "</span> choice
+
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">If the user chose 'c' for cancel, break.</span>
+    <span style="color: #db6e8f;">if</span> <span style="color: #6e94b9;">[</span> <span style="color: #eabe9a;">"$choice"</span> = <span style="color: #eabe9a;">"c"</span> <span style="color: #6e94b9;">]</span>; <span style="color: #db6e8f;">then break</span>; <span style="color: #db6e8f;">fi</span>
+
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">If the user choice 'y' to show contents, list them.</span>
+    <span style="color: #db6e8f;">if</span> <span style="color: #6e94b9;">[</span> <span style="color: #eabe9a;">"$choice"</span> = <span style="color: #eabe9a;">"y"</span> <span style="color: #6e94b9;">]</span>; <span style="color: #db6e8f;">then</span> ls <span style="color: #eabe9a;">"$file"</span>; <span style="color: #db6e8f;">fi</span>
+<span style="color: #db6e8f;">done</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org27d9ace" class="outline-3">
+<h3 id="org27d9ace"><a href="https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling">函数</a></h3>
+<div class="outline-text-3" id="text-org27d9ace">
+<blockquote>
+<p>
+The shell allows you to create functions - a set of commands that you
+can call at any time.
+</p>
+</blockquote>
+
+<p>
+基本格式：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">&lt;function-name&gt; <span style="color: #6e94b9;">{</span>
+    &lt;function-command 1&gt;
+    &lt;function-command 2&gt;
+    &lt;function-command n&gt;
+<span style="color: #6e94b9;">}</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #88c0d0;">title</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"My Script version 1.0"</span>
+<span style="color: #6e94b9;">}</span>
+</pre>
+</div>
+
+<p>
+<a href="https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#the-function-keyword">function 关键字</a> 可有可无，不建议使用。
+</p>
+</div>
+
+<div id="outline-container-org40e02f8" class="outline-4">
+<h4 id="org40e02f8"><a href="https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#variables-in-functions">变量</a></h4>
+<div class="outline-text-4" id="text-org40e02f8">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">Set some variables.</span>
+<span style="color: #c6797e;">title</span>=<span style="color: #eabe9a;">"My Cool Script"</span>
+<span style="color: #c6797e;">version</span>=<span style="color: #eabe9a;">"1.2"</span>
+<span style="color: #c6797e;">succeeded</span>=0
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Create a function that writes a message and changes a variable.</span>
+<span style="color: #88c0d0;">title</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">Note that we can read variables...</span>
+    <span style="color: #c6797e;">title_message</span>=<span style="color: #eabe9a;">"${title} - version ${version}"</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"${title_message}"</span>
+
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">...and set them as well.</span>
+    <span style="color: #c6797e;">succeeded</span>=1
+<span style="color: #6e94b9;">}</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Show the value of 'succeeded' before and after the function call.</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Succeeded: ${succeeded}"</span>
+title
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Succeeded: ${succeeded}"</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Title Message: ${title_message}"</span>
+</pre>
+</div>
+</div>
+
+<ul class="org-ul">
+<li><a id="org3fbc7cc"></a><a href="https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#variable-scoping-index">作用域</a><br />
+<div class="outline-text-5" id="text-org3fbc7cc">
+<blockquote>
+<p>
+If you come from a programming background you might find it odd that
+you can create a variable in a function and use it outside of the
+function. This is a feature known as <b>dynamic scoping</b>. Many common
+programming languages like Python, JavaScript, C, Java and others use
+an alternative mechanism called <b>lexical scoping</b>.
+</p>
+
+<p>
+<b>Lexical scoping</b> is a feature that ensures that you can only use a
+variable from within the 'scope' that it is defined. This can reduce
+errors - because it means that if you define a variable in a function
+you don't accidentally 'overwrite' the value of another variable that
+is used elsewhere.
+</p>
+
+<p>
+You can use the <code>local</code> keyword to define a variable that is only
+available in the 'local' scope, i.e. the function that it is defined
+in. This allows you to use lexical scoping and can reduce the risk of
+errors.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #88c0d0;">run_loop</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #db6e8f;">local</span> <span style="color: #c6797e;">count</span>=0
+    <span style="color: #db6e8f;">for</span> i<span style="color: #db6e8f;"> in</span> <span style="color: #5d80ae;">{</span>1..10<span style="color: #5d80ae;">}</span>; <span style="color: #db6e8f;">do</span>
+        <span style="color: #64727d;"># </span><span style="color: #64727d;">Update our counter.</span>
+        <span style="color: #c6797e;">count</span>=$<span style="color: #5d80ae;">(</span><span style="color: #a3b09a;">(</span>count + 1<span style="color: #a3b09a;">)</span><span style="color: #5d80ae;">)</span>
+    <span style="color: #db6e8f;">done</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Count is: ${count}"</span>
+<span style="color: #6e94b9;">}</span>
+</pre>
+</div>
+
+<blockquote>
+<p>
+In general, you should use 'local' variables inside functions. This
+can help to avoid problems where calling a function can have an
+unintended side effects:
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">&#27604;&#36739;&#29992; local &#21644;&#19981;&#29992;&#30340;&#21306;&#21035;</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Set a count variable somewhere in our script...</span>
+<span style="color: #c6797e;">count</span>=3
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Call our 'run_loop' function.</span>
+run_loop
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Write out the value of 'count'.</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"The 'count' variable is: ${count}"</span>
+</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+
+<div id="outline-container-orgdeafef9" class="outline-4">
+<h4 id="orgdeafef9"><a href="https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#passing-parameters-to-functions">传参</a></h4>
+<div class="outline-text-4" id="text-orgdeafef9">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #88c0d0;">sum</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #db6e8f;">local</span> <span style="color: #c6797e;">value1</span>=$<span style="color: #c6797e;">1</span>
+    <span style="color: #db6e8f;">local</span> <span style="color: #c6797e;">value2</span>=$<span style="color: #c6797e;">2</span>
+    <span style="color: #db6e8f;">local</span> <span style="color: #c6797e;">result</span>=$<span style="color: #5d80ae;">(</span><span style="color: #a3b09a;">(</span>value1 + value2<span style="color: #a3b09a;">)</span><span style="color: #5d80ae;">)</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"The sum of ${value1} and ${value2} is ${result}"</span>
+<span style="color: #6e94b9;">}</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Create a function that calculates the sum of two numbers.</span>
+<span style="color: #88c0d0;">sum</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"The sum of $1 and $2 is $(($1 + $2))"</span>
+<span style="color: #6e94b9;">}</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">usage</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">sum 3 6</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">sum 10 33</span>
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="100%">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Variable</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">$0</td>
+<td class="org-left">path that called the script (使用 <code>curl cht.sh/'bash parameter $0'</code> 查阅用法)</td>
+</tr>
+
+<tr>
+<td class="org-left">$1</td>
+<td class="org-left">The first parameter</td>
+</tr>
+
+<tr>
+<td class="org-left">$2</td>
+<td class="org-left">The second parameter</td>
+</tr>
+
+<tr>
+<td class="org-left">${11}</td>
+<td class="org-left">The 11th parameter - if the parameter is more than one digit you must surround it with braces</td>
+</tr>
+
+<tr>
+<td class="org-left">$#</td>
+<td class="org-left">The number of parameters</td>
+</tr>
+
+<tr>
+<td class="org-left">$@</td>
+<td class="org-left">The full set of parameters as an array</td>
+</tr>
+
+<tr>
+<td class="org-left">$*</td>
+<td class="org-left">The full set of parameters as a string separated by the first value in the $IFS variable</td>
+</tr>
+
+<tr>
+<td class="org-left">${@:start:count}</td>
+<td class="org-left">A subset of 'count' parameters starting at parameter number 'start'</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<ul class="org-ul">
+<li><a id="org728be8b"></a><a href="https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#parameter-shifting">Parameter Shifting</a><br />
+<div class="outline-text-5" id="text-org728be8b">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">Show the top 'n' values of a set.</span>
+<span style="color: #88c0d0;">show_top</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">Grab the number of values to show, then shift.</span>
+    <span style="color: #db6e8f;">local</span> <span style="color: #c6797e;">n</span>=$<span style="color: #c6797e;">1</span>
+    <span style="color: #db6e8f;">shift</span>
+
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">Get the set of values to show. Notice that we start in position 1 now.</span>
+    <span style="color: #db6e8f;">local</span> <span style="color: #c6797e;">values</span>=$<span style="color: #5d80ae;">{</span><span style="color: #c6797e;">@</span>:1:n<span style="color: #5d80ae;">}</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Top ${n} values: ${values}"</span>
+<span style="color: #6e94b9;">}</span>
+</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+
+<div id="outline-container-orgb599cc1" class="outline-4">
+<h4 id="orgb599cc1"><a href="https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#return-values">返回值</a></h4>
+<div class="outline-text-4" id="text-orgb599cc1">
+</div>
+<ul class="org-ul">
+<li><a id="orgb88fdc9"></a>通过设置变量值<br />
+<div class="outline-text-5" id="text-orgb88fdc9">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #88c0d0;">is_even</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #db6e8f;">local</span> <span style="color: #c6797e;">number</span>=$<span style="color: #c6797e;">1</span>
+
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">A number is even if when we divide it by 2 there is no remainder.</span>
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">Set 'result' to 1 if the parameter is even and 0 otherwise.</span>
+    <span style="color: #db6e8f;">if</span> <span style="color: #5d80ae;">[</span> $<span style="color: #a3b09a;">(</span><span style="color: #c6797e;">(</span>number % 2<span style="color: #c6797e;">)</span><span style="color: #a3b09a;">)</span> -eq 0 <span style="color: #5d80ae;">]</span>; <span style="color: #db6e8f;">then</span>
+        <span style="color: #c6797e;">result</span>=1
+    <span style="color: #db6e8f;">else</span>
+        <span style="color: #c6797e;">result</span>=0
+    <span style="color: #db6e8f;">fi</span>
+<span style="color: #6e94b9;">}</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash">$ <span style="color: #c6797e;">number</span>=33
+$ is_even $<span style="color: #c6797e;">number</span>
+$ echo <span style="color: #eabe9a;">"Result is: $result"</span>
+Result is: 0
+</pre>
+</div>
+
+<blockquote>
+<p>
+In general, this method of returning values from a function should be
+avoided. It overwrites the value of a global variable and that can be
+confusing for the operator.
+</p>
+
+<p>
+A more common way to return a value from a function is to write its
+result to <b>stdout</b>
+</p>
+</blockquote>
+</div>
+</li>
+
+<li><a id="orgdd0f5f3"></a>输出到 stdout<br />
+<div class="outline-text-5" id="text-orgdd0f5f3">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #88c0d0;">lowercase</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #db6e8f;">local</span> <span style="color: #c6797e;">params</span>=<span style="color: #eabe9a;">"$@"</span>
+    <span style="color: #64727d;"># </span><span style="color: #64727d;">Translate all uppercase characters to lowercase characters.</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"$params"</span> | tr <span style="color: #eabe9a;">'[:upper:]'</span> <span style="color: #eabe9a;">'[:lower:]'</span>
+<span style="color: #6e94b9;">}</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash">$ <span style="color: #c6797e;">result</span>=$<span style="color: #6e94b9;">(</span>lowercase <span style="color: #eabe9a;">"Don't SHOUT!"</span><span style="color: #6e94b9;">)</span>
+$ echo <span style="color: #eabe9a;">"$result"</span>
+don<span style="color: #eabe9a;">'t shout!</span>
+</pre>
+</div>
+
+<blockquote>
+<p>
+If you have a programming background it might seem very strange that
+you write results in a function by writing to <b>stdout</b>. Remember - the
+shell is a text based interface to the computer system. The majority
+of commands that we have seen so far that provide output write their
+output to the screen. This is what <code>ls</code> does, what <code>find</code> does, what <code>cat</code>
+does and so on. When we <code>echo</code> a result from a function, we are really
+just following the Unix standard of writing the results of a program
+to the screen.
+</p>
+
+<p>
+Remember - shell functions are designed to behave in a similar way to
+shell commands. They write their output to stdout.
+</p>
+
+<p>
+Although it might feel a bit clunky, writing the results of a command
+to stdout is a tried and tested method of returning results.
+</p>
+</blockquote>
+
+<p>
+但是，如果脚本中有很多次输出，最终的结果可能不是我们期待的。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #88c0d0;">command_exists</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #db6e8f;">if </span><span style="color: #db6e8f;">type</span> <span style="color: #eabe9a;">"$1"</span>; <span style="color: #db6e8f;">then</span>
+        <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"1"</span>
+    <span style="color: #db6e8f;">else</span>
+        <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"0"</span>
+    <span style="color: #db6e8f;">fi</span>
+<span style="color: #6e94b9;">}</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">result=$(command_exists "touch")</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">echo "Result is: ${result}"</span>
+</pre>
+</div>
+
+<p>
+解决办法就是移除调不需要的输出，输出到 <code>/dev/null</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #88c0d0;">command_exists</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #db6e8f;">if </span><span style="color: #db6e8f;">type</span> <span style="color: #eabe9a;">"$1"</span> &gt;&gt; /dev/null; <span style="color: #db6e8f;">then</span>
+        <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"1"</span>
+    <span style="color: #db6e8f;">else</span>
+        <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"0"</span>
+    <span style="color: #db6e8f;">fi</span>
+<span style="color: #6e94b9;">}</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orgdd30ab6"></a><a href="https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#returning-status-codes">Returning Status Codes</a><br />
+<div class="outline-text-5" id="text-orgdd30ab6">
+<blockquote>
+<p>
+The <code>return</code> (return from shell function) command causes a function to
+exit with a given status code.
+</p>
+
+<p>
+This is something that often causes confusion in shell scripts. The
+reason is that in most programming languages, you would use a 'return'
+statement to return the result of a function. But in the shell, when
+we return, we set the status code of the function.
+</p>
+
+<p>
+What is a status code?  When a command runs, we expect it to return a
+status code of 'zero' to indicate success. Any non-zero status code is
+used to specify an error code.
+</p>
+
+<p>
+Remember - only use the 'return' command to set a status code. Many
+shells will only allow values from <b>0-255</b> to be set, and most users
+will expect that a command should return zero for success and that any
+non-zero value is an error code. If you need to provide output for a
+command that is not just a status code, you should write it to stdout
+or if you must, set the value of a global variable.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #88c0d0;">command_exists</span><span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #db6e8f;">if </span><span style="color: #db6e8f;">type</span> <span style="color: #eabe9a;">"$1"</span> &gt;&gt; /dev/null; <span style="color: #db6e8f;">then</span>
+        <span style="color: #db6e8f;">return</span> 0
+    <span style="color: #db6e8f;">else</span>
+        <span style="color: #db6e8f;">return</span> 1
+    <span style="color: #db6e8f;">fi</span>
+<span style="color: #6e94b9;">}</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">if</span> command_exists <span style="color: #eabe9a;">"common"</span>; <span style="color: #db6e8f;">then</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"The 'common' command is installed on your system"</span>
+<span style="color: #db6e8f;">else</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"The 'common' command is not installed on your system"</span>
+<span style="color: #db6e8f;">fi</span>
+</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge31f5ec" class="outline-3">
+<h3 id="orge31f5ec"><a href="https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#error-handling">错误处理</a></h3>
+<div class="outline-text-3" id="text-orge31f5ec">
+<blockquote>
+<p>
+When you run a shell script, if a command in the script fails, the
+script will <b>continue to run</b>. Like many other points in this chapter
+this might seem unintuitive if you come from a programming background,
+but this makes sense in the shell - if the shell was to terminate
+whenever a command fails it would be very difficult to use
+interactively.
+</p>
+
+<p>
+In general in your shell scripts if a command fails you probably want
+the entire script to stop executing. Otherwise you can get this
+cascading effect as commands continue to return even after there was a
+failure, which can lead to all sorts of unexpected behaviour.
+</p>
+</blockquote>
+
+<p>
+如果先创建一个文件, 在执行脚本:
+</p>
+
+<pre class="example">
+touch "/tmp/$(date +"%Y-%m-%d")"
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #64727d;">#</span><span style="color: #64727d;">!/usr/bin/</span><span style="color: #db6e8f;">env</span><span style="color: #64727d;"> sh</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Get today's date in the format YYYY-MM-DD.</span>
+<span style="color: #c6797e;">today</span>=$<span style="color: #6e94b9;">(</span>date +<span style="color: #eabe9a;">"%Y-%m-%d"</span><span style="color: #6e94b9;">)</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Create the path to today's temp folder and then make sure the folder exists.</span>
+<span style="color: #c6797e;">temp_path</span>=<span style="color: #eabe9a;">"/tmp/${today}"</span>
+mkdir -p <span style="color: #eabe9a;">"${temp_path}"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Now that we've created the folder, make a symlink to it in our homedir.</span>
+ln -sf <span style="color: #eabe9a;">"${temp_path}"</span> <span style="color: #eabe9a;">"${HOME}/today"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Write out the path we created.</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"${temp_path}"</span>
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org4bbbc8e" class="outline-4">
+<h4 id="org4bbbc8e"><a href="https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#ensuring-exit-on-failure">出错后退出</a></h4>
+<div class="outline-text-4" id="text-org4bbbc8e">
+<blockquote>
+<p>
+You can use the <code>set</code> (set option) command to set an option in the
+shell. There is an option that tells the shell to exit when a command
+fails.
+</p>
+
+<p>
+The 'set' command allows you to turn on and turn off shell
+options. The 'e' option means 'exit if any command exits with a
+non-zero status'.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;">#</span><span style="color: #64727d;">!/usr/bin/</span><span style="color: #db6e8f;">env</span><span style="color: #64727d;"> sh</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Exit if any command fails.</span>
+<span style="color: #db6e8f;">set</span> -e
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">...</span>
+</pre>
+</div>
+
+<blockquote>
+<p>
+One thing to be aware of is that the <code>set -e</code> option only affects the
+<b>final</b> command of a pipeline.
+</p>
+
+<p>
+To ensure that the shell terminates if a command in a pipeline fails
+we must set the pipefail option: <code>set -o pipefail</code>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash">grep <span style="color: #eabe9a;">'[:space:]*#'</span> ~/effective-shell/scripts/common.sh | tr <span style="color: #eabe9a;">'a-z'</span> <span style="color: #eabe9a;">'A-Z'</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7ce8b4c" class="outline-3">
+<h3 id="org7ce8b4c"><a href="https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#debugging-shell-scripts">debug</a></h3>
+<div class="outline-text-3" id="text-org7ce8b4c">
+<blockquote>
+<p>
+You can use the <code>set</code> (set option) command to set the trace option (<code>set -x</code>). This
+option is incredibly useful for debugging shell scripts. When the
+trace option is set, the shell will write out each statement before it
+is evaluated.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">today.sh - creates a 'today' symlink in the home directory folder to a fresh</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">temporary folder each day.</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Enable tracing in the script.</span>
+<span style="color: #db6e8f;">set</span> -x
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Get today's date in the format YYYY-MM-DD.</span>
+<span style="color: #c6797e;">today</span>=$<span style="color: #6e94b9;">(</span>date +<span style="color: #eabe9a;">"%Y-%m-%d"</span><span style="color: #6e94b9;">)</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Create the path to today's temp folder and then make sure the folder exists.</span>
+<span style="color: #c6797e;">temp_path</span>=<span style="color: #eabe9a;">"/tmp/${today}"</span>
+mkdir -p <span style="color: #eabe9a;">"${temp_path}"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Now that we've created the folder, make a symlink to it in our homedir.</span>
+ln -sf <span style="color: #eabe9a;">"${temp_path}"</span> <span style="color: #eabe9a;">"${HOME}/today"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Disable tracing now that we are done with the work.</span>
+<span style="color: #db6e8f;">set</span> +x
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Write out the path we created.</span>
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"${temp_path}"</span>
+</pre>
+</div>
+
+<blockquote>
+<p>
+<b>Each command that the shell executes is written to stdout before it is
+executed.</b> The parameters are expanded, which can make it far easier to
+see what is going on and troubleshoot issues.
+</p>
+
+<p>
+The <code>+</code> symbol is written at the start of each trace line, so that you
+can differentiate it from normal output that you write in your
+script1. The final line of output in the example above does not have
+a + in front of it - because it is actual output from an echo command,
+rather than a trace line.
+</p>
+
+<p>
+The number of + symbols indicates the <b>'level of indirection'</b>
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">set</span> -x
+<span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"Name of home folder is $(basename $(echo ~) )"</span>
+</pre>
+</div>
+
+<p>
+推荐的设置：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">Fail on errors in commands or in pipelines.</span>
+<span style="color: #db6e8f;">set</span> -e
+<span style="color: #db6e8f;">set</span> -o pipefail
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Uncomment the below if you want to enable tracing to debug the script.</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">set -x</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8336513" class="outline-3">
+<h3 id="org8336513"><a href="https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts">一些技巧</a></h3>
+<div class="outline-text-3" id="text-org8336513">
+</div>
+<div id="outline-container-org5c752aa" class="outline-4">
+<h4 id="org5c752aa"><a href="https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#checking-for-existing-variables-or-functions">Checking for Existing Variables or Functions</a></h4>
+</div>
+
+<div id="outline-container-org67f3399" class="outline-4">
+<h4 id="org67f3399"><a href="https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#unsetting-values">Unsetting Values</a></h4>
+<div class="outline-text-4" id="text-org67f3399">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">Remove the 'is_even' function from the shell session.</span>
+<span style="color: #db6e8f;">unset</span> -f is_even
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6cccd34" class="outline-4">
+<h4 id="org6cccd34"><a href="https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#traps">Traps</a></h4>
+<div class="outline-text-4" id="text-org6cccd34">
+<blockquote>
+<p>
+You can use the <code>trap</code> (trap signals and events) command to specify a
+set of commands to run when the shell receives signals, or at certain
+points such as when the script exits or a function returns.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">Create a temporary folder for the effective shell download.</span>
+<span style="color: #c6797e;">source</span>=<span style="color: #eabe9a;">"https://effective-shell.com/downloads/effective-shell-samples.tar.gz"</span>
+<span style="color: #c6797e;">tmp_dir</span>=$<span style="color: #6e94b9;">(</span>mktemp -d 2&gt;/dev/null || mktemp -d -t <span style="color: #eabe9a;">'effective-shell'</span><span style="color: #6e94b9;">)</span>
+<span style="color: #c6797e;">tmp_tar</span>=<span style="color: #eabe9a;">"${tmp_dir}/effective-shell.tar.gz"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Define a cleanup function that we will call when the script exits or if</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">it is aborted.</span>
+<span style="color: #88c0d0;">cleanup</span> <span style="color: #6e94b9;">()</span> <span style="color: #6e94b9;">{</span>
+    <span style="color: #db6e8f;">if</span> <span style="color: #5d80ae;">[</span> -e <span style="color: #eabe9a;">"${tmp_tar}"</span> <span style="color: #5d80ae;">]</span>; <span style="color: #db6e8f;">then</span> rm <span style="color: #eabe9a;">"$tmp_tar}"</span>; <span style="color: #db6e8f;">fi</span>
+    <span style="color: #db6e8f;">if</span> <span style="color: #5d80ae;">[</span> -d <span style="color: #eabe9a;">"${tmp_dir}"</span> <span style="color: #5d80ae;">]</span>; <span style="color: #db6e8f;">then</span> rm -rf <span style="color: #eabe9a;">"${tmp_dir}"</span>; <span style="color: #db6e8f;">fi</span>
+<span style="color: #6e94b9;">}</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Cleanup on interrupt or terminate signals and on exit.</span>
+<span style="color: #db6e8f;">trap</span> <span style="color: #eabe9a;">"cleanup"</span> INT TERM EXIT
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Download the samples.</span>
+curl --fail --compressed -q -s <span style="color: #eabe9a;">"${source}"</span> -o <span style="color: #eabe9a;">"${tmp_tar}"</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Extract the samples.</span>
+tar -xzf <span style="color: #eabe9a;">"${tmp_tar}"</span> -C <span style="color: #eabe9a;">"${tmp_dir}"</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc6667ff" class="outline-4">
+<h4 id="orgc6667ff"><a href="https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#handling-options">Handling Options</a></h4>
+<div class="outline-text-4" id="text-orgc6667ff">
+<blockquote>
+<p>
+You can use the <code>getopts</code> (parse option arguments) command to process
+the arguments for a script or function.
+</p>
+</blockquote>
+
+<p>
+处理 <code>-h</code>, <code>-e</code> 等选项
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0e4d4d4" class="outline-4">
+<h4 id="org0e4d4d4"><a href="https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#using-select-to-show-a-menu">Using 'Select' to Show a Menu</a></h4>
+<div class="outline-text-4" id="text-org0e4d4d4">
+<blockquote>
+<p>
+The <code>select</code> compound command prints a menu and allows the user to make
+a selection. It is not part of the Posix standard, but is available in
+Bash and most Bash-like shells.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #db6e8f;">select</span> fruit<span style="color: #db6e8f;"> in</span> Apple Banana Cherry Durian
+<span style="color: #db6e8f;">do</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"You chose: $fruit"</span>
+    <span style="color: #db6e8f;">echo</span> <span style="color: #eabe9a;">"This is item number: $REPLY"</span>
+<span style="color: #db6e8f;">done</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga7d6181" class="outline-4">
+<h4 id="orga7d6181"><a href="https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#running-commands-in-subshells">Running Commands in Subshells</a></h4>
+<div class="outline-text-4" id="text-orga7d6181">
+<blockquote>
+<p>
+You will often see a nice little trick that allows you to change the
+current directory for a specific command, without affecting the
+current directory for the shell.
+</p>
+
+<p>
+The brackets around the statements mean that these commands are run in
+a sub-shell. Because they run in a sub-shell, they change the
+directory in the sub-shell only, not the current shell. This means we
+don't need to change back to the previous directory after the commands
+have completed.
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #6e94b9;">(</span>mkdir -p ~/new-project; <span style="color: #db6e8f;">cd</span> ~/new-project; touch README.md<span style="color: #6e94b9;">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6f91d01" class="outline-2">
+<h2 id="org6f91d01">我的推荐</h2>
+<div class="outline-text-2" id="text-org6f91d01">
+</div>
+<div id="outline-container-org89ffb09" class="outline-3">
+<h3 id="org89ffb09">history</h3>
+<div class="outline-text-3" id="text-org89ffb09">
+<ul class="org-ul">
+<li><code>echo $HISTFILE</code> : 查看 history 写入的文件</li>
+<li><code>history</code> : 查看输入的命令历史记录</li>
+<li><code>!n</code> : 使用 id 为 n 的历史记录</li>
+<li><code>Ctrl-r</code> : 搜索历史记录</li>
+<li><a href="https://github.com/junegunn/fzf">fzf</a> : 结合模糊匹配使用</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb16642f" class="outline-3">
+<h3 id="orgb16642f"><a href="https://effective-shell.com/part-6-advanced-techniques/master-the-multiplexer/">tmux</a></h3>
+</div>
+
+<div id="outline-container-orga7a1c75" class="outline-3">
+<h3 id="orga7a1c75"><a href="https://ohmyz.sh/">oh my zsh</a></h3>
+<div class="outline-text-3" id="text-orga7a1c75">
+<dl class="org-dl">
+<dt><a href="https://www.zsh.org/">zsh</a></dt><dd>Zsh is a shell designed for interactive use, although it is
+also a powerful scripting language.</dd>
+
+<dt><a href="https://starship.rs/">starship</a></dt><dd>Cross-shell <a href="https://effective-shell.com/part-5-building-your-toolkit/customising-your-command-prompt">Propmt</a>.</dd>
+</dl>
+
+<p>
+推荐的<a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins">插件</a>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #64727d;"># </span><span style="color: #64727d;">------------------------------- #</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Prerequire:</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">oh my zsh: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">starship: curl -sS https://starship.rs/install.sh | sh</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">------------------------------- #</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Path to your oh-my-zsh installation.</span>
+<span style="color: #db6e8f;">export</span> <span style="color: #c6797e;">ZSH</span>=<span style="color: #eabe9a;">"$HOME/.oh-my-zsh"</span>
+
+<span style="color: #c6797e;">plugins</span>=<span style="color: #6e94b9;">(</span>
+    aliases <span style="color: #64727d;"># </span><span style="color: #64727d;">&#25512;&#33616;</span>
+    common-aliases <span style="color: #64727d;"># </span><span style="color: #64727d;">&#25512;&#33616;</span>
+    deno
+    docker
+    git <span style="color: #64727d;"># </span><span style="color: #64727d;">&#25512;&#33616;</span>
+    gulp
+    <span style="color: #db6e8f;">history</span> <span style="color: #64727d;"># </span><span style="color: #64727d;">&#25512;&#33616;</span>
+    jira <span style="color: #64727d;"># </span><span style="color: #64727d;">&#25512;&#33616;</span>
+    jsontools
+    node
+    npm
+    nvm
+    ripgrep
+    thefuck
+    tmux
+    ubuntu
+    web-search
+    yarn
+    z <span style="color: #64727d;"># </span><span style="color: #64727d;">&#26497;&#21147;&#25512;&#33616;</span>
+    zbell
+    zsh-autosuggestions <span style="color: #64727d;"># </span><span style="color: #64727d;">&#26497;&#21147;&#25512;&#33616;</span>
+    zsh-syntax-highlighting
+<span style="color: #6e94b9;">)</span>
+
+<span style="color: #db6e8f;">source</span> $<span style="color: #c6797e;">ZSH</span>/oh-my-zsh.sh
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3648081" class="outline-3">
+<h3 id="org3648081"><a href="https://effective-shell.com/part-5-building-your-toolkit/managing-your-dotfiles">Managing your Dotfiles</a></h3>
+</div>
+
+<div id="outline-container-orga2cbe76" class="outline-3">
+<h3 id="orga2cbe76"><a href="https://poe.com/ChatGPT">还有不懂就问 GPT</a></h3>
+</div>
+</div>
+
+<div id="outline-container-org30aa300" class="outline-2">
+<h2 id="org30aa300">Refs</h2>
+<div class="outline-text-2" id="text-org30aa300">
+<ul class="org-ul">
+<li><a href="https://effective-shell.com/">effective-shell</a></li>
+
+<li><a href="https://missing-semester-cn.github.io/">计算机教育中缺失的一课</a></li>
+
+<li><a href="https://github.com/jlevy/the-art-of-command-line">The Art of Command Line</a></li>
+
+<li><a href="https://wangdoc.com/bash/">Bash 脚本教程</a></li>
+
+<li><a href="https://learnxinyminutes.com/docs/bash/">Learn X in Y minutes [bash]​</a></li>
+
+<li><a href="https://prithu.dev/posts/unix-pipeline/">The beauty of Unix pipelines</a></li>
+
+<li><a href="https://www.brianstorti.com/understanding-shell-script-idiom-redirect/">Understanding Shell Script's idiom: 2&gt;&amp;1</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2023-09-21T02:18:21+08:00</p>
+<p class="author">Author: localhost</p>
+<p class="date">Created: 2024-09-25 Wed 17:42</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-09-25 Wed 17:42 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Windows 下个人开发环境搭建</title>
+<meta name="author" content="localhost" />
+<meta name="description" content="&quot;&quot;" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<link rel="stylesheet"
+                       href="../styles/style.css" type="text/css"/>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Windows 下个人开发环境搭建</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org775de70">前言</a></li>
+<li><a href="#org709efdb">代理工具</a></li>
+<li><a href="#org596a372">浏览器</a></li>
+<li><a href="#org136f2ce">Emacs &amp; 环境</a>
+<ul>
+<li><a href="#org04849da">WSL</a></li>
+<li><a href="#org438020c">Windows Terminal</a>
+<ul>
+<li><a href="#org1d7ce3f">安装字体</a></li>
+<li><a href="#org9d8d68d">配置 Terminal</a></li>
+</ul>
+</li>
+<li><a href="#org3cf1272">按键绑定</a></li>
+<li><a href="#org4fd6469">WSL 和 Windows 之间的复制粘贴</a>
+<ul>
+<li><a href="#orgf0f3bf2">Windows -&gt; WSL</a></li>
+<li><a href="#orgc03b6c8">WSL -&gt; Windows</a></li>
+</ul>
+</li>
+<li><a href="#org02091e2">Ubuntu 环境配置</a>
+<ul>
+<li><a href="#orgc190835">Git</a></li>
+<li><a href="#orgd49dcb8">systemd</a></li>
+<li><a href="#orgcffea2b">zsh</a></li>
+<li><a href="#org18a5458">NodeJS</a></li>
+<li><a href="#org7115054">Emacs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org45bf34c">碎碎念</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org775de70" class="outline-2">
+<h2 id="org775de70">前言</h2>
+<div class="outline-text-2" id="text-org775de70">
+<p>
+工作关系，公司提供了一台 Windows 电脑进行开发，本来是用 Macbook 的，但懒得上下班来回背，于是就得在 Windows 上配置一下开发环境。
+</p>
+
+<p>
+这些是我需要用到的一些环境和工具：
+</p>
+
+<p>
+<code>NodeJS</code> ， <code>Git</code> ， <code>Emacs</code> ， <code>Firefox</code> ， <code>Chrome</code> ， <code>一个好用的终端</code> ， <code>代理工具</code>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org709efdb" class="outline-2">
+<h2 id="org709efdb">代理工具</h2>
+<div class="outline-text-2" id="text-org709efdb">
+<p>
+下载 <a href="https://github.com/2dust/v2rayN">2dust/v2rayN</a>，然后配置即可。
+</p>
+
+<p>
+一开始没有用代理，访问 GitHub 可能比较慢，以后考虑找个 U 盘存储一下， 避免到时访问不了 GitHub 的情况。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org596a372" class="outline-2">
+<h2 id="org596a372">浏览器</h2>
+<div class="outline-text-2" id="text-org596a372">
+<p>
+浏览器主要用 <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>,  <a href="https://www.google.com/chrome/">Chrome</a> 也偶尔用。
+</p>
+
+<p>
+下载 Firefox 时最好通过谷歌寻找下载链接，不然可能下载了国内的版本， 两个版本的账号是不互通的。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org136f2ce" class="outline-2">
+<h2 id="org136f2ce">Emacs &amp; 环境</h2>
+<div class="outline-text-2" id="text-org136f2ce">
+<p>
+最开始的时候，是直接下载 Windows 版本的 Git，NodeJS，Emacs，然后用 git bash 作为终端。
+</p>
+
+<p>
+但是在 Windows 下使用终端实在很别扭，Windows 下的路径和 MacOS，Linux 的不同，不习惯。
+</p>
+
+<p>
+之后了解到 <a href="https://learn.microsoft.com/en-us/windows/wsl/about">WSL</a> (Windows Subsystem for Linux), 可以通过它在 Windows 上装一个 Linux 子系统。
+</p>
+
+<p>
+只要安装一个 Ubuntu 或者自己熟悉的 Linux 发行版，就能回到 Linux 那样的命令行环境了。
+</p>
+</div>
+
+<div id="outline-container-org04849da" class="outline-3">
+<h3 id="org04849da">WSL</h3>
+<div class="outline-text-3" id="text-org04849da">
+<p>
+按照 <a href="https://learn.microsoft.com/en-us/windows/wsl/install">Install Linux on Windows with WSL</a> 安装即可，看看文档了解点基本用法。
+</p>
+
+<p>
+建议使用 Windows 的  <code>Microsoft Store</code> 搜索 wsl 进行安装，然后根据 <a href="https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/">Systemd support is now available in WSL!</a> 配置好 systemd。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org438020c" class="outline-3">
+<h3 id="org438020c">Windows Terminal</h3>
+<div class="outline-text-3" id="text-org438020c">
+<p>
+WSL 文档中推荐搭配 <a href="https://github.com/microsoft/terminal">microsoft/terminal</a> 使用，相比于 Powershell，git bash，确实好用很多。
+</p>
+
+<p>
+它支持了多个 tab，选择不同的 Profiles, 定制主题，字体等。
+</p>
+</div>
+
+<div id="outline-container-org1d7ce3f" class="outline-4">
+<h4 id="org1d7ce3f">安装字体</h4>
+<div class="outline-text-4" id="text-org1d7ce3f">
+<p>
+参考 <a href="https://slmeng.medium.com/how-to-install-powerline-fonts-in-windows-b2eedecace58">How to install Powerline fonts in Windows</a>，步骤如下：
+</p>
+
+<ul class="org-ul">
+<li>到 <a href="https://github.com/powerline/fonts">powerline/fonts</a> 上，点击克隆的按钮，下载字体 zip 包，下载后解压 zip 包</li>
+
+<li><code>WINDOW KEY + X</code> 选择 <code>Windows PowerShell(Admin)</code>, 然后 cd 到解压的 zip包中 <code>.../fonts-master/fonts-master</code> 目录</li>
+
+<li>执行 <code>Set-ExecutionPolicy Bypass</code> 设置可执行权限，然后执行 <code>.\install.ps1</code> 安装字体， 安装完成后，执行 <code>Set-ExecutionPolicy Default</code> 将权限重置回去</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9d8d68d" class="outline-4">
+<h4 id="org9d8d68d">配置 Terminal</h4>
+<div class="outline-text-4" id="text-org9d8d68d">
+<ul class="org-ul">
+<li>将 Ubuntu 作为默认 Profiles</li>
+
+<li>设置 Ubuntu Profiles 的字体为 Fira, Nerd 之类的字体</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3cf1272" class="outline-3">
+<h3 id="org3cf1272">按键绑定</h3>
+<div class="outline-text-3" id="text-org3cf1272">
+<p>
+Windows 有一些默认的全局绑定键，Terminal 里也有一些，按自己需要禁用。
+</p>
+
+<p>
+目前我的键盘可以直接切换 Ctrl 和 Caps Lock ，但可能有些键盘不支持，可以下载 <a href="https://github.com/microsoft/PowerToys">PowerToys</a> 映射一下。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4fd6469" class="outline-3">
+<h3 id="org4fd6469">WSL 和 Windows 之间的复制粘贴</h3>
+<div class="outline-text-3" id="text-org4fd6469">
+</div>
+<div id="outline-container-orgf0f3bf2" class="outline-4">
+<h4 id="orgf0f3bf2">Windows -&gt; WSL</h4>
+<div class="outline-text-4" id="text-orgf0f3bf2">
+<p>
+Windows 上 Ctrl-C 复制，然后可以在 WSL Ctrl-V 粘贴，但是因为我使用 Emacs，Ctrl-V 在 Emacs 中是常用的翻页功能。
+</p>
+
+<p>
+因此禁用了 Ctrl-V 作为粘贴快捷键，改为通过 Terminal 的 command 去粘贴：
+</p>
+
+<p>
+在 Ternimal 中 <code>Ctrl+Shift+P</code> 呼出 command panel，然后找到 <code>paste</code> 命令执行即可。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc03b6c8" class="outline-4">
+<h4 id="orgc03b6c8">WSL -&gt; Windows</h4>
+<div class="outline-text-4" id="text-orgc03b6c8">
+<p>
+同样，在 Terminal 中用 Emacs，选中文字复制没法传递到 Windows 的剪贴板， 目前还没找到方便的操作。
+</p>
+
+<p>
+当前的解决办法：
+</p>
+<ul class="org-ul">
+<li>Emacs 中选择内容，然后写入到一个文件 <code>~/copy.txt</code></li>
+
+<li>执行命令 <code>cat ~/copy.txt | clip.exe</code> 把 copy 的文本写入剪切板 (可以绑定 alias 方便调用)</li>
+</ul>
+
+<p>
+将以上流程封装为函数：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #6e94b9;">(</span><span style="color: #db6e8f;">defun</span> <span style="color: #88c0d0;">spike-leung/wsl-copy</span> <span style="color: #5d80ae;">()</span>
+  <span style="color: #64727d;">"Copy region to windows clipboard."</span>
+  <span style="color: #5d80ae;">(</span><span style="color: #db6e8f;">interactive</span><span style="color: #5d80ae;">)</span>
+  <span style="color: #5d80ae;">(</span><span style="color: #db6e8f;">progn</span>
+    <span style="color: #a3b09a;">(</span>write-region <span style="color: #c6797e;">(</span>mark<span style="color: #c6797e;">)</span> <span style="color: #c6797e;">(</span>point<span style="color: #c6797e;">)</span> <span style="color: #eabe9a;">"~/copy.txt"</span> nil nil nil nil<span style="color: #a3b09a;">)</span>
+    <span style="color: #a3b09a;">(</span>shell-command <span style="color: #eabe9a;">"cat ~/copy.txt | clip.exe"</span><span style="color: #a3b09a;">)</span>
+    <span style="color: #5d80ae;">)</span><span style="color: #6e94b9;">)</span>
+</pre>
+</div>
+
+<p>
+之后有时间把这个操作添加到 Emacs 的复制钩子里，这样 Emacs 复制时就能复制到 Windows 上了。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org02091e2" class="outline-3">
+<h3 id="org02091e2">Ubuntu 环境配置</h3>
+<div class="outline-text-3" id="text-org02091e2">
+</div>
+<div id="outline-container-orgc190835" class="outline-4">
+<h4 id="orgc190835">Git</h4>
+<div class="outline-text-4" id="text-orgc190835">
+<p>
+Ubuntu 自带，直接用
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd49dcb8" class="outline-4">
+<h4 id="orgd49dcb8">systemd</h4>
+<div class="outline-text-4" id="text-orgd49dcb8">
+<p>
+配置过程中，提示 systemd 不可用，导致一些安装无法进行。
+</p>
+
+<p>
+参考 <a href="http://wiki.webperfect.ch/index.php?title=WSL:_System_has_not_been_booted_with_systemd_as_init_system_(PID_1)">WSL: System has not been booted with systemd as init system (PID 1)</a> 解决：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">Install git</span>
+sudo apt install git
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Run the script</span>
+git clone https://github.com/DamionGans/ubuntu-wsl2-systemd-script.git
+<span style="color: #db6e8f;">cd</span> ubuntu-wsl2-systemd-script/
+bash ubuntu-wsl2-systemd-script.sh
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Enter your password and wait until the script has finished</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgcffea2b" class="outline-4">
+<h4 id="orgcffea2b">zsh</h4>
+<div class="outline-text-4" id="text-orgcffea2b">
+<p>
+参考 <a href="https://www.tecmint.com/install-zsh-in-ubuntu/">How to Install and Setup Zsh in Ubuntu 20.04</a>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">Install</span>
+sudo apt install zsh
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Set zsh as default shell</span>
+<span style="color: #64727d;"># </span><span style="color: #64727d;">chsh -s $(which "SHELL NAME")</span>
+chsh -s $<span style="color: #6e94b9;">(</span><span style="color: #db6e8f;">which</span> zsh<span style="color: #6e94b9;">)</span>
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Uninstall</span>
+sudo apt --purge remove zsh
+</pre>
+</div>
+
+<p>
+配置 <a href="https://ohmyz.sh/">Oh My ZSH</a> &amp; <a href="https://starship.rs">Starship</a>, 一些插件参考: <a href="https://github.com/antfu/dotfiles/blob/main/.zshrc">antfu/dotfiles</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org18a5458" class="outline-4">
+<h4 id="org18a5458">NodeJS</h4>
+<div class="outline-text-4" id="text-org18a5458">
+<p>
+下载 <a href="https://github.com/nvm-sh/nvm">nvm</a> 进行配置：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">install</span>
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">&#22312; .zshrc &#25110;&#32773; .bashrc &#20013;&#21152;&#20837;&#37197;&#32622;</span>
+<span style="color: #db6e8f;">export</span> <span style="color: #c6797e;">NVM_DIR</span>=<span style="color: #eabe9a;">"$([ -z "${XDG_CONFIG_HOME-}" ] &amp;&amp; printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"</span>
+<span style="color: #6e94b9;">[</span> -s <span style="color: #eabe9a;">"$NVM_DIR/nvm.sh"</span> <span style="color: #6e94b9;">]</span> &amp;&amp; <span style="color: #eabe9a;">\.</span> <span style="color: #eabe9a;">"$NVM_DIR/nvm.sh"</span> <span style="color: #64727d;"># </span><span style="color: #64727d;">This loads nvm</span>
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7115054" class="outline-4">
+<h4 id="org7115054">Emacs</h4>
+<div class="outline-text-4" id="text-org7115054">
+<p>
+默认 apt 安装的是 Emacs 26 的版本，但是我的配置需要 27 以上
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">sudo add-apt-repository ppa:kelleyk/emacs
+
+sudo apt update &amp;&amp; sudo apt upgrade
+
+sudo apt install emacs27
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">Uninstall</span>
+sudo apt autoremove --purge emacs27
+</pre>
+</div>
+
+<p>
+安装 gcc，用于编译 emacsql:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">sudo apt install gcc
+</pre>
+</div>
+
+<p>
+下载自己的 <a href="https://github.com/Spike-Leung/emacs.d">emacs.d 配置</a>，切换成 windows 的分支，注意要安装子模块。
+</p>
+
+<p>
+如果需要安装最新的 Emacs 版本，可以参考 <a href="https://learnubuntu.com/install-emacs/">How to Install Emacs on Ubuntu</a>:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #64727d;"># </span><span style="color: #64727d;">install</span>
+sudo apt-add-repository ppa:ubuntu-elisp/ppa
+
+sudo apt update &amp;&amp; sudo apt upgrade
+
+sudo apt-get install emacs-snapshot
+
+<span style="color: #64727d;"># </span><span style="color: #64727d;">uninstall</span>
+sudo add-apt-repository --remove ppa:ubuntu-elisp/ppa
+sudo apt remove emacs-snapshot
+</pre>
+</div>
+</div>
+
+<ul class="org-ul">
+<li><a id="org2f192de"></a>org-mode 打开链接， WSL 中找不到浏览器<br />
+<div class="outline-text-5" id="text-org2f192de">
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #64727d;">;;; </span><span style="color: #64727d;">Package --- Summary</span>
+<span style="color: #64727d;">;; </span><span style="color: #64727d;">init-wsl</span>
+<span style="color: #64727d;">;;; </span><span style="color: #64727d;">Commentary:</span>
+<span style="color: #64727d;">;;; </span><span style="color: #64727d;">Code:</span>
+<span style="color: #64727d;">;;; </span><span style="color: #64727d;">https://adam.kruszewski.name/2017-09-16-emacs-in-wsl-and-opening-links.html</span>
+
+<span style="color: #6e94b9;">(</span><span style="color: #db6e8f;">let</span> <span style="color: #5d80ae;">(</span><span style="color: #a3b09a;">(</span>cmd-exe <span style="color: #eabe9a;">"/mnt/c/Windows/System32/cmd.exe"</span><span style="color: #a3b09a;">)</span>
+      <span style="color: #a3b09a;">(</span>cmd-args <span style="color: #fafff6;">'</span><span style="color: #c6797e;">(</span><span style="color: #eabe9a;">"/c"</span> <span style="color: #eabe9a;">"start"</span><span style="color: #c6797e;">)</span><span style="color: #a3b09a;">)</span><span style="color: #5d80ae;">)</span>
+  <span style="color: #5d80ae;">(</span><span style="color: #db6e8f;">when</span> <span style="color: #a3b09a;">(</span>file-exists-p cmd-exe<span style="color: #a3b09a;">)</span>
+    <span style="color: #a3b09a;">(</span><span style="color: #db6e8f;">setq</span> browse-url-generic-program  cmd-exe
+          browse-url-generic-args     cmd-args
+          browse-url-browser-function <span style="color: #fafff6;">'</span><span style="color: #f7e3af;">browse-url-generic</span><span style="color: #a3b09a;">)</span><span style="color: #5d80ae;">)</span><span style="color: #6e94b9;">)</span>
+
+<span style="color: #6e94b9;">(</span><span style="color: #db6e8f;">provide</span> <span style="color: #fafff6;">'</span><span style="color: #c6797e;">init-wsl</span><span style="color: #6e94b9;">)</span>
+<span style="color: #64727d;">;;; </span><span style="color: #64727d;">init-wsl.el ends here</span>
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org9673652"></a>终端没有 GUI，因此一些 GUI 相关的显示会有些问题<br />
+<div class="outline-text-5" id="text-org9673652">
+<ul class="org-ul">
+<li><b>fringe</b>: 左侧显示的一些标志消失了，flycheck 找不到错误标志，不过可以通过其他方式显示错误，虽然不那么直观，但能接受</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org45bf34c" class="outline-2">
+<h2 id="org45bf34c">碎碎念</h2>
+<div class="outline-text-2" id="text-org45bf34c">
+<p>
+相对在 Windows 里开发，通过 WSL 用 Ubuntu 进行开发，要舒服很多，一些命令执行起来更方便，速度也不慢。
+</p>
+
+<p>
+不过仍然存在不少问题需要去解决，例如复制粘贴，还有不少的 Emacs 按键和其他软件似乎有冲突……
+</p>
+
+<p>
+后面解决了再来更新文章 ：）
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2022-10-27T19:15:20+08:00</p>
+<p class="author">Author: localhost</p>
+<p class="date">Created: 2024-09-25 Wed 17:42</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-09-25 Wed 17:42 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>制作SVG地图轮廓</title>
+<meta name="author" content="localhost" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<link rel="stylesheet"
+                       href="../styles/style.css" type="text/css"/>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">制作SVG地图轮廓</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgd63e7cc">前言</a></li>
+<li><a href="#org9045e3e">获取 GIS 数据</a></li>
+<li><a href="#org7602301">截取需要的地图轮廓</a></li>
+<li><a href="#org785c1e9">简化地图</a></li>
+<li><a href="#org1a3ac8d">导出时增加信息</a></li>
+<li><a href="#orgfd4fc45">参考链接</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgd63e7cc" class="outline-2">
+<h2 id="orgd63e7cc">前言</h2>
+<div class="outline-text-2" id="text-orgd63e7cc">
+<p>
+由于项目基于 AmMap，有时需要使用中国某些省份或者市区作为地图，但是 AmMap 没有提供相关的地图数据，官网提供了一个自制地图数据的文档，
+根据此文档，只要有地图的 GIS 数据，就可以制作出想要的地图。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9045e3e" class="outline-2">
+<h2 id="org9045e3e">获取 GIS 数据</h2>
+<div class="outline-text-2" id="text-org9045e3e">
+<p>
+网上搜索下载相关地区的 GIS 数据，一般下载下来会包含 <code>.shp</code> , <code>.shx</code>, <code>.prj</code>, <code>.dbf</code> 等类型的文件， 这里提供一份<a href="https://www.ganghe.net/research/data/china-gis-data">中国地图的 GIS 数据</a>。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7602301" class="outline-2">
+<h2 id="org7602301">截取需要的地图轮廓</h2>
+<div class="outline-text-2" id="text-org7602301">
+<p>
+获取轮廓，可以使用这个工具 <a href="https://github.com/mbloch/mapshaper">mapshaper</a>, 具体步骤如下:
+</p>
+
+<ol class="org-ol">
+<li>把 GIS 数据导入到 <code>mapshaper</code> 中，如果是下载了上文的中国地图 GIS 数据，里面包含了 <code>1</code> ， <code>2</code> ， <code>3</code> 不同精度的地图，根据需要的精度导入，
+笔者开发的时候，需要淄博市的轮廓，于是就导入等级 <code>3</code> 的地图数据</li>
+
+<li>打开 console，通过命令获得需要的轮廓
+<ul class="org-ul">
+<li><code>filter 'NAME_1 == "Shandong" &amp;&amp; NAME_2 == "Zibo" &amp;&amp; NAME_3 != "Gaoqing" || NAME_3 == "Zouping"'</code> 过滤得到淄博的轮廓</li>
+<li><code>mapshaper -clean</code> 清除淄博以外的区域</li>
+<li>由于不需要轮廓里面的线，只需要最外面那层轮廓，将里面的线移除:
+<ul class="org-ul">
+<li><code>mapshaper -dissolve</code></li>
+<li><code>mapshaper -clean</code></li>
+</ul></li>
+</ul></li>
+<li>导出成 SVG 数据，到此已经得到一个淄博地图轮廓的 SVG 了</li>
+<li>由于要在 AmMap 里用，使用 AmMap 提供的<a href="http://extra.amcharts.com/mapparser3/">工具</a>， 获取 JSON 数据，这里获取的 JSON 数据就能用于 AmMap 了
+<ul class="org-ul">
+<li>打开导出的 SVG 文件，复制里面 <code>&lt;g&gt;</code> 标签的全部内容</li>
+<li>导入到 <a href="http://extra.amcharts.com/mapparser3/">mapparser3</a>，获取到 JSON 数据</li>
+</ul></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org785c1e9" class="outline-2">
+<h2 id="org785c1e9">简化地图</h2>
+<div class="outline-text-2" id="text-org785c1e9">
+<p>
+  如果下载的地图数据很精细，导出时可能会导出一个非常大的文件，但是太大的文件又可能不好处理，
+这时，可以利用 mapshaper 的 <code>Simplify</code> 的功能去简化地图，从而导出一个大小合适的地图。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1a3ac8d" class="outline-2">
+<h2 id="org1a3ac8d">导出时增加信息</h2>
+<div class="outline-text-2" id="text-org1a3ac8d">
+<p>
+一般 GIS 数据里包含了很多地图区域的信息，例如，东莞市这个区域，包含了这块区域是什么市，属于什么省份等信息，
+但是当导出 SVG 的时候，发现这些信息丢失了。可以通过在导出的时候，指定要包含的属性，这样导出的SVG就能够包含
+相关的属性信息了。简单的用法：
+</p>
+<ul class="org-ul">
+<li>在 mapshaper 的右上角又一个 <code>i</code> 的按钮，点开此按钮有一个 <code>data</code> 选项，选择此选项后，悬浮在地图区域的时候
+就能看到此区域的相关属性信息</li>
+<li>例如属性信息当中有一个 <code>id</code> 属性，那么当点击右上角 <code>Export</code> 的时候，在弹窗中有一个可以输入 <code>export options</code>
+的输入框，可以输入 <code>-o svg-data=id</code>, 然后导出，导出的 SVG 中就会包含一个 <code>data-id</code> 的属性值。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgfd4fc45" class="outline-2">
+<h2 id="orgfd4fc45">参考链接</h2>
+<div class="outline-text-2" id="text-orgfd4fc45">
+<ul class="org-ul">
+<li><a href="https://www.amcharts.com/docs/v3/tutorials/creating-custom-maps-for-javascript-ammap/">Creating custom maps for JavaScript amMap(AmMap3)</a></li>
+<li><a href="https://www.amcharts.com/docs/v4/tutorials/creating-custom-maps/">Creating custom maps(AmMap4)</a></li>
+<li><a href="https://www.ganghe.net/research/data/china-gis-data">中国 GIS 数据</a></li>
+<li><a href="https://github.com/mbloch/mapshaper">mapshaper</a></li>
+<li><a href="http://extra.amcharts.com/mapparser3/">amMap parser</a></li>
+<li><a href="https://github.com/mbloch/mapshaper/issues/199">Additional attribute for SVG output #199</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2021-08-14T22:30:59+08:00</p>
+<p class="author">Author: localhost</p>
+<p class="date">Created: 2024-09-25 Wed 17:42</p>
+</div>
+</body>
+</html>

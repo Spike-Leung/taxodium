@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-09-25 Wed 17:42 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>word-break: break-all;</title>
+<meta name="author" content="localhost" />
+<meta name="description" content="&quot;&quot;" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<link rel="stylesheet"
+                       href="../styles/style.css" type="text/css"/>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">word-break: break-all;</h1>
+<p>
+开发中碰到一个问题，有一个信息字段，label 不换行，value 如果比较长就换行。
+</p>
+
+<p>
+一直以为只要设置 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/word-break#break-all">word-break: break-all;</a> 就万事大吉，但碰到恰好全是英文句号(<code>.</code> )的时候，失效了。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #db6e8f;">!DOCTYPE</span> html&gt;
+&lt;<span style="color: #88c0d0;">html</span>&gt;
+  &lt;<span style="color: #88c0d0;">head</span>&gt;
+    &lt;<span style="color: #88c0d0;">style</span>&gt;
+    .box {
+      width: 200px;
+      border: 1px solid <span style="color: #ffffff; background-color: #000;">#000</span>;
+    }
+
+    .value {
+      word-break: break-all;
+    }
+    &lt;/<span style="color: #88c0d0;">style</span>&gt;
+  &lt;/<span style="color: #88c0d0;">head</span>&gt;
+  &lt;<span style="color: #88c0d0;">body</span>&gt;
+    &lt;<span style="color: #88c0d0;">div</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"box"</span>&gt;
+      &lt;<span style="color: #88c0d0;">span</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"label"</span>&gt;label:&lt;/<span style="color: #88c0d0;">span</span>&gt;&lt;<span style="color: #88c0d0;">span</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"value"</span>&gt;...................................................................................&lt;/<span style="color: #88c0d0;">span</span>&gt;
+    &lt;/<span style="color: #88c0d0;">div</span>&gt;
+  &lt;/<span style="color: #88c0d0;">body</span>&gt;
+&lt;/<span style="color: #88c0d0;">html</span>&gt;
+</pre>
+</div>
+
+<iframe style="width: 100%" srcdoc="&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .box {width: 200px; border: 1px solid #000;} .value {word-break: break-all;} &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;box&#34;&gt; &lt;span class=&#34;label&#34;&gt;label:&lt;/span&gt;&lt;span class=&#34;value&#34;&gt;...................................................................................&lt;/span&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;"></iframe>
+
+<p>
+其实这是一个边界场景，因为内容都是标点符号(<code>.</code>)，规范中规定，对于 <code>word-break: break-all;</code> 在标点之间不会考虑换行：
+</p>
+
+<blockquote>
+<p>
+This value does not affect whether there are soft wrap opportunities around punctuation characters.
+To allow breaks anywhere, see line-break: anywhere. <a href="https://drafts.csswg.org/css-text/#word-break-property">Source</a>
+</p>
+</blockquote>
+
+<p>
+为了解决，可以使用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/line-break#anywhere">line-break: anywhere;</a> 或者 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-wrap#anywhere">overflow-wrap: anywhere;</a>。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #db6e8f;">!DOCTYPE</span> html&gt;
+&lt;<span style="color: #88c0d0;">html</span>&gt;
+  &lt;<span style="color: #88c0d0;">head</span>&gt;
+    &lt;<span style="color: #88c0d0;">style</span>&gt;
+    .box {
+      width: 200px;
+      border: 1px solid <span style="color: #ffffff; background-color: #000;">#000</span>;
+    }
+
+    .value {
+      word-break: break-all;
+      line-break: anywhere;
+    }
+    &lt;/<span style="color: #88c0d0;">style</span>&gt;
+  &lt;/<span style="color: #88c0d0;">head</span>&gt;
+  &lt;<span style="color: #88c0d0;">body</span>&gt;
+    &lt;<span style="color: #88c0d0;">div</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"box"</span>&gt;
+      &lt;<span style="color: #88c0d0;">span</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"label"</span>&gt;label:&lt;/<span style="color: #88c0d0;">span</span>&gt;&lt;<span style="color: #88c0d0;">span</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"value"</span>&gt;...................................................................................&lt;/<span style="color: #88c0d0;">span</span>&gt;
+    &lt;/<span style="color: #88c0d0;">div</span>&gt;
+  &lt;/<span style="color: #88c0d0;">body</span>&gt;
+&lt;/<span style="color: #88c0d0;">html</span>&gt;
+</pre>
+</div>
+
+<iframe style="width:100%" srcdoc="&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .box {width: 200px; border: 1px solid #000;} .value {word-break: break-all; line-break: anywhere;} &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;box&#34;&gt; &lt;span class=&#34;label&#34;&gt;label:&lt;/span&gt;&lt;span class=&#34;value&#34;&gt;...................................................................................&lt;/span&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;"></iframe>
+
+<p>
+对于普通的内容，其实 <code>word-break: break-all;</code> 是没问题的。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #db6e8f;">!DOCTYPE</span> html&gt;
+&lt;<span style="color: #88c0d0;">html</span>&gt;
+  &lt;<span style="color: #88c0d0;">head</span>&gt;
+    &lt;<span style="color: #88c0d0;">style</span>&gt;
+    .box {
+      width: 200px;
+      border: 1px solid <span style="color: #ffffff; background-color: #000;">#000</span>;
+    }
+
+    .value {
+      word-break: break-all;
+    }
+    &lt;/<span style="color: #88c0d0;">style</span>&gt;
+  &lt;/<span style="color: #88c0d0;">head</span>&gt;
+  &lt;<span style="color: #88c0d0;">body</span>&gt;
+    &lt;<span style="color: #88c0d0;">div</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"box"</span>&gt;
+      &lt;<span style="color: #88c0d0;">span</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"label"</span>&gt;label:&lt;/<span style="color: #88c0d0;">span</span>&gt;&lt;<span style="color: #88c0d0;">span</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"value"</span>&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/<span style="color: #88c0d0;">span</span>&gt;
+    &lt;/<span style="color: #88c0d0;">div</span>&gt;
+  &lt;/<span style="color: #88c0d0;">body</span>&gt;
+&lt;/<span style="color: #88c0d0;">html</span>&gt;
+</pre>
+</div>
+<iframe style="width: 100%" srcdoc="&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .box {width: 200px; border: 1px solid #000;} .value {word-break: break-all;} &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;box&#34;&gt; &lt;span class=&#34;label&#34;&gt;label:&lt;/span&gt;&lt;span class=&#34;value&#34;&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/span&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;"></iframe>
+
+<p>
+另外，如果设置为 <code>word-break: break-word;</code> 也是没问题的。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #db6e8f;">!DOCTYPE</span> html&gt;
+&lt;<span style="color: #88c0d0;">html</span>&gt;
+  &lt;<span style="color: #88c0d0;">head</span>&gt;
+    &lt;<span style="color: #88c0d0;">style</span>&gt;
+    .box {
+      width: 200px;
+      border: 1px solid <span style="color: #ffffff; background-color: #000;">#000</span>;
+    }
+
+    .value {
+      word-break: break-word;
+    }
+    &lt;/<span style="color: #88c0d0;">style</span>&gt;
+  &lt;/<span style="color: #88c0d0;">head</span>&gt;
+  &lt;<span style="color: #88c0d0;">body</span>&gt;
+    &lt;<span style="color: #88c0d0;">div</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"box"</span>&gt;
+      &lt;<span style="color: #88c0d0;">span</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"label"</span>&gt;label:&lt;/<span style="color: #88c0d0;">span</span>&gt;&lt;<span style="color: #88c0d0;">span</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"value"</span>&gt;...................................................................................&lt;/<span style="color: #88c0d0;">span</span>&gt;
+    &lt;/<span style="color: #88c0d0;">div</span>&gt;
+  &lt;/<span style="color: #88c0d0;">body</span>&gt;
+&lt;/<span style="color: #88c0d0;">html</span>&gt;
+</pre>
+</div>
+
+<iframe style="width: 100%" srcdoc="&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .box {width: 200px; border: 1px solid #000;} .value {word-break: break-word;} &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;box&#34;&gt; &lt;span class=&#34;label&#34;&gt;label:&lt;/span&gt;&lt;span class=&#34;value&#34;&gt;...................................................................................&lt;/span&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;"></iframe>
+
+<p>
+因为规范中对于 <code>word-break: break-word;</code> 的描述是这样的：
+</p>
+
+<blockquote>
+<p>
+For compatibility with legacy content, the word-break property also
+supports a deprecated break-word keyword. When specified, this has <code>the
+same effect as word-break: normal and overflow-wrap: anywhere</code>,
+regardless of the actual value of the overflow-wrap property.  <a href="https://drafts.csswg.org/css-text/#word-break-property">Source</a>
+</p>
+</blockquote>
+
+<p>
+也就是说， <code>word-break: break-word;</code> 相当于设置了 <code>overflow-wrap: anywhere;</code> ，所以即使是标点符号，也能换行。
+</p>
+
+<p>
+关于文本换行，<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_text/Wrapping_breaking_text">Wrapping and breaking text</a> 讲得很详细，里面还介绍了 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/wbr">&lt;wbr&gt;</a> (标记一个可换行的位置)，<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens">hyphens</a> (换行增加连接符 <code>-</code>)，推荐阅读一下。
+</p>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2024-08-04</p>
+<p class="author">Author: localhost</p>
+<p class="date">Created: 2024-09-25 Wed 17:42</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-09-25 Wed 17:42 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Emoji 正则匹配</title>
+<meta name="author" content="localhost" />
+<meta name="description" content="&quot;&quot;" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<link rel="stylesheet"
+                       href="../styles/style.css" type="text/css"/>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Emoji 正则匹配</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org02c8cdb">前言</a></li>
+<li><a href="#org4258203">TL;DR</a></li>
+<li><a href="#orgb5d4c4b">解决过程</a></li>
+<li><a href="#org152d958">Unicode character class escpae</a></li>
+<li><a href="#org2baccab">String &amp; Unicode</a></li>
+<li><a href="#org2de0538">为什么 /(\ud83c[\udf00-\udfff]&#x2026;/u 的正则无法匹配🉐</a></li>
+<li><a href="#orgf334f9b">String 中的相关方法</a></li>
+<li><a href="#orgf153d8d">注意点</a>
+<ul>
+<li><a href="#org06b9dde">字符串长度</a></li>
+<li><a href="#org1b22bd5">Lone surrogates</a></li>
+</ul>
+</li>
+<li><a href="#org68a72e1">Refs</a></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org02c8cdb" class="outline-2">
+<h2 id="org02c8cdb">前言</h2>
+<div class="outline-text-2" id="text-org02c8cdb">
+<p>
+要求输入框能输入除了特殊表情外的任意字符。
+</p>
+
+<p>
+我的理解就是将 Emoji 排除掉，通过 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a> 匹配 Emoji 判断是否存在特殊表情。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4258203" class="outline-2">
+<h2 id="org4258203">TL;DR</h2>
+<div class="outline-text-2" id="text-org4258203">
+<p>
+如果你只是想要一个能够匹配表情的正则，下面这个应该就满足👇：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-typescript"><span style="color: #eabe9a;">/\p{Extended_Pictographic}/</span>gu.<span style="color: #88c0d0;">test</span><span style="color: #6e94b9;">(</span><span style="color: #eabe9a;">"&#20320;&#22909;hello123&#128516;hi&#127799;456&#127568;"</span><span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #c6797e;">true</span>
+<span style="color: #eabe9a;">/\p{Extended_Pictographic}/</span>gu.<span style="color: #88c0d0;">test</span><span style="color: #6e94b9;">(</span><span style="color: #eabe9a;">"&#20320;&#22909;hello123"</span><span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #c6797e;">false</span>
+</pre>
+</div>
+
+
+<div id="orgdd2902c" class="figure">
+<p><img src="file:///post/emoji-regexp/regexp101-emoji-corret.png" alt="regexp101-emoji-corret.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb5d4c4b" class="outline-2">
+<h2 id="orgb5d4c4b">解决过程</h2>
+<div class="outline-text-2" id="text-orgb5d4c4b">
+<p>
+对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道 Emoji 和 Unicode 相关，但怎么用正则描述它呢？
+</p>
+
+<p>
+所以我的第一步是 Google，得到一个这样的正则：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-typescript"><span style="color: #eabe9a;">/(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]/</span>
+</pre>
+</div>
+
+<p>
+拿去 <a href="https://regex101.com/">regex101</a> 测试了一下，虽然能匹配到一些 Emoji，但是还是有部分 Emoji 匹配不到。
+</p>
+
+
+<div id="org3ea19e6" class="figure">
+<p><img src="file:///post/emoji-regexp/regexp101-emoji-wrong.png" alt="regexp101-emoji-wrong.png" />
+</p>
+</div>
+
+<p>
+上面的正则表达式应该是表示的是一个 Unicode 范围，部分 Emoji (🉐)没匹配上，说明这个范围小了，没有囊括所有的 Emoji。
+</p>
+
+<p>
+那么 Emoji 的 Unicode 范围是多少？是不是穷举就行了？
+</p>
+
+<p>
+其实没办法用一个固定的范围去表达，因为 Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicode ，没办法用一个固定的范围去表达所有的 Emoji。
+</p>
+
+<p>
+于是又搜索了一下，StackOverflow 有一个<a href="https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript">回答</a>，里面提到了用 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape">Unicode character class escape</a> 进行匹配，也就是  <code>/\p{Emoji}/u</code> 和 <code>/\p{Extended_Pictographic}/u</code> 。
+</p>
+
+<dl class="org-dl">
+<dt><code>/\p{Emoji}/u</code></dt><dd>既然是匹配 Emoji，那么 loneProperty (\p{loneProperty}) 就应该是 Emoji ? 实际测试并不符合需求，因为在<a href="https://www.unicode.org/Public/15.1.0/ucd/emoji/emoji-data.txt">Emoji 官方文档</a>中， <code>123456789*#</code> 也是被看作是 Emoji，
+如果用这个正则的话，就会把数字也认为是 Emoji，不符合只排除特殊表情的要求。</dd>
+
+<dt><code>/\p{Extended_Pictographic}/u</code></dt><dd>而 Extended<sub>Pictographic</sub> 表示的 Emoji 才是我们认为的那些表情符号。</dd>
+</dl>
+
+<div class="org-src-container">
+<pre class="src src-typescript"><span style="color: #f7e3af;">console</span>.<span style="color: #88c0d0;">log</span><span style="color: #6e94b9;">(</span>
+  <span style="color: #eabe9a;">/\p{Emoji}/</span>u.<span style="color: #88c0d0;">test</span><span style="color: #5d80ae;">(</span><span style="color: #eabe9a;">'flowers'</span><span style="color: #5d80ae;">)</span>, <span style="color: #64727d;">// </span><span style="color: #64727d;">false :)</span>
+  <span style="color: #eabe9a;">/\p{Emoji}/</span>u.<span style="color: #88c0d0;">test</span><span style="color: #5d80ae;">(</span><span style="color: #eabe9a;">'flowers &#127804;&#127802;&#127800;'</span><span style="color: #5d80ae;">)</span>, <span style="color: #64727d;">// </span><span style="color: #64727d;">true :)</span>
+  <span style="color: #eabe9a;">/\p{Emoji}/</span>u.<span style="color: #88c0d0;">test</span><span style="color: #5d80ae;">(</span><span style="color: #eabe9a;">'flowers 123'</span><span style="color: #5d80ae;">)</span>, <span style="color: #64727d;">// </span><span style="color: #64727d;">true :(</span>
+<span style="color: #6e94b9;">)</span>
+<span style="color: #f7e3af;">console</span>.<span style="color: #88c0d0;">log</span><span style="color: #6e94b9;">(</span>
+  <span style="color: #eabe9a;">/\p{Extended_Pictographic}/</span>u.<span style="color: #88c0d0;">test</span><span style="color: #5d80ae;">(</span><span style="color: #eabe9a;">'flowers'</span><span style="color: #5d80ae;">)</span>, <span style="color: #64727d;">// </span><span style="color: #64727d;">false :)</span>
+  <span style="color: #eabe9a;">/\p{Extended_Pictographic}/</span>u.<span style="color: #88c0d0;">test</span><span style="color: #5d80ae;">(</span><span style="color: #eabe9a;">'flowers &#127804;&#127802;&#127800;'</span><span style="color: #5d80ae;">)</span>, <span style="color: #64727d;">// </span><span style="color: #64727d;">true :)</span>
+  <span style="color: #eabe9a;">/\p{Extended_Pictographic}/</span>u.<span style="color: #88c0d0;">test</span><span style="color: #5d80ae;">(</span><span style="color: #eabe9a;">'flowers 123'</span><span style="color: #5d80ae;">)</span>, <span style="color: #64727d;">// </span><span style="color: #64727d;">false :)</span>
+<span style="color: #6e94b9;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org152d958" class="outline-2">
+<h2 id="org152d958">Unicode character class escpae</h2>
+<div class="outline-text-2" id="text-org152d958">
+<p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape">Unicode character class escape: \p{...}, \P{...}</a> 是 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_class_escape">Character class escape</a> 中的一种。
+</p>
+
+<p>
+平时正则中常用的 \d,\D,\w,\W 就是 Character class escape，就是用来表达一组字符的转义序列(escape sequence)。
+</p>
+
+<p>
+例如 <code>\d</code> 这个转义序列表达的就是 <code>[0-9]</code> 的一组字符 。
+</p>
+
+<p>
+而 <code>\p{...}</code> , <code>\P{...}</code> 也是类似的，只是他们用来表达一组 Unicdoe 字符，通过指定 <a href="https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties">Unicode property</a> 决定匹配什么 Unicode。
+</p>
+
+<p>
+例如可以用 <code>/\p{Hex_Digit}/u</code> 去匹配 16 进制的字符：
+</p>
+
+
+<div id="org27fdc70" class="figure">
+<p><img src="file:///post/emoji-regexp/regexp101-emoji-hex-digit.png" alt="regexp101-emoji-hex-digit.png" />
+</p>
+</div>
+
+<p>
+需要注意的是，使用 Unicode character class escpae 要启用 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode#unicode-aware_mode">unicode-aware mode</a>，即加上 <code>/u</code> 标记。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2baccab" class="outline-2">
+<h2 id="org2baccab">String &amp; Unicode</h2>
+<div class="outline-text-2" id="text-org2baccab">
+<blockquote>
+<p>
+Strings are represented fundamentally as sequences of <a href="https://en.wikipedia.org/wiki/UTF-16">UTF-16</a> code
+units. In UTF-16 encoding, every code unit is exact 16 bits long. This
+means there are a maximum of 2<sup>16</sup>, or 65536 possible characters
+representable as single UTF-16 code units.
+</p>
+
+<p>
+&#x2026;
+</p>
+
+<p>
+However, the entire Unicode character set is much, much bigger
+than 65536. The extra characters are stored in UTF-16 as surrogate
+pairs, which are pairs of 16-bit code units that represent a single
+character.To avoid ambiguity, the two parts of the pair must be
+between 0xD800 and 0xDFFF, and these code units are not used to encode
+single-code-unit characters. (More precisely, leading surrogates, also
+called <b>high-surrogate</b> code units, have values between <b>0xD800 and
+0xDBFF</b>, inclusive, while trailing surrogates, also called
+<b>low-surrogate</b> code units, have values between <b>0xDC00 and 0xDFFF</b>,
+inclusive.) Each Unicode character, comprised of one or two UTF-16
+code units, is also called a <b>Unicode code point</b>. Each Unicode code
+point can be written in a string with \u{xxxxxx} where xxxxxx
+represents 1–6 hex digits.
+</p>
+
+<p>
+—— <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters">UTF-16 characters, Unicode code points, and grapheme clusters</a>
+</p>
+</blockquote>
+
+<p>
+在 JavaScript 中，String 实际是 UTF-16  (16-bit Unicode Transformation Format) 编码的，它以 16 位去表示一个字符（code unit），最多可以表示 65536 (0x0000 - 0xFFFF) 个字符。
+</p>
+
+<p>
+这 65535 个字符中包含了大部分常用字符，例如字母，数字，拉丁字符，以及一些东亚文字字符。
+</p>
+
+<p>
+但是后来发现 65535 并不足以表达所有字符，16 位不够，那就需要增加 Unicode 去表达更多字符。
+</p>
+
+<p>
+实现的方法就是定义了 <b>代理对 (Surrogates pairs)</b>  , 代理对由 20 位组成。
+</p>
+
+<p>
+规定前 10 位作为 <b>高代理位 (high-surrogate)</b> ，取值范围是 0xD800 - 0xDBFF。
+</p>
+
+<p>
+后 10 位为 <b>低代理位 (low-surrogate)</b> ，取值范围是 0xDC00 - 0xDFFF。
+</p>
+
+<p>
+高代理位和低代理位组成代理对 (surrogate pairs) 。
+</p>
+
+<p>
+由于有 20 位的长度，因此可以表达 1048576 个字符，可以在原来 65536 个字符之上，再增加 1048576 个字符。
+</p>
+
+<p>
+为什么 Unicode 要这么设计，可以参考 <a href="https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm">Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?</a>
+</p>
+
+<p>
+为什么高代理和低代理这么取值，可以参考 <a href="https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen">How was the position of the Surrogates Area (UTF-16) chosen?</a>）
+</p>
+
+<p>
+概括来说，就是在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。
+</p>
+
+<p>
+而超出 65535 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2de0538" class="outline-2">
+<h2 id="org2de0538">为什么 /(\ud83c[\udf00-\udfff]&#x2026;/u 的正则无法匹配🉐</h2>
+<div class="outline-text-2" id="text-org2de0538">
+<p>
+现在已经知道 Emoji 是通过代理对表示的，那么 🉐 的代理对是什么呢？
+</p>
+
+<p>
+可以通过 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charAt">String.prototype.chartAt()</a> 或 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split">String.prototype.split()</a> 获得。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-typescript"><span style="color: #eabe9a;">'&#127568;'</span>.<span style="color: #88c0d0;">charAt</span><span style="color: #6e94b9;">(</span>0<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">'\uD83C'</span>
+<span style="color: #eabe9a;">'&#127568;'</span>.<span style="color: #88c0d0;">charAt</span><span style="color: #6e94b9;">(</span>1<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">'\uDE50'</span>
+<span style="color: #eabe9a;">'&#127568;'</span>.<span style="color: #88c0d0;">split</span><span style="color: #6e94b9;">(</span><span style="color: #eabe9a;">""</span><span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">['\uD83C', '\uDE50']</span>
+</pre>
+</div>
+
+<p>
+所以 🉐 的高代理是 \uD83C，低代理是 \uDE50。
+</p>
+
+<p>
+和 <code>(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]</code> 对比可以发现，正则的范围不包括 \uD83C\uDE50，所以匹配不到🉐。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf334f9b" class="outline-2">
+<h2 id="orgf334f9b">String 中的相关方法</h2>
+<div class="outline-text-2" id="text-orgf334f9b">
+<dl class="org-dl">
+<dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charAt">String.prototype.charAt()</a></dt><dd><blockquote>
+<p>
+The charAt() method of String values returns a new string consisting of the single UTF-16 code unit at the given index.
+</p>
+</blockquote>
+
+<p>
+charAt() 返回字符串对应下标的单个 UTF-16 编码单元。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-typescript"><span style="color: #eabe9a;">'&#127568;'</span>.<span style="color: #88c0d0;">charAt</span><span style="color: #6e94b9;">(</span>0<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">'\uD83C'</span>
+<span style="color: #eabe9a;">'&#127568;'</span>.<span style="color: #88c0d0;">charAt</span><span style="color: #6e94b9;">(</span>1<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">'\uDE50'</span>
+
+<span style="color: #eabe9a;">'a'</span>.<span style="color: #88c0d0;">charAt</span><span style="color: #6e94b9;">(</span>0<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">'a'</span>
+<span style="color: #eabe9a;">'a'</span>.<span style="color: #88c0d0;">charAt</span><span style="color: #6e94b9;">(</span>1<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">''</span>
+
+<span style="color: #eabe9a;">'apple'</span>.<span style="color: #88c0d0;">charAt</span><span style="color: #6e94b9;">(</span>0<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">'a'</span>
+<span style="color: #eabe9a;">'apple'</span>.<span style="color: #88c0d0;">charAt</span><span style="color: #6e94b9;">(</span>1<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">'p'</span>
+</pre>
+</div></dd>
+
+<dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt">String.property.charCodeAt()</a></dt><dd><blockquote>
+<p>
+The charCodeAt() method of String values returns an integer between 0 and 65535 representing the UTF-16 code unit at the given index.
+</p>
+</blockquote>
+
+<p>
+charCodeAt() 返回字符一个 <code>0-65535</code> 之间的 <code>数字(integer)</code> , 是字符串对应下标的 UTF-16 编码单元对应的数值。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-typescript"><span style="color: #eabe9a;">'&#127568;'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>0<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">55356</span>
+<span style="color: #eabe9a;">'&#127568;'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>1<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">56912</span>
+
+<span style="color: #eabe9a;">'a'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>0<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">97</span>
+<span style="color: #eabe9a;">'a'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>1<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #c6797e;">NaN</span>
+
+<span style="color: #eabe9a;">'apple'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>0<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">97</span>
+<span style="color: #eabe9a;">'apple'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>1<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">112</span>
+</pre>
+</div></dd>
+
+<dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode">String.fromCharCode()</a></dt><dd><blockquote>
+<p>
+The String.fromCharCode() static method returns a string created from the specified sequence of UTF-16 code units.
+</p>
+</blockquote>
+
+<p>
+fromCharCode() 可以接受多个 0-65535 之间的数字，返回这些 char code 组成的字符串。
+</p>
+
+<p>
+fromCharCode() 和 charCodeAt() 是对应的。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-typescript"><span style="color: #eabe9a;">'&#127568;'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>0<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">55356</span>
+<span style="color: #eabe9a;">'&#127568;'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>1<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">56912</span>
+String.<span style="color: #88c0d0;">fromCharCode</span><span style="color: #6e94b9;">(</span>55356, 56912<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">'&#127568;'</span>
+
+<span style="color: #eabe9a;">'apple'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>0<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">97</span>
+<span style="color: #eabe9a;">'apple'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>1<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">112</span>
+<span style="color: #eabe9a;">'apple'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>2<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">112</span>
+<span style="color: #eabe9a;">'apple'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>3<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">108</span>
+<span style="color: #eabe9a;">'apple'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>4<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">101</span>
+String.<span style="color: #88c0d0;">fromCharCode</span><span style="color: #6e94b9;">(</span>97, 112, 112, 108, 101<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">'apple'</span>
+</pre>
+</div></dd>
+
+<dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/codePointAt">String.prototype.codePointAt()</a></dt><dd><blockquote>
+<p>
+The codePointAt() method of String values returns a non-negative integer that is the Unicode code point value of the character starting at the given index.
+</p>
+
+<p>
+Note that the index is still based on UTF-16 code units, not Unicode code points.
+</p>
+</blockquote>
+
+<p>
+codePointAt() 返回的是一个数字，是字符串对应下标的对应的 Unicode code point(不局限在 0-65535, 而是 0-1114111 (0x10FFFF))。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-typescript"><span style="color: #eabe9a;">'&#127568;'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>0<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">55356</span>
+<span style="color: #eabe9a;">'&#127568;'</span>.<span style="color: #88c0d0;">charCodeAt</span><span style="color: #6e94b9;">(</span>1<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">56912</span>
+
+<span style="color: #eabe9a;">'&#127568;'</span>.<span style="color: #88c0d0;">codePointAt</span><span style="color: #6e94b9;">(</span>0<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">127568</span>
+<span style="color: #64727d;">// </span><span style="color: #64727d;">&#38656;&#35201;&#27880;&#24847;&#30340;&#26159;&#65292;&#19979;&#26631;&#26159;&#22522;&#20110; UTF-16 &#35745;&#31639;&#30340;&#65292;&#127568; &#26159;&#30001;&#20004;&#20010; UTF-16 &#32452;&#25104;&#30340;</span>
+<span style="color: #64727d;">// </span><span style="color: #64727d;">&#23545;&#20110;&#19979;&#26631; 0&#65292;&#21487;&#20197;&#25214;&#21040;&#19968;&#20010;&#20195;&#29702;&#23545;&#65292;&#23545;&#24212; Unicode code point&#65292;&#25152;&#20197;&#36820;&#22238;&#20102; 127568</span>
+<span style="color: #64727d;">// </span><span style="color: #64727d;">&#23545;&#20110;&#19979;&#26631; 1&#65292;&#30001;&#20110;&#21482;&#26377;&#20302;&#20195;&#29702;&#20301;&#65292;&#26080;&#27861;&#32452;&#25104;&#20195;&#29702;&#23545;&#65292;&#23601;&#36820;&#22238;&#20302;&#20195;&#29702;&#20301;&#23545;&#24212;&#30340; Unicode Code Point</span>
+<span style="color: #eabe9a;">'&#127568;'</span>.<span style="color: #88c0d0;">codePointAt</span><span style="color: #6e94b9;">(</span>1<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">56912</span>
+</pre>
+</div></dd>
+
+<dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint">String.fromCodePoint()</a></dt><dd><blockquote>
+<p>
+The String.fromCodePoint() static method returns a string created from the specified sequence of code points.
+</p>
+</blockquote>
+
+<p>
+fromCodePoint() 可以接受多个 codePoint 数字，返回对应的字符串。
+</p>
+
+<p>
+fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePoint() 则可以输入 0-1114111 范围的数字。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-typescript"><span style="color: #64727d;">// </span><span style="color: #64727d;">fromCodePoint</span>
+String.<span style="color: #88c0d0;">fromCodePoint</span><span style="color: #6e94b9;">(</span>127568<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">'&#127568;'</span>
+String.<span style="color: #88c0d0;">fromCodePoint</span><span style="color: #6e94b9;">(</span>55356, 56912<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">'&#127568;'</span>
+
+<span style="color: #64727d;">// </span><span style="color: #64727d;">fromCharCode</span>
+<span style="color: #64727d;">// </span><span style="color: #64727d;">fromCharCode &#21482;&#33021;&#22788;&#29702; 0-65535 &#20043;&#38388;&#30340;&#25968;&#23383;&#65292;&#23545;&#20110;&#36229;&#36807; 65535 &#30340;&#25968;&#23383;&#65292;&#21017;&#25130;&#26029;&#21040;&#26368;&#21518;&#30340; 16 &#20301;&#25968;&#23383;</span>
+<span style="color: #64727d;">// </span><span style="color: #64727d;">&#31561;&#21516;&#20110; String.</span><span style="color: #88c0d0;">fromCharCode</span><span style="color: #64727d;">(62032)</span>
+<span style="color: #64727d;">// </span><span style="color: #64727d;">Number(127568).</span><span style="color: #88c0d0;">toString</span><span style="color: #64727d;">(16) -&gt; '1f250' -&gt; &#25130;&#21462;&#26368;&#21518;&#30340; 16 &#20301;&#65292;&#21363; </span><span style="color: #c6797e;">f250</span>
+<span style="color: #64727d;">// </span><span style="color: #64727d;">Number.</span><span style="color: #88c0d0;">parseInt</span><span style="color: #64727d;">('f250', 16) -&gt; 62032</span>
+String.<span style="color: #88c0d0;">fromCharCode</span><span style="color: #6e94b9;">(</span>127568<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">'&#62032;'</span>
+String.<span style="color: #88c0d0;">fromCharCode</span><span style="color: #6e94b9;">(</span>55356, 56912<span style="color: #6e94b9;">)</span> <span style="color: #64727d;">// </span><span style="color: #64727d;">'&#127568;'</span>
+</pre>
+</div></dd>
+</dl>
+</div>
+</div>
+
+
+<div id="outline-container-orgf153d8d" class="outline-2">
+<h2 id="orgf153d8d">注意点</h2>
+<div class="outline-text-2" id="text-orgf153d8d">
+</div>
+<div id="outline-container-org06b9dde" class="outline-3">
+<h3 id="org06b9dde">字符串长度</h3>
+<div class="outline-text-3" id="text-org06b9dde">
+<p>
+有的字符是由代理对组成的，是两个 UTF-16 编码单元，例如 Emoji。
+</p>
+
+<p>
+当需要计算他们长度的时候，需要意识到他们是代理对，取决于具体需求去统计长度。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-typescript"><span style="color: #eabe9a;">'a'</span>.length <span style="color: #64727d;">// </span><span style="color: #64727d;">1</span>
+
+<span style="color: #eabe9a;">'&#127568;'</span>.length <span style="color: #64727d;">// </span><span style="color: #64727d;">2</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1b22bd5" class="outline-3">
+<h3 id="org1b22bd5">Lone surrogates</h3>
+<div class="outline-text-3" id="text-org1b22bd5">
+<p>
+代理对是由高代理和低代理组成的，如果单独把高代理拎出来，或者高代理和高代理组成代理对，是无法表达有含意的 Unicode 字符的。
+</p>
+
+<p>
+具体可以参考 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters">UTF-16 characters, Unicode code points, and grapheme clusters</a>。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org68a72e1" class="outline-2">
+<h2 id="org68a72e1">Refs</h2>
+<div class="outline-text-2" id="text-org68a72e1">
+<ul class="org-ul">
+<li><a href="https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript">How to detect emoji using javascript</a></li>
+
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape">Unicode character class escape: \p{...}, \P{...}</a></li>
+
+<li><a href="https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties">Binary Unicode property aliases and their canonical property names</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2024-05-09T20:28:46+08:00</p>
+<p class="author">Author: localhost</p>
+<p class="date">Created: 2024-09-25 Wed 17:42</p>
+</div>
+</body>
+</html>

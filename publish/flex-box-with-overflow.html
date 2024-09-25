@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-09-25 Wed 17:42 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Flex 布局下，元素溢出的问题</title>
+<meta name="author" content="localhost" />
+<meta name="description" content="&quot;&quot;" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<link rel="stylesheet"
+                       href="../styles/style.css" type="text/css"/>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Flex 布局下，元素溢出的问题</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org8568c4c">问题</a>
+<ul>
+<li><a href="#org179ab3b">非 flex 布局的表现</a></li>
+</ul>
+</li>
+<li><a href="#org5ee7928">解决方案</a>
+<ul>
+<li><a href="#org32546c5">给 flex item 设置 overflow 属性</a></li>
+<li><a href="#org66b8ab4">给 flex item 设置 width: 0 &amp; flex-grow: 1</a></li>
+<li><a href="#orgeed2655">给 flex item 设置 min-width: 0</a></li>
+</ul>
+</li>
+<li><a href="#org36d990b">原因</a>
+<ul>
+<li><a href="#orgc28265c">TL;DR</a></li>
+<li><a href="#orgc75ef0d">详细分析</a></li>
+</ul>
+</li>
+<li><a href="#org27c536a">推论</a></li>
+<li><a href="#org95ed427">Refs</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org8568c4c" class="outline-2">
+<h2 id="org8568c4c">问题</h2>
+<div class="outline-text-2" id="text-org8568c4c">
+<p>
+有一个 flex box，宽度是 400px，里面有一个 item，item 中有一段很长的文
+字，文字不换行。
+</p>
+
+<p>
+由于外层盒子设置了宽度，预期是父盒子宽度能限制住 item，避免溢出。
+</p>
+
+<p>
+但实际的表现是，文本没有隐藏显示，而是按照文本长度，溢出了盒子。
+</p>
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #db6e8f;">!DOCTYPE</span> html&gt;
+&lt;<span style="color: #88c0d0;">html</span>&gt;
+  &lt;<span style="color: #88c0d0;">head</span>&gt;
+    &lt;<span style="color: #88c0d0;">style</span>&gt;
+      .container {
+          display: flex;
+          height: 200px;
+          width: 400px;
+          background: <span style="color: #000000; background-color: #FFFF00;">yellow</span>;
+      }
+      .item {}
+      .text {
+          <span style="color: #000000; background-color: #FFFFFF;">white</span>-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+      }
+    &lt;/<span style="color: #88c0d0;">style</span>&gt;
+  &lt;/<span style="color: #88c0d0;">head</span>&gt;
+
+  &lt;<span style="color: #88c0d0;">body</span>&gt;
+    &lt;<span style="color: #88c0d0;">div</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"container"</span>&gt;
+      &lt;<span style="color: #88c0d0;">div</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"item"</span>&gt;
+        &lt;<span style="color: #88c0d0;">p</span> <span style="color: #c6797e;">class</span>=<span style="color: #eabe9a;">"text"</span>&gt;
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        &lt;/<span style="color: #88c0d0;">p</span>&gt;
+      &lt;/<span style="color: #88c0d0;">div</span>&gt;
+    &lt;/<span style="color: #88c0d0;">div</span>&gt;
+  &lt;/<span style="color: #88c0d0;">body</span>&gt;
+&lt;/<span style="color: #88c0d0;">html</span>&gt;
+</pre>
+</div>
+
+
+<div id="orge4481d6" class="figure">
+<p><img src="file:///post/flex-box-with-overflow/problem.png" alt="problem.png" />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org179ab3b" class="outline-3">
+<h3 id="org179ab3b">非 flex 布局的表现</h3>
+<div class="outline-text-3" id="text-org179ab3b">
+<p>
+如果去除 flex 布局，用默认的 display:block 的盒子， 文本是会受限于外层
+容器宽度，从而溢出隐藏显示。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-diff">  &lt;!DOCTYPE html&gt;
+  &lt;html&gt;
+    &lt;head&gt;
+      &lt;style&gt;
+        .container {
+<span style="color: #172030; background-color: #c6797e; font-weight: bold;">-</span><span style="color: #172030; background-color: #c6797e;">            display: flex;</span>
+            height: 200px;
+            width: 400px;
+            background: yellow;
+        }
+        .item {}
+        .text {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+      &lt;/style&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+      &lt;div class="container"&gt;
+        &lt;div class="item"&gt;
+          &lt;p class="text"&gt;
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          &lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/body&gt;
+  &lt;/html&gt;
+</pre>
+</div>
+
+
+<div id="org2f30da1" class="figure">
+<p><img src="file:///post/flex-box-with-overflow/display-block.png" alt="display-block.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5ee7928" class="outline-2">
+<h2 id="org5ee7928">解决方案</h2>
+<div class="outline-text-2" id="text-org5ee7928">
+</div>
+<div id="outline-container-org32546c5" class="outline-3">
+<h3 id="org32546c5">给 flex item 设置 overflow 属性</h3>
+<div class="outline-text-3" id="text-org32546c5">
+<div class="org-src-container">
+<pre class="src src-diff">.item {
+<span style="color: #172030; background-color: #a3b09a; font-weight: bold;">+</span><span style="color: #172030; background-color: #a3b09a;"> overflow: auto;</span>
+}
+</pre>
+</div>
+
+
+<div id="org5d750b6" class="figure">
+<p><img src="file:///post/flex-box-with-overflow/overflow.png" alt="overflow.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org66b8ab4" class="outline-3">
+<h3 id="org66b8ab4">给 flex item 设置 width: 0 &amp; flex-grow: 1</h3>
+<div class="outline-text-3" id="text-org66b8ab4">
+<div class="org-src-container">
+<pre class="src src-diff">.item {
+<span style="color: #172030; background-color: #a3b09a; font-weight: bold;">+</span><span style="color: #172030; background-color: #a3b09a;"> flex-grow: 1;</span>
+<span style="color: #172030; background-color: #a3b09a; font-weight: bold;">+</span><span style="color: #172030; background-color: #a3b09a;"> width: 0;</span>
+}
+</pre>
+</div>
+
+<div id="org0f5266d" class="figure">
+<p><img src="file:///post/flex-box-with-overflow/width.png" alt="width.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgeed2655" class="outline-3">
+<h3 id="orgeed2655">给 flex item 设置 min-width: 0</h3>
+<div class="outline-text-3" id="text-orgeed2655">
+<div class="org-src-container">
+<pre class="src src-diff">.item {
+<span style="color: #172030; background-color: #a3b09a; font-weight: bold;">+</span><span style="color: #172030; background-color: #a3b09a;"> min-width: 0;</span>
+}
+</pre>
+</div>
+
+<div id="org98bba60" class="figure">
+<p><img src="file:///post/flex-box-with-overflow/min-width.png" alt="min-width.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org36d990b" class="outline-2">
+<h2 id="org36d990b">原因</h2>
+<div class="outline-text-2" id="text-org36d990b">
+</div>
+<div id="outline-container-orgc28265c" class="outline-3">
+<h3 id="orgc28265c">TL;DR</h3>
+<div class="outline-text-3" id="text-orgc28265c">
+<p>
+会溢出是因为在这个例子中，flex item 的 <b>最小尺寸</b> 是文本的长度，即使
+flex item 可以缩小也只能缩小到文本长度，无法避免溢出。
+</p>
+
+<p>
+通过设置 <code>overflow</code> 属性，可以让最小宽度变为 0，从而让 flex item 可以缩小到容器内而不溢出；
+</p>
+
+<p>
+设置 <code>min-width:0</code> 同理，可以让 flex item 可以缩小到很小，避免溢出；
+</p>
+
+<p>
+设置 <code>width:0</code> 则也会影响最小尺寸，同时也设置了 flex item 的宽度，但因为
+宽度为 0，还需要设置 <code>flex-grow:1</code> ，让 flex item 延伸容器剩余空间。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc75ef0d" class="outline-3">
+<h3 id="orgc75ef0d">详细分析</h3>
+<div class="outline-text-3" id="text-orgc75ef0d">
+<p>
+当 flex item 没有设置 flex 属性时，默认值是 <code>flex: initial</code> ，相当于
+<code>flex: 0 1 auto</code>,
+</p>
+
+<p>
+也即 <code>flex-grow: 0; flex-shrink: 1: flex-basic: auto;</code>
+</p>
+
+<p>
+<a href="https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#flex-initial">默认值</a>的效果是，根据 item 的 width/height 来设置尺寸，如果
+width/height 没有指定，则会根据内容去计算尺寸。
+</p>
+
+<p>
+item 无法延伸尺寸，但可以缩小到它的 <b>最小尺寸</b> 。
+</p>
+
+<p>
+而最小尺寸的计算，在 <a href="https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#min-size-auto">4.5. Automatic Minimum Size of Flex Items</a> 中有描述：
+</p>
+
+<blockquote>
+<p>
+To provide a more reasonable default minimum size for flex items, the
+used value of a main axis automatic minimum size on a flex item that
+is <i>not a scroll container</i> is a <i>content-based minimum size</i>; for scroll
+containers the automatic minimum size is <i>zero</i>, as usual.
+</p>
+</blockquote>
+
+<p>
+也就是说，如果 flex item 是一个滚动容器（<a href="https://www.w3.org/TR/css-overflow-3/#scroll-container">scroll container</a>，即设置了
+overflow 属性），那么最小宽度就是 0。
+</p>
+
+<p>
+所以，当设置了 <code>overflow</code> 后，flex item 可以尽可能地缩小直到刚好填满
+flex container。
+</p>
+
+<p>
+借助 firefox，可以看此时的尺寸如下：
+</p>
+
+
+<div id="org51835fb" class="figure">
+<p><img src="file:///post/flex-box-with-overflow/layout-overflow.png" alt="layout-overflow.png" />
+</p>
+</div>
+
+
+<p>
+如果 <b>不是</b> 可滚动元素，有以下描述：
+</p>
+
+<blockquote>
+<p>
+In general, the content-based minimum size of a flex item is the
+smaller of its <i>content size suggestion</i> and its <i>specified size
+suggestion</i>.
+</p>
+
+<p>
+However, if the box <i>has an aspect ratio and no specified size</i>, its
+content-based minimum size is the smaller of its <i>content size
+suggestion</i> and its <i>transferred size suggestion</i>.
+</p>
+
+<p>
+If the box <i>has neither a specified size suggestion nor an aspect
+ratio</i>, its <i>content-based minimum size</i> is the content size suggestion.
+</p>
+</blockquote>
+
+<p>
+<i>specified size suggestion</i> 的定义：
+</p>
+<blockquote>
+<p>
+If the item’s computed <a href="https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#main-size-property">main size property</a> is definite, then the
+specified size suggestion is that size (clamped by its max main size
+property if it’s definite). It is otherwise undefined.
+</p>
+</blockquote>
+
+<p>
+根据 <a href="https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#main-size-property">main size property</a>，只要给 flex item 设置 width，或者 min-width，
+那么从这些值上去计算最小尺寸。
+</p>
+
+<p>
+所以可以通过设置 <code>min-width:0</code> ，让 flex item 可以尽可能的缩小。
+</p>
+
+
+<div id="org955a956" class="figure">
+<p><img src="file:///post/flex-box-with-overflow/layout-min-width.png" alt="layout-min-width.png" />
+</p>
+</div>
+
+<p>
+或者给 flex item 设置一个具体的 <code>width</code> 。
+</p>
+
+<p>
+不过此时由于 flex item 默认 <code>flex-grow:0</code>, 不会延展尺寸，因此还要设置
+<code>flex-grow:1</code>, 让 flex item 去延展填满剩余空间。
+</p>
+
+
+<div id="org156a613" class="figure">
+<p><img src="file:///post/flex-box-with-overflow/layout-width.png" alt="layout-width.png" />
+</p>
+</div>
+
+<p>
+如果都不设置，那么 flex item 此时的最小尺寸由 <i>content size suggestion</i>
+决定：
+</p>
+
+<blockquote>
+<p>
+The content size suggestion is the <a href="https://www.w3.org/TR/css-sizing-3/#min-content">min-content size</a> in the main axis,
+clamped, if it has an aspect ratio, by any definite min and max cross
+size properties converted through the aspect ratio, and then further
+clamped by the max main size property if that is definite.
+</p>
+</blockquote>
+
+<p>
+min-content size 最终会由 <a href="https://www.w3.org/TR/CSS2/visudet.html#float-width">CSS2.1§10.3.5</a> 确定最小尺寸的计算，具体来说是：
+</p>
+
+<blockquote>
+<p>
+Calculation of the shrink-to-fit width is similar to calculating the
+width of a table cell using the automatic table layout
+algorithm. Roughly: calculate the preferred width by formatting the
+content without breaking lines other than where explicit line breaks
+occur, and also calculate the preferred minimum width, e.g., by
+trying all possible line breaks. CSS 2.1 does not define the exact
+algorithm. Thirdly, find the available width: in this case, this is
+the width of the containing block minus the used values of
+'margin-left', 'border-left-width', 'padding-left', 'padding-right',
+'border-right-width', 'margin-right', and the widths of any relevant
+scroll bars.
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+Then the shrink-to-fit width is: min(max(preferred minimum width,
+available width), preferred width).
+</p>
+</blockquote>
+
+<ul class="org-ul">
+<li>preferred width: 元素不换行的宽度，本例子就是文本的长度</li>
+<li>preferred minimum width: 对元素尝试各种换行，得到的最小宽度（但由于
+设置了 <code>white-space:nowrap;</code> , 所以应该是和 preferred width 一样的）</li>
+<li>available width: 盒子宽度，400px</li>
+</ul>
+
+<p>
+根据公式，最小宽度就是 <i>min(max(2000+px, 400px), 2000+px) =&gt; 2000+px</i>
+</p>
+
+<p>
+所以默认最小宽度很长，导致了溢出。
+</p>
+
+
+<div id="org5369f37" class="figure">
+<p><img src="file:///post/flex-box-with-overflow/layout-default.png" alt="layout-default.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org27c536a" class="outline-2">
+<h2 id="org27c536a">推论</h2>
+<div class="outline-text-2" id="text-org27c536a">
+<p>
+使用 flex 布局的时候，可以给 flex item 设置 <code>min-width: 0</code> ，从而保证
+flex item 能够尽可能地收缩，避免溢出 flex container。
+</p>
+
+<p>
+当碰到 flex item 的尺寸和预想中不一样时，可以考虑是不是这个原因导致的。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org95ed427" class="outline-2">
+<h2 id="org95ed427">Refs</h2>
+<div class="outline-text-2" id="text-org95ed427">
+<ul class="org-ul">
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox">Basic concepts of flexbox</a> @MDN</li>
+<li><a href="https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#flex-basis-property">CSS Flexible Box Layout Module Level 1</a> @W3C</li>
+<li><a href="https://juejin.cn/post/7118267018918232072">如何解决flex文本溢出问题</a> @掘金/安迪five</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2022-09-28T15:01:21+08:00</p>
+<p class="author">Author: localhost</p>
+<p class="date">Created: 2024-09-25 Wed 17:42</p>
+</div>
+</body>
+</html>
