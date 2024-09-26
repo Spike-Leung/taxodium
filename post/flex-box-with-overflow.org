@@ -46,7 +46,7 @@
   </html>
 #+end_src
 
-[[file:/post/flex-box-with-overflow/problem.png]]
+[[file:./images/flex-box-with-overflow/problem.png]]
 
 ** 非 flex 布局的表现
 如果去除 flex 布局，用默认的 display:block 的盒子， 文本是会受限于外层
@@ -84,7 +84,7 @@
   </html>
 #+end_src
 
-[[file:/post/flex-box-with-overflow/display-block.png]]
+[[file:./images/flex-box-with-overflow/display-block.png]]
 
 * 解决方案
 ** 给 flex item 设置 overflow 属性
@@ -94,7 +94,7 @@
 }
 #+end_src
 
-[[file:/post/flex-box-with-overflow/overflow.png]]
+[[file:./images/flex-box-with-overflow/overflow.png]]
 
 ** 给 flex item 设置 width: 0 & flex-grow: 1
 #+begin_src diff
@@ -103,7 +103,7 @@
 + width: 0;
 }
 #+end_src
-[[file:/post/flex-box-with-overflow/width.png]]
+[[file:./images/flex-box-with-overflow/width.png]]
 
 ** 给 flex item 设置 min-width: 0
 #+begin_src diff
@@ -111,7 +111,7 @@
 + min-width: 0;
 }
 #+end_src
-[[file:/post/flex-box-with-overflow/min-width.png]]
+[[file:./images/flex-box-with-overflow/min-width.png]]
 
 * 原因
 ** TL;DR
@@ -153,7 +153,7 @@ flex container。
 
 借助 firefox，可以看此时的尺寸如下：
 
-[[file:/post/flex-box-with-overflow/layout-overflow.png]]
+[[file:./images/flex-box-with-overflow/layout-overflow.png]]
 
 
 如果 *不是* 可滚动元素，有以下描述：
@@ -184,14 +184,14 @@ property if it’s definite). It is otherwise undefined.
 
 所以可以通过设置 =min-width:0= ，让 flex item 可以尽可能的缩小。
 
-[[file:/post/flex-box-with-overflow/layout-min-width.png]]
+[[file:./images/flex-box-with-overflow/layout-min-width.png]]
 
 或者给 flex item 设置一个具体的 =width= 。
 
 不过此时由于 flex item 默认 =flex-grow:0=, 不会延展尺寸，因此还要设置
 =flex-grow:1=, 让 flex item 去延展填满剩余空间。
 
-[[file:/post/flex-box-with-overflow/layout-width.png]]
+[[file:./images/flex-box-with-overflow/layout-width.png]]
 
 如果都不设置，那么 flex item 此时的最小尺寸由 /content size suggestion/
 决定：
@@ -233,7 +233,7 @@ available width), preferred width).
 
 所以默认最小宽度很长，导致了溢出。
 
-[[file:/post/flex-box-with-overflow/layout-default.png]]
+[[file:./images/flex-box-with-overflow/layout-default.png]]
 
 * 推论
 使用 flex 布局的时候，可以给 flex item 设置 =min-width: 0= ，从而保证
