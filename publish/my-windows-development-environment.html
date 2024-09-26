@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-26 Thu 18:53 -->
+<!-- 2024-09-26 Thu 21:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Windows 下个人开发环境搭建</title>
@@ -205,7 +205,7 @@
   <ul>
     <li><a href="/index.html">Home</a></li>
     <li><a href="/about.html">About</a></li>
-    <li><a href="/index.xml">RSS</a></li>
+    <li><a href="/rss.xml">RSS</a></li>
     <li><a href="https://github.com/Spike-Leung">GitHub</a></li>
   </ul>
 </nav>
@@ -424,7 +424,7 @@ Windows 上 Ctrl-C 复制，然后可以在 WSL Ctrl-V 粘贴，但是因为我�
 
 <div class="org-src-container">
 <pre class="src src-elisp"><span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">spike-leung/wsl-copy</span> <span style="color: #dd22dd;">()</span>
-  <span style="color: #2a5045; font-style: italic;">"Copy region to windows clipboard."</span>
+  <span style="color: #2a5045;">"Copy region to windows clipboard."</span>
   <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">interactive</span><span style="color: #dd22dd;">)</span>
   <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">progn</span>
     <span style="color: #008899;">(</span>write-region <span style="color: #972500;">(</span>mark<span style="color: #972500;">)</span> <span style="color: #972500;">(</span>point<span style="color: #972500;">)</span> <span style="color: #3548cf;">"~/copy.txt"</span> nil nil nil nil<span style="color: #008899;">)</span>
@@ -465,14 +465,14 @@ Ubuntu 自带，直接用
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">Install git</span>
+<pre class="src src-bash"><span style="color: #969896;"># </span><span style="color: #7f0000;">Install git</span>
 sudo apt install git
 
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">Run the script</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">Run the script</span>
 git clone https://github.com/DamionGans/ubuntu-wsl2-systemd-script.git
 <span style="color: #8f0075;">cd</span> ubuntu-wsl2-systemd-script/
 bash ubuntu-wsl2-systemd-script.sh
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">Enter your password and wait until the script has finished</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">Enter your password and wait until the script has finished</span>
 </pre>
 </div>
 </div>
@@ -485,14 +485,14 @@ bash ubuntu-wsl2-systemd-script.sh
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">Install</span>
+<pre class="src src-bash"><span style="color: #969896;"># </span><span style="color: #7f0000;">Install</span>
 sudo apt install zsh
 
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">Set zsh as default shell</span>
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">chsh -s $(which "SHELL NAME")</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">Set zsh as default shell</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">chsh -s $(which "SHELL NAME")</span>
 chsh -s $<span style="color: #000000;">(</span><span style="color: #8f0075;">which</span> zsh<span style="color: #000000;">)</span>
 
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">Uninstall</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">Uninstall</span>
 sudo apt --purge remove zsh
 </pre>
 </div>
@@ -511,12 +511,12 @@ sudo apt --purge remove zsh
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">install</span>
+<pre class="src src-bash"><span style="color: #969896;"># </span><span style="color: #7f0000;">install</span>
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#22312; .zshrc &#25110;&#32773; .bashrc &#20013;&#21152;&#20837;&#37197;&#32622;</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">&#22312; .zshrc &#25110;&#32773; .bashrc &#20013;&#21152;&#20837;&#37197;&#32622;</span>
 <span style="color: #8f0075;">export</span> <span style="color: #005e8b;">NVM_DIR</span>=<span style="color: #3548cf;">"$([ -z "${XDG_CONFIG_HOME-}" ] &amp;&amp; printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"</span>
-<span style="color: #000000;">[</span> -s <span style="color: #3548cf;">"$NVM_DIR/nvm.sh"</span> <span style="color: #000000;">]</span> &amp;&amp; <span style="color: #3548cf;">\.</span> <span style="color: #3548cf;">"$NVM_DIR/nvm.sh"</span> <span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">This loads nvm</span>
+<span style="color: #000000;">[</span> -s <span style="color: #3548cf;">"$NVM_DIR/nvm.sh"</span> <span style="color: #000000;">]</span> &amp;&amp; <span style="color: #3548cf;">\.</span> <span style="color: #3548cf;">"$NVM_DIR/nvm.sh"</span> <span style="color: #969896;"># </span><span style="color: #7f0000;">This loads nvm</span>
 
 </pre>
 </div>
@@ -537,7 +537,7 @@ sudo apt update &amp;&amp; sudo apt upgrade
 
 sudo apt install emacs27
 
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">Uninstall</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">Uninstall</span>
 sudo apt autoremove --purge emacs27
 </pre>
 </div>
@@ -558,14 +558,14 @@ sudo apt autoremove --purge emacs27
 如果需要安装最新的 Emacs 版本，可以参考 <a href="https://learnubuntu.com/install-emacs/">How to Install Emacs on Ubuntu</a>:
 </p>
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">install</span>
+<pre class="src src-bash"><span style="color: #969896;"># </span><span style="color: #7f0000;">install</span>
 sudo apt-add-repository ppa:ubuntu-elisp/ppa
 
 sudo apt update &amp;&amp; sudo apt upgrade
 
 sudo apt-get install emacs-snapshot
 
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">uninstall</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">uninstall</span>
 sudo add-apt-repository --remove ppa:ubuntu-elisp/ppa
 sudo apt remove emacs-snapshot
 </pre>
@@ -576,21 +576,21 @@ sudo apt remove emacs-snapshot
 <li><a id="org1240e93"></a>org-mode 打开链接， WSL 中找不到浏览器<br />
 <div class="outline-text-5" id="text-org1240e93">
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #65737e; font-style: italic;">;;; </span><span style="color: #7f0000; font-style: italic;">Package --- Summary</span>
-<span style="color: #65737e; font-style: italic;">;; </span><span style="color: #7f0000; font-style: italic;">init-wsl</span>
-<span style="color: #65737e; font-style: italic;">;;; </span><span style="color: #7f0000; font-style: italic;">Commentary:</span>
-<span style="color: #65737e; font-style: italic;">;;; </span><span style="color: #7f0000; font-style: italic;">Code:</span>
-<span style="color: #65737e; font-style: italic;">;;; </span><span style="color: #7f0000; font-style: italic;">https://adam.kruszewski.name/2017-09-16-emacs-in-wsl-and-opening-links.html</span>
+<pre class="src src-elisp"><span style="color: #969896;">;;; </span><span style="color: #7f0000;">Package --- Summary</span>
+<span style="color: #969896;">;; </span><span style="color: #7f0000;">init-wsl</span>
+<span style="color: #969896;">;;; </span><span style="color: #7f0000;">Commentary:</span>
+<span style="color: #969896;">;;; </span><span style="color: #7f0000;">Code:</span>
+<span style="color: #969896;">;;; </span><span style="color: #7f0000;">https://adam.kruszewski.name/2017-09-16-emacs-in-wsl-and-opening-links.html</span>
 
 <span style="color: #000000;">(</span><span style="color: #531ab6;">let</span> <span style="color: #dd22dd;">(</span><span style="color: #008899;">(</span>cmd-exe <span style="color: #3548cf;">"/mnt/c/Windows/System32/cmd.exe"</span><span style="color: #008899;">)</span>
-      <span style="color: #008899;">(</span>cmd-args <span style="color: #c0c5ce;">'</span><span style="color: #972500;">(</span><span style="color: #3548cf;">"/c"</span> <span style="color: #3548cf;">"start"</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span>
+      <span style="color: #008899;">(</span>cmd-args <span style="color: #531ab6;">'</span><span style="color: #972500;">(</span><span style="color: #3548cf;">"/c"</span> <span style="color: #3548cf;">"start"</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span>
   <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">when</span> <span style="color: #008899;">(</span>file-exists-p cmd-exe<span style="color: #008899;">)</span>
     <span style="color: #008899;">(</span><span style="color: #531ab6;">setq</span> browse-url-generic-program  cmd-exe
           browse-url-generic-args     cmd-args
-          browse-url-browser-function <span style="color: #c0c5ce;">'</span><span style="color: #ecbe7b;">browse-url-generic</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+          browse-url-browser-function <span style="color: #531ab6;">'</span><span style="color: #0000b0;">browse-url-generic</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
 
-<span style="color: #000000;">(</span><span style="color: #531ab6;">provide</span> <span style="color: #c0c5ce;">'</span><span style="color: #0000b0;">init-wsl</span><span style="color: #000000;">)</span>
-<span style="color: #65737e; font-style: italic;">;;; </span><span style="color: #7f0000; font-style: italic;">init-wsl.el ends here</span>
+<span style="color: #000000;">(</span><span style="color: #531ab6;">provide</span> <span style="color: #531ab6;">'</span><span style="color: #0000b0;">init-wsl</span><span style="color: #000000;">)</span>
+<span style="color: #969896;">;;; </span><span style="color: #7f0000;">init-wsl.el ends here</span>
 </pre>
 </div>
 </div>

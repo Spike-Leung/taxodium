@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-26 Thu 18:53 -->
+<!-- 2024-09-26 Thu 21:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>部署前端静态文件的简单步骤</title>
@@ -204,7 +204,7 @@
   <ul>
     <li><a href="/index.html">Home</a></li>
     <li><a href="/about.html">About</a></li>
-    <li><a href="/index.xml">RSS</a></li>
+    <li><a href="/rss.xml">RSS</a></li>
     <li><a href="https://github.com/Spike-Leung">GitHub</a></li>
   </ul>
 </nav>
@@ -476,21 +476,21 @@ server <span style="color: #000000;">{</span>
     listen       9999;
     server_name  localhost;
 
-    <span style="color: #65737e; font-style: italic;">#</span><span style="color: #7f0000; font-style: italic;">charset koi8-r;</span>
+    <span style="color: #969896;">#</span><span style="color: #7f0000;">charset koi8-r;</span>
 
-    <span style="color: #65737e; font-style: italic;">#</span><span style="color: #7f0000; font-style: italic;">access_log  logs/host.access.log  main;</span>
+    <span style="color: #969896;">#</span><span style="color: #7f0000;">access_log  logs/host.access.log  main;</span>
 
     location / <span style="color: #dd22dd;">{</span>
-        <span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#36825;&#37324;&#25351;&#23450;&#20102;&#38745;&#24577;&#25991;&#20214;&#25152;&#22312;&#30340;&#25991;&#20214;&#36335;&#24452;</span>
+        <span style="color: #969896;"># </span><span style="color: #7f0000;">&#36825;&#37324;&#25351;&#23450;&#20102;&#38745;&#24577;&#25991;&#20214;&#25152;&#22312;&#30340;&#25991;&#20214;&#36335;&#24452;</span>
         root /home/hello-world;
         index index.html index.htm;
         try_files $<span style="color: #005e8b;">uri</span> $<span style="color: #005e8b;">uri</span>/ /index.html;
     <span style="color: #dd22dd;">}</span>
 
-    <span style="color: #65737e; font-style: italic;">#</span><span style="color: #7f0000; font-style: italic;">error_page  404              /404.html;</span>
+    <span style="color: #969896;">#</span><span style="color: #7f0000;">error_page  404              /404.html;</span>
 
-    <span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">redirect server error pages to the static page /50x.html</span>
-    <span style="color: #65737e; font-style: italic;">#</span>
+    <span style="color: #969896;"># </span><span style="color: #7f0000;">redirect server error pages to the static page /50x.html</span>
+    <span style="color: #969896;">#</span>
     error_page   500 502 503 504  /50x.html;
     <span style="color: #005e8b;">location</span> = /50x.html <span style="color: #dd22dd;">{</span>
         root   html;
@@ -548,32 +548,32 @@ server <span style="color: #000000;">{</span>
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #65737e; font-style: italic;">#</span><span style="color: #7f0000; font-style: italic;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #7f0000; font-style: italic;"> sh</span>
+<pre class="src src-bash"><span style="color: #969896;">#</span><span style="color: #7f0000;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #7f0000;"> sh</span>
 
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">abort on errors</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">abort on errors</span>
 <span style="color: #8f0075;">set</span> -e
 
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">install &#26356;&#26032;&#20381;&#36182;</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">install &#26356;&#26032;&#20381;&#36182;</span>
 yarn
 
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">build &#26500;&#24314;</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">build &#26500;&#24314;</span>
 yarn build
 
 <span style="color: #8f0075;">echo</span> <span style="color: #3548cf;">"Build finish!"</span>
 
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">navigate into the build output directory</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">navigate into the build output directory</span>
 <span style="color: #8f0075;">cd</span> dist/
 
 <span style="color: #8f0075;">echo</span> <span style="color: #3548cf;">"tar start"</span>
 
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#25171;&#21253;&#21387;&#32553;&#26500;&#24314;&#21518;&#30340;&#38745;&#24577;&#25991;&#20214;</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">&#25171;&#21253;&#21387;&#32553;&#26500;&#24314;&#21518;&#30340;&#38745;&#24577;&#25991;&#20214;</span>
 tar zcvf build.tar.gz *
 
 <span style="color: #8f0075;">echo</span> <span style="color: #3548cf;">"tar finish"</span>
 
 <span style="color: #8f0075;">echo</span> <span style="color: #3548cf;">'upload to 1.1.1.1 and untar'</span>
 
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#19978;&#20256;tar&#21253;&#21040;&#30446;&#26631;&#26426;&#22120;&#65292;&#24182;&#35299;&#21387;&#21040;&#23545;&#24212;&#30340;&#30446;&#24405;</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">&#19978;&#20256;tar&#21253;&#21040;&#30446;&#26631;&#26426;&#22120;&#65292;&#24182;&#35299;&#21387;&#21040;&#23545;&#24212;&#30340;&#30446;&#24405;</span>
 ssh root@1.1.1.1 <span style="color: #3548cf;">"tar -C /home/hello-world -xz -f-"</span> &lt; build.tar.gz
 
 <span style="color: #8f0075;">echo</span> <span style="color: #3548cf;">'upload &amp; untar done'</span>

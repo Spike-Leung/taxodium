@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-26 Thu 18:54 -->
+<!-- 2024-09-26 Thu 21:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>V2ray with Caddy + HTTP2 + TLS</title>
@@ -204,7 +204,7 @@
   <ul>
     <li><a href="/index.html">Home</a></li>
     <li><a href="/about.html">About</a></li>
-    <li><a href="/index.xml">RSS</a></li>
+    <li><a href="/rss.xml">RSS</a></li>
     <li><a href="https://github.com/Spike-Leung">GitHub</a></li>
   </ul>
 </nav>
@@ -443,17 +443,17 @@ reverse_proxy &lt;http2-path&gt; localhost:&lt;v2ray-port&gt; {
 相关<a href="https://caddyserver.com/docs/running">指令</a>：
 </p>
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#21551;&#21160; caddy &#26381;&#21153;</span>
+<pre class="src src-shell"><span style="color: #969896;"># </span><span style="color: #7f0000;">&#21551;&#21160; caddy &#26381;&#21153;</span>
 systemctl start caddy
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#20572;&#27490;</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">&#20572;&#27490;</span>
 systemctl stop caddy
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#37325;&#21551;</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">&#37325;&#21551;</span>
 systemctl restart caddy
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#26597;&#30475; caddy &#26381;&#21153;&#30340;&#29366;&#24577;&#65292;&#21487;&#20197;&#29992;&#20110;&#25490;&#38169;</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">&#26597;&#30475; caddy &#26381;&#21153;&#30340;&#29366;&#24577;&#65292;&#21487;&#20197;&#29992;&#20110;&#25490;&#38169;</span>
 systemctl status caddy
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#37325;&#26032;&#21152;&#36733; caddy &#37197;&#32622;&#65292;&#20363;&#22914;&#20462;&#25913;&#20102; /etc/caddy/Caddyfile &#20043;&#21518;</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">&#37325;&#26032;&#21152;&#36733; caddy &#37197;&#32622;&#65292;&#20363;&#22914;&#20462;&#25913;&#20102; /etc/caddy/Caddyfile &#20043;&#21518;</span>
 systemctl reload caddy
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#26597;&#30475; caddy &#36816;&#34892;&#26085;&#24535;</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">&#26597;&#30475; caddy &#36816;&#34892;&#26085;&#24535;</span>
 journalctl -u caddy --no-pager | less +G
 </pre>
 </div>
@@ -601,8 +601,8 @@ journalctl -u caddy --no-pager | less +G
 配置 http2 的相关 options。
 </p>
 <div class="org-src-container">
-<pre class="src src-yaml"><span style="color: #7f0000; font-style: italic;">---</span>
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">https://github.com/Dreamacro/clash/wiki/configuration</span>
+<pre class="src src-yaml"><span style="color: #7f0000;">---</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">https://github.com/Dreamacro/clash/wiki/configuration</span>
 <span style="color: #005e8b;">port</span>: 7890
 <span style="color: #005e8b;">socks-port</span>: 7891
 <span style="color: #005e8b;">allow-lan</span>: <span style="color: #0000b0;">false</span>
@@ -625,14 +625,14 @@ journalctl -u caddy --no-pager | less +G
         - &lt;domain&gt;
       <span style="color: #005e8b;">path</span>: &lt;http2-path&gt;
 <span style="color: #005e8b;">rules</span>:
-  <span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">proxy</span>
+  <span style="color: #969896;"># </span><span style="color: #7f0000;">proxy</span>
   - DOMAIN,google.com,proxy
 
-  <span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">REJECT</span>
+  <span style="color: #969896;"># </span><span style="color: #7f0000;">REJECT</span>
   - DOMAIN-SUFFIX,ad.com,REJECT
 
-  <span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">optional param "no-resolve" for IP rules (GEOIP, IP-CIDR, IP-CIDR6)</span>
-  <span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">DIRECT</span>
+  <span style="color: #969896;"># </span><span style="color: #7f0000;">optional param "no-resolve" for IP rules (GEOIP, IP-CIDR, IP-CIDR6)</span>
+  <span style="color: #969896;"># </span><span style="color: #7f0000;">DIRECT</span>
   - SRC-IP-CIDR,192.168.1.201/32,DIRECT
   - IP-CIDR,127.0.0.0/8,DIRECT
   - GEOIP,CN,DIRECT
@@ -652,10 +652,10 @@ journalctl -u caddy --no-pager | less +G
 主要通过查看日志去判断问题是什么，然后 google :)
 </p>
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#26816;&#26597;&#36816;&#34892;&#29366;&#24577;</span>
+<pre class="src src-shell"><span style="color: #969896;"># </span><span style="color: #7f0000;">&#26816;&#26597;&#36816;&#34892;&#29366;&#24577;</span>
 systemctl status candy
 systemctl status v2ray
-<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#26816;&#26597;&#36755;&#20986;&#30340;&#26085;&#24535;</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">&#26816;&#26597;&#36755;&#20986;&#30340;&#26085;&#24535;</span>
 journalctl -u caddy --no-pager | less +G
 journalctl -u v2ray --no-pager | less +G
 </pre>
