@@ -6,7 +6,7 @@
 <!-- 2024-09-26 Thu 22:00 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>单调栈</title>
+<title>Vue Router 为什么切换路由不刷新页面</title>
 <meta name="author" content="Spike Leung" />
 <meta name="generator" content="Org Mode" />
 <style>
@@ -210,144 +210,105 @@
 </nav>
 </div>
 <div id="content" class="content">
-<h1 class="title">单调栈</h1>
-<div id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#orga043f7d">定义</a></li>
-<li><a href="#orgf093570">性质</a></li>
-<li><a href="#orgb56b8c3">巧记</a></li>
-<li><a href="#orgf41ae22">练习题</a></li>
-<li><a href="#orgaf65311">Refs</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orga043f7d" class="outline-2">
-<h2 id="orga043f7d">定义</h2>
-<div class="outline-text-2" id="text-orga043f7d">
+<h1 class="title">Vue Router 为什么切换路由不刷新页面</h1>
 <p>
-单调栈即满足单调性的栈结构，插入时要保证栈的单调性。
+之前一直使用 <a href="https://router.vuejs.org/">Vue Router</a>， 编写路由以及路由对应的组件。
 </p>
 
 <p>
-它适合解决那些需要找到 <code>下一个/上一个更大/小值</code> 的问题。
+当 URL 命中配置的路由时，就会渲染对应的组件，并且页面不会重载。
 </p>
 
 <p>
-按照从 <code>栈顶到栈底</code> 的顺序，递增则为单调递增栈，递减则为单调递减栈。
+为什么页面不会重载呢？
 </p>
 
 <p>
-左侧为栈底，右侧为栈顶：
+在网页上浏览时，往往点击一个链接，都会把当前页整个刷新成新的页面。
 </p>
 
 <p>
-单调递增栈：[5,4,3,2,1]
+而使用 <a href="https://router.vuejs.org/">Vue Router</a> 去配置路由却不会，为什么呢？
 </p>
 
 <p>
-单调递减栈：[1,2,3,4,5]
+经过一些查阅，Vue Router 默认是 hash 模式。
 </p>
 
 <p>
-对于单调栈，在 <code>插入</code> 时，需要去比较入栈元素和栈顶元素的大小。
+利用 hash 变化不会造成浏览器刷新的特性，实现路由变化不刷新页面的功能。
+</p>
+
+<blockquote>
+<p>
+The default mode for vue-router is hash mode - it uses the URL hash
+to simulate a full URL so that the page won't be reloaded when the
+URL changes.
+</p>
+</blockquote>
+
+<p>
+当路由变化的时候，使用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/hash">location.hash</a> 改变 URL，监听 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/hashchange_event">hashchange</a> 事件。
 </p>
 
 <p>
-以单调递增栈为例子，要保证从栈顶到栈底是递增的关系。
+当发现 hash 变化时，找到匹配的路由，渲染对应的组件。
 </p>
 
 <p>
-入栈时，要保持栈顶的元素大于等于入栈的元素。
+不过 hash 模式的一个问题是，会让 URL 看起来比较奇怪，后面有很长的 hash。
 </p>
 
 <p>
-如果栈顶元素比入栈元素小，则将栈顶元素弹出，直到栈顶元素大于等于入栈元素，或者栈为空。
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgf093570" class="outline-2">
-<h2 id="orgf093570">性质</h2>
-<div class="outline-text-2" id="text-orgf093570">
-<p>
-对于数组 [5,2,3,7,1]
+如果想 URL 不带有 hash，Vue Router 还提供了一种 history 模式。
 </p>
 
 <p>
-按照从左到右遍历数组，构造单调递增栈(左边栈低，右边栈顶):
-</p>
-
-<ul class="org-ul">
-<li><code>[]</code></li>
-<li><code>[5]</code> 栈为空，入栈 5</li>
-<li><code>[5,2]</code> 栈顶 5 大于 2，入栈 2</li>
-<li><code>[5,3]</code> 栈顶 2 小于 3，弹出 2；弹出后，栈顶 5 大于 3，入栈 3。
-<code>观察此时的序列，通过序列可以知道，对于入栈元素 3，左边第一个比它大的元素是 5</code></li>
-<li><code>[7]</code> 栈顶 3 小于 7，弹出 3；栈顶 5 小于 7，弹出 5；栈为空，入栈 7</li>
-<li><code>[7,1]</code> 栈顶 7 大于 1， 入栈 1</li>
-</ul>
-
-<p>
-对于单调 <code>递增</code> 栈，当 <code>从左到右</code> 遍历进行入栈时，单调递增栈的序列表示的
-是， <code>左边第一个大于等于入栈元素的数</code> 。
+利用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/History">History API</a> 的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/History/pushState">History.pushState()</a> 方法，也可以实现改变 URL 但不造成页面重载。
 </p>
 
 <p>
-当 <code>从右往左</code> 入栈时，单调递增栈序列表示的是， <code>右边第一个大于等于入
-  栈元素的数</code> 。
+使用 History 模式，当 URL 变化时，使用 History.pushState 改变 URL，监听 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/popstate_event">popstate</a> 事件，处理路由变化。
 </p>
 
 <p>
-而单调 <code>递减</code> 栈则可以用来找 <code>第一个比入栈元素小的数</code> 。
+但是使用 History 模式，由于改变了 URL，又因为是 <a href="https://en.wikipedia.org/wiki/Single-page_application">SPA</a>， 应用里只有一个 index.html。
 </p>
 
 <p>
-有的问题，还需要限制 <code>严格递增或者严格递减</code> ，即栈序列都是严格递增递减
-的，不会出现相等的元素， 例如<a href="https://leetcode.cn/problems/daily-temperatures/">739. 每日温度</a>。
+如果此时页面刷新，浏览器就会尝试通过当前的 URL 去查找页面，但服务器上实际并没有这么一个资源存在，就会出现 404 的页面。
 </p>
-</div>
+
+<p>
+为了避免这个问题，就需要配置服务器，当根据 URL 找不到资源的时候，就回退到 index.html。
+</p>
+
+<p>
+例如这是 <a href="https://router.vuejs.org/guide/essentials/history-mode.html#nginx">nginx</a> 的配置:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">location / <span style="color: #000000;">{</span>
+  try_files $<span style="color: #005e8b;">uri</span> $<span style="color: #005e8b;">uri</span>/ /index.html;
+<span style="color: #000000;">}</span>
+</pre>
 </div>
 
-<div id="outline-container-orgb56b8c3" class="outline-2">
-<h2 id="orgb56b8c3">巧记</h2>
-<div class="outline-text-2" id="text-orgb56b8c3">
-<ul class="org-ul">
-<li>要寻找 <code>更小值</code> ，那么就要形成变 “小” 的单调栈，所以选择 <code>单调递减栈</code> ，如果要找 <code>左边</code> 第一个更小值，就从 <code>左边</code> 开始遍历</li>
+<p>
+如果没有 Vue Router 这些库，要实现 URL 变化页面变化。
+</p>
 
-<li>要寻找 <code>更大值</code> ，那么就要形成变 “大” 的单调栈，所以选择 <code>单调递增栈</code> ，如果要找 <code>左边</code> 第一个更大值，就从 <code>左边</code> 开始遍历</li>
-</ul>
-</div>
-</div>
+<p>
+一种是使用 MPA 应用，每个 URL 对应到一个 html 上，每次都刷新页面更新。
+</p>
 
-<div id="outline-container-orgf41ae22" class="outline-2">
-<h2 id="orgf41ae22">练习题</h2>
-<div class="outline-text-2" id="text-orgf41ae22">
-<ul class="org-ul">
-<li><a href="https://leetcode.cn/problems/daily-temperatures/">739. 每日温度</a></li>
-<li><a href="https://leetcode.cn/problems/sum-of-subarray-minimums/">907. 子数组的最小值之和</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgaf65311" class="outline-2">
-<h2 id="orgaf65311">Refs</h2>
-<div class="outline-text-2" id="text-orgaf65311">
-<ul class="org-ul">
-<li><a href="https://blog.hackerpie.com/posts/algorithms/monotonous-stacks/monotonous-stacks/">数据结构：单调栈</a>@HackerPie</li>
-<li><a href="https://oi-wiki.org/ds/monotonous-stack/">单调栈</a>@OI WIKI</li>
-<li><a href="https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E5%8D%95%E8%B0%83%E6%A0%88.md">如何使用单调栈解题</a>@labuladong/fucking-algorithm</li>
-<li><a href="https://suanfa8.com/data-structure-basic/stack/practice/">4.4 栈的练习</a>@算法吧</li>
-</ul>
-</div>
-</div>
+<p>
+另一种就是 SPA 的方案，使用 hash 或者 History API，改变 URL，然后监听变化事件，去渲染对应内容。
+</p>
 </div>
 <div id="postamble" class="status">
 
 <p class="author">Author: Spike Leung (<a href="mailto:l-yanlei@hotmail.com">l-yanlei@hotmail.com</a>)</p>
-<p class="date">Date: 2022-08-22 Mon 00:00</p>
+<p class="date">Date: 2022-01-30 Sun 00:00</p>
 </div>
 </body>
 </html>

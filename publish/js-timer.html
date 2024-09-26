@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-09-26 Thu 21:59 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JS 中的定时任务</title>
+<meta name="author" content="Spike Leung" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+ <nav>
+  <ul>
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/rss.xml">RSS</a></li>
+    <li><a href="https://github.com/Spike-Leung">GitHub</a></li>
+  </ul>
+</nav>
+</div>
+<div id="content" class="content">
+<h1 class="title">JS 中的定时任务</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgd386c0e">setTimeout</a></li>
+<li><a href="#org8cfe028">setTimeout(callback, 0) 零延迟的 setTimeout</a></li>
+<li><a href="#org7131f6f">setInterval</a>
+<ul>
+<li><a href="#org77a4c1f">对于长时间的同步任务</a></li>
+<li><a href="#org21106c5">对于长时间的异步任务</a></li>
+</ul>
+</li>
+<li><a href="#org25c89d9">嵌套的 setTimeout</a></li>
+<li><a href="#org79590c0">requestAnimationFrame</a></li>
+<li><a href="#orgbb4d407">requestIdleCallback</a></li>
+<li><a href="#orgfb4c9e0">参考</a></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgd386c0e" class="outline-2">
+<h2 id="orgd386c0e">setTimeout</h2>
+<div class="outline-text-2" id="text-orgd386c0e">
+<p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/setTimeout">setTimeout()</a> 可以设置一个延迟，延迟多少秒将一个 callback 放入到<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide#tasks_vs_microtasks">宏任务队列</a>。
+</p>
+
+<p>
+虽然设置了延迟时间，但不是到了延迟时间，callback 就会马上执行。
+</p>
+
+<p>
+callback 只是被放到了宏任务队列中，当调用栈空闲的时候，才会从宏任务队列中取一个任务执行。
+</p>
+
+<p>
+如果调用栈的任务还没处理完，就会延迟了宏任务队列中的任务的执行时间。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8cfe028" class="outline-2">
+<h2 id="org8cfe028">setTimeout(callback, 0) 零延迟的 setTimeout</h2>
+<div class="outline-text-2" id="text-org8cfe028">
+<p>
+这里的 0 其实是放入到宏任务队列的延迟，而不是放入调用栈的延迟。
+</p>
+
+<p>
+因此，不能保证 callback 会马上被执行，依旧需要等待调用栈任务(当前的同步任务) 执行完成。
+</p>
+
+<p>
+如果调用栈内的任务执行需要很久，那 callback 也可能等很久才会被执行。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7131f6f" class="outline-2">
+<h2 id="org7131f6f">setInterval</h2>
+<div class="outline-text-2" id="text-org7131f6f">
+<p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/setInterval">setInterval()</a> 是每隔一段时间，就把 callback 加入到任务队列。
+</p>
+
+<p>
+它只是把任务加入到了任务队列，任务未必马上就执行。
+</p>
+
+<p>
+如果间隔时间小于任务执行时间，例如，间隔时间为 5s，callback 执行时间需要 20s。
+</p>
+
+<p>
+那么，每 5s 加入一个任务，假设经过了 20s， 则有四个任务 A， B， C， D。
+</p>
+
+<p>
+当 A 从任务队列出队执行时，A 需要执行 20s。
+</p>
+
+<p>
+B，C，D 都得等 A 执行完才能执行，于是 B， C， D 都被堆在任务队列中。
+</p>
+
+<p>
+如果设想的是每隔 5s，就执行 callback，那么上面这种情况显然是不符合的。
+</p>
+
+<p>
+A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队列中。
+</p>
+
+<p>
+当 callback 执行时间可能大于间隔时间时，用 setInterval 就不合适了。
+</p>
+</div>
+
+<div id="outline-container-org77a4c1f" class="outline-3">
+<h3 id="org77a4c1f">对于长时间的同步任务</h3>
+<div class="outline-text-3" id="text-org77a4c1f">
+<div class="org-src-container">
+<pre class="src src-js"><span style="color: #531ab6;">var</span> <span style="color: #005e8b;">fakeTimeIntensiveOperation</span> = <span style="color: #531ab6;">function</span><span style="color: #000000;">()</span> <span style="color: #000000;">{</span>
+  <span style="color: #531ab6;">for</span> <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">var</span> <span style="color: #005e8b;">i</span> = 0; i&lt; Math.pow<span style="color: #008899;">(</span>10, 10<span style="color: #008899;">)</span>; i++<span style="color: #dd22dd;">)</span> <span style="color: #dd22dd;">{}</span>
+  <span style="color: #531ab6;">let</span> <span style="color: #005e8b;">insideTimeTakingFunction</span>  = <span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #dd22dd;">()</span>.toLocaleTimeString<span style="color: #dd22dd;">()</span>;
+  console.log<span style="color: #dd22dd;">(</span><span style="color: #3548cf;">'insideTimeTakingFunction'</span>, insideTimeTakingFunction<span style="color: #dd22dd;">)</span>;
+<span style="color: #000000;">}</span>;
+
+<span style="color: #531ab6;">var</span> <span style="color: #005e8b;">timer</span> = setInterval<span style="color: #000000;">(</span><span style="color: #531ab6;">function</span><span style="color: #dd22dd;">(){</span>
+  fakeTimeIntensiveOperation<span style="color: #008899;">()</span>;
+  <span style="color: #531ab6;">let</span> <span style="color: #005e8b;">insideSetInterval</span> = <span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #008899;">()</span>.toLocaleTimeString<span style="color: #008899;">()</span>;
+  console.log<span style="color: #008899;">(</span><span style="color: #3548cf;">'insideSetInterval'</span>, insideSetInterval<span style="color: #008899;">)</span>;
+<span style="color: #dd22dd;">}</span>, 1000<span style="color: #000000;">)</span>;
+</pre>
+</div>
+
+<p>
+时间很长的同步任务会阻塞 setInerval 的执行，并没有按照每一秒的频率去执行。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org21106c5" class="outline-3">
+<h3 id="org21106c5">对于长时间的异步任务</h3>
+<div class="outline-text-3" id="text-org21106c5">
+<div class="org-src-container">
+<pre class="src src-js"><span style="color: #531ab6;">let</span> <span style="color: #005e8b;">counter</span> = 0;
+<span style="color: #531ab6;">var</span> <span style="color: #005e8b;">fakeTimeIntensiveOperation</span> = <span style="color: #531ab6;">function</span><span style="color: #000000;">()</span> <span style="color: #000000;">{</span>
+  setTimeout<span style="color: #dd22dd;">(</span><span style="color: #008899;">()</span> =&gt; <span style="color: #008899;">{</span>
+    counter--;
+  <span style="color: #008899;">}</span>, 60000<span style="color: #dd22dd;">)</span>;
+<span style="color: #000000;">}</span>;
+
+<span style="color: #531ab6;">var</span> <span style="color: #005e8b;">timer</span> = setInterval<span style="color: #000000;">(</span><span style="color: #531ab6;">function</span><span style="color: #dd22dd;">()</span> <span style="color: #dd22dd;">{</span>
+  counter++;
+  fakeTimeIntensiveOperation<span style="color: #008899;">()</span>;
+  <span style="color: #531ab6;">let</span> <span style="color: #005e8b;">insideSetInterval</span> = <span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #008899;">()</span>.toLocaleTimeString<span style="color: #008899;">()</span>;
+  console.log<span style="color: #008899;">(</span><span style="color: #3548cf;">'insideSetInterval'</span>, insideSetInterval<span style="color: #008899;">)</span>;
+  console.log<span style="color: #008899;">(</span><span style="color: #3548cf;">'counter'</span>, counter<span style="color: #008899;">)</span>;
+<span style="color: #dd22dd;">}</span>, 200<span style="color: #000000;">)</span>;
+</pre>
+</div>
+<p>
+对于执行时间长的异步任务，例如接口请求，接口的响应可能需要很长时间，这就会造成大量请求的堆积。
+</p>
+
+<p>
+想保持 callback 每隔一段时间执行，可以使用嵌套的 setTimeout 实现。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org25c89d9" class="outline-2">
+<h2 id="org25c89d9">嵌套的 setTimeout</h2>
+<div class="outline-text-2" id="text-org25c89d9">
+<div class="org-src-container">
+<pre class="src src-js"><span style="color: #000000;">(</span><span style="color: #531ab6;">function</span> loop<span style="color: #dd22dd;">()</span> <span style="color: #dd22dd;">{</span>
+  setTimeout<span style="color: #008899;">(</span><span style="color: #531ab6;">function</span><span style="color: #972500;">()</span> <span style="color: #972500;">{</span>
+    <span style="color: #969896;">// </span><span style="color: #7f0000;">your logic here</span>
+    loop<span style="color: #808000;">()</span>;
+  <span style="color: #972500;">}</span>, delay<span style="color: #008899;">)</span>;
+<span style="color: #dd22dd;">}</span><span style="color: #000000;">)()</span>
+</pre>
+</div>
+
+<p>
+嵌套的 setTimeout 可以确保 callback 间隔一段时间执行，避免了 setInterval 的弊端。
+</p>
+
+<p>
+除此之外，嵌套的 setTimeout 还可以根据 callback 的执行情况，调整延迟时间。
+</p>
+
+<p>
+例如轮询请求接口，如果发现服务器已经超过负载，没法处理更多的请求了，可以延长轮询时间，降低服务器的负载。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js"><span style="color: #531ab6;">let</span> <span style="color: #005e8b;">delay</span> = 5000;
+
+<span style="color: #531ab6;">let</span> <span style="color: #005e8b;">timerId</span> = setTimeout<span style="color: #000000;">(</span><span style="color: #531ab6;">function</span> request<span style="color: #dd22dd;">()</span> <span style="color: #dd22dd;">{</span>
+  <span style="color: #969896;">// </span><span style="color: #7f0000;">...&#21457;&#36865;&#35831;&#27714;...</span>
+
+  <span style="color: #531ab6;">if</span> <span style="color: #008899;">(</span>request failed due to server overload<span style="color: #008899;">)</span> <span style="color: #008899;">{</span>
+    <span style="color: #969896;">// </span><span style="color: #7f0000;">&#19979;&#19968;&#27425;&#25191;&#34892;&#30340;&#38388;&#38548;&#26159;&#24403;&#21069;&#30340; 2 &#20493;</span>
+    delay *= 2;
+  <span style="color: #008899;">}</span>
+
+  timerId = setTimeout<span style="color: #008899;">(</span>request, delay<span style="color: #008899;">)</span>;
+
+<span style="color: #dd22dd;">}</span>, delay<span style="color: #000000;">)</span>;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org79590c0" class="outline-2">
+<h2 id="org79590c0">requestAnimationFrame</h2>
+<div class="outline-text-2" id="text-org79590c0">
+<p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame">Window.requestAnimationFrame()</a> 主要是用来做动画的。
+</p>
+
+<p>
+要想形成动画，就需要至少每秒 24 帧，这样才能让静态的东西看起来在动。
+</p>
+
+<p>
+但是 24 帧其实还不够，往往要达到 60 帧左右，动画才会看起来顺滑。
+</p>
+
+<p>
+实现动画可以用 setInterval 或者嵌套的 setTimeout，设置 60 fps (1000 / 60) 的间隔，不断地进行改变。
+</p>
+
+<p>
+但是这两个 api 都有一些弊端，可能会被其他同步任务阻塞，导致不能及时地更新动画，而出现丢帧。
+</p>
+
+<p>
+而且这两个 api 也不会考虑当前的 tab 是否显示去暂停或开始，导致性能消耗可能比较大。
+</p>
+
+<p>
+而 requestAnimationFrame 则是为了解决这些问题出现的，它有几个优点：
+</p>
+
+<ol class="org-ol">
+<li>不会被当前的同步任务阻塞，不会出现卡帧问题，它总是在屏幕下一次重绘之前去调用 callback，相对于 setInterval 更稳定。</li>
+<li>不用指定间隔，而是根据显示器的刷新率调整 callback 的调用频率。</li>
+<li><p>
+如果浏览器 tab 没有被激活 / 选中，或者元素不可见，那么 requestAnimationFrame 就会暂停，减少了性能消耗。
+</p>
+
+<p>
+当需要去实现动画时，应该优先去考虑 requestAnimationFrame 。
+</p></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgbb4d407" class="outline-2">
+<h2 id="orgbb4d407">requestIdleCallback</h2>
+<div class="outline-text-2" id="text-orgbb4d407">
+<p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback">window.requestIdleCallback()</a> 用于在浏览器空闲的时候，去调用 callback。
+</p>
+
+<p>
+在每一帧渲染的最后，如果完成帧的渲染，还有空余时间，就可以利用这段空余的时间去执行 callback，避免影响渲染，动画等。
+</p>
+
+<p>
+如果浏览器一直处于满载状态，requestIdleCallback 注册的 callback 有可能一直都不会执行。
+</p>
+
+<p>
+requestIdleCallback(callback, options) 中的第二个参数是 options。
+</p>
+
+<p>
+可以指定一个 timeout，表示如果超过了 timeout 还没有找到空闲时间去执行，则强制执行 callback，不再等待空闲。
+</p>
+
+<p>
+建议使用的时候都指定 timeout。
+</p>
+
+<p>
+由于是利用帧的最后一点空闲时间去执行 callback，callback 做的事情应该比较简单，耗时不要太长。
+</p>
+
+<p>
+例如统计数据上传、数据预加载等。
+</p>
+
+<p>
+另外由于帧已经渲染完成，尽量不要在 requestIdleCallback 再去改变 DOM， 避免造成新的重绘，影响下一帧的渲染。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfb4c9e0" class="outline-2">
+<h2 id="orgfb4c9e0">参考</h2>
+<div class="outline-text-2" id="text-orgfb4c9e0">
+<ul class="org-ul">
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals">Cooperative asynchronous JavaScript: Timeouts and intervals</a> - MDN</li>
+<li><a href="https://zh.javascript.info/settimeout-setinterval">调度：setTimeout 和 setInterval</a> - javascript.info</li>
+<li><a href="https://dev.to/akanksha_9560/why-not-to-use-setinterval--2na9">Why not to use setInterval</a> - dev.io @ Akanksha Sharma
+指出了setInterval 在执行一些消耗时间的任务时的问题</li>
+<li><a href="http://www.javascriptkit.com/javatutors/requestanimationframe.shtml">Understanding JavaScript's requestAnimationFrame() method for
+smooth animations </a>- javascriptkit
+有一些例子</li>
+<li><a href="https://flaviocopes.com/requestanimationframe/">The requestAnimationFrame() guide</a> - flaviocopes.com
+分析了 setTimeout, setInterval, requestAnimationFrame 在时间上的表
+现</li>
+<li><a href="https://www.kirupa.com/html5/animating_with_requestAnimationFrame.htm">Animating with requestAnimationFrame</a> - kirupa.com
+以视频的方式介绍 requestAnimationFrame 的使用。</li>
+<li><a href="https://juejin.cn/post/6844903848981577735">requestIdleCallback和requestAnimationFrame详解</a> - 知乎 @ DC<sub>er</sub></li>
+<li><a href="https://zhuanlan.zhihu.com/p/39878259">网页渲染性能优化 —— 性能优化上</a> - 知乎 @ 晨风明悟</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<p class="author">Author: Spike Leung (<a href="mailto:l-yanlei@hotmail.com">l-yanlei@hotmail.com</a>)</p>
+<p class="date">Date: 2022-02-14 Mon 00:00</p>
+</div>
+</body>
+</html>
