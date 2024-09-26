@@ -1,3 +1,6 @@
+* B
+  - blog
+    - [[file:2022-css-tech.org][2022 CSS 技术一瞥]]
 * W
   - weekly
     - [[file:0.org][#0]]
