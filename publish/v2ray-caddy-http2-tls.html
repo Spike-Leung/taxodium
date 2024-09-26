@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-09-26 Thu 18:54 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V2ray with Caddy + HTTP2 + TLS</title>
+<meta name="author" content="Spike Leung" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+ <nav>
+  <ul>
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/index.xml">RSS</a></li>
+    <li><a href="https://github.com/Spike-Leung">GitHub</a></li>
+  </ul>
+</nav>
+</div>
+<div id="content" class="content">
+<h1 class="title">V2ray with Caddy + HTTP2 + TLS</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org78d7a0b">准备</a></li>
+<li><a href="#orgec58c2b">搭建</a>
+<ul>
+<li><a href="#org14c2fa5">Tag 释义</a></li>
+<li><a href="#org671ea27">1. 购买一个 VPS 服务器</a></li>
+<li><a href="#orgec009a3">2. 申请一个域名</a></li>
+<li><a href="#orgd7daba5">3. 安装 &amp; 配置 Caddy</a></li>
+<li><a href="#orgab4e44b">4. 安装 &amp; 配置 v2ray</a>
+<ul>
+<li><a href="#orge05d89f">v2ray 服务器配置</a></li>
+<li><a href="#org323d7fb">v2ray 客户端配置</a></li>
+</ul>
+</li>
+<li><a href="#org5f78f02">排障</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+由于经常需要访问 GitHub 等外网，就需要有一个快速响应的代理。
+</p>
+
+<p>
+之前尝试过 v2ray 直连 、<a href="https://toutyrater.github.io/advanced/wss_and_web.html">WebSocket + TLS + Web</a> 的方式。
+</p>
+
+<p>
+直连是比较快的，不需要进行 TLS 连接等操作，但应用 TLS 可以更好地防检测。
+</p>
+
+<p>
+用了很长时间 WebSocket + TLS + Web 的组合，一直都比较稳定。
+</p>
+
+<p>
+周末时翻到一篇关于 <a href="https://guide.v2fly.org/advanced/h2.html">HTTP2</a> 的搭建，有一个<a href="https://http2.akamai.com/demo">网站</a>比较了 HTTP/1.1 和 HTTP2 的
+加载速度，发现 HTTP2 是真的很快，就想着重新部署一个代理，看是否有更好
+的体验。
+</p>
+
+<p>
+由于换了服务器，现在不太确定是服务器影响还是 HTTP2 的影响，速度上要比
+之前的好一些。
+</p>
+
+<p>
+这篇博客主要记录 <b>V2ray + Caddy + HTTP2 + TLS</b> 的相关配置，其它具体细节
+请参考<a href="https://guide.v2fly.org/"> V2ray 新白话文教程</a>以及<a href="https://www.v2ray.com/en/">官网</a>。
+</p>
+
+<div id="outline-container-org78d7a0b" class="outline-2">
+<h2 id="org78d7a0b">准备</h2>
+<div class="outline-text-2" id="text-org78d7a0b">
+<ul class="org-ul">
+<li><b>一台国外的 VPS</b> <br />
+目前我用的是 <a href="https://www.vultr.com/">VULTR</a>，价格可能有一些贵，但稳定，速度也还可以，另外也
+支持支付宝充值</li>
+<li><b>一个域名</b> <br />
+可以找个网站买一个便宜的域名，腾讯也有域名可以卖</li>
+<li><b>一些基础的知识</b> <br />
+简单的命令行操作；Web 服务器的部署，配置，排错；了解怎么在服务器编辑文件</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgec58c2b" class="outline-2">
+<h2 id="orgec58c2b">搭建</h2>
+<div class="outline-text-2" id="text-orgec58c2b">
+<p>
+这次搭建主要是参考了 <a href="https://guide.v2fly.org/advanced/h2_tls_web.html">HTTP/2+TLS+WEB</a>，里头用到了 <a href="https://caddyserver.com/">Caddy </a>作为 Web 服务器，
+不过他用的是 Caddy1，而我用的是 Caddy2。
+</p>
+
+<p>
+除了 Caddy， 其实还能用 Nginx，Apache 去做 Web 服务器，不过 Caddy 相
+对来说使用上更简单方便。
+</p>
+
+<p>
+之前搭建 WebSocket + TLS + Web 的时候是用的 Nginx，为了实现 TLS，需
+要去 <a href="https://letsencrypt.org/">Let's Encrypt</a> 申请证书，<a href="https://guide.v2fly.org/advanced/tls.html#%E6%B3%A8%E5%86%8C%E4%B8%80%E4%B8%AA%E5%9F%9F%E5%90%8D">这篇</a>教程里有介绍怎么申请。
+</p>
+
+<p>
+而 Caddy 默认是开启 HTTPS 的，当你配置了域名，他会自动帮你从 <a href="https://letsencrypt.org/">Let's
+Encrypt</a> 申请证书，到期了自动帮你更新，所以省去了不少步骤。
+</p>
+</div>
+
+<div id="outline-container-org14c2fa5" class="outline-3">
+<h3 id="org14c2fa5">Tag 释义</h3>
+<div class="outline-text-3" id="text-org14c2fa5">
+<p>
+下面配置中的 &lt;tag&gt; 是需要自己配置的，替换成对应的值。
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">tag</th>
+<th scope="col" class="org-left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">&lt;uuid&gt;</td>
+<td class="org-left">可以用 uuidgen 指令生成，是客户端服务器通讯用的标识</td>
+</tr>
+
+<tr>
+<td class="org-left">&lt;http2-path&gt;</td>
+<td class="org-left">http2 配置的路径</td>
+</tr>
+
+<tr>
+<td class="org-left">&lt;v2ray-port&gt;</td>
+<td class="org-left">v2ray 监听的端口</td>
+</tr>
+
+<tr>
+<td class="org-left">&lt;domain&gt;</td>
+<td class="org-left">申请的域名，例如 hello.world</td>
+</tr>
+
+<tr>
+<td class="org-left">&lt;root-path&gt;</td>
+<td class="org-left">静态文件路径，例如 /root/÷site</td>
+</tr>
+
+<tr>
+<td class="org-left">&lt;email&gt;</td>
+<td class="org-left">邮箱</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<div id="outline-container-org671ea27" class="outline-3">
+<h3 id="org671ea27">1. 购买一个 VPS 服务器</h3>
+<div class="outline-text-3" id="text-org671ea27">
+<p>
+可以从 <a href="https://www.vultr.com/">VULTR</a> 购买，如果有更快，更稳定，价格不是很贵的提供商，欢迎留言推荐。
+</p>
+
+<p>
+搭建代理不需要很高的配置，买一个最低配置的 VPS 即可，考虑到 CentOS
+不再维护，我安装的是 Ubuntu，总之找一个自己熟悉的 linux 操作系统即
+可。
+</p>
+
+<p>
+Ubuntu 的一个好处是配置防火墙的指令 <a href="https://help.ubuntu.com/community/UFW">ufw</a> 相对 CentOS 的 firewall-cmd
+而言用起来比较简单。
+</p>
+
+<p>
+服务器部署好之后，可以将 443 和 80 端口打开，443 作为 Web 服务器的
+访问端口，80 是开放给 Let's Encrypt 注册的。
+</p>
+
+<p>
+Ubuntu 的指令是：
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">ufw allow 443
+ufw allow 80
+ufw reload
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgec009a3" class="outline-3">
+<h3 id="orgec009a3">2. 申请一个域名</h3>
+<div class="outline-text-3" id="text-orgec009a3">
+<p>
+网上随便找个域名贩卖网站，买一个自己喜欢的域名即可，购买之后，需要
+将域名解析到 VPS 的 IP 地址。
+</p>
+</div>
+</div>
+<div id="outline-container-orgd7daba5" class="outline-3">
+<h3 id="orgd7daba5">3. 安装 &amp; 配置 Caddy</h3>
+<div class="outline-text-3" id="text-orgd7daba5">
+<p>
+按照 <a href="https://caddyserver.com/docs/install">Caddy 的安装步骤 </a>将 Caddy 安装到 VPS 上，具体使用可以看 Caddy 文
+档，里头有很多详细的例子。
+</p>
+
+<p>
+安装好之后，配置 <code>/etc/caddy/Caddyfile</code> :
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Caddyfile"># 你的域名
+&lt;domain&gt;
+# [可选] 邮箱，用于注册证书，到期时会有通知，
+tls &lt;email&gt;
+# 以下两项是配置一个访问静态文件，不配应该也可以
+# 指定静态文件路径
+root * &lt;root-path&gt;
+# 设置为静态文件服务器
+file_server
+
+# 反向代理，将流量代理到 VPS 上的 V2ray
+# &lt;http2-path&gt; 替换为 http2 的 path， &lt;v2ray-port&gt; 替换为 v2ray 对应的 port
+reverse_proxy &lt;http2-path&gt; localhost:&lt;v2ray-port&gt; {
+        header_up Host {host}
+        transport http {
+                versions h2c 2
+        }
+}
+</pre>
+</div>
+
+<p>
+相关<a href="https://caddyserver.com/docs/running">指令</a>：
+</p>
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#21551;&#21160; caddy &#26381;&#21153;</span>
+systemctl start caddy
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#20572;&#27490;</span>
+systemctl stop caddy
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#37325;&#21551;</span>
+systemctl restart caddy
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#26597;&#30475; caddy &#26381;&#21153;&#30340;&#29366;&#24577;&#65292;&#21487;&#20197;&#29992;&#20110;&#25490;&#38169;</span>
+systemctl status caddy
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#37325;&#26032;&#21152;&#36733; caddy &#37197;&#32622;&#65292;&#20363;&#22914;&#20462;&#25913;&#20102; /etc/caddy/Caddyfile &#20043;&#21518;</span>
+systemctl reload caddy
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#26597;&#30475; caddy &#36816;&#34892;&#26085;&#24535;</span>
+journalctl -u caddy --no-pager | less +G
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgab4e44b" class="outline-3">
+<h3 id="orgab4e44b">4. 安装 &amp; 配置 v2ray</h3>
+<div class="outline-text-3" id="text-orgab4e44b">
+<p>
+根据 <a href="https://github.com/v2fly/fhs-install-v2ray/blob/master/README.zh-Hans-CN.md">fhs-install-v2ray</a> 安装 v2ray， v2ray 的相关指令和 caddy 类似，
+将 caddy 换成 v2ray 即可。
+</p>
+</div>
+
+<div id="outline-container-orge05d89f" class="outline-4">
+<h4 id="orge05d89f">v2ray 服务器配置</h4>
+<div class="outline-text-4" id="text-orge05d89f">
+<p>
+配置含义请<a href="https://guide.v2fly.org/">官网</a>查阅， <code>/usr/local/etc/v2ray/config.json</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-json"><span style="color: #000000;">{</span>
+  <span style="color: #531ab6;">"log"</span>: <span style="color: #dd22dd;">{</span>
+    <span style="color: #531ab6;">"loglevel"</span>: <span style="color: #3548cf;">"warning"</span>
+  <span style="color: #dd22dd;">}</span>,
+  <span style="color: #531ab6;">"inbounds"</span>: <span style="color: #dd22dd;">[</span>
+    <span style="color: #008899;">{</span>
+    <span style="color: #531ab6;">"port"</span>: &lt;v<span style="color: #0000b0;">2</span>ray-port&gt;,
+    <span style="color: #531ab6;">"listen"</span>: <span style="color: #3548cf;">"127.0.0.1"</span>,
+    <span style="color: #531ab6;">"tag"</span>: <span style="color: #3548cf;">"vmess-inbound"</span>,
+    <span style="color: #531ab6;">"protocol"</span>: <span style="color: #3548cf;">"vmess"</span>,
+    <span style="color: #531ab6;">"settings"</span>: <span style="color: #972500;">{</span>
+      <span style="color: #531ab6;">"auth"</span>: <span style="color: #3548cf;">"noauth"</span>,
+      <span style="color: #531ab6;">"udp"</span>: <span style="color: #0000b0;">false</span>,
+      <span style="color: #531ab6;">"ip"</span>: <span style="color: #3548cf;">"127.0.0.1"</span>,
+      <span style="color: #531ab6;">"clients"</span>: <span style="color: #808000;">[</span>
+        <span style="color: #531ab6;">{</span>
+        <span style="color: #531ab6;">"id"</span>: <span style="color: #3548cf;">"&lt;uuid&gt;"</span>,
+        <span style="color: #531ab6;">"level"</span>: <span style="color: #0000b0;">0</span>,
+        <span style="color: #531ab6;">"alterId"</span>: <span style="color: #0000b0;">0</span>,
+      <span style="color: #531ab6;">}</span>,
+      <span style="color: #808000;">]</span>
+    <span style="color: #972500;">}</span>,
+    <span style="color: #531ab6;">"streamSettings"</span>: <span style="color: #972500;">{</span>
+      <span style="color: #531ab6;">"network"</span>: <span style="color: #3548cf;">"h2"</span>,
+      <span style="color: #531ab6;">"security"</span>: <span style="color: #3548cf;">"none"</span>,
+      <span style="color: #531ab6;">"httpSettings"</span>: <span style="color: #808000;">{</span>
+        <span style="color: #531ab6;">"path"</span>: <span style="color: #3548cf;">"&lt;http2-path&gt;"</span>,
+        <span style="color: #531ab6;">"host"</span>: <span style="color: #531ab6;">[</span><span style="color: #3548cf;">"&lt;domain&gt;"</span><span style="color: #531ab6;">]</span>
+      <span style="color: #808000;">}</span>,
+      <span style="color: #531ab6;">"tlsSettings"</span>: <span style="color: #808000;">{</span>
+        <span style="color: #531ab6;">"serverName"</span>: <span style="color: #3548cf;">"&lt;domain&gt;"</span>
+      <span style="color: #808000;">}</span>
+    <span style="color: #972500;">}</span>,
+    <span style="color: #531ab6;">"sniffing"</span>: <span style="color: #972500;">{</span>
+      <span style="color: #531ab6;">"enabled"</span>: <span style="color: #0000b0;">true</span>,
+      <span style="color: #531ab6;">"destOverride"</span>: <span style="color: #808000;">[</span><span style="color: #3548cf;">"http"</span>, <span style="color: #3548cf;">"tls"</span><span style="color: #808000;">]</span>
+    <span style="color: #972500;">}</span>
+  <span style="color: #008899;">}</span>
+  <span style="color: #dd22dd;">]</span>,
+  <span style="color: #531ab6;">"outbounds"</span>: <span style="color: #dd22dd;">[</span>
+    <span style="color: #008899;">{</span>
+    <span style="color: #531ab6;">"protocol"</span>: <span style="color: #3548cf;">"freedom"</span>,
+    <span style="color: #531ab6;">"settings"</span>: <span style="color: #972500;">{}</span>,
+    <span style="color: #531ab6;">"tag"</span>: <span style="color: #3548cf;">"direct"</span>
+  <span style="color: #008899;">}</span>,
+    <span style="color: #008899;">{</span>
+    <span style="color: #531ab6;">"protocol"</span>: <span style="color: #3548cf;">"blackhole"</span>,
+    <span style="color: #531ab6;">"settings"</span>: <span style="color: #972500;">{}</span>,
+    <span style="color: #531ab6;">"tag"</span>: <span style="color: #3548cf;">"blocked"</span>
+  <span style="color: #008899;">}</span>
+  <span style="color: #dd22dd;">]</span>,
+  <span style="color: #531ab6;">"routing"</span>: <span style="color: #dd22dd;">{</span>
+    <span style="color: #531ab6;">"domainStrategy"</span>: <span style="color: #3548cf;">"IPOnDemand"</span>,
+    <span style="color: #531ab6;">"rules"</span>: <span style="color: #008899;">[</span>
+      <span style="color: #972500;">{</span>
+      <span style="color: #531ab6;">"type"</span>: <span style="color: #3548cf;">"field"</span>,
+      <span style="color: #531ab6;">"ip"</span>: <span style="color: #808000;">[</span><span style="color: #3548cf;">"geoip:private"</span><span style="color: #808000;">]</span>,
+      <span style="color: #531ab6;">"outboundTag"</span>: <span style="color: #3548cf;">"blocked"</span>
+    <span style="color: #972500;">}</span>,
+      <span style="color: #972500;">{</span>
+      <span style="color: #531ab6;">"type"</span>: <span style="color: #3548cf;">"field"</span>,
+      <span style="color: #531ab6;">"domain"</span>: <span style="color: #808000;">[</span><span style="color: #3548cf;">"geosite:category-ads"</span><span style="color: #808000;">]</span>,
+      <span style="color: #531ab6;">"outboundTag"</span>: <span style="color: #3548cf;">"blocked"</span>
+    <span style="color: #972500;">}</span>
+    <span style="color: #008899;">]</span>
+  <span style="color: #dd22dd;">}</span>,
+  <span style="color: #531ab6;">"dns"</span>: <span style="color: #dd22dd;">{</span>
+    <span style="color: #531ab6;">"hosts"</span>: <span style="color: #008899;">{</span>
+      <span style="color: #531ab6;">"domain:v2ray.com"</span>: <span style="color: #3548cf;">"www.vicemc.net"</span>,
+      <span style="color: #531ab6;">"domain:github.io"</span>: <span style="color: #3548cf;">"pages.github.com"</span>,
+      <span style="color: #531ab6;">"domain:wikipedia.org"</span>: <span style="color: #3548cf;">"www.wikimedia.org"</span>,
+      <span style="color: #531ab6;">"domain:shadowsocks.org"</span>: <span style="color: #3548cf;">"electronicsrealm.com"</span>
+    <span style="color: #008899;">}</span>,
+    <span style="color: #531ab6;">"servers"</span>: <span style="color: #008899;">[</span>
+      <span style="color: #3548cf;">"1.1.1.1"</span>,
+      <span style="color: #972500;">{</span>
+        <span style="color: #531ab6;">"address"</span>: <span style="color: #3548cf;">"114.114.114.114"</span>,
+        <span style="color: #531ab6;">"port"</span>: <span style="color: #0000b0;">53</span>,
+        <span style="color: #531ab6;">"domains"</span>: <span style="color: #808000;">[</span><span style="color: #3548cf;">"geosite:cn"</span><span style="color: #808000;">]</span>
+      <span style="color: #972500;">}</span>,
+      <span style="color: #3548cf;">"8.8.8.8"</span>,
+      <span style="color: #3548cf;">"localhost"</span>
+    <span style="color: #008899;">]</span>
+  <span style="color: #dd22dd;">}</span>,
+  <span style="color: #531ab6;">"policy"</span>: <span style="color: #dd22dd;">{</span>
+    <span style="color: #531ab6;">"levels"</span>: <span style="color: #008899;">{</span>
+      <span style="color: #531ab6;">"0"</span>: <span style="color: #972500;">{</span>
+        <span style="color: #531ab6;">"uplinkOnly"</span>: <span style="color: #0000b0;">0</span>,
+        <span style="color: #531ab6;">"downlinkOnly"</span>: <span style="color: #0000b0;">0</span>,
+        <span style="color: #531ab6;">"bufferSize"</span>: <span style="color: #0000b0;">204800</span>,
+        <span style="color: #531ab6;">"handshake"</span>: <span style="color: #0000b0;">10</span>
+      <span style="color: #972500;">}</span>
+    <span style="color: #008899;">}</span>,
+    <span style="color: #531ab6;">"system"</span>: <span style="color: #008899;">{</span>
+      <span style="color: #531ab6;">"statsInboundUplink"</span>: <span style="color: #0000b0;">false</span>,
+      <span style="color: #531ab6;">"statsInboundDownlink"</span>: <span style="color: #0000b0;">false</span>,
+      <span style="color: #531ab6;">"statsOutboundUplink"</span>: <span style="color: #0000b0;">false</span>,
+      <span style="color: #531ab6;">"statsOutboundDownlink"</span>: <span style="color: #0000b0;">false</span>
+    <span style="color: #008899;">}</span>
+  <span style="color: #dd22dd;">}</span>
+<span style="color: #000000;">}</span>
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org323d7fb" class="outline-4">
+<h4 id="org323d7fb">v2ray 客户端配置</h4>
+<div class="outline-text-4" id="text-org323d7fb">
+<p>
+这里提供 <a href="https://github.com/yichengchen/clashX">ClashX</a> 配置的参考，其它客户端配置类似的。
+</p>
+
+<p>
+主要是配置 server， port 指向域名和对应的服务器。
+</p>
+
+<p>
+配置 uuid 和服务器的 uuid 保持一致。
+</p>
+
+<p>
+配置 http2 的相关 options。
+</p>
+<div class="org-src-container">
+<pre class="src src-yaml"><span style="color: #7f0000; font-style: italic;">---</span>
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">https://github.com/Dreamacro/clash/wiki/configuration</span>
+<span style="color: #005e8b;">port</span>: 7890
+<span style="color: #005e8b;">socks-port</span>: 7891
+<span style="color: #005e8b;">allow-lan</span>: <span style="color: #0000b0;">false</span>
+<span style="color: #005e8b;">bind-address</span>: <span style="color: #3548cf;">'*'</span>
+<span style="color: #005e8b;">mode</span>: rule
+<span style="color: #005e8b;">log-level</span>: info
+<span style="color: #005e8b;">ipv6</span>: <span style="color: #0000b0;">true</span>
+<span style="color: #005e8b;">proxies</span>:
+  - <span style="color: #005e8b;">name</span>: <span style="color: #3548cf;">"proxy"</span>
+    <span style="color: #005e8b;">type</span>: vmess
+    <span style="color: #005e8b;">server</span>: &lt;domain&gt;
+    <span style="color: #005e8b;">port</span>: 443
+    <span style="color: #005e8b;">uuid</span>: &lt;uuid&gt;
+    <span style="color: #005e8b;">alterId</span>: 0
+    <span style="color: #005e8b;">cipher</span>: auto
+    <span style="color: #005e8b;">network</span>: h2
+    <span style="color: #005e8b;">tls</span>: <span style="color: #0000b0;">true</span>
+    <span style="color: #005e8b;">h2-opts</span>:
+      <span style="color: #005e8b;">host</span>:
+        - &lt;domain&gt;
+      <span style="color: #005e8b;">path</span>: &lt;http2-path&gt;
+<span style="color: #005e8b;">rules</span>:
+  <span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">proxy</span>
+  - DOMAIN,google.com,proxy
+
+  <span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">REJECT</span>
+  - DOMAIN-SUFFIX,ad.com,REJECT
+
+  <span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">optional param "no-resolve" for IP rules (GEOIP, IP-CIDR, IP-CIDR6)</span>
+  <span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">DIRECT</span>
+  - SRC-IP-CIDR,192.168.1.201/32,DIRECT
+  - IP-CIDR,127.0.0.0/8,DIRECT
+  - GEOIP,CN,DIRECT
+  - DST-PORT,80,DIRECT
+  - SRC-PORT,7777,DIRECT
+  - MATCH,proxy
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5f78f02" class="outline-3">
+<h3 id="org5f78f02">排障</h3>
+<div class="outline-text-3" id="text-org5f78f02">
+<p>
+主要通过查看日志去判断问题是什么，然后 google :)
+</p>
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#26816;&#26597;&#36816;&#34892;&#29366;&#24577;</span>
+systemctl status candy
+systemctl status v2ray
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#26816;&#26597;&#36755;&#20986;&#30340;&#26085;&#24535;</span>
+journalctl -u caddy --no-pager | less +G
+journalctl -u v2ray --no-pager | less +G
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<p class="author">Author: Spike Leung (<a href="mailto:l-yanlei@hotmail.com">l-yanlei@hotmail.com</a>)</p>
+<p class="date">Date: 2022-08-08 Mon 00:00</p>
+</div>
+</body>
+</html>

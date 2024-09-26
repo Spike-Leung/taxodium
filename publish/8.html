@@ -1,0 +1,895 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-09-26 Thu 18:53 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Weekly#8</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="&quot;&quot;" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+ <nav>
+  <ul>
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/index.xml">RSS</a></li>
+    <li><a href="https://github.com/Spike-Leung">GitHub</a></li>
+  </ul>
+</nav>
+</div>
+<div id="content" class="content">
+<h1 class="title">Weekly#8</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgb8b2914">News | Article</a>
+<ul>
+<li><a href="#org6ccad38">burnout-vs-boreout</a></li>
+<li><a href="#org2867f66">Be a thermostat, not a thermometer</a></li>
+<li><a href="#orgd23b965">Growing your taste to build better products</a></li>
+<li><a href="#org8fdf0e7">Troubles with Food</a></li>
+<li><a href="#org0eaf417">Just for Fun. No, Really.</a></li>
+<li><a href="#org8a7eb87">Why Design Systems Can Be a Hot Mess (and How to Deal with It)</a></li>
+</ul>
+</li>
+<li><a href="#orgef2c7a1">Tutorial</a>
+<ul>
+<li><a href="#org063657b">So You Want to Learn Physics…</a></li>
+<li><a href="#orgdf28256">An Introduction to SQL for Weary Data Scientists</a></li>
+<li><a href="#orgf2d9338">英语学习指南</a></li>
+</ul>
+</li>
+<li><a href="#org71b95ac">Code</a>
+<ul>
+<li><a href="#orgebd560e">The Undeniable Utility Of CSS :has</a></li>
+<li><a href="#org5b47725">6 Techniques I Use to Create a Great User Experience for Shell Scripts</a></li>
+<li><a href="#org39d6923">Features of your font you had no idea about</a></li>
+<li><a href="#org4962c3b">暗水印显隐术助力生产排障提效</a></li>
+<li><a href="#org1551141">CSS display contents</a></li>
+</ul>
+</li>
+<li><a href="#orgc0a60dd">Cool Bit</a>
+<ul>
+<li><a href="#orgc051505">How I Added Maps to my Travel Posts</a></li>
+<li><a href="#org30c67a0">purplesyringa</a></li>
+<li><a href="#org95e9b3d">Creating a Git commit: The Hard Way</a></li>
+</ul>
+</li>
+<li><a href="#org9050d6b">Tool | Library</a>
+<ul>
+<li><a href="#org21351c6">Transparent Textures</a></li>
+</ul>
+</li>
+<li><a href="#org3936734">Music</a>
+<ul>
+<li><a href="#orgb44ef2c">太阳光明照我心 - 文兆杰</a></li>
+<li><a href="#orge4a723f">我什么都没有(Live) - 陈奕迅</a></li>
+<li><a href="#orgfb43841">May A Flower Bloom - 頭士奈生樹</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb8b2914" class="outline-2">
+<h2 id="orgb8b2914">News | Article</h2>
+<div class="outline-text-2" id="text-orgb8b2914">
+</div>
+<div id="outline-container-org6ccad38" class="outline-3">
+<h3 id="org6ccad38"><a href="https://nesslabs.com/burnout-vs-boreout">burnout-vs-boreout</a></h3>
+<div class="outline-text-3" id="text-org6ccad38">
+<p>
+<code>burnout</code> 指的是被耗尽了，倦怠了； <code>boreout</code> 指的是厌倦，觉得无聊。
+</p>
+
+<p>
+工作中也出现过被耗尽 (burnout) 的情况，当时同时需要好几个需求，而且 deadline 都集中差不多的时间。
+</p>
+
+<p>
+工作日一直加班到很晚去赶进度，一直被项目催进度，但是工作量在那，还是做不完，只能周末再加班。
+</p>
+
+<p>
+本来之前已经加班过一个周末了，一而再地无法安排自己的时间，投身于工作中，最终让我情绪有点崩溃。
+</p>
+
+<p>
+有的需求也是一些重复性的工作，不困难，但很繁琐也消耗时间，时间久了也会觉得厌倦 (boreout)，做起来没啥动力。
+</p>
+
+<p>
+有时不是因为自己没完成工作，而是需要等待别人配合调试，而对方又慢，拖到很晚才调完，
+</p>
+
+<p>
+中间其实也没我什么事，就又要加班到很晚，加班也没什么回报，就感觉非常的不值得，身心俱疲。
+</p>
+
+<p>
+至于如何调解，只能是周末做点喜欢的事情放空，慢慢让情绪恢复回来。
+</p>
+
+<p>
+有时做到一些比较感兴趣的功能，也能恢复一些兴奋和主动，找到写代码的乐趣。
+</p>
+
+<p>
+文章提到倦怠首先要认识到是情绪的问题，可能也是源自一种失控感，失去了对自己生活的控制。
+</p>
+
+<p>
+这时候就需要去给自己一些空间，去想想现在的状况是不是自己想要，自己想要的是什么；或者找朋友同事沟通一下；以及做一些小的改变去一点点尝试改变现状。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2867f66" class="outline-3">
+<h3 id="org2867f66"><a href="https://larahogan.me/blog/be-a-thermostat-not-a-thermometer/">Be a thermostat, not a thermometer</a></h3>
+<div class="outline-text-3" id="text-org2867f66">
+<blockquote>
+<p>
+我喜欢用温度计和恒温器来比喻这个概念。
+</p>
+
+<p>
+如果你在寻找有关某人感受的信号，这就有点像你在试图测量他们的情绪温度。
+</p>
+
+<p>
+你就是一个温度计。当他们微妙地散发出奇怪的气息时&#x2013;他们皱着眉头，
+</p>
+
+<p>
+回答你的问题时比平时少说了几句话，等等&#x2013;你就注意到他们的体温不一样了。
+</p>
+
+<p>
+当他们的杏仁核被劫持时，你可能会发现他们的行为发生了很大的变化（他们和你吵架、完全沉默、翘会等等）
+</p>
+
+<p>
+&#x2013;用温度计的比喻来说，他们在发烧，而你发现了这一点。
+</p>
+
+<p>
+既然我们知道一个人的行为改变会导致其他人改变他们的行为，我们就可以认为他们就像一个恒温器：
+</p>
+
+<p>
+他们在为整个房间设定温度。 即使双方都是无意的。
+</p>
+
+<p>
+这就是我们的思维方式：反映别人发出的 "氛围"。
+</p>
+</blockquote>
+
+<p>
+当你感受到对方情绪变化，可以选择成为"恒温器"，去调整情绪，但这还挺需要技巧的。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd23b965" class="outline-3">
+<h3 id="orgd23b965"><a href="https://shankarganesh.blog/2024/08/29/growing-taste-to-build-better-products/">Growing your taste to build better products</a></h3>
+<div class="outline-text-3" id="text-orgd23b965">
+<blockquote>
+<p>
+如果你一生只看过两部电影，那么你很可能会认为这两部电影都很不错。
+</p>
+
+<p>
+但如果你看过上千部电影，你就会真正懂得如何分辨好坏，以及从糟粕中发现精华。
+</p>
+</blockquote>
+
+<p>
+接触得多了，就分得出什么是好的，什么是差的。
+</p>
+
+<p>
+产品设计，UI 设计，写作，编码也是如此。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8fdf0e7" class="outline-3">
+<h3 id="org8fdf0e7"><a href="https://gabe.rocks/health/non-stop-eating/">Troubles with Food</a></h3>
+<div class="outline-text-3" id="text-org8fdf0e7">
+<blockquote>
+<ul class="org-ul">
+<li>不摄入超过所需热量</li>
+<li>获取所需的全部营养</li>
+</ul>
+<p>
+在了解以上两点的基础上，我认为最佳途径是尽量从所需的热量中获取最多的营养。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+自己做饭能让你更好地（但不是完全地）了解食物的制作过程。
+</p>
+
+<p>
+如果一个人要花时间准备饭菜，希望他能节省精力，做出高质量的饭菜，而不是垃圾食品。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+&#x2026;是因为坏习惯会累积，如果你熟悉复利的概念，你就会明白， 即使是微小的偏差，在很长一段时间内也会累积成巨大的问题。
+</p>
+
+<p>
+我个人就犯过没有及早正视这些错误的错误，我不得不花费大量精力来扭转这些错误造成的损失。
+</p>
+
+<p>
+与经济利益不同，健康问题没有破产，只有死亡。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+部分原因在于，我完全不愿意认真研究如何改变这些习惯。
+</p>
+
+<p>
+它们在我的生活中根深蒂固，以至于我觉得不可能改变它们，甚至连缓和程度都无能为力。
+</p>
+
+<p>
+我相信这在很大程度上是因为随着习惯的累积，你会变得固步自封，即使是一些小事，改变起来也会觉得是一件难以完成的任务。
+</p>
+
+<p>
+&#x2026;我想和大家分享的是，无论你已经走得多远，总有很多事情可以做来扭转局面。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+&#x2026;克服强迫性进食需要直接面对其原因。
+</p>
+
+<p>
+原因可能是无聊、压力、痛苦（情绪或身体上的），这些都是处于我这种情况的人不可避免会遇到的慢性问题。
+</p>
+
+<p>
+与我处于这种情况的人会理解强迫性进食与情绪性进食是多么紧密地交织在一起。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+对我来说，最难的一课就是认识到这是可以改变的。
+</p>
+
+<p>
+无论你强迫性回避的情感痛苦来源是什么，我向你保证，只要付出时间和努力，就一定有办法解决它们。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+&#x2026;我几乎完全戒掉了咖啡因。
+</p>
+
+<p>
+虽然这对我的工作效率绝对是一个暂时的严重打击，但我可以高兴地说，
+</p>
+
+<p>
+我已经反弹回来了。现在，我的工作效率比以往任何时候都高&#x2026;
+</p>
+
+<p>
+奇怪的是，戒掉咖啡因后，我注意到了两件事。
+</p>
+
+<ul class="org-ul">
+<li>梦境更加详细和生动（原因不明）</li>
+</ul>
+</blockquote>
+
+<p>
+对于一个每天都需要至少一杯咖啡的人来说，咖啡因戒断还是很难受，会头痛。
+</p>
+
+<blockquote>
+<p>
+如果上楼梯、走路或搬东西等简单的任务让您觉得几乎完全遥不可及，您就不会想到要四处奔波和进行各种活动。
+</p>
+
+<p>
+最终，一旦这些事情看起来遥不可及，它们就会逐渐变成实际上遥不可及。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+人不能习惯于安逸，因为随着时间的推移，最轻微的不适也会变得难以忍受。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+你必须接受一个事实，那就是很有可能在这一刻，你无法做任何事情来纠正你的状况，相反，你需要集中精力来创造动力。
+</p>
+
+<p>
+你的生活就像水中的大型航空母舰。你的体重越重，哪怕是稍稍转过身来都需要更多的时间和努力。
+</p>
+
+<p>
+随着时间的推移，你的良好改变会为更好的改变打开更多的大门。
+</p>
+
+<p>
+这才是真正的过程，愈合你的低谷，增长你的高潮。当你的航船不再走错方向，而是朝着正确的方向前进时，你会感觉好很多。
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-org0eaf417" class="outline-3">
+<h3 id="org0eaf417"><a href="https://justforfunnoreally.dev/">Just for Fun. No, Really.</a></h3>
+<div class="outline-text-3" id="text-org0eaf417">
+<blockquote>
+<p>
+与诗人一样，程序员的工作也只是稍稍脱离了纯粹的思考。
+</p>
+
+<p>
+他通过发挥想象力，在空中建造城堡。
+</p>
+
+<p>
+很少有创作媒介如此灵活，如此容易打磨和再加工，如此容易实现宏伟的概念结构&#x2026;.。
+</p>
+
+<p>
+然而，程序构造与诗人的文字不同，它是真实的，因为它可以移动和工作，产生与构造本身分离的可见输出。
+</p>
+
+<p>
+&#x2013;Fred Brooks, The Mythical Man-Month
+</p>
+</blockquote>
+
+<p>
+有时编程确实是一种乐趣，带来成就感和快乐。
+</p>
+
+<p>
+但是当做着一些简单机械的重复工作，也会觉得枯燥。（真希望以后都能用 AI 处理这部分工作）
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8a7eb87" class="outline-3">
+<h3 id="org8a7eb87"><a href="https://bootcamp.uxdesign.cc/why-design-systems-can-be-a-hot-mess-and-how-to-deal-with-it-9ead721a2c15">Why Design Systems Can Be a Hot Mess (and How to Deal with It)</a></h3>
+<div class="outline-text-3" id="text-org8a7eb87">
+<p>
+设计系统由一系列的规则/风格，规范，组件等构成，要避免它变得一团糟，需要所有人都达成共识，持续维护更新，保留一定的灵活性。
+</p>
+
+<p>
+除了设计系统，编码规范，文档其实也是同理的，都需要持续维护更新。
+</p>
+
+<blockquote>
+<p>
+定期安排审查，确保文档与您最新的 Spotify 播放列表一样新鲜。
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgef2c7a1" class="outline-2">
+<h2 id="orgef2c7a1">Tutorial</h2>
+<div class="outline-text-2" id="text-orgef2c7a1">
+</div>
+<div id="outline-container-org063657b" class="outline-3">
+<h3 id="org063657b"><a href="https://www.susanrigetti.com/physics">So You Want to Learn Physics…</a></h3>
+<div class="outline-text-3" id="text-org063657b">
+<p>
+物理学学习路径，里面还有关于哲学和数学的学习路径。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdf28256" class="outline-3">
+<h3 id="orgdf28256"><a href="https://gvwilson.github.io/sql-tutorial/">An Introduction to SQL for Weary Data Scientists</a></h3>
+<div class="outline-text-3" id="text-orgdf28256">
+<p>
+一个 SQL 入门教程。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf2d9338" class="outline-3">
+<h3 id="orgf2d9338"><a href="https://vvyst0z7tes.feishu.cn/wiki/HQuawZepyiwNiNkImw6c00IXnmc">英语学习指南</a></h3>
+<div class="outline-text-3" id="text-orgf2d9338">
+<p>
+一份飞书文档，学习英语时可以参考。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org71b95ac" class="outline-2">
+<h2 id="org71b95ac">Code</h2>
+<div class="outline-text-2" id="text-org71b95ac">
+</div>
+<div id="outline-container-orgebd560e" class="outline-3">
+<h3 id="orgebd560e"><a href="https://www.joshwcomeau.com/css/has/">The Undeniable Utility Of CSS :has</a></h3>
+<div class="outline-text-3" id="text-orgebd560e">
+<p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:has">:has</a> 选择器的介绍和一些用例。
+</p>
+
+<p>
+<code>p + a</code> 表示的是紧接在 <code>&lt;p&gt;</code> 后的 <code>&lt;a&gt;</code> ，使用 <code>:has</code> 可以将这个顺序反过来。
+</p>
+
+<p>
+<code>p:has(+ a)</code> 表示的是后面紧跟着 <code>&lt;a&gt;</code> 的 <code>&lt;p&gt;</code> 。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #721045;">html</span>&gt;
+  &lt;<span style="color: #721045;">head</span>&gt;
+    &lt;<span style="color: #721045;">style</span>&gt;
+      p:has(+ a) {
+        color: <span style="color: #000000; background-color: #FFC0CB;">pink</span>;
+      }
+    &lt;/<span style="color: #721045;">style</span>&gt;
+  &lt;/<span style="color: #721045;">head</span>&gt;
+  &lt;<span style="color: #721045;">body</span>&gt;
+    &lt;<span style="color: #721045;">p</span>&gt;Welcome :)&lt;/<span style="color: #721045;">p</span>&gt;
+    &lt;<span style="color: #721045;">p</span>&gt;My blog.&lt;/<span style="color: #721045;">p</span>&gt;
+    &lt;<span style="color: #721045;">a</span> <span style="color: #005e8b;">href</span>=<span style="color: #3548cf;">"https://taxodium.ink/"</span>&gt;taoxidium&lt;/<span style="color: #721045;">a</span>&gt;
+    &lt;<span style="color: #721045;">p</span>&gt;This post is weekly#8&lt;/<span style="color: #721045;">p</span>&gt;
+  &lt;/<span style="color: #721045;">body</span>&gt;
+&lt;/<span style="color: #721045;">html</span>&gt;
+</pre>
+</div>
+<iframe style="width:100%" srcdoc=" &lt;html&gt; &lt;head&gt; &lt;style&gt; p:has(+ a) { color: pink; } &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;p&gt;Welcome :)&lt;/p&gt; &lt;p&gt;My blog.&lt;/p&gt; &lt;a href=&#34;https://taxodium.ink/&#34;&gt;taoxidium&lt;/a&gt; &lt;p&gt;This post is weekly#8&lt;/p&gt; &lt;/body&gt; &lt;/html&gt; "></iframe>
+</div>
+</div>
+
+<div id="outline-container-org5b47725" class="outline-3">
+<h3 id="org5b47725"><a href="https://nochlin.com/blog/6-techniques-i-use-to-create-a-great-user-experience-for-shell-scripts">6 Techniques I Use to Create a Great User Experience for Shell Scripts</a></h3>
+<div class="outline-text-3" id="text-org5b47725">
+<ul class="org-ul">
+<li>详细的错误信息输出和输入验证，便于用户快速发现问题</li>
+<li>输出样式，设置色彩可以让信息更明显（但是无法显示颜色时(<code>\033[0m</code>)，就会有很多影响阅读的东西）</li>
+<li>执行步骤的输出，打印每一个执行的语句，让用户知道执行到了什么地方</li>
+<li>使用 <code>set -e</code> 和 <code>set +e</code> 在需要的地方出现错误后终止代码</li>
+<li>兼容不同平台的脚本，通过判断平台增加分支处理</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org39d6923" class="outline-3">
+<h3 id="org39d6923"><a href="https://sinja.io/blog/get-maximum-out-of-your-font">Features of your font you had no idea about</a></h3>
+<div class="outline-text-3" id="text-org39d6923">
+<p>
+平时写 CSS，也就是设置一下 font-family, font-weight, font-size, 但是实际上字体还有很多设置项，可以了解一下。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4962c3b" class="outline-3">
+<h3 id="org4962c3b"><a href="https://mp.weixin.qq.com/s/TLyQON9Tt_uMUbr5U7Pnyg">暗水印显隐术助力生产排障提效</a></h3>
+<div class="outline-text-3" id="text-org4962c3b">
+<p>
+由浅入深讲解如何设置网页水印。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1551141" class="outline-3">
+<h3 id="org1551141"><a href="https://ishadeed.com/article/display-contents/">CSS display contents</a></h3>
+<div class="outline-text-3" id="text-org1551141">
+<p>
+<code>display: contents;</code> 的介绍，第一次知道这个值的用法。
+</p>
+
+<p>
+它的作用是将包裹元素的盒子“移除”，像是盒子不存在一样，或者可以理解成<a href="https://ishadeed.com/article/display-contents/#thinking-of-contents-as-ungrouping-of-elements">取消元素的“分组”</a>。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #721045;">html</span>&gt;
+  &lt;<span style="color: #721045;">head</span>&gt;
+    &lt;<span style="color: #721045;">style</span>&gt;
+      .container {
+        border: 2px solid <span style="color: #000000; background-color: #FFC0CB;">pink</span>;
+      }
+    &lt;/<span style="color: #721045;">style</span>&gt;
+  &lt;/<span style="color: #721045;">head</span>&gt;
+  &lt;<span style="color: #721045;">body</span>&gt;
+    &lt;<span style="color: #721045;">div</span> <span style="color: #005e8b;">class</span>=<span style="color: #3548cf;">"container"</span>&gt;
+      &lt;<span style="color: #721045;">h1</span>&gt;<span style="font-weight: bold; text-decoration: underline;">without display:contents;</span>&lt;/<span style="color: #721045;">h1</span>&gt;
+      &lt;<span style="color: #721045;">p</span>&gt;some content&lt;/<span style="color: #721045;">p</span>&gt;
+    &lt;/<span style="color: #721045;">div</span>&gt;
+  &lt;/<span style="color: #721045;">body</span>&gt;
+&lt;/<span style="color: #721045;">html</span>&gt;
+</pre>
+</div>
+<iframe style="width:100%" srcdoc=" &lt;html&gt; &lt;head&gt; &lt;style&gt; .container { border: 2px solid pink; } &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;container&#34;&gt; &lt;h1&gt;without display:contents;&lt;/h1&gt; &lt;p&gt;some content&lt;/p&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt; "></iframe>
+
+
+
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #721045;">html</span>&gt;
+  &lt;<span style="color: #721045;">head</span>&gt;
+    &lt;<span style="color: #721045;">style</span>&gt;
+      .container {
+       border: 2px solid <span style="color: #000000; background-color: #FFC0CB;">pink</span>;
+       display: contents;
+      }
+    &lt;/<span style="color: #721045;">style</span>&gt;
+  &lt;/<span style="color: #721045;">head</span>&gt;
+  &lt;<span style="color: #721045;">body</span>&gt;
+    &lt;<span style="color: #721045;">div</span> <span style="color: #005e8b;">class</span>=<span style="color: #3548cf;">"container"</span>&gt;
+      &lt;<span style="color: #721045;">h1</span>&gt;<span style="font-weight: bold; text-decoration: underline;">with display: contents;</span>&lt;/<span style="color: #721045;">h1</span>&gt;
+      &lt;<span style="color: #721045;">p</span>&gt;some content&lt;/<span style="color: #721045;">p</span>&gt;
+    &lt;/<span style="color: #721045;">div</span>&gt;
+  &lt;/<span style="color: #721045;">body</span>&gt;
+&lt;/<span style="color: #721045;">html</span>&gt;
+</pre>
+</div>
+<iframe style="width:100%" srcdoc=" &lt;html&gt; &lt;head&gt; &lt;style&gt; .container { border: 2px solid pink; display: contents; } &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;container&#34;&gt; &lt;h1&gt;with display: contents;&lt;/h1&gt; &lt;p&gt;some content&lt;/p&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt; "></iframe>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc0a60dd" class="outline-2">
+<h2 id="orgc0a60dd">Cool Bit</h2>
+<div class="outline-text-2" id="text-orgc0a60dd">
+</div>
+<div id="outline-container-orgc051505" class="outline-3">
+<h3 id="orgc051505"><a href="https://cyberb.space/notes/2024/how-i-added-maps-to-my-travel-posts/">How I Added Maps to my Travel Posts</a></h3>
+<div class="outline-text-3" id="text-orgc051505">
+<p>
+作者想在博客中插入地图，并且满足三个要求：
+</p>
+
+<ul class="org-ul">
+<li>不依赖第三方</li>
+<li>构建时才生成</li>
+<li>手机和电脑上需要看起来一致</li>
+</ul>
+
+<p>
+主要是用 <a href="https://d3js.org/d3-geo">d3-geo</a> 生成地图的 SVG 然后嵌入到页面中。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org30c67a0" class="outline-3">
+<h3 id="org30c67a0"><a href="https://purplesyringa.moe">purplesyringa</a></h3>
+<div class="outline-text-3" id="text-org30c67a0">
+<p>
+作者的博客网站挺好看。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org95e9b3d" class="outline-3">
+<h3 id="org95e9b3d"><a href="https://avestura.dev/blog/creating-a-git-commit-the-hard-way">Creating a Git commit: The Hard Way</a></h3>
+<div class="outline-text-3" id="text-org95e9b3d">
+<p>
+用比 <code>git commit</code> 更基础的命令提交 git commit。
+</p>
+
+<p>
+对于了解 git 的底层原理有帮助。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9050d6b" class="outline-2">
+<h2 id="org9050d6b">Tool | Library</h2>
+<div class="outline-text-2" id="text-org9050d6b">
+</div>
+<div id="outline-container-org21351c6" class="outline-3">
+<h3 id="org21351c6"><a href="https://www.transparenttextures.com/">Transparent Textures</a></h3>
+<div class="outline-text-3" id="text-org21351c6">
+<p>
+选择颜色，模式，得到对应材质的 CSS 代码。
+</p>
+
+<p>
+可能在需要一些材质背景的时候会有用。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3936734" class="outline-2">
+<h2 id="org3936734">Music</h2>
+<div class="outline-text-2" id="text-org3936734">
+</div>
+<div id="outline-container-orgb44ef2c" class="outline-3">
+<h3 id="orgb44ef2c"><a href="https://music.163.com/#/song?id=2623174984">太阳光明照我心 - 文兆杰</a></h3>
+<div class="outline-text-3" id="text-orgb44ef2c">
+<blockquote>
+<p>
+前途的事说不清
+</p>
+
+<p>
+茫茫路何行
+</p>
+
+<p>
+太阳光明照我心
+</p>
+
+<p>
+敞亮向前进
+</p>
+</blockquote>
+
+<p>
+太阳照在身上，微风和煦的感觉让人觉得挺舒服和美好的。
+</p>
+
+<p>
+有时迷茫，不如出门晒晒太阳散散步，和大自然接触接触，给自己一点放松的空间。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge4a723f" class="outline-3">
+<h3 id="orge4a723f"><a href="https://music.163.com/#/song?id=64574">我什么都没有(Live) - 陈奕迅</a></h3>
+<div class="outline-text-3" id="text-orge4a723f">
+<blockquote>
+<p>
+我没有我没有没有
+</p>
+
+<p>
+从乐趣到痛苦到悲欢爱恨全被折扣
+</p>
+
+<p>
+&#x2026;
+</p>
+
+<p>
+梦里也会觉得快乐难求
+</p>
+
+<p>
+连泪光都光不过黑夜尽头
+</p>
+
+<p>
+不过不过我不用难受
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-orgfb43841" class="outline-3">
+<h3 id="orgfb43841"><a href="https://music.163.com/#/song?id=2610722693">May A Flower Bloom - 頭士奈生樹</a></h3>
+<div class="outline-text-3" id="text-orgfb43841">
+<p>
+一首安静的歌，适合深夜听。
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<p class="author">Author: Spike Leung (<a href="mailto:l-yanlei@hotmail.com">l-yanlei@hotmail.com</a>)</p>
+<p class="date">Date: 2024-09-17 Tue 00:00</p>
+</div>
+</body>
+</html>

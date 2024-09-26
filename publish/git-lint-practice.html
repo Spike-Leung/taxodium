@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-09-26 Thu 18:54 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Git 的校验实践</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="&quot;&quot;" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+ <nav>
+  <ul>
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/index.xml">RSS</a></li>
+    <li><a href="https://github.com/Spike-Leung">GitHub</a></li>
+  </ul>
+</nav>
+</div>
+<div id="content" class="content">
+<h1 class="title">Git 的校验实践</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org686801e">提交信息 (commit message)</a>
+<ul>
+<li><a href="#org0931f48">diff</a></li>
+<li><a href="#orgc593371">编写方式</a></li>
+<li><a href="#org45ca947">格式</a></li>
+<li><a href="#org61092a5">工具校验</a></li>
+<li><a href="#org0b4c049">提交信息模板(commit.template)</a></li>
+</ul>
+</li>
+<li><a href="#orge438b81">githooks / husky</a>
+<ul>
+<li><a href="#org55bfc2a">配置方法</a>
+<ul>
+<li><a href="#org27bbac0">githooks</a></li>
+<li><a href="#orgf8d12ad">husky</a></li>
+</ul>
+</li>
+<li><a href="#org3a5c401">一些例子</a>
+<ul>
+<li><a href="#org886b01d">校验提交信息 (commit-msg)</a></li>
+<li><a href="#orga3c5f4d">提交前校验&amp;格式化代码(pre-commit)</a></li>
+<li><a href="#org92a9564">推送时判断是否合包含主分支提交(pre-push)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org3178546">changelog</a></li>
+<li><a href="#org2963d66">Refs</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org686801e" class="outline-2">
+<h2 id="org686801e">提交信息 (commit message)</h2>
+<div class="outline-text-2" id="text-org686801e">
+</div>
+<div id="outline-container-org0931f48" class="outline-3">
+<h3 id="org0931f48">diff</h3>
+<div class="outline-text-3" id="text-org0931f48">
+<p>
+在提交前最好先确认一下当前提交了什么文件，看看 diff，确认没有改错后再提交。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc593371" class="outline-3">
+<h3 id="orgc593371">编写方式</h3>
+<div class="outline-text-3" id="text-orgc593371">
+<p>
+提交信息可以通过以下命令完成：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">git commit -m <span style="color: #3548cf;">'your message'</span>
+</pre>
+</div>
+
+<p>
+但是它的缺点是能写的内容不多, 有时你可能有一些补充信息，或者需要附上一些 issue 链接，就不方便了。
+</p>
+
+<p>
+所以建议是配置好 Git 使用的编辑器，然后直接敲 <code>git commit</code>, 在编辑器中进行编写。
+</p>
+
+<p>
+配置 Git 编辑器：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">vim &#21487;&#20197;&#25442;&#25104;&#20320;&#20064;&#24815;&#30340;&#32534;&#36753;&#22120;</span>
+git config --global core.editor <span style="color: #3548cf;">"vim"</span>
+
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#25110;&#32773;&#35774;&#32622; GIT_EDITOR &#21464;&#37327;&#65292;&#22312;&#20320;&#30340; .bashrc / .zshrc &#25991;&#20214;&#20013;&#28155;&#21152;&#21363;&#21487;</span>
+<span style="color: #8f0075;">export</span> <span style="color: #005e8b;">GIT_EDITOR</span>=vim
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org45ca947" class="outline-3">
+<h3 id="org45ca947">格式</h3>
+<div class="outline-text-3" id="text-org45ca947">
+<p>
+提交信息一般遵循<a href="https://www.conventionalcommits.org/zh-hans/v1.0.0-beta.4/">约定式提交</a>的规范去编写，基本结构为：
+</p>
+<pre class="example">
+&lt;类型&gt;[可选的作用域]: &lt;描述&gt;
+
+[可选的正文]
+
+[可选的脚注]
+</pre>
+
+<p>
+其中类型的定义可以参考 <a href="https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#type">Angular</a>:
+</p>
+
+<blockquote>
+<ul class="org-ul">
+<li><b>build</b>: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)</li>
+<li><b>ci</b>: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)</li>
+<li><b>docs</b>: Documentation only changes</li>
+<li><b>feat</b>: A new feature</li>
+<li><b>fix</b>: A bug fix</li>
+<li><b>perf</b>: A code change that improves performance</li>
+<li><b>refactor</b>: A code change that neither fixes a bug nor adds a feature</li>
+<li><b>style</b>: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)</li>
+<li><b>test</b>: Adding missing tests or correcting existing tests</li>
+</ul>
+</blockquote>
+
+<p>
+提交信息的编写可以参考 <a href="https://cbea.ms/git-commit/">Introduction: Why good commit messages matter</a>：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">Summarize changes<span style="color: #531ab6;"> in</span> around 50 characters or less
+
+More detailed explanatory text, if necessary. Wrap it to about 72
+characters or so. In some contexts, the first line is treated as the
+subject of the commit and the rest of the text as the body. The
+blank line separating the summary from the body is critical <span style="color: #000000;">(</span>unless
+you omit the body entirely<span style="color: #000000;">)</span>; various tools like <span style="color: #c0c5ce; font-weight: bold;">`log`</span>, <span style="color: #c0c5ce; font-weight: bold;">`shortlog`</span>
+and <span style="color: #c0c5ce; font-weight: bold;">`rebase`</span> can get confused if you run the two together.
+
+Explain the problem that this commit is solving. Focus on why you
+are making this change as opposed to how <span style="color: #000000;">(</span>the code explains that<span style="color: #000000;">)</span>.
+Are there side effects or other unintuitive consequences of this
+change? Here<span style="color: #3548cf;">'s the place to explain them.</span>
+
+<span style="color: #3548cf;">Further paragraphs come after blank lines.</span>
+
+<span style="color: #3548cf;"> - Bullet points are okay, too</span>
+
+<span style="color: #3548cf;"> - Typically a hyphen or asterisk is used for the bullet, preceded</span>
+<span style="color: #3548cf;">   by a single space, with blank lines in between, but conventions</span>
+<span style="color: #3548cf;">   vary here</span>
+
+<span style="color: #3548cf;">If you use an issue tracker, put references to them at the bottom,</span>
+<span style="color: #3548cf;">like this:</span>
+
+<span style="color: #3548cf;">Resolves: #123</span>
+<span style="color: #3548cf;">See also: #456, #789</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org61092a5" class="outline-3">
+<h3 id="org61092a5">工具校验</h3>
+<div class="outline-text-3" id="text-org61092a5">
+<p>
+在团队协作中，为了确保大家的提交都符合规范，最好是通过工具去约束，而不是人为检查。
+</p>
+
+<p>
+格式的约束可以通过 <a href="https://github.com/conventional-changelog/commitlint">commitlint</a> 等工具实现，可以添加一个 <code>pre-commit</code> 的钩子，在提交前进行格式的校验。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0b4c049" class="outline-3">
+<h3 id="org0b4c049">提交信息模板(commit.template)</h3>
+<div class="outline-text-3" id="text-org0b4c049">
+<p>
+团队中可能有约定好的提交信息格式，也可以添加一份提交模板在项目，每次提交时都读取模板进行编写，这样也可以统一格式。
+</p>
+
+<p>
+可以在项目中根目录创建一份 <code>.gittemplate.txt</code> , 然后写入模板内容：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">Subject line <span style="color: #000000;">(</span>try to keep under 50 characters<span style="color: #000000;">)</span>
+
+Multi-line description of commit,
+feel free to be detailed.
+
+<span style="color: #000000;">[</span>Ticket: X<span style="color: #000000;">]</span>
+</pre>
+</div>
+
+<p>
+然后给项目的 git 仓库配置使用这个模板(具体配置会生成在 <code>项目根目录/.git/config</code> 下)：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">git config commit.template .gittemplate.txt
+</pre>
+</div>
+
+<p>
+然后下次提交时，提交信息就会变成：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">Subject line <span style="color: #000000;">(</span>try to keep under 50 characters<span style="color: #000000;">)</span>
+
+Multi-line description of commit,
+feel free to be detailed.
+
+<span style="color: #000000;">[</span>Ticket: X<span style="color: #000000;">]</span>
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">Please enter the commit message for your changes. Lines starting</span>
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">with '#' will be ignored, and an empty message aborts the commit.</span>
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">On branch master</span>
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">Changes to be committed:</span>
+<span style="color: #65737e; font-style: italic;">#   </span><span style="color: #7f0000; font-style: italic;">(use "git reset HEAD &lt;file&gt;..." to unstage)</span>
+<span style="color: #65737e; font-style: italic;">#</span>
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">modified:   lib/test.rb</span>
+<span style="color: #65737e; font-style: italic;">#</span>
+~
+~
+<span style="color: #3548cf;">".git/COMMIT_EDITMSG"</span> 14L, 297C
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge438b81" class="outline-2">
+<h2 id="orge438b81">githooks / husky</h2>
+<div class="outline-text-2" id="text-orge438b81">
+<p>
+前面提到，可以用 <a href="https://github.com/conventional-changelog/commitlint">commitlint</a> 在 <code>pre-commit</code> 时进行校验， <code>pre-commit</code> 指的就是一个 <a href="https://git-scm.com/docs/githooks">Git 钩子</a>，可以在提交前触发一些动作。
+</p>
+
+<p>
+你可以在提交前后，push 前后，合并前后去触发一些动作。
+</p>
+
+<p>
+常见的配置例如：
+</p>
+
+<ul class="org-ul">
+<li>在提交的时候检查代码格式，格式化代码 (执行 eslint, prettier)</li>
+<li>在确认提交信息后，校验提交信息的格式</li>
+<li>在 push 到远端时，校验代码是否有错误，跑测试用例，比对分支看是否缺少上游提交等</li>
+<li>&#x2026;</li>
+</ul>
+
+<p>
+githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本过低，就需要升级一下。
+</p>
+</div>
+
+<div id="outline-container-org55bfc2a" class="outline-3">
+<h3 id="org55bfc2a">配置方法</h3>
+<div class="outline-text-3" id="text-org55bfc2a">
+</div>
+<div id="outline-container-org27bbac0" class="outline-4">
+<h4 id="org27bbac0">githooks</h4>
+<div class="outline-text-4" id="text-org27bbac0">
+<ul class="org-ul">
+<li><p>
+进入 githooks 所在的目录
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #8f0075;">cd</span> /project-repo/.git/hooks
+</pre>
+</div>
+
+<p>
+你会看到有这些文件：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">-rwxr-xr-x 1 spike spike  478 Oct 27 19:10 applypatch-msg.sample
+-rwxr-xr-x 1 spike spike  896 Oct 27 19:10 commit-msg.sample
+-rwxr-xr-x 1 spike spike 3079 Oct 27 19:10 fsmonitor-watchman.sample
+-rwxr-xr-x 1 spike spike  189 Oct 27 19:10 post-update.sample
+-rwxr-xr-x 1 spike spike  424 Oct 27 19:10 pre-applypatch.sample
+-rwxr-xr-x 1 spike spike 1638 Oct 27 19:10 pre-commit.sample
+-rwxr-xr-x 1 spike spike  416 Oct 27 19:10 pre-merge-commit.sample
+-rwxr-xr-x 1 spike spike 1348 Oct 27 19:10 pre-push.sample
+-rwxr-xr-x 1 spike spike 4898 Oct 27 19:10 pre-rebase.sample
+-rwxr-xr-x 1 spike spike  544 Oct 27 19:10 pre-receive.sample
+-rwxr-xr-x 1 spike spike 1492 Oct 27 19:10 prepare-commit-msg.sample
+-rwxr-xr-x 1 spike spike 3610 Oct 27 19:10 update.sample
+</pre>
+</div></li>
+
+<li>根据需要的钩子，将 <code>.simple</code> 后缀移除，例如 <code>pre-commit.sample</code> 改为 <code>pre-commit</code></li>
+
+<li>打开文件，设置为你想写的语言</li>
+</ul>
+
+<p>
+如果你想用 shell:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #65737e; font-style: italic;">#</span><span style="color: #7f0000; font-style: italic;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #7f0000; font-style: italic;"> sh</span>
+</pre>
+</div>
+
+<p>
+或者用 python:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #65737e; font-style: italic;">#</span><span style="color: #7f0000; font-style: italic;">!/usr/</span><span style="color: #531ab6;">bin</span><span style="color: #7f0000; font-style: italic;"> python</span>
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><p>
+设置好语言后，就编写脚本，例如 <code>pre-push</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #65737e; font-style: italic;">#</span><span style="color: #7f0000; font-style: italic;">!/bin/</span><span style="color: #531ab6;">sh</span>
+<span style="color: #005e8b;">COMMIT_ID</span>=$<span style="color: #000000;">(</span>git log -n 1 --pretty=format:<span style="color: #3548cf;">"%H"</span> main<span style="color: #000000;">)</span>
+
+<span style="color: #531ab6;">if</span> git merge-base --is-ancestor $<span style="color: #005e8b;">COMMIT_ID</span> HEAD
+<span style="color: #531ab6;">then</span>
+    <span style="color: #531ab6;">exit</span> 0
+<span style="color: #531ab6;">else</span>
+    <span style="color: #8f0075;">echo</span> <span style="color: #3548cf;">"&#20027;&#20998;&#25903;&#26377;&#20320;&#27809;&#26377;&#21512;&#24182;&#30340;&#25552;&#20132;&#65292;&#22312;&#25552;&#27979;&#21069;&#35831;&#21512;&#24182;"</span>
+    <span style="color: #531ab6;">exit</span> 0
+<span style="color: #531ab6;">fi</span>
+</pre>
+</div></li>
+
+<li>保存好脚本后, 当 push 的时候，就会执行 <code>pre-push</code> 里面的脚本，去比对分支，如果不同步则会出现提示文字</li>
+</ul>
+
+<p>
+但是 githooks 是 <code>存储在本地，不进入版本管理</code> 的。
+</p>
+
+<p>
+一个解决办法是在项目中创建一个目录存放 hooks, 同步到远端后，大家拉取下来拷贝 <code>.git/hooks</code> 目录里。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf8d12ad" class="outline-4">
+<h4 id="orgf8d12ad">husky</h4>
+<div class="outline-text-4" id="text-orgf8d12ad">
+<p>
+<a href="https://typicode.github.io/husky/#/">husky</a> 是一个方便写 githooks 的工具，目前也蛮流行的。
+</p>
+
+<p>
+它会在项目的根目录下创 <code>.husky</code> 目录，存放 husky 生成的所有 hooks，这样可以避免 hooks 在本地仓库没有同步的问题。
+</p>
+
+<p>
+它还会修改 githooks 对应的路径，改写为 <code>.husky</code> 目录, 如果你打开 <code>/project-root/.git/config</code> , 你会看到：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #000000;">[</span>core<span style="color: #000000;">]</span>
+        <span style="color: #005e8b;">hooksPath</span> = .husky
+</pre>
+</div>
+
+<p>
+husky 的使用就不赘述了，如果项目可以 husky，建议还是用 husky 来维护 githooks。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3a5c401" class="outline-3">
+<h3 id="org3a5c401">一些例子</h3>
+<div class="outline-text-3" id="text-org3a5c401">
+<div class="org-src-container">
+<pre class="src src-bash">/home/spike/git/commit-demo/.husky:
+total used<span style="color: #531ab6;"> in</span> directory 24 available 232.5 GiB
+drwxrwxr-x 3 spike spike 4096 Nov 17 17:48 .
+drwxrwxr-x 6 spike spike 4096 Nov 17 17:48 ..
+drwxrwxr-x 2 spike spike 4096 Oct 25 09:14 _
+-rwxr-xr-x 1 spike spike   88 Oct 25 09:15 commit-msg
+-rwxr-xr-x 1 spike spike   68 Oct 25 11:06 pre-commit
+-rwxr-xr-x 1 spike spike  218 Nov 17 17:48 pre-push
+
+</pre>
+</div>
+</div>
+<div id="outline-container-org886b01d" class="outline-4">
+<h4 id="org886b01d">校验提交信息 (commit-msg)</h4>
+<div class="outline-text-4" id="text-org886b01d">
+<p>
+安装  <a href="https://github.com/conventional-changelog/commitlint">commitlint</a> 以来，然后创建 <code>commit-msg</code> 钩子，在提交后，校验提交信息是否符合规范：
+</p>
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #65737e; font-style: italic;">#</span><span style="color: #7f0000; font-style: italic;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #7f0000; font-style: italic;"> sh</span>
+. <span style="color: #3548cf;">"$(dirname -- "$0")/_/husky.sh"</span>
+
+npx --no -- commitlint --edit $<span style="color: #000000;">{</span><span style="color: #005e8b;">1</span><span style="color: #000000;">}</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orga3c5f4d" class="outline-4">
+<h4 id="orga3c5f4d">提交前校验&amp;格式化代码(pre-commit)</h4>
+<div class="outline-text-4" id="text-orga3c5f4d">
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #65737e; font-style: italic;">#</span><span style="color: #7f0000; font-style: italic;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #7f0000; font-style: italic;"> sh</span>
+. <span style="color: #3548cf;">"$(dirname -- "$0")/_/husky.sh"</span>
+npx lint-staged
+</pre>
+</div>
+
+<p>
+这里用到了 <a href="https://github.com/okonet/lint-staged">okonet/lint-staged</a>, 它的作用是对 staged 中的内容(git add 进去的内容)进行一些处理。
+</p>
+
+<p>
+<code>.lintstagedrc.json</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-json"><span style="color: #000000;">{</span>
+  <span style="color: #531ab6;">"src/*.{js,vue}"</span>: <span style="color: #dd22dd;">[</span><span style="color: #3548cf;">"prettier --write"</span>, <span style="color: #3548cf;">"eslint"</span><span style="color: #dd22dd;">]</span>
+<span style="color: #000000;">}</span>
+</pre>
+</div>
+
+<p>
+例如这里就是对 src 下的 js 和 vue 类型的文件，用 pretteir 格式化后，再用 eslint 去校验。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org92a9564" class="outline-4">
+<h4 id="org92a9564">推送时判断是否合包含主分支提交(pre-push)</h4>
+<div class="outline-text-4" id="text-org92a9564">
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #65737e; font-style: italic;">#</span><span style="color: #7f0000; font-style: italic;">!/bin/</span><span style="color: #531ab6;">sh</span>
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#33719;&#21462; main &#20998;&#25903;&#26368;&#26032;&#30340;&#25552;&#20132;</span>
+git fetch
+<span style="color: #005e8b;">COMMIT_ID</span>=$<span style="color: #000000;">(</span>git log -n 1 --pretty=format:<span style="color: #3548cf;">"%H"</span> origin/main<span style="color: #000000;">)</span>
+
+<span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#21028;&#26029; main &#30340;&#26368;&#26032;&#25552;&#20132; &#26159;&#19981;&#26159; &#24403;&#21069;&#30340;&#26368;&#26032;&#25552;&#20132; (HEAD) &#30340;&#19978;&#28216;</span>
+<span style="color: #531ab6;">if</span> git merge-base --is-ancestor $<span style="color: #005e8b;">COMMIT_ID</span> HEAD
+<span style="color: #531ab6;">then</span>
+    <span style="color: #531ab6;">exit</span> 0
+<span style="color: #531ab6;">else</span>
+    <span style="color: #65737e; font-style: italic;"># </span><span style="color: #7f0000; font-style: italic;">&#22914;&#26524;&#19981;&#26159;&#21017;&#25552;&#31034; exit code &#19981;&#20026; 0&#65292;&#20250;&#38459;&#26029; push&#65292;&#26080;&#27861;&#25512;&#36865;&#21040;&#36828;&#31243;</span>
+    <span style="color: #8f0075;">echo</span> <span style="color: #3548cf;">"&#20027;&#20998;&#25903;&#26377;&#20320;&#27809;&#26377;&#21512;&#24182;&#30340;&#25552;&#20132;&#65292;&#22312;&#25552;&#27979;&#21069;&#35831;&#21512;&#24182;"</span>
+    <span style="color: #531ab6;">exit</span> 1
+<span style="color: #531ab6;">fi</span>
+
+</pre>
+</div>
+<p>
+当存在多条分支时，有时容易忘记合并主分支代码，导致测试时丢失主分支的提交。
+</p>
+
+<p>
+你就可以写一个 <code>pre-push</code> 钩子，再 push 的时候去校验一下。
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3178546" class="outline-2">
+<h2 id="org3178546">changelog</h2>
+<div class="outline-text-2" id="text-org3178546">
+<p>
+涉及到版本控制，自然也有版本号和发布日志，一般而言，版本号应该遵循<a href="https://semver.org/lang/zh-CN/">语义化版本 2.0.0</a>的规范。
+</p>
+
+<p>
+而发布日志，一般而言也可以用一个 <code>CHANGELOG.md</code> 文件去编写和维护。
+</p>
+
+<p>
+而 <a href="https://github.com/changesets/changesets">changesets</a> 可以方便地让你按照语义化的规范去编写 changelog。
+</p>
+
+<p>
+当做了一些修改，觉得有必要再发布日志里说明，就可以添加一条 changeset：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">npx changeset
+</pre>
+</div>
+
+<p>
+changeset 会要求你选择当前这条记录对应的语义化版本，从而约束你去遵守语义化。
+</p>
+
+<p>
+在发布前可以不断地添加 changeset，等到要发布时，执行：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">npx changeset version
+</pre>
+</div>
+
+<p>
+changeset 就会帮你把所有的 changeset 合并到 <code>CHANGELOG.md</code> 中，同时根据你之前的选择计算对应的版本号。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2963d66" class="outline-2">
+<h2 id="org2963d66">Refs</h2>
+<div class="outline-text-2" id="text-org2963d66">
+<ul class="org-ul">
+<li><a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration">8.1 Customizing Git - Git Configuration</a></li>
+<li><a href="https://stackoverflow.com/questions/2596805/how-do-i-make-git-use-the-editor-of-my-choice-for-editing-commit-messages">How do I make git use the editor of my choice for editing commit messages?</a></li>
+<li><a href="https://medium.com/@f3igao/get-started-with-git-hooks-5a489725c639">Get Started with Git Hooks</a></li>
+<li><a href="https://github.com/adambard/learnxinyminutes-docs">adambard / learnxinyminutes-docs</a> 快速了解 bash 等脚本语言用法</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<p class="author">Author: Spike Leung (<a href="mailto:l-yanlei@hotmail.com">l-yanlei@hotmail.com</a>)</p>
+<p class="date">Date: 2022-11-17 Thu 00:00</p>
+</div>
+</body>
+</html>
