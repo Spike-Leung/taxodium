@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-26 Thu 22:07 -->
+<!-- 2024-09-27 Fri 18:08 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>关于 Cookie 的一些知识</title>
 <meta name="author" content="Spike Leung" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -205,7 +205,7 @@
     <li><a href="/index.html">Home</a></li>
     <li><a href="/about.html">About</a></li>
     <li><a href="/rss.xml">RSS</a></li>
-    <li><a href="https://github.com/Spike-Leung">GitHub</a></li>
+    <li><a href="https://github.com/Spike-Leung/taxodium/tree/org-publish">GitHub</a></li>
   </ul>
 </nav>
 </div>
@@ -215,11 +215,11 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org6369eeb">作用</a></li>
-<li><a href="#org303b9d7">创建</a></li>
-<li><a href="#org47ae997">属性</a></li>
-<li><a href="#orgc6327fb">withCredentials</a></li>
-<li><a href="#org6051f2b">参考</a></li>
+<li><a href="#org7b9b28e">作用</a></li>
+<li><a href="#org54b7538">创建</a></li>
+<li><a href="#org5342f37">属性</a></li>
+<li><a href="#orgb25d1c2">withCredentials</a></li>
+<li><a href="#orgdab1ee4">参考</a></li>
 </ul>
 </div>
 </div>
@@ -228,10 +228,9 @@ Cookie 是服务器发送给客户端的一小段数据（一般不超过 4K）�
 请求时将 cookie 发送给服务器。由于 HTTP 是无状态的，服务器不会记住客户
 端，因此就通过 cookie 的字段去辨识客户端。
 </p>
-
-<div id="outline-container-org6369eeb" class="outline-2">
-<h2 id="org6369eeb">作用</h2>
-<div class="outline-text-2" id="text-org6369eeb">
+<div id="outline-container-org7b9b28e" class="outline-2">
+<h2 id="org7b9b28e">作用</h2>
+<div class="outline-text-2" id="text-org7b9b28e">
 <ul class="org-ul">
 <li>管理会话信息： 例如登录信息，购物车，游戏分数等服务器需要记住的东西</li>
 <li>个性化： 例如一些用户配置，主题等</li>
@@ -239,16 +238,15 @@ Cookie 是服务器发送给客户端的一小段数据（一般不超过 4K）�
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org303b9d7" class="outline-2">
-<h2 id="org303b9d7">创建</h2>
-<div class="outline-text-2" id="text-org303b9d7">
+<div id="outline-container-org54b7538" class="outline-2">
+<h2 id="org54b7538">创建</h2>
+<div class="outline-text-2" id="text-org54b7538">
 <p>
 当服务器收到请求时，可以通过返回一个或多个 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a> 头部字段设置
 cookie。
 </p>
 
-<pre class="example" id="org3861ff5">
+<pre class="example" id="orgee52ad5">
 Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Max-Age=2592000; Domain=somecompany.co.uk
 </pre>
 
@@ -257,15 +255,14 @@ Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Max-Age=2592000; Do
 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cookie">Cookie</a> 头部传给服务器。
 </p>
 
-<pre class="example" id="org0c4c365">
+<pre class="example" id="orga6e064a">
 Cookie: PHPSESSID=298zf09hf012fh2; csrftoken=u32t4o3tb3gg43; _gat=1
 </pre>
 </div>
 </div>
-
-<div id="outline-container-org47ae997" class="outline-2">
-<h2 id="org47ae997">属性</h2>
-<div class="outline-text-2" id="text-org47ae997">
+<div id="outline-container-org5342f37" class="outline-2">
+<h2 id="org5342f37">属性</h2>
+<div class="outline-text-2" id="text-org5342f37">
 <ul class="org-ul">
 <li><b>Expires</b>: cookie 过期的绝对时间，相对于客户端的时间而言</li>
 <li><b>Max-Age</b>: cookie 过期的相对时间</li>
@@ -293,10 +290,9 @@ get表单</li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgc6327fb" class="outline-2">
-<h2 id="orgc6327fb">withCredentials</h2>
-<div class="outline-text-2" id="text-orgc6327fb">
+<div id="outline-container-orgb25d1c2" class="outline-2">
+<h2 id="orgb25d1c2">withCredentials</h2>
+<div class="outline-text-2" id="text-orgb25d1c2">
 <p>
 当跨站或者跨域发送请求时，想要带上 cookie，就得设置 <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials">withCredentials</a>
 为 true，同时服务器要返回 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials">Access-Control-Allow-Credentials</a>，也设置为
@@ -311,10 +307,9 @@ For requests without credentials, the literal value "*" can be specified as a wi
 </blockquote>
 </div>
 </div>
-
-<div id="outline-container-org6051f2b" class="outline-2">
-<h2 id="org6051f2b">参考</h2>
-<div class="outline-text-2" id="text-org6051f2b">
+<div id="outline-container-orgdab1ee4" class="outline-2">
+<h2 id="orgdab1ee4">参考</h2>
+<div class="outline-text-2" id="text-orgdab1ee4">
 <ul class="org-ul">
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies">Cookie</a> - MDN</li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a> - MDN</li>
@@ -329,8 +324,10 @@ For requests without credentials, the literal value "*" can be specified as a wi
 </div>
 <div id="postamble" class="status">
 
-<p class="author">Author: Spike Leung (<a href="mailto:l-yanlei@hotmail.com">l-yanlei@hotmail.com</a>)</p>
+<p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">Date: 2022-02-23 Wed 00:00</p>
+<p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<script src="https://utteranc.es/client.js" repo="Spike-Leung/taxodium" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
 </div>
 </body>
 </html>

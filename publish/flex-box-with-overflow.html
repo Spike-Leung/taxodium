@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-26 Thu 22:07 -->
+<!-- 2024-09-27 Fri 18:08 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Flex 布局下，元素溢出的问题</title>
 <meta name="author" content="Spike Leung" />
 <meta name="description" content="&quot;&quot;" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -206,7 +206,7 @@
     <li><a href="/index.html">Home</a></li>
     <li><a href="/about.html">About</a></li>
     <li><a href="/rss.xml">RSS</a></li>
-    <li><a href="https://github.com/Spike-Leung">GitHub</a></li>
+    <li><a href="https://github.com/Spike-Leung/taxodium/tree/org-publish">GitHub</a></li>
   </ul>
 </nav>
 </div>
@@ -216,33 +216,32 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org251aec5">问题</a>
+<li><a href="#orgdfeb60f">问题</a>
 <ul>
-<li><a href="#org732fe7d">非 flex 布局的表现</a></li>
+<li><a href="#orgf3b84e6">非 flex 布局的表现</a></li>
 </ul>
 </li>
-<li><a href="#orge83b9a9">解决方案</a>
+<li><a href="#org63a5098">解决方案</a>
 <ul>
-<li><a href="#org81bb8e9">给 flex item 设置 overflow 属性</a></li>
-<li><a href="#orgafc5703">给 flex item 设置 width: 0 &amp; flex-grow: 1</a></li>
-<li><a href="#orgd629212">给 flex item 设置 min-width: 0</a></li>
+<li><a href="#org447ba4a">给 flex item 设置 overflow 属性</a></li>
+<li><a href="#org1b494b6">给 flex item 设置 width: 0 &amp; flex-grow: 1</a></li>
+<li><a href="#org4c8b602">给 flex item 设置 min-width: 0</a></li>
 </ul>
 </li>
-<li><a href="#org3ac8475">原因</a>
+<li><a href="#orgcbfddf0">原因</a>
 <ul>
-<li><a href="#orgcae5375">TL;DR</a></li>
-<li><a href="#orgdb0a544">详细分析</a></li>
+<li><a href="#orge320535">TL;DR</a></li>
+<li><a href="#org4b9d25b">详细分析</a></li>
 </ul>
 </li>
-<li><a href="#org1cf2a72">推论</a></li>
-<li><a href="#org8e24aa2">Refs</a></li>
+<li><a href="#orgda6f9cf">推论</a></li>
+<li><a href="#org321dd16">Refs</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org251aec5" class="outline-2">
-<h2 id="org251aec5">问题</h2>
-<div class="outline-text-2" id="text-org251aec5">
+<div id="outline-container-orgdfeb60f" class="outline-2">
+<h2 id="orgdfeb60f">问题</h2>
+<div class="outline-text-2" id="text-orgdfeb60f">
 <p>
 有一个 flex box，宽度是 400px，里面有一个 item，item 中有一段很长的文
 字，文字不换行。
@@ -289,15 +288,14 @@
 </div>
 
 
-<div id="orge6f6a12" class="figure">
+<div id="orgf438cb5" class="figure">
 <p><img src="./images/flex-box-with-overflow/problem.png" alt="problem.png" />
 </p>
 </div>
 </div>
-
-<div id="outline-container-org732fe7d" class="outline-3">
-<h3 id="org732fe7d">非 flex 布局的表现</h3>
-<div class="outline-text-3" id="text-org732fe7d">
+<div id="outline-container-orgf3b84e6" class="outline-3">
+<h3 id="orgf3b84e6">非 flex 布局的表现</h3>
+<div class="outline-text-3" id="text-orgf3b84e6">
 <p>
 如果去除 flex 布局，用默认的 display:block 的盒子， 文本是会受限于外层
 容器宽度，从而溢出隐藏显示。
@@ -337,21 +335,20 @@
 </div>
 
 
-<div id="org720c516" class="figure">
+<div id="org3041567" class="figure">
 <p><img src="./images/flex-box-with-overflow/display-block.png" alt="display-block.png" />
 </p>
 </div>
 </div>
 </div>
 </div>
-
-<div id="outline-container-orge83b9a9" class="outline-2">
-<h2 id="orge83b9a9">解决方案</h2>
-<div class="outline-text-2" id="text-orge83b9a9">
+<div id="outline-container-org63a5098" class="outline-2">
+<h2 id="org63a5098">解决方案</h2>
+<div class="outline-text-2" id="text-org63a5098">
 </div>
-<div id="outline-container-org81bb8e9" class="outline-3">
-<h3 id="org81bb8e9">给 flex item 设置 overflow 属性</h3>
-<div class="outline-text-3" id="text-org81bb8e9">
+<div id="outline-container-org447ba4a" class="outline-3">
+<h3 id="org447ba4a">给 flex item 设置 overflow 属性</h3>
+<div class="outline-text-3" id="text-org447ba4a">
 <div class="org-src-container">
 <pre class="src src-diff">.item {
 <span style="color: #006700; background-color: #c3ebc1;">+</span><span style="color: #005000; background-color: #c3ebc1;"> overflow: auto;</span>
@@ -360,16 +357,15 @@
 </div>
 
 
-<div id="orge7676ce" class="figure">
+<div id="org2415584" class="figure">
 <p><img src="./images/flex-box-with-overflow/overflow.png" alt="overflow.png" />
 </p>
 </div>
 </div>
 </div>
-
-<div id="outline-container-orgafc5703" class="outline-3">
-<h3 id="orgafc5703">给 flex item 设置 width: 0 &amp; flex-grow: 1</h3>
-<div class="outline-text-3" id="text-orgafc5703">
+<div id="outline-container-org1b494b6" class="outline-3">
+<h3 id="org1b494b6">给 flex item 设置 width: 0 &amp; flex-grow: 1</h3>
+<div class="outline-text-3" id="text-org1b494b6">
 <div class="org-src-container">
 <pre class="src src-diff">.item {
 <span style="color: #006700; background-color: #c3ebc1;">+</span><span style="color: #005000; background-color: #c3ebc1;"> flex-grow: 1;</span>
@@ -378,16 +374,15 @@
 </pre>
 </div>
 
-<div id="org7a06cdd" class="figure">
+<div id="org1c2cf27" class="figure">
 <p><img src="./images/flex-box-with-overflow/width.png" alt="width.png" />
 </p>
 </div>
 </div>
 </div>
-
-<div id="outline-container-orgd629212" class="outline-3">
-<h3 id="orgd629212">给 flex item 设置 min-width: 0</h3>
-<div class="outline-text-3" id="text-orgd629212">
+<div id="outline-container-org4c8b602" class="outline-3">
+<h3 id="org4c8b602">给 flex item 设置 min-width: 0</h3>
+<div class="outline-text-3" id="text-org4c8b602">
 <div class="org-src-container">
 <pre class="src src-diff">.item {
 <span style="color: #006700; background-color: #c3ebc1;">+</span><span style="color: #005000; background-color: #c3ebc1;"> min-width: 0;</span>
@@ -395,21 +390,20 @@
 </pre>
 </div>
 
-<div id="org5b3f3f3" class="figure">
+<div id="org1824cbe" class="figure">
 <p><img src="./images/flex-box-with-overflow/min-width.png" alt="min-width.png" />
 </p>
 </div>
 </div>
 </div>
 </div>
-
-<div id="outline-container-org3ac8475" class="outline-2">
-<h2 id="org3ac8475">原因</h2>
-<div class="outline-text-2" id="text-org3ac8475">
+<div id="outline-container-orgcbfddf0" class="outline-2">
+<h2 id="orgcbfddf0">原因</h2>
+<div class="outline-text-2" id="text-orgcbfddf0">
 </div>
-<div id="outline-container-orgcae5375" class="outline-3">
-<h3 id="orgcae5375">TL;DR</h3>
-<div class="outline-text-3" id="text-orgcae5375">
+<div id="outline-container-orge320535" class="outline-3">
+<h3 id="orge320535">TL;DR</h3>
+<div class="outline-text-3" id="text-orge320535">
 <p>
 会溢出是因为在这个例子中，flex item 的 <b>最小尺寸</b> 是文本的长度，即使
 flex item 可以缩小也只能缩小到文本长度，无法避免溢出。
@@ -429,10 +423,9 @@ flex item 可以缩小也只能缩小到文本长度，无法避免溢出。
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgdb0a544" class="outline-3">
-<h3 id="orgdb0a544">详细分析</h3>
-<div class="outline-text-3" id="text-orgdb0a544">
+<div id="outline-container-org4b9d25b" class="outline-3">
+<h3 id="org4b9d25b">详细分析</h3>
+<div class="outline-text-3" id="text-org4b9d25b">
 <p>
 当 flex item 没有设置 flex 属性时，默认值是 <code>flex: initial</code> ，相当于
 <code>flex: 0 1 auto</code>,
@@ -479,7 +472,7 @@ flex container。
 </p>
 
 
-<div id="org95a0a04" class="figure">
+<div id="orgf5bc64c" class="figure">
 <p><img src="./images/flex-box-with-overflow/layout-overflow.png" alt="layout-overflow.png" />
 </p>
 </div>
@@ -529,7 +522,7 @@ property if it’s definite). It is otherwise undefined.
 </p>
 
 
-<div id="org5b2585a" class="figure">
+<div id="org7090ae8" class="figure">
 <p><img src="./images/flex-box-with-overflow/layout-min-width.png" alt="layout-min-width.png" />
 </p>
 </div>
@@ -544,7 +537,7 @@ property if it’s definite). It is otherwise undefined.
 </p>
 
 
-<div id="org9b82f44" class="figure">
+<div id="org16aac85" class="figure">
 <p><img src="./images/flex-box-with-overflow/layout-width.png" alt="layout-width.png" />
 </p>
 </div>
@@ -606,17 +599,16 @@ available width), preferred width).
 </p>
 
 
-<div id="orgfb166cd" class="figure">
+<div id="org8ba5a0b" class="figure">
 <p><img src="./images/flex-box-with-overflow/layout-default.png" alt="layout-default.png" />
 </p>
 </div>
 </div>
 </div>
 </div>
-
-<div id="outline-container-org1cf2a72" class="outline-2">
-<h2 id="org1cf2a72">推论</h2>
-<div class="outline-text-2" id="text-org1cf2a72">
+<div id="outline-container-orgda6f9cf" class="outline-2">
+<h2 id="orgda6f9cf">推论</h2>
+<div class="outline-text-2" id="text-orgda6f9cf">
 <p>
 使用 flex 布局的时候，可以给 flex item 设置 <code>min-width: 0</code> ，从而保证
 flex item 能够尽可能地收缩，避免溢出 flex container。
@@ -627,10 +619,9 @@ flex item 能够尽可能地收缩，避免溢出 flex container。
 </p>
 </div>
 </div>
-
-<div id="outline-container-org8e24aa2" class="outline-2">
-<h2 id="org8e24aa2">Refs</h2>
-<div class="outline-text-2" id="text-org8e24aa2">
+<div id="outline-container-org321dd16" class="outline-2">
+<h2 id="org321dd16">Refs</h2>
+<div class="outline-text-2" id="text-org321dd16">
 <ul class="org-ul">
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox">Basic concepts of flexbox</a> @MDN</li>
 <li><a href="https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#flex-basis-property">CSS Flexible Box Layout Module Level 1</a> @W3C</li>
@@ -641,8 +632,10 @@ flex item 能够尽可能地收缩，避免溢出 flex container。
 </div>
 <div id="postamble" class="status">
 
-<p class="author">Author: Spike Leung (<a href="mailto:l-yanlei@hotmail.com">l-yanlei@hotmail.com</a>)</p>
+<p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">Date: 2022-09-28 Wed 00:00</p>
+<p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<script src="https://utteranc.es/client.js" repo="Spike-Leung/taxodium" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
 </div>
 </body>
 </html>
