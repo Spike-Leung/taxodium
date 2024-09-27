@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-28 Sat 02:06 -->
+<!-- 2024-09-28 Sat 02:15 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>使用 org-publish 发布博客</title>
@@ -386,7 +386,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 <h2 id="orga630ea4">org-publish 的完整代码</h2>
 <div class="outline-text-2" id="text-orga630ea4">
 <p>
-<a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el">init-org-publish.el</a>
+以下代码可以作为参考，我可能会有调整，最新的请看 <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el">init-org-publish.el</a>。
 </p>
 
 <div class="org-src-container">
@@ -397,7 +397,8 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 <span style="color: #000000;">(</span>maybe-require-package <span style="color: #531ab6;">'</span><span style="color: #0000b0;">ox-rss</span><span style="color: #000000;">)</span>
 
 <span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">spike-leung/apply-theme-when-publish</span> <span style="color: #dd22dd;">(</span><span style="color: #005f5f;">&amp;rest</span> args<span style="color: #dd22dd;">)</span>
-  <span style="color: #2a5045;">"Switch theme when do `</span><span style="color: #0000b0;">org-publish</span><span style="color: #2a5045;">'.ARGS will pass to `</span><span style="color: #0000b0;">org-publish</span><span style="color: #2a5045;">'."</span>
+  <span style="color: #2a5045;">"Switch theme when do `</span><span style="color: #0000b0;">org-publish</span><span style="color: #2a5045;">'.</span>
+<span style="color: #2a5045;">ARGS will pass to `</span><span style="color: #0000b0;">org-publish</span><span style="color: #2a5045;">'."</span>
   <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">let</span> <span style="color: #008899;">(</span><span style="color: #972500;">(</span>current-theme <span style="color: #808000;">(</span>car custom-enabled-themes<span style="color: #808000;">)</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span>
     <span style="color: #008899;">(</span>load-theme <span style="color: #531ab6;">'</span><span style="color: #0000b0;">modus-operandi-tinted</span> t<span style="color: #008899;">)</span>
     <span style="color: #008899;">(</span>apply args<span style="color: #008899;">)</span>
@@ -418,11 +419,15 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 
 
 <span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">spike-leung/org-publish-find-date</span> <span style="color: #dd22dd;">(</span>file project<span style="color: #dd22dd;">)</span>
-  <span style="color: #2a5045;">"&#20174; org &#25991;&#20214;&#20013;&#25552;&#21462; `#+date` &#23646;&#24615;&#12290;"</span>
+  <span style="color: #2a5045;">"Extract `#+date` form org file.</span>
+<span style="color: #2a5045;">FILE is org file name.</span>
+<span style="color: #2a5045;">PROJECT is the current project.</span>
+<span style="color: #2a5045;">"</span>
   <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">with-temp-buffer</span>
     <span style="color: #008899;">(</span>insert-file-contents file<span style="color: #008899;">)</span>
     <span style="color: #008899;">(</span>org-mode<span style="color: #008899;">)</span>
     <span style="color: #008899;">(</span>spike-leung/get-org-keyword <span style="color: #3548cf;">"DATE"</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+
 
 <span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">spike-leung/sitemap-format-entry</span> <span style="color: #dd22dd;">(</span>entry style project<span style="color: #dd22dd;">)</span>
   <span style="color: #2a5045;">"&#33258;&#23450;&#20041;&#32593;&#31449;&#22320;&#22270;&#26465;&#30446;&#26684;&#24335;&#65292;&#28155;&#21152;&#26085;&#26399;&#20449;&#24687;&#12290;"</span>
@@ -434,6 +439,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
                 date
               <span style="color: #3548cf;">"long time ago..."</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
 
+
 <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">@see: https://writepermission.com/org-blogging-rss-feed.html</span>
 <span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">rw/org-rss-publish-to-rss</span> <span style="color: #dd22dd;">(</span>plist filename pub-dir<span style="color: #dd22dd;">)</span>
   <span style="color: #2a5045;">"Publish RSS with PLIST, only when FILENAME is '</span><span style="color: #0000b0;">rss.org</span><span style="color: #2a5045;">'.</span>
@@ -441,26 +447,24 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
   <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">if</span> <span style="color: #008899;">(</span>equal <span style="color: #3548cf;">"rss.org"</span> <span style="color: #972500;">(</span>file-name-nondirectory filename<span style="color: #972500;">)</span><span style="color: #008899;">)</span>
       <span style="color: #008899;">(</span>org-rss-publish-to-rss plist filename pub-dir<span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
 
+
 <span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">rw/format-rss-feed</span> <span style="color: #dd22dd;">(</span>title list<span style="color: #dd22dd;">)</span>
-  <span style="color: #2a5045;">"Generate RSS feed as a string. TITLE is the RSS feed title and LIST contains files to include."</span>
-  <span style="color: #dd22dd;">(</span>message <span style="color: #3548cf;">"%s"</span> list<span style="color: #dd22dd;">)</span>
+  <span style="color: #2a5045;">"Generate RSS feed as a string.</span>
+<span style="color: #2a5045;">TITLE is the RSS feed title and LIST contains files to include."</span>
   <span style="color: #dd22dd;">(</span>concat <span style="color: #3548cf;">"#+TITLE: "</span> title <span style="color: #3548cf;">"</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">"</span> <span style="color: #008899;">(</span>org-list-to-subtree list<span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+
 
 <span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">rw/format-rss-feed-entry</span> <span style="color: #dd22dd;">(</span>entry style project<span style="color: #dd22dd;">)</span>
   <span style="color: #2a5045;">"Format ENTRY for the RSS feed.</span>
 <span style="color: #2a5045;">ENTRY is a file name.  STYLE is either '</span><span style="color: #0000b0;">list</span><span style="color: #2a5045;">' or '</span><span style="color: #0000b0;">tree</span><span style="color: #2a5045;">'.</span>
 <span style="color: #2a5045;">PROJECT is the current project."</span>
   <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">cond</span> <span style="color: #008899;">(</span><span style="color: #972500;">(</span>not <span style="color: #808000;">(</span>directory-name-p entry<span style="color: #808000;">)</span><span style="color: #972500;">)</span>
-         <span style="color: #972500;">(</span><span style="color: #531ab6;">let*</span> <span style="color: #808000;">(</span><span style="color: #531ab6;">(</span>file <span style="color: #008900;">(</span>org-publish--expand-file-name entry project<span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
-                <span style="color: #531ab6;">(</span>title <span style="color: #008900;">(</span>org-publish-find-title entry project<span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
+         <span style="color: #972500;">(</span><span style="color: #531ab6;">let*</span> <span style="color: #808000;">(</span><span style="color: #531ab6;">(</span>title <span style="color: #008900;">(</span>org-publish-find-title entry project<span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
                 <span style="color: #531ab6;">(</span>date <span style="color: #008900;">(</span>format-time-string <span style="color: #3548cf;">"%Y-%m-%d"</span> <span style="color: #3548cf;">(</span>org-publish-find-date entry project<span style="color: #3548cf;">)</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
                 <span style="color: #531ab6;">(</span>link <span style="color: #008900;">(</span>concat <span style="color: #3548cf;">(</span>file-name-sans-extension entry<span style="color: #3548cf;">)</span> <span style="color: #3548cf;">".html"</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span><span style="color: #808000;">)</span>
            <span style="color: #808000;">(</span><span style="color: #531ab6;">with-temp-buffer</span>
              <span style="color: #531ab6;">(</span>insert <span style="color: #008900;">(</span>format <span style="color: #3548cf;">"%s</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">"</span> title<span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
              <span style="color: #531ab6;">(</span>insert <span style="color: #3548cf;">":PROPERTIES:</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">:RSS_PERMALINK: "</span> link <span style="color: #3548cf;">"</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">:PUBDATE: "</span> date <span style="color: #3548cf;">"</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">:END:</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">"</span><span style="color: #531ab6;">)</span>
-             <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">(org-insert-property-drawer)</span>
-             <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">(org-set-property "RSS_PERMALINK" link)</span>
-             <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">(org-set-property "PUBDATE" date)</span>
              <span style="color: #531ab6;">(</span>insert <span style="color: #008900;">(</span>format <span style="color: #3548cf;">"%s"</span> title<span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
              <span style="color: #531ab6;">(</span>buffer-string<span style="color: #531ab6;">)</span><span style="color: #808000;">)</span>
            <span style="color: #972500;">)</span><span style="color: #008899;">)</span>
@@ -468,6 +472,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
          <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">Return only last subdir.</span>
          <span style="color: #972500;">(</span>file-name-nondirectory <span style="color: #808000;">(</span>directory-file-name entry<span style="color: #808000;">)</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span>
         <span style="color: #008899;">(</span>t entry<span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+
 
 <span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> org-publish-project-alist
       <span style="color: #531ab6;">'</span><span style="color: #dd22dd;">(</span><span style="color: #008899;">(</span><span style="color: #3548cf;">"orgfiles"</span>
@@ -535,6 +540,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
         <span style="color: #008899;">(</span><span style="color: #3548cf;">"rss"</span>
          <span style="color: #8f0075;">:base-directory</span> <span style="color: #3548cf;">"~/git/taxodium/post"</span>
          <span style="color: #8f0075;">:base-extension</span> <span style="color: #3548cf;">"org"</span>
+         <span style="color: #8f0075;">:exclude</span> <span style="color: #3548cf;">"about</span><span style="color: #721045;">\</span><span style="color: #00663f;">\</span><span style="color: #00663f;">|</span><span style="color: #3548cf;">index"</span>
          <span style="color: #8f0075;">:publishing-directory</span> <span style="color: #3548cf;">"~/git/taxodium/publish"</span>
          <span style="color: #8f0075;">:publishing-function</span> rw/org-rss-publish-to-rss
          <span style="color: #8f0075;">:html-postamble</span> nil
@@ -544,12 +550,13 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
          <span style="color: #8f0075;">:html-link-home</span> <span style="color: #3548cf;">"https://taxodium.ink"</span>
          <span style="color: #8f0075;">:html-link-use-abs-url</span> t
          <span style="color: #8f0075;">:auto-sitemap</span> t
-         <span style="color: #8f0075;">:exclude</span> <span style="color: #3548cf;">"index</span><span style="color: #721045;">\</span><span style="color: #00663f;">\</span><span style="color: #00663f;">|</span><span style="color: #3548cf;">about"</span>
          <span style="color: #8f0075;">:sitemap-filename</span> <span style="color: #3548cf;">"rss.org"</span>
          <span style="color: #8f0075;">:sitemap-title</span> <span style="color: #3548cf;">"Taxodium"</span>
          <span style="color: #8f0075;">:sitemap-sort-files</span> anti-chronologically
          <span style="color: #8f0075;">:sitemap-function</span> rw/format-rss-feed
-         <span style="color: #8f0075;">:sitemap-format-entry</span> rw/format-rss-feed-entry<span style="color: #008899;">)</span>
+         <span style="color: #8f0075;">:sitemap-format-entry</span> rw/format-rss-feed-entry
+         <span style="color: #8f0075;">:author</span> <span style="color: #3548cf;">"Spike Leung"</span>
+         <span style="color: #8f0075;">:email</span> <span style="color: #3548cf;">"l-yanlei@hotmail.com"</span><span style="color: #008899;">)</span>
 
         <span style="color: #008899;">(</span><span style="color: #3548cf;">"website"</span> <span style="color: #8f0075;">:components</span> <span style="color: #972500;">(</span><span style="color: #3548cf;">"orgfiles"</span> <span style="color: #3548cf;">"sitemap"</span> <span style="color: #3548cf;">"rss"</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
 
