@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-09-27 Fri 21:19 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>使用 org-publish 发布博客</title>
+<meta name="author" content="Spike Leung" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+ <nav>
+  <ul>
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/rss.xml">RSS</a></li>
+    <li><a href="https://github.com/Spike-Leung/taxodium/tree/org-publish">GitHub</a></li>
+  </ul>
+</nav>
+</div>
+<div id="content" class="content">
+<h1 class="title">使用 org-publish 发布博客</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgcadc2a3">动机</a></li>
+<li><a href="#orgf4c64a6">相比之前的变化</a></li>
+<li><a href="#org43ec46c">org-publish 的使用</a></li>
+<li><a href="#org830cb0d">一些缺点</a></li>
+<li><a href="#orgbcc873e">Todo <code>[0/5]</code></a></li>
+</ul>
+</div>
+</div>
+<p>
+博客经历过几次更新，最开始的时候是用 markdown 写博客，然后用 <a href="https://hexo.io/">Hexo</a> 发布。
+</p>
+
+<p>
+然后学习了 vue，又尝试用 <a href="https://vuepress.vuejs.org/">VuePress</a> 发布，它们都是托管在 <a href="https://pages.github.com/">Github Pages</a> 上。
+</p>
+
+<p>
+后来接触了 <a href="https://www.gnu.org/software/emacs/">Emacs</a>，就从 markdown 迁移到了 <a href="https://orgmode.org/">org-mode</a>，然后使用 <a href="https://gohugo.io/">Hugo</a> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>发布。
+</p>
+
+<p>
+因为 GitHub 直连变慢了，所以将内容托管到了 <a href="https://vercel.com/">Vercel</a> 和 <a href="https://nettify.com/">Nettify</a>。
+</p>
+
+<p>
+最近将博客又更新了一下，使用 <a href="https://orgmode.org/manual/Publishing.html">org-publish</a> 进行博客的发布，主要是让博客加载相对快一些，维护起来更简单一些。
+</p>
+<div id="outline-container-orgcadc2a3" class="outline-2">
+<h2 id="orgcadc2a3">动机</h2>
+<div class="outline-text-2" id="text-orgcadc2a3">
+<p>
+在很早之前看过这三个链接：
+</p>
+
+<ul class="org-ul">
+<li><a href="http://motherfuckingwebsite.com/">mother fucking website</a></li>
+
+<li><a href="http://bettermotherfuckingwebsite.com/">better motehr fucking website</a></li>
+
+<li><a href="https://thebestmotherfucking.website/">the best mother fucking website</a></li>
+</ul>
+
+<p>
+设计复杂的网站，在网络较差的情况下有可能要加载很久才能显示。
+</p>
+
+<p>
+如果样式比较复杂， 在一些小屏幕下的显示可能不好。
+</p>
+
+<p>
+所以作者提出网站要保持简洁，这次也主要是基于作者提出的建议修改了网站。
+</p>
+</div>
+</div>
+<div id="outline-container-orgf4c64a6" class="outline-2">
+<h2 id="orgf4c64a6">相比之前的变化</h2>
+<div class="outline-text-2" id="text-orgf4c64a6">
+<ul class="org-ul">
+<li>极大的简化了博客内容，没有主题，没有模板，只有博客内容的 org 文件，css 文件，字体，图片，以及最终转换出来的 HTML 文件</li>
+
+<li>博客的编写、构建只需要 Emacs 就能完成（以及 <a href="https://browsersync.io/">Browsersync</a> 用于本地查看构建的 HTML）</li>
+
+<li>转换后就是标准的 HTML，而且是使用 Emacs 内置的包转换 org 文件，理论上 org 的特性应该都能转换。</li>
+
+<li>按照  <a href="http://bettermotherfuckingwebsite.com/">better motehr fucking website</a> 和 <a href="https://thebestmotherfucking.website/">the best mother fucking website</a> 的建议，设置了字体颜色，字体大小，链接颜色，行间距，行宽等，比默认的浏览器样式好阅读一些</li>
+
+<li>使用 <a href="https://www.brailleinstitute.org/freefont/">Atkinson Hyperlegible</a> 字体，让一些容易混淆的字符更容易区分</li>
+</ul>
+
+<p>
+总而言之，就是清爽了很多，兼容性也应该不错。
+</p>
+</div>
+</div>
+<div id="outline-container-org43ec46c" class="outline-2">
+<h2 id="org43ec46c">org-publish 的使用</h2>
+<div class="outline-text-2" id="text-org43ec46c">
+<p>
+完整代码看：<a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el">init-org-publish.el</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #7f0000;">;;; </span><span style="color: #7f0000;">init-org-publish.el --- org publish config for my blog -*- lexical-binding: t -*-</span>
+<span style="color: #7f0000;">;;; </span><span style="color: #7f0000;">Commentary:</span>
+<span style="color: #7f0000;">;;; </span><span style="color: #7f0000;">Code:</span>
+
+<span style="color: #000000;">(</span>maybe-require-package <span style="color: #531ab6;">'</span><span style="color: #0000b0;">ox-rss</span><span style="color: #000000;">)</span>
+
+<span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">spike-leung/apply-theme-when-publish</span> <span style="color: #dd22dd;">(</span><span style="color: #005f5f;">&amp;rest</span> args<span style="color: #dd22dd;">)</span>
+  <span style="color: #2a5045;">"Switch theme when do `</span><span style="color: #0000b0;">org-publish</span><span style="color: #2a5045;">'.ARGS will pass to `</span><span style="color: #0000b0;">org-publish</span><span style="color: #2a5045;">'."</span>
+  <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">let</span> <span style="color: #008899;">(</span><span style="color: #972500;">(</span>current-theme <span style="color: #808000;">(</span>car custom-enabled-themes<span style="color: #808000;">)</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span>
+    <span style="color: #008899;">(</span>load-theme <span style="color: #531ab6;">'</span><span style="color: #0000b0;">modus-operandi-tinted</span> t<span style="color: #008899;">)</span>
+    <span style="color: #008899;">(</span>apply args<span style="color: #008899;">)</span>
+    <span style="color: #008899;">(</span><span style="color: #531ab6;">when</span> current-theme
+      <span style="color: #972500;">(</span>disable-theme <span style="color: #531ab6;">'</span><span style="color: #0000b0;">modus-operandi-tinted</span><span style="color: #972500;">)</span>
+      <span style="color: #972500;">(</span>enable-theme current-theme<span style="color: #972500;">)</span>
+      <span style="color: #972500;">(</span>load-theme current-theme <span style="color: #8f0075;">:no-confirm</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+
+<span style="color: #000000;">(</span>advice-add <span style="color: #531ab6;">'</span><span style="color: #0000b0;">org-publish</span> <span style="color: #8f0075;">:around</span> <span style="color: #531ab6;">#'</span><span style="color: #0000b0;">spike-leung/apply-theme-when-publish</span><span style="color: #000000;">)</span>
+
+
+<span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">spike-leung/get-org-keyword</span> <span style="color: #dd22dd;">(</span>keyword<span style="color: #dd22dd;">)</span>
+  <span style="color: #2a5045;">"Get the value of the given KEYWORD in the current Org file."</span>
+  <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">let</span> <span style="color: #008899;">(</span><span style="color: #972500;">(</span>keywords <span style="color: #808000;">(</span>org-collect-keywords <span style="color: #531ab6;">(</span>list keyword<span style="color: #531ab6;">)</span><span style="color: #808000;">)</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span>
+    <span style="color: #008899;">(</span><span style="color: #531ab6;">if-let</span> <span style="color: #972500;">(</span><span style="color: #808000;">(</span>value <span style="color: #531ab6;">(</span>car <span style="color: #008900;">(</span>cdr <span style="color: #3548cf;">(</span>assoc keyword keywords<span style="color: #3548cf;">)</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span><span style="color: #808000;">)</span><span style="color: #972500;">)</span>
+        value
+      <span style="color: #972500;">(</span>format <span style="color: #3548cf;">"No %s found"</span> keyword<span style="color: #972500;">)</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+
+
+<span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">spike-leung/org-publish-find-date</span> <span style="color: #dd22dd;">(</span>file project<span style="color: #dd22dd;">)</span>
+  <span style="color: #2a5045;">"&#20174; org &#25991;&#20214;&#20013;&#25552;&#21462; `#+date` &#23646;&#24615;&#12290;"</span>
+  <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">with-temp-buffer</span>
+    <span style="color: #008899;">(</span>insert-file-contents file<span style="color: #008899;">)</span>
+    <span style="color: #008899;">(</span>org-mode<span style="color: #008899;">)</span>
+    <span style="color: #008899;">(</span>spike-leung/get-org-keyword <span style="color: #3548cf;">"DATE"</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+
+<span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">spike-leung/sitemap-format-entry</span> <span style="color: #dd22dd;">(</span>entry style project<span style="color: #dd22dd;">)</span>
+  <span style="color: #2a5045;">"&#33258;&#23450;&#20041;&#32593;&#31449;&#22320;&#22270;&#26465;&#30446;&#26684;&#24335;&#65292;&#28155;&#21152;&#26085;&#26399;&#20449;&#24687;&#12290;"</span>
+  <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">let*</span> <span style="color: #008899;">(</span><span style="color: #972500;">(</span>filename <span style="color: #808000;">(</span>org-publish--expand-file-name entry project<span style="color: #808000;">)</span><span style="color: #972500;">)</span>
+         <span style="color: #972500;">(</span>date <span style="color: #808000;">(</span>spike-leung/org-publish-find-date filename project<span style="color: #808000;">)</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span>
+    <span style="color: #008899;">(</span>format <span style="color: #3548cf;">"%s %s"</span>
+            <span style="color: #972500;">(</span>org-publish-sitemap-default-entry entry style project<span style="color: #972500;">)</span>
+            <span style="color: #972500;">(</span><span style="color: #531ab6;">if</span> date
+                date
+              <span style="color: #3548cf;">"long time ago..."</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+
+<span style="color: #7f0000;">;; </span><span style="color: #7f0000;">@see: https://writepermission.com/org-blogging-rss-feed.html</span>
+<span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">rw/org-rss-publish-to-rss</span> <span style="color: #dd22dd;">(</span>plist filename pub-dir<span style="color: #dd22dd;">)</span>
+  <span style="color: #2a5045;">"Publish RSS with PLIST, only when FILENAME is '</span><span style="color: #0000b0;">rss.org</span><span style="color: #2a5045;">'.</span>
+<span style="color: #2a5045;">PUB-DIR is when the output will be placed."</span>
+  <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">if</span> <span style="color: #008899;">(</span>equal <span style="color: #3548cf;">"rss.org"</span> <span style="color: #972500;">(</span>file-name-nondirectory filename<span style="color: #972500;">)</span><span style="color: #008899;">)</span>
+      <span style="color: #008899;">(</span>org-rss-publish-to-rss plist filename pub-dir<span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+
+<span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">rw/format-rss-feed</span> <span style="color: #dd22dd;">(</span>title list<span style="color: #dd22dd;">)</span>
+  <span style="color: #2a5045;">"Generate RSS feed as a string. TITLE is the RSS feed title and LIST contains files to include."</span>
+  <span style="color: #dd22dd;">(</span>message <span style="color: #3548cf;">"%s"</span> list<span style="color: #dd22dd;">)</span>
+  <span style="color: #dd22dd;">(</span>concat <span style="color: #3548cf;">"#+TITLE: "</span> title <span style="color: #3548cf;">"</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">"</span> <span style="color: #008899;">(</span>org-list-to-subtree list<span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+
+<span style="color: #7f0000;">;; </span><span style="color: #7f0000;">(defun rw/format-rss-feed (title list)</span>
+<span style="color: #7f0000;">;;   </span><span style="color: #7f0000;">"Generate RSS feed, as a string.</span>
+<span style="color: #7f0000;">;; </span><span style="color: #7f0000;">TITLE is the title of the RSS feed.  LIST is an internal</span>
+<span style="color: #7f0000;">;; </span><span style="color: #7f0000;">representation for the files to include, as returned by</span>
+<span style="color: #7f0000;">;; </span><span style="color: #7f0000;">`</span><span style="color: #0000b0;">org-list-to-lisp</span><span style="color: #7f0000;">'.  PROJECT is the current project."</span>
+<span style="color: #7f0000;">;;   </span><span style="color: #7f0000;">(concat "#+TITLE: " title "\n\n"</span>
+<span style="color: #7f0000;">;;           </span><span style="color: #7f0000;">(org-list-to-subtree list '(:icount "" :istart ""))))</span>
+
+<span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">rw/format-rss-feed-entry</span> <span style="color: #dd22dd;">(</span>entry style project<span style="color: #dd22dd;">)</span>
+  <span style="color: #2a5045;">"Format ENTRY for the RSS feed.</span>
+<span style="color: #2a5045;">ENTRY is a file name.  STYLE is either '</span><span style="color: #0000b0;">list</span><span style="color: #2a5045;">' or '</span><span style="color: #0000b0;">tree</span><span style="color: #2a5045;">'.</span>
+<span style="color: #2a5045;">PROJECT is the current project."</span>
+  <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">cond</span> <span style="color: #008899;">(</span><span style="color: #972500;">(</span>not <span style="color: #808000;">(</span>directory-name-p entry<span style="color: #808000;">)</span><span style="color: #972500;">)</span>
+         <span style="color: #972500;">(</span><span style="color: #531ab6;">let*</span> <span style="color: #808000;">(</span><span style="color: #531ab6;">(</span>file <span style="color: #008900;">(</span>org-publish--expand-file-name entry project<span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
+                <span style="color: #531ab6;">(</span>title <span style="color: #008900;">(</span>org-publish-find-title entry project<span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
+                <span style="color: #531ab6;">(</span>date <span style="color: #008900;">(</span>format-time-string <span style="color: #3548cf;">"%Y-%m-%d"</span> <span style="color: #3548cf;">(</span>org-publish-find-date entry project<span style="color: #3548cf;">)</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
+                <span style="color: #531ab6;">(</span>link <span style="color: #008900;">(</span>concat <span style="color: #3548cf;">(</span>file-name-sans-extension entry<span style="color: #3548cf;">)</span> <span style="color: #3548cf;">".html"</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span><span style="color: #808000;">)</span>
+           <span style="color: #808000;">(</span><span style="color: #531ab6;">with-temp-buffer</span>
+             <span style="color: #531ab6;">(</span>insert <span style="color: #008900;">(</span>format <span style="color: #3548cf;">"* %s</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">"</span> title<span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
+             <span style="color: #531ab6;">(</span>insert <span style="color: #3548cf;">":PROPERTIES:</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">:RSS_PERMALINK: "</span> link <span style="color: #3548cf;">"</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">:PUBDATE: "</span> date <span style="color: #3548cf;">"</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">:END:</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">"</span><span style="color: #531ab6;">)</span>
+             <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">(org-insert-property-drawer)</span>
+             <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">(org-set-property "RSS_PERMALINK" link)</span>
+             <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">(org-set-property "PUBDATE" date)</span>
+             <span style="color: #531ab6;">(</span>insert <span style="color: #008900;">(</span>format <span style="color: #3548cf;">"%s"</span> title<span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
+             <span style="color: #531ab6;">(</span>buffer-string<span style="color: #531ab6;">)</span><span style="color: #808000;">)</span>
+           <span style="color: #972500;">)</span><span style="color: #008899;">)</span>
+        <span style="color: #008899;">(</span><span style="color: #972500;">(</span>eq style <span style="color: #531ab6;">'</span><span style="color: #0000b0;">tree</span><span style="color: #972500;">)</span>
+         <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">Return only last subdir.</span>
+         <span style="color: #972500;">(</span>file-name-nondirectory <span style="color: #808000;">(</span>directory-file-name entry<span style="color: #808000;">)</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span>
+        <span style="color: #008899;">(</span>t entry<span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+
+<span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> org-publish-project-alist
+      <span style="color: #531ab6;">'</span><span style="color: #dd22dd;">(</span><span style="color: #008899;">(</span><span style="color: #3548cf;">"orgfiles"</span>
+         <span style="color: #8f0075;">:base-directory</span> <span style="color: #3548cf;">"~/git/taxodium/post"</span>
+         <span style="color: #8f0075;">:base-extension</span> <span style="color: #3548cf;">"org"</span>
+         <span style="color: #8f0075;">:publishing-directory</span> <span style="color: #3548cf;">"~/git/taxodium/publish"</span>
+         <span style="color: #8f0075;">:publishing-function</span> org-html-publish-to-html
+         <span style="color: #8f0075;">:section-numbers</span> nil
+         <span style="color: #8f0075;">:with-toc</span> t
+         <span style="color: #8f0075;">:with-tags</span> t
+         <span style="color: #8f0075;">:with-broken-links</span> marks
+         <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">TODO: &#23553;&#35013;&#21040;&#21464;&#37327;</span>
+         <span style="color: #8f0075;">:html-head</span> <span style="color: #3548cf;">"</span>
+<span style="color: #3548cf;">&lt;link rel=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">stylesheet</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">../styles/style.css</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> type=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">text/css</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/&gt;</span>
+<span style="color: #3548cf;">&lt;link rel=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">icon</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/favicon.ico</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> type=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">image/x-icon</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;</span>
+<span style="color: #3548cf;">"</span>
+         <span style="color: #8f0075;">:html-preamble</span> <span style="color: #3548cf;">"</span>
+<span style="color: #3548cf;"> &lt;nav&gt;</span>
+<span style="color: #3548cf;">  &lt;ul&gt;</span>
+<span style="color: #3548cf;">    &lt;li&gt;&lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/index.html</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;Home&lt;/a&gt;&lt;/li&gt;</span>
+<span style="color: #3548cf;">    &lt;li&gt;&lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/about.html</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;About&lt;/a&gt;&lt;/li&gt;</span>
+<span style="color: #3548cf;">    &lt;li&gt;&lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/rss.xml</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;RSS&lt;/a&gt;&lt;/li&gt;</span>
+<span style="color: #3548cf;">    &lt;li&gt;&lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">https://github.com/Spike-Leung/taxodium/tree/org-publish</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;GitHub&lt;/a&gt;&lt;/li&gt;</span>
+<span style="color: #3548cf;">  &lt;/ul&gt;</span>
+<span style="color: #3548cf;">&lt;/nav&gt;</span>
+<span style="color: #3548cf;">"</span>
+         <span style="color: #8f0075;">:html-postamble</span> <span style="color: #3548cf;">"</span>
+<span style="color: #3548cf;">&lt;p class=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">author</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;Author: &lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">mailto:l-yanlei@hotmail.com</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;%a&lt;/a&gt;&lt;/p&gt;</span>
+<span style="color: #3548cf;">&lt;p class=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">date</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;Date: %d&lt;/p&gt;</span>
+<span style="color: #3548cf;">&lt;p class=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">license</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;License: &lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;CC BY-NC 4.0&lt;/a&gt;&lt;/p&gt;</span>
+<span style="color: #3548cf;">&lt;script src=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">https://utteranc.es/client.js</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> repo=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">Spike-Leung/taxodium</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> issue-term=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">pathname</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> theme=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">github-light</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> crossorigin=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">anonymous</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> async&gt;&lt;/script&gt;</span>
+<span style="color: #3548cf;">"</span>
+         <span style="color: #8f0075;">:exclude</span> <span style="color: #3548cf;">"rss.org"</span>
+         <span style="color: #8f0075;">:auto-sitemap</span> t
+         <span style="color: #8f0075;">:sitemap-filename</span> <span style="color: #3548cf;">"index.org"</span>
+         <span style="color: #8f0075;">:sitemap-title</span> <span style="color: #3548cf;">"Taxodium"</span>
+         <span style="color: #8f0075;">:sitemap-format-entry</span> spike-leung/sitemap-format-entry
+         <span style="color: #8f0075;">:sitemap-sort-files</span> anti-chronologically
+         <span style="color: #8f0075;">:author</span> <span style="color: #3548cf;">"Spike Leung"</span>
+         <span style="color: #8f0075;">:email</span> <span style="color: #3548cf;">"l-yanlei@hotmail.com"</span><span style="color: #008899;">)</span>
+
+        <span style="color: #008899;">(</span><span style="color: #3548cf;">"sitemap"</span>
+         <span style="color: #8f0075;">:base-directory</span> <span style="color: #3548cf;">"~/git/taxodium/post"</span>
+         <span style="color: #8f0075;">:base-extension</span> <span style="color: #3548cf;">"org"</span>
+         <span style="color: #8f0075;">:publishing-directory</span> <span style="color: #3548cf;">"~/git/taxodium/publish"</span>
+         <span style="color: #8f0075;">:publishing-function</span> org-html-publish-to-html
+         <span style="color: #8f0075;">:html-head</span> <span style="color: #3548cf;">"</span>
+<span style="color: #3548cf;">&lt;link rel=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">stylesheet</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">../styles/style.css</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> type=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">text/css</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/&gt;</span>
+<span style="color: #3548cf;">&lt;link rel=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">icon</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/favicon.ico</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> type=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">image/x-icon</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;</span>
+<span style="color: #3548cf;">"</span>
+         <span style="color: #8f0075;">:html-preamble</span> <span style="color: #3548cf;">"</span>
+<span style="color: #3548cf;"> &lt;nav&gt;</span>
+<span style="color: #3548cf;">  &lt;ul&gt;</span>
+<span style="color: #3548cf;">    &lt;li&gt;&lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/index.html</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;Home&lt;/a&gt;&lt;/li&gt;</span>
+<span style="color: #3548cf;">    &lt;li&gt;&lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/about.html</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;About&lt;/a&gt;&lt;/li&gt;</span>
+<span style="color: #3548cf;">    &lt;li&gt;&lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/rss.xml</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;RSS&lt;/a&gt;&lt;/li&gt;</span>
+<span style="color: #3548cf;">    &lt;li&gt;&lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">https://github.com/Spike-Leung/taxodium/tree/org-publish</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;GitHub&lt;/a&gt;&lt;/li&gt;</span>
+<span style="color: #3548cf;">  &lt;/ul&gt;</span>
+<span style="color: #3548cf;">&lt;/nav&gt;</span>
+<span style="color: #3548cf;">"</span>
+         <span style="color: #8f0075;">:include</span> <span style="color: #972500;">(</span><span style="color: #3548cf;">"index.org"</span><span style="color: #972500;">)</span>
+         <span style="color: #8f0075;">:exclude</span> <span style="color: #3548cf;">".*"</span>
+         <span style="color: #8f0075;">:html-postamble</span> nil<span style="color: #008899;">)</span>
+
+        <span style="color: #008899;">(</span><span style="color: #3548cf;">"rss"</span>
+         <span style="color: #8f0075;">:base-directory</span> <span style="color: #3548cf;">"~/git/taxodium/post"</span>
+         <span style="color: #8f0075;">:base-extension</span> <span style="color: #3548cf;">"org"</span>
+         <span style="color: #8f0075;">:publishing-directory</span> <span style="color: #3548cf;">"~/git/taxodium/publish"</span>
+         <span style="color: #8f0075;">:publishing-function</span> rw/org-rss-publish-to-rss
+         <span style="color: #8f0075;">:html-postamble</span> nil
+         <span style="color: #8f0075;">:section-numbers</span> nil
+         <span style="color: #8f0075;">:with-toc</span> nil
+         <span style="color: #8f0075;">:rss-extension</span> <span style="color: #3548cf;">"xml"</span>
+         <span style="color: #8f0075;">:html-link-home</span> <span style="color: #3548cf;">"https://taxodium.ink"</span>
+         <span style="color: #8f0075;">:html-link-use-abs-url</span> t
+         <span style="color: #8f0075;">:auto-sitemap</span> t
+         <span style="color: #8f0075;">:exclude</span> <span style="color: #3548cf;">"index|about"</span>
+         <span style="color: #8f0075;">:sitemap-filename</span> <span style="color: #3548cf;">"rss.org"</span>
+         <span style="color: #8f0075;">:sitemap-title</span> <span style="color: #3548cf;">"Taxodium"</span>
+         <span style="color: #8f0075;">:sitemap-sort-files</span> anti-chronologically
+         <span style="color: #8f0075;">:sitemap-function</span> rw/format-rss-feed
+         <span style="color: #8f0075;">:sitemap-format-entry</span> rw/format-rss-feed-entry<span style="color: #008899;">)</span>
+
+        <span style="color: #008899;">(</span><span style="color: #3548cf;">"website"</span> <span style="color: #8f0075;">:components</span> <span style="color: #972500;">(</span><span style="color: #3548cf;">"orgfiles"</span> <span style="color: #3548cf;">"sitemap"</span> <span style="color: #3548cf;">"rss"</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+
+<span style="color: #000000;">(</span><span style="color: #531ab6;">provide</span> <span style="color: #531ab6;">'</span><span style="color: #0000b0;">init-org-publish</span><span style="color: #000000;">)</span>
+<span style="color: #7f0000;">;;; </span><span style="color: #7f0000;">init-org-publish.el ends here</span>
+</pre>
+</div>
+
+<p>
+org-publish 的使用有点像 <a href="https://gulpjs.com/">gulpjs</a>，你可以定义很多个任务，每个任务指定处理什么文件，怎么处理，处理之后放到什么地方。
+</p>
+
+<p>
+你可以单独地执行某个任务，也可以将任务串联起来执行。
+</p>
+
+<p>
+过程中碰到的几个问题：
+</p>
+
+<dl class="org-dl">
+<dt><b>构建后代码块的高亮</b></dt><dd><p>
+高亮的颜色是基于 Emacs 当前的主题的，而我的博客整体是亮色的，因此需要 Emacs 中也使用亮色的主题才能得到合适的高亮颜色。
+</p>
+
+<p>
+为此写了 <code>spike-leung/apply-theme-when-publish</code> 用于在执行 <code>org-publish</code> 的时候切换主题。
+</p></dd>
+
+<dt><b>页眉页脚的设置</b></dt><dd>想自定义 <code>:html-head</code> ， <code>:html-preamble</code> ， <code>:html-postamble</code> ， 需要传入字符串才生效，还没搞懂怎么抽象成变量或函数复用。</dd>
+
+<dt><b>RSS 的设置</b></dt><dd><p>
+<a href="https://github.com/emacsmirror/ox-rss">ox-rss</a> 可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成 RSS。
+</p>
+
+<p>
+但是我需要的是把多个 org 文件生成为一个 RSS 文件。
+</p>
+
+<p>
+不过别人已经踩过坑，按照 <a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a> 中的方法实现了。
+</p>
+
+<p>
+具体来说就是遍历所有的 org 文件，将他们的内容插入到一个 rss.org 文件中，在基于 rss.org 使用 ox-rss 去生成 RSS 文件。
+</p>
+
+<p>
+还有一个问题是 <a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a> 的实现会把整个 org 文件的内容插入到 rss.org 中。
+</p>
+
+<p>
+但是如果内容很多时，Emacs 会崩溃，我目前是改成只插入标题，后面再研究一下如何优化。
+</p></dd>
+
+<dt><b>index 文件的设置</b></dt><dd><p>
+设置 <code>:makeindex t</code> 可以生成 index 文件，需要在 org 文件中设置 <code>#+INDEX</code> keyword。
+</p>
+
+<p>
+但是生成的文件名固定是 theindex.org, 并且会按照文章标题首个字进行索引，看起来很快，最后用 sitemap 替代了。
+</p>
+
+<p>
+现在看到的 <a href="https://taxodium.ink/index.html">Home</a> 其实就是一个 sitemap。
+</p></dd>
+
+<dt><code>#+date</code> <b>的设置</b></dt><dd><p>
+原来 Hugo 生成的日期 (2023-05-31T13:38:39+08:00) 在转换成 sitemap 的时候似乎不能识别，
+</p>
+
+<p>
+于是改成 org 的日期格式 (<span class="timestamp-wrapper"><span class="timestamp">&lt;2023-05-31 Wed&gt;</span></span>)，这样 sitemap 就能正常按照时间排序了。
+</p></dd>
+
+<dt><b>缓存问题</b></dt><dd><p>
+执行 org-publish 之后，会在 <code>org-publish-timestamp-directory</code> 指定的目录下生成缓存，有时调整了页眉页脚，可能需要清除缓存才能看到效果。
+</p>
+
+<p>
+不过可以执行 <code>C-u M-x org-publish</code> 忽略缓存进行构建。
+</p></dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-org830cb0d" class="outline-2">
+<h2 id="org830cb0d">一些缺点</h2>
+<div class="outline-text-2" id="text-org830cb0d">
+<ul class="org-ul">
+<li>在执行 org-publish 时，如果内容多，可能会很慢，此时也会阻塞 Emacs，不能做其他事情</li>
+<li>由于依赖 Emacs，<a href="https://nettify.com/">Nettify</a> 等平台上没有开箱即用的构建命令，集成 CI/CD 相对麻烦</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgbcc873e" class="outline-2">
+<h2 id="orgbcc873e">Todo <code>[0/5]</code></h2>
+<div class="outline-text-2" id="text-orgbcc873e">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> 复用 <code>:html-head</code> ， <code>:html-preamble</code> 等</li>
+<li class="off"><code>[&#xa0;]</code> 优化 RSS 的内容</li>
+<li class="off"><code>[&#xa0;]</code> 针对 weekly 单独设置 RSS</li>
+<li class="off"><code>[&#xa0;]</code> 增加搜索功能</li>
+<li class="off"><code>[&#xa0;]</code> 实现 CI/CD</li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://orgmode.org/worg/org-blog-wiki.html">Blogs and Wikis with Org</a> 上有很多适用于 org-mode 的博客方案，最开始是看到 <a href="https://eason0210.github.io/">Eason0210 的博客</a> 觉得挺简洁，就依葫芦画瓢更新了一下。
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">Date: 2024-09-27 Fri 00:00</p>
+<p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<script src="https://utteranc.es/client.js" repo="Spike-Leung/taxodium" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+</div>
+</body>
+</html>

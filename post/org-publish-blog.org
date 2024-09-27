@@ -1,0 +1,285 @@
+#+title: 使用 org-publish 发布博客
+#+date: <2024-09-27 Fri>
+
+博客经历过几次更新，最开始的时候是用 markdown 写博客，然后用 [[https://hexo.io/][Hexo]] 发布。
+
+然后学习了 Vue，又尝试用 [[https://vuepress.vuejs.org/][VuePress]] 发布，它们都是托管在 [[https://pages.github.com/][Github Pages]] 上。
+
+后来接触了 [[https://www.gnu.org/software/emacs/][Emacs]]，就从 markdown 迁移到了 [[https://orgmode.org/][org-mode]]，然后使用 [[https://gohugo.io/][Hugo]] [fn:1]发布。
+
+因为 GitHub 直连变慢了，所以将内容托管到了 [[https://vercel.com/][Vercel]] 和 [[https://nettify.com/][Nettify]]。
+
+最近将博客又更新了一下，使用 [[https://orgmode.org/manual/Publishing.html][org-publish]] 进行博客的发布，主要是让博客加载相对快一些，维护起来更简单一些。
+
+* 动机
+
+在很早之前看过几篇文章：
+
+- [[http://motherfuckingwebsite.com/][mother fucking website]]
+
+- [[http://bettermotherfuckingwebsite.com/][better motehr fucking website]]
+
+- [[https://thebestmotherfucking.website/][the best mother fucking website]]
+
+设计复杂的网站，在网络较差的情况下有可能要加载很久才能显示。
+
+如果样式比较复杂， 在一些小屏幕下的显示可能不好。
+
+所以作者提出网站要保持简洁，这次也主要是基于作者提出的建议修改了网站。
+
+* 相比之前的变化
+
+- 极大的简化了博客内容，没有主题，没有模板，只有博客内容的 org 文件、css 文件、字体、图片，以及最终转换出来的 HTML 文件
+
+- 博客的编写、构建只需要 Emacs 就能完成（以及 [[https://browsersync.io/][Browsersync]] 用于本地查看构建的 HTML）
+
+- 转换后就是标准的 HTML，而且是使用 Emacs 内置的包转换 org 文件，理论上 org 的特性应该都能转换
+
+- 按照  [[http://bettermotherfuckingwebsite.com/][better motehr fucking website]] 和 [[https://thebestmotherfucking.website/][the best mother fucking website]] 的建议，设置了字体颜色，字体大小，链接颜色，行间距，行宽等，比默认的浏览器样式好阅读一些
+
+- 使用 [[https://www.brailleinstitute.org/freefont/][Atkinson Hyperlegible]] 字体，让一些容易混淆的字符更容易区分
+
+总而言之，就是清爽了很多，兼容性也应该不错。
+
+* org-publish 的使用
+
+org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义很多个任务，每个任务指定处理什么文件，怎么处理，处理之后放到什么地方。
+
+你可以单独地执行某个任务，也可以将任务串联起来执行。
+
+过程中碰到的几个问题：
+
+- *构建后代码块的高亮* ::
+  高亮的颜色是基于 Emacs 当前的主题的，而我的博客整体是亮色的，因此需要 Emacs 中也使用亮色的主题才能得到合适的高亮颜色。
+
+    为此写了 =spike-leung/apply-theme-when-publish= 用于在执行 =org-publish= 的时候切换主题。
+
+- *页眉页脚的设置* ::
+  想自定义 =:html-head= ， =:html-preamble= ， =:html-postamble= ， 需要传入字符串才生效，还没搞懂怎么抽象成变量或函数复用。
+
+- *RSS 的设置* ::
+  [[https://github.com/emacsmirror/ox-rss][ox-rss]] 可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成 RSS。
+
+  但是我需要的是把多个 org 文件生成为一个 RSS 文件。
+
+  不过别人已经踩过坑，按照 [[https://writepermission.com/org-blogging-rss-feed.html][Org mode blogging: RSS feed]] 中的方法实现了。
+
+  具体来说就是遍历所有的 org 文件，将他们的内容插入到一个 rss.org 文件中，在基于 rss.org 使用 ox-rss 去生成 RSS 文件。
+
+  还有一个问题是 [[https://writepermission.com/org-blogging-rss-feed.html][Org mode blogging: RSS feed]] 的实现会把整个 org 文件的内容插入到 rss.org 中。
+
+  但是如果内容很多时，Emacs 会崩溃，我目前是改成只插入标题，后面再研究一下如何优化。
+
+- *index 文件的设置* ::
+  设置 =:makeindex t= 可以生成 index 文件，需要在 org 文件中设置 =#+INDEX= keyword。
+
+  但是生成的文件名固定是 theindex.org, 并且会按照文章标题首个字进行索引，看起来很快，最后用 sitemap 替代了。
+
+  现在看到的 [[https://taxodium.ink/index.html][Home]] 其实就是一个 sitemap。
+
+- =#+date= *的设置* ::
+  原来 Hugo 生成的日期 (2023-05-31T13:38:39+08:00) 在转换成 sitemap 的时候似乎不能识别，
+
+  于是改成 org 的日期格式 (<2023-05-31 Wed>)，这样 sitemap 就能正常按照时间排序了。
+
+- *缓存问题* ::
+  执行 org-publish 之后，会在 =org-publish-timestamp-directory= 指定的目录下生成缓存，有时调整了页眉页脚，可能需要清除缓存才能看到效果。
+
+  不过可以执行 =C-u M-x org-publish= 忽略缓存进行构建。
+
+* org-publish 的完整代码
+
+[[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el][init-org-publish.el]]
+
+#+begin_src elisp :options (fold)
+  ;;; init-org-publish.el --- org publish config for my blog -*- lexical-binding: t -*-
+  ;;; Commentary:
+  ;;; Code:
+
+  (maybe-require-package 'ox-rss)
+
+  (defun spike-leung/apply-theme-when-publish (&rest args)
+    "Switch theme when do `org-publish'.ARGS will pass to `org-publish'."
+    (let ((current-theme (car custom-enabled-themes)))
+      (load-theme 'modus-operandi-tinted t)
+      (apply args)
+      (when current-theme
+        (disable-theme 'modus-operandi-tinted)
+        (enable-theme current-theme)
+        (load-theme current-theme :no-confirm))))
+
+  (advice-add 'org-publish :around #'spike-leung/apply-theme-when-publish)
+
+
+  (defun spike-leung/get-org-keyword (keyword)
+    "Get the value of the given KEYWORD in the current Org file."
+    (let ((keywords (org-collect-keywords (list keyword))))
+      (if-let ((value (car (cdr (assoc keyword keywords)))))
+          value
+        (format "No %s found" keyword))))
+
+
+  (defun spike-leung/org-publish-find-date (file project)
+    "从 org 文件中提取 `#+date` 属性。"
+    (with-temp-buffer
+      (insert-file-contents file)
+      (org-mode)
+      (spike-leung/get-org-keyword "DATE")))
+
+  (defun spike-leung/sitemap-format-entry (entry style project)
+    "自定义网站地图条目格式，添加日期信息。"
+    (let* ((filename (org-publish--expand-file-name entry project))
+           (date (spike-leung/org-publish-find-date filename project)))
+      (format "%s %s"
+              (org-publish-sitemap-default-entry entry style project)
+              (if date
+                  date
+                "long time ago..."))))
+
+  ;; @see: https://writepermission.com/org-blogging-rss-feed.html
+  (defun rw/org-rss-publish-to-rss (plist filename pub-dir)
+    "Publish RSS with PLIST, only when FILENAME is 'rss.org'.
+  PUB-DIR is when the output will be placed."
+    (if (equal "rss.org" (file-name-nondirectory filename))
+        (org-rss-publish-to-rss plist filename pub-dir)))
+
+  (defun rw/format-rss-feed (title list)
+    "Generate RSS feed as a string. TITLE is the RSS feed title and LIST contains files to include."
+    (message "%s" list)
+    (concat "#+TITLE: " title "\n\n" (org-list-to-subtree list)))
+
+  ;; (defun rw/format-rss-feed (title list)
+  ;;   "Generate RSS feed, as a string.
+  ;; TITLE is the title of the RSS feed.  LIST is an internal
+  ;; representation for the files to include, as returned by
+  ;; `org-list-to-lisp'.  PROJECT is the current project."
+  ;;   (concat "#+TITLE: " title "\n\n"
+  ;;           (org-list-to-subtree list '(:icount "" :istart ""))))
+
+  (defun rw/format-rss-feed-entry (entry style project)
+    "Format ENTRY for the RSS feed.
+  ENTRY is a file name.  STYLE is either 'list' or 'tree'.
+  PROJECT is the current project."
+    (cond ((not (directory-name-p entry))
+           (let* ((file (org-publish--expand-file-name entry project))
+                  (title (org-publish-find-title entry project))
+                  (date (format-time-string "%Y-%m-%d" (org-publish-find-date entry project)))
+                  (link (concat (file-name-sans-extension entry) ".html")))
+             (with-temp-buffer
+               (insert (format "* %s\n" title))
+               (insert ":PROPERTIES:\n:RSS_PERMALINK: " link "\n:PUBDATE: " date "\n:END:\n")
+               ;; (org-insert-property-drawer)
+               ;; (org-set-property "RSS_PERMALINK" link)
+               ;; (org-set-property "PUBDATE" date)
+               (insert (format "%s" title))
+               (buffer-string))
+             ))
+          ((eq style 'tree)
+           ;; Return only last subdir.
+           (file-name-nondirectory (directory-file-name entry)))
+          (t entry)))
+
+  (setq org-publish-project-alist
+        '(("orgfiles"
+           :base-directory "~/git/taxodium/post"
+           :base-extension "org"
+           :publishing-directory "~/git/taxodium/publish"
+           :publishing-function org-html-publish-to-html
+           :section-numbers nil
+           :with-toc t
+           :with-tags t
+           :with-broken-links marks
+           ;; TODO: 封装到变量
+           :html-head "
+  <link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/>
+  <link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\">
+  "
+           :html-preamble "
+   <nav>
+    <ul>
+      <li><a href=\"/index.html\">Home</a></li>
+      <li><a href=\"/about.html\">About</a></li>
+      <li><a href=\"/rss.xml\">RSS</a></li>
+      <li><a href=\"https://github.com/Spike-Leung/taxodium/tree/org-publish\">GitHub</a></li>
+    </ul>
+  </nav>
+  "
+           :html-postamble "
+  <p class=\"author\">Author: <a href=\"mailto:l-yanlei@hotmail.com\">%a</a></p>
+  <p class=\"date\">Date: %d</p>
+  <p class=\"license\">License: <a href=\"https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans\">CC BY-NC 4.0</a></p>
+  <script src=\"https://utteranc.es/client.js\" repo=\"Spike-Leung/taxodium\" issue-term=\"pathname\" theme=\"github-light\" crossorigin=\"anonymous\" async></script>
+  "
+           :exclude "rss.org"
+           :auto-sitemap t
+           :sitemap-filename "index.org"
+           :sitemap-title "Taxodium"
+           :sitemap-format-entry spike-leung/sitemap-format-entry
+           :sitemap-sort-files anti-chronologically
+           :author "Spike Leung"
+           :email "l-yanlei@hotmail.com")
+
+          ("sitemap"
+           :base-directory "~/git/taxodium/post"
+           :base-extension "org"
+           :publishing-directory "~/git/taxodium/publish"
+           :publishing-function org-html-publish-to-html
+           :html-head "
+  <link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/>
+  <link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\">
+  "
+           :html-preamble "
+   <nav>
+    <ul>
+      <li><a href=\"/index.html\">Home</a></li>
+      <li><a href=\"/about.html\">About</a></li>
+      <li><a href=\"/rss.xml\">RSS</a></li>
+      <li><a href=\"https://github.com/Spike-Leung/taxodium/tree/org-publish\">GitHub</a></li>
+    </ul>
+  </nav>
+  "
+           :include ("index.org")
+           :exclude ".*"
+           :html-postamble nil)
+
+          ("rss"
+           :base-directory "~/git/taxodium/post"
+           :base-extension "org"
+           :publishing-directory "~/git/taxodium/publish"
+           :publishing-function rw/org-rss-publish-to-rss
+           :html-postamble nil
+           :section-numbers nil
+           :with-toc nil
+           :rss-extension "xml"
+           :html-link-home "https://taxodium.ink"
+           :html-link-use-abs-url t
+           :auto-sitemap t
+           :exclude "index|about"
+           :sitemap-filename "rss.org"
+           :sitemap-title "Taxodium"
+           :sitemap-sort-files anti-chronologically
+           :sitemap-function rw/format-rss-feed
+           :sitemap-format-entry rw/format-rss-feed-entry)
+
+          ("website" :components ("orgfiles" "sitemap" "rss"))))
+
+  (provide 'init-org-publish)
+  ;;; init-org-publish.el ends here
+#+end_src
+
+* 一些缺点
+
+- 在执行 org-publish 时，如果内容多，可能会很慢，此时也会阻塞 Emacs，不能做其他事情
+- 由于依赖 Emacs，[[https://nettify.com/][Nettify]] 等平台上没有开箱即用的构建命令，集成 CI/CD 相对麻烦
+
+* Todo [0/5]
+
+- [ ] 复用 =:html-head= ， =:html-preamble= 等
+- [ ] 优化 RSS 的内容
+- [ ] 针对 weekly 单独设置 RSS
+- [ ] 增加搜索功能
+- [ ] 实现 CI/CD
+
+* Footnotes
+
+[fn:1] [[https://orgmode.org/worg/org-blog-wiki.html][Blogs and Wikis with Org]] 上有很多适用于 org-mode 的博客方案，最开始是看到 [[https://eason0210.github.io/][Eason0210 的博客]] 觉得挺简洁，就依葫芦画瓢更新了一下。
