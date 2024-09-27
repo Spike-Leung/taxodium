@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-27 Fri 21:19 -->
+<!-- 2024-09-27 Fri 21:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>使用 org-publish 发布博客</title>
@@ -218,6 +218,7 @@
 <li><a href="#orgcadc2a3">动机</a></li>
 <li><a href="#orgf4c64a6">相比之前的变化</a></li>
 <li><a href="#org43ec46c">org-publish 的使用</a></li>
+<li><a href="#orgc84570a">org-publish 的完整代码</a></li>
 <li><a href="#org830cb0d">一些缺点</a></li>
 <li><a href="#orgbcc873e">Todo <code>[0/5]</code></a></li>
 </ul>
@@ -228,7 +229,7 @@
 </p>
 
 <p>
-然后学习了 vue，又尝试用 <a href="https://vuepress.vuejs.org/">VuePress</a> 发布，它们都是托管在 <a href="https://pages.github.com/">Github Pages</a> 上。
+然后学习了 Vue，又尝试用 <a href="https://vuepress.vuejs.org/">VuePress</a> 发布，它们都是托管在 <a href="https://pages.github.com/">Github Pages</a> 上。
 </p>
 
 <p>
@@ -246,7 +247,7 @@
 <h2 id="orgcadc2a3">动机</h2>
 <div class="outline-text-2" id="text-orgcadc2a3">
 <p>
-在很早之前看过这三个链接：
+在很早之前看过几篇文章：
 </p>
 
 <ul class="org-ul">
@@ -274,11 +275,11 @@
 <h2 id="orgf4c64a6">相比之前的变化</h2>
 <div class="outline-text-2" id="text-orgf4c64a6">
 <ul class="org-ul">
-<li>极大的简化了博客内容，没有主题，没有模板，只有博客内容的 org 文件，css 文件，字体，图片，以及最终转换出来的 HTML 文件</li>
+<li>极大的简化了博客内容，没有主题，没有模板，只有博客内容的 org 文件、css 文件、字体、图片，以及最终转换出来的 HTML 文件</li>
 
 <li>博客的编写、构建只需要 Emacs 就能完成（以及 <a href="https://browsersync.io/">Browsersync</a> 用于本地查看构建的 HTML）</li>
 
-<li>转换后就是标准的 HTML，而且是使用 Emacs 内置的包转换 org 文件，理论上 org 的特性应该都能转换。</li>
+<li>转换后就是标准的 HTML，而且是使用 Emacs 内置的包转换 org 文件，理论上 org 的特性应该都能转换</li>
 
 <li>按照  <a href="http://bettermotherfuckingwebsite.com/">better motehr fucking website</a> 和 <a href="https://thebestmotherfucking.website/">the best mother fucking website</a> 的建议，设置了字体颜色，字体大小，链接颜色，行间距，行宽等，比默认的浏览器样式好阅读一些</li>
 
@@ -294,7 +295,87 @@
 <h2 id="org43ec46c">org-publish 的使用</h2>
 <div class="outline-text-2" id="text-org43ec46c">
 <p>
-完整代码看：<a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el">init-org-publish.el</a>
+org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可以定义很多个任务，每个任务指定处理什么文件，怎么处理，处理之后放到什么地方。
+</p>
+
+<p>
+你可以单独地执行某个任务，也可以将任务串联起来执行。
+</p>
+
+<p>
+过程中碰到的几个问题：
+</p>
+
+<dl class="org-dl">
+<dt><b>构建后代码块的高亮</b></dt><dd><p>
+高亮的颜色是基于 Emacs 当前的主题的，而我的博客整体是亮色的，因此需要 Emacs 中也使用亮色的主题才能得到合适的高亮颜色。
+</p>
+
+<p>
+为此写了 <code>spike-leung/apply-theme-when-publish</code> 用于在执行 <code>org-publish</code> 的时候切换主题。
+</p></dd>
+
+<dt><b>页眉页脚的设置</b></dt><dd>想自定义 <code>:html-head</code> ， <code>:html-preamble</code> ， <code>:html-postamble</code> ， 需要传入字符串才生效，还没搞懂怎么抽象成变量或函数复用。</dd>
+
+<dt><b>RSS 的设置</b></dt><dd><p>
+<a href="https://github.com/emacsmirror/ox-rss">ox-rss</a> 可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成 RSS。
+</p>
+
+<p>
+但是我需要的是把多个 org 文件生成为一个 RSS 文件。
+</p>
+
+<p>
+不过别人已经踩过坑，按照 <a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a> 中的方法实现了。
+</p>
+
+<p>
+具体来说就是遍历所有的 org 文件，将他们的内容插入到一个 rss.org 文件中，在基于 rss.org 使用 ox-rss 去生成 RSS 文件。
+</p>
+
+<p>
+还有一个问题是 <a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a> 的实现会把整个 org 文件的内容插入到 rss.org 中。
+</p>
+
+<p>
+但是如果内容很多时，Emacs 会崩溃，我目前是改成只插入标题，后面再研究一下如何优化。
+</p></dd>
+
+<dt><b>index 文件的设置</b></dt><dd><p>
+设置 <code>:makeindex t</code> 可以生成 index 文件，需要在 org 文件中设置 <code>#+INDEX</code> keyword。
+</p>
+
+<p>
+但是生成的文件名固定是 theindex.org, 并且会按照文章标题首个字进行索引，看起来很快，最后用 sitemap 替代了。
+</p>
+
+<p>
+现在看到的 <a href="https://taxodium.ink/index.html">Home</a> 其实就是一个 sitemap。
+</p></dd>
+
+<dt><code>#+date</code> <b>的设置</b></dt><dd><p>
+原来 Hugo 生成的日期 (2023-05-31T13:38:39+08:00) 在转换成 sitemap 的时候似乎不能识别，
+</p>
+
+<p>
+于是改成 org 的日期格式 (<span class="timestamp-wrapper"><span class="timestamp">&lt;2023-05-31 Wed&gt;</span></span>)，这样 sitemap 就能正常按照时间排序了。
+</p></dd>
+
+<dt><b>缓存问题</b></dt><dd><p>
+执行 org-publish 之后，会在 <code>org-publish-timestamp-directory</code> 指定的目录下生成缓存，有时调整了页眉页脚，可能需要清除缓存才能看到效果。
+</p>
+
+<p>
+不过可以执行 <code>C-u M-x org-publish</code> 忽略缓存进行构建。
+</p></dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-orgc84570a" class="outline-2">
+<h2 id="orgc84570a">org-publish 的完整代码</h2>
+<div class="outline-text-2" id="text-orgc84570a">
+<p>
+<a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el">init-org-publish.el</a>
 </p>
 
 <div class="org-src-container">
@@ -473,82 +554,6 @@
 <span style="color: #7f0000;">;;; </span><span style="color: #7f0000;">init-org-publish.el ends here</span>
 </pre>
 </div>
-
-<p>
-org-publish 的使用有点像 <a href="https://gulpjs.com/">gulpjs</a>，你可以定义很多个任务，每个任务指定处理什么文件，怎么处理，处理之后放到什么地方。
-</p>
-
-<p>
-你可以单独地执行某个任务，也可以将任务串联起来执行。
-</p>
-
-<p>
-过程中碰到的几个问题：
-</p>
-
-<dl class="org-dl">
-<dt><b>构建后代码块的高亮</b></dt><dd><p>
-高亮的颜色是基于 Emacs 当前的主题的，而我的博客整体是亮色的，因此需要 Emacs 中也使用亮色的主题才能得到合适的高亮颜色。
-</p>
-
-<p>
-为此写了 <code>spike-leung/apply-theme-when-publish</code> 用于在执行 <code>org-publish</code> 的时候切换主题。
-</p></dd>
-
-<dt><b>页眉页脚的设置</b></dt><dd>想自定义 <code>:html-head</code> ， <code>:html-preamble</code> ， <code>:html-postamble</code> ， 需要传入字符串才生效，还没搞懂怎么抽象成变量或函数复用。</dd>
-
-<dt><b>RSS 的设置</b></dt><dd><p>
-<a href="https://github.com/emacsmirror/ox-rss">ox-rss</a> 可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成 RSS。
-</p>
-
-<p>
-但是我需要的是把多个 org 文件生成为一个 RSS 文件。
-</p>
-
-<p>
-不过别人已经踩过坑，按照 <a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a> 中的方法实现了。
-</p>
-
-<p>
-具体来说就是遍历所有的 org 文件，将他们的内容插入到一个 rss.org 文件中，在基于 rss.org 使用 ox-rss 去生成 RSS 文件。
-</p>
-
-<p>
-还有一个问题是 <a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a> 的实现会把整个 org 文件的内容插入到 rss.org 中。
-</p>
-
-<p>
-但是如果内容很多时，Emacs 会崩溃，我目前是改成只插入标题，后面再研究一下如何优化。
-</p></dd>
-
-<dt><b>index 文件的设置</b></dt><dd><p>
-设置 <code>:makeindex t</code> 可以生成 index 文件，需要在 org 文件中设置 <code>#+INDEX</code> keyword。
-</p>
-
-<p>
-但是生成的文件名固定是 theindex.org, 并且会按照文章标题首个字进行索引，看起来很快，最后用 sitemap 替代了。
-</p>
-
-<p>
-现在看到的 <a href="https://taxodium.ink/index.html">Home</a> 其实就是一个 sitemap。
-</p></dd>
-
-<dt><code>#+date</code> <b>的设置</b></dt><dd><p>
-原来 Hugo 生成的日期 (2023-05-31T13:38:39+08:00) 在转换成 sitemap 的时候似乎不能识别，
-</p>
-
-<p>
-于是改成 org 的日期格式 (<span class="timestamp-wrapper"><span class="timestamp">&lt;2023-05-31 Wed&gt;</span></span>)，这样 sitemap 就能正常按照时间排序了。
-</p></dd>
-
-<dt><b>缓存问题</b></dt><dd><p>
-执行 org-publish 之后，会在 <code>org-publish-timestamp-directory</code> 指定的目录下生成缓存，有时调整了页眉页脚，可能需要清除缓存才能看到效果。
-</p>
-
-<p>
-不过可以执行 <code>C-u M-x org-publish</code> 忽略缓存进行构建。
-</p></dd>
-</dl>
 </div>
 </div>
 <div id="outline-container-org830cb0d" class="outline-2">
