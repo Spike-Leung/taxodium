@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-28 Sat 01:56 -->
+<!-- 2024-09-28 Sat 02:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>使用 org-publish 发布博客</title>
@@ -334,12 +334,23 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 </p>
 
 <p>
-还有一个问题是 <a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a> 的实现会把整个 org 文件的内容插入到 rss.org 中。
+<a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a> 的实现会把整个 org 文件的内容插入到 rss.org 中。
 </p>
 
 <p>
 但是如果内容很多时，Emacs 会崩溃，我目前是改成只插入标题，后面再研究一下如何优化。
-</p></dd>
+</p>
+
+<p>
+如果执行 RSS 构建后，发现新写的文章不在 RSS 中，也可能是缓存问题，可以尝试：
+</p>
+<ul class="org-ul">
+<li>删除 <code>org-publish-timestamp-directory</code> 中 RSS 的 cache</li>
+
+<li>删除博客相关的 buffer 试试（或者删除全部 buffer）</li>
+
+<li>检查一下是不是 <code>:exclude</code> 正则表达式写得有问题</li>
+</ul></dd>
 
 <dt><b>index 文件的设置</b></dt><dd><p>
 设置 <code>:makeindex t</code> 可以生成 index 文件，需要在 org 文件中设置 <code>#+INDEX</code> keyword。
@@ -435,14 +446,6 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
   <span style="color: #dd22dd;">(</span>message <span style="color: #3548cf;">"%s"</span> list<span style="color: #dd22dd;">)</span>
   <span style="color: #dd22dd;">(</span>concat <span style="color: #3548cf;">"#+TITLE: "</span> title <span style="color: #3548cf;">"</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">"</span> <span style="color: #008899;">(</span>org-list-to-subtree list<span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
 
-<span style="color: #7f0000;">;; </span><span style="color: #7f0000;">(defun rw/format-rss-feed (title list)</span>
-<span style="color: #7f0000;">;;   </span><span style="color: #7f0000;">"Generate RSS feed, as a string.</span>
-<span style="color: #7f0000;">;; </span><span style="color: #7f0000;">TITLE is the title of the RSS feed.  LIST is an internal</span>
-<span style="color: #7f0000;">;; </span><span style="color: #7f0000;">representation for the files to include, as returned by</span>
-<span style="color: #7f0000;">;; </span><span style="color: #7f0000;">`</span><span style="color: #0000b0;">org-list-to-lisp</span><span style="color: #7f0000;">'.  PROJECT is the current project."</span>
-<span style="color: #7f0000;">;;   </span><span style="color: #7f0000;">(concat "#+TITLE: " title "\n\n"</span>
-<span style="color: #7f0000;">;;           </span><span style="color: #7f0000;">(org-list-to-subtree list '(:icount "" :istart ""))))</span>
-
 <span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">rw/format-rss-feed-entry</span> <span style="color: #dd22dd;">(</span>entry style project<span style="color: #dd22dd;">)</span>
   <span style="color: #2a5045;">"Format ENTRY for the RSS feed.</span>
 <span style="color: #2a5045;">ENTRY is a file name.  STYLE is either '</span><span style="color: #0000b0;">list</span><span style="color: #2a5045;">' or '</span><span style="color: #0000b0;">tree</span><span style="color: #2a5045;">'.</span>
@@ -453,7 +456,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
                 <span style="color: #531ab6;">(</span>date <span style="color: #008900;">(</span>format-time-string <span style="color: #3548cf;">"%Y-%m-%d"</span> <span style="color: #3548cf;">(</span>org-publish-find-date entry project<span style="color: #3548cf;">)</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
                 <span style="color: #531ab6;">(</span>link <span style="color: #008900;">(</span>concat <span style="color: #3548cf;">(</span>file-name-sans-extension entry<span style="color: #3548cf;">)</span> <span style="color: #3548cf;">".html"</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span><span style="color: #808000;">)</span>
            <span style="color: #808000;">(</span><span style="color: #531ab6;">with-temp-buffer</span>
-             <span style="color: #531ab6;">(</span>insert <span style="color: #008900;">(</span>format <span style="color: #3548cf;">"* %s</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">"</span> title<span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
+             <span style="color: #531ab6;">(</span>insert <span style="color: #008900;">(</span>format <span style="color: #3548cf;">"%s</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">"</span> title<span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
              <span style="color: #531ab6;">(</span>insert <span style="color: #3548cf;">":PROPERTIES:</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">:RSS_PERMALINK: "</span> link <span style="color: #3548cf;">"</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">:PUBDATE: "</span> date <span style="color: #3548cf;">"</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">:END:</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">"</span><span style="color: #531ab6;">)</span>
              <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">(org-insert-property-drawer)</span>
              <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">(org-set-property "RSS_PERMALINK" link)</span>
@@ -541,7 +544,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
          <span style="color: #8f0075;">:html-link-home</span> <span style="color: #3548cf;">"https://taxodium.ink"</span>
          <span style="color: #8f0075;">:html-link-use-abs-url</span> t
          <span style="color: #8f0075;">:auto-sitemap</span> t
-         <span style="color: #8f0075;">:exclude</span> <span style="color: #3548cf;">"index|about"</span>
+         <span style="color: #8f0075;">:exclude</span> <span style="color: #3548cf;">"index</span><span style="color: #721045;">\</span><span style="color: #00663f;">\</span><span style="color: #00663f;">|</span><span style="color: #3548cf;">about"</span>
          <span style="color: #8f0075;">:sitemap-filename</span> <span style="color: #3548cf;">"rss.org"</span>
          <span style="color: #8f0075;">:sitemap-title</span> <span style="color: #3548cf;">"Taxodium"</span>
          <span style="color: #8f0075;">:sitemap-sort-files</span> anti-chronologically

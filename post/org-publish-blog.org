@@ -66,9 +66,16 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
   具体来说就是遍历所有的 org 文件，将他们的内容插入到一个 rss.org 文件中，在基于 rss.org 使用 ox-rss 去生成 RSS 文件。
 
-  还有一个问题是 [[https://writepermission.com/org-blogging-rss-feed.html][Org mode blogging: RSS feed]] 的实现会把整个 org 文件的内容插入到 rss.org 中。
+  [[https://writepermission.com/org-blogging-rss-feed.html][Org mode blogging: RSS feed]] 的实现会把整个 org 文件的内容插入到 rss.org 中。
 
   但是如果内容很多时，Emacs 会崩溃，我目前是改成只插入标题，后面再研究一下如何优化。
+
+  如果执行 RSS 构建后，发现新写的文章不在 RSS 中，也可能是缓存问题，可以尝试：
+  + 删除 =org-publish-timestamp-directory= 中 RSS 的 cache
+
+  + 删除博客相关的 buffer 试试（或者删除全部 buffer）
+
+  + 检查一下是不是 =:exclude= 正则表达式写得有问题
 
 - *index 文件的设置* ::
   设置 =:makeindex t= 可以生成 index 文件，需要在 org 文件中设置 =#+INDEX= keyword。
@@ -148,14 +155,6 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
     (message "%s" list)
     (concat "#+TITLE: " title "\n\n" (org-list-to-subtree list)))
 
-  ;; (defun rw/format-rss-feed (title list)
-  ;;   "Generate RSS feed, as a string.
-  ;; TITLE is the title of the RSS feed.  LIST is an internal
-  ;; representation for the files to include, as returned by
-  ;; `org-list-to-lisp'.  PROJECT is the current project."
-  ;;   (concat "#+TITLE: " title "\n\n"
-  ;;           (org-list-to-subtree list '(:icount "" :istart ""))))
-
   (defun rw/format-rss-feed-entry (entry style project)
     "Format ENTRY for the RSS feed.
   ENTRY is a file name.  STYLE is either 'list' or 'tree'.
@@ -166,7 +165,7 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
                   (date (format-time-string "%Y-%m-%d" (org-publish-find-date entry project)))
                   (link (concat (file-name-sans-extension entry) ".html")))
              (with-temp-buffer
-               (insert (format "* %s\n" title))
+               (insert (format "%s\n" title))
                (insert ":PROPERTIES:\n:RSS_PERMALINK: " link "\n:PUBDATE: " date "\n:END:\n")
                ;; (org-insert-property-drawer)
                ;; (org-set-property "RSS_PERMALINK" link)
@@ -254,7 +253,7 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
            :html-link-home "https://taxodium.ink"
            :html-link-use-abs-url t
            :auto-sitemap t
-           :exclude "index|about"
+           :exclude "index\\|about"
            :sitemap-filename "rss.org"
            :sitemap-title "Taxodium"
            :sitemap-sort-files anti-chronologically
