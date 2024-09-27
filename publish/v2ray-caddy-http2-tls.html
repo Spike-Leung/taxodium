@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-27 Fri 21:45 -->
+<!-- 2024-09-28 Sat 01:56 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>V2ray with Caddy + HTTP2 + TLS</title>
@@ -215,20 +215,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgcf20164">准备</a></li>
-<li><a href="#org215380a">搭建</a>
+<li><a href="#orgd91000e">准备</a></li>
+<li><a href="#org503a3f5">搭建</a>
 <ul>
-<li><a href="#org7ede74f">Tag 释义</a></li>
-<li><a href="#org4f9ecac">1. 购买一个 VPS 服务器</a></li>
-<li><a href="#orge5a604a">2. 申请一个域名</a></li>
-<li><a href="#org9ec218a">3. 安装 &amp; 配置 Caddy</a></li>
-<li><a href="#org9a68a12">4. 安装 &amp; 配置 v2ray</a>
+<li><a href="#org67ebe69">Tag 释义</a></li>
+<li><a href="#org6c662a6">1. 购买一个 VPS 服务器</a></li>
+<li><a href="#org4a119f1">2. 申请一个域名</a></li>
+<li><a href="#orgfa2048b">3. 安装 &amp; 配置 Caddy</a></li>
+<li><a href="#orgf0a19c7">4. 安装 &amp; 配置 v2ray</a>
 <ul>
-<li><a href="#org66ea6df">v2ray 服务器配置</a></li>
-<li><a href="#org8c557e8">v2ray 客户端配置</a></li>
+<li><a href="#orgea3feb7">v2ray 服务器配置</a></li>
+<li><a href="#org489370c">v2ray 客户端配置</a></li>
 </ul>
 </li>
-<li><a href="#org34c0574">排障</a></li>
+<li><a href="#org907036a">排障</a></li>
 </ul>
 </li>
 </ul>
@@ -265,9 +265,9 @@
 这篇博客主要记录 <b>V2ray + Caddy + HTTP2 + TLS</b> 的相关配置，其它具体细节
 请参考<a href="https://guide.v2fly.org/"> V2ray 新白话文教程</a>以及<a href="https://www.v2ray.com/en/">官网</a>。
 </p>
-<div id="outline-container-orgcf20164" class="outline-2">
-<h2 id="orgcf20164">准备</h2>
-<div class="outline-text-2" id="text-orgcf20164">
+<div id="outline-container-orgd91000e" class="outline-2">
+<h2 id="orgd91000e">准备</h2>
+<div class="outline-text-2" id="text-orgd91000e">
 <ul class="org-ul">
 <li><b>一台国外的 VPS</b> <br />
 目前我用的是 <a href="https://www.vultr.com/">VULTR</a>，价格可能有一些贵，但稳定，速度也还可以，另外也
@@ -279,9 +279,9 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-org215380a" class="outline-2">
-<h2 id="org215380a">搭建</h2>
-<div class="outline-text-2" id="text-org215380a">
+<div id="outline-container-org503a3f5" class="outline-2">
+<h2 id="org503a3f5">搭建</h2>
+<div class="outline-text-2" id="text-org503a3f5">
 <p>
 这次搭建主要是参考了 <a href="https://guide.v2fly.org/advanced/h2_tls_web.html">HTTP/2+TLS+WEB</a>，里头用到了 <a href="https://caddyserver.com/">Caddy </a>作为 Web 服务器，
 不过他用的是 Caddy1，而我用的是 Caddy2。
@@ -302,9 +302,9 @@
 Encrypt</a> 申请证书，到期了自动帮你更新，所以省去了不少步骤。
 </p>
 </div>
-<div id="outline-container-org7ede74f" class="outline-3">
-<h3 id="org7ede74f">Tag 释义</h3>
-<div class="outline-text-3" id="text-org7ede74f">
+<div id="outline-container-org67ebe69" class="outline-3">
+<h3 id="org67ebe69">Tag 释义</h3>
+<div class="outline-text-3" id="text-org67ebe69">
 <p>
 下面配置中的 &lt;tag&gt; 是需要自己配置的，替换成对应的值。
 </p>
@@ -356,9 +356,9 @@ Encrypt</a> 申请证书，到期了自动帮你更新，所以省去了不少�
 </table>
 </div>
 </div>
-<div id="outline-container-org4f9ecac" class="outline-3">
-<h3 id="org4f9ecac">1. 购买一个 VPS 服务器</h3>
-<div class="outline-text-3" id="text-org4f9ecac">
+<div id="outline-container-org6c662a6" class="outline-3">
+<h3 id="org6c662a6">1. 购买一个 VPS 服务器</h3>
+<div class="outline-text-3" id="text-org6c662a6">
 <p>
 可以从 <a href="https://www.vultr.com/">VULTR</a> 购买，如果有更快，更稳定，价格不是很贵的提供商，欢迎留言推荐。
 </p>
@@ -390,18 +390,18 @@ ufw reload
 </div>
 </div>
 </div>
-<div id="outline-container-orge5a604a" class="outline-3">
-<h3 id="orge5a604a">2. 申请一个域名</h3>
-<div class="outline-text-3" id="text-orge5a604a">
+<div id="outline-container-org4a119f1" class="outline-3">
+<h3 id="org4a119f1">2. 申请一个域名</h3>
+<div class="outline-text-3" id="text-org4a119f1">
 <p>
 网上随便找个域名贩卖网站，买一个自己喜欢的域名即可，购买之后，需要
 将域名解析到 VPS 的 IP 地址。
 </p>
 </div>
 </div>
-<div id="outline-container-org9ec218a" class="outline-3">
-<h3 id="org9ec218a">3. 安装 &amp; 配置 Caddy</h3>
-<div class="outline-text-3" id="text-org9ec218a">
+<div id="outline-container-orgfa2048b" class="outline-3">
+<h3 id="orgfa2048b">3. 安装 &amp; 配置 Caddy</h3>
+<div class="outline-text-3" id="text-orgfa2048b">
 <p>
 按照 <a href="https://caddyserver.com/docs/install">Caddy 的安装步骤 </a>将 Caddy 安装到 VPS 上，具体使用可以看 Caddy 文
 档，里头有很多详细的例子。
@@ -453,17 +453,17 @@ journalctl -u caddy --no-pager | less +G
 </div>
 </div>
 </div>
-<div id="outline-container-org9a68a12" class="outline-3">
-<h3 id="org9a68a12">4. 安装 &amp; 配置 v2ray</h3>
-<div class="outline-text-3" id="text-org9a68a12">
+<div id="outline-container-orgf0a19c7" class="outline-3">
+<h3 id="orgf0a19c7">4. 安装 &amp; 配置 v2ray</h3>
+<div class="outline-text-3" id="text-orgf0a19c7">
 <p>
 根据 <a href="https://github.com/v2fly/fhs-install-v2ray/blob/master/README.zh-Hans-CN.md">fhs-install-v2ray</a> 安装 v2ray， v2ray 的相关指令和 caddy 类似，
 将 caddy 换成 v2ray 即可。
 </p>
 </div>
-<div id="outline-container-org66ea6df" class="outline-4">
-<h4 id="org66ea6df">v2ray 服务器配置</h4>
-<div class="outline-text-4" id="text-org66ea6df">
+<div id="outline-container-orgea3feb7" class="outline-4">
+<h4 id="orgea3feb7">v2ray 服务器配置</h4>
+<div class="outline-text-4" id="text-orgea3feb7">
 <p>
 配置含义请<a href="https://guide.v2fly.org/">官网</a>查阅， <code>/usr/local/etc/v2ray/config.json</code>:
 </p>
@@ -574,9 +574,9 @@ journalctl -u caddy --no-pager | less +G
 </div>
 </div>
 </div>
-<div id="outline-container-org8c557e8" class="outline-4">
-<h4 id="org8c557e8">v2ray 客户端配置</h4>
-<div class="outline-text-4" id="text-org8c557e8">
+<div id="outline-container-org489370c" class="outline-4">
+<h4 id="org489370c">v2ray 客户端配置</h4>
+<div class="outline-text-4" id="text-org489370c">
 <p>
 这里提供 <a href="https://github.com/yichengchen/clashX">ClashX</a> 配置的参考，其它客户端配置类似的。
 </p>
@@ -636,9 +636,9 @@ journalctl -u caddy --no-pager | less +G
 </div>
 </div>
 </div>
-<div id="outline-container-org34c0574" class="outline-3">
-<h3 id="org34c0574">排障</h3>
-<div class="outline-text-3" id="text-org34c0574">
+<div id="outline-container-org907036a" class="outline-3">
+<h3 id="org907036a">排障</h3>
+<div class="outline-text-3" id="text-org907036a">
 <p>
 主要通过查看日志去判断问题是什么，然后 google :)
 </p>

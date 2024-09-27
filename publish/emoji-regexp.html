@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-27 Fri 21:45 -->
+<!-- 2024-09-28 Sat 01:56 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Emoji 正则匹配</title>
@@ -248,27 +248,27 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge07b205">前言</a></li>
-<li><a href="#orgec4cc6f">TL;DR</a></li>
-<li><a href="#org5d85e33">解决过程</a></li>
-<li><a href="#orge1a34c8">Unicode character class escpae</a></li>
-<li><a href="#org483c2df">String &amp; Unicode</a></li>
-<li><a href="#org0abd320">为什么 /(\ud83c[\udf00-\udfff]&#x2026;/u 的正则无法匹配🉐</a></li>
-<li><a href="#org920d182">String 中的相关方法</a></li>
-<li><a href="#org599689f">注意点</a>
+<li><a href="#orgacf9a41">前言</a></li>
+<li><a href="#orgf1532e4">TL;DR</a></li>
+<li><a href="#org3d967ef">解决过程</a></li>
+<li><a href="#org94f1f6c">Unicode character class escpae</a></li>
+<li><a href="#org180b303">String &amp; Unicode</a></li>
+<li><a href="#org5548d0f">为什么 /(\ud83c[\udf00-\udfff]&#x2026;/u 的正则无法匹配🉐</a></li>
+<li><a href="#org612f48d">String 中的相关方法</a></li>
+<li><a href="#orgd907c1c">注意点</a>
 <ul>
-<li><a href="#org67e58e4">字符串长度</a></li>
-<li><a href="#org23e3658">Lone surrogates</a></li>
+<li><a href="#org108082e">字符串长度</a></li>
+<li><a href="#org5192c7e">Lone surrogates</a></li>
 </ul>
 </li>
-<li><a href="#org4b793dc">Refs</a></li>
-<li><a href="#org726b359">Comments</a></li>
+<li><a href="#orga61f25d">Refs</a></li>
+<li><a href="#org689fb5c">Comments</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orge07b205" class="outline-2">
-<h2 id="orge07b205">前言</h2>
-<div class="outline-text-2" id="text-orge07b205">
+<div id="outline-container-orgacf9a41" class="outline-2">
+<h2 id="orgacf9a41">前言</h2>
+<div class="outline-text-2" id="text-orgacf9a41">
 <p>
 要求输入框能输入除了特殊表情外的任意字符。
 </p>
@@ -278,9 +278,9 @@
 </p>
 </div>
 </div>
-<div id="outline-container-orgec4cc6f" class="outline-2">
-<h2 id="orgec4cc6f">TL;DR</h2>
-<div class="outline-text-2" id="text-orgec4cc6f">
+<div id="outline-container-orgf1532e4" class="outline-2">
+<h2 id="orgf1532e4">TL;DR</h2>
+<div class="outline-text-2" id="text-orgf1532e4">
 <p>
 如果你只是想要一个能够匹配表情的正则，下面这个应该就满足👇：
 </p>
@@ -292,15 +292,15 @@
 </div>
 
 
-<div id="orgf6c3cf2" class="figure">
+<div id="org14924b2" class="figure">
 <p><img src="./images/emoji-regexp/regexp101-emoji-corret.png" alt="regexp101-emoji-corret.png" />
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org5d85e33" class="outline-2">
-<h2 id="org5d85e33">解决过程</h2>
-<div class="outline-text-2" id="text-org5d85e33">
+<div id="outline-container-org3d967ef" class="outline-2">
+<h2 id="org3d967ef">解决过程</h2>
+<div class="outline-text-2" id="text-org3d967ef">
 <p>
 对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道 Emoji 和 Unicode 相关，但怎么用正则描述它呢？
 </p>
@@ -319,7 +319,7 @@
 </p>
 
 
-<div id="org64962cd" class="figure">
+<div id="org6c51f27" class="figure">
 <p><img src="./images/emoji-regexp/regexp101-emoji-wrong.png" alt="regexp101-emoji-wrong.png" />
 </p>
 </div>
@@ -362,9 +362,9 @@
 </div>
 </div>
 </div>
-<div id="outline-container-orge1a34c8" class="outline-2">
-<h2 id="orge1a34c8">Unicode character class escpae</h2>
-<div class="outline-text-2" id="text-orge1a34c8">
+<div id="outline-container-org94f1f6c" class="outline-2">
+<h2 id="org94f1f6c">Unicode character class escpae</h2>
+<div class="outline-text-2" id="text-org94f1f6c">
 <p>
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape">Unicode character class escape: \p{...}, &para;{&#x2026;}</a> 是 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_class_escape">Character class escape</a> 中的一种。
 </p>
@@ -386,7 +386,7 @@
 </p>
 
 
-<div id="org0509af1" class="figure">
+<div id="orged9ee45" class="figure">
 <p><img src="./images/emoji-regexp/regexp101-emoji-hex-digit.png" alt="regexp101-emoji-hex-digit.png" />
 </p>
 </div>
@@ -396,9 +396,9 @@
 </p>
 </div>
 </div>
-<div id="outline-container-org483c2df" class="outline-2">
-<h2 id="org483c2df">String &amp; Unicode</h2>
-<div class="outline-text-2" id="text-org483c2df">
+<div id="outline-container-org180b303" class="outline-2">
+<h2 id="org180b303">String &amp; Unicode</h2>
+<div class="outline-text-2" id="text-org180b303">
 <blockquote>
 <p>
 Strings are represented fundamentally as sequences of <a href="https://en.wikipedia.org/wiki/UTF-16">UTF-16</a> code
@@ -481,9 +481,9 @@ represents 1–6 hex digits.
 </p>
 </div>
 </div>
-<div id="outline-container-org0abd320" class="outline-2">
-<h2 id="org0abd320">为什么 /(\ud83c[\udf00-\udfff]&#x2026;/u 的正则无法匹配🉐</h2>
-<div class="outline-text-2" id="text-org0abd320">
+<div id="outline-container-org5548d0f" class="outline-2">
+<h2 id="org5548d0f">为什么 /(\ud83c[\udf00-\udfff]&#x2026;/u 的正则无法匹配🉐</h2>
+<div class="outline-text-2" id="text-org5548d0f">
 <p>
 现在已经知道 Emoji 是通过代理对表示的，那么 🉐 的代理对是什么呢？
 </p>
@@ -508,9 +508,9 @@ represents 1–6 hex digits.
 </p>
 </div>
 </div>
-<div id="outline-container-org920d182" class="outline-2">
-<h2 id="org920d182">String 中的相关方法</h2>
-<div class="outline-text-2" id="text-org920d182">
+<div id="outline-container-org612f48d" class="outline-2">
+<h2 id="org612f48d">String 中的相关方法</h2>
+<div class="outline-text-2" id="text-org612f48d">
 <dl class="org-dl">
 <dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charAt">String.prototype.charAt()</a></dt><dd><blockquote>
 <p>
@@ -641,13 +641,13 @@ String.<span style="color: #721045;">fromCharCode</span><span style="color: #000
 </dl>
 </div>
 </div>
-<div id="outline-container-org599689f" class="outline-2">
-<h2 id="org599689f">注意点</h2>
-<div class="outline-text-2" id="text-org599689f">
+<div id="outline-container-orgd907c1c" class="outline-2">
+<h2 id="orgd907c1c">注意点</h2>
+<div class="outline-text-2" id="text-orgd907c1c">
 </div>
-<div id="outline-container-org67e58e4" class="outline-3">
-<h3 id="org67e58e4">字符串长度</h3>
-<div class="outline-text-3" id="text-org67e58e4">
+<div id="outline-container-org108082e" class="outline-3">
+<h3 id="org108082e">字符串长度</h3>
+<div class="outline-text-3" id="text-org108082e">
 <p>
 有的字符是由代理对组成的，是两个 UTF-16 编码单元，例如 Emoji。
 </p>
@@ -664,9 +664,9 @@ String.<span style="color: #721045;">fromCharCode</span><span style="color: #000
 </div>
 </div>
 </div>
-<div id="outline-container-org23e3658" class="outline-3">
-<h3 id="org23e3658">Lone surrogates</h3>
-<div class="outline-text-3" id="text-org23e3658">
+<div id="outline-container-org5192c7e" class="outline-3">
+<h3 id="org5192c7e">Lone surrogates</h3>
+<div class="outline-text-3" id="text-org5192c7e">
 <p>
 代理对是由高代理和低代理组成的，如果单独把高代理拎出来，或者高代理和高代理组成代理对，是无法表达有含意的 Unicode 字符的。
 </p>
@@ -677,9 +677,9 @@ String.<span style="color: #721045;">fromCharCode</span><span style="color: #000
 </div>
 </div>
 </div>
-<div id="outline-container-org4b793dc" class="outline-2">
-<h2 id="org4b793dc">Refs</h2>
-<div class="outline-text-2" id="text-org4b793dc">
+<div id="outline-container-orga61f25d" class="outline-2">
+<h2 id="orga61f25d">Refs</h2>
+<div class="outline-text-2" id="text-orga61f25d">
 <ul class="org-ul">
 <li><a href="https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript">How to detect emoji using javascript</a></li>
 
@@ -689,8 +689,8 @@ String.<span style="color: #721045;">fromCharCode</span><span style="color: #000
 </ul>
 </div>
 </div>
-<div id="outline-container-org726b359" class="outline-2">
-<h2 id="org726b359">Comments</h2>
+<div id="outline-container-org689fb5c" class="outline-2">
+<h2 id="org689fb5c">Comments</h2>
 </div>
 </div>
 <div id="postamble" class="status">

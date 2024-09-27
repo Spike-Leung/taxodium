@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-09-27 Fri 21:45 -->
+<!-- 2024-09-28 Sat 01:56 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KPM 算法的 JS 实现</title>
@@ -215,15 +215,15 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org885c4b9">前缀 &amp; 后缀</a></li>
-<li><a href="#org0bd072d">部分匹配表(PMT [Partial Match Table])</a>
+<li><a href="#org9652fee">前缀 &amp; 后缀</a></li>
+<li><a href="#org4029b87">部分匹配表(PMT [Partial Match Table])</a>
 <ul>
-<li><a href="#orgfea3e20">PMT 代码实现</a></li>
+<li><a href="#orgf831fcf">PMT 代码实现</a></li>
 </ul>
 </li>
-<li><a href="#orgae7656c">KMP 实现</a></li>
-<li><a href="#org6cc8c2b">leetcode 题目</a></li>
-<li><a href="#org399a491">参考</a></li>
+<li><a href="#org618218a">KMP 实现</a></li>
+<li><a href="#orgc011921">leetcode 题目</a></li>
+<li><a href="#org473e5af">参考</a></li>
 </ul>
 </div>
 </div>
@@ -250,9 +250,9 @@
 <p>
 KMP 利用了匹配后的信息，把 <code>匹配串(B)的匹配部分的前缀</code> 和 <code>原串(A)匹配部分的后缀</code> 进行对齐，从而快速移动匹配串，避免了原串遍历的回溯。
 </p>
-<div id="outline-container-org885c4b9" class="outline-2">
-<h2 id="org885c4b9">前缀 &amp; 后缀</h2>
-<div class="outline-text-2" id="text-org885c4b9">
+<div id="outline-container-org9652fee" class="outline-2">
+<h2 id="org9652fee">前缀 &amp; 后缀</h2>
+<div class="outline-text-2" id="text-org9652fee">
 <blockquote>
 <p>
 字符串的 <b>前缀</b> 是指不包含最后一个字符的所有以第一个字符开头的连续子串；
@@ -284,9 +284,9 @@ KMP 利用了匹配后的信息，把 <code>匹配串(B)的匹配部分的前缀
 </p>
 </div>
 </div>
-<div id="outline-container-org0bd072d" class="outline-2">
-<h2 id="org0bd072d">部分匹配表(PMT [Partial Match Table])</h2>
-<div class="outline-text-2" id="text-org0bd072d">
+<div id="outline-container-org4029b87" class="outline-2">
+<h2 id="org4029b87">部分匹配表(PMT [Partial Match Table])</h2>
+<div class="outline-text-2" id="text-org4029b87">
 <blockquote>
 <p>
 "部分匹配值" 就是 "前缀" 和 "后缀" 的 <b>最长</b> 的 <b>共有</b> 元素的 <b>长度</b> 。
@@ -301,9 +301,9 @@ PMT[i] 表示一个部分匹配值，描述的是在 0 ~ i 这个区间，最长
 计算 PMT 的过程，其实也利用了 KMP 算法。
 </p>
 </div>
-<div id="outline-container-orgfea3e20" class="outline-3">
-<h3 id="orgfea3e20">PMT 代码实现</h3>
-<div class="outline-text-3" id="text-orgfea3e20">
+<div id="outline-container-orgf831fcf" class="outline-3">
+<h3 id="orgf831fcf">PMT 代码实现</h3>
+<div class="outline-text-3" id="text-orgf831fcf">
 <div class="org-src-container">
 <pre class="src src-js"><span style="color: #531ab6;">function</span> <span style="color: #721045;">getPmt</span><span style="color: #000000;">(</span><span style="color: #005e8b;">s</span><span style="color: #000000;">)</span> <span style="color: #000000;">{</span>
   <span style="color: #531ab6;">const</span> <span style="color: #005e8b;">n</span> = s.length;
@@ -343,9 +343,9 @@ console.log<span style="color: #000000;">(</span>getPmt<span style="color: #dd22
 </div>
 </div>
 </div>
-<div id="outline-container-orgae7656c" class="outline-2">
-<h2 id="orgae7656c">KMP 实现</h2>
-<div class="outline-text-2" id="text-orgae7656c">
+<div id="outline-container-org618218a" class="outline-2">
+<h2 id="org618218a">KMP 实现</h2>
+<div class="outline-text-2" id="text-org618218a">
 <div class="org-src-container">
 <pre class="src src-js"><span style="color: #531ab6;">function</span> <span style="color: #721045;">kmp</span><span style="color: #000000;">(</span><span style="color: #005e8b;">s</span>, <span style="color: #005e8b;">p</span><span style="color: #000000;">)</span> <span style="color: #000000;">{</span>
   <span style="color: #531ab6;">const</span> <span style="color: #005e8b;">n</span> = s.length;
@@ -396,17 +396,17 @@ console.log<span style="color: #000000;">(</span>getPmt<span style="color: #dd22
 </p>
 </div>
 </div>
-<div id="outline-container-org6cc8c2b" class="outline-2">
-<h2 id="org6cc8c2b">leetcode 题目</h2>
-<div class="outline-text-2" id="text-org6cc8c2b">
+<div id="outline-container-orgc011921" class="outline-2">
+<h2 id="orgc011921">leetcode 题目</h2>
+<div class="outline-text-2" id="text-orgc011921">
 <ul class="org-ul">
 <li><a href="https://leetcode-cn.com/problems/implement-strstr/">28. 实现 strStr()</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org399a491" class="outline-2">
-<h2 id="org399a491">参考</h2>
-<div class="outline-text-2" id="text-org399a491">
+<div id="outline-container-org473e5af" class="outline-2">
+<h2 id="org473e5af">参考</h2>
+<div class="outline-text-2" id="text-org473e5af">
 <ul class="org-ul">
 <li><a href="https://www.bilibili.com/video/av81151415/?p=1">[算法] 轻松掌握 kmp</a> - bilibili@邋遢大哥233
 最容易理解的视频</li>
