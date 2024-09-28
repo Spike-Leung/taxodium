@@ -1,0 +1,971 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Weekly#10</title>
+<meta name="author" content="Spike Leung" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+ <nav>
+  <ul>
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/rss.xml">RSS</a></li>
+    <li><a href="https://github.com/Spike-Leung/taxodium/tree/org-publish">GitHub</a></li>
+  </ul>
+</nav>
+</div>
+<div id="content" class="content">
+<h1 class="title">Weekly#10</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgb4444b0">News | Article</a>
+<ul>
+<li><a href="#org764dba4">Sanding UI</a></li>
+<li><a href="#org9316857">I Like Makefiles</a></li>
+<li><a href="#orge0d5627">What's inside the QR code menu at this cafe?</a></li>
+<li><a href="#org16c1f61">It’s Okay to Abandon Things</a></li>
+<li><a href="#orgd0fc39a">You Can't Build Interactive Web Apps Except as Single Page Applications&#x2026; And Other Myths</a></li>
+<li><a href="#orgff87589">Thoughts on Debugging</a></li>
+<li><a href="#org306aa65">Why I still blog after 15 years</a></li>
+<li><a href="#org3c28cd2">How I Think About Debt</a></li>
+</ul>
+</li>
+<li><a href="#org6815293">Tutorial</a>
+<ul>
+<li><a href="#orgba8606e">HOW TO SUCCEED IN MRBEAST PRODUCTION</a></li>
+<li><a href="#orgd089ce3">Stanford CS229 I Machine Learning I Building Large Language Models (LLMs)</a></li>
+<li><a href="#orgbae11e9">Visual guide to SSH tunneling and port forwarding</a></li>
+<li><a href="#org2c6faa1">Compiling to Assembly from Scratch</a></li>
+</ul>
+</li>
+<li><a href="#orgeb038e1">Code</a>
+<ul>
+<li><a href="#org88f9ae3">Component Composition is great btw</a></li>
+<li><a href="#org5488523">9 Principles for Doing Node.js Right in Enterprise Environments</a></li>
+<li><a href="#org7655990">A guide to destructuring in JavaScript</a></li>
+<li><a href="#org8195f01">Improving rendering performance with CSS content-visibility</a></li>
+<li><a href="#org2eae49f">Don't Sleep on AbortController</a></li>
+</ul>
+</li>
+<li><a href="#org3272e1b">Cool Bit</a>
+<ul>
+<li><a href="#orga383914">ASCII Silhouettify</a></li>
+<li><a href="#orgccb30e6">Your Name In Landsat</a></li>
+<li><a href="#org7380f2a">这个网店用 ssh 卖咖啡</a></li>
+<li><a href="#org051c4fd">time-flies</a></li>
+<li><a href="#orgf858339">A look at how I redesigned my website.</a></li>
+<li><a href="#org844c23c">The 34th First Annual Ig Nobel Ceremony</a></li>
+<li><a href="#org4720095">乡音</a></li>
+<li><a href="#orgdfe8e5f">abtest.design</a></li>
+<li><a href="#orgaaa50d2">DEPΛR7URE MONO</a></li>
+<li><a href="#org9f5f79b">Awesome CN Café</a></li>
+</ul>
+</li>
+<li><a href="#org6ab9a9f">博客推荐</a>
+<ul>
+<li><a href="#orga672eee">葉開 • 時光記</a></li>
+<li><a href="#org0370747">midnight serial experiments</a></li>
+<li><a href="#org1920fd3">Josh Comeau</a></li>
+</ul>
+</li>
+<li><a href="#org4b21f1a">Tool | Library</a>
+<ul>
+<li><a href="#orgee03ed1">sugarizer</a></li>
+<li><a href="#orgaab839b">Kaomoji</a></li>
+<li><a href="#orgb6a4f21">git absorb</a></li>
+</ul>
+</li>
+<li><a href="#org0a565ec">Music</a></li>
+</ul>
+</div>
+</div>
+<div class="org-src-container">
+<pre class="src src-js"><span style="color: #7f0000;">// </span><span style="color: #7f0000;">What does this evaluate to?</span>
+Array.from<span style="color: #000000;">(</span><span style="color: #dd22dd;">{</span> length: 26 <span style="color: #dd22dd;">}</span>, <span style="color: #dd22dd;">(</span>x, i<span style="color: #dd22dd;">)</span> =&gt; <span style="color: #dd22dd;">(</span>i + 10<span style="color: #dd22dd;">)</span>.toString<span style="color: #dd22dd;">(</span>36<span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>.join<span style="color: #000000;">(</span><span style="color: #3548cf;">", "</span><span style="color: #000000;">)</span>
+</pre>
+</div>
+<div id="outline-container-orgb4444b0" class="outline-2">
+<h2 id="orgb4444b0">News | Article</h2>
+<div class="outline-text-2" id="text-orgb4444b0">
+</div>
+<div id="outline-container-org764dba4" class="outline-3">
+<h3 id="org764dba4"><a href="https://blog.jim-nielsen.com/2024/sanding-ui/">Sanding UI</a></h3>
+<div class="outline-text-3" id="text-org764dba4">
+<p>
+作者使用 flex 布局实现 radio box，在 label 和 input 之间设置了 gap，发现无法点击，对用户不友好，然后用 padding 替换了 gap。
+</p>
+
+<blockquote>
+<p>
+It’s a small thing, but lots of small splinters lead to an agonizing experience.
+</p>
+
+<p>
+这是件小事，但很多小碎片会导致痛苦的经历。
+</p>
+
+<p>
+So my recipe is: sand it, feel the grain, get a splinter, sand again, and repeat until smooth.
+</p>
+
+<p>
+所以我的秘诀是：打磨，感觉纹理，有刺，再打磨，重复直到光滑为止。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org9316857" class="outline-3">
+<h3 id="org9316857"><a href="https://switowski.com/blog/i-like-makefiles/">I Like Makefiles</a></h3>
+<div class="outline-text-3" id="text-org9316857">
+<blockquote>
+<p>
+The reason I like makefiles is that they often follow an unwritten convention of implementing the same set of commands to get you up and running.
+</p>
+
+<p>
+我之所以喜欢 makefile，是因为它们通常遵循一种不成文的惯例，即执行同一套命令即可启动和运行。
+</p>
+</blockquote>
+
+<p>
+作者喜欢 makefile，是因为它相对来说比较统一，在不同地方构建一般都是 install，build，dev 几个命令，他自己也会使用 makefile 整合其他构建工具。
+</p>
+
+<p>
+这样可以减少心智负担，要构建就执行 <code>make build</code> 就好了。
+</p>
+
+<p>
+就像有的人会买很多同样的衣服，每天就从同样的衣服里拿，不用纠结穿什么衣服。
+</p>
+
+<p>
+makefile 相关的资源还有：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/theicfire/makefiletutorial">makefile tutrorial</a></li>
+<li><a href="https://gagor.pro/2024/02/how-i-stopped-worrying-and-loved-makefiles/">How I stopped worrying and loved Makefiles</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge0d5627" class="outline-3">
+<h3 id="orge0d5627"><a href="https://news.ycombinator.com/item?id=41622632">What's inside the QR code menu at this cafe?</a></h3>
+<div class="outline-text-3" id="text-orge0d5627">
+<p>
+作者在咖啡店扫了二维码，无聊用网页打开，找到了订单系统的 API，通过 API 可以给其他人下单，获取其他门店的交易情况。
+</p>
+
+<p>
+一个二维码把整个订单系统都暴露了。
+</p>
+
+<p>
+不过文章已经下架了。 ┐(シ)┌
+</p>
+</div>
+</div>
+<div id="outline-container-org16c1f61" class="outline-3">
+<h3 id="org16c1f61"><a href="https://netninja.com/2024/02/05/its-okay-to-abandon-things/">It’s Okay to Abandon Things</a></h3>
+<div class="outline-text-3" id="text-org16c1f61">
+<p>
+和作者类似，当我开始读一本书的时候，如果没有读完，我就不愿意读另一本书。
+</p>
+
+<p>
+尽管对在读的这本书不感兴趣了，还得逼着自己读完。
+</p>
+
+<p>
+因为不想读，就搁置在一边，但又不肯开一本新书。
+</p>
+
+<p>
+作者的建议是可以增加一个“远离书架”：
+</p>
+
+<p>
+当一本书不想读的时候，可以快速看看结尾，或者看看别人的书评，然后将它放入到“远离书架”。
+</p>
+
+<p>
+这样你依然有机会看这本书，但从精神上把它放一边，让自己可以轻松一些，去看新的书。
+</p>
+
+<blockquote>
+<p>
+由于上述原因，我的 "当前阅读 "书架上只能有一本书，而且我必须在读完这本书后才能把它移到 "已读 "书架上，然后再换一本新书。
+</p>
+
+<p>
+去年年底，我创建了第四个书架："远离 "书架。
+</p>
+
+<p>
+如果我读一本书读得不开心，这个新书架就会给我一定的精神许可，让我可以把它移到 "远离 "书架，继续我的生活。
+</p>
+
+<p>
+这只是一件小事，似乎并不重要，但它却能让我的大脑允许我不必读完这本书。
+</p>
+
+<p>
+我仍在追踪这本书，以及我开始写这本书的事实。
+</p>
+
+<p>
+我没有把它从我的 Goodreads 上完全删除。我只是在精神上（以及在网站上）把它放在一边，为其他东西腾出空间。
+</p>
+
+<p>
+谁知道呢？也许我以后还会再看，但可能不会了。
+</p>
+
+<p>
+书架让它保持开放性，但也不会被人遗忘。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+对于电影，至少是在家里看的流媒体电影，我坚持 "十分钟原则"。
+</p>
+
+<p>
+如果有人在看电影的前十分钟内不感兴趣，就可以拔掉插头。
+</p>
+</blockquote>
+
+<p>
+我觉得 GTD (Getting Thing Done) 也是类似的策略，它要求你将生活的所有事情收集起来，放到一个系统中，这样脑子就不用一直记着有什么事情没做，脑子就会轻松很多，可以去思考别的事情。
+</p>
+
+<p>
+如果对 GTD 感兴趣，可以看看 <a href="https://www.youtube.com/watch?v=gCswMsONkwY&amp;ab_channel=SuccessfulByDesign">Getting Things Done (GTD) by David Allen - Animated Book Summary And Review</a> 。
+</p>
+</div>
+</div>
+<div id="outline-container-orgd0fc39a" class="outline-3">
+<h3 id="orgd0fc39a"><a href="https://htmx.org/essays/you-cant">You Can't Build Interactive Web Apps Except as Single Page Applications&#x2026; And Other Myths</a></h3>
+<div class="outline-text-3" id="text-orgd0fc39a">
+<p>
+翻译一下标题：2024 年了，MPA(Multiple Page Application，多页面应用) 能不能用？
+</p>
+
+<p>
+作者澄清了一些 MPA 开发的误区，看起来目前使用 MPA 也能得到不错的交互体验。
+</p>
+
+<blockquote>
+<p>
+在我们不经意间，浏览器已经缩小了差距，并借鉴了单页面应用程序革命的最佳理念。
+</p>
+
+<p>
+&#x2026;
+</p>
+
+<p>
+因此，现在我们可以主要使用浏览器工具 &#x2013; HTML、CSS，也许还有一些 Javascript &#x2013; 来构建交互性很强的甚至是离线的网络应用程序，而且在用户体验方面仍然不会有太大的损失。
+</p>
+
+<p>
+浏览器已取得长足进步。给它一个机会吧！
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orgff87589" class="outline-3">
+<h3 id="orgff87589"><a href="https://catskull.net/thoughts-on-debugging.html">Thoughts on Debugging</a></h3>
+<div class="outline-text-3" id="text-orgff87589">
+<blockquote>
+<p>
+Here’s my one simple rule for debugging:
+</p>
+
+<p>
+<b>Reproduce the issue.</b>
+</p>
+
+<p>
+That’s the only thing, really.
+</p>
+
+<p>
+There are a lot of barriers to this. This is the antithesis to “it works on my machine”.
+</p>
+
+<p>
+Debugging is answering the question “why?”.
+</p>
+
+<p>
+Magic exists, but I’ve never seen any in software. Problems are logical. Nothing is impossible.
+</p>
+
+<p>
+You can solve this problem. You just need to reproduce the issue.
+</p>
+
+<p>
+Reproducing the issue should be the team’s number 1 priority.
+</p>
+
+<p>
+The issue must be reproduced exactly, not just symptoms of the same behavior.
+</p>
+
+<p>
+这是我调试的一个简单规则:
+</p>
+
+<p>
+<b>重现问题。</b>
+</p>
+
+<p>
+这就是关键所在。这其中存在许多障碍。这与"在我的机器上运行正常"的理念完全相反。
+</p>
+
+<p>
+调试就是回答"为什么?"这个问题。
+</p>
+
+<p>
+魔法存在，但我从未在软件中见过任何魔法。问题是逻辑性的。没有什么是不可能的。
+</p>
+
+<p>
+你能解决这个问题。你只需要重现这个问题。
+</p>
+
+<p>
+重现问题应该是团队的首要任务。
+</p>
+
+<p>
+必须准确地重现问题，而不仅仅是同样行为的症状。
+</p>
+</blockquote>
+
+<p>
+确实，所谓的“偶现问题”，很多时候只是找不到重现问题的方法。
+</p>
+
+<blockquote>
+<p>
+Often the solution will naturally present itself in the course of debugging, usually by the time you’re successfully reproducing the issue.
+</p>
+
+<p>
+It could be that by reproducing the problem, you are gaining the required knowledge to fix it.
+</p>
+
+<p>
+However I think there very few actually hard problems and you’re probably not smart and/or lucky enough to work on one.
+</p>
+
+<p>
+I’m not sure that I’ve ever worked on a hard problem, at least not for work.
+</p>
+
+<p>
+We’re mostly just shoveling mud around in various forms with various amounts of efficiency.
+</p>
+
+<p>
+很多时候，解决方案会在调试过程中自然呈现，通常在您成功再现问题时。
+</p>
+
+<p>
+可能是通过再现问题，您获得了修复它所需的知识。
+</p>
+
+<p>
+但我认为实际上很少有难题，您可能足够聪明和/或幸运到去解决一个。
+</p>
+
+<p>
+我不确定我是否曾经解决过什么难题，至少不是在工作中。
+</p>
+
+<p>
+我们大多数人只是在各种形式和效率下拧螺丝。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org306aa65" class="outline-3">
+<h3 id="org306aa65"><a href="https://www.jonashietala.se/blog/2024/09/25/why_i_still_blog_after_15_years/">Why I still blog after 15 years</a></h3>
+<div class="outline-text-3" id="text-org306aa65">
+<p>
+作者回顾了自己写博客的 15 年，为什么写博客，为什么还继续写博客。
+</p>
+
+<p>
+关于为什么还继续写，作者的理由是：
+</p>
+
+<ul class="org-ul">
+<li>我喜欢写作</li>
+<li>写作帮助我思路更清晰，也帮我完善想法</li>
+<li>发布某些东西迫使我做得更好，因为要发布给别人看，所以需要自己斟酌内容</li>
+<li>这个博客是一个记录我个人项目的地方</li>
+<li>看看我已经做过的事情的记录,让我感到更好</li>
+<li>我乐于将博客作为一个专门解决我自身问题的项目进行开发，可以随便折腾</li>
+<li><p>
+博客写作帮助我成为更好的作家，这又反过来帮助我成为更好的开发人员
+</p>
+
+<blockquote>
+<p>
+It’s important to point out that it’s not external feedback that has kept me going all these years.
+</p>
+
+<p>
+Yes, of course, it’s nice to get the occasional email with compliments, but that’s just a bonus.
+</p>
+
+<p>
+<b>I keep this blog for me to write, not necessarily for others to read.</b>
+</p>
+
+<p>
+重要的是要指出，并不是外部反馈一直支撑我走到今天。
+</p>
+
+<p>
+是的，当然，偶尔收到赞美的电子邮件很不错,但那只是额外的奖赏。
+</p>
+
+<p>
+<b>我保留这个博客是为了让我自己书写，而非必须让别人阅读。</b>
+</p>
+</blockquote></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3c28cd2" class="outline-3">
+<h3 id="org3c28cd2"><a href="https://collabfund.com/blog/how-i-think-about-debt/">How I Think About Debt</a></h3>
+<div class="outline-text-3" id="text-org3c28cd2">
+<blockquote>
+<p>
+“Debt defines your future, and when your future is defined, hope begins to die.”
+</p>
+
+<p>
+“债务定义了你的未来，当你的未来被定义时,希望开始消亡。”
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+But once you view debt as narrowing what you can endure in a volatile world, you start to see it as a constraint on the asset that matters most: having options and flexibility.
+</p>
+
+<p>
+但是一旦你将债务视为缩小了你在动荡世界中能够经受的范围，你就会开始将其视为对最重要的资产的约束：拥有选择和灵活性。
+</p>
+</blockquote>
+
+<p>
+买了房，要背负几十年的房贷，再有了孩子，感觉很多选择确实就不敢做了。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org6815293" class="outline-2">
+<h2 id="org6815293">Tutorial</h2>
+<div class="outline-text-2" id="text-org6815293">
+</div>
+<div id="outline-container-orgba8606e" class="outline-3">
+<h3 id="orgba8606e"><a href="http://splet.4a.si/dir/How-To-Succeed-At-MrBeast-Production.pdf">HOW TO SUCCEED IN MRBEAST PRODUCTION</a></h3>
+<div class="outline-text-3" id="text-orgba8606e">
+<p>
+Mr.Beast 的培训资料，有一些关于如何创建爆火视频的方法。
+</p>
+
+<p>
+Mr.Beast 的视频也看过一些，看起来每期视频都成本很高。
+</p>
+</div>
+</div>
+<div id="outline-container-orgd089ce3" class="outline-3">
+<h3 id="orgd089ce3"><a href="https://www.youtube.com/watch?v=9vM4p9NN0Ts&amp;ab_channel=StanfordOnline">Stanford CS229 I Machine Learning I Building Large Language Models (LLMs)</a></h3>
+</div>
+
+<div id="outline-container-orgbae11e9" class="outline-3">
+<h3 id="orgbae11e9"><a href="https://ittavern.com/visual-guide-to-ssh-tunneling-and-port-forwarding/">Visual guide to SSH tunneling and port forwarding</a></h3>
+</div>
+
+<div id="outline-container-org2c6faa1" class="outline-3">
+<h3 id="org2c6faa1"><a href="https://keleshev.com/compiling-to-assembly-from-scratch/">Compiling to Assembly from Scratch</a></h3>
+<div class="outline-text-3" id="text-org2c6faa1">
+<p>
+一本电子书，教你制作一个编译器，学习编译器理论和汇编知识。
+</p>
+
+<p>
+书里使用的是 TypeScript 的子集，读起来像伪代码，目标是 ARM 32 位指令集。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgeb038e1" class="outline-2">
+<h2 id="orgeb038e1">Code</h2>
+<div class="outline-text-2" id="text-orgeb038e1">
+</div>
+<div id="outline-container-org88f9ae3" class="outline-3">
+<h3 id="org88f9ae3"><a href="https://tkdodo.eu/blog/component-composition-is-great-btw">Component Composition is great btw</a></h3>
+<div class="outline-text-3" id="text-org88f9ae3">
+<p>
+在处理条件渲染的时候，组合组件的形式，比将所有逻辑都写在一个组件模板中会更好维护。
+</p>
+
+<p>
+好处是：
+</p>
+
+<ul class="org-ul">
+<li>降低心智负担</li>
+<li>容易扩展</li>
+<li>更好的类型推断</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5488523" class="outline-3">
+<h3 id="org5488523"><a href="https://www.platformatichq.com/node-principles">9 Principles for Doing Node.js Right in Enterprise Environments</a></h3>
+<div class="outline-text-3" id="text-org5488523">
+<p>
+一些 Node.js 最佳实践：
+</p>
+
+<ul class="org-ul">
+<li>不要阻塞事件循环</li>
+<li>监控 NodeJS 的具体指标并采取相应行动，如内存，CPU 的使用等，当它们达到某个阈值，就需要有措施去应对</li>
+<li>使用 Node LTS（Long-Term Support） 版本</li>
+<li>尽可能实现测试、代码审查和一致性的自动化</li>
+<li>避免依赖性攀升，避免依赖过多</li>
+<li>降低依赖风险，定期检查，及时更新依赖</li>
+<li>避免使用全局变量、配置或单例，主要是为了降低耦合</li>
+<li>处理错误并提供有意义的日志</li>
+<li>使用应用程序接口规范（如 OpenAPI）并自动生成客户端</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org7655990" class="outline-3">
+<h3 id="org7655990"><a href="https://piccalil.li/blog/a-guide-to-destructuring-in-javascript/">A guide to destructuring in JavaScript</a></h3>
+<div class="outline-text-3" id="text-org7655990">
+<p>
+JS 中<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment">解构赋值</a>的使用介绍，内容比较简单，适合对解构赋值不熟悉的初学者。
+</p>
+</div>
+</div>
+<div id="outline-container-org8195f01" class="outline-3">
+<h3 id="org8195f01"><a href="https://nolanlawson.com/2024/09/18/improving-rendering-performance-with-css-content-visibility">Improving rendering performance with CSS content-visibility</a></h3>
+<div class="outline-text-3" id="text-org8195f01">
+<p>
+作者要渲染 20K 个表情，但是页面很卡。
+</p>
+
+<p>
+最开始想到的是虚拟列表的方案，后来他想到了用 <a href="https://web.dev/articles/content-visibility">content-visibility</a>，实践后确实也有提升，但是性能还是没有虚拟列表的好，但是可以作为一个粗略的替代方案。
+</p>
+</div>
+</div>
+<div id="outline-container-org2eae49f" class="outline-3">
+<h3 id="org2eae49f"><a href="https://kettanaito.com/blog/dont-sleep-on-abort-controller">Don't Sleep on AbortController</a></h3>
+<div class="outline-text-3" id="text-org2eae49f">
+<p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController">AbortController</a> 的用例，通过封装，你可以通过 AbortController 中断各种逻辑。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org3272e1b" class="outline-2">
+<h2 id="org3272e1b">Cool Bit</h2>
+<div class="outline-text-2" id="text-org3272e1b">
+</div>
+<div id="outline-container-orga383914" class="outline-3">
+<h3 id="orga383914"><a href="https://meatfighter.com/ascii-silhouettify/spa/index.html#/">ASCII Silhouettify</a></h3>
+<div class="outline-text-3" id="text-orga383914">
+<p>
+上传图片，生成 ASCII 图案，效果还不错。
+</p>
+</div>
+</div>
+<div id="outline-container-orgccb30e6" class="outline-3">
+<h3 id="orgccb30e6"><a href="https://landsat.gsfc.nasa.gov/apps/YourNameInLandsat-main/index.html">Your Name In Landsat</a></h3>
+<div class="outline-text-3" id="text-orgccb30e6">
+<p>
+填写一个英文名，返回对应字母的地理图片，都是真是的地理位置。
+</p>
+</div>
+</div>
+<div id="outline-container-org7380f2a" class="outline-3">
+<h3 id="org7380f2a"><a href="https://www.v2ex.com/t/1037342">这个网店用 ssh 卖咖啡</a></h3>
+<div class="outline-text-3" id="text-org7380f2a">
+<p>
+<code>ssh terminal.shop</code> 会终端打开一个购物页面，挺有趣的。
+</p>
+</div>
+</div>
+<div id="outline-container-org051c4fd" class="outline-3">
+<h3 id="org051c4fd"><a href="https://time-flies.koenvangilst.nl/">time-flies</a></h3>
+<div class="outline-text-3" id="text-org051c4fd">
+<p>
+“飞蝇时钟”
+</p>
+</div>
+</div>
+<div id="outline-container-orgf858339" class="outline-3">
+<h3 id="orgf858339"><a href="https://ishadeed.com/article/redesign-2024/">A look at how I redesigned my website.</a></h3>
+<div class="outline-text-3" id="text-orgf858339">
+<p>
+作者重新设计了他的个人网站，首页的 hero part 挺好玩的。
+</p>
+
+<p>
+网站的交互和动效都很不错。
+</p>
+
+<p>
+最近我也将博客改造了一下，但是相比作者，我这简直就是毛胚房 (/▿＼ )
+</p>
+</div>
+</div>
+<div id="outline-container-org844c23c" class="outline-3">
+<h3 id="org844c23c"><a href="https://improbable.com/ig/archive/2024-ceremony/">The 34th First Annual Ig Nobel Ceremony</a></h3>
+<div class="outline-text-3" id="text-org844c23c">
+<p>
+2024 年搞笑诺贝尔奖。
+</p>
+
+<dl class="org-dl">
+<dt>解剖学奖</dt><dd>Marjolaine Willems, Quentin Hennocq, Sara Tunon de Lara, Nicolas Kogane, Vincent Fleury, Romy Rayssiguier, Juan José Cortés Santander, Roberto Requena, Julien Stirnemann, and Roman Hossein Khonsari, 研究了大多数人头发的旋转方向(顺时针还是逆时针?)是否与南半球大多数人的头发旋转方向相同。</dd>
+
+<dt>医学奖</dt><dd>Lieven A. Schenk, Tahmine Fadai, and Christian Büchel，证明引起痛苦副作用的假药比不引起痛苦副作用的假药更有效。</dd>
+
+<dt>概率奖</dt><dd>František Bartoš, Eric-Jan Wagenmakers, Alexandra Sarafoglou, Henrik Godmann, and many colleagues, 通过理论和 350,757 个实验证明,当你投掷硬币时,它倾向于落在与起始状态相同的一面。</dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-org4720095" class="outline-3">
+<h3 id="org4720095"><a href="https://web.xiangyin.mobi/">乡音</a></h3>
+<div class="outline-text-3" id="text-org4720095">
+<p>
+一个方言语音交流平台。
+</p>
+</div>
+</div>
+<div id="outline-container-orgdfe8e5f" class="outline-3">
+<h3 id="orgdfe8e5f"><a href="https://abtest.design/">abtest.design</a></h3>
+<div class="outline-text-3" id="text-orgdfe8e5f">
+<p>
+一些设计的 A/B test 数据，换了设计，有的提高了 46% 的销售额，足见好的设计的重要性。
+</p>
+</div>
+</div>
+<div id="outline-container-orgaaa50d2" class="outline-3">
+<h3 id="orgaaa50d2"><a href="https://departuremono.com/">DEPΛR7URE MONO</a></h3>
+<div class="outline-text-3" id="text-orgaaa50d2">
+<p>
+像素风格的字体，网站也很好看。
+</p>
+</div>
+</div>
+<div id="outline-container-org9f5f79b" class="outline-3">
+<h3 id="org9f5f79b"><a href="https://github.com/ElaWorkshop/awesome-cn-cafe">Awesome CN Café</a></h3>
+<div class="outline-text-3" id="text-org9f5f79b">
+<p>
+在 GitHub 上使用 <code>.geojson</code> 后缀的文件，可以显示成地图，并将里面的数据标记在地图上，蛮有趣的。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org6ab9a9f" class="outline-2">
+<h2 id="org6ab9a9f">博客推荐</h2>
+<div class="outline-text-2" id="text-org6ab9a9f">
+</div>
+<div id="outline-container-orga672eee" class="outline-3">
+<h3 id="orga672eee"><a href="https://qq.md/">葉開 • 時光記</a></h3>
+</div>
+
+<div id="outline-container-org0370747" class="outline-3">
+<h3 id="org0370747"><a href="https://bilibi.li/">midnight serial experiments</a></h3>
+<div class="outline-text-3" id="text-org0370747">
+<p>
+简洁的博客。
+</p>
+</div>
+</div>
+<div id="outline-container-org1920fd3" class="outline-3">
+<h3 id="org1920fd3"><a href="https://www.joshwcomeau.com/">Josh Comeau</a></h3>
+<div class="outline-text-3" id="text-org1920fd3">
+<p>
+Josh Comeau 的博客看起来很不错，而且分享很多关于 CSS 和 JS 的知识，之前经常刷到。
+</p>
+
+<dl class="org-dl">
+<dt><a href="https://www.joshwcomeau.com/blog/how-i-built-my-blog-v2/">How I Built My Blog</a></dt><dd>他分享了他的博客是如何构建出来的。</dd>
+
+<dt><a href="https://www.joshwcomeau.com/blog/hands-free-coding/">Hands-Free Coding</a></dt><dd>他手患病了，无法用键盘和鼠标，就用语音和眼动仪替代。</dd>
+</dl>
+</div>
+</div>
+</div>
+<div id="outline-container-org4b21f1a" class="outline-2">
+<h2 id="org4b21f1a">Tool | Library</h2>
+<div class="outline-text-2" id="text-org4b21f1a">
+</div>
+<div id="outline-container-orgee03ed1" class="outline-3">
+<h3 id="orgee03ed1"><a href="https://sugarizer.org/">sugarizer</a></h3>
+<div class="outline-text-3" id="text-orgee03ed1">
+<p>
+一个儿童学习平台。
+</p>
+</div>
+</div>
+<div id="outline-container-orgaab839b" class="outline-3">
+<h3 id="orgaab839b"><a href="https://kaomoji.ru/en/">Kaomoji</a></h3>
+<div class="outline-text-3" id="text-orgaab839b">
+<p>
+一些颜文字。
+</p>
+</div>
+</div>
+<div id="outline-container-orgb6a4f21" class="outline-3">
+<h3 id="orgb6a4f21"><a href="https://github.com/tummychow/git-absorb">git absorb</a></h3>
+<div class="outline-text-3" id="text-orgb6a4f21">
+<p>
+git absorb 会识别一些相近的 fix 改动，自动打上 <code>fixup!</code> 标记，方便 rebase.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">git add $<span style="color: #005e8b;">FILES_YOU_FIXED</span>
+git absorb
+git log <span style="color: #7f0000;"># </span><span style="color: #7f0000;">check the auto-generated fixup commits</span>
+git rebase -i --autosquash master
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org0a565ec" class="outline-2">
+<h2 id="org0a565ec">Music</h2>
+<div class="outline-text-2" id="text-org0a565ec">
+<p>
+这周听的很多的是窦靖童的两张专辑： 《<a href="https://music.163.com/#/album?id=164309759">春游</a>》和 《空中飞人》。
+</p>
+
+<p>
+在我的播放器里，在窦靖童之后的就是<a href="https://music.163.com/#/artist?id=17673">関取花</a>的《<a href="https://music.163.com/#/album?id=2881280">中くらいの話</a>》，也听了很多遍。
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">Date: 2024-09-28 Sat 00:00</p>
+<p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<script src="https://utteranc.es/client.js" repo="Spike-Leung/taxodium" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+</div>
+</body>
+</html>
