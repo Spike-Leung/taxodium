@@ -64,7 +64,7 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
   不过别人已经踩过坑，按照 [[https://writepermission.com/org-blogging-rss-feed.html][Org mode blogging: RSS feed]] 中的方法实现了。
 
-  具体来说就是遍历所有的 org 文件，将他们的内容插入到一个 rss.org 文件中，在基于 rss.org 使用 ox-rss 去生成 RSS 文件。
+  具体来说就是遍历所有的 org 文件，将他们的内容插入到一个 rss.org 文件中，再基于 rss.org 使用 ox-rss 去生成 RSS 文件。
 
   [[https://writepermission.com/org-blogging-rss-feed.html][Org mode blogging: RSS feed]] 的实现会把整个 org 文件的内容插入到 rss.org 中。
 
@@ -80,7 +80,7 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 - *index 文件的设置* ::
   设置 =:makeindex t= 可以生成 index 文件，需要在 org 文件中设置 =#+INDEX= keyword。
 
-  但是生成的文件名固定是 theindex.org, 并且会按照文章标题首个字进行索引，看起来很快，最后用 sitemap 替代了。
+  但是生成的文件名固定是 theindex.org, 并且会按照文章标题首个字进行索引，看起来很怪，最后用 sitemap 替代了。
 
   现在看到的 [[https://taxodium.ink/index.html][Home]] 其实就是一个 sitemap。
 
@@ -96,7 +96,7 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
 * org-publish 的完整代码
 
-以下代码可以作为参考，我可能会有调整，最新的请看 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el][init-org-publish.el]]。
+以下代码可以作为参考，最新的请看 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el][init-org-publish.el]]。
 
 #+begin_src elisp
   ;;; init-org-publish.el --- org publish config for my blog -*- lexical-binding: t -*-
@@ -275,7 +275,7 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
 * 一些缺点
 
-- 在执行 org-publish 时，如果内容多，可能会很慢，此时也会阻塞 Emacs，不能做其他事情
+- 在执行 org-publish 时，如果内容多，可能会很慢，此时会阻塞 Emacs，不能做其他事情
 - 由于依赖 Emacs，[[https://nettify.com/][Nettify]] 等平台上没有开箱即用的构建命令，集成 CI/CD 相对麻烦
 
 * Todo [0/5]
