@@ -94,6 +94,9 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
   不过可以执行 =C-u M-x org-publish= 忽略缓存进行构建。
 
+- :time-stamp-file nil ::
+  设置 =:time-stamp-file nil= 可以避免每次执行 org-publish 的时候都往 HTML 插入最新的时间戳，导致每次变更的文件很多。
+
 * org-publish 的完整代码
 
 以下代码可以作为参考，最新的请看 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el][init-org-publish.el]]。
@@ -277,6 +280,43 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
 - 在执行 org-publish 时，如果内容多，可能会很慢，此时会阻塞 Emacs，不能做其他事情
 - 由于依赖 Emacs，[[https://nettify.com/][Nettify]] 等平台上没有开箱即用的构建命令，集成 CI/CD 相对麻烦
+
+* 其他
+
+为了方便，可以通过 [[https://github.com/joaotavora/yasnippet][YASnippet]] 或其他方式，设置 org 文件共用内容。
+
+例如这是我用于[[https://github.com/Spike-Leung/emacs.d/blob/windows/snippets/org-mode/weekly][写周刊的 snippet]]:
+
+#+begin_src elisp
+  # -*- mode: snippet -*-
+  # name: weekly
+  # key: weekly
+  # group: blog
+  # --
+
+  ,#+title: Weekly#$1
+  ,#+INDEX: weekly!#$1
+  ,#+date: `(format-time-string "<%Y-%m-%d %a>" (current-time))`
+  ,#+lastmod: `(format-time-string "<%Y-%m-%d %a %H:%M>" (current-time))`
+  ,#+author: Spike Leung
+  ,#+email: l-yanlei@hotmail.com
+  ,#+description: ""
+  ,#+tags: weekly
+
+
+  ,* News | Article
+  $0
+  ,* Tutorial
+
+  ,* Code
+
+  ,* Cool Bit
+
+  ,* Tool | Library
+
+  ,* Music
+#+end_src
+
 
 * TODO Todo
 
