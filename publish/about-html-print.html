@@ -9,7 +9,7 @@
 <meta name="author" content="Spike Leung" />
 <meta name="description" content="&quot;&quot;" />
 <meta name="generator" content="Org Mode" />
-<style type="text/css">
+<style>
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -215,21 +215,22 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3acd9fd">print()</a></li>
-<li><a href="#org9a742e7">Style</a></li>
-<li><a href="#org6a3f549">Debug</a></li>
-<li><a href="#org9ca0191">其他注意点</a></li>
-<li><a href="#orge3584c7">Examples</a></li>
-<li><a href="#org5e3d62a">Refs</a></li>
+<li><a href="#org3492bf6">print()</a></li>
+<li><a href="#org59b6356">Style</a></li>
+<li><a href="#org05105af">Debug</a></li>
+<li><a href="#orge50e39d">其他注意点</a></li>
+<li><a href="#org9399aa3">Examples</a></li>
+<li><a href="#org12cd728">Refs</a></li>
 </ul>
 </div>
 </div>
 <p>
 当想把一个网页打印的时候，可以在浏览器中右键，选择 <code>Print</code> ，浏览器会出来一个打印预览窗口给你预览效果，并且可以设置一些打印参数。
 </p>
-<div id="outline-container-org3acd9fd" class="outline-2">
-<h2 id="org3acd9fd">print()</h2>
-<div class="outline-text-2" id="text-org3acd9fd">
+
+<div id="outline-container-org3492bf6" class="outline-2">
+<h2 id="org3492bf6">print()</h2>
+<div class="outline-text-2" id="text-org3492bf6">
 <p>
 你也可以在页面中，调用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/print">Window: print() method</a> 方法，弹出打印预览窗口。
 </p>
@@ -251,9 +252,10 @@ print() 方法默认是打印当前页面的整个 HTML。
 </p>
 </div>
 </div>
-<div id="outline-container-org9a742e7" class="outline-2">
-<h2 id="org9a742e7">Style</h2>
-<div class="outline-text-2" id="text-org9a742e7">
+
+<div id="outline-container-org59b6356" class="outline-2">
+<h2 id="org59b6356">Style</h2>
+<div class="outline-text-2" id="text-org59b6356">
 <p>
 打印的样式，可以通过 <code>@media print</code> 设置。
 </p>
@@ -261,7 +263,7 @@ print() 方法默认是打印当前页面的整个 HTML。
 <div class="org-src-container">
 <pre class="src src-css"><span style="color: #8f0075;">@media</span> screen <span style="color: #000000;">{}</span>
 
-<span style="color: #7f0000;">/* </span><span style="color: #7f0000;">print style</span><span style="color: #7f0000;"> */</span>
+<span style="color: #969896;">/* </span><span style="color: #7f0000;">print style</span><span style="color: #969896;"> */</span>
 <span style="color: #8f0075;">@media</span> print <span style="color: #000000;">{</span>
 
 <span style="color: #000000;">}</span>
@@ -298,12 +300,12 @@ print() 方法默认是打印当前页面的整个 HTML。
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-css"><span style="color: #7f0000;">/* </span><span style="color: #7f0000;">print.css</span><span style="color: #7f0000;"> */</span>
+<pre class="src src-css"><span style="color: #969896;">/* </span><span style="color: #7f0000;">print.css</span><span style="color: #969896;"> */</span>
 <span style="color: #721045;">header, footer, aside, nav, form, iframe, .menu, .hero, .adslot</span> <span style="color: #000000;">{</span>
   <span style="color: #531ab6;">display</span>: none;
 <span style="color: #000000;">}</span>
 
-<span style="color: #7f0000;">/* </span><span style="color: #7f0000;">https://css-tricks.com/stylesheets-for-printing/</span><span style="color: #7f0000;"> */</span>
+<span style="color: #969896;">/* </span><span style="color: #7f0000;">https://css-tricks.com/stylesheets-for-printing/</span><span style="color: #969896;"> */</span>
 <span style="color: #721045;">#header, #navigation, #footer, .any, .random, .junk, .on, .your, .page, .that, .shouldnt, .print</span> <span style="color: #000000;">{</span>
   <span style="color: #531ab6;">display</span>: none;
 <span style="color: #000000;">}</span>
@@ -336,12 +338,12 @@ print() 方法默认是打印当前页面的整个 HTML。
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-css"><span style="color: #7f0000;">/* </span><span style="color: #7f0000;">&#26174;&#31034;&#38142;&#25509;</span><span style="color: #7f0000;"> */</span>
+<pre class="src src-css"><span style="color: #969896;">/* </span><span style="color: #7f0000;">&#26174;&#31034;&#38142;&#25509;</span><span style="color: #969896;"> */</span>
 <span style="color: #721045;">a::after</span> <span style="color: #000000;">{</span>
   <span style="color: #531ab6;">content</span>: <span style="color: #3548cf;">" ("</span> attr<span style="color: #dd22dd;">(</span>href<span style="color: #dd22dd;">)</span> <span style="color: #3548cf;">")"</span>;
 <span style="color: #000000;">}</span>
 
-<span style="color: #7f0000;">/* </span><span style="color: #7f0000;">&#28155;&#21152;&#19968;&#20123;&#25171;&#21360;&#20449;&#24687;&#65292;&#22914;&#32593;&#31449;</span><span style="color: #7f0000;"> */</span>
+<span style="color: #969896;">/* </span><span style="color: #7f0000;">&#28155;&#21152;&#19968;&#20123;&#25171;&#21360;&#20449;&#24687;&#65292;&#22914;&#32593;&#31449;</span><span style="color: #969896;"> */</span>
 <span style="color: #721045;">main::after</span> <span style="color: #000000;">{</span>
   <span style="color: #531ab6;">content</span>: <span style="color: #3548cf;">"Copyright site.com"</span>;
   <span style="color: #531ab6;">display</span>: block;
@@ -357,21 +359,22 @@ print() 方法默认是打印当前页面的整个 HTML。
 </ul>
 </div>
 </div>
-<div id="outline-container-org6a3f549" class="outline-2">
-<h2 id="org6a3f549">Debug</h2>
-<div class="outline-text-2" id="text-org6a3f549">
+
+<div id="outline-container-org05105af" class="outline-2">
+<h2 id="org05105af">Debug</h2>
+<div class="outline-text-2" id="text-org05105af">
 <p>
 以 Chrome 为例，你可以打开 <code>Developer tools</code> ，在更多工具中找到 <code>rendering</code> ，设置 <code>Emulate CSS media type</code> 为 <code>print</code> ，可以模拟 <code>@media print</code> ，从而调试打印样式。
 </p>
 
 
-<div id="orgdc966ec" class="figure">
+<div id="org94e7a0c" class="figure">
 <p><img src="./images/about-html-print/rendering.png" alt="rendering.png" />
 </p>
 </div>
 
 
-<div id="org3deacf6" class="figure">
+<div id="org1ec5a50" class="figure">
 <p><img src="./images/about-html-print/rendering-emulate-css-media-type-print.png" alt="rendering-emulate-css-media-type-print.png" />
 </p>
 </div>
@@ -385,25 +388,28 @@ print() 方法默认是打印当前页面的整个 HTML。
 </p>
 </div>
 </div>
-<div id="outline-container-org9ca0191" class="outline-2">
-<h2 id="org9ca0191">其他注意点</h2>
-<div class="outline-text-2" id="text-org9ca0191">
+
+<div id="outline-container-orge50e39d" class="outline-2">
+<h2 id="orge50e39d">其他注意点</h2>
+<div class="outline-text-2" id="text-orge50e39d">
 <ul class="org-ul">
 <li>如果页面存在动画，打印的时候需要等待动画完成，不然可能由于动画未完成导致部分元素没有显示，或者考虑关闭动画</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orge3584c7" class="outline-2">
-<h2 id="orge3584c7">Examples</h2>
-<div class="outline-text-2" id="text-orge3584c7">
+
+<div id="outline-container-org9399aa3" class="outline-2">
+<h2 id="org9399aa3">Examples</h2>
+<div class="outline-text-2" id="text-org9399aa3">
 <ul class="org-ul">
 <li><a href="https://spike-leung.github.io/print-demo/">print-demo</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org5e3d62a" class="outline-2">
-<h2 id="org5e3d62a">Refs</h2>
-<div class="outline-text-2" id="text-org5e3d62a">
+
+<div id="outline-container-org12cd728" class="outline-2">
+<h2 id="org12cd728">Refs</h2>
+<div class="outline-text-2" id="text-org12cd728">
 <ul class="org-ul">
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/print">Window: print() method</a></li>
 

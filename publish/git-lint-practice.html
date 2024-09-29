@@ -9,7 +9,7 @@
 <meta name="author" content="Spike Leung" />
 <meta name="description" content="&quot;&quot;" />
 <meta name="generator" content="Org Mode" />
-<style type="text/css">
+<style>
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -215,52 +215,54 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0e4f098">提交信息 (commit message)</a>
+<li><a href="#org71de4e9">提交信息 (commit message)</a>
 <ul>
-<li><a href="#org849c838">diff</a></li>
-<li><a href="#org22387ef">编写方式</a></li>
-<li><a href="#orgb8742f2">格式</a></li>
-<li><a href="#org22d2b82">工具校验</a></li>
-<li><a href="#org83975b6">提交信息模板(commit.template)</a></li>
+<li><a href="#org3f448ba">diff</a></li>
+<li><a href="#org8d57d62">编写方式</a></li>
+<li><a href="#org0f10b11">格式</a></li>
+<li><a href="#org8756165">工具校验</a></li>
+<li><a href="#org05a71d8">提交信息模板(commit.template)</a></li>
 </ul>
 </li>
-<li><a href="#orgfe0bd9d">githooks / husky</a>
+<li><a href="#orge71e6a5">githooks / husky</a>
 <ul>
-<li><a href="#org50b698e">配置方法</a>
+<li><a href="#orgbffdcf3">配置方法</a>
 <ul>
-<li><a href="#orge4d22e7">githooks</a></li>
-<li><a href="#org5cd423a">husky</a></li>
+<li><a href="#org3925274">githooks</a></li>
+<li><a href="#org134034c">husky</a></li>
 </ul>
 </li>
-<li><a href="#orgd0f6d04">一些例子</a>
+<li><a href="#org0d738e9">一些例子</a>
 <ul>
-<li><a href="#org4b7f0f6">校验提交信息 (commit-msg)</a></li>
-<li><a href="#org784f198">提交前校验&amp;格式化代码(pre-commit)</a></li>
-<li><a href="#org5cc78e1">推送时判断是否合包含主分支提交(pre-push)</a></li>
+<li><a href="#org64e1453">校验提交信息 (commit-msg)</a></li>
+<li><a href="#org0d4b09d">提交前校验&amp;格式化代码(pre-commit)</a></li>
+<li><a href="#orgfc11edf">推送时判断是否合包含主分支提交(pre-push)</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org8c83cd0">changelog</a></li>
-<li><a href="#org4d4d400">Refs</a></li>
+<li><a href="#org1583736">changelog</a></li>
+<li><a href="#orgce9bc88">Refs</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org0e4f098" class="outline-2">
-<h2 id="org0e4f098">提交信息 (commit message)</h2>
-<div class="outline-text-2" id="text-org0e4f098">
+
+<div id="outline-container-org71de4e9" class="outline-2">
+<h2 id="org71de4e9">提交信息 (commit message)</h2>
+<div class="outline-text-2" id="text-org71de4e9">
 </div>
-<div id="outline-container-org849c838" class="outline-3">
-<h3 id="org849c838">diff</h3>
-<div class="outline-text-3" id="text-org849c838">
+<div id="outline-container-org3f448ba" class="outline-3">
+<h3 id="org3f448ba">diff</h3>
+<div class="outline-text-3" id="text-org3f448ba">
 <p>
 在提交前最好先确认一下当前提交了什么文件，看看 diff，确认没有改错后再提交。
 </p>
 </div>
 </div>
-<div id="outline-container-org22387ef" class="outline-3">
-<h3 id="org22387ef">编写方式</h3>
-<div class="outline-text-3" id="text-org22387ef">
+
+<div id="outline-container-org8d57d62" class="outline-3">
+<h3 id="org8d57d62">编写方式</h3>
+<div class="outline-text-3" id="text-org8d57d62">
 <p>
 提交信息可以通过以下命令完成：
 </p>
@@ -281,29 +283,29 @@
 配置 Git 编辑器：
 </p>
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #7f0000;"># </span><span style="color: #7f0000;">vim &#21487;&#20197;&#25442;&#25104;&#20320;&#20064;&#24815;&#30340;&#32534;&#36753;&#22120;</span>
+<pre class="src src-bash"><span style="color: #969896;"># </span><span style="color: #7f0000;">vim &#21487;&#20197;&#25442;&#25104;&#20320;&#20064;&#24815;&#30340;&#32534;&#36753;&#22120;</span>
 git config --global core.editor <span style="color: #3548cf;">"vim"</span>
 
-<span style="color: #7f0000;"># </span><span style="color: #7f0000;">&#25110;&#32773;&#35774;&#32622; GIT_EDITOR &#21464;&#37327;&#65292;&#22312;&#20320;&#30340; .bashrc / .zshrc &#25991;&#20214;&#20013;&#28155;&#21152;&#21363;&#21487;</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">&#25110;&#32773;&#35774;&#32622; GIT_EDITOR &#21464;&#37327;&#65292;&#22312;&#20320;&#30340; .bashrc / .zshrc &#25991;&#20214;&#20013;&#28155;&#21152;&#21363;&#21487;</span>
 <span style="color: #8f0075;">export</span> <span style="color: #005e8b;">GIT_EDITOR</span>=vim
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgb8742f2" class="outline-3">
-<h3 id="orgb8742f2">格式</h3>
-<div class="outline-text-3" id="text-orgb8742f2">
+
+<div id="outline-container-org0f10b11" class="outline-3">
+<h3 id="org0f10b11">格式</h3>
+<div class="outline-text-3" id="text-org0f10b11">
 <p>
 提交信息一般遵循<a href="https://www.conventionalcommits.org/zh-hans/v1.0.0-beta.4/">约定式提交</a>的规范去编写，基本结构为：
 </p>
-<div class="org-src-container">
-<pre class="src src-nil">&lt;类型&gt;[可选的作用域]: &lt;描述&gt;
+<pre class="example">
+&lt;类型&gt;[可选的作用域]: &lt;描述&gt;
 
 [可选的正文]
 
 [可选的脚注]
 </pre>
-</div>
 
 <p>
 其中类型的定义可以参考 <a href="https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#type">Angular</a>:
@@ -359,9 +361,10 @@ change? Here<span style="color: #3548cf;">'s the place to explain them.</span>
 </div>
 </div>
 </div>
-<div id="outline-container-org22d2b82" class="outline-3">
-<h3 id="org22d2b82">工具校验</h3>
-<div class="outline-text-3" id="text-org22d2b82">
+
+<div id="outline-container-org8756165" class="outline-3">
+<h3 id="org8756165">工具校验</h3>
+<div class="outline-text-3" id="text-org8756165">
 <p>
 在团队协作中，为了确保大家的提交都符合规范，最好是通过工具去约束，而不是人为检查。
 </p>
@@ -371,9 +374,10 @@ change? Here<span style="color: #3548cf;">'s the place to explain them.</span>
 </p>
 </div>
 </div>
-<div id="outline-container-org83975b6" class="outline-3">
-<h3 id="org83975b6">提交信息模板(commit.template)</h3>
-<div class="outline-text-3" id="text-org83975b6">
+
+<div id="outline-container-org05a71d8" class="outline-3">
+<h3 id="org05a71d8">提交信息模板(commit.template)</h3>
+<div class="outline-text-3" id="text-org05a71d8">
 <p>
 团队中可能有约定好的提交信息格式，也可以添加一份提交模板在项目，每次提交时都读取模板进行编写，这样也可以统一格式。
 </p>
@@ -409,14 +413,14 @@ Multi-line description of commit,
 feel free to be detailed.
 
 <span style="color: #000000;">[</span>Ticket: X<span style="color: #000000;">]</span>
-<span style="color: #7f0000;"># </span><span style="color: #7f0000;">Please enter the commit message for your changes. Lines starting</span>
-<span style="color: #7f0000;"># </span><span style="color: #7f0000;">with '#' will be ignored, and an empty message aborts the commit.</span>
-<span style="color: #7f0000;"># </span><span style="color: #7f0000;">On branch master</span>
-<span style="color: #7f0000;"># </span><span style="color: #7f0000;">Changes to be committed:</span>
-<span style="color: #7f0000;">#   </span><span style="color: #7f0000;">(use "git reset HEAD &lt;file&gt;..." to unstage)</span>
-<span style="color: #7f0000;">#</span>
-<span style="color: #7f0000;"># </span><span style="color: #7f0000;">modified:   lib/test.rb</span>
-<span style="color: #7f0000;">#</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">Please enter the commit message for your changes. Lines starting</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">with '#' will be ignored, and an empty message aborts the commit.</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">On branch master</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">Changes to be committed:</span>
+<span style="color: #969896;">#   </span><span style="color: #7f0000;">(use "git reset HEAD &lt;file&gt;..." to unstage)</span>
+<span style="color: #969896;">#</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">modified:   lib/test.rb</span>
+<span style="color: #969896;">#</span>
 ~
 ~
 <span style="color: #3548cf;">".git/COMMIT_EDITMSG"</span> 14L, 297C
@@ -425,9 +429,10 @@ feel free to be detailed.
 </div>
 </div>
 </div>
-<div id="outline-container-orgfe0bd9d" class="outline-2">
-<h2 id="orgfe0bd9d">githooks / husky</h2>
-<div class="outline-text-2" id="text-orgfe0bd9d">
+
+<div id="outline-container-orge71e6a5" class="outline-2">
+<h2 id="orge71e6a5">githooks / husky</h2>
+<div class="outline-text-2" id="text-orge71e6a5">
 <p>
 前面提到，可以用 <a href="https://github.com/conventional-changelog/commitlint">commitlint</a> 在 <code>pre-commit</code> 时进行校验， <code>pre-commit</code> 指的就是一个 <a href="https://git-scm.com/docs/githooks">Git 钩子</a>，可以在提交前触发一些动作。
 </p>
@@ -451,13 +456,14 @@ feel free to be detailed.
 githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本过低，就需要升级一下。
 </p>
 </div>
-<div id="outline-container-org50b698e" class="outline-3">
-<h3 id="org50b698e">配置方法</h3>
-<div class="outline-text-3" id="text-org50b698e">
+
+<div id="outline-container-orgbffdcf3" class="outline-3">
+<h3 id="orgbffdcf3">配置方法</h3>
+<div class="outline-text-3" id="text-orgbffdcf3">
 </div>
-<div id="outline-container-orge4d22e7" class="outline-4">
-<h4 id="orge4d22e7">githooks</h4>
-<div class="outline-text-4" id="text-orge4d22e7">
+<div id="outline-container-org3925274" class="outline-4">
+<h4 id="org3925274">githooks</h4>
+<div class="outline-text-4" id="text-org3925274">
 <ul class="org-ul">
 <li><p>
 进入 githooks 所在的目录
@@ -496,7 +502,7 @@ githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本
 如果你想用 shell:
 </p>
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #7f0000;">#</span><span style="color: #7f0000;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #7f0000;"> sh</span>
+<pre class="src src-bash"><span style="color: #969896;">#</span><span style="color: #7f0000;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #7f0000;"> sh</span>
 </pre>
 </div>
 
@@ -504,7 +510,7 @@ githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本
 或者用 python:
 </p>
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #7f0000;">#</span><span style="color: #7f0000;">!/usr/</span><span style="color: #531ab6;">bin</span><span style="color: #7f0000;"> python</span>
+<pre class="src src-bash"><span style="color: #969896;">#</span><span style="color: #7f0000;">!/usr/</span><span style="color: #531ab6;">bin</span><span style="color: #7f0000;"> python</span>
 </pre>
 </div>
 
@@ -513,7 +519,7 @@ githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本
 设置好语言后，就编写脚本，例如 <code>pre-push</code>:
 </p>
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #7f0000;">#</span><span style="color: #7f0000;">!/bin/</span><span style="color: #531ab6;">sh</span>
+<pre class="src src-shell"><span style="color: #969896;">#</span><span style="color: #7f0000;">!/bin/</span><span style="color: #531ab6;">sh</span>
 <span style="color: #005e8b;">COMMIT_ID</span>=$<span style="color: #000000;">(</span>git log -n 1 --pretty=format:<span style="color: #3548cf;">"%H"</span> main<span style="color: #000000;">)</span>
 
 <span style="color: #531ab6;">if</span> git merge-base --is-ancestor $<span style="color: #005e8b;">COMMIT_ID</span> HEAD
@@ -538,9 +544,10 @@ githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本
 </p>
 </div>
 </div>
-<div id="outline-container-org5cd423a" class="outline-4">
-<h4 id="org5cd423a">husky</h4>
-<div class="outline-text-4" id="text-org5cd423a">
+
+<div id="outline-container-org134034c" class="outline-4">
+<h4 id="org134034c">husky</h4>
+<div class="outline-text-4" id="text-org134034c">
 <p>
 <a href="https://typicode.github.io/husky/#/">husky</a> 是一个方便写 githooks 的工具，目前也蛮流行的。
 </p>
@@ -565,9 +572,10 @@ husky 的使用就不赘述了，如果项目可以 husky，建议还是用 husk
 </div>
 </div>
 </div>
-<div id="outline-container-orgd0f6d04" class="outline-3">
-<h3 id="orgd0f6d04">一些例子</h3>
-<div class="outline-text-3" id="text-orgd0f6d04">
+
+<div id="outline-container-org0d738e9" class="outline-3">
+<h3 id="org0d738e9">一些例子</h3>
+<div class="outline-text-3" id="text-org0d738e9">
 <div class="org-src-container">
 <pre class="src src-bash">/home/spike/git/commit-demo/.husky:
 total used<span style="color: #531ab6;"> in</span> directory 24 available 232.5 GiB
@@ -581,14 +589,14 @@ drwxrwxr-x 2 spike spike 4096 Oct 25 09:14 _
 </pre>
 </div>
 </div>
-<div id="outline-container-org4b7f0f6" class="outline-4">
-<h4 id="org4b7f0f6">校验提交信息 (commit-msg)</h4>
-<div class="outline-text-4" id="text-org4b7f0f6">
+<div id="outline-container-org64e1453" class="outline-4">
+<h4 id="org64e1453">校验提交信息 (commit-msg)</h4>
+<div class="outline-text-4" id="text-org64e1453">
 <p>
 安装  <a href="https://github.com/conventional-changelog/commitlint">commitlint</a> 以来，然后创建 <code>commit-msg</code> 钩子，在提交后，校验提交信息是否符合规范：
 </p>
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #7f0000;">#</span><span style="color: #7f0000;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #7f0000;"> sh</span>
+<pre class="src src-shell"><span style="color: #969896;">#</span><span style="color: #7f0000;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #7f0000;"> sh</span>
 . <span style="color: #3548cf;">"$(dirname -- "$0")/_/husky.sh"</span>
 
 npx --no -- commitlint --edit $<span style="color: #000000;">{</span><span style="color: #005e8b;">1</span><span style="color: #000000;">}</span>
@@ -596,11 +604,11 @@ npx --no -- commitlint --edit $<span style="color: #000000;">{</span><span style
 </div>
 </div>
 </div>
-<div id="outline-container-org784f198" class="outline-4">
-<h4 id="org784f198">提交前校验&amp;格式化代码(pre-commit)</h4>
-<div class="outline-text-4" id="text-org784f198">
+<div id="outline-container-org0d4b09d" class="outline-4">
+<h4 id="org0d4b09d">提交前校验&amp;格式化代码(pre-commit)</h4>
+<div class="outline-text-4" id="text-org0d4b09d">
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #7f0000;">#</span><span style="color: #7f0000;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #7f0000;"> sh</span>
+<pre class="src src-shell"><span style="color: #969896;">#</span><span style="color: #7f0000;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #7f0000;"> sh</span>
 . <span style="color: #3548cf;">"$(dirname -- "$0")/_/husky.sh"</span>
 npx lint-staged
 </pre>
@@ -625,21 +633,22 @@ npx lint-staged
 </p>
 </div>
 </div>
-<div id="outline-container-org5cc78e1" class="outline-4">
-<h4 id="org5cc78e1">推送时判断是否合包含主分支提交(pre-push)</h4>
-<div class="outline-text-4" id="text-org5cc78e1">
+
+<div id="outline-container-orgfc11edf" class="outline-4">
+<h4 id="orgfc11edf">推送时判断是否合包含主分支提交(pre-push)</h4>
+<div class="outline-text-4" id="text-orgfc11edf">
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #7f0000;">#</span><span style="color: #7f0000;">!/bin/</span><span style="color: #531ab6;">sh</span>
-<span style="color: #7f0000;"># </span><span style="color: #7f0000;">&#33719;&#21462; main &#20998;&#25903;&#26368;&#26032;&#30340;&#25552;&#20132;</span>
+<pre class="src src-shell"><span style="color: #969896;">#</span><span style="color: #7f0000;">!/bin/</span><span style="color: #531ab6;">sh</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">&#33719;&#21462; main &#20998;&#25903;&#26368;&#26032;&#30340;&#25552;&#20132;</span>
 git fetch
 <span style="color: #005e8b;">COMMIT_ID</span>=$<span style="color: #000000;">(</span>git log -n 1 --pretty=format:<span style="color: #3548cf;">"%H"</span> origin/main<span style="color: #000000;">)</span>
 
-<span style="color: #7f0000;"># </span><span style="color: #7f0000;">&#21028;&#26029; main &#30340;&#26368;&#26032;&#25552;&#20132; &#26159;&#19981;&#26159; &#24403;&#21069;&#30340;&#26368;&#26032;&#25552;&#20132; (HEAD) &#30340;&#19978;&#28216;</span>
+<span style="color: #969896;"># </span><span style="color: #7f0000;">&#21028;&#26029; main &#30340;&#26368;&#26032;&#25552;&#20132; &#26159;&#19981;&#26159; &#24403;&#21069;&#30340;&#26368;&#26032;&#25552;&#20132; (HEAD) &#30340;&#19978;&#28216;</span>
 <span style="color: #531ab6;">if</span> git merge-base --is-ancestor $<span style="color: #005e8b;">COMMIT_ID</span> HEAD
 <span style="color: #531ab6;">then</span>
     <span style="color: #531ab6;">exit</span> 0
 <span style="color: #531ab6;">else</span>
-    <span style="color: #7f0000;"># </span><span style="color: #7f0000;">&#22914;&#26524;&#19981;&#26159;&#21017;&#25552;&#31034; exit code &#19981;&#20026; 0&#65292;&#20250;&#38459;&#26029; push&#65292;&#26080;&#27861;&#25512;&#36865;&#21040;&#36828;&#31243;</span>
+    <span style="color: #969896;"># </span><span style="color: #7f0000;">&#22914;&#26524;&#19981;&#26159;&#21017;&#25552;&#31034; exit code &#19981;&#20026; 0&#65292;&#20250;&#38459;&#26029; push&#65292;&#26080;&#27861;&#25512;&#36865;&#21040;&#36828;&#31243;</span>
     <span style="color: #8f0075;">echo</span> <span style="color: #3548cf;">"&#20027;&#20998;&#25903;&#26377;&#20320;&#27809;&#26377;&#21512;&#24182;&#30340;&#25552;&#20132;&#65292;&#22312;&#25552;&#27979;&#21069;&#35831;&#21512;&#24182;"</span>
     <span style="color: #531ab6;">exit</span> 1
 <span style="color: #531ab6;">fi</span>
@@ -657,9 +666,10 @@ git fetch
 </div>
 </div>
 </div>
-<div id="outline-container-org8c83cd0" class="outline-2">
-<h2 id="org8c83cd0">changelog</h2>
-<div class="outline-text-2" id="text-org8c83cd0">
+
+<div id="outline-container-org1583736" class="outline-2">
+<h2 id="org1583736">changelog</h2>
+<div class="outline-text-2" id="text-org1583736">
 <p>
 涉及到版本控制，自然也有版本号和发布日志，一般而言，版本号应该遵循<a href="https://semver.org/lang/zh-CN/">语义化版本 2.0.0</a>的规范。
 </p>
@@ -697,9 +707,10 @@ changeset 就会帮你把所有的 changeset 合并到 <code>CHANGELOG.md</code>
 </p>
 </div>
 </div>
-<div id="outline-container-org4d4d400" class="outline-2">
-<h2 id="org4d4d400">Refs</h2>
-<div class="outline-text-2" id="text-org4d4d400">
+
+<div id="outline-container-orgce9bc88" class="outline-2">
+<h2 id="orgce9bc88">Refs</h2>
+<div class="outline-text-2" id="text-orgce9bc88">
 <ul class="org-ul">
 <li><a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration">8.1 Customizing Git - Git Configuration</a></li>
 <li><a href="https://stackoverflow.com/questions/2596805/how-do-i-make-git-use-the-editor-of-my-choice-for-editing-commit-messages">How do I make git use the editor of my choice for editing commit messages?</a></li>

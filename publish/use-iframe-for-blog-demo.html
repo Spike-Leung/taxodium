@@ -9,7 +9,7 @@
 <meta name="author" content="Spike Leung" />
 <meta name="description" content="&quot;&quot;" />
 <meta name="generator" content="Org Mode" />
-<style type="text/css">
+<style>
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -254,7 +254,7 @@
 而我的博客本身使用 <a href="https://orgmode.org/">Org Mode</a> 写的，代码块是：
 </p>
 
-<pre class="example" id="orgd529643">
+<pre class="example" id="org336c876">
 #+begin_src html
 &lt;!DOCTYPE&gt;
 &lt;html&gt;
@@ -267,7 +267,7 @@
 iframe 实例是：
 </p>
 
-<pre class="example" id="org40ba12c">
+<pre class="example" id="org916211e">
 #+begin_export html
 &lt;iframe style="width: 100%;" srcdoc="&amp;lt;!DOCTYPE&amp;gt; &amp;lt;html&amp;gt; &amp;lt;body&amp;gt;hello world&amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt;"&gt;&lt;/iframe&gt;
 #+end_export
@@ -282,40 +282,40 @@ iframe 实例是：
   <span style="color: #2a5045;">"Process the next HTML block from the current position, escape it, compress it, and generate a #+begin_export html block with an iframe, replacing any existing export block."</span>
   <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">interactive</span><span style="color: #dd22dd;">)</span>
   <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">let</span> <span style="color: #008899;">(</span>html-content escaped-html srcdoc start end export-start export-end<span style="color: #008899;">)</span>
-    <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">Search for the next #+begin_src html block from the current position</span>
+    <span style="color: #969896;">;; </span><span style="color: #7f0000;">Search for the next #+begin_src html block from the current position</span>
     <span style="color: #008899;">(</span><span style="color: #531ab6;">save-excursion</span>
       <span style="color: #972500;">(</span><span style="color: #531ab6;">when</span> <span style="color: #808000;">(</span>re-search-forward <span style="color: #3548cf;">"^#</span><span style="color: #721045;">\</span><span style="color: #00663f;">\</span><span style="color: #3548cf;">+begin_src html"</span> nil t<span style="color: #808000;">)</span>
         <span style="color: #808000;">(</span><span style="color: #531ab6;">setq</span> start <span style="color: #531ab6;">(</span>match-end 0<span style="color: #531ab6;">)</span><span style="color: #808000;">)</span>
         <span style="color: #808000;">(</span><span style="color: #531ab6;">when</span> <span style="color: #531ab6;">(</span>re-search-forward <span style="color: #3548cf;">"^#</span><span style="color: #721045;">\</span><span style="color: #00663f;">\</span><span style="color: #3548cf;">+end_src"</span> nil t<span style="color: #531ab6;">)</span>
           <span style="color: #531ab6;">(</span><span style="color: #531ab6;">setq</span> end <span style="color: #008900;">(</span>match-beginning 0<span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
           <span style="color: #531ab6;">(</span><span style="color: #531ab6;">setq</span> html-content <span style="color: #008900;">(</span>buffer-substring-no-properties start end<span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
-          <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">Process the HTML content</span>
+          <span style="color: #969896;">;; </span><span style="color: #7f0000;">Process the HTML content</span>
           <span style="color: #531ab6;">(</span><span style="color: #531ab6;">when</span> html-content
-            <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">Escape HTML characters using sgml-quote in a temporary buffer</span>
+            <span style="color: #969896;">;; </span><span style="color: #7f0000;">Escape HTML characters using sgml-quote in a temporary buffer</span>
             <span style="color: #008900;">(</span><span style="color: #531ab6;">setq</span> escaped-html
                   <span style="color: #3548cf;">(</span><span style="color: #531ab6;">with-temp-buffer</span>
                     <span style="color: #8f0075;">(</span>insert html-content<span style="color: #8f0075;">)</span>
-                    <span style="color: #8f0075;">(</span>sgml-mode<span style="color: #8f0075;">)</span> <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">Switch to sgml-mode to enable sgml-quote</span>
+                    <span style="color: #8f0075;">(</span>sgml-mode<span style="color: #8f0075;">)</span> <span style="color: #969896;">;; </span><span style="color: #7f0000;">Switch to sgml-mode to enable sgml-quote</span>
                     <span style="color: #8f0075;">(</span>sgml-quote <span style="color: #000000;">(</span>point-min<span style="color: #000000;">)</span> <span style="color: #000000;">(</span>point-max<span style="color: #000000;">)</span><span style="color: #8f0075;">)</span>
                     <span style="color: #8f0075;">(</span>buffer-string<span style="color: #8f0075;">)</span><span style="color: #3548cf;">)</span><span style="color: #008900;">)</span>
 
-            <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">Compress into a single line and remove extra spaces</span>
+            <span style="color: #969896;">;; </span><span style="color: #7f0000;">Compress into a single line and remove extra spaces</span>
             <span style="color: #008900;">(</span><span style="color: #531ab6;">setq</span> srcdoc <span style="color: #3548cf;">(</span>replace-regexp-in-string <span style="color: #3548cf;">"[</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #721045;">\</span><span style="color: #00663f;">r</span><span style="color: #3548cf;">]+"</span> <span style="color: #3548cf;">" "</span> escaped-html<span style="color: #3548cf;">)</span><span style="color: #008900;">)</span>
             <span style="color: #008900;">(</span><span style="color: #531ab6;">setq</span> srcdoc <span style="color: #3548cf;">(</span>replace-regexp-in-string <span style="color: #3548cf;">"[ </span><span style="color: #721045;">\</span><span style="color: #00663f;">t</span><span style="color: #3548cf;">]+"</span> <span style="color: #3548cf;">" "</span> srcdoc<span style="color: #3548cf;">)</span><span style="color: #008900;">)</span>
 
-            <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">Move to the end of the block and check for existing export block</span>
+            <span style="color: #969896;">;; </span><span style="color: #7f0000;">Move to the end of the block and check for existing export block</span>
             <span style="color: #008900;">(</span>goto-char end<span style="color: #008900;">)</span>
-            <span style="color: #008900;">(</span>forward-line 1<span style="color: #008900;">)</span> <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">Move to the line after #+end_src</span>
+            <span style="color: #008900;">(</span>forward-line 1<span style="color: #008900;">)</span> <span style="color: #969896;">;; </span><span style="color: #7f0000;">Move to the line after #+end_src</span>
 
-            <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">Check if there's an existing #+begin_export html block</span>
+            <span style="color: #969896;">;; </span><span style="color: #7f0000;">Check if there's an existing #+begin_export html block</span>
             <span style="color: #008900;">(</span><span style="color: #531ab6;">when</span> <span style="color: #3548cf;">(</span>looking-at <span style="color: #3548cf;">"^#</span><span style="color: #721045;">\</span><span style="color: #00663f;">\</span><span style="color: #3548cf;">+begin_export html"</span><span style="color: #3548cf;">)</span>
               <span style="color: #3548cf;">(</span><span style="color: #531ab6;">setq</span> export-start <span style="color: #8f0075;">(</span>point<span style="color: #8f0075;">)</span><span style="color: #3548cf;">)</span>
               <span style="color: #3548cf;">(</span><span style="color: #531ab6;">when</span> <span style="color: #8f0075;">(</span>re-search-forward <span style="color: #3548cf;">"^#</span><span style="color: #721045;">\</span><span style="color: #00663f;">\</span><span style="color: #3548cf;">+end_export"</span> nil t<span style="color: #8f0075;">)</span>
                 <span style="color: #8f0075;">(</span><span style="color: #531ab6;">setq</span> export-end <span style="color: #000000;">(</span>point<span style="color: #000000;">)</span><span style="color: #8f0075;">)</span>
-                <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">Delete the existing export block</span>
+                <span style="color: #969896;">;; </span><span style="color: #7f0000;">Delete the existing export block</span>
                 <span style="color: #8f0075;">(</span>delete-region export-start export-end<span style="color: #8f0075;">)</span><span style="color: #3548cf;">)</span><span style="color: #008900;">)</span>
 
-            <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">Insert the new #+begin_export html block</span>
+            <span style="color: #969896;">;; </span><span style="color: #7f0000;">Insert the new #+begin_export html block</span>
             <span style="color: #008900;">(</span>insert <span style="color: #3548cf;">(</span>format <span style="color: #3548cf;">"#+begin_export html</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">&lt;iframe style=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">width:100%%</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> srcdoc=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">%s</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;&lt;/iframe&gt;</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">#+end_export</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">"</span> srcdoc<span style="color: #3548cf;">)</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span><span style="color: #808000;">)</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
 </pre>
 </div>
