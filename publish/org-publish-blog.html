@@ -8,7 +8,7 @@
 <title>使用 org-publish 发布博客</title>
 <meta name="author" content="Spike Leung" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -214,14 +214,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org490fc1d">动机</a></li>
-<li><a href="#org5e89e7f">相比之前的变化</a></li>
-<li><a href="#org5493eea">org-publish 的使用</a></li>
-<li><a href="#org0d25261">org-publish 的完整代码</a></li>
-<li><a href="#org4c8e49d">一些缺点</a></li>
-<li><a href="#org01d0a59">其他</a></li>
-<li><a href="#org1a759fe"><span class="todo TODO">TODO</span> Todo</a></li>
-<li><a href="#org01fea98">Refs</a></li>
+<li><a href="#orge83bc48">动机</a></li>
+<li><a href="#org3296b18">相比之前的变化</a></li>
+<li><a href="#orgb9fd38f">org-publish 的使用</a></li>
+<li><a href="#orga630ea4">org-publish 的完整代码</a></li>
+<li><a href="#orgcaad86e">一些缺点</a></li>
+<li><a href="#org613bbf6">其他</a></li>
+<li><a href="#orgc7ed290"><span class="todo TODO">TODO</span> Todo</a></li>
+<li><a href="#orgcc84ee9">Refs</a></li>
 </ul>
 </div>
 </div>
@@ -244,10 +244,9 @@
 <p>
 最近将博客又更新了一下，使用 <a href="https://orgmode.org/manual/Publishing.html">org-publish</a> 进行博客的发布，主要是让博客加载相对快一些，维护起来更简单一些。
 </p>
-
-<div id="outline-container-org490fc1d" class="outline-2">
-<h2 id="org490fc1d">动机</h2>
-<div class="outline-text-2" id="text-org490fc1d">
+<div id="outline-container-orge83bc48" class="outline-2">
+<h2 id="orge83bc48">动机</h2>
+<div class="outline-text-2" id="text-orge83bc48">
 <p>
 在很早之前看过几篇文章：
 </p>
@@ -273,10 +272,9 @@
 </p>
 </div>
 </div>
-
-<div id="outline-container-org5e89e7f" class="outline-2">
-<h2 id="org5e89e7f">相比之前的变化</h2>
-<div class="outline-text-2" id="text-org5e89e7f">
+<div id="outline-container-org3296b18" class="outline-2">
+<h2 id="org3296b18">相比之前的变化</h2>
+<div class="outline-text-2" id="text-org3296b18">
 <ul class="org-ul">
 <li>极大的简化了博客内容，没有主题，没有模板，只有博客内容的 org 文件、css 文件、字体、图片，以及最终转换出来的 HTML 文件</li>
 
@@ -294,10 +292,9 @@
 </p>
 </div>
 </div>
-
-<div id="outline-container-org5493eea" class="outline-2">
-<h2 id="org5493eea">org-publish 的使用</h2>
-<div class="outline-text-2" id="text-org5493eea">
+<div id="outline-container-orgb9fd38f" class="outline-2">
+<h2 id="orgb9fd38f">org-publish 的使用</h2>
+<div class="outline-text-2" id="text-orgb9fd38f">
 <p>
 org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可以定义很多个任务，每个任务指定处理什么文件，怎么处理，处理之后放到什么地方。
 </p>
@@ -385,13 +382,107 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 </p></dd>
 
 <dt>:time-stamp-file nil</dt><dd>设置 <code>:time-stamp-file nil</code> 可以避免每次执行 org-publish 的时候都往 HTML 插入最新的时间戳，导致每次变更的文件很多。</dd>
+
+<dt><code>:html-head</code> 的复用</dt><dd><p>
+最开始定义 <code>org-publish-project-alist</code> ， 我是这么写的，导致一直无法使用变量抽象一些公用的 string：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #000000;">(</span><span style="color: #531ab6;">defconst</span> <span style="color: #005e8b;">spike-leung/html-head</span> <span style="color: #3548cf;">"</span>
+<span style="color: #3548cf;">  &lt;link rel=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">stylesheet</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">../styles/style.css</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> type=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">text/css</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/&gt;</span>
+<span style="color: #3548cf;">  &lt;link rel=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">icon</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/favicon.ico</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> type=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">image/x-icon</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;</span>
+<span style="color: #3548cf;">  "</span>
+  <span style="color: #2a5045;">"`</span><span style="color: #0000b0;">:html-head</span><span style="color: #2a5045;">' for `</span><span style="color: #0000b0;">org-publish</span><span style="color: #2a5045;">'."</span><span style="color: #000000;">)</span>
+
+<span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> org-publish-project-alist
+      <span style="color: #531ab6;">'</span><span style="color: #dd22dd;">(</span><span style="color: #008899;">(</span><span style="color: #3548cf;">"orgfiles"</span>
+         <span style="color: #8f0075;">:base-directory</span> <span style="color: #3548cf;">"~/git/taxodium/post"</span>
+         <span style="color: #8f0075;">:base-extension</span> <span style="color: #3548cf;">"org"</span>
+         <span style="color: #8f0075;">:html-head</span> ,spike-leung/html-head
+         <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;</span>
+         <span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+</pre>
+</div>
+
+<p>
+我在这里用的是 <code>'</code> 去定义， <code>'</code> 在 elisp 中的作用是：
+</p>
+
+<blockquote>
+<p>
+The special form quote returns its single argument, as written, without evaluating it.
+</p>
+
+<p>
+This provides a way to include constant symbols and lists, which are not self-evaluating objects, in a program.
+</p>
+
+<p>
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Quoting.html">Quoting</a>
+</p>
+</blockquote>
+
+<p>
+因此 <code>,spike-leung/html-head</code> 会被当作一个常量，而不会被执行， 而 <code>,spike-leung/html-head</code> 这个字符串 <code>:html-head</code> 并不认识。
+</p>
+
+<p>
+要让 <code>,spike-leung/html-head</code> 被执行，需要将 <code>'</code> 换成 <code>`</code> :
+</p>
+
+<div class="org-src-container">
+<pre class="src src-diff">    (defconst spike-leung/html-head "
+      &lt;link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/&gt;
+      &lt;link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\"&gt;
+      "
+      "`:html-head' for `org-publish'.")
+
+    (setq org-publish-project-alist
+<span style="color: #aa2222; background-color: #f4d0cf;">-</span><span style="color: #8f1313; background-color: #f4d0cf;">          '(("orgfiles"</span>
+<span style="color: #006700; background-color: #c3ebc1;">+</span><span style="color: #005000; background-color: #c3ebc1;">          `(("orgfiles"</span>
+             :base-directory "~/git/taxodium/post"
+             :base-extension "org"
+             :html-head ,spike-leung/html-head
+             ;; ... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
+             )))
+</pre>
+</div>
+
+<blockquote>
+<p>
+Backquote constructs allow you to quote a list, but selectively evaluate elements of that list.
+</p>
+
+<p>
+In the simplest case, it is identical to the special form quote (described in the previous section; see <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Quoting.html">Quoting</a>).
+</p>
+
+<p>
+&#x2026;
+</p>
+
+<p>
+The special marker ‘,’ inside of the argument to backquote indicates a value that isn’t constant.
+</p>
+
+<p>
+The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value in the list structure.
+</p>
+
+<p>
+<a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Backquote.html">Backquote</a>
+</p>
+</blockquote>
+
+<p>
+<code>`</code> 和 <code>'</code> 的不同是，它会执行 list 里面的内容， 这样 <code>,spike-leung/html-head</code> 就会被执行并返回对应的 string，满足 <code>:html-head</code> 的需要。
+</p></dd>
 </dl>
 </div>
 </div>
-
-<div id="outline-container-org0d25261" class="outline-2">
-<h2 id="org0d25261">org-publish 的完整代码</h2>
-<div class="outline-text-2" id="text-org0d25261">
+<div id="outline-container-orga630ea4" class="outline-2">
+<h2 id="orga630ea4">org-publish 的完整代码</h2>
+<div class="outline-text-2" id="text-orga630ea4">
 <p>
 以下代码可以作为参考，最新的请看 <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el">init-org-publish.el</a>。
 </p>
@@ -480,23 +571,13 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
          <span style="color: #972500;">(</span>file-name-nondirectory <span style="color: #808000;">(</span>directory-file-name entry<span style="color: #808000;">)</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span>
         <span style="color: #008899;">(</span>t entry<span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
 
-
-<span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> org-publish-project-alist
-      <span style="color: #531ab6;">'</span><span style="color: #dd22dd;">(</span><span style="color: #008899;">(</span><span style="color: #3548cf;">"orgfiles"</span>
-         <span style="color: #8f0075;">:base-directory</span> <span style="color: #3548cf;">"~/git/taxodium/post"</span>
-         <span style="color: #8f0075;">:base-extension</span> <span style="color: #3548cf;">"org"</span>
-         <span style="color: #8f0075;">:publishing-directory</span> <span style="color: #3548cf;">"~/git/taxodium/publish"</span>
-         <span style="color: #8f0075;">:publishing-function</span> org-html-publish-to-html
-         <span style="color: #8f0075;">:section-numbers</span> nil
-         <span style="color: #8f0075;">:with-toc</span> t
-         <span style="color: #8f0075;">:with-tags</span> t
-         <span style="color: #8f0075;">:with-broken-links</span> marks
-         <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">TODO: &#23553;&#35013;&#21040;&#21464;&#37327;</span>
-         <span style="color: #8f0075;">:html-head</span> <span style="color: #3548cf;">"</span>
+<span style="color: #000000;">(</span><span style="color: #531ab6;">defconst</span> <span style="color: #005e8b;">spike-leung/html-head</span> <span style="color: #3548cf;">"</span>
 <span style="color: #3548cf;">&lt;link rel=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">stylesheet</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">../styles/style.css</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> type=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">text/css</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/&gt;</span>
 <span style="color: #3548cf;">&lt;link rel=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">icon</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/favicon.ico</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> type=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">image/x-icon</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;</span>
 <span style="color: #3548cf;">"</span>
-         <span style="color: #8f0075;">:html-preamble</span> <span style="color: #3548cf;">"</span>
+  <span style="color: #2a5045;">"`</span><span style="color: #0000b0;">:html-head</span><span style="color: #2a5045;">' for `</span><span style="color: #0000b0;">org-publish</span><span style="color: #2a5045;">'."</span><span style="color: #000000;">)</span>
+
+<span style="color: #000000;">(</span><span style="color: #531ab6;">defconst</span> <span style="color: #005e8b;">spike-leung/html-preamble</span> <span style="color: #3548cf;">"</span>
 <span style="color: #3548cf;"> &lt;nav&gt;</span>
 <span style="color: #3548cf;">  &lt;ul&gt;</span>
 <span style="color: #3548cf;">    &lt;li&gt;&lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/index.html</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;Home&lt;/a&gt;&lt;/li&gt;</span>
@@ -506,12 +587,31 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 <span style="color: #3548cf;">  &lt;/ul&gt;</span>
 <span style="color: #3548cf;">&lt;/nav&gt;</span>
 <span style="color: #3548cf;">"</span>
-         <span style="color: #8f0075;">:html-postamble</span> <span style="color: #3548cf;">"</span>
+  <span style="color: #2a5045;">"`</span><span style="color: #0000b0;">:html-preamble</span><span style="color: #2a5045;">' for `</span><span style="color: #0000b0;">org-publish</span><span style="color: #2a5045;">'."</span> <span style="color: #000000;">)</span>
+
+<span style="color: #000000;">(</span><span style="color: #531ab6;">defconst</span> <span style="color: #005e8b;">spike-lenng/html-postamble</span> <span style="color: #3548cf;">"</span>
 <span style="color: #3548cf;">&lt;p class=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">author</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;Author: &lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">mailto:l-yanlei@hotmail.com</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;%a&lt;/a&gt;&lt;/p&gt;</span>
 <span style="color: #3548cf;">&lt;p class=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">date</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;Date: %d&lt;/p&gt;</span>
 <span style="color: #3548cf;">&lt;p class=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">license</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;License: &lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;CC BY-NC 4.0&lt;/a&gt;&lt;/p&gt;</span>
 <span style="color: #3548cf;">&lt;script src=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">https://utteranc.es/client.js</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> repo=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">Spike-Leung/taxodium</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> issue-term=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">pathname</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> theme=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">github-light</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> crossorigin=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">anonymous</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> async&gt;&lt;/script&gt;</span>
 <span style="color: #3548cf;">"</span>
+  <span style="color: #2a5045;">"`</span><span style="color: #0000b0;">:html-postamble</span><span style="color: #2a5045;">' for `</span><span style="color: #0000b0;">org-publish</span><span style="color: #2a5045;">'."</span><span style="color: #000000;">)</span>
+
+
+
+<span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> org-publish-project-alist
+      <span style="color: #531ab6;">`</span><span style="color: #dd22dd;">(</span><span style="color: #008899;">(</span><span style="color: #3548cf;">"orgfiles"</span>
+         <span style="color: #8f0075;">:base-directory</span> <span style="color: #3548cf;">"~/git/taxodium/post"</span>
+         <span style="color: #8f0075;">:base-extension</span> <span style="color: #3548cf;">"org"</span>
+         <span style="color: #8f0075;">:publishing-directory</span> <span style="color: #3548cf;">"~/git/taxodium/publish"</span>
+         <span style="color: #8f0075;">:publishing-function</span> org-html-publish-to-html
+         <span style="color: #8f0075;">:section-numbers</span> nil
+         <span style="color: #8f0075;">:with-toc</span> t
+         <span style="color: #8f0075;">:with-tags</span> t
+         <span style="color: #8f0075;">:time-stamp-file</span> nil
+         <span style="color: #8f0075;">:html-head</span> ,spike-leung/html-head
+         <span style="color: #8f0075;">:html-preamble</span> ,spike-leung/html-preamble
+         <span style="color: #8f0075;">:html-postamble</span> ,spike-lenng/html-postamble
          <span style="color: #8f0075;">:exclude</span> <span style="color: #3548cf;">"rss.org"</span>
          <span style="color: #8f0075;">:auto-sitemap</span> t
          <span style="color: #8f0075;">:sitemap-filename</span> <span style="color: #3548cf;">"index.org"</span>
@@ -526,20 +626,9 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
          <span style="color: #8f0075;">:base-extension</span> <span style="color: #3548cf;">"org"</span>
          <span style="color: #8f0075;">:publishing-directory</span> <span style="color: #3548cf;">"~/git/taxodium/publish"</span>
          <span style="color: #8f0075;">:publishing-function</span> org-html-publish-to-html
-         <span style="color: #8f0075;">:html-head</span> <span style="color: #3548cf;">"</span>
-<span style="color: #3548cf;">&lt;link rel=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">stylesheet</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">../styles/style.css</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> type=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">text/css</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/&gt;</span>
-<span style="color: #3548cf;">&lt;link rel=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">icon</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/favicon.ico</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;"> type=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">image/x-icon</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;</span>
-<span style="color: #3548cf;">"</span>
-         <span style="color: #8f0075;">:html-preamble</span> <span style="color: #3548cf;">"</span>
-<span style="color: #3548cf;"> &lt;nav&gt;</span>
-<span style="color: #3548cf;">  &lt;ul&gt;</span>
-<span style="color: #3548cf;">    &lt;li&gt;&lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/index.html</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;Home&lt;/a&gt;&lt;/li&gt;</span>
-<span style="color: #3548cf;">    &lt;li&gt;&lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/about.html</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;About&lt;/a&gt;&lt;/li&gt;</span>
-<span style="color: #3548cf;">    &lt;li&gt;&lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">/rss.xml</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;RSS&lt;/a&gt;&lt;/li&gt;</span>
-<span style="color: #3548cf;">    &lt;li&gt;&lt;a href=</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">https://github.com/Spike-Leung/taxodium/tree/org-publish</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #3548cf;">&gt;GitHub&lt;/a&gt;&lt;/li&gt;</span>
-<span style="color: #3548cf;">  &lt;/ul&gt;</span>
-<span style="color: #3548cf;">&lt;/nav&gt;</span>
-<span style="color: #3548cf;">"</span>
+         <span style="color: #8f0075;">:time-stamp-file</span> nil
+         <span style="color: #8f0075;">:html-head</span> ,spike-leung/html-head
+         <span style="color: #8f0075;">:html-preamble</span> ,spike-leung/html-preamble
          <span style="color: #8f0075;">:include</span> <span style="color: #972500;">(</span><span style="color: #3548cf;">"index.org"</span><span style="color: #972500;">)</span>
          <span style="color: #8f0075;">:exclude</span> <span style="color: #3548cf;">".*"</span>
          <span style="color: #8f0075;">:html-postamble</span> nil<span style="color: #008899;">)</span>
@@ -573,20 +662,18 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 </div>
 </div>
 </div>
-
-<div id="outline-container-org4c8e49d" class="outline-2">
-<h2 id="org4c8e49d">一些缺点</h2>
-<div class="outline-text-2" id="text-org4c8e49d">
+<div id="outline-container-orgcaad86e" class="outline-2">
+<h2 id="orgcaad86e">一些缺点</h2>
+<div class="outline-text-2" id="text-orgcaad86e">
 <ul class="org-ul">
 <li>在执行 org-publish 时，如果内容多，可能会很慢，此时会阻塞 Emacs，不能做其他事情</li>
 <li>由于依赖 Emacs，<a href="https://www.netlify.com/">Netlify</a> 等平台上没有开箱即用的构建命令，集成 CI/CD 相对麻烦</li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org01d0a59" class="outline-2">
-<h2 id="org01d0a59">其他</h2>
-<div class="outline-text-2" id="text-org01d0a59">
+<div id="outline-container-org613bbf6" class="outline-2">
+<h2 id="org613bbf6">其他</h2>
+<div class="outline-text-2" id="text-org613bbf6">
 <p>
 为了方便，可以通过 <a href="https://github.com/joaotavora/yasnippet">YASnippet</a> 或其他方式，设置 org 文件共用内容。
 </p>
@@ -627,13 +714,11 @@ $0
 </div>
 </div>
 </div>
-
-
-<div id="outline-container-org1a759fe" class="outline-2">
-<h2 id="org1a759fe"><span class="todo TODO">TODO</span> Todo</h2>
-<div class="outline-text-2" id="text-org1a759fe">
+<div id="outline-container-orgc7ed290" class="outline-2">
+<h2 id="orgc7ed290"><span class="todo TODO">TODO</span> Todo</h2>
+<div class="outline-text-2" id="text-orgc7ed290">
 <ul class="org-ul">
-<li class="off"><code>[&#xa0;]</code> 复用 <code>:html-head</code> ， <code>:html-preamble</code> 等</li>
+<li class="on"><code>[X]</code> 复用 <code>:html-head</code> ， <code>:html-preamble</code> 等</li>
 <li class="off"><code>[&#xa0;]</code> 优化 RSS 的内容</li>
 <li class="off"><code>[&#xa0;]</code> 针对 weekly 单独设置 RSS</li>
 <li class="off"><code>[&#xa0;]</code> 增加搜索功能</li>
@@ -641,10 +726,9 @@ $0
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org01fea98" class="outline-2">
-<h2 id="org01fea98">Refs</h2>
-<div class="outline-text-2" id="text-org01fea98">
+<div id="outline-container-orgcc84ee9" class="outline-2">
+<h2 id="orgcc84ee9">Refs</h2>
+<div class="outline-text-2" id="text-orgcc84ee9">
 <ul class="org-ul">
 <li><a href="https://orgmode.org/manual/Publishing.html">14 Publishing ¶</a></li>
 <li><a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a></li>

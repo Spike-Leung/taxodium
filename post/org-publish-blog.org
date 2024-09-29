@@ -97,6 +97,72 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 - :time-stamp-file nil ::
   设置 =:time-stamp-file nil= 可以避免每次执行 org-publish 的时候都往 HTML 插入最新的时间戳，导致每次变更的文件很多。
 
+- =:html-head= 的复用 ::
+  最开始定义 =org-publish-project-alist= ， 我是这么写的，导致一直无法使用变量抽象一些公用的 string：
+
+  #+begin_src elisp
+    (defconst spike-leung/html-head "
+      <link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/>
+      <link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\">
+      "
+      "`:html-head' for `org-publish'.")
+
+    (setq org-publish-project-alist
+          '(("orgfiles"
+             :base-directory "~/git/taxodium/post"
+             :base-extension "org"
+             :html-head ,spike-leung/html-head
+             ;; ... 还有其他很多设置
+             )))
+  #+end_src
+
+  我在这里用的是 ='= 去定义， ='= 在 elisp 中的作用是：
+
+  #+begin_quote
+  The special form quote returns its single argument, as written, without evaluating it.
+
+  This provides a way to include constant symbols and lists, which are not self-evaluating objects, in a program.
+
+  [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Quoting.html][Quoting]]
+  #+end_quote
+
+  因此 =,spike-leung/html-head= 会被当作一个常量，而不会被执行， 而 =,spike-leung/html-head= 这个字符串 =:html-head= 并不认识。
+
+  要让 =,spike-leung/html-head= 被执行，需要将 ='= 换成 =`= :
+
+  #+begin_src diff
+    (defconst spike-leung/html-head "
+      <link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/>
+      <link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\">
+      "
+      "`:html-head' for `org-publish'.")
+
+    (setq org-publish-project-alist
+-          '(("orgfiles"
++          `(("orgfiles"
+             :base-directory "~/git/taxodium/post"
+             :base-extension "org"
+             :html-head ,spike-leung/html-head
+             ;; ... 还有其他很多设置
+             )))
+  #+end_src
+
+  #+begin_quote
+  Backquote constructs allow you to quote a list, but selectively evaluate elements of that list.
+
+  In the simplest case, it is identical to the special form quote (described in the previous section; see [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Quoting.html][Quoting]]).
+
+  ...
+
+  The special marker ‘,’ inside of the argument to backquote indicates a value that isn’t constant.
+
+  The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value in the list structure.
+
+  [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Backquote.html][Backquote]]
+  #+end_quote
+
+  =`= 和 ='= 的不同是，它会执行 list 里面的内容， 这样 =,spike-leung/html-head= 就会被执行并返回对应的 string，满足 =:html-head= 的需要。
+
 * org-publish 的完整代码
 
 以下代码可以作为参考，最新的请看 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el][init-org-publish.el]]。
@@ -185,23 +251,13 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
            (file-name-nondirectory (directory-file-name entry)))
           (t entry)))
 
-
-  (setq org-publish-project-alist
-        '(("orgfiles"
-           :base-directory "~/git/taxodium/post"
-           :base-extension "org"
-           :publishing-directory "~/git/taxodium/publish"
-           :publishing-function org-html-publish-to-html
-           :section-numbers nil
-           :with-toc t
-           :with-tags t
-           :with-broken-links marks
-           ;; TODO: 封装到变量
-           :html-head "
+  (defconst spike-leung/html-head "
   <link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/>
   <link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\">
   "
-           :html-preamble "
+    "`:html-head' for `org-publish'.")
+
+  (defconst spike-leung/html-preamble "
    <nav>
     <ul>
       <li><a href=\"/index.html\">Home</a></li>
@@ -211,12 +267,31 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
     </ul>
   </nav>
   "
-           :html-postamble "
+    "`:html-preamble' for `org-publish'." )
+
+  (defconst spike-lenng/html-postamble "
   <p class=\"author\">Author: <a href=\"mailto:l-yanlei@hotmail.com\">%a</a></p>
   <p class=\"date\">Date: %d</p>
   <p class=\"license\">License: <a href=\"https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans\">CC BY-NC 4.0</a></p>
   <script src=\"https://utteranc.es/client.js\" repo=\"Spike-Leung/taxodium\" issue-term=\"pathname\" theme=\"github-light\" crossorigin=\"anonymous\" async></script>
   "
+    "`:html-postamble' for `org-publish'.")
+
+
+
+  (setq org-publish-project-alist
+        `(("orgfiles"
+           :base-directory "~/git/taxodium/post"
+           :base-extension "org"
+           :publishing-directory "~/git/taxodium/publish"
+           :publishing-function org-html-publish-to-html
+           :section-numbers nil
+           :with-toc t
+           :with-tags t
+           :time-stamp-file nil
+           :html-head ,spike-leung/html-head
+           :html-preamble ,spike-leung/html-preamble
+           :html-postamble ,spike-lenng/html-postamble
            :exclude "rss.org"
            :auto-sitemap t
            :sitemap-filename "index.org"
@@ -231,20 +306,9 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
            :base-extension "org"
            :publishing-directory "~/git/taxodium/publish"
            :publishing-function org-html-publish-to-html
-           :html-head "
-  <link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/>
-  <link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\">
-  "
-           :html-preamble "
-   <nav>
-    <ul>
-      <li><a href=\"/index.html\">Home</a></li>
-      <li><a href=\"/about.html\">About</a></li>
-      <li><a href=\"/rss.xml\">RSS</a></li>
-      <li><a href=\"https://github.com/Spike-Leung/taxodium/tree/org-publish\">GitHub</a></li>
-    </ul>
-  </nav>
-  "
+           :time-stamp-file nil
+           :html-head ,spike-leung/html-head
+           :html-preamble ,spike-leung/html-preamble
            :include ("index.org")
            :exclude ".*"
            :html-postamble nil)
@@ -320,7 +384,7 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
 * TODO Todo
 
-- [ ] 复用 =:html-head= ， =:html-preamble= 等
+- [X] 复用 =:html-head= ， =:html-preamble= 等
 - [ ] 优化 RSS 的内容
 - [ ] 针对 weekly 单独设置 RSS
 - [ ] 增加搜索功能
