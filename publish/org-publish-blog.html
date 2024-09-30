@@ -8,7 +8,7 @@
 <title>使用 org-publish 发布博客</title>
 <meta name="author" content="Spike Leung" />
 <meta name="generator" content="Org Mode" />
-<style type="text/css">
+<style>
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -205,6 +205,7 @@
     <li><a href="/about.html">About</a></li>
     <li><a href="/rss.xml">RSS</a></li>
     <li><a href="https://github.com/Spike-Leung/taxodium/tree/org-publish">GitHub</a></li>
+    <li><a href="https://music.163.com/#/playlist?id=12531191848">Playlist</a></li>
   </ul>
 </nav>
 </div>
@@ -214,14 +215,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge83bc48">动机</a></li>
-<li><a href="#org3296b18">相比之前的变化</a></li>
-<li><a href="#orgb9fd38f">org-publish 的使用</a></li>
-<li><a href="#orga630ea4">org-publish 的完整代码</a></li>
-<li><a href="#orgcaad86e">一些缺点</a></li>
-<li><a href="#org613bbf6">其他</a></li>
-<li><a href="#orgc7ed290"><span class="todo TODO">TODO</span> Todo</a></li>
-<li><a href="#orgcc84ee9">Refs</a></li>
+<li><a href="#org490fc1d">动机</a></li>
+<li><a href="#org5e89e7f">相比之前的变化</a></li>
+<li><a href="#org5493eea">org-publish 的使用</a></li>
+<li><a href="#org0d25261">org-publish 的完整代码</a></li>
+<li><a href="#org4c8e49d">一些缺点</a></li>
+<li><a href="#org01d0a59">其他</a></li>
+<li><a href="#org1a759fe"><span class="todo TODO">TODO</span> Todo</a></li>
+<li><a href="#org01fea98">Refs</a></li>
 </ul>
 </div>
 </div>
@@ -244,9 +245,10 @@
 <p>
 最近将博客又更新了一下，使用 <a href="https://orgmode.org/manual/Publishing.html">org-publish</a> 进行博客的发布，主要是让博客加载相对快一些，维护起来更简单一些。
 </p>
-<div id="outline-container-orge83bc48" class="outline-2">
-<h2 id="orge83bc48">动机</h2>
-<div class="outline-text-2" id="text-orge83bc48">
+
+<div id="outline-container-org490fc1d" class="outline-2">
+<h2 id="org490fc1d">动机</h2>
+<div class="outline-text-2" id="text-org490fc1d">
 <p>
 在很早之前看过几篇文章：
 </p>
@@ -272,9 +274,10 @@
 </p>
 </div>
 </div>
-<div id="outline-container-org3296b18" class="outline-2">
-<h2 id="org3296b18">相比之前的变化</h2>
-<div class="outline-text-2" id="text-org3296b18">
+
+<div id="outline-container-org5e89e7f" class="outline-2">
+<h2 id="org5e89e7f">相比之前的变化</h2>
+<div class="outline-text-2" id="text-org5e89e7f">
 <ul class="org-ul">
 <li>极大的简化了博客内容，没有主题，没有模板，只有博客内容的 org 文件、css 文件、字体、图片，以及最终转换出来的 HTML 文件</li>
 
@@ -292,9 +295,10 @@
 </p>
 </div>
 </div>
-<div id="outline-container-orgb9fd38f" class="outline-2">
-<h2 id="orgb9fd38f">org-publish 的使用</h2>
-<div class="outline-text-2" id="text-orgb9fd38f">
+
+<div id="outline-container-org5493eea" class="outline-2">
+<h2 id="org5493eea">org-publish 的使用</h2>
+<div class="outline-text-2" id="text-org5493eea">
 <p>
 org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可以定义很多个任务，每个任务指定处理什么文件，怎么处理，处理之后放到什么地方。
 </p>
@@ -399,7 +403,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
          <span style="color: #8f0075;">:base-directory</span> <span style="color: #3548cf;">"~/git/taxodium/post"</span>
          <span style="color: #8f0075;">:base-extension</span> <span style="color: #3548cf;">"org"</span>
          <span style="color: #8f0075;">:html-head</span> ,spike-leung/html-head
-         <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;</span>
+         <span style="color: #969896;">;; </span><span style="color: #7f0000;">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;</span>
          <span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
 </pre>
 </div>
@@ -480,17 +484,18 @@ The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value i
 </dl>
 </div>
 </div>
-<div id="outline-container-orga630ea4" class="outline-2">
-<h2 id="orga630ea4">org-publish 的完整代码</h2>
-<div class="outline-text-2" id="text-orga630ea4">
+
+<div id="outline-container-org0d25261" class="outline-2">
+<h2 id="org0d25261">org-publish 的完整代码</h2>
+<div class="outline-text-2" id="text-org0d25261">
 <p>
 以下代码可以作为参考，最新的请看 <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el">init-org-publish.el</a>。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #7f0000;">;;; </span><span style="color: #7f0000;">init-org-publish.el --- org publish config for my blog -*- lexical-binding: t -*-</span>
-<span style="color: #7f0000;">;;; </span><span style="color: #7f0000;">Commentary:</span>
-<span style="color: #7f0000;">;;; </span><span style="color: #7f0000;">Code:</span>
+<pre class="src src-elisp"><span style="color: #969896;">;;; </span><span style="color: #7f0000;">init-org-publish.el --- org publish config for my blog -*- lexical-binding: t -*-</span>
+<span style="color: #969896;">;;; </span><span style="color: #7f0000;">Commentary:</span>
+<span style="color: #969896;">;;; </span><span style="color: #7f0000;">Code:</span>
 
 <span style="color: #000000;">(</span>maybe-require-package <span style="color: #531ab6;">'</span><span style="color: #0000b0;">ox-rss</span><span style="color: #000000;">)</span>
 
@@ -538,7 +543,7 @@ The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value i
               <span style="color: #3548cf;">"long time ago..."</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
 
 
-<span style="color: #7f0000;">;; </span><span style="color: #7f0000;">@see: https://writepermission.com/org-blogging-rss-feed.html</span>
+<span style="color: #969896;">;; </span><span style="color: #7f0000;">@see: https://writepermission.com/org-blogging-rss-feed.html</span>
 <span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">rw/org-rss-publish-to-rss</span> <span style="color: #dd22dd;">(</span>plist filename pub-dir<span style="color: #dd22dd;">)</span>
   <span style="color: #2a5045;">"Publish RSS with PLIST, only when FILENAME is '</span><span style="color: #0000b0;">rss.org</span><span style="color: #2a5045;">'.</span>
 <span style="color: #2a5045;">PUB-DIR is when the output will be placed."</span>
@@ -567,7 +572,7 @@ The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value i
              <span style="color: #531ab6;">(</span>buffer-string<span style="color: #531ab6;">)</span><span style="color: #808000;">)</span>
            <span style="color: #972500;">)</span><span style="color: #008899;">)</span>
         <span style="color: #008899;">(</span><span style="color: #972500;">(</span>eq style <span style="color: #531ab6;">'</span><span style="color: #0000b0;">tree</span><span style="color: #972500;">)</span>
-         <span style="color: #7f0000;">;; </span><span style="color: #7f0000;">Return only last subdir.</span>
+         <span style="color: #969896;">;; </span><span style="color: #7f0000;">Return only last subdir.</span>
          <span style="color: #972500;">(</span>file-name-nondirectory <span style="color: #808000;">(</span>directory-file-name entry<span style="color: #808000;">)</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span>
         <span style="color: #008899;">(</span>t entry<span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
 
@@ -657,23 +662,25 @@ The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value i
         <span style="color: #008899;">(</span><span style="color: #3548cf;">"website"</span> <span style="color: #8f0075;">:components</span> <span style="color: #972500;">(</span><span style="color: #3548cf;">"orgfiles"</span> <span style="color: #3548cf;">"sitemap"</span> <span style="color: #3548cf;">"rss"</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
 
 <span style="color: #000000;">(</span><span style="color: #531ab6;">provide</span> <span style="color: #531ab6;">'</span><span style="color: #0000b0;">init-org-publish</span><span style="color: #000000;">)</span>
-<span style="color: #7f0000;">;;; </span><span style="color: #7f0000;">init-org-publish.el ends here</span>
+<span style="color: #969896;">;;; </span><span style="color: #7f0000;">init-org-publish.el ends here</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgcaad86e" class="outline-2">
-<h2 id="orgcaad86e">一些缺点</h2>
-<div class="outline-text-2" id="text-orgcaad86e">
+
+<div id="outline-container-org4c8e49d" class="outline-2">
+<h2 id="org4c8e49d">一些缺点</h2>
+<div class="outline-text-2" id="text-org4c8e49d">
 <ul class="org-ul">
 <li>在执行 org-publish 时，如果内容多，可能会很慢，此时会阻塞 Emacs，不能做其他事情</li>
 <li>由于依赖 Emacs，<a href="https://www.netlify.com/">Netlify</a> 等平台上没有开箱即用的构建命令，集成 CI/CD 相对麻烦</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org613bbf6" class="outline-2">
-<h2 id="org613bbf6">其他</h2>
-<div class="outline-text-2" id="text-org613bbf6">
+
+<div id="outline-container-org01d0a59" class="outline-2">
+<h2 id="org01d0a59">其他</h2>
+<div class="outline-text-2" id="text-org01d0a59">
 <p>
 为了方便，可以通过 <a href="https://github.com/joaotavora/yasnippet">YASnippet</a> 或其他方式，设置 org 文件共用内容。
 </p>
@@ -714,9 +721,11 @@ $0
 </div>
 </div>
 </div>
-<div id="outline-container-orgc7ed290" class="outline-2">
-<h2 id="orgc7ed290"><span class="todo TODO">TODO</span> Todo</h2>
-<div class="outline-text-2" id="text-orgc7ed290">
+
+
+<div id="outline-container-org1a759fe" class="outline-2">
+<h2 id="org1a759fe"><span class="todo TODO">TODO</span> Todo</h2>
+<div class="outline-text-2" id="text-org1a759fe">
 <ul class="org-ul">
 <li class="on"><code>[X]</code> 复用 <code>:html-head</code> ， <code>:html-preamble</code> 等</li>
 <li class="off"><code>[&#xa0;]</code> 优化 RSS 的内容</li>
@@ -726,9 +735,10 @@ $0
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcc84ee9" class="outline-2">
-<h2 id="orgcc84ee9">Refs</h2>
-<div class="outline-text-2" id="text-orgcc84ee9">
+
+<div id="outline-container-org01fea98" class="outline-2">
+<h2 id="org01fea98">Refs</h2>
+<div class="outline-text-2" id="text-org01fea98">
 <ul class="org-ul">
 <li><a href="https://orgmode.org/manual/Publishing.html">14 Publishing ¶</a></li>
 <li><a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a></li>
@@ -753,7 +763,22 @@ $0
 <p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">Date: 2024-09-27 Fri 00:00</p>
 <p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
-<script src="https://utteranc.es/client.js" repo="Spike-Leung/taxodium" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+<script src="https://giscus.app/client.js"
+        data-repo="Spike-Leung/taxodium"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkzOTYyNDQwMzk="
+        data-category="Announcements"
+        data-category-id="DIC_kwDOF540R84Ci61D"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="light_high_contrast"
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
 </div>
 </body>
 </html>
