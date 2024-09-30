@@ -3,6 +3,8 @@
 
 ヽ(・∀・)ﾉ My blog. (´｡• ω •｡`)
 
-٩(｡•́‿•̀｡)۶ [sitemap](https://github.com/Spike-Leung/taxodium/blob/org-publish/post/index.org) (๑>◡<๑)
+The blog is build by org-publish, you can find my org-publish config [here](https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el). ☆ ～('▽^人)
 
-ヽ(o＾▽＾o)ノ [RSS](https://taxodium.ink/rss.xml) ☆ ～('▽^人)
+ (๑>◡<๑) [sitemap](https://github.com/Spike-Leung/taxodium/blob/org-publish/post/index.org)
+
+ヽ(o＾▽＾o)ノ [RSS](https://taxodium.ink/rss.xml)
