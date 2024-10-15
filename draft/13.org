@@ -1,0 +1,132 @@
+#+title: Weekly#13
+#+INDEX: weekly!#13
+#+date: <2024-10-15 Tue>
+#+lastmod: <2024-10-15 Tue 23:01>
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+description: ""
+#+tags: weekly
+
+* News | Article
+
+** [[https://jsomers.net/blog/gettiers][The three-page paper that shook philosophy: Gettiers in software engineering]]
+
+#+begin_quote
+假设你站在田野里，看到远处有一头奶牛。
+
+但假设你看到的并不是一头奶牛，而是一个用纸糊的栩栩如生的奶牛模型。
+
+你看到的不是奶牛，而是模型。
+
+一方面，你有一个“田里有一头牛”的合理的真实信念：
+
+1.你相信田里有一头牛；
+
+2.这个信念不是凭空产生的，而是因为你看到了一个长得很像牛的东西；
+
+3.事实上，田里确实有一头牛。
+
+不过，我们还是不愿意说你 /知道/ 田里有一头牛，因为从某种意义上说，你是幸运的：
+
+因为一个奇怪的巧合，那里碰巧真的有一头牛 -- 一头你一无所知的牛。
+#+end_quote
+
+#+begin_quote
+Gettier 可以用来形容程序员可能遇到的最棘手的情况之一：
+
+*一个问题有多个潜在原因，而你完全有理由相信其中一个原因，即使另一个原因在暗中起作用。*
+
+我认为，为这些棘手的情况设置一个术语，可以让你对它们保持稍微的警觉。
+
+这样，你就能成为一个更好的开发者。
+#+end_quote
+
+确实，这周开发的时候我也碰到类似的情况。
+
+我在一个输入框里输入了内容，但发现它在某些情况下没有更新，我就在它触发变化的地方去主动更新它的值。
+
+但是它并不是一直都不会更新，如果输入不同的值的时候，它是会更新的。
+
+于是再好好看了一下它更新的链路，发现它的更新依赖于它的值发生变化。
+
+如果原来输入的是 10，切换出去，再输入 10，因为有个值将它缓存了，前后值一致，就不会更新。
+
+实际上当它被切换出去的时候，它需要重置一下，让缓存的值发生变化才行。
+
+所以问题还是要尽可能地更进一步，找到根本问题，不能停留在表面，不然就会像文章说的，你以为自己知道了，当其实你并不知道。
+
+** [[https://www.greptile.com/blog/how-we-engineer][Splitting engineering teams into defense and offense]]
+
+#+begin_export html
+<img src="https://www.greptile.com/5-min.png" alt="Productivity chart">
+#+end_export
+
+#+begin_quote
+当你让手工艺者不再分心时，就会发生令人惊叹的事情。他们可以花更多的时间在流程上，并在大脑的 "客户端 "保留大量的背景信息。
+
+重要的是，只需 1-2 次短暂中断，就能大幅减少工程师一天的工作量。
+
+由此可见，将干扰隔离给少数人，比分散干扰以 "保持每个人的工作效率 "要有用得多。
+
+如果你在支持上花费了一定的时间，那么在支持上花费更多的时间也不会对你的工作效率产生太大的影响。
+#+end_quote
+
+要想高效地做一些事情，需要给自己留足够长的高质量时间。
+
+
+** [[https://taylor.town/history-of-microwave-ovens][A History of Microwave Ovens]]
+
+微波炉的发展史，感兴趣可以看看。
+
+* Tutorial
+
+** [[https://joaquimrocha.com/2024/09/22/how-to-fork/][How to fork: Best practices and guide]]
+
+关于如何维护好 fork 的仓库的一些实践和指南。
+
+- Use atomic commits :: 提交只包含一个改动，颗粒度小，就容易维护。
+- Identify your fixes and non-fixes :: commit message 中区分 fix 和其他修改，fix 的可能是需要合并到上游的，如果不区分到时不好找。
+- No evil merges :: merge 不要包含其他变更，只是单纯的 merge
+- Rebase early, rebase often :: 及时和上游合并代码，进行 rebase，保持进度，到时需要 merge 就不会落后太多
+- Contribute changes back :: 将改动提交到上游，这样这部分代码就有其他人维护了，而不仅是自己
+- Keep a good relationship with upstream :: 符合上游的规范，建立和上游的信任，这样才能促进积极合作
+
+** [[https://uadesignsystem.com/][The Ultinamte E-book for Crafting Design Systems]]
+
+一本关于设计的电子书，完整书籍需要付费购买。
+
+* Code
+
+* Cool Bit
+
+** [[https://mattferraro.dev/posts/caustics-engineering][Hiding Images in Plain Sight: The Physics Of Magic Windows]]
+
+作者在一块透明玻璃上刻了纹路，光线透过会看到一幅图画。
+
+里面的数学知识好多，看不太明白，但是看作者一步步解决问题的过程，也很 cool，这样的记录也值得学习。
+
+** [[https://busy.bar/?hn][Busy Status Bar]]
+
+想法很不错的产品，一个可以放在显示器上的状态栏，告诉别人你在忙，或者在通话，请不要打扰。
+
+#+begin_quote
+但遗憾的是，根据我的经验，在办公室里经常打断你说话的人，会忽略所有明确的信号。
+
+佩戴降噪耳机是“正在工作，请勿打扰”的公认标志，但有些人却觉得这不适用于他们。
+
+或者他们只是站在你的办公桌旁边等待你的注意。
+
+[[https://news.ycombinator.com/item?id=41838337][Source]]
+#+end_quote
+
+* Tool | Library
+
+** [[https://www.explainshell.com/][explainshell.com]]
+
+一个可以解释 shell 命令的网站，对于学习 shell 命令应该会挺有帮助。
+
+** [[https://www.dobrowser.io/][dobrowser]]
+
+通过 prompt 指导浏览器帮你完成一些任务。Chrome 本身自带 Gemini，或许以后 Chrome 能自带这个功能？
+
+* Music
