@@ -218,19 +218,19 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgdd08a79">new Date() 使用 date string 返回时间格式不同</a>
+<li><a href="#org0c6317c">new Date() 使用 date string 返回时间格式不同</a>
 <ul>
-<li><a href="#org4790d07">如何规避</a></li>
+<li><a href="#orgb51c668">如何规避</a></li>
 </ul>
 </li>
-<li><a href="#org16541e0">Refs</a></li>
+<li><a href="#org7f098d4">Refs</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgdd08a79" class="outline-2">
-<h2 id="orgdd08a79">new Date() 使用 date string 返回时间格式不同</h2>
-<div class="outline-text-2" id="text-orgdd08a79">
+<div id="outline-container-org0c6317c" class="outline-2">
+<h2 id="org0c6317c">new Date() 使用 date string 返回时间格式不同</h2>
+<div class="outline-text-2" id="text-org0c6317c">
 <p>
 有个需求，需要计算两个日期之间包含的月份，实现如下：
 </p>
@@ -244,8 +244,8 @@
   <span style="color: #531ab6;">return</span> Math.<span style="color: #721045;">floor</span><span style="color: #dd22dd;">(</span><span style="color: #008899;">(</span>endSeconds - startSeconds<span style="color: #008899;">)</span> / SECONDS_IN_A_MONTH<span style="color: #dd22dd;">)</span>
 <span style="color: #000000;">}</span>
 
-<span style="color: #721045;">getMonth</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03'</span>, <span style="color: #3548cf;">'2024-03-25 01:00:00'</span><span style="color: #000000;">)</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">12</span>
-<span style="color: #721045;">getMonth</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03'</span>, <span style="color: #3548cf;">'2024-03-25 08:00:00'</span><span style="color: #000000;">)</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">13</span>
+<span style="color: #721045;">getMonth</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03'</span>, <span style="color: #3548cf;">'2024-03-25 01:00:00'</span><span style="color: #000000;">)</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">12</span>
+<span style="color: #721045;">getMonth</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03'</span>, <span style="color: #3548cf;">'2024-03-25 08:00:00'</span><span style="color: #000000;">)</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">13</span>
 </pre>
 </div>
 
@@ -266,8 +266,8 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2024-01-01'</span><span style="color: #000000;">)</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">Mon Jan 01 2024 08:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
-<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2024-01-01 00:00:00'</span><span style="color: #000000;">)</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">Mon Jan 01 2024 00:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
+<pre class="src src-typescript"><span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2024-01-01'</span><span style="color: #000000;">)</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">Mon Jan 01 2024 08:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
+<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2024-01-01 00:00:00'</span><span style="color: #000000;">)</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">Mon Jan 01 2024 00:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
 </pre>
 </div>
 
@@ -314,23 +314,23 @@ Parser – A Web Reality Issue.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #969896;">// </span><span style="color: #7f0000;">&#36820;&#22238;&#26412;&#22320;&#26102;&#38388;</span>
-<span style="color: #969896;">// </span><span style="color: #7f0000;">date-only forms are interpreted as a UTC time</span>
-<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03'</span><span style="color: #000000;">)</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
-<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03-01'</span><span style="color: #000000;">)</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
+<pre class="src src-typescript"><span style="color: #7f0000;">// </span><span style="color: #7f0000;">&#36820;&#22238;&#26412;&#22320;&#26102;&#38388;</span>
+<span style="color: #7f0000;">// </span><span style="color: #7f0000;">date-only forms are interpreted as a UTC time</span>
+<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03'</span><span style="color: #000000;">)</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
+<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03-01'</span><span style="color: #000000;">)</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
 
-<span style="color: #969896;">// </span><span style="color: #7f0000;">date-time forms are interpreted as local time</span>
-<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03-01T00:00:00'</span><span style="color: #000000;">)</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
-<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03-01 00:00:00'</span><span style="color: #000000;">)</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
+<span style="color: #7f0000;">// </span><span style="color: #7f0000;">date-time forms are interpreted as local time</span>
+<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03-01T00:00:00'</span><span style="color: #000000;">)</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
+<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03-01 00:00:00'</span><span style="color: #000000;">)</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
 
-<span style="color: #969896;">// </span><span style="color: #7f0000;">&#36820;&#22238; UTC &#26102;&#38388;</span>
-<span style="color: #969896;">// </span><span style="color: #7f0000;">date-only forms are interpreted as a UTC time</span>
-<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Wed</span><span style="color: #7f0000;">, 01 Mar 2023 00:00:00 GMT'</span>
-<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03-01'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Wed</span><span style="color: #7f0000;">, 01 Mar 2023 00:00:00 GMT'</span>
+<span style="color: #7f0000;">// </span><span style="color: #7f0000;">&#36820;&#22238; UTC &#26102;&#38388;</span>
+<span style="color: #7f0000;">// </span><span style="color: #7f0000;">date-only forms are interpreted as a UTC time</span>
+<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Wed</span><span style="color: #7f0000;">, 01 Mar 2023 00:00:00 GMT'</span>
+<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03-01'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Wed</span><span style="color: #7f0000;">, 01 Mar 2023 00:00:00 GMT'</span>
 
-<span style="color: #969896;">// </span><span style="color: #7f0000;">date-time forms are interpreted as local time</span>
-<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03-01T00:00:00'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Tue</span><span style="color: #7f0000;">, 28 Feb 2023 16:00:00 GMT'</span>
-<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03-01 00:00:00'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Tue</span><span style="color: #7f0000;">, 28 Feb 2023 16:00:00 GMT'</span>
+<span style="color: #7f0000;">// </span><span style="color: #7f0000;">date-time forms are interpreted as local time</span>
+<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03-01T00:00:00'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Tue</span><span style="color: #7f0000;">, 28 Feb 2023 16:00:00 GMT'</span>
+<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03-01 00:00:00'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Tue</span><span style="color: #7f0000;">, 28 Feb 2023 16:00:00 GMT'</span>
 </pre>
 </div>
 
@@ -352,9 +352,9 @@ midnight at the beginning of January 1, 1970, UTC.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Wed</span><span style="color: #7f0000;">, 01 Mar 2023 00:00:00 GMT'</span>
-<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2024-03-25 01:00:00'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Sun</span><span style="color: #7f0000;">, 24 Mar 2024 17:00:00 GMT'</span>
-<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2024-03-25 08:00:00'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Mon</span><span style="color: #7f0000;">, 25 Mar 2024 00:00:00 GMT'</span>
+<pre class="src src-typescript"><span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2023-03'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Wed</span><span style="color: #7f0000;">, 01 Mar 2023 00:00:00 GMT'</span>
+<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2024-03-25 01:00:00'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Sun</span><span style="color: #7f0000;">, 24 Mar 2024 17:00:00 GMT'</span>
+<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span><span style="color: #3548cf;">'2024-03-25 08:00:00'</span><span style="color: #000000;">)</span>.<span style="color: #721045;">toUTCString</span><span style="color: #000000;">()</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">'</span><span style="color: #005e8b;">Mon</span><span style="color: #7f0000;">, 25 Mar 2024 00:00:00 GMT'</span>
 </pre>
 </div>
 
@@ -363,25 +363,25 @@ midnight at the beginning of January 1, 1970, UTC.
 </p>
 </div>
 
-<div id="outline-container-org4790d07" class="outline-3">
-<h3 id="org4790d07">如何规避</h3>
-<div class="outline-text-3" id="text-org4790d07">
+<div id="outline-container-orgb51c668" class="outline-3">
+<h3 id="orgb51c668">如何规避</h3>
+<div class="outline-text-3" id="text-orgb51c668">
 <p>
 由于以 date string 形式创建 Date，得到的结果可能不同，因此最好避免用 date string ，而是用参数的形式创建:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #969896;">// </span><span style="color: #7f0000;">Remember (and accept) that month is zero-indexed in JavaScript.</span>
-<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span>2023, 02, 01<span style="color: #000000;">)</span> <span style="color: #969896;">// </span><span style="color: #7f0000;">Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
+<pre class="src src-typescript"><span style="color: #7f0000;">// </span><span style="color: #7f0000;">Remember (and accept) that month is zero-indexed in JavaScript.</span>
+<span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Date</span><span style="color: #000000;">(</span>2023, 02, 01<span style="color: #000000;">)</span> <span style="color: #7f0000;">// </span><span style="color: #7f0000;">Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard </span><span style="color: #005e8b;">Time</span><span style="color: #7f0000;">)</span>
 </pre>
 </div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org16541e0" class="outline-2">
-<h2 id="org16541e0">Refs</h2>
-<div class="outline-text-2" id="text-org16541e0">
+<div id="outline-container-org7f098d4" class="outline-2">
+<h2 id="org7f098d4">Refs</h2>
+<div class="outline-text-2" id="text-org7f098d4">
 <ul class="org-ul">
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a></li>
 
