@@ -321,8 +321,6 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 为此写了 <code>spike-leung/apply-theme-when-publish</code> 用于在执行 <code>org-publish</code> 的时候切换主题。
 </p></dd>
 
-<dt><b>页眉页脚的设置</b></dt><dd>想自定义 <code>:html-head</code> ， <code>:html-preamble</code> ， <code>:html-postamble</code> ， 需要传入字符串才生效，还没搞懂怎么抽象成变量或函数复用。</dd>
-
 <dt><b>RSS 的设置</b></dt><dd><p>
 <a href="https://github.com/emacsmirror/ox-rss">ox-rss</a> 可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成 RSS。
 </p>
@@ -388,7 +386,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 
 <dt>:time-stamp-file nil</dt><dd>设置 <code>:time-stamp-file nil</code> 可以避免每次执行 org-publish 的时候都往 HTML 插入最新的时间戳，导致每次变更的文件很多。</dd>
 
-<dt><code>:html-head</code> 的复用</dt><dd><p>
+<dt><code>:html-head</code> ， <code>:html-preamble</code> ， <code>:html-postamble</code> 的复用</dt><dd><p>
 最开始定义 <code>org-publish-project-alist</code> ， 我是这么写的，导致一直无法使用变量抽象一些公用的 string：
 </p>
 
@@ -482,6 +480,28 @@ The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value i
 <p>
 <code>`</code> 和 <code>'</code> 的不同是，它会执行 list 里面的内容， 这样 <code>,spike-leung/html-head</code> 就会被执行并返回对应的 string，满足 <code>:html-head</code> 的需要。
 </p></dd>
+
+<dt>代码块的收起展开</dt><dd><p>
+需要开启 <code>org-html-html5-fancy</code> (<a href="https://orgmode.org/manual/HTML-doctypes.html">13.9.3 HTML doctypes ¶</a>)，从而可以使用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details">&lt;details&gt;</a>
+</p>
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> org-html-html5-fancy t<span style="color: #000000;">)</span>
+<span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> org-html-doctype <span style="color: #3548cf;">"html5"</span><span style="color: #000000;">)</span>
+</pre>
+</div>
+
+<p>
+然后就可以这么用：
+</p>
+
+<pre class="example" id="org68356a6">
+#+begin_details
+#+HTML: &lt;summary&gt;Demo Code&lt;/summary&gt;
+#+begin_src JavaScript
+console.log('Hello world!')
+#+end_src
+#+end_details
+</pre></dd>
 </dl>
 </div>
 </div>
@@ -493,7 +513,7 @@ The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value i
 以下代码可以作为参考，最新的请看 <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el">init-org-publish.el</a>。
 </p>
 
-<details id="orgea408b5">
+<details id="org94c21d3">
 <summary>init-org-publish.el</summary>
 <div class="org-src-container">
 <pre class="src src-elisp"><span style="color: #969896;">;;; </span><span style="color: #7f0000;">init-org-publish.el --- org publish config for my blog -*- lexical-binding: t -*-</span>
@@ -693,7 +713,7 @@ The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value i
 例如这是我用于<a href="https://github.com/Spike-Leung/emacs.d/blob/windows/snippets/org-mode/weekly">写周刊的 snippet</a>:
 </p>
 
-<details id="orgfd162de">
+<details id="org92d8bb0">
 <summary>weekly snippet</summary>
 <div class="org-src-container">
 <pre class="src src-elisp"># -*- mode: snippet -*-
@@ -738,6 +758,7 @@ $0
 <li class="off"><code>[&#xa0;]</code> 针对 weekly 单独设置 RSS</li>
 <li class="off"><code>[&#xa0;]</code> 增加搜索功能</li>
 <li class="off"><code>[&#xa0;]</code> 实现 CI/CD</li>
+<li class="off"><code>[&#xa0;]</code> 在不同机器执行 publish 的时候，ID 总是会变化</li>
 </ul>
 </div>
 </div>

@@ -54,9 +54,6 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
     为此写了 =spike-leung/apply-theme-when-publish= 用于在执行 =org-publish= 的时候切换主题。
 
-- *页眉页脚的设置* ::
-  想自定义 =:html-head= ， =:html-preamble= ， =:html-postamble= ， 需要传入字符串才生效，还没搞懂怎么抽象成变量或函数复用。
-
 - *RSS 的设置* ::
   [[https://github.com/emacsmirror/ox-rss][ox-rss]] 可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成 RSS。
 
@@ -97,7 +94,7 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 - :time-stamp-file nil ::
   设置 =:time-stamp-file nil= 可以避免每次执行 org-publish 的时候都往 HTML 插入最新的时间戳，导致每次变更的文件很多。
 
-- =:html-head= 的复用 ::
+- =:html-head= ， =:html-preamble= ， =:html-postamble= 的复用 ::
   最开始定义 =org-publish-project-alist= ， 我是这么写的，导致一直无法使用变量抽象一些公用的 string：
 
   #+begin_src elisp
@@ -163,11 +160,29 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
   =`= 和 ='= 的不同是，它会执行 list 里面的内容， 这样 =,spike-leung/html-head= 就会被执行并返回对应的 string，满足 =:html-head= 的需要。
 
+- 代码块的收起展开 ::
+  需要开启 =org-html-html5-fancy= ([[https://orgmode.org/manual/HTML-doctypes.html][13.9.3 HTML doctypes ¶]])，从而可以使用 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details][<details>]]
+  #+begin_src elisp
+    (setq org-html-html5-fancy t)
+    (setq org-html-doctype "html5")
+  #+end_src
+
+  然后就可以这么用：
+
+  #+begin_example
+    ,#+begin_details
+    ,#+HTML: <summary>Demo Code</summary>
+    ,#+begin_src JavaScript
+    console.log('Hello world!')
+    ,#+end_src
+    ,#+end_details
+  #+end_example
+
 * org-publish 的完整代码
 
 以下代码可以作为参考，最新的请看 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el][init-org-publish.el]]。
 
-#+BEGIN_details
+#+begin_details
 #+HTML: <summary>init-org-publish.el</summary>
 #+begin_src elisp
   ;;; init-org-publish.el --- org publish config for my blog -*- lexical-binding: t -*-
@@ -394,6 +409,7 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 - [ ] 针对 weekly 单独设置 RSS
 - [ ] 增加搜索功能
 - [ ] 实现 CI/CD
+- [ ] 在不同机器执行 publish 的时候，ID 总是会变化
 
 * Refs
 
