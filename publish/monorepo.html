@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Monorepo</title>
 <meta name="author" content="Spike Leung" />
@@ -193,8 +191,9 @@
   .org-svg { }
 </style>
 
-<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css" />
 <link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -212,230 +211,231 @@
 </nav>
 </div>
 <div id="content" class="content">
+<header>
 <h1 class="title">Monorepo</h1>
-<div id="table-of-contents" role="doc-toc">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org611b64c">Why</a>
+<li><a href="#orgcdb6014">Why</a>
 <ul>
-<li><a href="#org8544404">multirepo 优缺点</a>
+<li><a href="#org6616500">multirepo 优缺点</a>
 <ul>
-<li><a href="#org1be3026">优点</a></li>
-<li><a href="#org1b1db17">缺点</a></li>
+<li><a href="#org1b128ab">优点</a></li>
+<li><a href="#orge8c5d02">缺点</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgbdd6536">What</a></li>
-<li><a href="#org285bdda">monorepo 优缺点</a>
+<li><a href="#orgf4cb6af">What</a></li>
+<li><a href="#org5f9b695">monorepo 优缺点</a>
 <ul>
-<li><a href="#org2a38a98">优点</a></li>
-<li><a href="#org64573ce">缺点</a></li>
+<li><a href="#org066a6b3">优点</a></li>
+<li><a href="#org921007f">缺点</a></li>
 </ul>
 </li>
-<li><a href="#orgf1f34a9">例子</a></li>
-<li><a href="#org73cfa76">Refs</a></li>
+<li><a href="#orgd70bbc5">例子</a></li>
+<li><a href="#org785229d">Refs</a></li>
 </ul>
 </div>
+</nav>
+
+<div id="outline-container-orgcdb6014" class="outline-2">
+<h2 id="orgcdb6014">Why</h2>
+<div class="outline-text-2" id="text-orgcdb6014">
+<p>
+当项目变得庞大的时候，自然就会想到去拆分，以更小的单位去维护，或者复用。<br>
+</p>
+
+<p>
+一种组织方式是，将项目拆成多个独立的 repo，然后通过子模块关联，<br>
+</p>
+
+<p>
+或者将某些模块发到 npm，通过 npm 去安装依赖。<br>
+</p>
+
+<p>
+这种拆分成多个 repo 的组织形式，称为 <code>multirepo</code> ，这种组织形式的有什么优劣呢？<br>
+</p>
 </div>
 
-<div id="outline-container-org611b64c" class="outline-2">
-<h2 id="org611b64c">Why</h2>
-<div class="outline-text-2" id="text-org611b64c">
-<p>
-当项目变得庞大的时候，自然就会想到去拆分，以更小的单位去维护，或者复用。<br />
-</p>
-
-<p>
-一种组织方式是，将项目拆成多个独立的 repo，然后通过子模块关联，<br />
-</p>
-
-<p>
-或者将某些模块发到 npm，通过 npm 去安装依赖。<br />
-</p>
-
-<p>
-这种拆分成多个 repo 的组织形式，称为 <code>multirepo</code> ，这种组织形式的有什么优劣呢？<br />
-</p>
+<div id="outline-container-org6616500" class="outline-3">
+<h3 id="org6616500">multirepo 优缺点</h3>
+<div class="outline-text-3" id="text-org6616500">
 </div>
-
-<div id="outline-container-org8544404" class="outline-3">
-<h3 id="org8544404">multirepo 优缺点</h3>
-<div class="outline-text-3" id="text-org8544404">
-</div>
-<div id="outline-container-org1be3026" class="outline-4">
-<h4 id="org1be3026">优点</h4>
-<div class="outline-text-4" id="text-org1be3026">
+<div id="outline-container-org1b128ab" class="outline-4">
+<h4 id="org1b128ab">优点</h4>
+<div class="outline-text-4" id="text-org1b128ab">
 <ul class="org-ul">
-<li>每个仓库的大小一般不会很大<br /></li>
+<li>每个仓库的大小一般不会很大<br></li>
 
-<li>每个仓库独立，可以单独对仓库进行权限控制， 例如控制谁有权限访问，谁可以提交等。<br /></li>
+<li>每个仓库独立，可以单独对仓库进行权限控制， 例如控制谁有权限访问，谁可以提交等。<br></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org1b1db17" class="outline-4">
-<h4 id="org1b1db17">缺点</h4>
-<div class="outline-text-4" id="text-org1b1db17">
+<div id="outline-container-orge8c5d02" class="outline-4">
+<h4 id="orge8c5d02">缺点</h4>
+<div class="outline-text-4" id="text-orge8c5d02">
 <ul class="org-ul">
-<li>当维护多个 repo 时，需要在多个 repo 之间切换，容易混乱。<br /></li>
+<li>当维护多个 repo 时，需要在多个 repo 之间切换，容易混乱。<br></li>
 
-<li>每个仓库可能有一套自己的配置，仓库之间不兼容，标准不统一。<br /></li>
+<li>每个仓库可能有一套自己的配置，仓库之间不兼容，标准不统一。<br></li>
 
-<li>repo 和子模块可能存在重复的依赖，导致依赖的重复安装。<br /></li>
+<li>repo 和子模块可能存在重复的依赖，导致依赖的重复安装。<br></li>
 
-<li>不在同一个 repo 中，不方便分析整个项目的所有依赖。<br /></li>
+<li>不在同一个 repo 中，不方便分析整个项目的所有依赖。<br></li>
 
-<li>发布的时候，如果多个 repo 存在依赖关系，要按照依赖顺序依次构建再部署。<br /></li>
+<li>发布的时候，如果多个 repo 存在依赖关系，要按照依赖顺序依次构建再部署。<br></li>
 
-<li>repo 之间存在依赖关系，调试依赖的仓库时，需要 npm link 关联仓库。<br /></li>
+<li>repo 之间存在依赖关系，调试依赖的仓库时，需要 npm link 关联仓库。<br></li>
 </ul>
 </div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgbdd6536" class="outline-2">
-<h2 id="orgbdd6536">What</h2>
-<div class="outline-text-2" id="text-orgbdd6536">
+<div id="outline-container-orgf4cb6af" class="outline-2">
+<h2 id="orgf4cb6af">What</h2>
+<div class="outline-text-2" id="text-orgf4cb6af">
 <p>
-面对 multirepo 的这些问题，就有人提出了 <code>monorepo</code> 的组织方式。<br />
+面对 multirepo 的这些问题，就有人提出了 <code>monorepo</code> 的组织方式。<br>
 </p>
 
 <blockquote>
 <p>
-A monorepo is a single repository containing multiple distinct<br />
-projects, with well-defined relationships.<br />
+A monorepo is a single repository containing multiple distinct<br>
+projects, with well-defined relationships.<br>
 </p>
 </blockquote>
 
 <p>
-一个 monorepo 应该是：<br />
+一个 monorepo 应该是：<br>
 </p>
 
 <ul class="org-ul">
-<li>单一的仓库<br /></li>
-<li>仓库中包含多个独立的项目<br /></li>
-<li>每个项目之间的关系定义清晰明确<br /></li>
+<li>单一的仓库<br></li>
+<li>仓库中包含多个独立的项目<br></li>
+<li>每个项目之间的关系定义清晰明确<br></li>
 </ul>
 
 <p>
-简单的理解，monorepo 就是把原来的 multirepo 合并成一个 repo。<br />
+简单的理解，monorepo 就是把原来的 multirepo 合并成一个 repo。<br>
 </p>
 
 <p>
-那是不是把每个 repo 分别放到不同的目录，建一个新的庞大的仓库，就完事了呢？<br />
+那是不是把每个 repo 分别放到不同的目录，建一个新的庞大的仓库，就完事了呢？<br>
 </p>
 
 <p>
-这样就变成一个“大杂烩”了，被称为 <code>Single-repo Monolith</code>, 已经接近 monorepo 的样子了。<br />
+这样就变成一个“大杂烩”了，被称为 <code>Single-repo Monolith</code>, 已经接近 monorepo 的样子了。<br>
 </p>
 
 <p>
-在这个基础上，还需要：<br />
+在这个基础上，还需要：<br>
 </p>
 
 <ol class="org-ol">
-<li>每个 repo 逻辑上独立，项目之间可能是不相关的，松散连接的，或者可以通过一些方式连接起来。（譬如 pnpm 的 workspace）<br /></li>
+<li>每个 repo 逻辑上独立，项目之间可能是不相关的，松散连接的，或者可以通过一些方式连接起来。（譬如 pnpm 的 workspace）<br></li>
 
-<li>要保证项目之间的依赖关系定义清晰<br />
+<li>要保证项目之间的依赖关系定义清晰<br>
 
 <dl class="org-dl">
-<dt><b>项目间的依赖关系</b></dt><dd>monorepo 的项目之间可能存在依赖关系，如何可以方便地添加依赖，完成构建。在 pnpm 中，可以在子项目的 <code>package.json</code> 中通过 <a href="https://pnpm.io/workspaces">workspace</a> 关键字去引用项目。<br /></dd>
+<dt><b>项目间的依赖关系</b></dt><dd>monorepo 的项目之间可能存在依赖关系，如何可以方便地添加依赖，完成构建。在 pnpm 中，可以在子项目的 <code>package.json</code> 中通过 <a href="https://pnpm.io/workspaces">workspace</a> 关键字去引用项目。<br></dd>
 
-<dt><b>项目第三方依赖间的关系</b></dt><dd>monorepo 中可能多个项目同时依赖了相同的第三方依赖，如都依赖 vue。在 pnpm，相同的依赖可以考虑按照到 workspace 中，而不是具体的项目里。<br />
-尽管都是依赖 vue，但是不同项目可能依赖不同版本的 vue，需要解决版本问题。<br /></dd>
+<dt><b>项目第三方依赖间的关系</b></dt><dd>monorepo 中可能多个项目同时依赖了相同的第三方依赖，如都依赖 vue。在 pnpm，相同的依赖可以考虑按照到 workspace 中，而不是具体的项目里。<br>
+尽管都是依赖 vue，但是不同项目可能依赖不同版本的 vue，需要解决版本问题。<br></dd>
 </dl></li>
 </ol>
 
 <p>
-对于 <b>项目间的依赖关系</b> ，为了实现一定程度的自动化，需要借助一些工具，如 <a href="https://nx.dev/">NX</a>，<a href="https://lerna.js.org/">Lerna</a>，<a href="https://turborepo.org/">turborepo</a>。<br />
+对于 <b>项目间的依赖关系</b> ，为了实现一定程度的自动化，需要借助一些工具，如 <a href="https://nx.dev/">NX</a>，<a href="https://lerna.js.org/">Lerna</a>，<a href="https://turborepo.org/">turborepo</a>。<br>
 </p>
 
 <p>
-对于 <b>项目第三方依赖间的关系</b>, 可以借助 <a href="https://yarnpkg.com/">yarn</a>，<a href="https://pnpm.io/">pnpm</a> 等包管理工具的 workspace 功能去实现。<br />
+对于 <b>项目第三方依赖间的关系</b>, 可以借助 <a href="https://yarnpkg.com/">yarn</a>，<a href="https://pnpm.io/">pnpm</a> 等包管理工具的 workspace 功能去实现。<br>
 </p>
 
 <p>
-所以，有别于 Single-repo Monolisth， monorepo 需要有明确清晰的依赖关系，能够很方便地管理依赖。<br />
+所以，有别于 Single-repo Monolisth， monorepo 需要有明确清晰的依赖关系，能够很方便地管理依赖。<br>
 </p>
 </div>
 </div>
 
-<div id="outline-container-org285bdda" class="outline-2">
-<h2 id="org285bdda">monorepo 优缺点</h2>
-<div class="outline-text-2" id="text-org285bdda">
+<div id="outline-container-org5f9b695" class="outline-2">
+<h2 id="org5f9b695">monorepo 优缺点</h2>
+<div class="outline-text-2" id="text-org5f9b695">
 </div>
-<div id="outline-container-org2a38a98" class="outline-3">
-<h3 id="org2a38a98">优点</h3>
-<div class="outline-text-3" id="text-org2a38a98">
+<div id="outline-container-org066a6b3" class="outline-3">
+<h3 id="org066a6b3">优点</h3>
+<div class="outline-text-3" id="text-org066a6b3">
 <ul class="org-ul">
-<li>更容易管理依赖<br /></li>
+<li>更容易管理依赖<br></li>
 
-<li>源码都在一起，方便调试<br /></li>
+<li>源码都在一起，方便调试<br></li>
 
-<li>可以在多个模块中，复用相同的配置，例如单元测试，CI/CD 相关的配置，便于保持规范一致<br /></li>
+<li>可以在多个模块中，复用相同的配置，例如单元测试，CI/CD 相关的配置，便于保持规范一致<br></li>
 
-<li>由于相关的项目都在一起，因此可以比较方便地编写集成测试<br /></li>
+<li>由于相关的项目都在一起，因此可以比较方便地编写集成测试<br></li>
 
-<li>当有一个功能，牵涉多个模块时，可以在一个提交中改好，而 multirepo 则需要在多个 repo 做提交<br /></li>
+<li>当有一个功能，牵涉多个模块时，可以在一个提交中改好，而 multirepo 则需要在多个 repo 做提交<br></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org64573ce" class="outline-3">
-<h3 id="org64573ce">缺点</h3>
-<div class="outline-text-3" id="text-org64573ce">
+<div id="outline-container-org921007f" class="outline-3">
+<h3 id="org921007f">缺点</h3>
+<div class="outline-text-3" id="text-org921007f">
 <ul class="org-ul">
-<li>项目启动，打包构建速度变慢<br /></li>
+<li>项目启动，打包构建速度变慢<br></li>
 
-<li>当项目很庞大，提交记录很多时，git 的一些操作性能上会变慢<br /></li>
+<li>当项目很庞大，提交记录很多时，git 的一些操作性能上会变慢<br></li>
 
-<li>没法限制不同模块的访问权限。也是一个优点，开发人员能看到所有模块，了解到这些模块的关联，而不是只关注自己的模块。<br /></li>
+<li>没法限制不同模块的访问权限。也是一个优点，开发人员能看到所有模块，了解到这些模块的关联，而不是只关注自己的模块。<br></li>
 
-<li>可能出现"幽灵"依赖，由于依赖安装在项目的 root 目录，所有模块能访问到，<br />
-于是即使模块中忘了声明某个依赖，但是 root 中存在，则可以使用。但实<br />
-际部署时，会因为没有声明依赖，导致没有安装而报错。<br /></li>
+<li>可能出现"幽灵"依赖，由于依赖安装在项目的 root 目录，所有模块能访问到，<br>
+于是即使模块中忘了声明某个依赖，但是 root 中存在，则可以使用。但实<br>
+际部署时，会因为没有声明依赖，导致没有安装而报错。<br></li>
 </ul>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgf1f34a9" class="outline-2">
-<h2 id="orgf1f34a9">例子</h2>
-<div class="outline-text-2" id="text-orgf1f34a9">
+<div id="outline-container-orgd70bbc5" class="outline-2">
+<h2 id="orgd70bbc5">例子</h2>
+<div class="outline-text-2" id="text-orgd70bbc5">
 <dl class="org-dl">
-<dt><a href="https://codeburst.io/monorepos-by-example-part-1-3a883b49047e">Monorepos By Example: Part 1</a></dt><dd>一个应用 monorepo 的例子，用 Lerna 管理依赖。<br /></dd>
+<dt><a href="https://codeburst.io/monorepos-by-example-part-1-3a883b49047e">Monorepos By Example: Part 1</a></dt><dd>一个应用 monorepo 的例子，用 Lerna 管理依赖。<br></dd>
 
-<dt><a href="https://github.com/Spike-Leung/leetcode">Spike-Leung/leetcode</a></dt><dd>我自己的实践，分成了 solutions, solution-parser, web 三个 package，然后用 pnpm 的 workspace 关联。<br /></dd>
+<dt><a href="https://github.com/Spike-Leung/leetcode">Spike-Leung/leetcode</a></dt><dd>我自己的实践，分成了 solutions, solution-parser, web 三个 package，然后用 pnpm 的 workspace 关联。<br></dd>
 
-<dt><a href="https://github.com/illa-family/illa-design">illa-design</a></dt><dd>一个组件库，组件之间就是以 monorepo 的形式组织的，目前使用的工具是 turborepo<br /></dd>
+<dt><a href="https://github.com/illa-family/illa-design">illa-design</a></dt><dd>一个组件库，组件之间就是以 monorepo 的形式组织的，目前使用的工具是 turborepo<br></dd>
 
-<dt><a href="https://github.com/vuejs/core">vuejs/core</a></dt><dd>看起来也是一个 monorepo 的组织方式，使用了 pnpm 去管理依赖<br /></dd>
+<dt><a href="https://github.com/vuejs/core">vuejs/core</a></dt><dd>看起来也是一个 monorepo 的组织方式，使用了 pnpm 去管理依赖<br></dd>
 </dl>
 </div>
 </div>
 
-<div id="outline-container-org73cfa76" class="outline-2">
-<h2 id="org73cfa76">Refs</h2>
-<div class="outline-text-2" id="text-org73cfa76">
+<div id="outline-container-org785229d" class="outline-2">
+<h2 id="org785229d">Refs</h2>
+<div class="outline-text-2" id="text-org785229d">
 <dl class="org-dl">
-<dt><a href="https://monorepo.tools/">monorepo.tools</a></dt><dd>对 monorepo 的整体介绍，同时比对了不同 monorepo 工具之间的优缺点<br /></dd>
+<dt><a href="https://monorepo.tools/">monorepo.tools</a></dt><dd>对 monorepo 的整体介绍，同时比对了不同 monorepo 工具之间的优缺点<br></dd>
 
-<dt><a href="https://mp.weixin.qq.com/s/U8_30S9B0S_SU3jdgUxFGQ">Monorepo 的过去、现在、和未来</a></dt><dd>解释了 monolith 和 moporepo 间的差别，怎么实现这些差别，以及相关的工具，比较了作者自己用到的一些工具<br /></dd>
+<dt><a href="https://mp.weixin.qq.com/s/U8_30S9B0S_SU3jdgUxFGQ">Monorepo 的过去、现在、和未来</a></dt><dd>解释了 monolith 和 moporepo 间的差别，怎么实现这些差别，以及相关的工具，比较了作者自己用到的一些工具<br></dd>
 
-<dt><a href="https://www.aha.io/engineering/articles/monorepo">From many to one: Moving our JavaScript code into a monorepo</a></dt><dd>Aha! 团队迁移 monorepo 的选型<br /></dd>
+<dt><a href="https://www.aha.io/engineering/articles/monorepo">From many to one: Moving our JavaScript code into a monorepo</a></dt><dd>Aha! 团队迁移 monorepo 的选型<br></dd>
 
-<dt><a href="https://segmentfault.com/a/1190000039814987">开源项目都在用 monorepo，但是你知道居然有那么多坑么？</a></dt><dd>对比了 multirepo 和 monorepo 的优缺点，较详细地分析了 monorepo 带来的问题：依赖，构建，测试，发布等<br /></dd>
+<dt><a href="https://segmentfault.com/a/1190000039814987">开源项目都在用 monorepo，但是你知道居然有那么多坑么？</a></dt><dd>对比了 multirepo 和 monorepo 的优缺点，较详细地分析了 monorepo 带来的问题：依赖，构建，测试，发布等<br></dd>
 
-<dt><a href="https://www.toptal.com/front-end/guide-to-monorepos">Guide to Monorepos for Front-end Code</a></dt><dd>讲了为什么要用 monorepo，monorepo 的优劣，以及实现 monorepo 的工具链<br /></dd>
+<dt><a href="https://www.toptal.com/front-end/guide-to-monorepos">Guide to Monorepos for Front-end Code</a></dt><dd>讲了为什么要用 monorepo，monorepo 的优劣，以及实现 monorepo 的工具链<br></dd>
 
-<dt><a href="https://github.com/korfuri/awesome-monorepo">Awesome Monorepo</a></dt><dd>整理了 monorepo 相关的工具<br /></dd>
+<dt><a href="https://github.com/korfuri/awesome-monorepo">Awesome Monorepo</a></dt><dd>整理了 monorepo 相关的工具<br></dd>
 
-<dt><a href="https://blog.logrocket.com/javascript-package-managers-compared/">JavaScript package managers compared: npm, Yarn, or pnpm?</a></dt><dd>比对了常用的包管理工具： npm vs yarn vs pnpm, 提及他们对 monorepo 的支持<br /></dd>
+<dt><a href="https://blog.logrocket.com/javascript-package-managers-compared/">JavaScript package managers compared: npm, Yarn, or pnpm?</a></dt><dd>比对了常用的包管理工具： npm vs yarn vs pnpm, 提及他们对 monorepo 的支持<br></dd>
 
-<dt><a href="https://dev.to/jonlauridsen/exploring-the-typescript-monorepo-a-practical-hands-on-adventure-your-help-is-needed-2ggb">Exploring the Typescript Monorepo (a practical, hands-on adventure)</a></dt><dd>Monorepo 引子，作为目录管理和 multirepo 管理的折中模式，同时包含一些实践。<br /></dd>
+<dt><a href="https://dev.to/jonlauridsen/exploring-the-typescript-monorepo-a-practical-hands-on-adventure-your-help-is-needed-2ggb">Exploring the Typescript Monorepo (a practical, hands-on adventure)</a></dt><dd>Monorepo 引子，作为目录管理和 multirepo 管理的折中模式，同时包含一些实践。<br></dd>
 </dl>
 </div>
 </div>

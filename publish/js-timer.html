@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>JS 中的定时任务</title>
 <meta name="author" content="Spike Leung" />
@@ -193,8 +191,9 @@
   .org-svg { }
 </style>
 
-<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css" />
 <link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -212,31 +211,32 @@
 </nav>
 </div>
 <div id="content" class="content">
+<header>
 <h1 class="title">JS 中的定时任务</h1>
-<div id="table-of-contents" role="doc-toc">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga175318">setTimeout</a></li>
-<li><a href="#org1f9fbab">setTimeout(callback, 0) 零延迟的 setTimeout</a></li>
-<li><a href="#orgcacdf4e">setInterval</a>
+<li><a href="#org5988e61">setTimeout</a></li>
+<li><a href="#org5b7d020">setTimeout(callback, 0) 零延迟的 setTimeout</a></li>
+<li><a href="#orgabf1c65">setInterval</a>
 <ul>
-<li><a href="#org5956174">对于长时间的同步任务</a></li>
-<li><a href="#orgffb26dc">对于长时间的异步任务</a></li>
+<li><a href="#orgf0f6026">对于长时间的同步任务</a></li>
+<li><a href="#org5ac1b5e">对于长时间的异步任务</a></li>
 </ul>
 </li>
-<li><a href="#org318d05a">嵌套的 setTimeout</a></li>
-<li><a href="#org48d4f0c">requestAnimationFrame</a></li>
-<li><a href="#org125c299">requestIdleCallback</a></li>
-<li><a href="#org2ec1863">参考</a></li>
+<li><a href="#orgbc79d5a">嵌套的 setTimeout</a></li>
+<li><a href="#org820e61c">requestAnimationFrame</a></li>
+<li><a href="#org6e6c321">requestIdleCallback</a></li>
+<li><a href="#orgd255c26">参考</a></li>
 </ul>
 </div>
-</div>
+</nav>
 
 
-<div id="outline-container-orga175318" class="outline-2">
-<h2 id="orga175318">setTimeout</h2>
-<div class="outline-text-2" id="text-orga175318">
+<div id="outline-container-org5988e61" class="outline-2">
+<h2 id="org5988e61">setTimeout</h2>
+<div class="outline-text-2" id="text-org5988e61">
 <p>
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/setTimeout">setTimeout()</a> 可以设置一个延迟，延迟多少秒将一个 callback 放入到<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide#tasks_vs_microtasks">宏任务队列</a>。
 </p>
@@ -255,9 +255,9 @@ callback 只是被放到了宏任务队列中，当调用栈空闲的时候，�
 </div>
 </div>
 
-<div id="outline-container-org1f9fbab" class="outline-2">
-<h2 id="org1f9fbab">setTimeout(callback, 0) 零延迟的 setTimeout</h2>
-<div class="outline-text-2" id="text-org1f9fbab">
+<div id="outline-container-org5b7d020" class="outline-2">
+<h2 id="org5b7d020">setTimeout(callback, 0) 零延迟的 setTimeout</h2>
+<div class="outline-text-2" id="text-org5b7d020">
 <p>
 这里的 0 其实是放入到宏任务队列的延迟，而不是放入调用栈的延迟。
 </p>
@@ -272,9 +272,9 @@ callback 只是被放到了宏任务队列中，当调用栈空闲的时候，�
 </div>
 </div>
 
-<div id="outline-container-orgcacdf4e" class="outline-2">
-<h2 id="orgcacdf4e">setInterval</h2>
-<div class="outline-text-2" id="text-orgcacdf4e">
+<div id="outline-container-orgabf1c65" class="outline-2">
+<h2 id="orgabf1c65">setInterval</h2>
+<div class="outline-text-2" id="text-orgabf1c65">
 <p>
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/setInterval">setInterval()</a> 是每隔一段时间，就把 callback 加入到任务队列。
 </p>
@@ -312,9 +312,9 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 </p>
 </div>
 
-<div id="outline-container-org5956174" class="outline-3">
-<h3 id="org5956174">对于长时间的同步任务</h3>
-<div class="outline-text-3" id="text-org5956174">
+<div id="outline-container-orgf0f6026" class="outline-3">
+<h3 id="orgf0f6026">对于长时间的同步任务</h3>
+<div class="outline-text-3" id="text-orgf0f6026">
 <div class="org-src-container">
 <pre class="src src-js"><span style="color: #531ab6;">var</span> <span style="color: #005e8b;">fakeTimeIntensiveOperation</span> = <span style="color: #531ab6;">function</span><span style="color: #000000;">()</span> <span style="color: #000000;">{</span>
   <span style="color: #531ab6;">for</span> <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">var</span> <span style="color: #005e8b;">i</span> = 0; i&lt; Math.pow<span style="color: #008899;">(</span>10, 10<span style="color: #008899;">)</span>; i++<span style="color: #dd22dd;">)</span> <span style="color: #dd22dd;">{}</span>
@@ -336,9 +336,9 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 </div>
 </div>
 
-<div id="outline-container-orgffb26dc" class="outline-3">
-<h3 id="orgffb26dc">对于长时间的异步任务</h3>
-<div class="outline-text-3" id="text-orgffb26dc">
+<div id="outline-container-org5ac1b5e" class="outline-3">
+<h3 id="org5ac1b5e">对于长时间的异步任务</h3>
+<div class="outline-text-3" id="text-org5ac1b5e">
 <div class="org-src-container">
 <pre class="src src-js"><span style="color: #531ab6;">let</span> <span style="color: #005e8b;">counter</span> = 0;
 <span style="color: #531ab6;">var</span> <span style="color: #005e8b;">fakeTimeIntensiveOperation</span> = <span style="color: #531ab6;">function</span><span style="color: #000000;">()</span> <span style="color: #000000;">{</span>
@@ -366,9 +366,9 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 </div>
 </div>
 </div>
-<div id="outline-container-org318d05a" class="outline-2">
-<h2 id="org318d05a">嵌套的 setTimeout</h2>
-<div class="outline-text-2" id="text-org318d05a">
+<div id="outline-container-orgbc79d5a" class="outline-2">
+<h2 id="orgbc79d5a">嵌套的 setTimeout</h2>
+<div class="outline-text-2" id="text-orgbc79d5a">
 <div class="org-src-container">
 <pre class="src src-js"><span style="color: #000000;">(</span><span style="color: #531ab6;">function</span> loop<span style="color: #dd22dd;">()</span> <span style="color: #dd22dd;">{</span>
   setTimeout<span style="color: #008899;">(</span><span style="color: #531ab6;">function</span><span style="color: #972500;">()</span> <span style="color: #972500;">{</span>
@@ -409,9 +409,9 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 </div>
 </div>
 </div>
-<div id="outline-container-org48d4f0c" class="outline-2">
-<h2 id="org48d4f0c">requestAnimationFrame</h2>
-<div class="outline-text-2" id="text-org48d4f0c">
+<div id="outline-container-org820e61c" class="outline-2">
+<h2 id="org820e61c">requestAnimationFrame</h2>
+<div class="outline-text-2" id="text-org820e61c">
 <p>
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame">Window.requestAnimationFrame()</a> 主要是用来做动画的。
 </p>
@@ -453,9 +453,9 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 </ol>
 </div>
 </div>
-<div id="outline-container-org125c299" class="outline-2">
-<h2 id="org125c299">requestIdleCallback</h2>
-<div class="outline-text-2" id="text-org125c299">
+<div id="outline-container-org6e6c321" class="outline-2">
+<h2 id="org6e6c321">requestIdleCallback</h2>
+<div class="outline-text-2" id="text-org6e6c321">
 <p>
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback">window.requestIdleCallback()</a> 用于在浏览器空闲的时候，去调用 callback。
 </p>
@@ -494,9 +494,9 @@ requestIdleCallback(callback, options) 中的第二个参数是 options。
 </div>
 </div>
 
-<div id="outline-container-org2ec1863" class="outline-2">
-<h2 id="org2ec1863">参考</h2>
-<div class="outline-text-2" id="text-org2ec1863">
+<div id="outline-container-orgd255c26" class="outline-2">
+<h2 id="orgd255c26">参考</h2>
+<div class="outline-text-2" id="text-orgd255c26">
 <ul class="org-ul">
 <li><a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals">Cooperative asynchronous JavaScript: Timeouts and intervals</a> - MDN</li>
 <li><a href="https://zh.javascript.info/settimeout-setinterval">调度：setTimeout 和 setInterval</a> - javascript.info</li>

@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KPM 算法的 JS 实现</title>
 <meta name="author" content="Spike Leung" />
@@ -193,8 +191,9 @@
   .org-svg { }
 </style>
 
-<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css" />
 <link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -212,23 +211,24 @@
 </nav>
 </div>
 <div id="content" class="content">
+<header>
 <h1 class="title">KPM 算法的 JS 实现</h1>
-<div id="table-of-contents" role="doc-toc">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge28cbdb">前缀 &amp; 后缀</a></li>
-<li><a href="#org2c33eac">部分匹配表(PMT [Partial Match Table])</a>
+<li><a href="#org95e67fa">前缀 &amp; 后缀</a></li>
+<li><a href="#orgf311b29">部分匹配表(PMT [Partial Match Table])</a>
 <ul>
-<li><a href="#org1e903b5">PMT 代码实现</a></li>
+<li><a href="#org0e7f071">PMT 代码实现</a></li>
 </ul>
 </li>
-<li><a href="#org7768576">KMP 实现</a></li>
-<li><a href="#org8c0f4c0">leetcode 题目</a></li>
-<li><a href="#orgc337c9a">参考</a></li>
+<li><a href="#org1a6f36d">KMP 实现</a></li>
+<li><a href="#orgdc3203c">leetcode 题目</a></li>
+<li><a href="#org6b4cb40">参考</a></li>
 </ul>
 </div>
-</div>
+</nav>
 <p>
 <a href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm">KMP (Knuth–Morris–Pratt algorithm)</a> 算法是用于比较字符串的，给定字符串A，以及匹配字符串 B，判断 A 中是否包含 B。
 </p>
@@ -253,9 +253,9 @@
 KMP 利用了匹配后的信息，把 <code>匹配串(B)的匹配部分的前缀</code> 和 <code>原串(A)匹配部分的后缀</code> 进行对齐，从而快速移动匹配串，避免了原串遍历的回溯。
 </p>
 
-<div id="outline-container-orge28cbdb" class="outline-2">
-<h2 id="orge28cbdb">前缀 &amp; 后缀</h2>
-<div class="outline-text-2" id="text-orge28cbdb">
+<div id="outline-container-org95e67fa" class="outline-2">
+<h2 id="org95e67fa">前缀 &amp; 后缀</h2>
+<div class="outline-text-2" id="text-org95e67fa">
 <blockquote>
 <p>
 字符串的 <b>前缀</b> 是指不包含最后一个字符的所有以第一个字符开头的连续子串；
@@ -288,9 +288,9 @@ KMP 利用了匹配后的信息，把 <code>匹配串(B)的匹配部分的前缀
 </div>
 </div>
 
-<div id="outline-container-org2c33eac" class="outline-2">
-<h2 id="org2c33eac">部分匹配表(PMT [Partial Match Table])</h2>
-<div class="outline-text-2" id="text-org2c33eac">
+<div id="outline-container-orgf311b29" class="outline-2">
+<h2 id="orgf311b29">部分匹配表(PMT [Partial Match Table])</h2>
+<div class="outline-text-2" id="text-orgf311b29">
 <blockquote>
 <p>
 "部分匹配值" 就是 "前缀" 和 "后缀" 的 <b>最长</b> 的 <b>共有</b> 元素的 <b>长度</b> 。
@@ -306,9 +306,9 @@ PMT[i] 表示一个部分匹配值，描述的是在 0 ~ i 这个区间，最长
 </p>
 </div>
 
-<div id="outline-container-org1e903b5" class="outline-3">
-<h3 id="org1e903b5">PMT 代码实现</h3>
-<div class="outline-text-3" id="text-org1e903b5">
+<div id="outline-container-org0e7f071" class="outline-3">
+<h3 id="org0e7f071">PMT 代码实现</h3>
+<div class="outline-text-3" id="text-org0e7f071">
 <div class="org-src-container">
 <pre class="src src-js"><span style="color: #531ab6;">function</span> <span style="color: #721045;">getPmt</span><span style="color: #000000;">(</span><span style="color: #005e8b;">s</span><span style="color: #000000;">)</span> <span style="color: #000000;">{</span>
   <span style="color: #531ab6;">const</span> <span style="color: #005e8b;">n</span> = s.length;
@@ -349,9 +349,9 @@ console.log<span style="color: #000000;">(</span>getPmt<span style="color: #dd22
 </div>
 </div>
 
-<div id="outline-container-org7768576" class="outline-2">
-<h2 id="org7768576">KMP 实现</h2>
-<div class="outline-text-2" id="text-org7768576">
+<div id="outline-container-org1a6f36d" class="outline-2">
+<h2 id="org1a6f36d">KMP 实现</h2>
+<div class="outline-text-2" id="text-org1a6f36d">
 <div class="org-src-container">
 <pre class="src src-js"><span style="color: #531ab6;">function</span> <span style="color: #721045;">kmp</span><span style="color: #000000;">(</span><span style="color: #005e8b;">s</span>, <span style="color: #005e8b;">p</span><span style="color: #000000;">)</span> <span style="color: #000000;">{</span>
   <span style="color: #531ab6;">const</span> <span style="color: #005e8b;">n</span> = s.length;
@@ -403,18 +403,18 @@ console.log<span style="color: #000000;">(</span>getPmt<span style="color: #dd22
 </div>
 </div>
 
-<div id="outline-container-org8c0f4c0" class="outline-2">
-<h2 id="org8c0f4c0">leetcode 题目</h2>
-<div class="outline-text-2" id="text-org8c0f4c0">
+<div id="outline-container-orgdc3203c" class="outline-2">
+<h2 id="orgdc3203c">leetcode 题目</h2>
+<div class="outline-text-2" id="text-orgdc3203c">
 <ul class="org-ul">
 <li><a href="https://leetcode-cn.com/problems/implement-strstr/">28. 实现 strStr()</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgc337c9a" class="outline-2">
-<h2 id="orgc337c9a">参考</h2>
-<div class="outline-text-2" id="text-orgc337c9a">
+<div id="outline-container-org6b4cb40" class="outline-2">
+<h2 id="org6b4cb40">参考</h2>
+<div class="outline-text-2" id="text-org6b4cb40">
 <ul class="org-ul">
 <li><a href="https://www.bilibili.com/video/av81151415/?p=1">[算法] 轻松掌握 kmp</a> - bilibili@邋遢大哥233
 最容易理解的视频</li>

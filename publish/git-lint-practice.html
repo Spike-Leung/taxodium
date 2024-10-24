@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Git 的校验实践</title>
 <meta name="author" content="Spike Leung" />
@@ -194,8 +192,9 @@
   .org-svg { }
 </style>
 
-<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+<link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css" />
 <link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="../styles/style.css" type="text/css"/>
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -213,59 +212,60 @@
 </nav>
 </div>
 <div id="content" class="content">
+<header>
 <h1 class="title">Git 的校验实践</h1>
-<div id="table-of-contents" role="doc-toc">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd85d8bc">提交信息 (commit message)</a>
+<li><a href="#org3540370">提交信息 (commit message)</a>
 <ul>
-<li><a href="#org9c6a057">diff</a></li>
-<li><a href="#org083334a">编写方式</a></li>
-<li><a href="#org0e197c7">格式</a></li>
-<li><a href="#org1a826cc">工具校验</a></li>
-<li><a href="#org16a440d">提交信息模板(commit.template)</a></li>
+<li><a href="#org6ed7ce1">diff</a></li>
+<li><a href="#org9149c2e">编写方式</a></li>
+<li><a href="#org8ca8ea5">格式</a></li>
+<li><a href="#org7472d0d">工具校验</a></li>
+<li><a href="#orgb8bbaed">提交信息模板(commit.template)</a></li>
 </ul>
 </li>
-<li><a href="#orgf625a36">githooks / husky</a>
+<li><a href="#org94c9117">githooks / husky</a>
 <ul>
-<li><a href="#org90c1a68">配置方法</a>
+<li><a href="#org426ad3c">配置方法</a>
 <ul>
-<li><a href="#org3048f52">githooks</a></li>
-<li><a href="#orgdeee24d">husky</a></li>
+<li><a href="#orgeb16630">githooks</a></li>
+<li><a href="#org960099f">husky</a></li>
 </ul>
 </li>
-<li><a href="#org0eb8e25">一些例子</a>
+<li><a href="#org52cc22c">一些例子</a>
 <ul>
-<li><a href="#org275a330">校验提交信息 (commit-msg)</a></li>
-<li><a href="#orgaff847f">提交前校验&amp;格式化代码(pre-commit)</a></li>
-<li><a href="#org5ed5b1d">推送时判断是否合包含主分支提交(pre-push)</a></li>
+<li><a href="#orgd30c992">校验提交信息 (commit-msg)</a></li>
+<li><a href="#orgf0f8f51">提交前校验&amp;格式化代码(pre-commit)</a></li>
+<li><a href="#orgd485d9c">推送时判断是否合包含主分支提交(pre-push)</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org413d504">changelog</a></li>
-<li><a href="#orgb0d360f">Refs</a></li>
+<li><a href="#org89e8b5f">changelog</a></li>
+<li><a href="#orgab51c56">Refs</a></li>
 </ul>
 </div>
-</div>
+</nav>
 
-<div id="outline-container-orgd85d8bc" class="outline-2">
-<h2 id="orgd85d8bc">提交信息 (commit message)</h2>
-<div class="outline-text-2" id="text-orgd85d8bc">
+<div id="outline-container-org3540370" class="outline-2">
+<h2 id="org3540370">提交信息 (commit message)</h2>
+<div class="outline-text-2" id="text-org3540370">
 </div>
-<div id="outline-container-org9c6a057" class="outline-3">
-<h3 id="org9c6a057">diff</h3>
-<div class="outline-text-3" id="text-org9c6a057">
+<div id="outline-container-org6ed7ce1" class="outline-3">
+<h3 id="org6ed7ce1">diff</h3>
+<div class="outline-text-3" id="text-org6ed7ce1">
 <p>
 在提交前最好先确认一下当前提交了什么文件，看看 diff，确认没有改错后再提交。
 </p>
 </div>
 </div>
 
-<div id="outline-container-org083334a" class="outline-3">
-<h3 id="org083334a">编写方式</h3>
-<div class="outline-text-3" id="text-org083334a">
+<div id="outline-container-org9149c2e" class="outline-3">
+<h3 id="org9149c2e">编写方式</h3>
+<div class="outline-text-3" id="text-org9149c2e">
 <p>
 提交信息可以通过以下命令完成：
 </p>
@@ -296,9 +296,9 @@ git config --global core.editor <span style="color: #3548cf;">"vim"</span>
 </div>
 </div>
 
-<div id="outline-container-org0e197c7" class="outline-3">
-<h3 id="org0e197c7">格式</h3>
-<div class="outline-text-3" id="text-org0e197c7">
+<div id="outline-container-org8ca8ea5" class="outline-3">
+<h3 id="org8ca8ea5">格式</h3>
+<div class="outline-text-3" id="text-org8ca8ea5">
 <p>
 提交信息一般遵循<a href="https://www.conventionalcommits.org/zh-hans/v1.0.0-beta.4/">约定式提交</a>的规范去编写，基本结构为：
 </p>
@@ -365,9 +365,9 @@ change? Here<span style="color: #3548cf;">'s the place to explain them.</span>
 </div>
 </div>
 
-<div id="outline-container-org1a826cc" class="outline-3">
-<h3 id="org1a826cc">工具校验</h3>
-<div class="outline-text-3" id="text-org1a826cc">
+<div id="outline-container-org7472d0d" class="outline-3">
+<h3 id="org7472d0d">工具校验</h3>
+<div class="outline-text-3" id="text-org7472d0d">
 <p>
 在团队协作中，为了确保大家的提交都符合规范，最好是通过工具去约束，而不是人为检查。
 </p>
@@ -378,9 +378,9 @@ change? Here<span style="color: #3548cf;">'s the place to explain them.</span>
 </div>
 </div>
 
-<div id="outline-container-org16a440d" class="outline-3">
-<h3 id="org16a440d">提交信息模板(commit.template)</h3>
-<div class="outline-text-3" id="text-org16a440d">
+<div id="outline-container-orgb8bbaed" class="outline-3">
+<h3 id="orgb8bbaed">提交信息模板(commit.template)</h3>
+<div class="outline-text-3" id="text-orgb8bbaed">
 <p>
 团队中可能有约定好的提交信息格式，也可以添加一份提交模板在项目，每次提交时都读取模板进行编写，这样也可以统一格式。
 </p>
@@ -433,9 +433,9 @@ feel free to be detailed.
 </div>
 </div>
 
-<div id="outline-container-orgf625a36" class="outline-2">
-<h2 id="orgf625a36">githooks / husky</h2>
-<div class="outline-text-2" id="text-orgf625a36">
+<div id="outline-container-org94c9117" class="outline-2">
+<h2 id="org94c9117">githooks / husky</h2>
+<div class="outline-text-2" id="text-org94c9117">
 <p>
 前面提到，可以用 <a href="https://github.com/conventional-changelog/commitlint">commitlint</a> 在 <code>pre-commit</code> 时进行校验， <code>pre-commit</code> 指的就是一个 <a href="https://git-scm.com/docs/githooks">Git 钩子</a>，可以在提交前触发一些动作。
 </p>
@@ -460,13 +460,13 @@ githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本
 </p>
 </div>
 
-<div id="outline-container-org90c1a68" class="outline-3">
-<h3 id="org90c1a68">配置方法</h3>
-<div class="outline-text-3" id="text-org90c1a68">
+<div id="outline-container-org426ad3c" class="outline-3">
+<h3 id="org426ad3c">配置方法</h3>
+<div class="outline-text-3" id="text-org426ad3c">
 </div>
-<div id="outline-container-org3048f52" class="outline-4">
-<h4 id="org3048f52">githooks</h4>
-<div class="outline-text-4" id="text-org3048f52">
+<div id="outline-container-orgeb16630" class="outline-4">
+<h4 id="orgeb16630">githooks</h4>
+<div class="outline-text-4" id="text-orgeb16630">
 <ul class="org-ul">
 <li><p>
 进入 githooks 所在的目录
@@ -548,9 +548,9 @@ githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本
 </div>
 </div>
 
-<div id="outline-container-orgdeee24d" class="outline-4">
-<h4 id="orgdeee24d">husky</h4>
-<div class="outline-text-4" id="text-orgdeee24d">
+<div id="outline-container-org960099f" class="outline-4">
+<h4 id="org960099f">husky</h4>
+<div class="outline-text-4" id="text-org960099f">
 <p>
 <a href="https://typicode.github.io/husky/#/">husky</a> 是一个方便写 githooks 的工具，目前也蛮流行的。
 </p>
@@ -576,9 +576,9 @@ husky 的使用就不赘述了，如果项目可以 husky，建议还是用 husk
 </div>
 </div>
 
-<div id="outline-container-org0eb8e25" class="outline-3">
-<h3 id="org0eb8e25">一些例子</h3>
-<div class="outline-text-3" id="text-org0eb8e25">
+<div id="outline-container-org52cc22c" class="outline-3">
+<h3 id="org52cc22c">一些例子</h3>
+<div class="outline-text-3" id="text-org52cc22c">
 <div class="org-src-container">
 <pre class="src src-bash">/home/spike/git/commit-demo/.husky:
 total used<span style="color: #531ab6;"> in</span> directory 24 available 232.5 GiB
@@ -592,9 +592,9 @@ drwxrwxr-x 2 spike spike 4096 Oct 25 09:14 _
 </pre>
 </div>
 </div>
-<div id="outline-container-org275a330" class="outline-4">
-<h4 id="org275a330">校验提交信息 (commit-msg)</h4>
-<div class="outline-text-4" id="text-org275a330">
+<div id="outline-container-orgd30c992" class="outline-4">
+<h4 id="orgd30c992">校验提交信息 (commit-msg)</h4>
+<div class="outline-text-4" id="text-orgd30c992">
 <p>
 安装  <a href="https://github.com/conventional-changelog/commitlint">commitlint</a> 以来，然后创建 <code>commit-msg</code> 钩子，在提交后，校验提交信息是否符合规范：
 </p>
@@ -607,9 +607,9 @@ npx --no -- commitlint --edit $<span style="color: #000000;">{</span><span style
 </div>
 </div>
 </div>
-<div id="outline-container-orgaff847f" class="outline-4">
-<h4 id="orgaff847f">提交前校验&amp;格式化代码(pre-commit)</h4>
-<div class="outline-text-4" id="text-orgaff847f">
+<div id="outline-container-orgf0f8f51" class="outline-4">
+<h4 id="orgf0f8f51">提交前校验&amp;格式化代码(pre-commit)</h4>
+<div class="outline-text-4" id="text-orgf0f8f51">
 <div class="org-src-container">
 <pre class="src src-shell"><span style="color: #7f0000;">#</span><span style="color: #7f0000;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #7f0000;"> sh</span>
 . <span style="color: #3548cf;">"$(dirname -- "$0")/_/husky.sh"</span>
@@ -637,9 +637,9 @@ npx lint-staged
 </div>
 </div>
 
-<div id="outline-container-org5ed5b1d" class="outline-4">
-<h4 id="org5ed5b1d">推送时判断是否合包含主分支提交(pre-push)</h4>
-<div class="outline-text-4" id="text-org5ed5b1d">
+<div id="outline-container-orgd485d9c" class="outline-4">
+<h4 id="orgd485d9c">推送时判断是否合包含主分支提交(pre-push)</h4>
+<div class="outline-text-4" id="text-orgd485d9c">
 <div class="org-src-container">
 <pre class="src src-shell"><span style="color: #7f0000;">#</span><span style="color: #7f0000;">!/bin/</span><span style="color: #531ab6;">sh</span>
 <span style="color: #7f0000;"># </span><span style="color: #7f0000;">&#33719;&#21462; main &#20998;&#25903;&#26368;&#26032;&#30340;&#25552;&#20132;</span>
@@ -670,9 +670,9 @@ git fetch
 </div>
 </div>
 
-<div id="outline-container-org413d504" class="outline-2">
-<h2 id="org413d504">changelog</h2>
-<div class="outline-text-2" id="text-org413d504">
+<div id="outline-container-org89e8b5f" class="outline-2">
+<h2 id="org89e8b5f">changelog</h2>
+<div class="outline-text-2" id="text-org89e8b5f">
 <p>
 涉及到版本控制，自然也有版本号和发布日志，一般而言，版本号应该遵循<a href="https://semver.org/lang/zh-CN/">语义化版本 2.0.0</a>的规范。
 </p>
@@ -711,9 +711,9 @@ changeset 就会帮你把所有的 changeset 合并到 <code>CHANGELOG.md</code>
 </div>
 </div>
 
-<div id="outline-container-orgb0d360f" class="outline-2">
-<h2 id="orgb0d360f">Refs</h2>
-<div class="outline-text-2" id="text-orgb0d360f">
+<div id="outline-container-orgab51c56" class="outline-2">
+<h2 id="orgab51c56">Refs</h2>
+<div class="outline-text-2" id="text-orgab51c56">
 <ul class="org-ul">
 <li><a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration">8.1 Customizing Git - Git Configuration</a></li>
 <li><a href="https://stackoverflow.com/questions/2596805/how-do-i-make-git-use-the-editor-of-my-choice-for-editing-commit-messages">How do I make git use the editor of my choice for editing commit messages?</a></li>
