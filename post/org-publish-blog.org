@@ -160,24 +160,6 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
   =`= 和 ='= 的不同是，它会执行 list 里面的内容， 这样 =,spike-leung/html-head= 就会被执行并返回对应的 string，满足 =:html-head= 的需要。
 
-- 代码块的收起展开 ::
-  需要开启 =org-html-html5-fancy= ([[https://orgmode.org/manual/HTML-doctypes.html][13.9.3 HTML doctypes ¶]])，从而可以使用 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details][<details>]]
-  #+begin_src elisp
-    (setq org-html-html5-fancy t)
-    (setq org-html-doctype "html5")
-  #+end_src
-
-  然后就可以这么用：
-
-  #+begin_example
-    ,#+begin_details
-    ,#+HTML: <summary>Demo Code</summary>
-    ,#+begin_src JavaScript
-    console.log('Hello world!')
-    ,#+end_src
-    ,#+end_details
-  #+end_example
-
 * org-publish 的完整代码
 
 以下代码可以作为参考，最新的请看 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el][init-org-publish.el]]。
@@ -362,8 +344,11 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
 - 在执行 org-publish 时，如果内容多，可能会很慢，此时会阻塞 Emacs，不能做其他事情
 - 由于依赖 Emacs，[[https://www.netlify.com/][Netlify]] 等平台上没有开箱即用的构建命令，集成 CI/CD 相对麻烦
+- 还不知道如何 Hot Reload，所以预览编辑后的效果不是很方便，总是需要先执行一次构建
 
-* 其他
+* Tricks
+
+** Snippet
 
 为了方便，可以通过 [[https://github.com/joaotavora/yasnippet][YASnippet]] 或其他方式，设置 org 文件共用内容。
 
@@ -402,6 +387,46 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 #+end_src
 #+end_details
 
+** 内容的收起展开
+
+需要开启 =org-html-html5-fancy= ([[https://orgmode.org/manual/HTML-doctypes.html][13.9.3 HTML doctypes ¶]])，从而可以使用 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details][<details>]]
+
+#+begin_src elisp
+  (setq org-html-html5-fancy t)
+  (setq org-html-doctype "html5")
+#+end_src
+
+然后就可以这么用：
+
+#+begin_example
+  ,#+begin_details
+  ,#+HTML: <summary>Demo Code</summary>
+  ,#+begin_src JavaScript
+  console.log('Hello world!')
+  ,#+end_src
+  ,#+end_details
+#+end_example
+
+** 行内图片的插入
+
+#+ATTR_HTML: :class inline-image
+如果你想在文字中间插入一张图片[[file:./images/org-publish-blog/avatar.jpg]]，同时你希望控制图片的大小，可以这样：
+
+#+begin_example
+#+ATTR_HTML: :class inline-image
+如果你想在文字中间插入一张图片[[file:./images/org-publish-blog/avatar.jpg]]，同时你希望控制图片的大小，可以这样：
+#+end_example
+
+然后在 CSS 中通过类名设置样式：
+
+#+begin_src css
+    img.inline-image {
+      width: 1em;
+      height: 1em;
+      vertical-align: -3.5px;
+    }
+#+end_src
+
 * TODO Todo
 
 - [X] 复用 =:html-head= ， =:html-preamble= 等
@@ -410,6 +435,7 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 - [ ] 增加搜索功能
 - [ ] 实现 CI/CD
 - [ ] 在不同机器执行 publish 的时候，ID 总是会变化
+- [ ] 编写 Elisp，方便创建当前博客文章对应的图片目录，以及插入图片的 snippets
 
 * Refs
 

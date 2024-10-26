@@ -222,7 +222,13 @@
 <li><a href="#org1cd67bf">org-publish 的使用</a></li>
 <li><a href="#org867f49f">org-publish 的完整代码</a></li>
 <li><a href="#org186badc">一些缺点</a></li>
-<li><a href="#org63ae7b3">其他</a></li>
+<li><a href="#orga20b7f8">Tricks</a>
+<ul>
+<li><a href="#org142163d">Snippet</a></li>
+<li><a href="#org4295378">内容的收起展开</a></li>
+<li><a href="#org99dcfaa">行内图片的插入</a></li>
+</ul>
+</li>
 <li><a href="#orga88d9b2"><span class="todo TODO">TODO</span> Todo</a></li>
 <li><a href="#org8af36bc">Refs</a></li>
 </ul>
@@ -481,28 +487,6 @@ The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value i
 <p>
 <code>`</code> 和 <code>'</code> 的不同是，它会执行 list 里面的内容， 这样 <code>,spike-leung/html-head</code> 就会被执行并返回对应的 string，满足 <code>:html-head</code> 的需要。
 </p></dd>
-
-<dt>代码块的收起展开</dt><dd><p>
-需要开启 <code>org-html-html5-fancy</code> (<a href="https://orgmode.org/manual/HTML-doctypes.html">13.9.3 HTML doctypes ¶</a>)，从而可以使用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details">&lt;details&gt;</a>
-</p>
-<div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> org-html-html5-fancy t<span style="color: #000000;">)</span>
-<span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> org-html-doctype <span style="color: #3548cf;">"html5"</span><span style="color: #000000;">)</span>
-</pre>
-</div>
-
-<p>
-然后就可以这么用：
-</p>
-
-<pre class="example" id="org9fdc4dc">
-#+begin_details
-#+HTML: &lt;summary&gt;Demo Code&lt;/summary&gt;
-#+begin_src JavaScript
-console.log('Hello world!')
-#+end_src
-#+end_details
-</pre></dd>
 </dl>
 </div>
 </div>
@@ -514,7 +498,7 @@ console.log('Hello world!')
 以下代码可以作为参考，最新的请看 <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el">init-org-publish.el</a>。
 </p>
 
-<details id="org94c339b">
+<details id="orgb9cceab">
 <summary>init-org-publish.el</summary>
 <div class="org-src-container">
 <pre class="src src-elisp"><span style="color: #7f0000;">;;; </span><span style="color: #7f0000;">init-org-publish.el --- org publish config for my blog -*- lexical-binding: t -*-</span>
@@ -699,13 +683,18 @@ console.log('Hello world!')
 <ul class="org-ul">
 <li>在执行 org-publish 时，如果内容多，可能会很慢，此时会阻塞 Emacs，不能做其他事情</li>
 <li>由于依赖 Emacs，<a href="https://www.netlify.com/">Netlify</a> 等平台上没有开箱即用的构建命令，集成 CI/CD 相对麻烦</li>
+<li>还不知道如何 Hot Reload，所以预览编辑后的效果不是很方便，总是需要先执行一次构建</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org63ae7b3" class="outline-2">
-<h2 id="org63ae7b3">其他</h2>
-<div class="outline-text-2" id="text-org63ae7b3">
+<div id="outline-container-orga20b7f8" class="outline-2">
+<h2 id="orga20b7f8">Tricks</h2>
+<div class="outline-text-2" id="text-orga20b7f8">
+</div>
+<div id="outline-container-org142163d" class="outline-3">
+<h3 id="org142163d">Snippet</h3>
+<div class="outline-text-3" id="text-org142163d">
 <p>
 为了方便，可以通过 <a href="https://github.com/joaotavora/yasnippet">YASnippet</a> 或其他方式，设置 org 文件共用内容。
 </p>
@@ -714,7 +703,7 @@ console.log('Hello world!')
 例如这是我用于<a href="https://github.com/Spike-Leung/emacs.d/blob/windows/snippets/org-mode/weekly">写周刊的 snippet</a>:
 </p>
 
-<details id="org0a8dc5e">
+<details id="org287da3c">
 <summary>weekly snippet</summary>
 <div class="org-src-container">
 <pre class="src src-elisp"># -*- mode: snippet -*-
@@ -750,6 +739,62 @@ $0
 </div>
 </div>
 
+<div id="outline-container-org4295378" class="outline-3">
+<h3 id="org4295378">内容的收起展开</h3>
+<div class="outline-text-3" id="text-org4295378">
+<p>
+需要开启 <code>org-html-html5-fancy</code> (<a href="https://orgmode.org/manual/HTML-doctypes.html">13.9.3 HTML doctypes ¶</a>)，从而可以使用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details">&lt;details&gt;</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> org-html-html5-fancy t<span style="color: #000000;">)</span>
+<span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> org-html-doctype <span style="color: #3548cf;">"html5"</span><span style="color: #000000;">)</span>
+</pre>
+</div>
+
+<p>
+然后就可以这么用：
+</p>
+
+<pre class="example" id="orge4541b2">
+#+begin_details
+#+HTML: &lt;summary&gt;Demo Code&lt;/summary&gt;
+#+begin_src JavaScript
+console.log('Hello world!')
+#+end_src
+#+end_details
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org99dcfaa" class="outline-3">
+<h3 id="org99dcfaa">行内图片的插入</h3>
+<div class="outline-text-3" id="text-org99dcfaa">
+<p class="inline-image">
+如果你想在文字中间插入一张图片<img src="./images/org-publish-blog/avatar.jpg" alt="avatar.jpg" class="inline-image">，同时你希望控制图片的大小，可以这样：
+</p>
+
+<pre class="example" id="orgfd231fe">
+#+ATTR_HTML: :class inline-image
+如果你想在文字中间插入一张图片[[file:./images/org-publish-blog/avatar.jpg]]，同时你希望控制图片的大小，可以这样：
+</pre>
+
+<p>
+然后在 CSS 中通过类名设置样式：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #721045;">img.inline-image</span> <span style="color: #000000;">{</span>
+  <span style="color: #531ab6;">width</span>: 1em;
+  <span style="color: #531ab6;">height</span>: 1em;
+  <span style="color: #531ab6;">vertical-align</span>: -3.5px;
+<span style="color: #000000;">}</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
 <div id="outline-container-orga88d9b2" class="outline-2">
 <h2 id="orga88d9b2"><span class="todo TODO">TODO</span> Todo</h2>
 <div class="outline-text-2" id="text-orga88d9b2">
@@ -760,6 +805,7 @@ $0
 <li class="off"><code>[&#xa0;]</code> 增加搜索功能</li>
 <li class="off"><code>[&#xa0;]</code> 实现 CI/CD</li>
 <li class="off"><code>[&#xa0;]</code> 在不同机器执行 publish 的时候，ID 总是会变化</li>
+<li class="off"><code>[&#xa0;]</code> 编写 Elisp，方便创建当前博客文章对应的图片目录，以及插入图片的 snippets</li>
 </ul>
 </div>
 </div>
