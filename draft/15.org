@@ -14,13 +14,14 @@
 
 ** [[https://www.jonathancreamer.com/how-we-shrunk-our-git-repo-size-by-94-percent/][How we shrunk our Javascript monorepo git size by 94%]]
 
-[[https://lore.kernel.org/git/pull.1785.git.1725890210.gitgitgadget@gmail.com/?ref=jonathancreamer.com#:~:text=After%20some%20digging%20(and%0Aprototyping%20some%20analysis%20tools)%20the%20main%20discovery%20was%20that%20the%20current%0Aname%2Dhash%20algorithm%20only%20considers%20the%20last%2016%20characters%20in%20the%20path%20name%0Aand%20has%20some%20naturally%2Doccurring%20collisions%20within%20that%20scope.][git 默认只会用文件路径的最后 16 个字符进行比较]]，当 monorepo 里面文件很多时，就容易发生哈希冲突，导致一个 repo 的文件和另一个 repo 的同名文件进行了 diff。
+[[https://lore.kernel.org/git/pull.1785.git.1725890210.gitgitgadget@gmail.com/?ref=jonathancreamer.com#:~:text=After%20some%20digging%20(and%0Aprototyping%20some%20analysis%20tools)%20the%20main%20discovery%20was%20that%20the%20current%0Aname%2Dhash%20algorithm%20only%20considers%20the%20last%2016%20characters%20in%20the%20path%20name%0Aand%20has%20some%20naturally%2Doccurring%20collisions%20within%20that%20scope.][git 默认只会用文件路径的最后 16 个字符进行比较]]，当 monorepo 里面文件很多时，就容易发生
+[[https://en.m.wikipedia.org/wiki/Hash_collision][哈希冲突]]，导致一个 repo 的文件和另一个 repo 的同名文件进行了 diff。
 
-而这本来不应该发生的，这样会导致每次都多推送了一些无关的 diff，不断增加 repo 的 git 冗余信息，导致 repo 变得很大。
+这样会导致每次都多推送了一些无关的 diff，不断增加 repo 的 git 冗余信息，导致 repo 变得很大。
 
 可以通过 =git repack -adf --path-walk= 改变文件哈希的算法，能减少一些冗余的比较。
 
-(不过 =--path-walk= 目前还没合入： [[https://github.com/gitgitgadget/git/pull/1813][pack-objects: add --path-walk option for better deltas #1813]] )
+(=--path-walk= 目前还没合入： [[https://github.com/gitgitgadget/git/pull/1813][pack-objects: add --path-walk option for better deltas #1813]] )
 
 不过一般个人的 repo 不容易发生这样的情况吧。╮(╯_╰)╭
 
