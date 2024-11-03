@@ -1,0 +1,336 @@
+#+title: Weekly#15
+#+INDEX: weekly!#15
+#+date: <2024-11-03 Sun>
+#+lastmod: <2024-11-03 Sun>
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+description: "Weekly info collected by Spike Leung"
+#+keywords: "Weekly News Code Music"
+#+tags: weekly
+#+OPTIONS: toc:1
+
+这周碰到了一个 Bug，是偶现的，当我将 HTML 通过 [[https://github.com/cefsharp/CefSharp][CEFSharp]] 打印成 PDF 的时候，表格有时候会出现高度溢出，导致多打印了一页。
+
+复现的办法是进行打印，也许十几次中，会出现一次。
+
+因为打印后的 PDF 我没办法方便调试，CEFSharp 我也没法调试，只能猜测是什么问题，尝试修改 HTML 看看能不能解决。 例如将表格的高度限定死，避免溢出。
+
+但是因为我无法稳定复现问题，即使我修复了，我也无法确定我是不是就修复好了。
+
+花了不少时间猜测，修复，然后又出现问题，继续猜测，修复...
+
+其实，更重要的还是要先找到复现的办法。
+
+但这种打印十几次可能出现一次，也不知道怎么复现...陷入了困境中。
+
+不知道还有什么好的办法去定位问题，想到的一些方向：
+
+- 尝试多在页面上添加多一些信息，打印的时候显示出来提供信息用于排查；
+
+- 研究一下 Element Table 的源码，了解一下它的高度是如何计算的，是不是在打印的时候，计算逻辑会存在问题
+
+也试过升级 CEFSharp 版本，确实好像不会出现问题，但升级会带来其他的影响，而且由于没有复现问题的步骤去测试，也不能说明就是解决问题了。
+
+希望后续我能找到解决版本吧(´･_･`)
+
+* News | Article
+
+** [[https://www.jonathancreamer.com/how-we-shrunk-our-git-repo-size-by-94-percent/][How we shrunk our Javascript monorepo git size by 94%]]
+
+[[https://lore.kernel.org/git/pull.1785.git.1725890210.gitgitgadget@gmail.com/?ref=jonathancreamer.com#:~:text=After%20some%20digging%20(and%0Aprototyping%20some%20analysis%20tools)%20the%20main%20discovery%20was%20that%20the%20current%0Aname%2Dhash%20algorithm%20only%20considers%20the%20last%2016%20characters%20in%20the%20path%20name%0Aand%20has%20some%20naturally%2Doccurring%20collisions%20within%20that%20scope.][git 默认只会用文件路径的最后 16 个字符进行比较]]，当 monorepo 里面文件很多时，就容易发生
+[[https://en.m.wikipedia.org/wiki/Hash_collision][哈希冲突]]，导致一个 repo 的文件和另一个 repo 的同名文件进行了 diff。
+
+这样会导致每次都多推送了一些无关的 diff，不断增加 repo 的 git 冗余信息，导致 repo 变得很大。
+
+可以通过 =git repack -adf --path-walk= 改变文件哈希的算法，能减少一些冗余的比较。
+
+(=--path-walk= 目前还没合入： [[https://github.com/gitgitgadget/git/pull/1813][pack-objects: add --path-walk option for better deltas #1813]] )
+
+不过一般个人的 repo 不容易发生这样的情况吧。╮(╯_╰)╭
+
+** [[https://blinry.org/coast-to-coast/][Crossing the USA by train]]
+
+作者的火车游记。
+
+美国的火车和国内的不太一样，可能是因为是长途的火车？
+
+火车里有很小淋浴间，座位上还有板可以放下来当床，还是蛮新奇的。
+
+游记里的景色也不错，有机会也写一篇类似的游记。
+
+** [[https://blakewatson.com/journal/the-making-of-html-for-people/][The making of HTML for People]]
+
+在 [[https://taxodium.ink/13][Weekly#13]] 中分享过 [[https://htmlforpeople.com/][HTML is for people]]，一个教你实现个人网站的教程，对没什么编程的人也很友好。
+
+这篇文章是关于这个教程背后的故事。
+
+其中作者谈到网站设计找了插画师，提供一些插画，而插画会吸引人们的点击，同时因为存在一些可爱插画，也让内容显得不那么枯燥，更像是一个入门读物，让人们学习的心理负担更低。
+
+#+begin_quote
+在对图片进行校对和处理之后，我决定 "奢侈 "一下，委托他人制作一些艺术品。
+
+虽然我原本计划不在这个项目上花很多钱，但我觉得一些友好的艺术品会大大减轻初学者的心理负担。
+
+[[https://blakewatson.com/journal/the-making-of-html-for-people/#:~:text=After%20proofing%20and%20processing%20images%2C%20I%20decided%20to%20%E2%80%9Csplurge%E2%80%9D%20by%20commissioning%20some%20artwork.%20While%20I%20originally%20planned%20not%20to%20spend%20much%20money%20on%20this%20project%2C%20I%20felt%20that%20some%20friendly%20artwork%20would%20go%20a%20long%20way%20toward%20softening%20the%20blow%20for%20beginners%20who%20might%20feel%20intimidated][Source]]
+
+即使在我采购艺术品的时候，我也没有意识到一张好的开放图预览图片有多么重要。
+
+许多 YouTub 制作者在制作缩略图时花费了大量精力，这是有原因的--缩略图很有用。
+
+我把这本书在发布日的成功主要归功于预览缩略图的质量。它吸引了人们的点击。
+
+是的，我必须用人们喜欢的内容来支持它，但缩略图把人们带进了门。
+
+[[https://blakewatson.com/journal/the-making-of-html-for-people/#:~:text=Even%20as%20I,through%20the%20door][Source]]
+#+end_quote
+
+** [[https://ipfs.io/ipfs/QmcVwBYE7Apg8UyBMpeVV43imEBa4SJ51uENxi6kwLh7te][THIS SITE CAN'T BE REACHED]]
+
+这个链接现在我已经访问不到了，或许一段时间后又能访问吧。
+
+文章说的是很多网站都会绑定域名，但是域名是需要续费的，有可能现在 10 元每年，但是几年后，变成了 10000 元每年，不是每个人都会选择继续续费。
+
+而且可能一些其他原因，导致域名没有继续维护，这样就会导致很多网站最后变成无法访问。
+
+所以像是 [[https://archive.org/][Internet Archive]] 这样的存在还是很有必要的，如果被归档了，那么以后即使网站不存在了，还有备份可以查看。
+
+文章实际实在推广 [[https://blog.ipfs.tech/][IPFS]]，它需要在自己机器上安装一个服务，然后可以将文件内容进行哈希得到一个指纹，和其他人分享这个指纹，对方就能看到你机器上的文件。
+
+#+begin_quote
+IPFS（InterPlanetary File System）是一种分布式的、对等网络的文件存储和共享协议，旨在实现去中心化的网络。
+
+它通过内容寻址而不是位置寻址来存储文件，这意味着文件在 IPFS 网络中的存储和检索是基于其内容哈希值，而不是其存储位置。
+
+这种机制提高了数据的可靠性和可访问性，并减少了对单点服务器的依赖。
+#+end_quote
+
+但是我觉得这并不能解决 THIS SITE CAN'T BE REACHED 的问题，如果我托管的机器没人维护了，我的内容一样是访问不到。
+
+而且 IPFS 的内容，对方得用 IPFS 才能查看，也不方便。
+
+** [[https://registerspill.thorstenball.com/p/the-basics][The Basics]]
+
+作者认为是基础的一些经验，节选一些：
+
+- 思考边缘情况，这并不意味着你必须马上处理所有这些情况，但你应该对它们有一个答案。
+- 让您的更改不受无关更改的影响。（原子化提交）
+- 在发表评论之前，请先阅读全文。
+- 开会前做好功课，你将脱颖而出。
+- 了解你要解决什么问题。了解 /为什么/ 你要做某件事情，是知道你是否真正解决问题的必要条件。
+- 接受有时你不得不做一些你觉得不有趣、不令人兴奋或不能给你带来快乐的事情。有时候，它就是工作。
+- 在提 bug 之前，尽量找到一套最基本的重现步骤。
+- Read the error messages.
+- Read the manual, the docs, the instructions, the ticket.
+- Know why your fix is a fix.
+- 说到做到。如果出于某种原因你做不到，让假定你正在做某事的人知道这件事。
+- 把人们愿意与你合作作为目标。
+
+** [[https://jvns.ca/blog/good-questions/][How to ask good questions]]
+
+一些关于提问的建议。
+
+#+begin_export html
+<img src="https://jvns.ca/images/questions.png" data-immersive-translate-walked="0ec15e6b-9f3c-4590-a26d-9ca387d2e830" alt="an manga about asking good questions">
+#+end_export
+** [[https://johnresig.com/blog/write-code-every-day/][Write Code Every Day]]
+
+作者的副业出现了瓶颈，平时也只有周末集中时间去开发，他需要在有限的时间里尽可能多地产出，给自己造成了比较大的压力。
+
+集中在周末再处理的问题是，1)会比较迫切的希望得到进展，容易焦虑；2)间隔一周再重新做副业，需要回忆之前开发的上下文。
+
+后来他尝试每天都做副业，而不是集中在一周的某个时间，带来的变化是：
+
+- 相对不那么焦虑了
+
+  #+begin_quote
+  我意识到，取得进展的感觉与取得实际进展同样重要。
+
+  这让我大开眼界。一旦我开始每天都取得持续的进步，焦虑就开始消散。
+
+  [[https://johnresig.com/blog/write-code-every-day/#:~:text=I%20realized%20that%20the%20feeling%20of%20making%20progress%20is%20just%20as%20important%20as%20making%20actual%20progress.%20This%20was%20an%20eye%2Dopener.%20Once%20I%20started%20to%20make%20consistent%20progress%20every%20day%20the%20anxiety%20started%20to%20melt%20away][Source]]
+  #+end_quote
+
+- 上下文切换成本低
+
+- 在不编程的时候，脑子也会经常复现相关的问题
+
+  #+begin_quote
+  每天编写副项目代码的一个有趣的副作用是，您当前的任务会经常在脑海中闪现。
+
+  因此，当我去散步、洗澡或参加任何其他不用脑的活动时，我都在思考稍后要编写的代码，并寻找解决该问题的好方法。
+  #+end_quote
+
+或许我写周报也可以试试，我现在也是每周找一个时间专门处理，信息多的话处理起来压力就比较大。
+
+或许可以尝试每天花半小时到一小时的时间去处理当天看到的内容，压力会小得多。
+
+** [[https://lacot.org/blog/2024/10/29/the-trailing-dot-in-domain-names-a-detail-that-is-often-poorly-managed.html][The trailing dot in domain names, a detail that is often poorly managed]]
+
+我的博客域名是 =taxodium.ink= ， =.ink= 是它的顶级域名，但是这个顶级域名是靠 DNS 服务器解析判断它是顶级域名的。
+
+除了让 DNS 自己判断，还可以主动告诉它，什么是顶级域名，办法就是在域名后添加一个 =.= ，例如 =taxodium.ink.= 。
+
+这种被称为 [[https://www.wikiwand.com/en/articles/Fully_qualified_domain_name][FQDN (Fully qualified domain name)]]。
+
+不过我尝试使用 =taxodium.ink.= 去访问，是无法访问的，大概是 Netlify 没有做相关的处理。
+
+不过像是 GitHub，会做重定向，你可以访问看看: [[https://github.com.]]
+
+** [[https://news.ycombinator.com/item?id=41992394][NASA reconnected with Voyager 1 after a brief pause]]
+
+NASA 在短暂失联后，和旅行者 1 号再次连接。
+
+这群工程师太厉害了，调试一个这么遥远的机器，获取信息有 45 小时的延迟！
+
+相比之下，我平时在工作中调试碰到的困难，又算什么呢。
+
+#+begin_quote
+所以，你要给一个有 47 年历史、距离我们 150 亿英里的飞船排查故障。
+
+往返时间为 45 小时。
+
+这是某种延迟！
+
+[[https://news.ycombinator.com/item?id=41992394#:~:text=So%20you%27re%20troubleshooting,kind%20of%20latency][Source]]
+#+end_quote
+
+#+begin_quote
+如果你想了解旅行者 1 号目前相对于太阳系的位置，可以在谷歌上快速搜索一下：
+
+https://theskylive.com/voyager1-info#orbitdiagramcontainer
+
+这绝对令人印象深刻，但同时与浩瀚的银河系相比，又显得有些力不从心。
+
+[[https://news.ycombinator.com/item?id=41992394#:~:text=If%20you%20would,of%20our%20galaxy][Source]]
+#+end_quote
+
+** [[https://me.revome.cn/articles/lanzhoushasha][兰州莎莎]]
+
+一篇短篇小说，作者文笔不错。
+
+* Tutorial
+
+** [[https://ui.dev/why-react-renders][The Interactive Guide to Rendering in React]]
+
+交互式页面解释 React 如何渲染。
+
+** [[https://css-tricks.com/unleash-the-power-of-scroll-driven-animations/][Unleash the Power of Scroll-Driven Animations]]
+
+一篇介绍 [[https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations][CSS scroll-driven animations]] 的文章。
+
+如果觉得麻烦，[[https://gsap.com/][GSAP]] 也是一个不错的库，用来实现滚动动画很方便。
+
+** [[https://makeityourself.org/][Make it Yourself]]
+
+一本小册子，包含很多物件的制作方法，动手能力强的话，看着教程大概能自己做出来吧。
+
+* Code
+
+** [[https://gist.github.com/faustinoaq/b19da758fc45155a0b3b10d9f578c5ce][myAngular.html]]
+
+单个 JS 文件展示 Angular，React，Vue 的基本原理。
+
+** [[https://piccalil.li/blog/making-content-aware-components-using-css-has-grid-and-quantity-queries/][Making content-aware components using CSS :has(), grid, and quantity queries]]
+
+文章结合了 [[https://developer.mozilla.org/en-US/docs/Web/CSS/:has][:has()]]，[[https://developer.mozilla.org/en-US/docs/Glossary/Grid][Grid]]，[[https://alistapart.com/article/quantity-queries-for-css/][Quantity Queries]]，[[https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries][CSS container queries]] 完成了一个页面组件的布局，值得一看的实践。
+
+* Tool | Library
+
+** [[https://devpedia.pages.dev/][Dev Encyclopedia]]
+
+可以方便地查询一些开发者会碰到的术语。
+
+** [[https://github.com/mazzzystar/tinymind][Tinymind]]
+
+利用 GitHub 搭建属于你的微博客。
+
+作者的介绍文章：[[https://mazzzystar.github.io/2024/09/26/The-easiest-way-to-have-a-blog-zh/][拥有个人博客最简单的方式]]。
+
+** [[https://monokai.pro/history][Monokai Pro: The Definitive Modern Version]]
+
+一款挺好看的主题，我在 VSCode 用的是 Monokai Pro Sun。
+
+如果换成 Classic，浓浓的一股 sublime 的感觉。
+
+** [[https://github.com/leafac/kill-the-newsletter][Kill the Newsletter!]]
+
+将 newsletters 转换为 RSS。
+
+** [[https://github.com/jdan/98.css][98.css]]
+
+提供 Windows 98 样式的 CSS。
+
+#+begin_quote
+A design system for building faithful recreations of old UIs.
+#+end_quote
+
+** [[https://github.com/faker-js/faker][faker]]
+
+#+begin_quote
+Generate massive amounts of fake data in the browser and node.js
+#+end_quote
+
+* 一些话
+
+#+begin_quote
+始终重现问题，然后再尝试修复。如果不知道如何重现问题，就不知道如何检查问题是否已修复。
+
+[[https://ntietz.com/blog/debugging-my-wifes-alarm-clock/#always-reproduce:~:text=Always%20reproduce%20issues%20before%20you%20try%20to%20fix%20them.%20If%20you%20don%27t%20know%20how%20to%20reproduce%20it%2C%20you%20don%27t%20know%20how%20to%20check%20that%20it%27s%20fixed][Debugging my wife's alarm clock]]
+#+end_quote
+
+开发中我也碰到了一个偶现的问题，不知道怎么稳定的复现，尝试了一些办法修复，以为修好了，但是总会在不知道什么时候又出问题。
+
+当无法复现一个问题的时候，真的很难对症下药，一切都是只是猜测，修没修好其实是不确定的。
+
+但有时问题就是很难复现，怎么办呢？(｡ŏ_ŏ)
+
+再次分享 [[https://taxodium.ink/10][Weekly#10]] 分享过的文章： [[https://catskull.net/thoughts-on-debugging.html#:~:text=Here%E2%80%99s%20my%20one,the%20question%20%E2%80%9Cwhy%3F%E2%80%9D.][Thoughts on Debugging]] ，文章也指出，调试问题最重要的就是先复现问题。
+
+#+begin_quote
+由于技术只是为公司服务的工具，公司想要的是业务的稳定，不会激进冒险选择用最新的技术迭代业务，你所研究的算法、花时间学的技术都很难派上用场。
+
+久而久之，开发者就会被公司所「封装」：输入和输出的内容固化，技术能力没有得到精进，岗位职责使得每天高度相似的工作。
+
+彻头彻尾地成了一颗被打磨好的螺丝钉，作为人的价值逐步被抽离，变得更像是系统里面设定好的功能一样。
+
+开发者不再是社会关系的总和，而是被封装起来的工具。
+
+[[https://www.icebeer.top/%e5%bc%80%e5%8f%91%e8%80%85%e7%9a%84%e7%aa%98%e5%a2%83/#:~:text=%E7%94%B1%E4%BA%8E%E6%8A%80%E6%9C%AF%E5%8F%AA%E6%98%AF,%E8%B5%B7%E6%9D%A5%E7%9A%84%E5%B7%A5%E5%85%B7%E3%80%82][开发者的窘境]]
+#+end_quote
+
+#+begin_quote
+我想说的是，我们思考和谈论系统的方式对系统的可理解性有很大影响。
+
+用复杂的方法解决复杂的问题很容易，难的是用简单的方法解决复杂的问题。
+
+只要细心观察，我们就能找到正确的视角，从而使棘手的问题迎刃而解...
+
+[[https://sophiebits.com/2024/10/30/everyone-is-wrong-about-that-slack-flowchart#:~:text=The%20point%20I,than%20the%20first][Source]]
+#+end_quote
+
+* Music
+
+分享一下 《[[https://music.163.com/#/song?id=1887213257][BOY HOOD]]》，开头是 RAP，后半段是 JAZZ，长号那段挺好听的。
+
+歌词是对童年和故乡的怀念吧。
+
+#+begin_quote
+When pop pop wouldn't give me ends (give me ends)
+
+Grandma was a ATM (was a ATM)
+
+Buying bubble gum and M&M's (M&M's)
+
+I just had to rot my teeth out
+
+...
+
+
+I thought I had so much time, I don't know where it went
+
+But now that I'm grown I know what it all meant
+
+No place like New Orleans, yeah, yeah
+#+end_quote
+
+专辑《[[https://music.163.com/#/album?id=134831122][WE ARE (The Deluxe Edition)]]》里其他的歌也还不错。
