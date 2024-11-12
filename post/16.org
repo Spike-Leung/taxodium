@@ -15,7 +15,7 @@
 
 链接都留在周末处理的话，确实有点多，还是需要平时每天处理一点，或许可以趁着通勤时间在路上简单记录一下。
 
-这周工作也很忙，加班到很晚，留给自己的时候是越来越少。
+这周工作也很忙，加班到很晚，留给自己的时间是越来越少。
 
 手头上同时做着两个项目，项目 A 进入了修 Bug 的阶段，项目 B 刚开始，但是工时很紧（评估的工时被压缩了近一半）。
 
@@ -75,13 +75,13 @@
 
 佩服作者对于这种细节的观察和效率提高。
 
-以前使用开始从来没有考虑过可以去优化它，让自己使用起来更轻松，每次使用都是各种尝试，各种穷举，比较费时也让人心烦。
+以前使用钥匙从来没有考虑过可以去优化它，让自己使用起来更轻松，每次使用都是各种尝试，比较费时也让人心烦。
 
 生活工作中也有很多事情可以去优化吧，只是往往养成了习惯，不愿意思考和改变。
 
 ** [[https://berthub.eu/articles/posts/open-source-by-itself-is-no-alternative-for-big-tech/][Open Source on its own is no alternative to Big Tech]]
 
-文章认为开源技术，和大公司提供的技术不能相提并论，大公司能够除了产品，还提供了许多的服务和支持。
+文章认为开源技术，和大公司提供的技术不能相提并论，大公司除了产品，还提供了许多的服务和支持。
 
 但是开源软件往往就是一个产品，没有额外的服务和支持。
 
@@ -262,7 +262,7 @@ Headless components 将组件拆得比较细，使用的时候像是拼接积木
 
 ** [[https://juejin.cn/post/7430031817254944805][37 岁程序员被裁日记]]
 
-作者也挺不容易，孩子快生的时候碰到失业，但是家庭基于的支持还是很够的。
+作者也挺不容易，孩子快生的时候碰到失业，但是家庭给予的支持还是很够的。
 
 作者老婆问的一个问题，我也不知道该如何回答：
 
@@ -336,7 +336,7 @@ Code Review 除了阅读代码，给出合理建议之外，比较困难的是�
 
 作者提出了几点建议：
 
-- 让计算机来完成无聊的部分 :: 用格式化工具，lint 工具，CI/CD 完成像是空格，换行等格式问题，减少人工 review，而且这些也不是 review 的重点。例如可以使用 [[https://typicode.github.io/husky/][husky]]，在提交之前执行 [[https://prettier.io/][Prettier]] 和 [[https://eslint.org/][ESLint]]，可以参考 [[https://taxodium.ink/git-lint-practice][Git 的校验实践]] 。
+- 让计算机来完成无聊的部分 :: 用格式化工具，lint 工具，CI/CD 处理空格，换行等格式问题，减少人工 review。例如可以使用 [[https://typicode.github.io/husky/][husky]]，在提交之前执行 [[https://prettier.io/][Prettier]] 和 [[https://eslint.org/][ESLint]]，可以参考 [[https://taxodium.ink/git-lint-practice][Git 的校验实践]] 。
 
 - 用风格指南解决风格之争 :: 用风格指南统一风格，避免在风格上争论。可以使用现成的，也可能自己从头整理，或者基于现成的扩展。像是前端项目，用 eslint 也能约束大部分风的编码风格。
 
@@ -394,39 +394,34 @@ Code Review 除了阅读代码，给出合理建议之外，比较困难的是�
 
 - 永远不要说 “你” :: 说 “你” 🫵 ，很容易让人产生一种被冒犯的感觉。可以换成 “我们”，或者不要使用主语。
 
-  #+begin_example org
-  bad: You misspelled ‘successfully.’
+  + 例子 1
+    + bad
+      * You misspelled ‘successfully.’
+    + good
+      * sucessfully -> successfully
 
-  good: sucessfully -> successfully
-  #+end_example
-
-  #+begin_example org
-  bad: Can *you* rename this variable to something more descriptive, like =seconds_remaining=?
-
-  good: Can *we* rename this variable to something more descriptive, like =seconds_remaining=?
-
-  good: Suggest renaming to something more descriptive, like =seconds_remaining=.
-
-  good: This variable should be renamed to something more descriptive, like =seconds_remaining=.
-
-  good: What about renaming this variable to something more descriptive, like =seconds_remaining=?
-  #+end_example
+  + 例子 2
+    + bad
+      * Can *you* rename this variable to something more descriptive, like =seconds_remaining=?
+    + good
+      * Can *we* rename this variable to something more descriptive, like =seconds_remaining=?
+      * Suggest renaming to something more descriptive, like =seconds_remaining=.
+      * This variable should be renamed to something more descriptive, like =seconds_remaining=.
+      * about renaming this variable to something more descriptive, like =seconds_remaining=?
 
 - 将反馈作为请求，而不是命令 :: 没人喜欢被人命令，强迫，换一种语气，用一种商量，请求的语气更容易让人接受。
+  + bad
+    * Move the Foo class to a separate file.
 
-  #+begin_example org
-  bad: Move the Foo class to a separate file.
-
-  good: Can we move the Foo class to a separate file?
-  #+end_example
+  + good
+    * Can we move the Foo class to a separate file?
 
 - 将笔记与原则而非观点挂钩 :: 评论的时候应该有理有据，而不是基于自己的喜好和观点
+  + bad
+    * 我们应该将这个类一分为二
 
-  #+begin_example
-  bad: 我们应该将这个类一分为二
-
-  good: 现在，这个类既负责下载文件，又负责解析文件。我们应该根据单一责任原则，将其拆分为下载类和解析类。
-  #+end_example
+  + good
+    * 现在，这个类既负责下载文件，又负责解析文件。我们应该根据单一责任原则，将其拆分为下载类和解析类。
 
   #+begin_quote
   软件开发既是一门艺术，也是一门科学。你不可能总是按照既定的原则准确地说明一段代码出了什么问题。
@@ -446,7 +441,7 @@ Code Review 除了阅读代码，给出合理建议之外，比较困难的是�
 
 ** [[https://michaelengen.com/posts/my-eleventy-resume/][Building My Resume in HTML using Eleventy]]
 
-作者介绍了如何使用 [[https://www.11ty.dev/][Eleventy]] 构建简历， 简历看起来比较简洁。
+作者介绍了如何使用 [[https://www.11ty.dev/][Eleventy]] 构建简历，简历看起来比较简洁。
 
 我自己以前也写过一个简单的简历工具：[[https://github.com/Spike-Leung/markdown-resume][markdown-resume]]，将 markdown 转换成 HTML，然后打印成 PDF，对我来说比较简单也够用了。
 
@@ -455,7 +450,7 @@ Code Review 除了阅读代码，给出合理建议之外，比较困难的是�
 ** [[https://evanhahn.com/re-implementing-javascript-double-equals-in-javascript/][Re-implementing JavaScript's == in JavaScript]]
 
 #+begin_quote
-== 实现了一种称为 [[https://262.ecma-international.org/11.0/#sec-abstract-equality-comparison][抽象等价比较算法 (Abstract Equality Comparison)]] 的东西，这是一个通过 13 个步骤确定两个事物是否等价的过程。
+==== 实现了一种称为 [[https://262.ecma-international.org/11.0/#sec-abstract-equality-comparison][抽象等价比较算法 (Abstract Equality Comparison)]] 的东西，这是一个通过 13 个步骤确定两个事物是否等价的过程。
 #+end_quote
 
 现在写 JS，像是 eslint 会限制只能用 ===== 做比较，如果用 ==== 则会报 warning。
@@ -735,13 +730,13 @@ It is a feature-rich alternative to cloud vendors' web storage interfaces.
 
 ** [[https://music.163.com/#/album?id=242818031][Opus]]
 
-这是 [[https://www.wikiwand.com/zh/articles/%E5%9D%82%E6%9C%AC%E9%BE%8D%E4%B8%80][教授（坂本龍一）]] 最后一场线上钢琴演奏会了，当时看到有票就买了，一个人在海边听完了正常钢琴演奏。
+这是 [[https://www.wikiwand.com/zh/articles/%E5%9D%82%E6%9C%AC%E9%BE%8D%E4%B8%80][教授（坂本龍一）]] 最后一场线上钢琴演奏会了，当时看到有票就买了，一个人在海边听完了整场钢琴演奏。
 
-这场专辑里的钢琴曲让人心情平静，尤其喜欢其中的《[[https://music.163.com/#/song?id=2610263290][Aqua]]》。
+这张专辑里的钢琴曲让人心情平静，尤其喜欢其中的《[[https://music.163.com/#/song?id=2610263290][Aqua]]》。
 
 像是 《[[https://music.163.com/#/song?id=2610262430][Merry Christmas Mr. Lawrence]]》，也许很多人也都听过。
 
-最开始认识教授，应该是看《[[https://movie.douban.com/subject/1303535/][战场上的快乐圣诞 Merry Christmas Mr. Lawrence (1983)]]》，荧幕里的他显得有些“艳”。
+最开始认识教授，应该是看 《[[https://movie.douban.com/subject/1303535/][战场上的快乐圣诞 Merry Christmas Mr. Lawrence (1983)]]》，荧幕里的他显得有些“艳”。
 
 后来还发现他组过一支乐队 [[https://music.163.com/#/artist?id=22394][YMO イエロー・マジック・オーケストラ]]，里面的电子音乐也很有好听，里面也有一些搞怪的，例如《[[https://music.163.com/#/album?id=3257075][Multiplies]]》这张专辑，让人捧腹大笑。
 
