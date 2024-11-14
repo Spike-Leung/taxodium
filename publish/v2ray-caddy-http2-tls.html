@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -226,20 +226,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org67fd253">准备</a></li>
-<li><a href="#org32e36db">搭建</a>
+<li><a href="#org49773a6">准备</a></li>
+<li><a href="#org137e4f9">搭建</a>
 <ul>
-<li><a href="#org7853d00">Tag 释义</a></li>
-<li><a href="#org6fd5846">1. 购买一个 VPS 服务器</a></li>
-<li><a href="#org27c3ca0">2. 申请一个域名</a></li>
-<li><a href="#org3f292ed">3. 安装 &amp; 配置 Caddy</a></li>
-<li><a href="#org26c38eb">4. 安装 &amp; 配置 v2ray</a>
+<li><a href="#orgb3d30a5">Tag 释义</a></li>
+<li><a href="#org7f26be0">1. 购买一个 VPS 服务器</a></li>
+<li><a href="#orgbcb636c">2. 申请一个域名</a></li>
+<li><a href="#orgb9da550">3. 安装 &amp; 配置 Caddy</a></li>
+<li><a href="#orgde454de">4. 安装 &amp; 配置 v2ray</a>
 <ul>
-<li><a href="#org22f77a7">v2ray 服务器配置</a></li>
-<li><a href="#org3f56683">v2ray 客户端配置</a></li>
+<li><a href="#org179b9f6">v2ray 服务器配置</a></li>
+<li><a href="#org1fa571b">v2ray 客户端配置</a></li>
 </ul>
 </li>
-<li><a href="#orgcc758a6">排障</a></li>
+<li><a href="#org7c7b0a0">排障</a></li>
 </ul>
 </li>
 </ul>
@@ -262,28 +262,23 @@
 </p>
 
 <p>
-周末时翻到一篇关于 <a href="https://guide.v2fly.org/advanced/h2.html">HTTP2</a> 的搭建，有一个<a href="https://http2.akamai.com/demo">网站</a>比较了 HTTP/1.1 和 HTTP2 的
-加载速度，发现 HTTP2 是真的很快，就想着重新部署一个代理，看是否有更好
-的体验。
+周末时翻到一篇关于 <a href="https://guide.v2fly.org/advanced/h2.html">HTTP2</a> 的搭建，有一个<a href="https://http2.akamai.com/demo">网站</a>比较了 HTTP/1.1 和 HTTP2 的加载速度，发现 HTTP2 是真的很快，就想着重新部署一个代理，看是否有更好的体验。
 </p>
 
 <p>
-由于换了服务器，现在不太确定是服务器影响还是 HTTP2 的影响，速度上要比
-之前的好一些。
+由于换了服务器，现在不太确定是服务器影响还是 HTTP2 的影响，速度上要比之前的好一些。
 </p>
 
 <p>
-这篇博客主要记录 <b>V2ray + Caddy + HTTP2 + TLS</b> 的相关配置，其它具体细节
-请参考<a href="https://guide.v2fly.org/"> V2ray 新白话文教程</a>以及<a href="https://www.v2ray.com/en/">官网</a>。
+这篇博客主要记录 <b>V2ray + Caddy + HTTP2 + TLS</b> 的相关配置，其它具体细节请参考 <a href="https://guide.v2fly.org/"> V2ray 新白话文教程 </a>以及 <a href="https://www.v2ray.com/en/">官网</a>。
 </p>
 
-<div id="outline-container-org67fd253" class="outline-2">
-<h2 id="org67fd253">准备</h2>
-<div class="outline-text-2" id="text-org67fd253">
+<div id="outline-container-org49773a6" class="outline-2">
+<h2 id="org49773a6">准备</h2>
+<div class="outline-text-2" id="text-org49773a6">
 <ul class="org-ul">
 <li><b>一台国外的 VPS</b> <br>
-目前我用的是 <a href="https://www.vultr.com/">VULTR</a>，价格可能有一些贵，但稳定，速度也还可以，另外也
-支持支付宝充值</li>
+目前我用的是 <a href="https://www.vultr.com/">VULTR</a>，价格可能有一些贵，但稳定，速度也还可以，另外也支持支付宝充值</li>
 <li><b>一个域名</b> <br>
 可以找个网站买一个便宜的域名，腾讯也有域名可以卖</li>
 <li><b>一些基础的知识</b> <br>
@@ -292,36 +287,33 @@
 </div>
 </div>
 
-<div id="outline-container-org32e36db" class="outline-2">
-<h2 id="org32e36db">搭建</h2>
-<div class="outline-text-2" id="text-org32e36db">
+<div id="outline-container-org137e4f9" class="outline-2">
+<h2 id="org137e4f9">搭建</h2>
+<div class="outline-text-2" id="text-org137e4f9">
 <p>
-这次搭建主要是参考了 <a href="https://guide.v2fly.org/advanced/h2_tls_web.html">HTTP/2+TLS+WEB</a>，里头用到了 <a href="https://caddyserver.com/">Caddy </a>作为 Web 服务器，
-不过他用的是 Caddy1，而我用的是 Caddy2。
+这次搭建主要是参考了 <a href="https://guide.v2fly.org/advanced/h2_tls_web.html">HTTP/2+TLS+WEB</a>，里头用到了 <a href="https://caddyserver.com/">Caddy </a>作为 Web 服务器，不过他用的是 Caddy1，而我用的是 Caddy2。
 </p>
 
 <p>
-除了 Caddy， 其实还能用 Nginx，Apache 去做 Web 服务器，不过 Caddy 相
-对来说使用上更简单方便。
+除了 Caddy， 其实还能用 Nginx，Apache 去做 Web 服务器，不过 Caddy 相对来说使用上更简单方便。
 </p>
 
 <p>
-之前搭建 WebSocket + TLS + Web 的时候是用的 Nginx，为了实现 TLS，需
-要去 <a href="https://letsencrypt.org/">Let's Encrypt</a> 申请证书，<a href="https://guide.v2fly.org/advanced/tls.html#%E6%B3%A8%E5%86%8C%E4%B8%80%E4%B8%AA%E5%9F%9F%E5%90%8D">这篇</a>教程里有介绍怎么申请。
+之前搭建 WebSocket + TLS + Web 的时候是用的 Nginx，为了实现 TLS，需要去 <a href="https://letsencrypt.org/">Let's Encrypt</a> 申请证书，<a href="https://guide.v2fly.org/advanced/tls.html#%E6%B3%A8%E5%86%8C%E4%B8%80%E4%B8%AA%E5%9F%9F%E5%90%8D">这篇</a>教程里有介绍怎么申请。
 </p>
 
 <p>
-而 Caddy 默认是开启 HTTPS 的，当你配置了域名，他会自动帮你从 <a href="https://letsencrypt.org/">Let's
-Encrypt</a> 申请证书，到期了自动帮你更新，所以省去了不少步骤。
+而 Caddy 默认是开启 HTTPS 的，当你配置了域名，他会自动帮你从 <a href="https://letsencrypt.org/">Let's Encrypt</a> 申请证书，到期了自动帮你更新，所以省去了不少步骤。
 </p>
 </div>
 
-<div id="outline-container-org7853d00" class="outline-3">
-<h3 id="org7853d00">Tag 释义</h3>
-<div class="outline-text-3" id="text-org7853d00">
+<div id="outline-container-orgb3d30a5" class="outline-3">
+<h3 id="orgb3d30a5">Tag 释义</h3>
+<div class="outline-text-3" id="text-orgb3d30a5">
 <p>
 下面配置中的 &lt;tag&gt; 是需要自己配置的，替换成对应的值。
 </p>
+
 <table>
 
 
@@ -372,32 +364,29 @@ Encrypt</a> 申请证书，到期了自动帮你更新，所以省去了不少�
 </div>
 
 
-<div id="outline-container-org6fd5846" class="outline-3">
-<h3 id="org6fd5846">1. 购买一个 VPS 服务器</h3>
-<div class="outline-text-3" id="text-org6fd5846">
+<div id="outline-container-org7f26be0" class="outline-3">
+<h3 id="org7f26be0">1. 购买一个 VPS 服务器</h3>
+<div class="outline-text-3" id="text-org7f26be0">
 <p>
 可以从 <a href="https://www.vultr.com/">VULTR</a> 购买，如果有更快，更稳定，价格不是很贵的提供商，欢迎留言推荐。
 </p>
 
 <p>
-搭建代理不需要很高的配置，买一个最低配置的 VPS 即可，考虑到 CentOS
-不再维护，我安装的是 Ubuntu，总之找一个自己熟悉的 linux 操作系统即
-可。
+搭建代理不需要很高的配置，买一个最低配置的 VPS 即可，考虑到 CentOS 不再维护，我安装的是 Ubuntu，总之找一个自己熟悉的 linux 操作系统即可。
 </p>
 
 <p>
-Ubuntu 的一个好处是配置防火墙的指令 <a href="https://help.ubuntu.com/community/UFW">ufw</a> 相对 CentOS 的 firewall-cmd
-而言用起来比较简单。
+Ubuntu 的一个好处是配置防火墙的指令 <a href="https://help.ubuntu.com/community/UFW">ufw</a> 相对 CentOS 的 firewall-cmd 而言用起来比较简单。
 </p>
 
 <p>
-服务器部署好之后，可以将 443 和 80 端口打开，443 作为 Web 服务器的
-访问端口，80 是开放给 Let's Encrypt 注册的。
+服务器部署好之后，可以将 443 和 80 端口打开，443 作为 Web 服务器的访问端口，80 是开放给 Let's Encrypt 注册的。
 </p>
 
 <p>
 Ubuntu 的指令是：
 </p>
+
 <div class="org-src-container">
 <pre class="src src-shell">ufw allow 443
 ufw allow 80
@@ -407,21 +396,20 @@ ufw reload
 </div>
 </div>
 
-<div id="outline-container-org27c3ca0" class="outline-3">
-<h3 id="org27c3ca0">2. 申请一个域名</h3>
-<div class="outline-text-3" id="text-org27c3ca0">
+<div id="outline-container-orgbcb636c" class="outline-3">
+<h3 id="orgbcb636c">2. 申请一个域名</h3>
+<div class="outline-text-3" id="text-orgbcb636c">
 <p>
-网上随便找个域名贩卖网站，买一个自己喜欢的域名即可，购买之后，需要
-将域名解析到 VPS 的 IP 地址。
+网上随便找个域名贩卖网站，买一个自己喜欢的域名即可，购买之后，需要将域名解析到 VPS 的 IP 地址。
 </p>
 </div>
 </div>
-<div id="outline-container-org3f292ed" class="outline-3">
-<h3 id="org3f292ed">3. 安装 &amp; 配置 Caddy</h3>
-<div class="outline-text-3" id="text-org3f292ed">
+
+<div id="outline-container-orgb9da550" class="outline-3">
+<h3 id="orgb9da550">3. 安装 &amp; 配置 Caddy</h3>
+<div class="outline-text-3" id="text-orgb9da550">
 <p>
-按照 <a href="https://caddyserver.com/docs/install">Caddy 的安装步骤 </a>将 Caddy 安装到 VPS 上，具体使用可以看 Caddy 文
-档，里头有很多详细的例子。
+按照 <a href="https://caddyserver.com/docs/install">Caddy 的安装步骤 </a>将 Caddy 安装到 VPS 上，具体使用可以看 Caddy 文档，里头有很多详细的例子。
 </p>
 
 <p>
@@ -450,42 +438,44 @@ reverse_proxy &lt;http2-path&gt; localhost:&lt;v2ray-port&gt; {
 </pre>
 </div>
 
+
 <p>
 相关<a href="https://caddyserver.com/docs/running">指令</a>：
 </p>
+
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #969896;"># </span><span style="color: #7f0000;">&#21551;&#21160; caddy &#26381;&#21153;</span>
+<pre class="src src-shell"><span style="color: #7f0000;"># </span><span style="color: #7f0000;">&#21551;&#21160; caddy &#26381;&#21153;</span>
 systemctl start caddy
-<span style="color: #969896;"># </span><span style="color: #7f0000;">&#20572;&#27490;</span>
+<span style="color: #7f0000;"># </span><span style="color: #7f0000;">&#20572;&#27490;</span>
 systemctl stop caddy
-<span style="color: #969896;"># </span><span style="color: #7f0000;">&#37325;&#21551;</span>
+<span style="color: #7f0000;"># </span><span style="color: #7f0000;">&#37325;&#21551;</span>
 systemctl restart caddy
-<span style="color: #969896;"># </span><span style="color: #7f0000;">&#26597;&#30475; caddy &#26381;&#21153;&#30340;&#29366;&#24577;&#65292;&#21487;&#20197;&#29992;&#20110;&#25490;&#38169;</span>
+<span style="color: #7f0000;"># </span><span style="color: #7f0000;">&#26597;&#30475; caddy &#26381;&#21153;&#30340;&#29366;&#24577;&#65292;&#21487;&#20197;&#29992;&#20110;&#25490;&#38169;</span>
 systemctl status caddy
-<span style="color: #969896;"># </span><span style="color: #7f0000;">&#37325;&#26032;&#21152;&#36733; caddy &#37197;&#32622;&#65292;&#20363;&#22914;&#20462;&#25913;&#20102; /etc/caddy/Caddyfile &#20043;&#21518;</span>
+<span style="color: #7f0000;"># </span><span style="color: #7f0000;">&#37325;&#26032;&#21152;&#36733; caddy &#37197;&#32622;&#65292;&#20363;&#22914;&#20462;&#25913;&#20102; /etc/caddy/Caddyfile &#20043;&#21518;</span>
 systemctl reload caddy
-<span style="color: #969896;"># </span><span style="color: #7f0000;">&#26597;&#30475; caddy &#36816;&#34892;&#26085;&#24535;</span>
+<span style="color: #7f0000;"># </span><span style="color: #7f0000;">&#26597;&#30475; caddy &#36816;&#34892;&#26085;&#24535;</span>
 journalctl -u caddy --no-pager | less +G
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org26c38eb" class="outline-3">
-<h3 id="org26c38eb">4. 安装 &amp; 配置 v2ray</h3>
-<div class="outline-text-3" id="text-org26c38eb">
+<div id="outline-container-orgde454de" class="outline-3">
+<h3 id="orgde454de">4. 安装 &amp; 配置 v2ray</h3>
+<div class="outline-text-3" id="text-orgde454de">
 <p>
-根据 <a href="https://github.com/v2fly/fhs-install-v2ray/blob/master/README.zh-Hans-CN.md">fhs-install-v2ray</a> 安装 v2ray， v2ray 的相关指令和 caddy 类似，
-将 caddy 换成 v2ray 即可。
+根据 <a href="https://github.com/v2fly/fhs-install-v2ray/blob/master/README.zh-Hans-CN.md">fhs-install-v2ray</a> 安装 v2ray， v2ray 的相关指令和 caddy 类似，将 caddy 换成 v2ray 即可。
 </p>
 </div>
 
-<div id="outline-container-org22f77a7" class="outline-4">
-<h4 id="org22f77a7">v2ray 服务器配置</h4>
-<div class="outline-text-4" id="text-org22f77a7">
+<div id="outline-container-org179b9f6" class="outline-4">
+<h4 id="org179b9f6">v2ray 服务器配置</h4>
+<div class="outline-text-4" id="text-org179b9f6">
 <p>
 配置含义请<a href="https://guide.v2fly.org/">官网</a>查阅， <code>/usr/local/etc/v2ray/config.json</code>:
 </p>
+
 <div class="org-src-container">
 <pre class="src src-json"><span style="color: #000000;">{</span>
   <span style="color: #531ab6;">"log"</span>: <span style="color: #dd22dd;">{</span>
@@ -593,9 +583,9 @@ journalctl -u caddy --no-pager | less +G
 </div>
 </div>
 </div>
-<div id="outline-container-org3f56683" class="outline-4">
-<h4 id="org3f56683">v2ray 客户端配置</h4>
-<div class="outline-text-4" id="text-org3f56683">
+<div id="outline-container-org1fa571b" class="outline-4">
+<h4 id="org1fa571b">v2ray 客户端配置</h4>
+<div class="outline-text-4" id="text-org1fa571b">
 <p>
 这里提供 <a href="https://github.com/yichengchen/clashX">ClashX</a> 配置的参考，其它客户端配置类似的。
 </p>
@@ -611,9 +601,10 @@ journalctl -u caddy --no-pager | less +G
 <p>
 配置 http2 的相关 options。
 </p>
+
 <div class="org-src-container">
 <pre class="src src-yaml"><span style="color: #7f0000;">---</span>
-<span style="color: #969896;"># </span><span style="color: #7f0000;">https://github.com/Dreamacro/clash/wiki/configuration</span>
+<span style="color: #7f0000;"># </span><span style="color: #7f0000;">https://github.com/Dreamacro/clash/wiki/configuration</span>
 <span style="color: #005e8b;">port</span>: 7890
 <span style="color: #005e8b;">socks-port</span>: 7891
 <span style="color: #005e8b;">allow-lan</span>: <span style="color: #0000b0;">false</span>
@@ -636,14 +627,14 @@ journalctl -u caddy --no-pager | less +G
         - &lt;domain&gt;
       <span style="color: #005e8b;">path</span>: &lt;http2-path&gt;
 <span style="color: #005e8b;">rules</span>:
-  <span style="color: #969896;"># </span><span style="color: #7f0000;">proxy</span>
+  <span style="color: #7f0000;"># </span><span style="color: #7f0000;">proxy</span>
   - DOMAIN,google.com,proxy
 
-  <span style="color: #969896;"># </span><span style="color: #7f0000;">REJECT</span>
+  <span style="color: #7f0000;"># </span><span style="color: #7f0000;">REJECT</span>
   - DOMAIN-SUFFIX,ad.com,REJECT
 
-  <span style="color: #969896;"># </span><span style="color: #7f0000;">optional param "no-resolve" for IP rules (GEOIP, IP-CIDR, IP-CIDR6)</span>
-  <span style="color: #969896;"># </span><span style="color: #7f0000;">DIRECT</span>
+  <span style="color: #7f0000;"># </span><span style="color: #7f0000;">optional param "no-resolve" for IP rules (GEOIP, IP-CIDR, IP-CIDR6)</span>
+  <span style="color: #7f0000;"># </span><span style="color: #7f0000;">DIRECT</span>
   - SRC-IP-CIDR,192.168.1.201/32,DIRECT
   - IP-CIDR,127.0.0.0/8,DIRECT
   - GEOIP,CN,DIRECT
@@ -656,17 +647,18 @@ journalctl -u caddy --no-pager | less +G
 </div>
 </div>
 
-<div id="outline-container-orgcc758a6" class="outline-3">
-<h3 id="orgcc758a6">排障</h3>
-<div class="outline-text-3" id="text-orgcc758a6">
+<div id="outline-container-org7c7b0a0" class="outline-3">
+<h3 id="org7c7b0a0">排障</h3>
+<div class="outline-text-3" id="text-org7c7b0a0">
 <p>
 主要通过查看日志去判断问题是什么，然后 google :)
 </p>
+
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #969896;"># </span><span style="color: #7f0000;">&#26816;&#26597;&#36816;&#34892;&#29366;&#24577;</span>
+<pre class="src src-shell"><span style="color: #7f0000;"># </span><span style="color: #7f0000;">&#26816;&#26597;&#36816;&#34892;&#29366;&#24577;</span>
 systemctl status candy
 systemctl status v2ray
-<span style="color: #969896;"># </span><span style="color: #7f0000;">&#26816;&#26597;&#36755;&#20986;&#30340;&#26085;&#24535;</span>
+<span style="color: #7f0000;"># </span><span style="color: #7f0000;">&#26816;&#26597;&#36755;&#20986;&#30340;&#26085;&#24535;</span>
 journalctl -u caddy --no-pager | less +G
 journalctl -u v2ray --no-pager | less +G
 </pre>
