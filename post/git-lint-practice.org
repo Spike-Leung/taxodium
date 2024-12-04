@@ -11,12 +11,21 @@
 #+LANGUAGE: zh-CN
 
 * 提交信息 (commit message)
+:PROPERTIES:
+:CUSTOM_ID: 5b1ecbaf-59bd-4d61-b960-58ced7b49997
+:END:
 
 ** diff
+:PROPERTIES:
+:CUSTOM_ID: 8a328885-a800-4c72-95bd-3ce270aa1b67
+:END:
 
 在提交前最好先确认一下当前提交了什么文件，看看 diff，确认没有改错后再提交。
 
 ** 编写方式
+:PROPERTIES:
+:CUSTOM_ID: 9c8c50af-4d13-4fae-8b84-1f8015c5e3a9
+:END:
 
 提交信息可以通过以下命令完成：
 #+begin_src bash
@@ -37,6 +46,9 @@
 #+end_src
 
 ** 格式
+:PROPERTIES:
+:CUSTOM_ID: 93c301cc-cee5-478d-9e43-f5cf200bb41a
+:END:
 提交信息一般遵循[[https://www.conventionalcommits.org/zh-hans/v1.0.0-beta.4/][约定式提交]]的规范去编写，基本结构为：
 #+begin_src
 <类型>[可选的作用域]: <描述>
@@ -93,11 +105,17 @@
 #+end_src
 
 ** 工具校验
+:PROPERTIES:
+:CUSTOM_ID: a916021d-ec14-46e2-a853-71373eea815d
+:END:
 在团队协作中，为了确保大家的提交都符合规范，最好是通过工具去约束，而不是人为检查。
 
 格式的约束可以通过 [[https://github.com/conventional-changelog/commitlint][commitlint]] 等工具实现，可以添加一个 =pre-commit= 的钩子，在提交前进行格式的校验。
 
 ** 提交信息模板(commit.template)
+:PROPERTIES:
+:CUSTOM_ID: 3ce0d8f2-3967-4dc7-993f-f0255cf2aefd
+:END:
 团队中可能有约定好的提交信息格式，也可以添加一份提交模板在项目，每次提交时都读取模板进行编写，这样也可以统一格式。
 
 可以在项目中根目录创建一份 =.gittemplate.txt= , 然后写入模板内容：
@@ -137,6 +155,9 @@ feel free to be detailed.
 #+end_src
 
 * githooks / husky
+:PROPERTIES:
+:CUSTOM_ID: fea552db-1ea9-45f0-9eb8-3d95e69f62d2
+:END:
 前面提到，可以用 [[https://github.com/conventional-changelog/commitlint][commitlint]] 在 =pre-commit= 时进行校验， =pre-commit= 指的就是一个 [[https://git-scm.com/docs/githooks][Git 钩子]]，可以在提交前触发一些动作。
 
 你可以在提交前后，push 前后，合并前后去触发一些动作。
@@ -151,7 +172,13 @@ feel free to be detailed.
 githooks 最早出现的版本时 =2.19.0= ，如果你的 Git 版本过低，就需要升级一下。
 
 ** 配置方法
+:PROPERTIES:
+:CUSTOM_ID: d8973eec-b860-4d67-8dc1-5865837515b7
+:END:
 *** githooks
+:PROPERTIES:
+:CUSTOM_ID: 1ed84eb9-084f-41d5-a96e-ffad1a84956b
+:END:
 - 进入 githooks 所在的目录
   #+begin_src bash
     cd /project-repo/.git/hooks
@@ -209,6 +236,9 @@ githooks 最早出现的版本时 =2.19.0= ，如果你的 Git 版本过低，�
 一个解决办法是在项目中创建一个目录存放 hooks, 同步到远端后，大家拉取下来拷贝 =.git/hooks= 目录里。
 
 *** husky
+:PROPERTIES:
+:CUSTOM_ID: 0c3c479f-31ee-4596-8779-2b77675f7e32
+:END:
 [[https://typicode.github.io/husky/#/][husky]] 是一个方便写 githooks 的工具，目前也蛮流行的。
 
 它会在项目的根目录下创 =.husky= 目录，存放 husky 生成的所有 hooks，这样可以避免 hooks 在本地仓库没有同步的问题。
@@ -223,6 +253,9 @@ githooks 最早出现的版本时 =2.19.0= ，如果你的 Git 版本过低，�
 husky 的使用就不赘述了，如果项目可以 husky，建议还是用 husky 来维护 githooks。
 
 ** 一些例子
+:PROPERTIES:
+:CUSTOM_ID: 27fcb9b4-e311-4cf3-b13d-7af6919fbe65
+:END:
 #+begin_src bash
     /home/spike/git/commit-demo/.husky:
     total used in directory 24 available 232.5 GiB
@@ -235,6 +268,9 @@ husky 的使用就不赘述了，如果项目可以 husky，建议还是用 husk
 
 #+end_src
 *** 校验提交信息 (commit-msg)
+:PROPERTIES:
+:CUSTOM_ID: 608da1e1-6ffa-4f8e-b618-5f8284647bb6
+:END:
 安装  [[https://github.com/conventional-changelog/commitlint][commitlint]] 以来，然后创建 =commit-msg= 钩子，在提交后，校验提交信息是否符合规范：
 #+begin_src shell
   #!/usr/bin/env sh
@@ -243,6 +279,9 @@ husky 的使用就不赘述了，如果项目可以 husky，建议还是用 husk
   npx --no -- commitlint --edit ${1}
 #+end_src
 *** 提交前校验&格式化代码(pre-commit)
+:PROPERTIES:
+:CUSTOM_ID: b568a982-3ed4-4d97-af63-abe11f373d79
+:END:
 #+begin_src shell
   #!/usr/bin/env sh
   . "$(dirname -- "$0")/_/husky.sh"
@@ -261,6 +300,9 @@ husky 的使用就不赘述了，如果项目可以 husky，建议还是用 husk
 例如这里就是对 src 下的 js 和 vue 类型的文件，用 pretteir 格式化后，再用 eslint 去校验。
 
 *** 推送时判断是否合包含主分支提交(pre-push)
+:PROPERTIES:
+:CUSTOM_ID: 35c1589b-671f-4259-854e-377d7680471f
+:END:
 #+begin_src shell
   #!/bin/sh
   # 获取 main 分支最新的提交
@@ -283,6 +325,9 @@ husky 的使用就不赘述了，如果项目可以 husky，建议还是用 husk
 你就可以写一个 =pre-push= 钩子，再 push 的时候去校验一下。
 
 * changelog
+:PROPERTIES:
+:CUSTOM_ID: b52167c5-572b-4192-8af9-4c949d26bbf5
+:END:
 涉及到版本控制，自然也有版本号和发布日志，一般而言，版本号应该遵循[[https://semver.org/lang/zh-CN/][语义化版本 2.0.0]]的规范。
 
 而发布日志，一般而言也可以用一个 =CHANGELOG.md= 文件去编写和维护。
@@ -304,6 +349,9 @@ changeset 会要求你选择当前这条记录对应的语义化版本，从而�
 changeset 就会帮你把所有的 changeset 合并到 =CHANGELOG.md= 中，同时根据你之前的选择计算对应的版本号。
 
 * Refs
+:PROPERTIES:
+:CUSTOM_ID: c2f7dc25-f0e2-48c7-b022-1b2a304ba14e
+:END:
 - [[https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration][8.1 Customizing Git - Git Configuration]]
 - [[https://stackoverflow.com/questions/2596805/how-do-i-make-git-use-the-editor-of-my-choice-for-editing-commit-messages][How do I make git use the editor of my choice for editing commit messages?]]
 - [[https://medium.com/@f3igao/get-started-with-git-hooks-5a489725c639][Get Started with Git Hooks]]

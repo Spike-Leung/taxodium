@@ -6,15 +6,24 @@
 #+LANGUAGE: zh-CN
 
 * 前言
+:PROPERTIES:
+:CUSTOM_ID: 9cef0750-a7a1-4eb6-a75f-a9b1a854e051
+:END:
 
   由于项目基于 AmMap，有时需要使用中国某些省份或者市区作为地图，但是 AmMap 没有提供相关的地图数据，官网提供了一个自制地图数据的文档，
   根据此文档，只要有地图的 GIS 数据，就可以制作出想要的地图。
 
 * 获取 GIS 数据
+:PROPERTIES:
+:CUSTOM_ID: b20d5729-db28-4cba-8c95-158f0a6bfdae
+:END:
 
   网上搜索下载相关地区的 GIS 数据，一般下载下来会包含 ~.shp~ , ~.shx~, ~.prj~, ~.dbf~ 等类型的文件， 这里提供一份[[https://www.ganghe.net/research/data/china-gis-data][中国地图的 GIS 数据]]。
 
 * 截取需要的地图轮廓
+:PROPERTIES:
+:CUSTOM_ID: 104010d2-b581-48de-82b3-aadf298275ca
+:END:
 
   获取轮廓，可以使用这个工具 [[https://github.com/mbloch/mapshaper][mapshaper]], 具体步骤如下:
 
@@ -33,10 +42,16 @@
   - 导入到 [[http://extra.amcharts.com/mapparser3/][mapparser3]]，获取到 JSON 数据
 
 * 简化地图
+:PROPERTIES:
+:CUSTOM_ID: 339bf6b4-1cfa-4191-93b8-cc4dccf57d09
+:END:
   如果下载的地图数据很精细，导出时可能会导出一个非常大的文件，但是太大的文件又可能不好处理，
 这时，可以利用 mapshaper 的 ~Simplify~ 的功能去简化地图，从而导出一个大小合适的地图。
 
 * 导出时增加信息
+:PROPERTIES:
+:CUSTOM_ID: 39ef259f-ea51-447d-9f07-30d9b0b5186b
+:END:
   一般 GIS 数据里包含了很多地图区域的信息，例如，东莞市这个区域，包含了这块区域是什么市，属于什么省份等信息，
   但是当导出 SVG 的时候，发现这些信息丢失了。可以通过在导出的时候，指定要包含的属性，这样导出的SVG就能够包含
   相关的属性信息了。简单的用法：
@@ -46,6 +61,9 @@
      的输入框，可以输入 ~-o svg-data=id~, 然后导出，导出的 SVG 中就会包含一个 ~data-id~ 的属性值。
 
 * 参考链接
+:PROPERTIES:
+:CUSTOM_ID: f4310c42-3cdc-481f-99ad-581f2dc99184
+:END:
 
  - [[https://www.amcharts.com/docs/v3/tutorials/creating-custom-maps-for-javascript-ammap/][Creating custom maps for JavaScript amMap(AmMap3)]]
  - [[https://www.amcharts.com/docs/v4/tutorials/creating-custom-maps/][Creating custom maps(AmMap4)]]

@@ -10,12 +10,18 @@
 #+LANGUAGE: zh-CN
 
 * 前言
+:PROPERTIES:
+:CUSTOM_ID: a252e66a-efb6-4f6d-9692-767160e1cbde
+:END:
 
 要求输入框能输入除了特殊表情外的任意字符。
 
 我的理解就是将 Emoji 排除掉，通过 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp][RegExp]] 匹配 Emoji 判断是否存在特殊表情。
 
 * TL;DR
+:PROPERTIES:
+:CUSTOM_ID: 3dd21c20-23d8-4d1c-a431-e8edf6b76a1e
+:END:
 
 +如果你只是想要一个能够匹配表情的正则，下面这个应该就满足👇：+
 
@@ -33,6 +39,9 @@
 相关讨论可以看评论区。
 
 * 解决过程
+:PROPERTIES:
+:CUSTOM_ID: 1347354e-0cd0-4408-b10f-efa68d00cb27
+:END:
 
 对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道 Emoji 和 Unicode 相关，但怎么用正则描述它呢？
 
@@ -73,6 +82,9 @@
 #+end_src
 
 * Unicode character class escpae
+:PROPERTIES:
+:CUSTOM_ID: e9a4bc9a-66a8-4875-af52-618a5fec283e
+:END:
 
 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape: \p{...}, \P{...}]] 是 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_class_escape][Character class escape]] 中的一种。
 
@@ -89,6 +101,9 @@
 需要注意的是，使用 Unicode character class escpae 要启用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode#unicode-aware_mode][unicode-aware mode]]，即加上 =/u= 标记。
 
 * String & Unicode
+:PROPERTIES:
+:CUSTOM_ID: 02f1594b-e08e-43d6-a94d-36f1d534eae0
+:END:
 
 #+begin_quote
 Strings are represented fundamentally as sequences of [[https://en.wikipedia.org/wiki/UTF-16][UTF-16]] code
@@ -140,6 +155,9 @@ represents 1–6 hex digits.
 而超出 65535 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
 
 * 为什么 /(\ud83c[\udf00-\udfff].../u 的正则无法匹配🉐
+:PROPERTIES:
+:CUSTOM_ID: 981cd9a6-3bc0-4c8d-8144-da19e135b56c
+:END:
 
 现在已经知道 Emoji 是通过代理对表示的，那么 🉐 的代理对是什么呢？
 
@@ -156,6 +174,9 @@ represents 1–6 hex digits.
 和 =(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]= 对比可以发现，正则的范围不包括 \uD83C\uDE50，所以匹配不到🉐。
 
 * String 中的相关方法
+:PROPERTIES:
+:CUSTOM_ID: ae6fda15-0cd6-4aa6-b072-a9836204a9e4
+:END:
 
 - [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charAt][String.prototype.charAt()]] ::
 
@@ -265,8 +286,14 @@ The String.fromCodePoint() static method returns a string created from the speci
 
 
 * 注意点
+:PROPERTIES:
+:CUSTOM_ID: 6b858229-2717-4f33-85fb-b6e57f26d5e5
+:END:
 
 ** 字符串长度
+:PROPERTIES:
+:CUSTOM_ID: d08ecef5-1d4f-42ac-b8e8-649bd603ae92
+:END:
 
 有的字符是由代理对组成的，是两个 UTF-16 编码单元，例如 Emoji。
 
@@ -279,12 +306,18 @@ The String.fromCodePoint() static method returns a string created from the speci
 #+end_src
 
 ** Lone surrogates
+:PROPERTIES:
+:CUSTOM_ID: e849eebe-31a5-49e1-9bab-4c6e8bd69271
+:END:
 
 代理对是由高代理和低代理组成的，如果单独把高代理拎出来，或者高代理和高代理组成代理对，是无法表达有含意的 Unicode 字符的。
 
 具体可以参考 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters][UTF-16 characters, Unicode code points, and grapheme clusters]]。
 
 * Refs
+:PROPERTIES:
+:CUSTOM_ID: 79e8a27e-35a0-4246-9bc6-5a8bdae90c45
+:END:
 
 - [[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][How to detect emoji using javascript]]
 

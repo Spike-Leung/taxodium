@@ -9,6 +9,9 @@
 #+LANGUAGE: zh-CN
 
 * 问题
+:PROPERTIES:
+:CUSTOM_ID: 1e74c31a-4677-4cac-99aa-06e50ab292af
+:END:
 有一个 flex box，宽度是 400px，里面有一个 item，item 中有一段很长的文
 字，文字不换行。
 
@@ -50,6 +53,9 @@
 [[file:./images/flex-box-with-overflow/problem.png]]
 
 ** 非 flex 布局的表现
+:PROPERTIES:
+:CUSTOM_ID: 7e947e4c-a4ac-4e97-bdef-83319abd1553
+:END:
 如果去除 flex 布局，用默认的 display:block 的盒子， 文本是会受限于外层
 容器宽度，从而溢出隐藏显示。
 
@@ -88,7 +94,13 @@
 [[file:./images/flex-box-with-overflow/display-block.png]]
 
 * 解决方案
+:PROPERTIES:
+:CUSTOM_ID: 6e472179-d85b-4498-8c0e-ae2047d5aad8
+:END:
 ** 给 flex item 设置 overflow 属性
+:PROPERTIES:
+:CUSTOM_ID: 86995ec3-8e77-4fca-99ba-01f943dea670
+:END:
 #+begin_src diff
 .item {
 + overflow: auto;
@@ -98,6 +110,9 @@
 [[file:./images/flex-box-with-overflow/overflow.png]]
 
 ** 给 flex item 设置 width: 0 & flex-grow: 1
+:PROPERTIES:
+:CUSTOM_ID: c05a2370-8a75-42c5-b17f-0302bf2abd72
+:END:
 #+begin_src diff
 .item {
 + flex-grow: 1;
@@ -107,6 +122,9 @@
 [[file:./images/flex-box-with-overflow/width.png]]
 
 ** 给 flex item 设置 min-width: 0
+:PROPERTIES:
+:CUSTOM_ID: eadd437c-40c6-46b6-929f-ada1c7773e4f
+:END:
 #+begin_src diff
 .item {
 + min-width: 0;
@@ -115,7 +133,13 @@
 [[file:./images/flex-box-with-overflow/min-width.png]]
 
 * 原因
+:PROPERTIES:
+:CUSTOM_ID: bd478911-a841-40f1-9008-e3a5fcb0924e
+:END:
 ** TL;DR
+:PROPERTIES:
+:CUSTOM_ID: 506cfe7f-f1ba-4c39-96d1-ac3e8bb053a8
+:END:
 会溢出是因为在这个例子中，flex item 的 *最小尺寸* 是文本的长度，即使
 flex item 可以缩小也只能缩小到文本长度，无法避免溢出。
 
@@ -127,6 +151,9 @@ flex item 可以缩小也只能缩小到文本长度，无法避免溢出。
 宽度为 0，还需要设置 =flex-grow:1= ，让 flex item 延伸容器剩余空间。
 
 ** 详细分析
+:PROPERTIES:
+:CUSTOM_ID: 413f277a-515a-420a-8cbc-a45329b88de3
+:END:
 当 flex item 没有设置 flex 属性时，默认值是 =flex: initial= ，相当于
 =flex: 0 1 auto=,
 
@@ -237,12 +264,18 @@ available width), preferred width).
 [[file:./images/flex-box-with-overflow/layout-default.png]]
 
 * 推论
+:PROPERTIES:
+:CUSTOM_ID: 5e281bfa-547d-4548-8fa2-ab7c564a09aa
+:END:
 使用 flex 布局的时候，可以给 flex item 设置 =min-width: 0= ，从而保证
 flex item 能够尽可能地收缩，避免溢出 flex container。
 
 当碰到 flex item 的尺寸和预想中不一样时，可以考虑是不是这个原因导致的。
 
 * Refs
+:PROPERTIES:
+:CUSTOM_ID: 220e3788-a3c0-4209-89bd-c8ef37c44448
+:END:
 - [[https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox][Basic concepts of flexbox]] @MDN
 - [[https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#flex-basis-property][CSS Flexible Box Layout Module Level 1]] @W3C
 - [[https://juejin.cn/post/7118267018918232072][如何解决flex文本溢出问题]] @掘金/安迪five
