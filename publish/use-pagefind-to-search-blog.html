@@ -259,14 +259,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0f8a7d7">关于 pagefind</a></li>
-<li><a href="#org455ad0a">配置 pagefind</a>
+<li><a href="#8146bd66-566b-49de-9e2b-796bc84fa98f">关于 pagefind</a></li>
+<li><a href="#d0cb0641-caef-4bb1-8bd5-f55349aa923c">配置 pagefind</a>
 <ul>
-<li><a href="#org68bac94">CI/CD 中添加索引指令</a></li>
-<li><a href="#org3859ac1">引用 findpage 资源</a></li>
+<li><a href="#8a7bf407-8909-44d5-ad65-75a4d48ba47a">CI/CD 中添加索引指令</a></li>
+<li><a href="#23066128-897c-40cf-8243-04d8238d55cc">引用 findpage 资源</a></li>
 </ul>
 </li>
-<li><a href="#org807e70e">写在最后</a></li>
+<li><a href="#1f87fbcb-c481-404c-b4ac-97db76feb1ad">写在最后</a></li>
 </ul>
 </div>
 </nav>
@@ -286,9 +286,9 @@
 这周看到了一个开源项目 <a href="https://pagefind.app/">pagefind</a>，它可以对构建好的 HTML 进行索引和搜索，配置简单，开箱即用，没有额外的第三方服务，很符合我的需要。
 </p>
 
-<div id="outline-container-org0f8a7d7" class="outline-2">
-<h2 id="org0f8a7d7">关于 pagefind</h2>
-<div class="outline-text-2" id="text-org0f8a7d7">
+<div id="outline-container-8146bd66-566b-49de-9e2b-796bc84fa98f" class="outline-2">
+<h2 id="8146bd66-566b-49de-9e2b-796bc84fa98f">关于 pagefind</h2>
+<div class="outline-text-2" id="text-8146bd66-566b-49de-9e2b-796bc84fa98f">
 <blockquote>
 <p>
 Pagefind 是一个完全静态的搜索库，其目标是在大型网站上运行良好，同时尽可能少地占用用户带宽，并且无需托管任何基础设施。
@@ -357,9 +357,9 @@ pagefind 的一些特点：
 </div>
 </div>
 
-<div id="outline-container-org455ad0a" class="outline-2">
-<h2 id="org455ad0a">配置 pagefind</h2>
-<div class="outline-text-2" id="text-org455ad0a">
+<div id="outline-container-d0cb0641-caef-4bb1-8bd5-f55349aa923c" class="outline-2">
+<h2 id="d0cb0641-caef-4bb1-8bd5-f55349aa923c">配置 pagefind</h2>
+<div class="outline-text-2" id="text-d0cb0641-caef-4bb1-8bd5-f55349aa923c">
 <p>
 配置 pagefind 很简单，你只需要两步：
 </p>
@@ -391,29 +391,29 @@ pagefind 的一些特点：
 </p>
 </div>
 
-<div id="outline-container-org68bac94" class="outline-3">
-<h3 id="org68bac94">CI/CD 中添加索引指令</h3>
-<div class="outline-text-3" id="text-org68bac94">
+<div id="outline-container-8a7bf407-8909-44d5-ad65-75a4d48ba47a" class="outline-3">
+<h3 id="8a7bf407-8909-44d5-ad65-75a4d48ba47a">CI/CD 中添加索引指令</h3>
+<div class="outline-text-3" id="text-8a7bf407-8909-44d5-ad65-75a4d48ba47a">
 <p>
 我的博客<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>是部署在 <a href="https://www.netlify.com/">Netlify</a>，我只需要在构建的最后，添加一行执行索引的指令就完成索引了。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #7f0000;">#</span><span style="color: #7f0000;">!/bin/bash</span>
+<pre class="src src-diff"><span style="color: #969896;">#</span><span style="color: #7f0000;">!/bin/bash</span>
 
-<span style="color: #7f0000;">#</span><span style="color: #7f0000;"> Enable command printing (debug mode)</span>
+<span style="color: #969896;">#</span><span style="color: #7f0000;"> Enable command printing (debug mode)</span>
 set -x
 
-<span style="color: #7f0000;">#</span><span style="color: #7f0000;"> Only build when `publish` change</span>
+<span style="color: #969896;">#</span><span style="color: #7f0000;"> Only build when `publish` change</span>
 git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF publish
 
-<span style="color: #7f0000;">#</span><span style="color: #7f0000;"> index.xml is for https://www.v2ex.com/xna</span>
+<span style="color: #969896;">#</span><span style="color: #7f0000;"> index.xml is for https://www.v2ex.com/xna</span>
 cp -f publish/rss.xml publish/index.xml
 
 <span style="color: #008900;">+</span><span style="color: #006800;"> # see: https://pagefind.app/docs/multilingual/#opting-out-of-multilingual-search</span>
 <span style="color: #008900;">+</span><span style="color: #006800;"> npx -y pagefind --site publish --force-language zh-CN</span>
 
-<span style="color: #7f0000;">#</span><span style="color: #7f0000;"> Disable debug mode</span>
+<span style="color: #969896;">#</span><span style="color: #7f0000;"> Disable debug mode</span>
 set +x
 </pre>
 </div>
@@ -432,9 +432,9 @@ set +x
 </div>
 </div>
 
-<div id="outline-container-org3859ac1" class="outline-3">
-<h3 id="org3859ac1">引用 findpage 资源</h3>
-<div class="outline-text-3" id="text-org3859ac1">
+<div id="outline-container-23066128-897c-40cf-8243-04d8238d55cc" class="outline-3">
+<h3 id="23066128-897c-40cf-8243-04d8238d55cc">引用 findpage 资源</h3>
+<div class="outline-text-3" id="text-23066128-897c-40cf-8243-04d8238d55cc">
 <p>
 相比于在文章页面上添加搜索，我更倾向于一个独立的搜索页面，避免搜索结果影响文章页面的布局。
 </p>
@@ -444,7 +444,7 @@ set +x
 </p>
 
 <div class="org-src-container">
-<pre class="src src-html" id="orge636345">&lt;<span style="color: #531ab6;">!DOCTYPE</span> html&gt;
+<pre class="src src-html" id="orgf36fa5d">&lt;<span style="color: #531ab6;">!DOCTYPE</span> html&gt;
 &lt;<span style="color: #721045;">html</span> <span style="color: #005e8b;">lang</span>=<span style="color: #3548cf;">"zh-CN"</span>&gt;
   &lt;<span style="color: #721045;">head</span>&gt;
     &lt;<span style="color: #721045;">meta</span> <span style="color: #005e8b;">http-equiv</span>=<span style="color: #3548cf;">"Content-Type"</span> <span style="color: #005e8b;">content</span>=<span style="color: #3548cf;">"text/html;charset=utf-8"</span> /&gt;
@@ -489,9 +489,9 @@ set +x
 </div>
 </div>
 
-<div id="outline-container-org807e70e" class="outline-2">
-<h2 id="org807e70e">写在最后</h2>
-<div class="outline-text-2" id="text-org807e70e">
+<div id="outline-container-1f87fbcb-c481-404c-b4ac-97db76feb1ad" class="outline-2">
+<h2 id="1f87fbcb-c481-404c-b4ac-97db76feb1ad">写在最后</h2>
+<div class="outline-text-2" id="text-1f87fbcb-c481-404c-b4ac-97db76feb1ad">
 <p>
 如果你还有更好的搜索服务，欢迎分享 (ﾟ∀。)
 </p>
