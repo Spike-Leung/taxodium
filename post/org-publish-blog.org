@@ -183,6 +183,7 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
 以下代码可以作为参考，最新的请看 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el][init-org-publish.el]]。
 
+#+name: hello
 #+begin_details
 #+HTML: <summary>init-org-publish.el</summary>
 #+begin_src elisp
@@ -471,7 +472,9 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 - [ ] 针对 weekly 单独设置 RSS
 - [X] 增加搜索功能 -> [[https://taxodium.ink/search.html][search]]，使用 [[https://github.com/CloudCannon/pagefind][pagefind]] 实现，不过对于中文有的分词分的不是很好，可能搜索不到，凑合用着
 - [ ] 实现 CI/CD
-- [ ] 在不同机器执行 publish 的时候，ID 总是会变化
+- [X] 在不同机器执行 publish 的时候，ID 总是会变化 -> 每个 heading 都设置 =CUSTOM_ID= ，而不是自动生成，避免不同机器上由于没有缓存，导致变化。
+  + 导出是通过 =ox-html.el= 实现的，其中，heading 是通过 =org-html-headline= 实现
+  + ID 通过 =org-html--reference= 返回，如果存在 =CUSTOM_ID= 则会使用它，如果不存在则使用 =org-export-get-reference= 生成 ID，这个方法会搜索 =:internal-references= 和 =:crossrefs= 判断是否存在缓存，如果存在则复用。
 - [ ] 编写 Elisp，方便创建当前博客文章对应的图片目录，以及插入图片的 snippets
 
 * Refs
