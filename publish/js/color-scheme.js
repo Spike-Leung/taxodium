@@ -13,6 +13,7 @@ function switchMode(mode, isInit = false) {
     function setColorScheme() {
       colorSchemeMeta.setAttribute("content", scheme);
       localStorage.setItem("color-scheme", mode);
+      switchGiscusTheme(mode)
     }
 
     // 如果不是通过 select 切换的，则不启用 vimw transition, 避免白色主题到黑色主题过渡时的闪烁。
@@ -24,6 +25,22 @@ function switchMode(mode, isInit = false) {
 
 function getSavedColorScheme() {
   return localStorage.getItem("color-scheme") || "auto";
+}
+
+// Set Theme giscus theme
+function switchGiscusTheme(mode) {
+  const iframe = document.querySelector('.giscus-frame');
+  const theme = {
+    auto: 'preferred_color_scheme',
+    light: 'light_high_contrast',
+    dark: 'dark_high_contrast'
+  }
+
+  if (iframe) {
+    const url = new URL(iframe.src);
+    url.searchParams.set('theme', theme[mode]);
+    iframe.src = url.toString();
+  }
 }
 
 function initColorScheme() {
@@ -38,3 +55,7 @@ function initColorScheme() {
 }
 
 initColorScheme()
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  switchGiscusTheme(getSavedColorScheme())
+});
