@@ -68,12 +68,14 @@ initColorScheme();
 
 document.addEventListener("DOMContentLoaded", () => {
   const savedMode = getSavedColorScheme();
-  setTimeout(() => {
+  const interval = setInterval(() => {
     // 因为 giscus 是加载 script 后动态渲染，DOMContentLoaded 时可能还没能拿到，增加一定的定时等待
     const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
     iframe.addEventListener("load", () => {
       switchGiscusTheme(savedMode);
     });
+    clearInterval(interval);
   }, 1000);
   setModeSelectValue(savedMode);
 });
