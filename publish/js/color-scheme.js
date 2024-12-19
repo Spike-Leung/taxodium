@@ -80,7 +80,8 @@ function initGiscusTheme(mode) {
     const iframe = document.querySelector("iframe.giscus-frame");
     if (!iframe) return;
     iframe.addEventListener("load", () => {
-      switchGiscusTheme(mode);
+      // giscus 的主题也是通过 postMessage 的形式更新的，如果同时 sendMessage，可能这里执行的更早，就会导致设置的主题被覆盖，因此延后 postMessage 的时间
+      setTimeout(() => switchGiscusTheme(mode), 200)
     });
     clearInterval(interval);
   }, 1000);
