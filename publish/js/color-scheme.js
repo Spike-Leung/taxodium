@@ -2,29 +2,38 @@ const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
 const modeSelect = document.querySelector('#lightdark');
 
 function switchMode(mode) {
-  const scheme = mode === "auto" ? "light dark" : mode;
+  try {
+    const scheme = mode === "auto" ? "light dark" : mode;
 
-   if (!document.startViewTransition) {
-    setColorScheme();
-    return;
-   }
+    if (!document.startViewTransition) {
+      setColorScheme();
+      return;
+    }
 
-  function setColorScheme() {
-    colorSchemeMeta.setAttribute("content", scheme);
-    localStorage.setItem("color-scheme", mode);
+    function setColorScheme() {
+      colorSchemeMeta.setAttribute("content", scheme);
+      localStorage.setItem("color-scheme", mode);
+    }
+
+    document.startViewTransition(() => setColorScheme());
+  } catch (err) {
+    console.error(err)
   }
-
-  document.startViewTransition(() => setColorScheme());
 }
 
 function getSavedColorScheme() {
   return localStorage.getItem("color-scheme") || "auto";
 }
 
-const savedMode = getSavedColorScheme();
-modeSelect.value = savedMode;
-switchMode(savedMode);
+function initColorScheme() {
+  try {
+    const savedMode = getSavedColorScheme();
+    modeSelect && (modeSelect.value = savedMode)
 
-modeSelect.addEventListener('change', (event) => {
-  switchMode(event.target.value);
-});
+    switchMode(savedMode);
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+initColorScheme()
