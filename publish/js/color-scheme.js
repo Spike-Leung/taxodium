@@ -1,5 +1,8 @@
 const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
-const modeSelect = document.querySelector('#lightdark');
+
+function getSavedColorScheme() {
+  return localStorage.getItem("color-scheme") || "auto";
+}
 
 function switchMode(mode, isInit = false) {
   try {
@@ -13,28 +16,22 @@ function switchMode(mode, isInit = false) {
     function setColorScheme() {
       colorSchemeMeta.setAttribute("content", scheme);
       localStorage.setItem("color-scheme", mode);
-      switchGiscusTheme(mode)
+      switchGiscusTheme(mode);
     }
 
-    // 如果不是通过 select 切换的，则不启用 vimw transition, 避免白色主题到黑色主题过渡时的闪烁。
     isInit ? setColorScheme() : document.startViewTransition(() => setColorScheme());
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
 }
 
-function getSavedColorScheme() {
-  return localStorage.getItem("color-scheme") || "auto";
-}
-
-// Set Theme giscus theme
 function switchGiscusTheme(mode) {
   const iframe = document.querySelector('.giscus-frame');
   const theme = {
     auto: 'preferred_color_scheme',
     light: 'light_high_contrast',
     dark: 'dark_high_contrast'
-  }
+  };
 
   if (iframe) {
     const url = new URL(iframe.src);
@@ -46,16 +43,22 @@ function switchGiscusTheme(mode) {
 function initColorScheme() {
   try {
     const savedMode = getSavedColorScheme();
-    modeSelect && (modeSelect.value = savedMode)
-
+    setModeSelectValue(savedMode);
     switchMode(savedMode, true);
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
 }
 
-initColorScheme()
+function setModeSelectValue(mode) {
+  const modeSelect = document.querySelector('#lightdark');
+  modeSelect && (modeSelect.value = mode);
+}
 
-document.addEventListener("DOMContentLoaded", (event) => {
-  switchGiscusTheme(getSavedColorScheme())
+initColorScheme();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const savedMode = getSavedColorScheme();
+  switchGiscusTheme(savedMode);
+  setModeSelectValue(savedMode);
 });
