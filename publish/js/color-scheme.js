@@ -1,7 +1,7 @@
 const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
 const modeSelect = document.querySelector('#lightdark');
 
-function switchMode(mode) {
+function switchMode(mode, isInit = false) {
   try {
     const scheme = mode === "auto" ? "light dark" : mode;
 
@@ -15,7 +15,8 @@ function switchMode(mode) {
       localStorage.setItem("color-scheme", mode);
     }
 
-    document.startViewTransition(() => setColorScheme());
+    // 如果不是通过 select 切换的，则不启用 vimw transition, 避免白色主题到黑色主题过渡时的闪烁。
+    isInit ? setColorScheme() : document.startViewTransition(() => setColorScheme());
   } catch (err) {
     console.error(err)
   }
@@ -30,7 +31,7 @@ function initColorScheme() {
     const savedMode = getSavedColorScheme();
     modeSelect && (modeSelect.value = savedMode)
 
-    switchMode(savedMode);
+    switchMode(savedMode, true);
   } catch (err) {
     console.error(err)
   }
