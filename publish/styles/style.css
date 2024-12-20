@@ -4,6 +4,7 @@
 
     --color-bg: #eee;
     --color-bg-secondary: #ffffffe6;
+    --color-bg-src-block: #ffffff51;
     --color-text: #454545;
     --color-text-secondary: #777;
     --color-border: #ddd;
@@ -13,6 +14,7 @@
 
     --dark-color-bg: #121212;
     --dark-color-bg-secondary: #1e1e1e;
+    --dark-color-bg-src-block: #ffffff15;
     --dark-color-text: #ddd;
     --dark-color-text-secondary: #9e9e9e;
     --dark-color-border: #3e3e3e;
@@ -249,11 +251,19 @@ pre.src {
   white-space: pre-wrap;
   word-break: break-word;
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, "Courier New", Courier, monospace;
+  color: var(--color-text);
+  color: light-dark(var(--color-text), var(--dark-color-text));
   border-color: var(--color-border);
   border-color: light-dark(var(--color-border), var(--dark-color-border));
-  background-color: var(--color-bg-secondary);
-  background-color: light-dark(var(--color-bg-secondary), var(--dark-color-bg-secondary));
+  background-color: var(--color-bg-src-block);
+  background-color: light-dark(var(--color-bg-src-block), var(--dark-color-bg-src-block));
 }
+
+html:has(meta[name="color-scheme"][content="dark"]) pre.src > *,
+html:has(meta[name="color-scheme"][content="dark"]) pre.example > * {
+  filter: invert(20%) brightness(200%);
+}
+
 
 .ally-nav {
     position: absolute;
