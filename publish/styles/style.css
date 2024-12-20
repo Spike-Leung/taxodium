@@ -25,6 +25,7 @@
     --pagefind-ui-font: var(--font-family);
 }
 
+@media (prefers-color-scheme: dark),
 html:has(meta[name="color-scheme"][content="dark"]) {
     --pagefind-ui-primary: var(--dark-color-link);
     --pagefind-ui-text: var(--dark-color-text);
@@ -258,6 +259,13 @@ pre.src {
   border-color: light-dark(var(--color-border), var(--dark-color-border));
   background-color: var(--color-bg-src-block);
   background-color: light-dark(var(--color-bg-src-block), var(--dark-color-bg-src-block));
+}
+
+@media (prefers-color-scheme: dark) {
+    pre.src > *,
+    pre.example > * {
+        filter: invert(20%) brightness(200%);
+    }
 }
 
 html:has(meta[name="color-scheme"][content="dark"]) pre.src > *,
