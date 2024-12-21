@@ -19,7 +19,7 @@
 - [[https://zh.wikipedia.org/wiki/%E9%A3%9B%E8%9A%8A%E7%97%87][飞蚊症]]患者可能更喜欢 dark mode（可能是 dark mode 下飞蚊不那么明显？）
 - 散光患者可能在 light mode 下更容易聚焦
 
-不管如何，有的读者或许更喜欢 dark mode，我也想实践一下文章中的方法，所以我给博客加上了 dark mode 啦  ヾ(*´∀ ˋ*)ﾉ
+不管如何，或许有人需要 dark mode，我也想实践一下文章中的方法，所以我给博客加上了 dark mode 啦ヾ(*´∀ ˋ*)ﾉ
 
 本来以为是一件不怎么麻烦的事情，但实践下来要处理的内容还不少，接下来我会分享是如何实现的，以及碰到的问题，包括：
 
@@ -143,15 +143,15 @@ main {
 
 ** 闪烁问题
 
-最开始 =color-scheme.js= 是放在 HTML 的最后加载的，避免影响页面内容的加载和渲染。
+最开始 color-scheme.js 是放在 HTML 的最后加载的，避免影响页面内容的加载和渲染。
 
 但因为 ~<meta name="color-scheme">~ 的默认值是 =light dark= ，假如系统配置中是 light mode ，而读者之前选择了 dark mode，页面加载的时候就会出现从 light mode 到 dark mode 的一个短暂转换，看起来像闪烁了一下。
 
-为了避免这个问题，我将 =color-scheme.js= 挪到了 HTML 的开头部分，一开始就按照读者之前选择的值，设置 color-scheme，这样在内容渲染之前，color-scheme 就已经切换好了，避免闪烁。
+为了避免这个问题，我将 color-scheme.js 挪到了 HTML 的开头部分，一开始就按照读者之前选择的值，设置 color-scheme，这样在内容渲染之前，color-scheme 就已经切换好了，避免闪烁。
 
-但这样又引入了另一个问题，由于 =color-scheme.js= 执行的时候，页面的 DOM 还没渲染，因此无法提前获取 DOM，设置 =<select>= 的选中值，以及其他 DOM 元素的样式。
+但这样又引入了另一个问题，由于 color-scheme.js 执行的时候，页面的 DOM 还没渲染，因此无法提前获取 DOM，设置 =<select>= 的选中值，以及其他 DOM 元素的样式。
 
-所以 =color-scheme.js= 中还需要监听 [[https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event][DOMContentLoaded]] 事件，当页面 DOM 加载完成后，执行一些获取 DOM ，设置 =color-scheme= 的逻辑。
+所以 color-scheme.js 中还需要监听 [[https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event][DOMContentLoaded]] 事件，当页面 DOM 加载完成后，执行一些获取 DOM ，设置 color-scheme 的逻辑。
 
 ** dark mode 下 giscus 的处理
 
@@ -203,7 +203,7 @@ publish 生成的代码高亮的颜色是单独写在 =<span>= 上的，没有�
 
 这样既复用了亮色主题的高亮，也能在 dark mode 下看得比较清楚，凑合能用了 (´・ω・`)
 
-* TODO
+* TODO Todos
 
 除了上面的问题，其实还有一些没解决的：
 
