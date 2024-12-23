@@ -1,3 +1,8 @@
+/**
+ * color scheme mode
+ * @typedef { 'auto' | 'dark' | 'light' } ColorSchemeMode
+ */
+
 const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
 
 function getSavedColorScheme() {
@@ -6,8 +11,8 @@ function getSavedColorScheme() {
 
 /**
  * 主题下拉框切换事件，切换主题
- * @param { 'auto' | 'dark' | 'light' } mode - 当前主题模式
- * @param {boolean} isInit - 是否是页面初始化
+ * @param { ColorSchemeMode } mode - 当前主题模式
+ * @param { boolean } isInit - 是否是页面初始化
  */
 function switchMode(mode, isInit = false) {
   try {
@@ -35,7 +40,7 @@ function switchMode(mode, isInit = false) {
 
 /**
  * 设置主题模式下拉框的值
- * @param { 'auto' | 'dark' | 'light' } mode - 当前主题模式
+ * @param { ColorSchemeMode } mode - 当前主题模式
  */
 function setModeSelectValue(mode) {
   const modeSelect = document.querySelector("#lightdark");
@@ -44,7 +49,7 @@ function setModeSelectValue(mode) {
 
 /**
  * 切换 Gitcus 的主题
- * @param { 'auto' | 'dark' | 'light' } mode - 当前主题模式
+ * @param { ColorSchemeMode } mode - 当前主题模式
  */
 function switchGiscusTheme(mode) {
   const theme = {
@@ -73,7 +78,7 @@ function switchGiscusTheme(mode) {
 
 /**
  * 切换页面所有 iframe 的 color-scheme
- * @param { 'auto' | 'dark' | 'light' } mode - 当前主题模式
+ * @param { ColorSchemeMode } mode - 当前主题模式
  */
 function switchIframeColorScheme(mode) {
   const iframes = document.querySelectorAll("iframe");
@@ -107,7 +112,7 @@ function switchIframeColorScheme(mode) {
 
 /**
  * 初始化 Giscus 主题
- * @param { 'auto' | 'dark' | 'light' } mode - 当前主题模式
+ * @param { ColorSchemeMode } mode - 当前主题模式
  */
 function initGiscusTheme(mode) {
   const interval = setInterval(() => {
