@@ -1,7 +1,7 @@
 #+title: V2ray with Caddy + HTTP2 + TLS
 #+INDEX: V2ray with Caddy + HTTP2 + TLS
 #+date: <2022-08-08 Mon>
-#+lastmod: 2022-08-08T21:47:48+08:00
+#+lastmod: <2024-12-24 Tue>
 #+categories[]: blog
 #+LANGUAGE: zh-CN
 
@@ -13,30 +13,29 @@
 
 用了很长时间 WebSocket + TLS + Web 的组合，一直都比较稳定。
 
-周末时翻到一篇关于 [[https://guide.v2fly.org/advanced/h2.html][HTTP2]] 的搭建，有一个[[https://http2.akamai.com/demo][网站]]比较了 HTTP/1.1 和 HTTP2 的加载速度，发现 HTTP2 是真的很快，就想着重新部署一个代理，看是否有更好的体验。
+周末时翻到一篇关于 [[https://guide.v2fly.org/advanced/h2.html][HTTP2]] 的搭建，有一个网站比较了 HTTP/1.1 和 HTTP2 的加载速度，发现 HTTP2 是真的很快，就想着重新部署一个代理，看是否有更好的体验。
 
 由于换了服务器，现在不太确定是服务器影响还是 HTTP2 的影响，速度上要比之前的好一些。
 
-这篇博客主要记录 *V2ray + Caddy + HTTP2 + TLS* 的相关配置，其它具体细节请参考 [[https://guide.v2fly.org/][V2ray 新白话文教程]] 以及[[https://www.v2ray.com/en/][官网]]。
+这篇博客主要记录 *V2ray + Caddy + HTTP2 + TLS* 的相关配置，其它具体细节请参考 [[https://guide.v2fly.org/][V2ray 新白话文教程]] 以及[[https://www.v2fly.org/][官网]]。
 
 * 准备
 :PROPERTIES:
 :CUSTOM_ID: 1341006d-ba8e-40d9-b549-5f38ff646d4f
 :END:
 
-- *一台国外的 VPS* \\
-  目前我用的是 [[https://www.vultr.com/][VULTR]]，价格可能有一些贵，但稳定，速度也还可以，另外也支持支付宝充值
-- *一个域名* \\
-  可以找个网站买一个便宜的域名，腾讯也有域名可以卖
-- *一些基础的知识* \\
-  简单的命令行操作；Web 服务器的部署，配置，排错；了解怎么在服务器编辑文件
+- *一台国外的 VPS* :: 目前我用的是 [[https://www.vultr.com/][VULTR]]，价格可能有一些贵，但稳定，速度也还可以，另外也支持支付宝充值。
+
+- *一个域名* :: 可以找个网站买一个便宜的域名，腾讯也有域名可以卖。
+
+- *一些基础的知识* :: 简单的命令行操作；Web 服务器的部署，配置，排错；了解怎么在服务器编辑文件。
 
 * 搭建
 :PROPERTIES:
 :CUSTOM_ID: 9f73fe29-4ee2-4c05-b881-10a3e5c20f91
 :END:
 
-这次搭建主要是参考了 [[https://guide.v2fly.org/advanced/h2_tls_web.html][HTTP/2+TLS+WEB]]，里头用到了 [[https://caddyserver.com/][Caddy ]]作为 Web 服务器，不过他用的是 Caddy1，而我用的是 Caddy2。
+这次搭建主要是参考了 [[https://guide.v2fly.org/advanced/h2_tls_web.html][HTTP/2+TLS+WEB]] ，里头用到了 [[https://caddyserver.com/][Caddy ]]作为 Web 服务器，不过他用的是 Caddy1，而我用的是 Caddy2。
 
 除了 Caddy， 其实还能用 Nginx，Apache 去做 Web 服务器，不过 Caddy 相对来说使用上更简单方便。
 
@@ -95,7 +94,7 @@ Ubuntu 的指令是：
 :CUSTOM_ID: 77111a27-49cc-4a44-ae67-b1bae7f0f852
 :END:
 
-按照 [[https://caddyserver.com/docs/install][Caddy 的安装步骤 ]]将 Caddy 安装到 VPS 上，具体使用可以看 Caddy 文档，里头有很多详细的例子。
+按照 [[https://caddyserver.com/docs/install][Caddy 的安装步骤]] 将 Caddy 安装到 VPS 上，具体使用可以看 Caddy 文档，里头有很多详细的例子。
 
 安装好之后，配置 ~/etc/caddy/Caddyfile~ :
 
@@ -150,7 +149,7 @@ Ubuntu 的指令是：
 :CUSTOM_ID: 47d1f71c-8331-40e8-870a-ba67ca3987f0
 :END:
 
-配置含义请[[https://guide.v2fly.org/][官网]]查阅， ~/usr/local/etc/v2ray/config.json~:
+配置含义请[[https://www.v2fly.org/config/overview.html][官网]]查阅， ~/usr/local/etc/v2ray/config.json~:
 
     #+begin_src json
       {
