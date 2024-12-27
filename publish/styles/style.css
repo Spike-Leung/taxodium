@@ -302,37 +302,62 @@ html:has(meta[name="color-scheme"][content="dark"]) pre.example > * {
   top: 10rem;
 }
 
-/* table */
+/*
+ * table
+ * @see: https://piccalil.li/blog/styling-tables-the-modern-css-way/
+ */
 
 table {
-  border-top: var(--table-border);
-  border-bottom: var(--table-border);
+  border-block-start: var(--table-border);
+  border-block-end: var(--table-border);
   border-collapse: collapse;
   border-color: var(--color-text);
   border-color: light-dark(var(--color-text), var(--dark-color-text-secondary));
+  text-align: start;
+  caption-side: bottom;
+}
+
+.table-wrapper {
+  overflow: auto;
+}
+
+/* override org publish default style */
+table th.org-left {
+  text-align: start;
 }
 
 thead {
-  border-bottom: var(--table-border);
+  border-block-end: var(--table-border);
   border-color: var(--color-text);
   border-color: light-dark(var(--color-text), var(--dark-color-text-secondary));
 }
 
-table td + td, table th + th {
-  border-left: var(--table-cell-border);
-  border-color: var(--color-text);
-  border-color: light-dark(var(--color-text), var(--dark-color-text-secondary));
+thead,
+tfoot {
+  background: var(--color-border);
+  background: light-dark(var(--color-border), var(--dark-color-border));
+}
+
+tbody tr:nth-child(even) {
+  background: var(--color-border);
+  background: light-dark(var(--color-border), var(--dark-color-border));
+  background: light-dark(color-mix(in srgb , var(--color-border), transparent 60%), color-mix(in srgb, var(--dark-color-border), transparent 60%));
 }
 
 table tr {
-  border-top: var(--table-cell-border);
+  border-block-start: var(--table-cell-border);
   border-color: var(--color-border);
   border-color: light-dark(var(--color-border), var(--dark-color-border));
 }
 
+thead th {
+  vertical-align: bottom;
+}
+
+
 td,th {
   padding: 0.3em 0.6em;
-  vertical-align: middle;
+  vertical-align: baseline;
 }
 
 /* media query */
