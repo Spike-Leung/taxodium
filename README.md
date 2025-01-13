@@ -5,6 +5,8 @@
 
 (๑>◡<๑) The blog is build by org-publish, you can find my org-publish config [here](https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el).
 
+I also wrote a post about [how to use Org-Publish to manage and publish my blog](https://taxodium.ink/org-publish-blog.html).
+
 ☆ ～('▽^人) [sitemap](https://github.com/Spike-Leung/taxodium/blob/org-publish/post/index.org)
 
 ヽ(o＾▽＾o)ノ[RSS](https://taxodium.ink/rss.xml)
