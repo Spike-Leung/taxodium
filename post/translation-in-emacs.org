@@ -1,7 +1,7 @@
 #+title: Translation In Emacs
 #+INDEX: Translation In Emacs
-#+date: <2025-01-15 Wed>
-#+lastmod: <2025-01-15 Wed 23:34>
+#+date: <2025-01-16 Thu>
+#+lastmod: <2025-01-16 Thu>
 #+author: Spike Leung
 #+email: l-yanlei@hotmail.com
 #+description: ""
@@ -11,7 +11,7 @@
 #+CAPTION: Emacs 中翻译插件的使用截图，包括 emacs-immersive-translate, go-translate, fanyi
 [[file:./images/translate-in-emacs/screenshot.png]]
 
-逛 [[https://emacs-china.org/][Emacs China]] 的时候看到了一下在 Emacs 中翻译的插件，我也配置了一些，最近也在使用 [[https://platform.deepseek.com/][deepseek]]，它的 API 是和 [[https://platform.openai.com/docs/overview][OpenAI]] 兼容的，于是我就配置了一下，翻译的效果还不错。
+逛 [[https://emacs-china.org/][Emacs China]] 的时候看到了一些在 Emacs 中翻译的插件[fn:1][fn:2][fn:3]，我也跟着配置了一些，最近也在使用 [[https://platform.deepseek.com/][deepseek]]，它的 API 是和 [[https://platform.openai.com/docs/overview][OpenAI]] 兼容的，于是我就配置了一下，翻译的效果还不错。
 
 我想记录一下我都使用了什么插件，怎么配置的以及是如何使用的。
 
@@ -20,15 +20,15 @@
 插件我主要使用这几个：
 
 - [[https://github.com/Elilif/emacs-immersive-translate][Elilif/emacs-immersive-translate]] ::  Immersive-translate provides bilingual simultaneous display and translation of any text in Emacs.
-- [[https://github.com/lorniu/go-translate][lorniu/go-translate]] :: : Translator on Emacs. Supports multiple engines such as Google, Bing, deepL, ChatGPT, StarDict, Youdao and so on.
+- [[https://github.com/lorniu/go-translate][lorniu/go-translate]] :: Translator on Emacs. Supports multiple engines such as Google, Bing, deepL, ChatGPT, StarDict, Youdao and so on.
 - [[https://github.com/condy0919/fanyi.el][condy0919/fanyi.el]] ::  Not only English-Chinese translator for Emacs.
 - [[https://github.com/karthink/gptel][karthink/gptel]] :: A simple LLM client for Emacs
 
 我使用最多的是 emacs-immersive-translate，它的灵感是 [[https://immersivetranslate.com/en/][Immersive Translate]]，是我使用频率极高的一个浏览器翻译插件。
 
-emacs-immersive-translate 给我的体验和 Immersive Translate 很接近，我主要是用来查看 Emacs 中的 Info，它还有 immersive-translate-auto-mode，可以在 buffer 变化的时候自动翻译，挺方便的。
+emacs-immersive-translate 给我的体验和 Immersive Translate 很接近，我主要是用来查看 Emacs 中的 Info，它还有 immersive-translate-auto-mode，可以在 buffer 变化的时候自动翻译，很方便。
 
-最开始时我没有 OpenAI 的 APIKey，我用的是 [[https://github.com/soimort/translate-shell][translate-shell]]，实际上就是 [[https://translate.google.com/][Goolge Translate]]。
+最开始时我没有 OpenAI 的 API Key，我用的是 [[https://github.com/soimort/translate-shell][translate-shell]]，实际上就是 [[https://translate.google.com/][Goolge Translate]]。
 
 Google Translate 速度很快，缺点是有的时候翻译不是那么准确，但也基本够用了。
 
@@ -46,13 +46,13 @@ fanyi 则是当作字典使用，碰到一两个单词不熟悉，则使用 fany
 
 你可以在 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-translate.el][init-translate.el]] 中查看翻译的相关配置。
 
-** emacs-immersive-translate
+** [[https://github.com/Elilif/emacs-immersive-translate][emacs-immersive-translate]]
 
 你可以在 [[https://melpa.org/][MELPA]] 上直接安装 emacs-immersive-translate。
 
 不过我修改了源码，[[https://github.com/Spike-Leung/emacs-immersive-translate/commit/330dcfa3603845ead9408000577b429f8c47ee87][调整了翻译文字颜色]]，所以我是作为 [[https://git-scm.com/docs/gitsubmodules][git submodules]] 安装的。
 
-然后我配置了使用 [[https://platform.deepseek.com/][deepseek]] 作为翻译服务：
+然后我配置了使用 deepseek 作为翻译服务：
 
 #+begin_src elisp
   (push (expand-file-name "lisp/my-lisp/emacs-immersive-translate" user-emacs-directory) load-path)
@@ -65,16 +65,16 @@ fanyi 则是当作字典使用，碰到一两个单词不熟悉，则使用 fany
         immersive-translate-failed-message "(つд⊂) ")
 #+end_src
 
-然后需要在 ~~./authinfo~  中配置 apikey，由于 emacs-immersive-translate 是查找 user 为 =apikey= 的配置，因此 user 这里需要设置为 =apikey=
+然后需要在 ~~./authinfo~  中配置 API Key，由于 emacs-immersive-translate 是查找 user 为 =apikey= 的配置，因此 user 这里需要设置为 =apikey=
 #+begin_src authinfo
   machine api.deepseek.com login apikey password ********************************
 #+end_src
 
-** go-translate
+** [[https://github.com/lorniu/go-translate][go-translate]]
 
-go-translate 也是可以在 [[https://melpa.org/][MELPA]] 上直接安装。
+go-translate 也是可以在 MELPA 上直接安装。
 
-我将它配置成使用 [[https://platform.deepseek.com/][deepseek]] 作为翻译服务，翻译显示在一个新的 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html][buffer]] 中。
+我将它配置成使用 deepseek 作为翻译服务，翻译显示在一个新的 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html][buffer]] 中。
 
 #+begin_src elisp
   ;; @see: https://github.com/lorniu/go-translate
@@ -95,17 +95,120 @@ go-translate 也是可以在 [[https://melpa.org/][MELPA]] 上直接安装。
 
 #+end_src
 
-apikey 也是配置在 ~~/.authinfo~ 文件，使用 ~spike-leung/get-deepseek-api-key~ 这个方法从文件中查找对应的密钥。
+API Key 也是配置在 ~~/.authinfo~ 文件，使用 ~spike-leung/get-deepseek-api-key~ 这个方法从文件中查找对应的密钥。
 
 #+begin_details
+#+HTML: <summary>spike-leung/get-deepseek-api-key</summary>
+#+begin_src elisp
+  ;;; function to get api-key from authinfo
+  (defun spike-leung/get-api-key (service)
+    "Retrieve the API key for SERVICE from authinfo."
+    (let* ((host (format "api.%s.com" service))
+           (creds (car (auth-source-search :host host :port 443))))
+      (if creds
+          (let ((api-key (plist-get creds :secret)))
+            (if (functionp api-key)
+                (funcall api-key)
+              api-key
+              (error "API key not found for %s" service)))
+        (error "No credentials found for %s" service))))
 
-#+begin_src
+  (defun spike-leung/get-deepseek-api-key ()
+    "Retrieve the DeepSeek API key from authinfo."
+    (spike-leung/get-api-key "deepseek"))
+
+  (defun spike-leung/get-gemini-api-key ()
+    "Retrieve the Gemini API key from authinfo."
+    (spike-leung/get-api-key "gemini"))
 #+end_src
+
+[[https://github.com/Spike-Leung/emacs.d/blob/eb72b335c90942e43d6082227c646b47725475d2/lisp/my-lisp/init-my-misc.el#L125-L144][Source]]
 #+end_details
 
-** fanyi
+** [[https://github.com/condy0919/fanyi.el][fanyi]]
 
-** gptel
+fanyi 从 MELPA 上直接安装使用即可。
 
+** [[https://github.com/karthink/gptel][gptel]]
 
-* Refs
+gptel 也是从 MELPA 上直接安装，然后配置 deepseek。
+
+deepseek 的 API Key 也是放在 ~~/.authinfo~ 文件，和 go-translate 公用相同的 API Key。
+
+获取 API Key 也是通过 ~spike-leung/get-deepseek-api-key~ 方法。
+
+#+begin_src elisp
+  ;; init-gptel.el --- gptel
+  ;;; Commentary:
+
+  (maybe-require-package 'gptel)
+
+  (with-eval-after-load 'gptel
+    (gptel-make-openai "DeepSeek"
+      :host "api.deepseek.com"
+      :endpoint "/chat/completions"
+      :stream t
+      :key (spike-leung/get-deepseek-api-key)
+      :models '(deepseek-chat deepseek-coder))
+    (gptel-make-gemini "Gemini" :key (spike-leung/get-gemini-api-key) :stream t)
+    (setq
+     gptel-model 'deepseek-chat
+     gptel-backend (gptel-make-openai "DeepSeek"
+                     :host "api.deepseek.com"
+                     :endpoint "/chat/completions"
+                     :stream t
+                     :key (spike-leung/get-deepseek-api-key)
+                     :models '(deepseek-chat deepseek-coder))))
+
+  (global-set-key (kbd "M-o g") 'gptel-menu)
+
+  (provide 'init-gptel)
+  ;;; init-gptel.el ends here
+#+end_src
+
+gptel 就是当 LLM 用，需要翻译的时候就复制文字和它对话。
+
+此外，在日常开发中，gptel 还能用来重构代码，完成一些重复任务，给我一些初始代码逻辑等，也是我用的很频繁的插件。
+
+deepseek V3 的价格足够便宜，也足够智能，目前我已经退了 ChatGPT Plus 的订阅，需要的时候使用 gptel 和 deepseek 对话。
+
+** 快捷键
+
+为了方便使用，我将这几个插件绑定到了相同的快捷键入口。
+
+#+begin_src elisp
+  ;; gptel
+  (global-set-key (kbd "M-o g") 'gptel-menu)
+
+  ;; translate stuff
+  (defvar spike-leung/my-translate-keymap (make-sparse-keymap)
+    "Keymap for translation commands.")
+
+  (define-key spike-leung/my-translate-keymap (kbd "i") 'immersive-translate-buffer)
+  (define-key spike-leung/my-translate-keymap (kbd "f") 'fanyi-dwim2)
+  (define-key spike-leung/my-translate-keymap (kbd "g") 'gt-do-translate)
+
+  (global-set-key (kbd "M-o t") spike-leung/my-translate-keymap)
+#+end_src
+
+#+CAPTION: M-o 绑定的函数，包括 gptel，avy 以及翻译的前缀键
+[[file:./images/translate-in-emacs/M-o.png]]
+
+#+CAPTION: M-o t 绑定的函数，主要是翻译相关的
+[[file:./images/translate-in-emacs/M-o-t.png]]
+
+* 写在最后
+
+有了翻译插件，在阅读 info 等文档上真的帮助很大，极大地提高阅读效率。
+
+集成了 LLM 后，翻译的质量也好了很多。
+
+但依赖翻译插件也有个问题，就是原文会看的比较少，不利于增进英语学习。
+
+如果你还有更好的插件，欢迎推荐啦 (ﾉ>ω<)ﾉ
+
+* Footnotes
+
+[fn:1] [[https://emacs-china.org/t/emacs-immersive-translate-emacs/24990][emacs-immersive-translate: Emacs 版本的沉浸式翻译（支持多个翻译后端）]]
+[fn:2] [[https://emacs-china.org/t/google/14407][新写的 Google 翻译插件]]
+[fn:3] [[https://emacs-china.org/t/topic/18006][一个支持多词典的翻译插件(目前仅支持单词)]]
