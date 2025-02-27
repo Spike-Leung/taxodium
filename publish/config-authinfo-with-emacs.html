@@ -249,7 +249,7 @@
 </p>
 
 <p>
-但是 ~/.authinfo 是未加密的，如果泄露了，那么我的 API key 就会泄露被滥用，所以我觉得还是需要对它做一层加密。
+但是 ~/.authinfo 是未加密的，如果泄露了，那么我的 API key 可能被滥用，所以我觉得还需要对它做一层加密。
 </p>
 
 <p>
@@ -281,7 +281,7 @@ machine <i>mymachine</i> login <i>myloginname</i> password <i>mypassword</i> por
 </blockquote>
 
 <p>
-Emacs 是通过 auth-source 去实现身份验证的，一般将验证信息(例如 API Key)存储在这三个文件中:
+Emacs 是通过 auth-source 去实现身份验证的，一般将验证信息 (例如 API Key) 存储在这三个文件中:
 </p>
 
 <ul class="org-ul">
@@ -313,7 +313,7 @@ Emacs 是通过 auth-source 去实现身份验证的，一般将验证信息(例
 一些例子：
 </p>
 
-<pre class="example" id="org725f43d">
+<pre class="example" id="org2c3a5c8">
 machine localhost login spike port sudo password xxxx
 machine 192.168.100.100 login root port ssh password xxxx
 machine api.deepseek.com login apikey password xxxx
@@ -358,11 +358,11 @@ machine openrouter.ai/api login apikey password xxxx
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #595959;">;; </span><span style="color: #595959;">...&#20854;&#20182;&#20195;&#30721;</span>
+<pre class="src src-lisp"><span style="color: #969896;">;; </span><span style="color: #595959;">...&#20854;&#20182;&#20195;&#30721;</span>
 <span style="color: #000000;">(</span><span style="color: #3548cf;">"Authorization"</span> . ,<span style="color: #dd22dd;">(</span>concat <span style="color: #3548cf;">"Bearer "</span> <span style="color: #008899;">(</span>immersive-translate-api-key
                                        immersive-translate-chatgpt-host
-                                       <span style="color: #3548cf;">"apikey"</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span><span style="color: #000000; background-color: #ff8f88; font-weight: bold;">)))</span>
-<span style="color: #595959;">;; </span><span style="color: #595959;">...&#20854;&#20182;&#20195;&#30721;</span>
+                                       <span style="color: #3548cf;">"apikey"</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span><span style="color: #d54e53; background-color: #ff8f88; font-weight: bold;">)))</span>
+<span style="color: #969896;">;; </span><span style="color: #595959;">...&#20854;&#20182;&#20195;&#30721;</span>
 </pre>
 </div>
 
@@ -379,9 +379,17 @@ machine openrouter.ai/api login apikey password xxxx
 所以按照默认配置，当你获取到 openai 的 API key 后，要这样配置:
 </p>
 
-<pre class="example" id="org99dacdc">
+<pre class="example" id="org7e4e862">
 machine api.openai.com login apikey password your_openai_api_key
 </pre>
+
+<p>
+如果你只是希望配置好 API key 给插件用，你只需要将 API key 按照插件要求定义在 ~/.authinfo 中，就足够了。
+</p>
+
+<p>
+如果你想共享 ~/.authinfo，例如分享给特定的人，推送到公开的 git 仓库，同步到云盘，你不想所有人都能看到你的密钥，那你可能需要进一步对文件进行加密。
+</p>
 </div>
 </div>
 <div id="outline-container-d9c9b92d-705a-4fc3-8a18-2027f79a2788" class="outline-2">
@@ -392,8 +400,9 @@ machine api.openai.com login apikey password your_openai_api_key
 </p>
 
 <ol class="org-ol">
-<li>创建 gpg 密钥</li>
-</ol>
+<li><p>
+创建 gpg 密钥
+</p>
 
 <p>
 执行 <code>gpg --full-generate-key</code> ，按照提示完成创建即可。
@@ -403,7 +412,7 @@ machine api.openai.com login apikey password your_openai_api_key
 创建完成后可以通过 <code>gpg --list-keys</code> 查看当前得密钥，例如我执行后会得到：
 </p>
 
-<pre class="example" id="orgc0d9d24">
+<pre class="example" id="orgd996f66">
 /home/spike/.gnupg/pubring.kbx
 ------------------------------
 pub   rsa4096 2025-02-27 [SC]
@@ -417,12 +426,14 @@ sub   rsa4096 2025-02-27 [E]
 </p>
 
 <ul class="org-ul">
-<li><code>1BAF5568B6AFD3DB367B865B50AC4C6F1FD4B1CF</code> 是指纹(fingerprint)<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup></li>
+<li><code>1BAF5568B6...4B1CF</code> 是指纹(fingerprint)<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup></li>
 <li><code>[ultimate] SpikeLeung &lt;l-yanlei@hotmail.com&gt;</code> 是 uid</li>
 <li><code>l-yanlei@hotmail.com</code> 是和这个 gpg 密钥关联的邮箱</li>
+</ul></li>
 
-<li>加密文件</li>
-</ul>
+<li><p>
+加密文件
+</p>
 
 <p>
 <code>gpg -e -r "SpikeLeung" ~/.authinfo</code> 或者 <code>gpg -e -r "l-yanlei@hotmail.com" ~/.authinfo</code>
@@ -434,7 +445,8 @@ sub   rsa4096 2025-02-27 [E]
 
 <p>
 加密成功的话，就会在当前目录生成一个带有 <code>.gpg</code> 后缀的加密文件 <code>~/.authinfo.gpg</code> 。
-</p>
+</p></li>
+</ol>
 </div>
 </div>
 <div id="outline-container-14bd3095-f26b-4acb-8e8b-0510e9462424" class="outline-2">
@@ -452,20 +464,24 @@ sub   rsa4096 2025-02-27 [E]
 <h3 id="d303b1e6-da8c-449a-ace3-a261e2d94215">EasyPG Assistant (epa-file)</h3>
 <div class="outline-text-3" id="text-d303b1e6-da8c-449a-ace3-a261e2d94215">
 <p>
-EasyPG Assistant<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> 是 Emacs 内置的包，当需要访问 gpg 加密文件的时候就会启用。
+EasyPG Assistant<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> 是 Emacs 内置的包，当需要访问 gpg 加密文件的时候它就会启用，你不需要额外做什么。
 </p>
 
 <p>
-我是在终端中使用 Emacs 的，默认输入密码是弹窗输入，输入的时候很容易卡顿，可以添加下面的配置：
+因为 gpg 密钥我也设置了密码，打开 Emacs 还需要先输入密码，让 gpg 密钥能被访问。
+</p>
+
+<p>
+默认输入密码是弹窗输入，输入的时候很容易卡顿，可以添加下面的配置：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> epa-pinentry-mode <span style="color: #531ab6;">'</span><span style="color: #0000b0;">loopback</span><span style="color: #000000;">)</span> <span style="color: #595959;">;; </span><span style="color: #595959;">&#22312; minibuffer &#36755;&#20837;&#23494;&#30721;</span>
+<pre class="src src-emacs-lisp"><span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> epa-pinentry-mode <span style="color: #531ab6;">'</span><span style="color: #0000b0;">loopback</span><span style="color: #000000;">)</span> <span style="color: #969896;">;; </span><span style="color: #595959;">&#22312; minibuffer &#36755;&#20837;&#23494;&#30721;</span>
 </pre>
 </div>
 
 <p>
-这样 Emacs 会从 minibuffer 读取密码，更流畅。
+这样 Emacs 会从 minibuffer 读取密码，输入更流畅一些。
 </p>
 </div>
 </div>
@@ -477,11 +493,11 @@ EasyPG Assistant<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backli
 </p>
 
 <p>
-EasyPG Assistant 主要是和 Emacs 集成，方便打开和保存文件。
+如果你有在多个设备管理密码，或者有多个 gpg 密钥需要管理，或许你可以考虑用 pass。
 </p>
 
 <p>
-pass 是更侧重于密码管理，Emacs 也可以和 pass 集成。
+pass 更侧重于密码管理，可以方便地在多个设备管理密钥，Emacs 也可以和 pass 集成。
 </p>
 
 <p>
@@ -493,7 +509,7 @@ pass 是更侧重于密码管理，Emacs 也可以和 pass 集成。
 </p>
 
 <ul class="org-ul">
-<li>fingerprint: <code>1BAF5568B6AFD3DB367B865B50AC4C6F1FD4B1CF</code></li>
+<li>fingerprint: <code>1BAF5568B6...4B1CF</code> ，你可以完整输入一长串，好像也可以只输入前几位，和 git hash 有点类似</li>
 <li>uid: <code>SpikeLeung</code> 或者 <code>l-yanlei@hotmail.com</code></li>
 </ul>
 
@@ -543,7 +559,7 @@ auth-source-search 是 Emacs 中的一个函数，可以基于条件查询返回
 
 <p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">Date: 2025-02-27 Thu 00:00</p>
-<p class="date">Last Modified: 2025-02-27 Thu 22:50</p>
+<p class="date">Last Modified: 2025-02-28 Fri 01:44</p>
 <p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <script src="https://giscus.app/client.js"
         data-repo="Spike-Leung/taxodium"
