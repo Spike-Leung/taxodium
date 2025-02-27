@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Emacs 中配置 .authinfo.gpg</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="&quot;&quot;" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css" />
+<link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+    <li>
+      <a id="skip-postamble" href="#postamble">Skip to comments</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/rss.xml">RSS</a></li>
+    <li><a href="https://music.163.com/#/playlist?id=12531191848">Playlist</a></li>
+    <li><a href="/search.html">Search</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Emacs 中配置 .authinfo.gpg</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#9a14762b-a452-41a5-b65b-30df073e89af">authinfo</a></li>
+<li><a href="#d9c9b92d-705a-4fc3-8a18-2027f79a2788">GnuPG 加密</a></li>
+<li><a href="#14bd3095-f26b-4acb-8e8b-0510e9462424">配置 Emacs 读取 ~/.authinfo.gpg</a>
+<ul>
+<li><a href="#d303b1e6-da8c-449a-ace3-a261e2d94215">EasyPG Assistant (epa-file)</a></li>
+<li><a href="#dfec6478-0e51-4c86-b802-5afbd1565889">The Unix password store (pass)</a></li>
+</ul>
+</li>
+<li><a href="#83699692-fcf3-404e-9697-6feafe4bf5c9">写在最后</a></li>
+</ul>
+</div>
+</nav>
+<p>
+之前我写过一篇<a href="https://taxodium.ink/translation-in-emacs.html">在 Emacs 中集成翻译插件</a>的文章，插件依赖一些 LLM 服务，LLM 服务需要配置对应的 API key，它们是定义在 <code>~/.authinfo</code> 中的。
+</p>
+
+<p>
+但是 ~/.authinfo 是未加密的，如果泄露了，那么我的 API key 就会泄露被滥用，所以我觉得还是需要对它做一层加密。
+</p>
+
+<p>
+这篇文章我会分享如何在 ~/.authinfo 中定义 API key、如何使用 <a href="https://www.gnupg.org/documentation/manuals/gnupg/index.html">GnuPG</a> 对 ~/.authinfo 加密，以及如何配置 Emacs 从加密后的 <code>~/.authinfo.gpg</code> 中读取 API key。
+</p>
+<div id="outline-container-9a14762b-a452-41a5-b65b-30df073e89af" class="outline-2">
+<h2 id="9a14762b-a452-41a5-b65b-30df073e89af">authinfo</h2>
+<div class="outline-text-2" id="text-9a14762b-a452-41a5-b65b-30df073e89af">
+<blockquote>
+<p>
+有些连接到其他服务的 Emacs 软件包需要身份验证，由于反复提供相同的用户名和密码可能会令人烦恼，Emacs 通过 <a href="https://www.gnu.org/software/emacs/manual/html_mono/auth.html">auth-source</a> 库提供了持久化信息。
+</p>
+
+<p>
+默认情况下，身份验证信息来自 <code>~/.authinfo</code> 或 <code>~/.authinfo.gpg</code> 或 <code>~/.netrc</code> 文件。
+</p>
+
+<p>
+这些文件的语法与 ftp 程序中的 netrc 文件类似，如下所示：
+</p>
+
+<p>
+machine <i>mymachine</i> login <i>myloginname</i> password <i>mypassword</i> port <i>myport</i>
+</p>
+
+<p>
+<a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Authentication.html">Source</a>
+</p>
+</blockquote>
+
+<p>
+Emacs 是通过 auth-source 去实现身份验证的，一般将验证信息(例如 API Key)存储在这三个文件中:
+</p>
+
+<ul class="org-ul">
+<li>~/.authinfo</li>
+<li>~/.authinfo.gpg (加密)</li>
+<li>~/.netrc</li>
+</ul>
+
+<p>
+而验证信息的格式是：
+</p>
+
+<p class="verse">
+<b>machine</b> mymachine <b>login</b> myloginname <b>password</b> mypassword <b>port</b> myport<br>
+</p>
+
+<p>
+其中:
+</p>
+
+<ul class="org-ul">
+<li><b>machine</b> 服务器，DNS 名称或 IP 地址，在 auth-source-search<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> 查询中称为 <code>:host</code> 。</li>
+<li><b>login</b> 是用户名，在 auth-source-search 查询中称为 <code>:user</code> 。也可以使用 login 和 account 。</li>
+<li><b>port</b> 是连接端口或协议，在 auth-source-search 查询中称为 <code>:port</code> 。</li>
+<li><b>password</b> 就是对应的密钥，或者 API key 之类的</li>
+</ul>
+
+<p>
+一些例子：
+</p>
+
+<pre class="example" id="org725f43d">
+machine localhost login spike port sudo password xxxx
+machine 192.168.100.100 login root port ssh password xxxx
+machine api.deepseek.com login apikey password xxxx
+machine api.siliconflow.cn login apikey password xxxx
+machine openrouter.ai login apikey password xxxx
+machine openrouter.ai/api login apikey password xxxx
+</pre>
+
+<p>
+一些插件可能会基于 machine 或者 login 去查找密钥，具体如何设置就需要看插件是如何读取的。
+</p>
+
+<p>
+例如 <a href="https://github.com/Elilif/emacs-immersive-translate/tree/main">emacs-immersive-translate</a> 是这样读取的:
+</p>
+
+<p>
+<a href="https://github.com/Elilif/emacs-immersive-translate/blob/1d00d558363985fa988fc40cd5093bfc6926d83e/immersive-translate.el#L197-L212">immersive-translate-api-key</a>:
+</p>
+<div class="org-src-container">
+<pre class="src src-lisp"><span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">immersive-translate-api-key</span> <span style="color: #dd22dd;">(</span>host user<span style="color: #dd22dd;">)</span>
+  <span style="color: #2a5045;">"Lookup api key in the auth source.</span>
+
+<span style="color: #2a5045;">By default, `</span><span style="color: #0000b0;">immersive-translate-chatgpt-host</span><span style="color: #2a5045;">' is used as HOST</span>
+<span style="color: #2a5045;">and </span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #2a5045;">apikey</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #2a5045;"> as USER in Chatgpt backend.</span>
+<span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #2a5045;">fanyi-api.baidu.com</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #2a5045;"> is used as HOST and</span>
+<span style="color: #2a5045;">`</span><span style="color: #0000b0;">immersive-translate-baidu-appid</span><span style="color: #2a5045;">' as USER in Baidu backend."</span>
+  <span style="color: #dd22dd;">(</span>if-let <span style="color: #008899;">(</span><span style="color: #972500;">(</span>secret <span style="color: #808000;">(</span>plist-get <span style="color: #531ab6;">(</span>car <span style="color: #008900;">(</span>auth-source-search
+                                    <span style="color: #8f0075;">:host</span> host
+                                    <span style="color: #8f0075;">:user</span> user
+                                    <span style="color: #8f0075;">:require</span> '<span style="color: #3548cf;">(</span><span style="color: #8f0075;">:secret</span><span style="color: #3548cf;">)</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
+                              <span style="color: #8f0075;">:secret</span><span style="color: #808000;">)</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span>
+      <span style="color: #008899;">(</span><span style="color: #531ab6;">if</span> <span style="color: #972500;">(</span>functionp secret<span style="color: #972500;">)</span>
+          <span style="color: #972500;">(</span>encode-coding-string <span style="color: #808000;">(</span>funcall secret<span style="color: #808000;">)</span> 'utf-8<span style="color: #972500;">)</span>
+        secret<span style="color: #008899;">)</span>
+    <span style="color: #008899;">(</span>user-error <span style="color: #3548cf;">"No %s found in the auth source"</span> user<span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+</pre>
+</div>
+
+<p>
+<a href="https://github.com/Elilif/emacs-immersive-translate/blob/1d00d558363985fa988fc40cd5093bfc6926d83e/immersive-translate-chatgpt.el#L109C6-L111C66">immersive-translate-chatgpt.el</a> 中设置 ChatGPT 的密钥:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp"><span style="color: #595959;">;; </span><span style="color: #595959;">...&#20854;&#20182;&#20195;&#30721;</span>
+<span style="color: #000000;">(</span><span style="color: #3548cf;">"Authorization"</span> . ,<span style="color: #dd22dd;">(</span>concat <span style="color: #3548cf;">"Bearer "</span> <span style="color: #008899;">(</span>immersive-translate-api-key
+                                       immersive-translate-chatgpt-host
+                                       <span style="color: #3548cf;">"apikey"</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span><span style="color: #000000; background-color: #ff8f88; font-weight: bold;">)))</span>
+<span style="color: #595959;">;; </span><span style="color: #595959;">...&#20854;&#20182;&#20195;&#30721;</span>
+</pre>
+</div>
+
+<p>
+可以看到，emacs-immersive-translate 基于 :host 和 :user 去查找的：
+</p>
+
+<ul class="org-ul">
+<li><code>:host</code> (machine) 是 <code>immersive-translate-chatgpt-host</code> ，默认是 api.openai.com</li>
+<li><code>:user</code> (login) 是 <code>apikey</code></li>
+</ul>
+
+<p>
+所以按照默认配置，当你获取到 openai 的 API key 后，要这样配置:
+</p>
+
+<pre class="example" id="org99dacdc">
+machine api.openai.com login apikey password your_openai_api_key
+</pre>
+</div>
+</div>
+<div id="outline-container-d9c9b92d-705a-4fc3-8a18-2027f79a2788" class="outline-2">
+<h2 id="d9c9b92d-705a-4fc3-8a18-2027f79a2788">GnuPG 加密</h2>
+<div class="outline-text-2" id="text-d9c9b92d-705a-4fc3-8a18-2027f79a2788">
+<p>
+我对 GnuPG 研究得不多，简单分享一下如何创建 gpg 密钥，如何加密文件。
+</p>
+
+<ol class="org-ol">
+<li>创建 gpg 密钥</li>
+</ol>
+
+<p>
+执行 <code>gpg --full-generate-key</code> ，按照提示完成创建即可。
+</p>
+
+<p>
+创建完成后可以通过 <code>gpg --list-keys</code> 查看当前得密钥，例如我执行后会得到：
+</p>
+
+<pre class="example" id="orgc0d9d24">
+/home/spike/.gnupg/pubring.kbx
+------------------------------
+pub   rsa4096 2025-02-27 [SC]
+      1BAF5568B6AFD3DB367B865B50AC4C6F1FD4B1CF
+uid           [ultimate] SpikeLeung &lt;l-yanlei@hotmail.com&gt;
+sub   rsa4096 2025-02-27 [E]
+</pre>
+
+<p>
+其中:
+</p>
+
+<ul class="org-ul">
+<li><code>1BAF5568B6AFD3DB367B865B50AC4C6F1FD4B1CF</code> 是指纹(fingerprint)<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup></li>
+<li><code>[ultimate] SpikeLeung &lt;l-yanlei@hotmail.com&gt;</code> 是 uid</li>
+<li><code>l-yanlei@hotmail.com</code> 是和这个 gpg 密钥关联的邮箱</li>
+
+<li>加密文件</li>
+</ul>
+
+<p>
+<code>gpg -e -r "SpikeLeung" ~/.authinfo</code> 或者 <code>gpg -e -r "l-yanlei@hotmail.com" ~/.authinfo</code>
+</p>
+
+<p>
+其中， <code>-e</code> 表示加密， <code>-r</code> 指定使用哪个 user-id，对应的是上面 uid 中的内容，你可以用名字或者邮箱。
+</p>
+
+<p>
+加密成功的话，就会在当前目录生成一个带有 <code>.gpg</code> 后缀的加密文件 <code>~/.authinfo.gpg</code> 。
+</p>
+</div>
+</div>
+<div id="outline-container-14bd3095-f26b-4acb-8e8b-0510e9462424" class="outline-2">
+<h2 id="14bd3095-f26b-4acb-8e8b-0510e9462424">配置 Emacs 读取 ~/.authinfo.gpg</h2>
+<div class="outline-text-2" id="text-14bd3095-f26b-4acb-8e8b-0510e9462424">
+<p>
+原来 ~/.authinfo 是未加密的，Emacs 里可以随便访问，现在加密了，那么在访问前就要先解密才能访问了。
+</p>
+
+<p>
+为了让 Emacs 能够解密 gpg 加密的文件，我们需要让 Emacs 能够读取 gpg 密钥，然后用密钥去解密。
+</p>
+</div>
+<div id="outline-container-d303b1e6-da8c-449a-ace3-a261e2d94215" class="outline-3">
+<h3 id="d303b1e6-da8c-449a-ace3-a261e2d94215">EasyPG Assistant (epa-file)</h3>
+<div class="outline-text-3" id="text-d303b1e6-da8c-449a-ace3-a261e2d94215">
+<p>
+EasyPG Assistant<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> 是 Emacs 内置的包，当需要访问 gpg 加密文件的时候就会启用。
+</p>
+
+<p>
+我是在终端中使用 Emacs 的，默认输入密码是弹窗输入，输入的时候很容易卡顿，可以添加下面的配置：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> epa-pinentry-mode <span style="color: #531ab6;">'</span><span style="color: #0000b0;">loopback</span><span style="color: #000000;">)</span> <span style="color: #595959;">;; </span><span style="color: #595959;">&#22312; minibuffer &#36755;&#20837;&#23494;&#30721;</span>
+</pre>
+</div>
+
+<p>
+这样 Emacs 会从 minibuffer 读取密码，更流畅。
+</p>
+</div>
+</div>
+<div id="outline-container-dfec6478-0e51-4c86-b802-5afbd1565889" class="outline-3">
+<h3 id="dfec6478-0e51-4c86-b802-5afbd1565889">The Unix password store (pass)</h3>
+<div class="outline-text-3" id="text-dfec6478-0e51-4c86-b802-5afbd1565889">
+<p>
+除了 EasyPG Assistant，你也可以用 <a href="https://www.gnu.org/software/emacs/manual/html_node/auth/The-Unix-password-store.html">The Unix password store (pass)</a>，这是一个简单的密码管理程序。
+</p>
+
+<p>
+EasyPG Assistant 主要是和 Emacs 集成，方便打开和保存文件。
+</p>
+
+<p>
+pass 是更侧重于密码管理，Emacs 也可以和 pass 集成。
+</p>
+
+<p>
+如果你的环境中没有 <a href="https://www.passwordstore.org/">pass</a>，首先你需要按照文档安装好。
+</p>
+
+<p>
+然后初始化 pass: <code>pass init gpg-id</code> ，这里的 gpg-id 可以是:
+</p>
+
+<ul class="org-ul">
+<li>fingerprint: <code>1BAF5568B6AFD3DB367B865B50AC4C6F1FD4B1CF</code></li>
+<li>uid: <code>SpikeLeung</code> 或者 <code>l-yanlei@hotmail.com</code></li>
+</ul>
+
+<p>
+这样，pass 就配置好了。
+</p>
+
+<p>
+接下来就是告诉 Emacs 启用 pass，在配置文件中添加一下配置即可:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #000000;">(</span>auth-source-pass-enable<span style="color: #000000;">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-83699692-fcf3-404e-9697-6feafe4bf5c9" class="outline-2">
+<h2 id="83699692-fcf3-404e-9697-6feafe4bf5c9">写在最后</h2>
+<div class="outline-text-2" id="text-83699692-fcf3-404e-9697-6feafe4bf5c9">
+<p>
+我对 GnuPG 其实不太熟悉，文章中如果有什么错误，欢迎留言指正~
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+auth-source-search 是 Emacs 中的一个函数，可以基于条件查询返回基于 auth-source 定义的密钥。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+更详细的解释可以看 <a href="https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/">Anatomy of a GPG Key</a>。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+在 Emacs 中你可以通过 <code>C-h R epa</code> 查看相关文档。
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">Date: 2025-02-27 Thu 00:00</p>
+<p class="date">Last Modified: 2025-02-27 Thu 22:50</p>
+<p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<script src="https://giscus.app/client.js"
+        data-repo="Spike-Leung/taxodium"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkzOTYyNDQwMzk="
+        data-category="Announcements"
+        data-category-id="DIC_kwDOF540R84Ci61D"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+</body>
+</html>

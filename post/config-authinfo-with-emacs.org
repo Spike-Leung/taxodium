@@ -16,6 +16,9 @@
 这篇文章我会分享如何在 ~/.authinfo 中定义 API key、如何使用 [[https://www.gnupg.org/documentation/manuals/gnupg/index.html][GnuPG]] 对 ~/.authinfo 加密，以及如何配置 Emacs 从加密后的 =~/.authinfo.gpg= 中读取 API key。
 
 * authinfo
+:PROPERTIES:
+:CUSTOM_ID: 9a14762b-a452-41a5-b65b-30df073e89af
+:END:
 
 #+begin_quote
 有些连接到其他服务的 Emacs 软件包需要身份验证，由于反复提供相同的用户名和密码可能会令人烦恼，Emacs 通过 [[https://www.gnu.org/software/emacs/manual/html_mono/auth.html][auth-source]] 库提供了持久化信息。
@@ -105,6 +108,9 @@ machine api.openai.com login apikey password your_openai_api_key
 #+end_example
 
 * GnuPG 加密
+:PROPERTIES:
+:CUSTOM_ID: d9c9b92d-705a-4fc3-8a18-2027f79a2788
+:END:
 
 我对 GnuPG 研究得不多，简单分享一下如何创建 gpg 密钥，如何加密文件。
 
@@ -138,16 +144,69 @@ sub   rsa4096 2025-02-27 [E]
 加密成功的话，就会在当前目录生成一个带有 =.gpg= 后缀的加密文件 =~/.authinfo.gpg= 。
 
 * 配置 Emacs 读取 ~/.authinfo.gpg
+:PROPERTIES:
+:CUSTOM_ID: 14bd3095-f26b-4acb-8e8b-0510e9462424
+:END:
 
 原来 ~/.authinfo 是未加密的，Emacs 里可以随便访问，现在加密了，那么在访问前就要先解密才能访问了。
 
 为了让 Emacs 能够解密 gpg 加密的文件，我们需要让 Emacs 能够读取 gpg 密钥，然后用密钥去解密。
 
-我们需要用到 [[https://www.gnu.org/software/emacs/manual/html_node/auth/The-Unix-password-store.html][The Unix password store (pass)]]，这是一个简单的密码管理程序。
+** EasyPG Assistant (epa-file)
+:PROPERTIES:
+:CUSTOM_ID: d303b1e6-da8c-449a-ace3-a261e2d94215
+:END:
 
-* Refs
+EasyPG Assistant[fn:3] 是 Emacs 内置的包，当需要访问 gpg 加密文件的时候就会启用。
+
+我是在终端中使用 Emacs 的，默认输入密码是弹窗输入，输入的时候很容易卡顿，可以添加下面的配置：
+
+#+begin_src emacs-lisp
+  (setq epa-pinentry-mode 'loopback) ;; 在 minibuffer 输入密码
+#+end_src
+
+这样 Emacs 会从 minibuffer 读取密码，更流畅。
+
+** The Unix password store (pass)
+:PROPERTIES:
+:CUSTOM_ID: dfec6478-0e51-4c86-b802-5afbd1565889
+:END:
+
+除了 EasyPG Assistant，你也可以用 [[https://www.gnu.org/software/emacs/manual/html_node/auth/The-Unix-password-store.html][The Unix password store (pass)]]，这是一个简单的密码管理程序。
+
+EasyPG Assistant 主要是和 Emacs 集成，方便打开和保存文件。
+
+pass 是更侧重于密码管理，Emacs 也可以和 pass 集成。
+
+如果你的环境中没有 [[https://www.passwordstore.org/][pass]]，首先你需要按照文档安装好。
+
+然后初始化 pass: =pass init gpg-id= ，这里的 gpg-id 可以是:
+
+- fingerprint: =1BAF5568B6AFD3DB367B865B50AC4C6F1FD4B1CF=
+- uid: =SpikeLeung= 或者 =l-yanlei@hotmail.com=
+
+这样，pass 就配置好了。
+
+接下来就是告诉 Emacs 启用 pass，在配置文件中添加一下配置即可:
+
+#+begin_src emacs-lisp
+(auth-source-pass-enable)
+#+end_src
+
+* 写在最后
+:PROPERTIES:
+:CUSTOM_ID: 83699692-fcf3-404e-9697-6feafe4bf5c9
+:END:
+
+我对 GnuPG 其实不太熟悉，文章中如果有什么错误，欢迎留言指正~
 
 * Footnotes
+:PROPERTIES:
+:CUSTOM_ID: 3c0afb59-826f-4daf-b778-0c852967a555
+:END:
+
 [fn:1]auth-source-search 是 Emacs 中的一个函数，可以基于条件查询返回基于 auth-source 定义的密钥。
 
-[fn:2]更详细的解释可以看 [[https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/][Anatomy of a GPG Key]]
+[fn:2]更详细的解释可以看 [[https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/][Anatomy of a GPG Key]]。
+
+[fn:3]在 Emacs 中你可以通过 =C-h R epa= 查看相关文档。
