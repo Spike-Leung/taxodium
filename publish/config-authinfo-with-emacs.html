@@ -234,12 +234,8 @@
 <ul>
 <li><a href="#9a14762b-a452-41a5-b65b-30df073e89af">authinfo</a></li>
 <li><a href="#d9c9b92d-705a-4fc3-8a18-2027f79a2788">GnuPG 加密</a></li>
-<li><a href="#14bd3095-f26b-4acb-8e8b-0510e9462424">配置 Emacs 读取 ~/.authinfo.gpg</a>
-<ul>
-<li><a href="#d303b1e6-da8c-449a-ace3-a261e2d94215">EasyPG Assistant (epa-file)</a></li>
-<li><a href="#dfec6478-0e51-4c86-b802-5afbd1565889">The Unix password store (pass)</a></li>
-</ul>
-</li>
+<li><a href="#14bd3095-f26b-4acb-8e8b-0510e9462424">配置 Emacs 读取 ~/.authinfo.gpg</a></li>
+<li><a href="#dfec6478-0e51-4c86-b802-5afbd1565889">Bonus: The Unix password store (pass)</a></li>
 <li><a href="#83699692-fcf3-404e-9697-6feafe4bf5c9">写在最后</a></li>
 </ul>
 </div>
@@ -313,7 +309,7 @@ Emacs 是通过 auth-source 去实现身份验证的，一般将验证信息 (�
 一些例子：
 </p>
 
-<pre class="example" id="org2c3a5c8">
+<pre class="example" id="orgfc54832">
 machine localhost login spike port sudo password xxxx
 machine 192.168.100.100 login root port ssh password xxxx
 machine api.deepseek.com login apikey password xxxx
@@ -379,7 +375,7 @@ machine openrouter.ai/api login apikey password xxxx
 所以按照默认配置，当你获取到 openai 的 API key 后，要这样配置:
 </p>
 
-<pre class="example" id="org7e4e862">
+<pre class="example" id="orgecea78f">
 machine api.openai.com login apikey password your_openai_api_key
 </pre>
 
@@ -412,7 +408,7 @@ machine api.openai.com login apikey password your_openai_api_key
 创建完成后可以通过 <code>gpg --list-keys</code> 查看当前得密钥，例如我执行后会得到：
 </p>
 
-<pre class="example" id="orgd996f66">
+<pre class="example" id="org3bba580">
 /home/spike/.gnupg/pubring.kbx
 ------------------------------
 pub   rsa4096 2025-02-27 [SC]
@@ -459,12 +455,9 @@ sub   rsa4096 2025-02-27 [E]
 <p>
 为了让 Emacs 能够解密 gpg 加密的文件，我们需要让 Emacs 能够读取 gpg 密钥，然后用密钥去解密。
 </p>
-</div>
-<div id="outline-container-d303b1e6-da8c-449a-ace3-a261e2d94215" class="outline-3">
-<h3 id="d303b1e6-da8c-449a-ace3-a261e2d94215">EasyPG Assistant (epa-file)</h3>
-<div class="outline-text-3" id="text-d303b1e6-da8c-449a-ace3-a261e2d94215">
+
 <p>
-EasyPG Assistant<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> 是 Emacs 内置的包，当需要访问 gpg 加密文件的时候它就会启用，你不需要额外做什么。
+Emacs 内置的 EasyPG Assistant<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> 可以帮你自动完成加密解密，当需要访问 gpg 加密文件的时候它就会启用，你不需要额外做什么。
 </p>
 
 <p>
@@ -485,9 +478,9 @@ EasyPG Assistant<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backli
 </p>
 </div>
 </div>
-<div id="outline-container-dfec6478-0e51-4c86-b802-5afbd1565889" class="outline-3">
-<h3 id="dfec6478-0e51-4c86-b802-5afbd1565889">The Unix password store (pass)</h3>
-<div class="outline-text-3" id="text-dfec6478-0e51-4c86-b802-5afbd1565889">
+<div id="outline-container-dfec6478-0e51-4c86-b802-5afbd1565889" class="outline-2">
+<h2 id="dfec6478-0e51-4c86-b802-5afbd1565889">Bonus: The Unix password store (pass)</h2>
+<div class="outline-text-2" id="text-dfec6478-0e51-4c86-b802-5afbd1565889">
 <p>
 除了 EasyPG Assistant，你也可以用 <a href="https://www.gnu.org/software/emacs/manual/html_node/auth/The-Unix-password-store.html">The Unix password store (pass)</a>，这是一个简单的密码管理程序。
 </p>
@@ -527,7 +520,6 @@ pass 更侧重于密码管理，可以方便地在多个设备管理密钥，Ema
 </div>
 </div>
 </div>
-</div>
 <div id="outline-container-83699692-fcf3-404e-9697-6feafe4bf5c9" class="outline-2">
 <h2 id="83699692-fcf3-404e-9697-6feafe4bf5c9">写在最后</h2>
 <div class="outline-text-2" id="text-83699692-fcf3-404e-9697-6feafe4bf5c9">
@@ -559,7 +551,7 @@ auth-source-search 是 Emacs 中的一个函数，可以基于条件查询返回
 
 <p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">Date: 2025-02-27 Thu 00:00</p>
-<p class="date">Last Modified: 2025-02-28 Fri 01:44</p>
+<p class="date">Last Modified: 2025-03-01 Sat 10:38</p>
 <p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <script src="https://giscus.app/client.js"
         data-repo="Spike-Leung/taxodium"
