@@ -6,7 +6,7 @@
 <title>部署前端静态文件的简单步骤</title>
 <meta name="author" content="Spike Leung" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -226,7 +226,7 @@
 </div>
 <div id="content" class="content">
 <header>
-<h1 class="title">部署前端静态文件的简单步骤</h1>
+<h1 style="view-transition-name: spike-deploy-static-file-to-server" class="title">部署前端静态文件的简单步骤</h1>
 </header><nav id="table-of-contents" role="doc-toc">
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
@@ -262,7 +262,6 @@
 <p>
 涉及到的一些命令 如 <code>tar</code> ， <code>ssh</code> ， <code>scp</code> ， 以及笔者的一些小技巧。
 </p>
-
 <div id="outline-container-cc74359f-6031-479a-bec6-e27e93f9d739" class="outline-2">
 <h2 id="cc74359f-6031-479a-bec6-e27e93f9d739">打包构建</h2>
 <div class="outline-text-2" id="text-cc74359f-6031-479a-bec6-e27e93f9d739">
@@ -290,7 +289,6 @@
 </ul>
 </div>
 </div>
-
 <div id="outline-container-4c93ce12-f0c7-4c6a-bb81-bfcd8f77c8e6" class="outline-2">
 <h2 id="4c93ce12-f0c7-4c6a-bb81-bfcd8f77c8e6">tar 打包</h2>
 <div class="outline-text-2" id="text-4c93ce12-f0c7-4c6a-bb81-bfcd8f77c8e6">
@@ -306,7 +304,6 @@
 在上传时，如果一个一个文件上传，会有些麻烦， 我们可以将这些静态文件打包成一个 tar 包一次性上传。
 </p>
 </div>
-
 <div id="outline-container-8467a708-e5fe-4f7b-9cc6-9a51df55b7e7" class="outline-3">
 <h3 id="8467a708-e5fe-4f7b-9cc6-9a51df55b7e7">压缩</h3>
 <div class="outline-text-3" id="text-8467a708-e5fe-4f7b-9cc6-9a51df55b7e7">
@@ -341,7 +338,6 @@
 </div>
 </div>
 </div>
-
 <div id="outline-container-df4236b1-6886-4a6b-8a90-fac73e453b56" class="outline-2">
 <h2 id="df4236b1-6886-4a6b-8a90-fac73e453b56">scp 上传 tar 包</h2>
 <div class="outline-text-2" id="text-df4236b1-6886-4a6b-8a90-fac73e453b56">
@@ -353,9 +349,10 @@
 假设要上传到 <code>1.1.1.1</code> 上的 <code>/home</code> 目录， 使用 <code>1.1.1.1</code> 的 <code>root</code> 用户，可以执行如下命令：
 </p>
 
-<pre class="example">
-scp path/to/tar root@1.1.1.1:/home
+<div class="org-src-container">
+<pre class="src src-nil">scp path/to/tar root@1.1.1.1:/home
 </pre>
+</div>
 
 <p>
 命令解释：
@@ -372,7 +369,6 @@ scp path/to/tar root@1.1.1.1:/home
 </ul>
 </div>
 </div>
-
 <div id="outline-container-2ed42da8-c367-469d-8e46-bb1b623f1f39" class="outline-2">
 <h2 id="2ed42da8-c367-469d-8e46-bb1b623f1f39">ssh 到目标机器</h2>
 <div class="outline-text-2" id="text-2ed42da8-c367-469d-8e46-bb1b623f1f39">
@@ -400,8 +396,6 @@ The authenticity of host <span style="color: #3548cf;">'1.1.1.1 (1.1.1.1)'</span
 </ul></li>
 </ul>
 </div>
-
-
 <div id="outline-container-94458263-c020-4648-8172-8f64073c27c6" class="outline-3">
 <h3 id="94458263-c020-4648-8172-8f64073c27c6">避免重复输入密码</h3>
 <div class="outline-text-3" id="text-94458263-c020-4648-8172-8f64073c27c6">
@@ -451,7 +445,6 @@ Enter file<span style="color: #531ab6;"> in</span> which to save the key <span s
 </p>
 </div>
 </div>
-
 <div id="outline-container-cdfb8a5f-7732-4465-891b-a8f517d1353e" class="outline-3">
 <h3 id="cdfb8a5f-7732-4465-891b-a8f517d1353e">移除过期的指纹</h3>
 <div class="outline-text-3" id="text-cdfb8a5f-7732-4465-891b-a8f517d1353e">
@@ -473,7 +466,6 @@ Enter file<span style="color: #531ab6;"> in</span> which to save the key <span s
 </div>
 </div>
 </div>
-
 <div id="outline-container-a44304ac-5b89-401c-b64a-042474311c56" class="outline-2">
 <h2 id="a44304ac-5b89-401c-b64a-042474311c56">解压 tar 包</h2>
 <div class="outline-text-2" id="text-a44304ac-5b89-401c-b64a-042474311c56">
@@ -492,21 +484,21 @@ server <span style="color: #000000;">{</span>
     listen       9999;
     server_name  localhost;
 
-    <span style="color: #595959;">#</span><span style="color: #595959;">charset koi8-r;</span>
+    <span style="color: #8a290f;">#</span><span style="color: #8a290f;">charset koi8-r;</span>
 
-    <span style="color: #595959;">#</span><span style="color: #595959;">access_log  logs/host.access.log  main;</span>
+    <span style="color: #8a290f;">#</span><span style="color: #8a290f;">access_log  logs/host.access.log  main;</span>
 
     location / <span style="color: #dd22dd;">{</span>
-        <span style="color: #595959;"># </span><span style="color: #595959;">&#36825;&#37324;&#25351;&#23450;&#20102;&#38745;&#24577;&#25991;&#20214;&#25152;&#22312;&#30340;&#25991;&#20214;&#36335;&#24452;</span>
+        <span style="color: #8a290f;"># </span><span style="color: #8a290f;">&#36825;&#37324;&#25351;&#23450;&#20102;&#38745;&#24577;&#25991;&#20214;&#25152;&#22312;&#30340;&#25991;&#20214;&#36335;&#24452;</span>
         root /home/hello-world;
         index index.html index.htm;
         try_files $<span style="color: #005e8b;">uri</span> $<span style="color: #005e8b;">uri</span>/ /index.html;
     <span style="color: #dd22dd;">}</span>
 
-    <span style="color: #595959;">#</span><span style="color: #595959;">error_page  404              /404.html;</span>
+    <span style="color: #8a290f;">#</span><span style="color: #8a290f;">error_page  404              /404.html;</span>
 
-    <span style="color: #595959;"># </span><span style="color: #595959;">redirect server error pages to the static page /50x.html</span>
-    <span style="color: #595959;">#</span>
+    <span style="color: #8a290f;"># </span><span style="color: #8a290f;">redirect server error pages to the static page /50x.html</span>
+    <span style="color: #8a290f;">#</span>
     error_page   500 502 503 504  /50x.html;
     <span style="color: #005e8b;">location</span> = /50x.html <span style="color: #dd22dd;">{</span>
         root   html;
@@ -547,7 +539,6 @@ server <span style="color: #000000;">{</span>
 </p>
 </div>
 </div>
-
 <div id="outline-container-574e60c7-21fb-4f52-ae0d-bb846d804392" class="outline-2">
 <h2 id="574e60c7-21fb-4f52-ae0d-bb846d804392">节省手动操作</h2>
 <div class="outline-text-2" id="text-574e60c7-21fb-4f52-ae0d-bb846d804392">
@@ -564,32 +555,32 @@ server <span style="color: #000000;">{</span>
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #595959;">#</span><span style="color: #595959;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #595959;"> sh</span>
+<pre class="src src-bash"><span style="color: #8a290f;">#</span><span style="color: #8a290f;">!/usr/bin/</span><span style="color: #531ab6;">env</span><span style="color: #8a290f;"> sh</span>
 
-<span style="color: #595959;"># </span><span style="color: #595959;">abort on errors</span>
+<span style="color: #8a290f;"># </span><span style="color: #8a290f;">abort on errors</span>
 <span style="color: #8f0075;">set</span> -e
 
-<span style="color: #595959;"># </span><span style="color: #595959;">install &#26356;&#26032;&#20381;&#36182;</span>
+<span style="color: #8a290f;"># </span><span style="color: #8a290f;">install &#26356;&#26032;&#20381;&#36182;</span>
 yarn
 
-<span style="color: #595959;"># </span><span style="color: #595959;">build &#26500;&#24314;</span>
+<span style="color: #8a290f;"># </span><span style="color: #8a290f;">build &#26500;&#24314;</span>
 yarn build
 
 <span style="color: #8f0075;">echo</span> <span style="color: #3548cf;">"Build finish!"</span>
 
-<span style="color: #595959;"># </span><span style="color: #595959;">navigate into the build output directory</span>
+<span style="color: #8a290f;"># </span><span style="color: #8a290f;">navigate into the build output directory</span>
 <span style="color: #8f0075;">cd</span> dist/
 
 <span style="color: #8f0075;">echo</span> <span style="color: #3548cf;">"tar start"</span>
 
-<span style="color: #595959;"># </span><span style="color: #595959;">&#25171;&#21253;&#21387;&#32553;&#26500;&#24314;&#21518;&#30340;&#38745;&#24577;&#25991;&#20214;</span>
+<span style="color: #8a290f;"># </span><span style="color: #8a290f;">&#25171;&#21253;&#21387;&#32553;&#26500;&#24314;&#21518;&#30340;&#38745;&#24577;&#25991;&#20214;</span>
 tar zcvf build.tar.gz *
 
 <span style="color: #8f0075;">echo</span> <span style="color: #3548cf;">"tar finish"</span>
 
 <span style="color: #8f0075;">echo</span> <span style="color: #3548cf;">'upload to 1.1.1.1 and untar'</span>
 
-<span style="color: #595959;"># </span><span style="color: #595959;">&#19978;&#20256;tar&#21253;&#21040;&#30446;&#26631;&#26426;&#22120;&#65292;&#24182;&#35299;&#21387;&#21040;&#23545;&#24212;&#30340;&#30446;&#24405;</span>
+<span style="color: #8a290f;"># </span><span style="color: #8a290f;">&#19978;&#20256;tar&#21253;&#21040;&#30446;&#26631;&#26426;&#22120;&#65292;&#24182;&#35299;&#21387;&#21040;&#23545;&#24212;&#30340;&#30446;&#24405;</span>
 ssh root@1.1.1.1 <span style="color: #3548cf;">"tar -C /home/hello-world -xz -f-"</span> &lt; build.tar.gz
 
 <span style="color: #8f0075;">echo</span> <span style="color: #3548cf;">'upload &amp; untar done'</span>
@@ -620,7 +611,6 @@ ssh root@1.1.1.1 <span style="color: #3548cf;">"tar -C /home/hello-world -xz -f-
 </ul>
 </div>
 </div>
-
 <div id="outline-container-7ff082cd-209a-4542-a231-7009867d5b56" class="outline-2">
 <h2 id="7ff082cd-209a-4542-a231-7009867d5b56">进一步节省操作</h2>
 <div class="outline-text-2" id="text-7ff082cd-209a-4542-a231-7009867d5b56">
@@ -641,7 +631,6 @@ ssh root@1.1.1.1 <span style="color: #3548cf;">"tar -C /home/hello-world -xz -f-
 </p>
 </div>
 </div>
-
 <div id="outline-container-1211fb78-de36-4bb7-afea-7cb004df2007" class="outline-2">
 <h2 id="1211fb78-de36-4bb7-afea-7cb004df2007">参考链接</h2>
 <div class="outline-text-2" id="text-1211fb78-de36-4bb7-afea-7cb004df2007">
@@ -658,7 +647,7 @@ ssh root@1.1.1.1 <span style="color: #3548cf;">"tar -C /home/hello-world -xz -f-
 
 <p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">Date: 2021-08-10 Tue 00:00</p>
-<p class="date">Last Modified: 2024-12-20 Fri 22:17</p>
+<p class="date">Last Modified: 2024-12-20 Fri 15:22</p>
 <p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <script src="https://giscus.app/client.js"
         data-repo="Spike-Leung/taxodium"

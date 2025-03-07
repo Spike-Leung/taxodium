@@ -7,7 +7,7 @@
 <meta name="author" content="Spike Leung" />
 <meta name="description" content="&quot;&quot;" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -259,7 +259,7 @@
 </div>
 <div id="content" class="content">
 <header>
-<h1 class="title">使用 pagefind 添加博客搜索功能</h1>
+<h1 style="view-transition-name: spike-use-pagefind-to-search-blog" class="title">使用 pagefind 添加博客搜索功能</h1>
 </header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
@@ -290,7 +290,6 @@
 <p>
 这周看到了一个开源项目 <a href="https://pagefind.app/">pagefind</a>，它可以对构建好的 HTML 进行索引和搜索，配置简单，开箱即用，没有额外的第三方服务，很符合我的需要。
 </p>
-
 <div id="outline-container-8146bd66-566b-49de-9e2b-796bc84fa98f" class="outline-2">
 <h2 id="8146bd66-566b-49de-9e2b-796bc84fa98f">关于 pagefind</h2>
 <div class="outline-text-2" id="text-8146bd66-566b-49de-9e2b-796bc84fa98f">
@@ -361,7 +360,6 @@ pagefind 的一些特点：
 </blockquote>
 </div>
 </div>
-
 <div id="outline-container-d0cb0641-caef-4bb1-8bd5-f55349aa923c" class="outline-2">
 <h2 id="d0cb0641-caef-4bb1-8bd5-f55349aa923c">配置 pagefind</h2>
 <div class="outline-text-2" id="text-d0cb0641-caef-4bb1-8bd5-f55349aa923c">
@@ -395,7 +393,6 @@ pagefind 的一些特点：
 下面分享一下我是如何集成的。
 </p>
 </div>
-
 <div id="outline-container-8a7bf407-8909-44d5-ad65-75a4d48ba47a" class="outline-3">
 <h3 id="8a7bf407-8909-44d5-ad65-75a4d48ba47a">CI/CD 中添加索引指令</h3>
 <div class="outline-text-3" id="text-8a7bf407-8909-44d5-ad65-75a4d48ba47a">
@@ -404,21 +401,21 @@ pagefind 的一些特点：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #595959;">#</span><span style="color: #595959;">!/bin/bash</span>
+<pre class="src src-diff"><span style="color: #8a290f;">#</span><span style="color: #8a290f;">!/bin/bash</span>
 
-<span style="color: #595959;">#</span><span style="color: #595959;"> Enable command printing (debug mode)</span>
+<span style="color: #8a290f;">#</span><span style="color: #8a290f;"> Enable command printing (debug mode)</span>
 set -x
 
-<span style="color: #595959;">#</span><span style="color: #595959;"> Only build when `publish` change</span>
+<span style="color: #8a290f;">#</span><span style="color: #8a290f;"> Only build when `publish` change</span>
 git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF publish
 
-<span style="color: #595959;">#</span><span style="color: #595959;"> index.xml is for https://www.v2ex.com/xna</span>
+<span style="color: #8a290f;">#</span><span style="color: #8a290f;"> index.xml is for https://www.v2ex.com/xna</span>
 cp -f publish/rss.xml publish/index.xml
 
 <span style="color: #008900;">+</span><span style="color: #006800;"> # see: https://pagefind.app/docs/multilingual/#opting-out-of-multilingual-search</span>
 <span style="color: #008900;">+</span><span style="color: #006800;"> npx -y pagefind --site publish --force-language zh-CN</span>
 
-<span style="color: #595959;">#</span><span style="color: #595959;"> Disable debug mode</span>
+<span style="color: #8a290f;">#</span><span style="color: #8a290f;"> Disable debug mode</span>
 set +x
 </pre>
 </div>
@@ -436,7 +433,6 @@ set +x
 </p>
 </div>
 </div>
-
 <div id="outline-container-23066128-897c-40cf-8243-04d8238d55cc" class="outline-3">
 <h3 id="23066128-897c-40cf-8243-04d8238d55cc">引用 findpage 资源</h3>
 <div class="outline-text-3" id="text-23066128-897c-40cf-8243-04d8238d55cc">
@@ -449,7 +445,7 @@ set +x
 </p>
 
 <div class="org-src-container">
-<pre class="src src-html" id="org0c6df02">&lt;<span style="color: #531ab6;">!DOCTYPE</span> html&gt;
+<pre class="src src-html" id="org5ff6197">&lt;<span style="color: #531ab6;">!DOCTYPE</span> html&gt;
 &lt;<span style="color: #721045;">html</span> <span style="color: #005e8b;">lang</span>=<span style="color: #3548cf;">"zh-CN"</span>&gt;
   &lt;<span style="color: #721045;">head</span>&gt;
     &lt;<span style="color: #721045;">meta</span> <span style="color: #005e8b;">http-equiv</span>=<span style="color: #3548cf;">"Content-Type"</span> <span style="color: #005e8b;">content</span>=<span style="color: #3548cf;">"text/html;charset=utf-8"</span> /&gt;
@@ -493,7 +489,6 @@ set +x
 </div>
 </div>
 </div>
-
 <div id="outline-container-1f87fbcb-c481-404c-b4ac-97db76feb1ad" class="outline-2">
 <h2 id="1f87fbcb-c481-404c-b4ac-97db76feb1ad">写在最后</h2>
 <div class="outline-text-2" id="text-1f87fbcb-c481-404c-b4ac-97db76feb1ad">
@@ -525,7 +520,7 @@ set +x
 
 <p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">Date: 2024-11-16 Sat 00:00</p>
-<p class="date">Last Modified: 2024-12-06 Fri 00:02</p>
+<p class="date">Last Modified: 2024-12-04 Wed 15:10</p>
 <p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <script src="https://giscus.app/client.js"
         data-repo="Spike-Leung/taxodium"

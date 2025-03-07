@@ -7,7 +7,7 @@
 <meta name="author" content="Spike Leung" />
 <meta name="description" content="&quot;&quot;" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -227,7 +227,7 @@
 </div>
 <div id="content" class="content">
 <header>
-<h1 class="title">Flex 布局下，元素溢出的问题</h1>
+<h1 style="view-transition-name: spike-flex-box-with-overflow" class="title">Flex 布局下，元素溢出的问题</h1>
 </header><nav id="table-of-contents" role="doc-toc">
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
@@ -255,7 +255,6 @@
 </ul>
 </div>
 </nav>
-
 <div id="outline-container-1e74c31a-4677-4cac-99aa-06e50ab292af" class="outline-2">
 <h2 id="1e74c31a-4677-4cac-99aa-06e50ab292af">问题</h2>
 <div class="outline-text-2" id="text-1e74c31a-4677-4cac-99aa-06e50ab292af">
@@ -306,7 +305,6 @@
 
 <iframe style="width:100%" srcdoc=" &lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .container { display: flex; height: 200px; width: 400px; background: lemonchiffon; } .item {} .text { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; } &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;container&#34;&gt; &lt;div class=&#34;item&#34;&gt; &lt;p class=&#34;text&#34;&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. &lt;/p&gt; &lt;/div&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt; "></iframe>
 </div>
-
 <div id="outline-container-7e947e4c-a4ac-4e97-bdef-83319abd1553" class="outline-3">
 <h3 id="7e947e4c-a4ac-4e97-bdef-83319abd1553">非 flex 布局的表现</h3>
 <div class="outline-text-3" id="text-7e947e4c-a4ac-4e97-bdef-83319abd1553">
@@ -351,12 +349,10 @@
 </div>
 </div>
 </div>
-
 <div id="outline-container-6e472179-d85b-4498-8c0e-ae2047d5aad8" class="outline-2">
 <h2 id="6e472179-d85b-4498-8c0e-ae2047d5aad8">解决方案</h2>
 <div class="outline-text-2" id="text-6e472179-d85b-4498-8c0e-ae2047d5aad8">
 </div>
-
 <div id="outline-container-86995ec3-8e77-4fca-99ba-01f943dea670" class="outline-3">
 <h3 id="86995ec3-8e77-4fca-99ba-01f943dea670">给 flex item 设置 overflow 属性</h3>
 <div class="outline-text-3" id="text-86995ec3-8e77-4fca-99ba-01f943dea670">
@@ -370,7 +366,6 @@
 <iframe style="width:100%" srcdoc=" &lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .container { display: flex; height: 200px; width: 400px; background: lemonchiffon; } .item { overflow: auto; } .text { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; } &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;container&#34;&gt; &lt;div class=&#34;item&#34;&gt; &lt;p class=&#34;text&#34;&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. &lt;/p&gt; &lt;/div&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt; "></iframe>
 </div>
 </div>
-
 <div id="outline-container-c05a2370-8a75-42c5-b17f-0302bf2abd72" class="outline-3">
 <h3 id="c05a2370-8a75-42c5-b17f-0302bf2abd72">给 flex item 设置 width: 0 &amp; flex-grow: 1</h3>
 <div class="outline-text-3" id="text-c05a2370-8a75-42c5-b17f-0302bf2abd72">
@@ -385,7 +380,6 @@
 <iframe style="width:100%" srcdoc=" &lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .container { display: flex; height: 200px; width: 400px; background: lemonchiffon; } .item { flex-grow: 1; width: 0; } .text { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; } &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;container&#34;&gt; &lt;div class=&#34;item&#34;&gt; &lt;p class=&#34;text&#34;&gt; Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. &lt;/p&gt; &lt;/div&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt; "></iframe>
 </div>
 </div>
-
 <div id="outline-container-eadd437c-40c6-46b6-929f-ada1c7773e4f" class="outline-3">
 <h3 id="eadd437c-40c6-46b6-929f-ada1c7773e4f">给 flex item 设置 min-width: 0</h3>
 <div class="outline-text-3" id="text-eadd437c-40c6-46b6-929f-ada1c7773e4f">
@@ -400,12 +394,10 @@
 </div>
 </div>
 </div>
-
 <div id="outline-container-bd478911-a841-40f1-9008-e3a5fcb0924e" class="outline-2">
 <h2 id="bd478911-a841-40f1-9008-e3a5fcb0924e">原因</h2>
 <div class="outline-text-2" id="text-bd478911-a841-40f1-9008-e3a5fcb0924e">
 </div>
-
 <div id="outline-container-506cfe7f-f1ba-4c39-96d1-ac3e8bb053a8" class="outline-3">
 <h3 id="506cfe7f-f1ba-4c39-96d1-ac3e8bb053a8">TL;DR</h3>
 <div class="outline-text-3" id="text-506cfe7f-f1ba-4c39-96d1-ac3e8bb053a8">
@@ -426,7 +418,6 @@
 </p>
 </div>
 </div>
-
 <div id="outline-container-413f277a-515a-420a-8cbc-a45329b88de3" class="outline-3">
 <h3 id="413f277a-515a-420a-8cbc-a45329b88de3">详细分析</h3>
 <div class="outline-text-3" id="text-413f277a-515a-420a-8cbc-a45329b88de3">
@@ -483,7 +474,7 @@ for scroll containers the automatic minimum size is <i>zero</i>, as usual.
 </p>
 
 
-<figure id="orgfe87efa">
+<figure id="orgbc37658">
 <img src="./images/flex-box-with-overflow/layout-overflow.png" alt="layout-overflow.png">
 
 <figcaption><span class="figure-number">&#22270;1&nbsp; </span>由于设置了 overflow: auto; 使得 flex item 最小尺寸是 0，flex-shrink 可以收缩到容器内，避免溢出。</figcaption>
@@ -541,7 +532,7 @@ property if it’s definite). It is otherwise undefined.
 </p>
 
 
-<figure id="org372363e">
+<figure id="orge7ae2cb">
 <img src="./images/flex-box-with-overflow/layout-min-width.png" alt="layout-min-width.png">
 
 <figcaption><span class="figure-number">&#22270;2&nbsp; </span>由于设置了 min-width: 0; 使得 flex item 最小尺寸是 0，flex-shrink 可以收缩到容器内，避免溢出。</figcaption>
@@ -556,7 +547,7 @@ property if it’s definite). It is otherwise undefined.
 </p>
 
 
-<figure id="org1e616b2">
+<figure id="orgacef5c3">
 <img src="./images/flex-box-with-overflow/layout-width.png" alt="layout-width.png">
 
 <figcaption><span class="figure-number">&#22270;3&nbsp; </span>由于设置了 width: 0; 此时 flex item 宽度取 width，即为 0，可以看到 basic 的位置在 0 的位置，也就不会溢出。但是为了要显示内容，还需要设置 flex-grow: 1, 让 flex item 能够撑开到容器宽度。</figcaption>
@@ -633,7 +624,7 @@ Then the shrink-to-fit width is: <code>min(max(preferred minimum width, availabl
 </p>
 
 
-<figure id="org90ef00f">
+<figure id="org41f9a1f">
 <img src="./images/flex-box-with-overflow/layout-default.png" alt="layout-default.png">
 
 <figcaption><span class="figure-number">&#22270;4&nbsp; </span>最小宽度即文本宽度，可以看到 min 和 basic 的位置都溢出了容器。</figcaption>
@@ -641,7 +632,6 @@ Then the shrink-to-fit width is: <code>min(max(preferred minimum width, availabl
 </div>
 </div>
 </div>
-
 <div id="outline-container-5e281bfa-547d-4548-8fa2-ab7c564a09aa" class="outline-2">
 <h2 id="5e281bfa-547d-4548-8fa2-ab7c564a09aa">推论</h2>
 <div class="outline-text-2" id="text-5e281bfa-547d-4548-8fa2-ab7c564a09aa">
@@ -654,7 +644,6 @@ Then the shrink-to-fit width is: <code>min(max(preferred minimum width, availabl
 </p>
 </div>
 </div>
-
 <div id="outline-container-220e3788-a3c0-4209-89bd-c8ef37c44448" class="outline-2">
 <h2 id="220e3788-a3c0-4209-89bd-c8ef37c44448">Refs</h2>
 <div class="outline-text-2" id="text-220e3788-a3c0-4209-89bd-c8ef37c44448">
@@ -670,7 +659,7 @@ Then the shrink-to-fit width is: <code>min(max(preferred minimum width, availabl
 
 <p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">Date: 2022-09-28 Wed 00:00</p>
-<p class="date">Last Modified: 2024-12-25 Wed 22:26</p>
+<p class="date">Last Modified: 2024-12-25 Wed 16:32</p>
 <p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <script src="https://giscus.app/client.js"
         data-repo="Spike-Leung/taxodium"

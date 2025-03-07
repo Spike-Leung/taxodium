@@ -6,7 +6,7 @@
 <title>JS 中的定时任务</title>
 <meta name="author" content="Spike Leung" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -226,7 +226,7 @@
 </div>
 <div id="content" class="content">
 <header>
-<h1 class="title">JS 中的定时任务</h1>
+<h1 style="view-transition-name: spike-js-timer" class="title">JS 中的定时任务</h1>
 </header><nav id="table-of-contents" role="doc-toc">
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
@@ -246,7 +246,6 @@
 </ul>
 </div>
 </nav>
-
 <div id="outline-container-f0dca97f-946b-46c2-9339-a5c1d4590523" class="outline-2">
 <h2 id="f0dca97f-946b-46c2-9339-a5c1d4590523">setTimeout</h2>
 <div class="outline-text-2" id="text-f0dca97f-946b-46c2-9339-a5c1d4590523">
@@ -268,7 +267,6 @@ callback 只是被放到了宏任务队列中，当调用栈空闲的时候，�
 </p>
 </div>
 </div>
-
 <div id="outline-container-40fae145-6e94-416e-a72f-350fd1880515" class="outline-2">
 <h2 id="40fae145-6e94-416e-a72f-350fd1880515">setTimeout(callback, 0) 零延迟的 setTimeout</h2>
 <div class="outline-text-2" id="text-40fae145-6e94-416e-a72f-350fd1880515">
@@ -285,7 +283,6 @@ callback 只是被放到了宏任务队列中，当调用栈空闲的时候，�
 </p>
 </div>
 </div>
-
 <div id="outline-container-a8295c06-e05d-4c94-b0e4-8b737c4b7f8a" class="outline-2">
 <h2 id="a8295c06-e05d-4c94-b0e4-8b737c4b7f8a">setInterval</h2>
 <div class="outline-text-2" id="text-a8295c06-e05d-4c94-b0e4-8b737c4b7f8a">
@@ -325,7 +322,6 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 当 callback 执行时间可能大于间隔时间时，用 setInterval 就不合适了。
 </p>
 </div>
-
 <div id="outline-container-82e839e4-7bda-4599-a7b9-3d9eeceef12b" class="outline-3">
 <h3 id="82e839e4-7bda-4599-a7b9-3d9eeceef12b">对于长时间的同步任务</h3>
 <div class="outline-text-3" id="text-82e839e4-7bda-4599-a7b9-3d9eeceef12b">
@@ -349,7 +345,6 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 </p>
 </div>
 </div>
-
 <div id="outline-container-6de052fe-4204-4e10-8196-fcbfbdb40a37" class="outline-3">
 <h3 id="6de052fe-4204-4e10-8196-fcbfbdb40a37">对于长时间的异步任务</h3>
 <div class="outline-text-3" id="text-6de052fe-4204-4e10-8196-fcbfbdb40a37">
@@ -386,7 +381,7 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <div class="org-src-container">
 <pre class="src src-js"><span style="color: #000000;">(</span><span style="color: #531ab6;">function</span> loop<span style="color: #dd22dd;">()</span> <span style="color: #dd22dd;">{</span>
   setTimeout<span style="color: #008899;">(</span><span style="color: #531ab6;">function</span><span style="color: #972500;">()</span> <span style="color: #972500;">{</span>
-    <span style="color: #595959;">// </span><span style="color: #595959;">your logic here</span>
+    <span style="color: #8a290f;">// </span><span style="color: #8a290f;">your logic here</span>
     loop<span style="color: #808000;">()</span>;
   <span style="color: #972500;">}</span>, delay<span style="color: #008899;">)</span>;
 <span style="color: #dd22dd;">}</span><span style="color: #000000;">)()</span>
@@ -409,10 +404,10 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <pre class="src src-js"><span style="color: #531ab6;">let</span> <span style="color: #005e8b;">delay</span> = 5000;
 
 <span style="color: #531ab6;">let</span> <span style="color: #005e8b;">timerId</span> = setTimeout<span style="color: #000000;">(</span><span style="color: #531ab6;">function</span> request<span style="color: #dd22dd;">()</span> <span style="color: #dd22dd;">{</span>
-  <span style="color: #595959;">// </span><span style="color: #595959;">...&#21457;&#36865;&#35831;&#27714;...</span>
+  <span style="color: #8a290f;">// </span><span style="color: #8a290f;">...&#21457;&#36865;&#35831;&#27714;...</span>
 
   <span style="color: #531ab6;">if</span> <span style="color: #008899;">(</span>request failed due to server overload<span style="color: #008899;">)</span> <span style="color: #008899;">{</span>
-    <span style="color: #595959;">// </span><span style="color: #595959;">&#19979;&#19968;&#27425;&#25191;&#34892;&#30340;&#38388;&#38548;&#26159;&#24403;&#21069;&#30340; 2 &#20493;</span>
+    <span style="color: #8a290f;">// </span><span style="color: #8a290f;">&#19979;&#19968;&#27425;&#25191;&#34892;&#30340;&#38388;&#38548;&#26159;&#24403;&#21069;&#30340; 2 &#20493;</span>
     delay *= 2;
   <span style="color: #008899;">}</span>
 
@@ -507,7 +502,6 @@ requestIdleCallback(callback, options) 中的第二个参数是 options。
 </p>
 </div>
 </div>
-
 <div id="outline-container-61b9c400-75a3-4bb0-8097-8bf7112cf28e" class="outline-2">
 <h2 id="61b9c400-75a3-4bb0-8097-8bf7112cf28e">参考</h2>
 <div class="outline-text-2" id="text-61b9c400-75a3-4bb0-8097-8bf7112cf28e">
@@ -534,7 +528,7 @@ smooth animations </a>- javascriptkit
 
 <p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">Date: 2022-02-14 Mon 00:00</p>
-<p class="date">Last Modified: 2024-12-06 Fri 00:02</p>
+<p class="date">Last Modified: 2024-12-04 Wed 15:12</p>
 <p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <script src="https://giscus.app/client.js"
         data-repo="Spike-Leung/taxodium"
