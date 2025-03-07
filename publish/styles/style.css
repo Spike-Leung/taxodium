@@ -62,9 +62,21 @@ html:has(meta[name="color-scheme"][content="dark"]) {
   navigation: auto;
 }
 
+/**
+* @see: https://daverupert.com/2023/05/getting-started-view-transitions/#:~:text=I%20mostly%20use,a%20long%20time
+* 使得在进行 view-transition 的时候，标题的文字不会变得特别大
+*/
 .title {
   width: fit-content;
-  margin: 0 auto;
+  /** 居中标题 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a[view-transition-name] {
+    view-transition-name: none;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
