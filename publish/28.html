@@ -1,0 +1,2337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Weekly#28</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="&quot;Weekly info collected by Spike Leung&quot;" />
+<meta name="keywords" content="&quot;Weekly News Code Music&quot;" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css" />
+<link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+    <li>
+      <a id="skip-postamble" href="#postamble">Skip to comments</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/rss.xml">RSS</a></li>
+    <li><a href="https://music.163.com/#/playlist?id=12531191848">Playlist</a></li>
+    <li><a href="/search.html">Search</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 style="view-transition-name: spike-28" class="title">Weekly#28</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org9e7caed">琐碎两三事</a></li>
+<li><a href="#org5c8ff2e">News | Article</a></li>
+<li><a href="#orga1da635">Tutorial | Resource</a></li>
+<li><a href="#org56d176b">Code Related</a></li>
+<li><a href="#orgaa239d8">Cool Bit</a></li>
+<li><a href="#org10ccdc3">Tool | Library</a></li>
+<li><a href="#org096391c">Emacs</a></li>
+<li><a href="#org0fe6283">一些话 | 摘抄</a></li>
+<li><a href="#orge55060e">多媒体</a></li>
+<li><a href="#orgb5cde9d">Music</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-org9e7caed" class="outline-2">
+<h2 id="org9e7caed">琐碎两三事</h2>
+<div class="outline-text-2" id="text-org9e7caed">
+<ul class="org-ul">
+<li><p>
+博客有了一些关注
+</p>
+
+<p>
+我想感谢一下在 follow 上给我打赏的读者 <code>@l1uyun</code> ，以及前阵子<a href="https://ameow.xyz/archives/weekly-058">猫鱼周刊 vol. 058</a>对于博客文章的分享。
+</p>
+
+<p>
+知道有人看，有人喜欢这件事情让我很开心。(ﾉ&gt;ω&lt;)ﾉ
+</p>
+
+<p>
+博客里没有做一些访问量的追踪，所以有多少人看我也不了解。
+</p>
+
+<p>
+不过发布在了 follow 上，能了解到 follow 上的阅读量。
+</p>
+
+<p>
+上周阅读量突然攀高，不知道从哪里吸引了一些没有见过的读者，不过可以最后订阅的人并不多 (´;ω;`)
+</p>
+
+<p>
+不管如何，谢谢喜爱。有人看也好，没人看也罢，我也会继续更新。
+</p>
+
+<p>
+写 weekly 时阅读很多网页，就像是看一本百科全书一样，还挺有趣的。
+</p>
+
+<p>
+如果你还没有开始写博客，我也希望你开始写，不用担心没有读者，你可以评论留言，我去看～
+</p>
+
+<p>
+以前 weekly 引用的这段话再次分享给你：
+</p>
+
+<blockquote>
+<p>
+各位朋友们，谢谢你们今晚来，谢谢你们来看我们的作品。
+</p>
+
+<p>
+如果你喜欢这个乐团，我们希望你也去组你自己的乐國，发表你自己的作品。
+</p>
+
+<p>
+或者，无论你现在正对什么感兴趣，我们都期待你发表你的作品。
+</p>
+
+<p>
+我们想象的事情是：
+</p>
+
+<p>
+一开始都会很糟，但如果你一直做属于你的东西，事情最后都会变好；
+</p>
+
+<p>
+这个好不是指“全世界都会超级爱你”
+</p>
+
+<p>
+而是会有一小群人爱你，但他们爱得很深，爱得很有力量，那种力量会让你终于也能开始喜欢你自己。
+</p>
+
+<p>
+一直到最后，直到你不必证明什么事情，你还是能喜欢你自己。
+</p>
+
+<p>
+这就是我们想象的事情。
+</p>
+
+<p>
+所以我们期待，你开始发表你的作品。
+</p>
+
+<p>
+因为只有开始了，你才会察觉到，有人在你从未想过的地方等你。
+</p>
+
+<p>
+谢谢大家。
+</p>
+
+<p>
+<a href="https://b23.tv/xxl7e5a">“所以我们期待 你开始发表你的作品” - 当代电影大师</a>
+</p>
+</blockquote></li>
+
+<li><p>
+LLM 的滥用
+</p>
+
+<p>
+以前逛论坛，看到一些粘贴 LLM 的评论，我是无感的，大不了不看。
+</p>
+
+<p>
+但是最近工作中，也看到了大段粘贴 LLM 内容，有的内容还是经不起推敲的，就让人相当厌烦。
+</p>
+
+<p>
+LLM 的回复就像是那些形式主义的话，一套一套，一大段一大段的，没有了作者自己的思考在里面。
+</p>
+
+<p>
+并不反对 LLM 的回答，我自己用的也很多，但 LLM 应该是一个工具，促进我们自身的思考，而不是完全依赖它。
+</p>
+
+<blockquote>
+<p>
+顺便提一下，这就是我倾向于不喜欢事件总结工具的原因。不要让人们停止尝试拼凑发生了什么！
+</p>
+
+<p>
+相反，我更喜欢看到一些工具，它们查看你的总结，以提醒你可能忘记的事项，或者寻找指向偏见或简化观点的语言线索。
+</p>
+
+<p>
+<a href="https://ferd.ca/ai-where-in-the-loop-should-humans-go.html#:~:text=(As%20a%20side,points%20of%20view.)">Source</a>
+</p>
+</blockquote></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5c8ff2e" class="outline-2">
+<h2 id="org5c8ff2e">News | Article</h2>
+<div class="outline-text-2" id="text-org5c8ff2e">
+</div>
+<div id="outline-container-orgb2094f2" class="outline-3">
+<h3 id="orgb2094f2"><a href="https://blog.danieljanus.pl/2025/03/02/cleaner-codebase/">Cleaner codebase, happier mind</a></h3>
+<div class="outline-text-3" id="text-orgb2094f2">
+<p>
+干净的桌面相比凌乱的桌面，会让人心情更好一些。
+</p>
+
+<p>
+有时，把一个地方打扫干净，也会带来一些成就感。
+</p>
+
+<p>
+对于代码库也是一样，把一些“垃圾代码”打扫干净，在后续维护的时候也会更愉悦。
+</p>
+
+<blockquote>
+<p>
+让我强调，我并不是在谈论 <a href="https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882">Uncle Bob 的 clean code</a>；
+</p>
+
+<p>
+我指的是每个人都希望完成的琐事，但显然没有人有时间去做——作为技术债务积累的杂物。
+</p>
+
+<p>
+每个代码库都有这样的东西，你一眼就能看出来。
+</p>
+
+<p>
+那个每 20 次就失败一次的脆弱测试，毫无明显原因。
+</p>
+
+<p>
+那个可以用更现代基础设施合理实现的遗留组件。
+</p>
+
+<p>
+那个你仅仅为了持续集成而保留的 Jenkins 实例。
+</p>
+
+<p>
+那三个位于内部的库，它们都做着相同的事情，但方式略有不同。
+</p>
+
+<p>
+那些模块之所以存在，仅仅是因为你一年前进行过一次涉及它们的 A/B 测试，而该测试已经被回滚。等等。
+</p>
+
+<p>
+是的，这就是技术债务，必须经济地管理。
+</p>
+
+<p>
+有时候，忍受现状是有道理的，因为你的时间需要用在其他地方。
+</p>
+
+<p>
+或者在清理这些东西上投入精力并没有明显的经济收益。
+</p>
+
+<p>
+但我相信这会带来心理上的好处。
+</p>
+
+<p>
+它可以带来成就感；它可以使代码库更愉快地使用；它可以减少挫折感。
+</p>
+
+<p>
+长远来看，它可以让人们更快乐。
+</p>
+
+<p>
+<a href="https://blog.danieljanus.pl/2025/03/02/cleaner-codebase/#:~:text=Let%20me%20stress,the%20long%20run">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org1ea548c" class="outline-3">
+<h3 id="org1ea548c"><a href="https://blog.vlt.sh/blog/reproducibility">Reproducibility vs. Provenance: Trusting the JavaScript Supply Chain</a></h3>
+<div class="outline-text-3" id="text-org1ea548c">
+<p>
+曾经出现过不少往 NPM “投毒”的事件，例如前阵子 <a href="https://github.com/web-infra-dev/rspack/issues/8767">rspack 的投毒事件</a>，那么如何确保依赖的 NPM 包可信任呢？
+</p>
+
+<p>
+<a href="https://www.npmjs.com/package/reproduce">reproduce</a> 的方法是，从 package.json 中读取 repository 的配置，找到 repository 进行构建，比对构建后的产物和 NPM 上产物是否一致。
+</p>
+
+<blockquote>
+<p>
+为了对 reproduce 进行测试，我们将其应用于前 5000 个“高影响”npm 包。
+</p>
+
+<p>
+“高影响”包被认为是每周下载量超过 100 万或有超过 500 个依赖项的包。
+</p>
+
+<p>
+其中，5.78% (289) 的软件包被发现是可重现的，这意味着它们可以在没有对其源代码库或发布工作流程进行任何更改的情况下，完全按照发布时的状态重新构建。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orgff949a0" class="outline-3">
+<h3 id="orgff949a0"><a href="https://www.hillelwayne.com/post/hoc/">The Hierarchy of Hazard Controls</a></h3>
+<div class="outline-text-3" id="text-orgff949a0">
+<p>
+控制层级（Hierarchy of Controls，HoC）是<a href="https://en.wikipedia.org/wiki/Process_safety">工作场所安全</a>中的一个重要概念。
+</p>
+
+<p>
+HoC 主要是针对物理环境的，作者将其类比到软件工程中。
+</p>
+
+<p>
+如果你的工作环境中没有相关规范制度避免一些生产安全问题（例如误操作生产数据库，操作生产环境没有权限控制等），这篇文章或许可以提供一些参考。
+</p>
+</div>
+</div>
+<div id="outline-container-org8872e4c" class="outline-3">
+<h3 id="org8872e4c"><a href="https://andregarzia.com/2025/03/the-web-should-be-a-conversation.html">The Web Should Be A Conversation</a></h3>
+<div class="outline-text-3" id="text-org8872e4c">
+<p>
+如果你还拥有博客，开始写博客吧！拥有属于你的一方天地。
+</p>
+
+<p>
+写啥都好，也许没人看，但自娱自乐也不错。
+</p>
+
+<p>
+而且很多人都说，写作有助于你思绪的整理，何乐而不为呢。
+</p>
+
+<p>
+文章也是鼓励大家写博客，用 RSS 订阅自己的信息流，脱离算法的控制。
+</p>
+
+<p>
+作者还分享了一些写博客的平台和 RSS 工具。
+</p>
+</div>
+</div>
+<div id="outline-container-org1f6b262" class="outline-3">
+<h3 id="org1f6b262"><a href="https://blog.jim-nielsen.com/2025/lots-of-little-html-pages/">Building Websites With LLMS</a></h3>
+<div class="outline-text-3" id="text-org1f6b262">
+<p>
+这里的 LLMS 指的是 (L)ots of (L)ittle ht(M)l page(S)，即多个小的 HTML 页面。
+</p>
+
+<p>
+作者发现将博客的功能拆成多个 HTML 页面，配合 <a href="https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API">View Transition</a>，比维护许多的 JS 逻辑要来得简单。
+</p>
+
+<blockquote>
+<p>
+随着跨文档视图过渡获得越来越广泛的支持，我意识到构建页面内的渐进增强交互比简单地构建两个 HTML 页面并将它们链接起来要更费力。
+</p>
+
+<p>
+我在心里称这种方法为“许多小的 HTML 页面”。
+</p>
+
+<p>
+当我发现自己试图用 JavaScript 构建渐进增强的功能时——比如一个弹出导航菜单，或者页面内搜索，或者内容过滤——我停下来问自己：
+</p>
+
+<p>
+“我能否将其构建为一个由链接触发的独立 HTML 页面，而不是从按钮构建的 JavaScript 注入内容？”
+</p>
+
+<p>
+我有点喜欢这个结果。
+</p>
+
+<p>
+我为每个我想要的“交互”构建单独的小 HTML 页面，然后让我使用 CSS 过渡效果，这样我得到的东西感觉比它的 JS 对应物更好，而且工作量少得多。
+</p>
+
+<p>
+<a href="https://blog.jim-nielsen.com/2025/lots-of-little-html-pages/#:~:text=With%20cross%2Ddocument,way%20less%20work">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org02a8d32" class="outline-3">
+<h3 id="org02a8d32"><a href="https://www.openmymind.net/Basic-Awareness-In-Addition-To-Deep-Understanding/">Basic Awareness in Addition to Deep Understanding</a></h3>
+<div class="outline-text-3" id="text-org02a8d32">
+<p>
+有的知识需要深度，需要精通它们。
+</p>
+
+<p>
+有的知识只需要广度，大致知道有这样的东西，在需要的时候能提供一个方向就足够了，用到的时候在深入研究。
+</p>
+
+<blockquote>
+<p>
+对软件开发人员的评估通常基于他们对特定理念和工具的理解程度。
+</p>
+
+<p>
+掌握知识固然重要，但我发现自己还依赖于另一种知识：模糊的意识。
+</p>
+
+<p>
+与精通不同的是，意识仅仅是知道某样东西的存在，以及对它是什么和它能解决什么问题的基本理解。
+</p>
+
+<p>
+<a href="https://www.openmymind.net/Basic-Awareness-In-Addition-To-Deep-Understanding/#:~:text=Software%20developers%20are,it%20can%20solve">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+这也是我写博客的原因之一。
+</p>
+
+<p>
+我发现，当我把事情写下来时，我就能更好地记住它们。
+</p>
+
+<p>
+从这些错别字和拼写错误中你看不出来，但我会在发表博文前重读 3-4 遍。这种边写边读的方式有助于我保留信息。
+</p>
+
+<p>
+这对未来的自己也是一个很好的参考。我不止一次利用博客来学习我曾经学得更好的东西。
+</p>
+
+<p>
+我们向别人解释事情的方式就是我们希望别人向我们解释事情的方式 ，这可能是放之四海而皆准的真理。
+</p>
+
+<p>
+<a href="https://www.openmymind.net/Basic-Awareness-In-Addition-To-Deep-Understanding/#:~:text=This%20is%20one,explained%20to%20us">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orgaf0a739" class="outline-3">
+<h3 id="orgaf0a739"><a href="https://www.piglei.com/articles/everyone-can-write-eng-blog/">人人都能写英文博客</a></h3>
+<div class="outline-text-3" id="text-orgaf0a739">
+<p>
+英文博客似乎能得到更多的关注，作者使用 LLM 和 DeepL 将他写的文章翻译成英文，并在一些主流网站推广，得到了不错的反响，接触到了更多读者。
+</p>
+
+<p>
+可以尝试一下！
+</p>
+</div>
+</div>
+<div id="outline-container-orgf5ef7ce" class="outline-3">
+<h3 id="orgf5ef7ce"><a href="https://johnpweiss.com/blog/199949/the-day-the-muse-died">The Day the Muse Died</a></h3>
+<div class="outline-text-3" id="text-orgf5ef7ce">
+<p>
+作者的职业是一个执法人员，但是他喜欢绘画，也产生了一些成就。
+</p>
+
+<p>
+但是后来他搬家后，周围的风景不是很吸引他，他发现自己对绘画不太感兴趣了。
+</p>
+
+<p>
+反而，他开始对阅读和写作产生了浓烈的兴趣。
+</p>
+
+<p>
+有时候，一些我们认为热爱的东西，或许会消逝，我们会对它们不再热情，但或许我们能找到别的兴趣。
+</p>
+
+<blockquote>
+<p>
+也许你的创作灵感消失了。你认为自己会一直做的事情突然枯竭了。这种事是会发生的。
+</p>
+
+<p>
+如果你幸运的话，某些东西会取代你曾经享受的创造激情。
+</p>
+
+<p>
+我经常遇到告诉我他们不再追求或享受的过去激情的人。
+</p>
+
+<p>
+通常是因为他们感到疲惫不堪，或者发现了更让他们兴奋的新事物。
+</p>
+
+<p>
+如果你所做的事情消失了，你应该怎么办？
+</p>
+
+<p>
+休息一下。有时候我们需要暂时离开，充电一下。
+</p>
+
+<p>
+其他时候，在我们离开后，我们意识到我们准备好继续前进。
+</p>
+
+<p>
+在这种情况下，问问自己还有什么其他的事情让你感兴趣或兴奋。
+</p>
+
+<p>
+也许是你一直想学习的乐器。或者是你从未有机会尝试的运动。上课，尝试新的创意机会。
+</p>
+
+<p>
+你可能会喜欢木工、烹饪、陶艺、舞蹈或钓鱼。
+</p>
+
+<p>
+谁知道呢，除非你走出舒适区，去探索。
+</p>
+
+<p>
+最重要的是，不要为了钱去做。
+</p>
+
+<p>
+如果你需要更多收入，找一些你感兴趣的工作或你能忍受的工作。
+</p>
+
+<p>
+但如果你试图把你的热情变成收入，你就有可能扼杀这种热情带来的快乐。
+</p>
+
+<p>
+如果金钱来自你的热情，那很好。但不要把这作为目标。
+</p>
+
+<p>
+&#x2026;
+</p>
+
+<p>
+总有一天，灵感可能会在你心中消逝。
+</p>
+
+<p>
+你一直热爱的东西突然不再吸引你。
+</p>
+
+<p>
+如果发生这种情况，不要惊慌。它可能会回来。
+</p>
+
+<p>
+但无论它是否回来，尝试新的事物。
+</p>
+
+<p>
+问问自己，最近什么真的让你感到兴奋。
+</p>
+
+<p>
+一旦确定，试试看。
+</p>
+
+<p>
+<a href="https://johnpweiss.com/blog/199949/the-day-the-muse-died#:~:text=Maybe%20your%20creative,next%20for%20you">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org2b25ebf" class="outline-3">
+<h3 id="org2b25ebf">程序员的错误认知</h3>
+<div class="outline-text-3" id="text-org2b25ebf">
+<ul class="org-ul">
+<li><p>
+<a href="https://www.lexiconista.com/falsehoods-about-languages/">Falsehoods programmers believe about languages</a>
+</p>
+<blockquote>
+<ul class="org-ul">
+<li>&#x2026;</li>
+<li>每种语言都有表示“是”和“否”的词。</li>
+<li>在每种语言中，表示“是”和“否”的词永远不会改变，无论它们回答的是哪个问题。</li>
+<li>所有使用拉丁字母的语言都有相同的字母排序顺序。</li>
+<li>&#x2026;</li>
+</ul>
+</blockquote></li>
+<li><p>
+<a href="https://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/">Falsehoods Programmers believe about names</a>
+</p>
+<blockquote>
+<ul class="org-ul">
+<li>&#x2026;</li>
+<li>我这个系统永远都不需要处理来自中国的名字。</li>
+<li>或者日本。</li>
+<li>或者韩国。</li>
+<li>或者爱尔兰，英国，美国，西班牙，墨西哥，巴西，秘鲁，俄罗斯，瑞典，博茨瓦纳，南非，特立尼达，海地，法国，或者克林贡帝国，因为这些国家都有好多奇奇怪怪的名字。</li>
+<li>克林贡帝国那个是开玩笑的对吧？</li>
+<li>人是在出生的时候被起名的。</li>
+<li>OK，不一定是出生那一刻，但是应该是出生前后没差多久。</li>
+<li>好吧好吧，出生一年以内。</li>
+<li>五年以内？</li>
+<li>你 tmd 的在逗我对吧？</li>
+<li>人有名字。</li>
+<li>&#x2026;</li>
+</ul>
+</blockquote></li>
+<li><p>
+<a href="https://gist.github.com/timvisee/fcda9bbdff88d45cc9061606b4b923ca">Falsehoods programmers believe about time</a>
+</p>
+<blockquote>
+<ul class="org-ul">
+<li>一天总是有 24 小时。</li>
+<li>二月总是 28 天长。</li>
+<li>任何 24 小时的周期总是会在同一天（或同周，或同月）开始和结束。</li>
+<li>&#x2026;</li>
+</ul>
+</blockquote></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb1f2731" class="outline-3">
+<h3 id="orgb1f2731"><a href="https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/git-no-forge/">Git without a forge</a></h3>
+<div class="outline-text-3" id="text-orgb1f2731">
+<p>
+<a href="https://en.wikipedia.org/wiki/Simon_Tatham">Simon Tatham</a> 是 <a href="https://en.wikipedia.org/wiki/PuTTY">PuTYY</a> 的创建者和维护者，他不喜欢用 GitHub，GitLab 之类的托管平台。
+</p>
+
+<p>
+文章里，他分享了几种向他提交 PR 的方法，同时表达了他为什么不想用 GitHub 等托管平台，最主要的原因是他不信任这些平台。
+</p>
+
+<blockquote>
+<p>
+对我来说，决定在哪里托管我的代码的首要问题不是它能提供什么设施，而是谁来运行它。
+</p>
+
+<p>
+我不希望我的代码受我不信任的人的摆布。
+</p>
+
+<p>
+我并不是说我特别不信任负责主要 Git forge 网站的组织。
+</p>
+
+<p>
+但我本人并不认识他们，而我更愿意信任我认识的人。
+</p>
+
+<p>
+所以我的 Git 托管安排是在朋友的服务器上，而不是公司的服务器上。
+</p>
+
+<p>
+<a href="https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/git-no-forge/#:~:text=For%20me%2C%20the,by%20a%20company">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+另外，我不妨直截了当地说：我不想使用 Github 的一个原因是，它是最受欢迎的代码托管地。
+</p>
+
+<p>
+任何事物的单一文化几乎都不健康，而由一家公司控制的单一文化尤其危险。
+</p>
+
+<p>
+我宁愿为互联网的分布式发展做出贡献，也不愿意为它的集中式发展做出贡献。
+</p>
+
+<p>
+<a href="https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/git-no-forge/#:~:text=Also%2C%20I%20might,it%20being%20centralised">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org502a291" class="outline-3">
+<h3 id="org502a291"><a href="https://evanhahn.com/why-alias-is-my-last-resort-for-aliases/">Why "alias" is my last resort for aliases</a></h3>
+</div>
+<div id="outline-container-org572a5bc" class="outline-3">
+<h3 id="org572a5bc"><a href="https://www.chrbutler.com/in-defense-of-text-labels">In Defense of Text Labels</a></h3>
+<div class="outline-text-3" id="text-org572a5bc">
+<p>
+人脑处理图像比文字要快，icon 可以带来更快的认知效率，也能节省一些页面空间，也能让页面元素更多，没那么呆板。
+</p>
+
+<p>
+但是 icon 也是存在问题的:
+</p>
+
+<ul class="org-ul">
+<li><p>
+很少有图标能够立即传达清晰、单一的含义。
+</p>
+
+<p>
+例如铅笔的图标，在不同上下文中，可能是编辑、新建、绘画。
+</p></li>
+
+<li><p>
+界面中的图标越多，导航就越困难。
+</p>
+<blockquote>
+<p>
+随着功能集的增长，我们常常不得不在图标之间 resort to 越来越抽象或微妙的视觉区分。
+</p>
+
+<p>
+对于 5-7 个核心功能可能有效的方法，在 15-20 个功能时变得难以管理。
+</p>
+</blockquote></li>
+
+<li><p>
+图标在更广泛的生态系统中作为特定于界面的语言。
+</p>
+
+<p>
+应用可能会嵌套在别的环境中被使用，而别的环境可能也有 icon，甚至是相似的 icon，但表达的含义可能不同。
+</p></li>
+</ul>
+
+<p>
+因此，作者认为不能仅靠 icon，文本也有它的用武之处：
+</p>
+
+<ul class="org-ul">
+<li><p>
+单独使用文本通常更高效。
+</p>
+
+<p>
+扫描文本，比扫描很多图标，再区分图标含义，往往来得更高效。
+</p></li>
+
+<li><p>
+文本可以使图标更高效。
+</p>
+<blockquote>
+<p>
+为图标添加文本标签有两个目的：一是澄清含义，二是提供更大的创作自由。
+</p>
+
+<p>
+当图标的含义通过文本得到强化时，用户可以更快、更自信地浏览。
+</p>
+
+<p>
+此外，当设计师不再仅依赖图标来传达功能时，他们可以更专注于界面视觉语言的统一性。
+</p>
+</blockquote></li>
+
+<li><p>
+图标在文本密集型应用中是有效的锚点。
+</p>
+<blockquote>
+<p>
+图标作为视觉标志，发挥着重要作用，帮助区分功能区域和内容区域。
+</p>
+
+<p>
+特别是在文本密集型应用中，图标有助于吸引视线关注交互元素。
+</p>
+
+<p>
+图标和文本标签的结合比单独使用任一元素更能清晰地传达功能。
+</p>
+</blockquote></li>
+</ul>
+
+
+<blockquote>
+<p>
+每次我们在图标和文本标签之间做出选择时，我们是在选择认知负荷。
+</p>
+
+<p>
+我们在决定人们在解读我们的界面上花费多少心理能量，而不是在使用它们。
+</p>
+
+<p>
+虽然纯图标界面看起来简单且更具吸引力，但它往往会对注意力和理解造成一种无形的负担。
+</p>
+
+<p>
+<a href="https://www.chrbutler.com/in-defense-of-text-labels#:~:text=Every%20time%20we,attention%20and%20understanding">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+下次当你想要再创建一个图标，或者去掉文本标签时，请记住：最优雅的解决方案并不总是看起来简单的那个 ⸺  而是让沟通和理解感觉简单的那个。
+</p>
+
+<p>
+<a href="https://www.chrbutler.com/in-defense-of-text-labels#:~:text=The%20next%20time%20you%E2%80%99re%20tempted%20to%20create%20yet%20another%20icon%2C%20or%20to%20remove%20text%20labels%2C%20remember%3A%20the%20most%20elegant%20solution%20isn%E2%80%99t%20always%20the%20one%20that%20looks%20simple%E2%80%89%E2%80%94%E2%80%89it%E2%80%99s%20the%20one%20that%20makes%20communication%20and%20understanding%20feel%20simple">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orga614419" class="outline-3">
+<h3 id="orga614419"><a href="https://cloudfour.com/thinks/truth-lies-and-progress-bars/">Truth, Lies and Progress Bars</a></h3>
+<div class="outline-text-3" id="text-orga614419">
+<p>
+作者是个设计师，在一个团队里，他发现团队实现的进度条其实是假的，和实际进度无关，只是为了避免用户提前关闭配置。
+</p>
+
+<p>
+原因是因为要反馈实际进度很复杂，资源消耗也比较高。
+</p>
+
+<blockquote>
+<p>
+我被告知这个特定操作很复杂，涉及许多不同的因素，这些因素可能因用户而异。
+</p>
+
+<p>
+这使得提前预测变得具有挑战性，并且动态估算资源消耗也很高。
+</p>
+
+<p>
+如果他们没有包含任何进度指示器，甚至没有像旋转器或<a href="https://en.wikipedia.org/wiki/Progress_bar#:~:text=A%20more%20recent,bar%20shaped%2E">不确定的“理发师杆”条</a>那样的重复动画，用户可能会担心某个过程的某个方面已经停滞或崩溃。他们可能会不必要地取消操作。
+</p>
+
+<p>
+决定使用虚构的进度条是一种必要的恶。
+</p>
+
+<p>
+通过展示一定程度的前进势头，用户对操作按预期进行的信心增强，放弃设置过程的人也减少了。
+</p>
+</blockquote>
+
+<p>
+但是作者对此不太满意，他给出了一些更好的实现。
+</p>
+</div>
+</div>
+<div id="outline-container-orgae8a917" class="outline-3">
+<h3 id="orgae8a917"><a href="https://simonwillison.net/2025/Mar/2/hallucinations-in-code/">Hallucinations in code are the least dangerous form of LLM mistakes</a></h3>
+<div class="outline-text-3" id="text-orgae8a917">
+<p>
+LLM 会出现幻觉，在编程的时候，可能会出现本来不存在的方法。
+</p>
+
+<p>
+LLM 生成的代码需要实际去执行它，检验代码是否生效，这样才能避免一些编译器无法发现的问题。
+</p>
+
+<p>
+你也需要去 review LLM 的代码，有时这会有不小的 review 压力，有时 LLM 重构的力度比较大，review 它的改动也需要不少的时间。
+</p>
+
+<blockquote>
+<p>
+代码中的幻觉是你可以从模型中遇到的最无害的幻觉。
+</p>
+
+<p>
+使用 LLMs 进行代码的真正风险在于，它们会犯一些不会被语言编译器或解释器立即捕获的错误。而且这些错误时常发生！
+</p>
+
+<p>
+<a href="https://simonwillison.net/2025/Mar/2/hallucinations-in-code/#:~:text=Hallucinations%20in%20code%20are%20the%20least%20harmful%20hallucinations%20you%20can%20encounter%20from%20a%20model">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+如果你在使用LLM编写代码而自己甚至没有运行它，你在做什么？
+</p>
+
+<p>
+&#x2026;
+</p>
+
+<p>
+仅仅因为代码看起来不错并且运行没有错误，并不意味着它实际上在做正确的事情。
+</p>
+
+<p>
+再仔细的代码审查——甚至全面的自动化测试——也无法明确证明代码确实做了正确的事情。
+</p>
+
+<p>
+<i>你必须自己运行它！</i>
+</p>
+
+<p>
+证明代码有效是你的工作。这是我认为LLMs不会让软件专业人士失业的众多原因之一。
+</p>
+
+<p>
+<a href="https://simonwillison.net/2025/Mar/2/hallucinations-in-code/#:~:text=Just%20because%20code,out%20of%20work">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+避免这些问题的方法与您在审查其他人编写的代码或自己编写的代码时避免问题的方法相同：
+</p>
+
+<p>
+您需要积极地执行该代码。您需要具备出色的手动质量保证技能。
+</p>
+
+<p>
+编程的一条通用规则是，在亲眼看到某段代码运行之前，你绝不应该信任它——更好的是，亲眼看到它失败并修复它。
+</p>
+
+<p>
+<a href="https://simonwillison.net/2025/Mar/2/hallucinations-in-code/#:~:text=The%20way%20to,then%20fixed%20it">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+我不断看到人们说 “如果我必须审查每一行 LLM 写的代码，那我自己写会更快！”
+</p>
+
+<p>
+那些人大声宣称他们在阅读、理解和审查他人编写的代码这一关键技能上投资不足。
+</p>
+
+<p>
+我建议多加练习。审查由 LLMs 为你编写的代码是一个很好的方法。
+</p>
+
+<p>
+<a href="https://simonwillison.net/2025/Mar/2/hallucinations-in-code/#:~:text=I%E2%80%99ll%20finish%20this,to%20do%20that">Source</a>
+</p>
+</blockquote>
+
+<p>
+减少幻觉，作者改了三个改进方向：
+</p>
+
+<ul class="org-ul">
+<li>尝试不同的模型，有的模型在某些方面的表现更好。</li>
+<li>学习如何使用上下文，给 LLM 提供足够的上下文。</li>
+<li>选择<a href="https://boringtechnology.club/">无聊的技术</a>，这些技术往往都存在了一段时间， LLM 的训练集中很可能包含这些“老旧”技术，LLM 能更好的使用它们。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb684dc0" class="outline-3">
+<h3 id="orgb684dc0"><a href="https://rodyne.com/?p=1828">With AI You Need to Think Much Bigger!</a></h3>
+<div class="outline-text-3" id="text-orgb684dc0">
+<p>
+以前一些不太擅长的东西，在 LLM 的帮助下，现在也许可以做起来了。
+</p>
+
+<p>
+虽然经常听到程序员可能会被 LLM 取代的论调，但是有了 LLM，也确实让程序员多了很多可能性。
+</p>
+
+<p>
+这是一个最坏的时代，也是一个最好的时代 ;)
+</p>
+
+<blockquote>
+<p>
+我现在正处于一个真正的僵局，职业生涯的末尾，知道我可以带着新的见解和更宏大的愿景快乐地重新开始一切。
+</p>
+
+<p>
+这感觉就像在你去世前两周中了彩票。
+</p>
+
+<p>
+我现在正在重新审视一些我曾经认为过于复杂或超出我能力范围的爱好项目，只要我能负担得起，就尝试一下。
+</p>
+
+<p>
+活在这个时代真令人兴奋。
+</p>
+
+<p>
+<a href="https://rodyne.com/?p=1828#:~:text=I%20am%20now,to%20be%20alive">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org47901a4" class="outline-3">
+<h3 id="org47901a4"><a href="https://ferd.ca/ai-where-in-the-loop-should-humans-go.html">AI: Where in the Loop Should Humans Go?</a></h3>
+<div class="outline-text-3" id="text-org47901a4">
+<p>
+这篇文章提出的问题挺值得深思的，强烈推荐看看原文。
+</p>
+
+<blockquote>
+<p>
+我首先要说的是，我们目前没有人工通用智能（AGI）。
+</p>
+
+<p>
+我不在乎我们是在 2 年、40 年还是永远都没有；如果我想部署一个应该在我的生产环境中执行任务的工具（或代理），它必须能够现在就做到。
+</p>
+
+<p>
+我不是想要被打动，我想要让我的生活和系统变得更好。
+</p>
+
+<p>
+另一个我希望你记住的机制是所谓的上下文差距。
+</p>
+
+<p>
+简而言之，任何模型或自动化都是从对受控环境的狭窄定义构建的，随着其获得自主性而扩展，但仍然有限。
+</p>
+
+<p>
+相比之下，系统中的人从广泛的情况开始，逐步缩小定义并添加约束，以使问题解决变得可行。
+</p>
+
+<p>
+一方从狭窄的上下文开始，而另一方从广泛的上下文开始——因此在实践中，人与机器之间的合作类型是一个不断更新彼此的过程：
+</p>
+
+<p>
+一个模型的最优解并不是一个问题的最优解，除非该模型是对问题的完美表述，而这在现实中从来都不是。
+</p>
+
+<p>
+<a href="https://ferd.ca/ai-where-in-the-loop-should-humans-go.html#:~:text=The%20first%20thing,1979%2C%20p.%2097">Source</a>
+</p>
+</blockquote>
+
+<p>
+文章中提出的一些问题：
+</p>
+
+<ul class="org-ul">
+<li>在工具被拿走后，你是否变得更好？</li>
+<li>你是在增强人还是计算机？</li>
+<li>它是在让你变成一个监视者，而不是帮助建立理解吗？</li>
+<li>这是否限制了你可以查看的内容？</li>
+<li>这是一种内置的干扰吗？</li>
+<li>它融入了哪些视角？</li>
+<li>它会成为英雄吗？(它变得不可或缺）</li>
+<li>你需要它完美吗？</li>
+<li>它是在完成整个工作还是其中的一部分？</li>
+<li>如果我们有不止一个呢？</li>
+<li>他们如何应对有限的上下文？</li>
+<li>在停机或事件发生后，谁负责学习，谁负责修复？</li>
+</ul>
+
+<blockquote>
+<p>
+总的来说，上述问题并没有明确说你不应该使用 AI，也没有说明人应该放在循环的哪个位置。
+</p>
+
+<p>
+关键是你应该提出这个问题，并意识到仅仅将某些东西添加到你的系统中并不能替代工人。
+</p>
+
+<p>
+相反，它会改变工作并创造新的模式和弱点。
+</p>
+
+<p>
+这些模式中的一些是已知的并且经过充分研究。
+</p>
+
+<p>
+我们不必急于通过失败重新发现它们，就好像我们是第一次自动化某些东西一样。
+</p>
+
+<p>
+如果人工智能变得如此优秀和聪明，以至于超越了你所有的工程师，那么你在它变得优秀后才采用它也无所谓。
+</p>
+
+<p>
+与此同时，这些事情确实很重要，并且会产生实际影响，因此请负责任地设计你的系统。
+</p>
+
+<p>
+<a href="https://ferd.ca/ai-where-in-the-loop-should-humans-go.html#:~:text=All%20in%20all,your%20systems%20responsibly">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="outline-container-orga1da635" class="outline-2">
+<h2 id="orga1da635">Tutorial | Resource</h2>
+<div class="outline-text-2" id="text-orga1da635">
+</div>
+<div id="outline-container-org659dfea" class="outline-3">
+<h3 id="org659dfea"><a href="https://davidwong.fr/blockbreakers/">Block Breakers</a></h3>
+<div class="outline-text-3" id="text-org659dfea">
+<blockquote>
+<p>
+本页面旨在教您关于分组密码的密码分析。
+</p>
+
+<p>
+它并不假装是一个详尽的攻击列表，但会提供足够的信息让您入门。
+</p>
+
+<p>
+课程分为几个部分，第一部分是关于 AES 的。
+</p>
+
+<p>
+我们本可以设计一个简单的分组密码，但攻击真实的东西更有趣，你不觉得吗？
+</p>
+
+<p>
+所以前往 <a href="https://davidwong.fr/blockbreakers/aes.html">Set 1</a> 并开始实现 AES。
+</p>
+
+<p>
+别担心，我们会陪着你 ;)
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orgc4a9085" class="outline-3">
+<h3 id="orgc4a9085"><a href="https://churchofturing.github.io/landscapeoflisp.html">The Landscape of Lisp</a></h3>
+<div class="outline-text-3" id="text-orgc4a9085">
+<p>
+文章整理了很多关于 Lisp 的资源。
+</p>
+
+<blockquote>
+<p>
+Lisp 是一系列编程语言，拥有悠久、丰富且常常令人困惑的传统。
+</p>
+
+<p>
+在 1960 年，约翰·麦卡锡（John McCarthy）发表了一篇论文，随后 64 年间产生了数千种方言和许多非常好的想法。
+</p>
+
+<p>
+从外部视角来看，Lisp 家族的碎片化对新手来说可能显得非常混乱，就像一个软件的巴别塔。事实上，我认为 Lisp 的多样性是它最好的品质之一。
+</p>
+
+<p>
+这篇文章的目的不是说服读者 Lisp 有多伟大；相反，我假设读者已经对其有一定兴趣，并且现在正在试图弄清楚这些方言中哪一种最适合他们。
+</p>
+
+<p>
+这也不是关于“哪种 Lisp 最好”的问题，而只是我对使用广泛的 Lisp 方言的主观看法。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orgb293a90" class="outline-3">
+<h3 id="orgb293a90"><a href="https://rexriepe.com/yousuckatcss/">You suck at CSS</a></h3>
+<div class="outline-text-3" id="text-orgb293a90">
+<blockquote>
+<p>
+本书讲解 CSS 的编写。它也探讨如何避免编写 CSS。
+</p>
+
+<p>
+它面向想要学习 CSS 的人，想要避免 CSS 的人，业余爱好者，专业人士以及所有介于两者之间的人。
+</p>
+
+<p>
+该书旨在提供关于为什么 CSS 及其周围的设计生态系统是这样的背景信息。
+</p>
+
+<p>
+它是为了支持 California Stylesheets CSS 框架而编写的。
+</p>
+
+<p>
+它的核心是使用网络技术在前端快速完成任务，并专注于在团队中保持这种速度。
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="outline-container-org56d176b" class="outline-2">
+<h2 id="org56d176b">Code Related</h2>
+<div class="outline-text-2" id="text-org56d176b">
+</div>
+<div id="outline-container-org99f671a" class="outline-3">
+<h3 id="org99f671a"><a href="https://londonwebstandards.org/talks/everything-you-need-to-know-about-invoker-commands/">Everything you need to know about Invoker Commands</a></h3>
+<div class="outline-text-3" id="text-org99f671a">
+<p>
+Chrome 135 的新特性， <code>command</code> 和 <code>commandfor</code> ，可以用来方便地将 button 和 dialog，popover 关联起来。
+</p>
+
+<p>
+see also: <a href="https://developer.chrome.com/blog/command-and-commandfor">Introducing command and commandfor</a>.
+</p>
+</div>
+</div>
+<div id="outline-container-org557d154" class="outline-3">
+<h3 id="org557d154"><a href="https://css-tricks.com/functions-in-css/">Functions in CSS?!</a></h3>
+<div class="outline-text-3" id="text-org557d154">
+<p>
+CSS 中即将有函数了。
+</p>
+
+<blockquote>
+<p>
+自定义函数赋予作者与自定义属性相同的能力，但带有参数化。
+</p>
+
+<p>
+<a href="https://css-tricks.com/functions-in-css/#:~:text=Custom%20functions%20allow%20authors%20the%20same%20power%20as%20custom%20properties%2C%20but%20parameterized">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+我自信地说：函数将给 CSS 带来巨大的变化，并不是说我们会以不同的方式编写它——我们不会用函数来居中一个 &lt;div&gt; ，但它们将简化那些黑客式的 CSS，并开启许多新的可能性。
+</p>
+
+<p>
+<a href="https://css-tricks.com/functions-in-css/#:~:text=I%20say%20it%20with%20confidence%3A%20functions%20will%20bring%20an%20enormous%20change%20to%20CSS%2C%20not%20in%20the%20sense%20that%20we%E2%80%99ll%20write%20it%20any%20differently%20%E2%80%94%20we%20won%E2%80%99t%20use%20functions%20to%20center%20a%20%3Cdiv%3E%2C%20but%20they%20will%20simplify%20hack%2Dish%20CSS%20and%20open%20a%20lot%20of%20new%20possibilities">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org7b66a13" class="outline-3">
+<h3 id="org7b66a13"><a href="https://css-tricks.com/using-styling-the-details-element">Using &amp; Styling the Details Element</a></h3>
+<div class="outline-text-3" id="text-org7b66a13">
+<p>
+如何给 <code>&lt;details&gt;</code> 和 <code>&lt;summary&gt;</code> 设置样式。
+</p>
+</div>
+</div>
+<div id="outline-container-org10e688f" class="outline-3">
+<h3 id="org10e688f"><a href="https://codeburst.io/the-only-way-to-detect-touch-with-javascript-7791a3346685">The only way to detect touch with JavaScript</a></h3>
+<div class="outline-text-3" id="text-org10e688f">
+<p>
+最近在想办法在同一个页面，区分是鼠标点击，还是触屏。
+</p>
+
+<p>
+问了 LLM，给出的其实就是 Stack Overflow 上的答案，但并不好使。最终还是监听 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Touch_events">Touch events</a> 事件实现的。
+</p>
+
+<blockquote>
+<p>
+如果你问 Stack Overflow “如何用 JavaScript 检测触摸”，你会得到很多答案，它们都有一个共同点：与人类无关。
+</p>
+
+<p>
+在我并不谦虚的观点中，所有这些答案都是错误的，但这不是回答者的错。这是提问者的错。
+</p>
+
+<p>
+你为什么会想知道你的用户是否在使用一个响应触摸的设备呢？
+</p>
+
+<p>
+我们想要检测人类的触摸，而不是设备的触摸。我认为这足够重要，值得用大字体重复。
+</p>
+
+<p>
+<code>我们想要检测人类的触摸，而不是设备的触摸。</code>
+</p>
+
+<p>
+<a href="https://codeburst.io/the-only-way-to-detect-touch-with-javascript-7791a3346685#:~:text=Okay%2C%20got%20it-,If%20you%20ask%20stack%20overflow%20%E2%80%9Chow%20to%20detect%20touch%20with%20JavaScript,We%20want%20to%20detect%20human%20touch%2C%20not%20device%20touch.,-We%20don%E2%80%99t%20care">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org3119cad" class="outline-3">
+<h3 id="org3119cad"><a href="https://2ality.com/2025/02/what-is-typescript.html">What is TypeScript? An overview for JavaScript programmers</a></h3>
+<div class="outline-text-3" id="text-org3119cad">
+<p>
+从 JS 开发者角度看 TS。
+</p>
+</div>
+</div>
+<div id="outline-container-org7af2972" class="outline-3">
+<h3 id="org7af2972"><a href="https://css-tricks.com/toe-dipping-into-view-transitions/">Toe Dipping Into View Transitions</a></h3>
+<div class="outline-text-3" id="text-org7af2972">
+<p>
+对于 view transition 的探究，不过我觉得文章写得一般，但是文章中引用的另外 2 篇文章不错：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://daverupert.com/2023/05/getting-started-view-transitions/">Getting started with View Transitions on multi-page apps</a></li>
+<li><a href="https://blog.jim-nielsen.com/2025/view-transition-name-gotchas/">Gotchas in Naming CSS View Transitions</a></li>
+</ul>
+
+<p>
+我在博客里也实现了，现在你在首页中点击文章，然后返回，你会看到标题有一个过渡效果。
+</p>
+
+<p>
+它的一个好处是，当你从一篇文章返回的时候，知道刚才看的是哪一篇 :P
+</p>
+</div>
+</div>
+<div id="outline-container-orga44d2e6" class="outline-3">
+<h3 id="orga44d2e6"><a href="https://nerdy.dev/css-kaleidoscopes">CSS Kaleidoscopes</a></h3>
+<div class="outline-text-3" id="text-orga44d2e6">
+<p>
+用 CSS 实现万花筒效果。
+</p>
+
+<p>
+（作者的头像好像 undertale 里的 Papyrus。）
+</p>
+
+
+<figure id="orgb072378">
+<img src="https://static.wikia.nocookie.net/undertale/images/2/21/Papyrus1.PNG/revision/latest?cb=20151124092813&amp;path-prefix=zh" alt="latest?cb=20151124092813&amp;path-prefix=zh">
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>undertale 中 Papyrus 的形象。</figcaption>
+</figure>
+</div>
+</div>
+<div id="outline-container-org24b378a" class="outline-3">
+<h3 id="org24b378a"><a href="https://ishadeed.com/article/css-relative-colors/">CSS Relative colors</a></h3>
+<div class="outline-text-3" id="text-org24b378a">
+<p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors">CSS Relative colors</a> 的使用教程，作者的代码示例做得相当好。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgaa239d8" class="outline-2">
+<h2 id="orgaa239d8">Cool Bit</h2>
+<div class="outline-text-2" id="text-orgaa239d8">
+</div>
+<div id="outline-container-orgf7c0ddb" class="outline-3">
+<h3 id="orgf7c0ddb"><a href="https://divided-we-fall.therobinlord.com/df_level/1">Divided We Fall</a></h3>
+<div class="outline-text-3" id="text-orgf7c0ddb">
+<p>
+&lt;div&gt;ided we fall, 通过游戏学习 HTML 和 CSS，有趣！画风也很可爱
+</p>
+</div>
+</div>
+<div id="outline-container-org393e606" class="outline-3">
+<h3 id="org393e606"><a href="https://initialcommit.com/blog/im-making-a-git-game">I struggled with Git, so I'm making a game to spare others the pain</a></h3>
+<div class="outline-text-3" id="text-org393e606">
+<p>
+作者认为学习 Git 有点痛苦，所以他做了一个游戏帮助类似的人学习 Git。
+</p>
+
+<p>
+第一个版本作者在 DOOM 里集成了 Git，你举着枪走进一个房间，上面贴着 git commit，进去之后看到的是 diff。
+</p>
+
+<p>
+有点没绷住 _​(:3 」∠ )​_
+</p>
+
+<p>
+后来他做成了<a href="https://devlands.com/">类似 Minecraft 一样的游戏</a>，挺酷的。
+</p>
+</div>
+</div>
+<div id="outline-container-org537343d" class="outline-3">
+<h3 id="org537343d"><a href="https://socket.dev/blog/typescript-types-running-doom">Michigan TypeScript Founder Successfully Runs Doom Inside TypeScript's Type System</a></h3>
+<div class="outline-text-3" id="text-org537343d">
+<blockquote>
+<p>
+在今年编程界可以说是最令人印象深刻的技术壮举之一，密歇根 TypeScript 的创始人 Dimitri Mitropoulos 完成了一项之前被认为不可能的事情：完全在 TypeScript 的类型系统内运行经典的 1993 年视频游戏 Doom。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org86ff5ea" class="outline-3">
+<h3 id="org86ff5ea"><a href="https://pierre.co/">Pierre</a></h3>
+<div class="outline-text-3" id="text-org86ff5ea">
+<p>
+很酷炫的页面，就是有点废眼睛。
+</p>
+</div>
+</div>
+<div id="outline-container-orgb69a64f" class="outline-3">
+<h3 id="orgb69a64f"><a href="https://martin.janiczek.cz/vt220-font-emulation/">VT220 Font Emulation</a></h3>
+<div class="outline-text-3" id="text-orgb69a64f">
+<p>
+一种终端复古字体的模拟。
+</p>
+</div>
+</div>
+<div id="outline-container-org4fec949" class="outline-3">
+<h3 id="org4fec949"><a href="https://fi-le.net/pypi/">A Map of Python</a></h3>
+<div class="outline-text-3" id="text-org4fec949">
+<p>
+作者将 Python 生态的依赖包做成了一张<a href="https://anvaka.github.io/pm/#/galaxy/python?cx=-2700&amp;cy=377&amp;cz=5622&amp;lx=-0.0869&amp;ly=-0.2315&amp;lz=-0.0338&amp;lw=0.9684&amp;ml=150&amp;s=1.75&amp;l=1&amp;v=2015-09-27T13-00-00Z">地图</a>， 像是宇宙中的一片星云。
+</p>
+</div>
+</div>
+<div id="outline-container-orgec197a3" class="outline-3">
+<h3 id="orgec197a3"><a href="https://www.bmwgroup-classic.com/en/history/historic-modeloverview-bmw.html">BMW Historic Model Overview</a></h3>
+<div class="outline-text-3" id="text-orgec197a3">
+<p>
+宝马的一些历史车型。
+</p>
+</div>
+</div>
+<div id="outline-container-orga9ff2bb" class="outline-3">
+<h3 id="orga9ff2bb"><a href="https://freesound.org/">freesound</a></h3>
+<div class="outline-text-3" id="text-orga9ff2bb">
+<blockquote>
+<p>
+Freesound 是一个拥有超过 50 万个声音样本的创意共享许可音频样本的协作库，且是一个非营利组织。
+</p>
+
+<p>
+截至 2021 年 5 月，拥有超过 500,000 个声音和效果，以及 800 万注册用户（截至 2019 年 3 月）。
+</p>
+
+<p>
+声音由用户上传到网站，涵盖从现场录音到合成声音的广泛主题。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orgb3f7a39" class="outline-3">
+<h3 id="orgb3f7a39"><a href="https://codepen.io/petrek/pen/WbNNeWL?utm_source=CSS-Weekly&amp;utm_campaign=Issue-607&amp;utm_medium=web">sunshine pure css</a></h3>
+<div class="outline-text-3" id="text-orgb3f7a39">
+<p>
+纯 CSS 实现的小太阳。
+</p>
+</div>
+</div>
+<div id="outline-container-org08690e4" class="outline-3">
+<h3 id="org08690e4"><a href="https://pippinbarr.com/it-is-as-if-you-were-on-your-phone/info/">It is as if you were on your phone</a></h3>
+<div class="outline-text-3" id="text-org08690e4">
+<blockquote>
+<p>
+It is as if you were on your phone 是一款几乎是推测性的游戏，描绘了一个极其接近的未来，在这个未来中，我们都面临着同时需要一直使用手机和又不想一直使用手机的巨大压力。
+</p>
+
+<p>
+我们的手指想要触摸屏幕，我们的眼睛想要注视表面，我们的大脑想要高效且始终被占用。
+</p>
+
+<p>
+但喜欢照片、滑动个人资料、观看短视频以及我们一直在做的其他一切也让人感到疲惫。
+</p>
+
+<p>
+It is as if you were on your phone提供了一种替代方案：假装在使用手机，以便看起来像人类，但实际上什么都不做。
+</p>
+
+<p>
+跟随提示，获得自由。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org6e1beaf" class="outline-3">
+<h3 id="org6e1beaf"><a href="https://www.sesame.com/research/crossing_the_uncanny_valley_of_voice">Crossing the uncanny valley of conversational voice</a></h3>
+<div class="outline-text-3" id="text-org6e1beaf">
+<p>
+Sesame 在实现一个 “对话伙伴”，具有和人接近的说话方式，可以和他们对话一下看看。
+</p>
+
+<blockquote>
+<p>
+我们怎么知道某人是否真正理解我们？这很少仅仅是我们的言辞——而是在声音的细微之处：兴奋的上升，深思的停顿，温暖的安慰。
+</p>
+
+<p>
+声音是我们人类最亲密的媒介，通过无数种音调、音高、节奏和情感的变化传递着多层含义。
+</p>
+
+<p>
+今天的数字语音助手缺乏使其真正有用的基本特质。
+</p>
+
+<p>
+如果无法充分发挥语音的潜力，它们就无法有效地与我们合作。
+</p>
+
+<p>
+一个只用中性语调说话的个人助手在初始新鲜感消退后，很难在我们的日常生活中找到一个永久的位置。
+</p>
+
+<p>
+随着时间的推移，这种情感的平淡不仅令人失望——它变得令人疲惫。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orgd73d4cf" class="outline-3">
+<h3 id="orgd73d4cf"><a href="https://scrollbuddy.com/">Scroll buddy</a></h3>
+<div class="outline-text-3" id="text-orgd73d4cf">
+<p>
+放一个帅小伙在你的滚动条上，增添一点乐趣。
+</p>
+</div>
+</div>
+<div id="outline-container-orgee7958e" class="outline-3">
+<h3 id="orgee7958e"><a href="https://estilofilos.blogspot.com/2016/03/one-logo-three-companies-i.html">One Logo, Three Companies (I)</a></h3>
+<div class="outline-text-3" id="text-orgee7958e">
+<p>
+日本三菱的 logo 被三家公司使用：
+</p>
+<ul class="org-ul">
+<li><a href="https://en.wikipedia.org/wiki/Mitsubishi">三菱商事集团</a> （尼康和麒麟啤酒也是它的一部份）</li>
+<li><a href="https://www.mpuni.co.jp/">三菱铅笔株式会社</a>
+<ul class="org-ul">
+<li><a href="https://notes.stlartsupply.com/the-golden-age-of-japanese-pencils-1952-1967/">The Golden Age of Japanese Pencils, 1952-1967</a> 如果你对三菱铅笔感兴趣，也可以看看这篇文章。</li>
+</ul></li>
+<li><a href="https://konyusha.co.jp/index.html">三菱苹果酒</a></li>
+</ul>
+
+<p>
+一个商标竟然可以被这么多公司用，真奇怪。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org10ccdc3" class="outline-2">
+<h2 id="org10ccdc3">Tool | Library</h2>
+<div class="outline-text-2" id="text-org10ccdc3">
+</div>
+<div id="outline-container-org91db111" class="outline-3">
+<h3 id="org91db111"><a href="https://github.com/transitive-bullshit/random">random</a></h3>
+<div class="outline-text-3" id="text-org91db111">
+<p>
+可种子(Seedable)随机数生成器，支持多种常见分布。
+</p>
+
+<p>
+相同的种子，可以生成相同的随机数序列。
+</p>
+</div>
+</div>
+<div id="outline-container-orge4fdec2" class="outline-3">
+<h3 id="orge4fdec2"><a href="https://github.com/image-js/fast-png">fast-png</a></h3>
+<div class="outline-text-3" id="text-orge4fdec2">
+<p>
+完全用 JavaScript 编写的 PNG 图像解码器和编码器。
+</p>
+</div>
+</div>
+<div id="outline-container-org475eb61" class="outline-3">
+<h3 id="org475eb61"><a href="https://github.com/mikesmallhelp/wacat">wecat</a></h3>
+<div class="outline-text-3" id="text-org475eb61">
+<p>
+用猫的混乱和人工智能驱动的测试挑战你的网络应用！
+</p>
+
+<blockquote>
+<p>
+想象一下，您暂时离开电脑，去喝杯咖啡。
+</p>
+
+<p>
+与此同时，您的猫走过您的键盘，并造成了一些混乱。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org649ecd6" class="outline-3">
+<h3 id="org649ecd6"><a href="https://github.com/hakimel/reveal.js">reveal.js</a></h3>
+<div class="outline-text-3" id="text-org649ecd6">
+<p>
+使用 HTML 或 Markdown 写 PPT。
+</p>
+
+<blockquote>
+<p>
+reveal.js 是一个开源的 HTML 演示框架。
+</p>
+
+<p>
+它是一个工具，使任何拥有网络浏览器的人都可以免费创建功能齐全且美观的演示文稿。
+</p>
+
+<p>
+使用 reveal.js 制作的演示文稿是基于开放的网络技术。
+</p>
+
+<p>
+这意味着您在网络上可以做的任何事情，都可以在您的演示文稿中实现。
+</p>
+
+<p>
+使用 CSS 更改样式，使用 &lt;iframe&gt; 包含外部网页，或使用我们的 JavaScript API 添加您自己的自定义行为。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org46cf2ab" class="outline-3">
+<h3 id="org46cf2ab"><a href="https://github.com/darrenburns/posting">posting</a></h3>
+<div class="outline-text-3" id="text-org46cf2ab">
+<p>
+一个运行在终端的 API 工具，界面看起来不错。
+</p>
+</div>
+</div>
+<div id="outline-container-orgfa2d698" class="outline-3">
+<h3 id="orgfa2d698"><a href="https://quaily.com/">quaily</a></h3>
+<div class="outline-text-3" id="text-orgfa2d698">
+<p>
+一个现代的、人工智能驱动的新闻通讯服务。
+</p>
+
+<p>
+如果你需要一个 newsletters 服务，或许可以看看。
+</p>
+</div>
+</div>
+<div id="outline-container-orgf2952a0" class="outline-3">
+<h3 id="orgf2952a0"><a href="https://mistral.ai/fr/news/mistral-ocr">Mistral OCR</a></h3>
+<div class="outline-text-3" id="text-orgf2952a0">
+<p>
+提供 OCR API，宣传的优点是:
+</p>
+
+<ul class="org-ul">
+<li>对复杂文档的最先进理解</li>
+<li>本地多语言和多模态</li>
+<li>顶级基准</li>
+<li>同类中最快</li>
+<li>文档作为提示，结构化输出</li>
+<li>可选择性地提供给处理高度敏感或机密信息的组织自托管</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org096391c" class="outline-2">
+<h2 id="org096391c">Emacs</h2>
+<div class="outline-text-2" id="text-org096391c">
+<ul class="org-ul">
+<li><a href="https://amitp.blogspot.com/2025/02/emacs-tree-sitter-custom-highlighting.html">Amit's Thoughts: Emacs Tree-sitter custom highlighting, part 1</a> 作者尝试用 <a href="https://tree-sitter.github.io/tree-sitter/index.html">Tree-sitter</a> 去高亮一些语法。</li>
+<li><a href="https://opensource.com/article/20/3/variables-emacs">What you need to know about variables in Emacs</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0fe6283" class="outline-2">
+<h2 id="org0fe6283">一些话 | 摘抄</h2>
+<div class="outline-text-2" id="text-org0fe6283">
+</div>
+<div id="outline-container-org5913ed6" class="outline-3">
+<h3 id="org5913ed6"><a href="https://theengineeringmanager.substack.com/p/should-managers-still-code">Should managers still code?</a></h3>
+<div class="outline-text-3" id="text-org5913ed6">
+<blockquote>
+<p>
+进行代码审查。不要只是浏览 PR，而是要真正深入其中：在本地运行分支，进行测试，批判性地思考设计和实现，并提供反馈。
+</p>
+
+<p>
+<a href="https://theengineeringmanager.substack.com/p/should-managers-still-code#:~:text=Do%20code%20reviews.%20Don%27t%20just%20skim%20PRs%20(sorry%2C%20reader!)%2C%20but%20really%20dig%20into%20them%3A%20run%20the%20branch%20locally%2C%20test%20it%2C%20think%20critically%20about%20the%20design%20and%20the%20implementation%2C%20and%20provide%20feedback.%20Record%20a%20video%20of%20your%20review%20to%20highlight%20things%20that%20could%20be%20better">Source</a>
+</p>
+</blockquote>
+
+<p>
+目前我进行 review，还是以看 PR 为主，但比较少将分支拉下来，本地运行并测试需求功能。
+</p>
+
+<p>
+有的问题或许是需要运行起来才能发现的，以后 review 改变一下。
+</p>
+</div>
+</div>
+<div id="outline-container-orgdce4841" class="outline-3">
+<h3 id="orgdce4841"><a href="https://worldhistory.substack.com/p/the-ancient-art-of-color">The Ancient Art of Color</a></h3>
+<div class="outline-text-3" id="text-orgdce4841">
+<blockquote>
+<p>
+&#x2026;色彩在古代世界是一种奢侈。
+</p>
+
+<p>
+你可能不太会考虑生活中的颜色从何而来（我当然不会）。
+</p>
+
+<p>
+你会选择一件红色衬衫或一条蓝色裤子，却不知道它们是怎么来的。
+</p>
+
+<p>
+但在古代和中世纪世界，鲜艳的色彩往往是通过艰苦的努力和巨大的花费而获得的。
+</p>
+
+<p>
+要想在家中或身上添上一抹亮色，需要付出一定的努力。
+</p>
+
+<p>
+<a href="https://worldhistory.substack.com/p/the-ancient-art-of-color#:~:text=The%20story%20of,took%20some%20doing">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orged8d0d1" class="outline-3">
+<h3 id="orged8d0d1"><a href="https://www.geoffreylitt.com/2025/03/03/the-nightmare-bicycle.html">Avoid the nightmare bicycle</a></h3>
+<div class="outline-text-3" id="text-orged8d0d1">
+<blockquote>
+<p>
+同样，产品设计中最糟糕的误解之一是，微波炉需要为你可能烹饪的每样东西都配备一个按钮：“爆米花”、“鸡肉”、“土豆”、“冷冻蔬菜”，等等等等。
+</p>
+
+<p>
+真的不需要！只要有一个时间（和功率）按钮就可以了。人们会知道如何烹饪的。
+</p>
+
+<p>
+好的设计揭示了系统的结构；它们依赖于用户理解这种结构并将其应用于新情况的能力。我们为此而生。
+</p>
+
+<p>
+糟糕的设计用肤浅的标签来掩盖结构，从而隐藏了底层系统，阻碍了用户在头脑中建立清晰模型的能力。
+</p>
+
+<p>
+<a href="https://www.geoffreylitt.com/2025/03/03/the-nightmare-bicycle.html#:~:text=Along%20the%20same,in%20their%20heads">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orge0b210c" class="outline-3">
+<h3 id="orge0b210c"><a href="https://leehanchung.github.io/blogs/2025/02/26/deep-research/">The Differences between Deep Research, Deep Research, and Deep Research</a></h3>
+<div class="outline-text-3" id="text-orge0b210c">
+<blockquote>
+<p>
+“深度研究 (Deep Research) 是一个报告生成系统，它接受用户查询，使用大型语言模型（LLMs）作为代理，迭代搜索和分析信息，并生成详细的报告作为输出。”
+</p>
+
+<p>
+<a href="https://leehanchung.github.io/blogs/2025/02/26/deep-research/#:~:text=%E2%80%9CDeep%20research%20is%20a%20report%20generation%20system%20that%20takes%20a%20user%20query%2C%20uses%20large%20language%20models%20(LLMs)%20as%20agents%20to%20iteratively%20search%20and%20analyze%20information%2C%20and%20produce%20a%20detailed%20report%20as%20the%20output.%E2%80%9D">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org16e9a7d" class="outline-3">
+<h3 id="org16e9a7d"><a href="https://dri.es/trusting-ai-with-my-images-was-not-easy">Trusting AI with my images wasn't easy</a></h3>
+<div class="outline-text-3" id="text-org16e9a7d">
+<blockquote>
+<p>
+AI 并不完美，但它可以非常有用。
+</p>
+
+<p>
+人们担心幻觉和不准确性，我也有这样的担忧。
+</p>
+
+<p>
+但在为 9,000 张图片生成 alt -text 之后，我看到了不同的东西：真实的、实用的价值。
+</p>
+
+<p>
+它不仅让我的网站更易于访问；还挑战了我。
+</p>
+
+<p>
+它让我明白，有时候，改善的最佳方式是退一步，让工具更好地完成工作。
+</p>
+
+<p>
+<a href="https://dri.es/trusting-ai-with-my-images-was-not-easy#:~:text=AI%20isn%27t%20perfect,the%20job%20better">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org59869a2" class="outline-3">
+<h3 id="org59869a2"><a href="https://newsletter.posthog.com/p/50-things-weve-learned-about-building">50 things we’ve learned about building successful products</a></h3>
+<div class="outline-text-3" id="text-org59869a2">
+<details id="orgff1f439">
+<summary>部分摘录</summary>
+
+<blockquote>
+<ul class="org-ul">
+<li>产品的成功是员工努力的结果。因为人才是会不断积累的，所以招聘的高标准至关重要。没有什么比一个不称职的员工更能拖累你了。</li>
+<li>构建一个伟大的产品需要信任。缺乏信任往往是团队面临的最大瓶颈之一。这很可能是由于雇佣了一个水平不够高的人，或者未能给予该人反馈以帮助他们改进。</li>
+<li>信任也是通过透明度建立的。在公开场合工作，进行公开讨论，并记录你正在做的事情。这为每个人提供了所需的背景信息，并消除了困扰许多公司的政治争斗。</li>
+<li>依靠信任和反馈，而不是流程。这是我们的核心价值观之一。构建和扩展人们想要的东西是一个复杂的问题，因此我们让人们自行判断。当他们判断错误时，我们会直接给予反馈。</li>
+<li>“你无法验证一个想法。它并不存在，你必须去构建它。市场会验证它。”</li>
+<li>计划是有用的，但死板地遵循计划并不是。良好的执行不应意味着执行一个特定的计划，而是反复做最重要的事情。评判人们的标准应是他们交付的成果、交付的频率以及他们工作的影响，而不是他们是否“遵循了计划”。</li>
+<li>等待“再一周”再发布某个东西几乎总是个坏主意。这种态度如果延续几个月， 动力会大大减弱。越早将某个东西交到用户手中，越早你就能知道他们是否重视它，以及如何改进它。</li>
+<li>减少你的进行中的工作。PR 应该在一天内完成，开始你的一天时先回应他人的审查请求，随时合并，使用功能标志发布，并在生产环境中测试。每一项都减少了完成工作所需的上下文量。</li>
+<li>人为设定的截止日期不会让你的团队更快。它们往往导致一种恶性循环，造成大量的技术债务和疲惫。相反，消除那些拖慢团队的流程，给予小团队快速交付的自主权。</li>
+<li>明确责任。这使得决定构建什么变得更加清晰和快速。回避责任的团队花费太多时间在规划、头脑风暴、会议和项目管理上，而他们本可以直接进行交付。</li>
+<li>工程师能够决定构建什么。他们理解技术限制，能够识别功能之间的模式，并能够找出解决问题的方法。只是当涉及到用户需求时，他们可能会面临信息瓶颈。</li>
+<li>产品经理应该通过分析产品分析数据、进行用户研究、进行竞争对手研究等方式，为产品团队创造背景，而不是控制工程师。</li>
+<li>大多数人都不是史蒂夫·乔布斯。他们并不是一开始就“知道”该构建什么或拥有宏伟的愿景。相反，他们发布产品，将其交到用户手中，基于反馈进行迭代，然后再重复这个过程。你做得越快，你的产品就会越好。</li>
+<li>在所有你可能构建的东西中，支持请求是最“真实”的之一。一个特定的用户有一个特定的问题。当你解决它时，你就改善了你的产品，其他的变化无法做到这一点。</li>
+<li>使用自己的产品，也称为“吃自己的狗粮”，可以帮助你更快地交付产品，在问题到达用户之前拦截它们，深入理解你的产品，并培养对用户的同理心。不过，这并不能替代与用户交谈、获取真实的反馈和跟踪实际使用指标。</li>
+<li>优秀的产品构建者总是在原型设计和实验。这意味着他们需要能够舒适地构建最小可行产品（MVP）和概念验证，发布未打磨的作品，获取反馈，并在事情不顺利时进行调整。这也意味着具备从零到构建所需的所有技能，包括基础设施到设计的各个方面。</li>
+<li>失败并不是产品实验的世界末日。在谷歌，80-90%的实验“失败”。你可能会认为这是一种时间浪费，但在大规模的情况下，10%的成功可以弥补所有的失败。例如，Bing 展示标题的 A/B 测试使收入增长了 12%（当时超过 1 亿美元）。</li>
+<li>“如果你对自己正在做的事情没有激情，那就转变方向。就是这么简单。如果你在做一些感觉属于你的事情，你会取得更多成就。”</li>
+</ul>
+</blockquote>
+</details>
+</div>
+</div>
+<div id="outline-container-org76afcad" class="outline-3">
+<h3 id="org76afcad"><a href="https://manateelazycat.github.io/2025/03/06/use-ai-build-website/">用 AI 创建高品质网站</a></h3>
+<div class="outline-text-3" id="text-org76afcad">
+<blockquote>
+<p>
+个人觉得， 最先失业的就是低级前端工程师， 有审美的产品经理和高级前端工程师不会失业。
+</p>
+
+<p>
+<a href="https://manateelazycat.github.io/2025/03/06/use-ai-build-website/#:~:text=%E4%B8%AA%E4%BA%BA%E8%A7%89%E5%BE%97%EF%BC%8C%20%E6%9C%80%E5%85%88%E5%A4%B1%E4%B8%9A%E7%9A%84%E5%B0%B1%E6%98%AF%E4%BD%8E%E7%BA%A7%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%B8%88%EF%BC%8C%20%E6%9C%89%E5%AE%A1%E7%BE%8E%E7%9A%84%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86%E5%92%8C%E9%AB%98%E7%BA%A7%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%B8%88%E4%B8%8D%E4%BC%9A%E5%A4%B1%E4%B8%9A%E3%80%82">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orgeaf4131" class="outline-3">
+<h3 id="orgeaf4131"><a href="https://blog.koehntopp.info/2023/05/06/50-years-in-filesystems-1984.html">50 years in filesystems: 1984</a></h3>
+<div class="outline-text-3" id="text-orgeaf4131">
+<blockquote>
+<p>
+进步有时很难察觉，尤其是当你参与其中或经历过时。
+</p>
+
+<p>
+通常，如果你将现代教育材料和讨论的问题与旧材料进行比较，就更容易看到进步。
+</p>
+
+<p>
+<a href="https://blog.koehntopp.info/2023/05/06/50-years-in-filesystems-1984.html#:~:text=Progress%20is%20sometimes%20hard%20to%20see%2C%20especially%20when%20you%20have%20been%20part%20of%20it%20or%20otherwise%20lived%20through%20it.%20Often%2C%20it%20is%20easier%20to%20see%20if%20you%20compare%20modern%20educational%20material%2C%20and%20the%20problems%20discussed%20with%20older%20material.%20And%20then%20look%20for%20the%20research%20papers%20and%20sources%20that%20fueled%20the%20change">Source</a>
+</p>
+</blockquote>
+
+<p>
+文章是关于文件系统的历史和分析其设计的，感兴趣可以看看。
+</p>
+</div>
+</div>
+<div id="outline-container-org43c6beb" class="outline-3">
+<h3 id="org43c6beb"><a href="https://andregarzia.com/2025/03/why-i-choose-lua-for-this-blog.html">Why I choose Lua for this blog</a></h3>
+<div class="outline-text-3" id="text-org43c6beb">
+<blockquote>
+<p>
+我想要一个更简单的博客系统；一个随着时间的推移只需最少更改的系统。
+</p>
+
+<p>
+<a href="https://andregarzia.com/2025/03/why-i-choose-lua-for-this-blog.html#:~:text=I%20want%20a%20simpler%20blogging%20system%3B%20one%20that%20requires%20minimal%20changes%20over%20time">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+我想说的是，通过选择一种发展非常缓慢且依赖极少的小语言，我可以将我的整个博客系统保留在脑海中。
+</p>
+
+<p>
+我可以确保它在接下来的十年或二十年内不会有太多变化。
+</p>
+
+<p>
+<a href="https://andregarzia.com/2025/03/why-i-choose-lua-for-this-blog.html#:~:text=What%20I%20want%20to%20say%20is%20that%20by%20choosing%20a%20small%20language%20that%20moves%20very%20slowly%20and%20very%20few%20dependencies%2C%20I%20can%20keep%20all%20of%20my%20blogging%20system%20in%20my%20head.%20I%20can%20make%20sure%20it%20will%20run%20without%20too%20much%20change%20for%20the%20next%20ten%20or%20twenty%20years">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org45614aa" class="outline-3">
+<h3 id="org45614aa"><a href="https://unplannedobsolescence.com/blog/best-hello-world-web-development/">The Best "Hello World" in Web Development</a></h3>
+<div class="outline-text-3" id="text-org45614aa">
+<p>
+用 PHP 写一个 Hello World 网页是相当简单的，什么都不需要配置。
+</p>
+
+<p>
+相反，有的框架，上来需要一系列步骤，安装很多的依赖，让初学者望而止步。
+</p>
+
+<blockquote>
+<p>
+软化学习曲线意味着让常见的事物变得简单，并且在你需要它们之前不要引入太多概念。初学者和专家都能从中受益。
+</p>
+
+<p>
+<a href="https://unplannedobsolescence.com/blog/best-hello-world-web-development/#:~:text=Softening%20the%20learning%20curve%20means%20making%20the%20common%20things%20easy%20and%20not%20introducing%20too%20many%20concepts%20until%20you%20hit%20the%20point%20where%20you%20need%20them.%20Beginners%20and%20experts%20alike%20benefit">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org1b5d837" class="outline-3">
+<h3 id="org1b5d837"><a href="https://thomwolf.io/blog/scientific-ai.html">🔭 The Einstein AI model</a></h3>
+<div class="outline-text-3" id="text-org1b5d837">
+<blockquote>
+<p>
+人们通常犯的主要错误是认为牛顿或爱因斯坦只是优秀学生的放大版，天才的出现是通过线性外推一个前 10% 的学生。
+</p>
+
+<p>
+这种观点忽视了科学中最关键的方面： <i>提出正确问题的能力，以及挑战自己所学知识的能力。</i>
+</p>
+
+<p>
+真正的科学突破是哥白尼提出的，尽管他所处时代的所有知识 ⸺  用机器学习的术语来说，我们会说“尽管他的训练数据集” ⸺  地球可能围绕太阳转，而不是相反。
+</p>
+
+<p>
+要在数据中心创造一个爱因斯坦，我们不仅需要一个知道所有答案的系统，更需要一个能够提出别人从未想到或敢于提出的问题的系统。
+</p>
+
+<p>
+一个在所有教科书、专家和常识都建议相反时，能够写下“如果每个人都错了呢？”的系统。
+</p>
+
+<p>
+<a href="https://thomwolf.io/blog/scientific-ai.html#:~:text=The%20main%20mistake,knowledge%20suggest%20otherwise">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+真正的科学突破将不是来自回答已知问题，而是来自提出具有挑战性的新问题以及质疑常见观念和以往想法。
+</p>
+
+<p>
+<a href="https://thomwolf.io/blog/scientific-ai.html#:~:text=However%2C%20real%20scientific%20breakthroughs%20will%20come%20not%20from%20answering%20known%20questions%2C%20but%20from%20asking%20challenging%20new%20questions%20and%20questioning%20common%20conceptions%20and%20previous%20ideas">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="outline-container-orge55060e" class="outline-2">
+<h2 id="orge55060e">多媒体</h2>
+<div class="outline-text-2" id="text-orge55060e">
+<ul class="org-ul">
+<li><a href="https://www.bilibili.com/video/BV1Un9vY9EX7">首次亮相，能打电话的国产“相机”</a> (13:40) 小米的概念机，通过磁吸外接镜头，很大地提高了成像。</li>
+<li><a href="https://www.bilibili.com/video/BV18rRhYmEww">R&amp;B 会一直有人唱,成都会一直阴天丨施鑫文月x地磁卡双打歌丨HOPICO</a> (24:04)</li>
+<li><a href="https://www.bilibili.com/video/BV1xU91YjEyb">搞了一个世界上最小的V8发动机！声音简直了……</a> (04:50)</li>
+<li><a href="https://www.bilibili.com/video/BV1oLF2eEEiK">心上人请从早到晚都和我说甜蜜话吧</a> (02:14) up 做的电动牙刷广告，但音乐和画面都挺好的。男主的造型像是蜡笔小新里的爸爸。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb5cde9d" class="outline-2">
+<h2 id="orgb5cde9d">Music</h2>
+<div class="outline-text-2" id="text-orgb5cde9d">
+</div>
+<div id="outline-container-org3c24aac" class="outline-3">
+<h3 id="org3c24aac"><a href="https://music.163.com/#/artist?id=2738">方大同</a></h3>
+<div class="outline-text-3" id="text-org3c24aac">
+<p>
+这周大部份的时间都在听方大同，把他大部份专辑都翻出来听了一遍，都很不错。
+</p>
+
+<p>
+这么认真，真诚，音乐做得如此好听的人这么早就离世了，太让人可惜了。
+</p>
+
+<ul class="org-ul">
+<li><a href="https://music.163.com/#/song?id=82504">认识你 (hidden track)</a> 歌曲的开头还有一点点剧情</li>
+<li><a href="https://music.163.com/#/song?id=82187">黑洞里</a> 在 <a href="https://www.bilibili.com/video/BV1854y1h72K">15 Live in HK</a> 里大同说到，这是一个外星人用来哄地球女孩的歌，希望她能跟他去他的星球</li>
+<li><p>
+<a href="https://music.163.com/#/song?id=82194">每个人都会 (song for Cartier [Love Project])</a>
+</p>
+
+<blockquote>
+<p>
+什麽比 love love love love love 更美
+</p>
+
+<p>
+爱让人安心在梦中熟睡
+</p>
+
+<p>
+Oh love love love love love 最美
+</p>
+
+<p>
+美在每一个人都会
+</p>
+</blockquote></li>
+<li><p>
+<a href="https://music.163.com/#/song?id=82496">南音</a>
+</p>
+
+<blockquote>
+<p>
+音乐没人懂打赏要人懂
+</p>
+
+<p>
+因为他真的很穷
+</p>
+
+<p>
+漆黑北风中飘渺的烛光中
+</p>
+
+<p>
+他想他总能为人们奏出彩虹
+</p>
+
+<p>
+音乐自己懂一样有听众
+</p>
+
+<p>
+沿途点亮他命运的灯笼
+</p>
+
+<p>
+二泉映月他才不管红与不红
+</p>
+</blockquote>
+
+<p>
+写博客也是，有没有人懂有什么关系呢，自己就是自己的读者，管他红不红。
+</p></li>
+<li><p>
+<a href="https://music.163.com/#/song?id=82148">Wonderful Tonight</a>
+</p>
+
+<p>
+浪漫温柔的一首歌。原曲是 <a href="https://music.163.com/#/song?id=5048569">Eric Clapton 的 Wonderful Tonight</a>。
+</p>
+
+<p>
+在《老友记》里，还有一段和这首歌的对话：
+</p>
+
+<blockquote>
+<p>
+钱德勒：“我以为，求婚的地点，内容很重要，到后来我意识到，唯一重要的只有你，是你让我得到了超乎想象的幸福。如果你愿意，我希望可以尽我余生之力，使你幸福如我。你愿意嫁给我吗？”
+</p>
+
+<p>
+莫妮卡：“我愿意。”
+</p>
+</blockquote></li>
+<li><p>
+<a href="https://music.163.com/#/song?id=28406197">爱不来 (feat. Miss Ko葛仲珊)</a>
+</p>
+
+<blockquote>
+<p>
+没有天时与地利
+</p>
+
+<p>
+只有生活的压力
+</p>
+
+<p>
+就算再多的话题
+</p>
+
+<p>
+见不着你 前事不提
+</p>
+</blockquote></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd4040d6" class="outline-3">
+<h3 id="orgd4040d6"><a href="https://music.163.com/#/artist?id=12383009">夏日入侵企画</a></h3>
+<div class="outline-text-3" id="text-orgd4040d6">
+<ul class="org-ul">
+<li><p>
+<a href="https://music.163.com/#/song?id=1832684671">回不去的夏天</a>
+</p>
+<blockquote>
+<p>
+虽然有点想念还有一点抱歉
+</p>
+
+<p>
+但是也只能说一声再见
+</p>
+
+<p>
+很久没有过这样的蝉鸣在耳边出现
+</p>
+
+<p>
+所有回忆为你留在那天
+</p>
+</blockquote></li>
+<li><p>
+<a href="https://music.163.com/#/song?id=2028376484">南风过隙</a>
+</p>
+<blockquote>
+<p>
+不知不觉又遇到了许多问题
+</p>
+
+<p>
+比如说分享欲和礼貌越来越贫瘠
+</p>
+</blockquote></li>
+<li><p>
+<a href="https://music.163.com/#/song?id=497572729">人生浪费指南</a>
+</p>
+<blockquote>
+<p>
+你已经想了太久
+</p>
+
+<p>
+可还是不想放手
+</p>
+
+<p>
+何时才去寻找你所说的自由
+</p>
+
+<p>
+望眼欲穿的生活
+</p>
+
+<p>
+忙碌滋生的折磨
+</p>
+</blockquote></li>
+<li><p>
+<a href="https://music.163.com/#/song?id=1413863166">想去海边</a>
+</p>
+<blockquote>
+<p>
+等一个自然而然的晴天
+</p>
+
+<p>
+我想要带你去海边
+</p>
+
+<p>
+去留住这个瞬间在来不及挽回之前
+</p>
+</blockquote></li>
+</ul>
+
+<p>
+从名字上看，就能知道夏日入侵企划是那种充满夏日活力的风格，曲子的旋律听起来都是比较欢快和积极的。早上迎着朝阳听听还不错。
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">Date: 2025-03-11 Tue 00:00</p>
+<p class="date">Last Modified: 2025-03-11 Tue 12:53</p>
+<p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<script src="https://giscus.app/client.js"
+        data-repo="Spike-Leung/taxodium"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkzOTYyNDQwMzk="
+        data-category="Announcements"
+        data-category-id="DIC_kwDOF540R84Ci61D"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+</body>
+</html>
