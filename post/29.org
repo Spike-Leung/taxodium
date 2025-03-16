@@ -1,0 +1,333 @@
+#+title: Weekly#29
+#+INDEX: weekly!#29
+#+date: <2025-03-16 Sun>
+#+lastmod: <2025-03-16 Sun 17:30>
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+description: "Weekly info collected by Spike Leung"
+#+keywords: "Weekly News Code Music"
+#+tags: weekly
+#+OPTIONS: toc:1
+#+LANGUAGE: zh-CN
+#+startup: content indent
+
+
+
+* News | Article
+** [[https://simonwillison.net/2025/Mar/11/using-llms-for-code/][Here’s how I use LLMs to help me write code]]
+
+[[https://github.com/simonw][Simon Willison]] 整理了一些他使用 LLM 的经验和技巧，推荐一看。
+
+#+begin_details
+#+html: <summary>摘录</summary>
+
+
+- 设定合理的期望
+
+  LLM 说到底还是通过预测可能的 token 返回结果，所以它们还是会出错。
+
+  不用因为它们时而出错而弃而不用，也不要完全相信它们返回的结果，利用它们来增强自己的能力。
+
+- 注意 LLM 的训练截止日期
+
+  问 LLM 一些训练截止日期之后的东西，因为它们的训练内容里没有，所以它们可能不熟悉，回答更容易出错。
+
+  可以考虑让它们使用 [[https://boringtechnology.club/][“老旧” 一些的技术]]实现功能，它们对于这些技术的训练内容足够多，效果往往都不差。
+
+- 上下文为王
+
+  #+begin_quote
+  要从 LLM 中获得良好的效果，大部分技巧都在于管理其上下文，即当前对话中的文本。
+
+  ...
+
+  您可以利用以前的回复也是上下文的一部分这一优势。
+
+  对于复杂的编码任务，请尝试让 LLM 先编写一个较简单的版本，检查其是否有效，然后再重复编写更复杂的实现。
+
+  ...
+
+  我最喜欢的代码提示技巧之一是插入几个与我想要构建的内容相关的完整示例，然后提示 LLM 将它们作为新项目的灵感来源。
+  #+end_quote
+
+- 向它们询问方向
+
+  可以问 LLM 一些开放性问题，作为初始研究阶段的一部份，找到一些开始的方向。
+
+  例如 “我想做的事情可行吗？有哪些可能的实现方式？哪些方案是最好的？JavaScript 中有哪些有用的拖放库，给我构建 demo 展示它们的使用。”
+
+- 告诉它们应该怎么做
+
+  给 LLM 写好函数定义，描述清楚函数的实现，然后让 LLM 去实现。
+
+  #+begin_quote
+  我可以自己编写这个函数，但我需要花费 15 分钟来查找所有细节并使代码正常工作。Claude 在 15 秒内就完成了。
+
+  我发现 LLM 对函数签名的响应非常好，就像我在这里使用的签名一样。
+
+  我充当函数设计者，LLM 则按照我的要求构建主体。
+
+  如果您对此的反应是 “敲代码肯定比写一大段说明要快”，我只能告诉您，我的确不再适合写代码了。
+
+  代码需要正确。
+
+  自然语言有很大的空间来使用捷径、变幻莫测、错别字，以及在你记不住名字的情况下说 “使用那个流行的 HTTP 库” 之类的话。
+
+  优秀的代码 LLM 善于填补空白。
+
+  他们也不像我那么懒惰 ⸺ 他们会记得捕获可能出现的异常，添加准确的文档说明，并在代码中注释相关类型。
+
+  [[https://simonwillison.net/2025/Mar/11/using-llms-for-code/#:~:text=I%20could%20write,the%20relevant%20types.][Source]]
+  #+end_quote
+
+- 你必须测试它们写了什么！
+
+  #+begin_quote
+  作为一名软件开发人员，你的责任是提供可运行的系统。
+
+  如果你没有看到它运行，它就不是一个工作系统。
+
+  您需要在加强人工质量保证习惯方面进行投资。
+
+  [[https://simonwillison.net/2025/Mar/11/using-llms-for-code/#:~:text=Your%20responsibility%20as%20a%20software%20developer%20is%20to%20deliver%20working%20systems.%20If%20you%20haven%E2%80%99t%20seen%20it%20run%2C%20it%E2%80%99s%20not%20a%20working%20system.%20You%20need%20to%20invest%20in%20strengthening%20those%20manual%20QA%20habits.][Source]]
+  #+end_quote
+
+- 记住，这是一次对话
+
+  第一次对话得到的结果可能不是很好，那就持续对话就好了，LLM 不会像人一样抱怨。
+
+  #+begin_quote
+  我偶尔会从第一次提示中获得很好的结果 ⸺ 我练习得越多，获得的结果就越多 ⸺ 但我预计至少需要几次跟进。
+
+  我经常在想，这是否是人们忽略的关键诀窍之一 ⸺ 糟糕的初始结果并不是失败，而是将模型推向你真正想要的方向的起点。
+
+  [[https://simonwillison.net/2025/Mar/11/using-llms-for-code/#:~:text=Occasionally%20I%E2%80%99ll%20get,you%20actually%20want.][Source]]
+  #+end_quote
+
+- Vibe-coding 是一种很好的学习方法
+
+  #+begin_quote
+  一个多月前，Andrej Karpathy 创造了 “vibe-coding” 这一术语，并一直沿用至今：
+
+  有一种新的编码方式，我称之为 “vibe-coding”，在这种编码方式中，你完全屈服于活力 (vibes)，拥抱指数，甚至忘记代码的存在。
+
+  [...]
+
+  我要求的都是最蠢的东西，比如 “把侧边栏的填充减少一半”，因为我懒得去找。
+
+  我总是 “全盘接受” (accpet all)，不再阅读差异。
+
+  当我收到错误信息时，我会直接复制粘贴，不加任何注释，通常这样就能解决问题。
+
+  安德烈认为，这 “对于周末的一次性项目来说还不错”。
+
+  这也是探索这些模型性能的绝佳方式，而且非常有趣。
+
+  学习 LLMs 的最佳方法就是与它们玩耍。
+
+  向它们抛出荒诞的想法并进行振动编码，直到它们几乎可以工作为止，这是一种真正有用的方法，可以加快你建立直觉的速度，让你知道什么可行，什么不可行。
+
+  [[https://simonwillison.net/2025/Mar/11/using-llms-for-code/#:~:text=Andrej%20Karpathy%20coined,and%20what%20doesn%E2%80%99t][Source]]
+  #+end_quote
+#+end_details
+
+** [[http://11spades.net/posts/on-naming-things/][On Naming Things]]
+
+编码中命名是一件让人头疼的事，一般而言，会使用名称作为描述，描述对应的变量或者函数。
+
+但是变量和函数的功能可能会发生变化，可能会导致命名的描述不再准确，甚至造成误解。
+
+#+begin_quote
+例如，在命名一个可变变量或一个抽象链上的高级函数时，对象的性质有可能随着时间的推移而偏离其描述。
+
+事实上，我非常确信这一点：每当你使用一个描述作为能够变化的事物的名称时，你就是在告诉自己一个最终的谎言，而在这个谎言被识破之前，你所拥有的时间是该对象及其依赖关系所经历的变化的频率和幅度的函数。
+
+将来要解决这个问题，代价可能会很高，也可能不会很高。
+
+如果你在很多地方都调用了这个名称，或者这个名称的选择使得查找和替换操作会返回很多不相关的匹配结果，那么重构依赖于这个名称的逻辑可能会很麻烦。
+
+[[https://11spades.net/posts/on-naming-things/#:~:text=But%20these%20benefits,that%20depends%20thereupon][Source]]
+#+end_quote
+
+对此，作者的建议是减少变量和函数的复杂度，让它们尽可能简单、原子化，从而减少它们变化的可能性。
+
+#+begin_quote
+我们有几种方法可以避免这种繁琐的重构。
+
+最明显的就是限制需要命名的对象在目的和组成方面的复杂性。
+
+具有原子目的的精益对象通常会经历较少和较小的实用特性变化，这反过来又意味着我们的债务会更少，需要偿还的次数也会更少。
+
+顺便提一下，应用这一原则还能避免使用过于冗长、近乎可憎的名称，如 RemoteConnectorFactoryFactoryConfigurerFactory，同时还能让你不必在脑海中映射这些令人发指的名称的含义。
+
+因此，当你遇到一个对象确实应该有一个描述性的名称，但却莫名其妙地很难命名，或者虽然可以命名，但却必须重命名很多次时，就毁掉它，另辟蹊径吧。
+
+[[https://11spades.net/posts/on-naming-things/#:~:text=We%20have%20a,a%20new%20way][Source]]
+#+end_quote
+
+** [[https://mislav.net/2014/02/hidden-documentation/][Every line of code is always documented]]
+
+作者给了几行代码，执行了一些操作，但是不知道为什么要执行。
+
+代码没有注释，所幸通过 =git blame= 查看提交记录的时候，上面有很完整的说明。
+
+因此作者认为，应该注重提交信息的编写，这也是补充代码信息的重要一环。
+
+我自己维护历史项目也有这样的感受，有时看到一些奇怪的代码，或者我想知道某个改动是从什么时候引入的、对应的需求版本是什么，我就会通过 =git blame= 查看对应的提交信息。
+
+通过提交信息，我能找到对应的版本，进而找到对应的需求文档，或许我就能知道某些代码逻辑为什么会存在。
+
+把提交信息写好，描述清楚为什么，将来的读者肯定会对这样的提交信息心存感激的。
+
+关于提交信息，你还可以看看：
+
+- [[https://dhwthompson.com/2019/my-favourite-git-commit][My favourite Git commit]]
+- [[https://who-t.blogspot.com/2009/12/on-commit-messages.html][On commit messages]]
+- [[https://cbea.ms/git-commit/][How to Write a Git Commit Message]]
+- [[https://taxodium.ink/git-lint-practice.html][Git 的校验实践]]
+
+#+begin_quote
+请记住，你今天所做的一切都将进入项目的历史，并永远留在那里。
+
+为了更好地对待与你一起工作的其他人（即使是一个人的项目，也包括 3 个月后的你自己），请在提交时遵守以下基本规则：
+
+- 在撰写提交信息时，一定要像向坐在旁边的同事解释变更一样，因为他根本不知道发生了什么。
+
+  [[http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message][按照 Thoughtbot 的提示来编写更好的提交信息]]：
+
+  + 为什么需要做出这种改变？
+
+  + 它是如何解决这一问题的？
+
+  + 这种变化有什么副作用？
+
+  + 考虑加入链接 (相关文档，相关讨论，issue 等)
+
+- 避免在一次提交中出现无关的改动。
+
+  您可能在同一个文件中发现了一个错别字或进行了微小的代码重构，但除非它们直接相关，否则请不要将它们与主要更改记录在一起。
+
+- 推送前一定要清理历史。如果提交尚未被共享，[[https://mislav.net/2013/02/merge-vs-rebase/][就可以安全地将其 rebase]]。
+
+[[https://mislav.net/2014/02/hidden-documentation/#:~:text=Being%20on%20the%20right%20side%20of%20history][Source]]
+#+end_quote
+
+* Tutorial | Resource
+
+* Code Related
+* Cool Bit
+
+** [[https://www.fourmilab.ch/gravitation/foobar/][Bending Spacetime in the Basement]]
+
+作者在地下室设计了一个实验，去观察物体之间的引力，探索万有引力。
+
+牛顿发现了万有引力，推动了启蒙运动及随后的科技发展，作者就好奇为什么牛顿之前的人没有发现？
+
+在阿基米德的年代，能否通过相同的实验发现万有引力？
+
+#+begin_quote
+好吧，人到中年固然有其弊端，但至少你可以开展这样的项目，而不用担心被“妈妈！开尔文在地下室弯曲时空！”的喊声扼杀在萌芽状态。
+
+记住 “大人” (grownup) 和 “长大了” (grown up) 之间的区别很重要。
+
+让我们这些 “大人” (grownup) 去地下室弯曲时空吧。
+
+[[https://www.fourmilab.ch/gravitation/foobar/#:~:text=Well%2C%20middle%20age,some%20serious%20spacetime][Source]]
+#+end_quote
+
+#+begin_quote
+如果引力与电磁力相比不是如此微弱，你就不会在阅读这一页；
+
+正是因为将你身体中的原子结合在一起的电磁力轻易地战胜了地球的引力，
+
+你和所有其他固体物体才不会塌陷成一滩水，最终合并成一个完美的球体（实际上，由于旋转，略呈椭球形）。
+
+[[https://www.fourmilab.ch/gravitation/foobar/#:~:text=If%20gravity%20were,to%20rotation)%20planet.][Source]]
+#+end_quote
+
+#+begin_quote
+在物理学家和工程师的工具箱里，有一把万能大锤，那就是微分测量法。
+
+换句话说，不要担心某样东西的绝对值，只担心你能测量到的东西之间的差值。
+
+例如，维修高压输电线的电线工通常的做法是在不切断电源的情况下，从起重机升起的绝缘筐中进行作业。
+
+只要线路工与地面是绝缘的，那么只有他的手和他正在工作的线路之间的电压差才是最重要的；
+
+将篮子固定在线路上后，电压差为零，就像是修理接地导体一样。
+
+现在，如果他在高于地电位 20 万伏的导体上工作时，碰巧触碰到了接地的铁塔，那将是非常糟糕的一天。
+
+诀窍在于保持微小的差异。
+
+你可以在 100 万伏的电压下生活一辈子，只要你周围的一切都接近这个值，即使在原则上，你也不可能发现绝对电势。
+
+这就是所有物理力都是规整不变的结果：绝对值不存在，只有差异才重要。
+
+[[https://www.fourmilab.ch/gravitation/foobar/#:~:text=One%20of%20the%20great,exist%E2%80%94only%20differences%20matter][Source]]
+#+end_quote
+
+#+begin_quote
+引力的普遍性意味着宇宙中的每个物体都在相互吸引的网络中相互关联；宇宙对引力是透明的。
+
+最遥远的星系对你施加引力，就像你对它们施加引力一样——虽然可以肯定地说这种引力微不足道，但依然存在。
+
+[[https://www.fourmilab.ch/gravitation/foobar/#:~:text=The%20universality%20of%20gravitation%20means%20that%20every%20object%20in%20the%20universe%20is%20interlinked%20in%20a%20web%20of%20mutual%20attraction%3B%20the%20universe%20is%20transparent%20to%20gravitation.%20The%20most%20distant%20galaxies%20exert%20a%20pull%20on%20you%2C%20as%20you%20do%20upon%20them%E2%80%94immeasurably%20tiny%20to%20be%20sure%2C%20but%20present%20just%20the%20same.][Source]]
+#+end_quote
+
+* Tool | Library
+
+* Emacs
+- [[https://sachachua.com/blog/2014/04/emacs-beginner-resources/][Emacs beginner resources]] [[https://sachachua.com/blog/][Sacha Chua]] 整理的一些 Emacs 入门教程。
+
+* 一些话 | 摘抄
+
+** [[https://articles.data.blog/2024/03/30/jeff-bezos-when-the-data-and-the-anecdotes-disagree-the-anecdotes-are-usually-right/][Jeff Bezos: When the data and the anecdotes disagree, the anecdotes are usually right.]]
+
+#+begin_quote
+当数据和轶事出现分歧时，轶事通常是正确的。
+
+这通常不是因为数据收集错误。
+
+通常是你没有测量正确的东西。
+
+[[https://articles.data.blog/2024/03/30/jeff-bezos-when-the-data-and-the-anecdotes-disagree-the-anecdotes-are-usually-right/#:~:text=Jeff%20Bezos%3A%20%E2%80%9CI,the%20right%20thing][Source]]
+#+end_quote
+
+** [[https://allenpike.com/2025/javascript-fatigue-ssr][JavaScript Fatigue Strikes Back]]
+
+
+#+begin_quote
+采用任何新依赖项——无论是框架、库还是其他工具——都伴随着风险。
+
+我们押注于新工具带来的速度提升，并能抵消其维护成本。
+
+如果一个框架华而不实，过于复杂，或者维护不善，无法满足需求，我们就会陷入困境。
+
+因此，真正厉害的人会[[https://mcfunley.com/choose-boring-technology][选择那些枯燥、简单、维护良好的技术]]：
+
+谁也不想成为第一个因为使用 X 框架而遇到 Y 问题的团队，或者成为最后一个使用非主流技术导致项目停滞的团队。
+
+[[https://allenpike.com/2025/javascript-fatigue-ssr#:~:text=When%20we%20choose,more%20modern%20toys.][Source]]
+#+end_quote
+** [[https://z.arlmy.me/posts/MastodonArchives/2025/MastodonTootsArchives_20250308/][Toots 2025 Mar.2 - Mar.8]]
+
+#+begin_quote
+故事，也是时间的另一个名字。
+
+[[https://z.arlmy.me/posts/MastodonArchives/2025/MastodonTootsArchives_20250308/#:~:text=%E6%9C%BA%E6%A0%B8%20GCORES-,%E6%95%85%E4%BA%8B%EF%BC%8C%E4%B9%9F%E6%98%AF%E6%97%B6%E9%97%B4%E7%9A%84%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%90%8D%E5%AD%97%E3%80%82,-Mar.3][Source]]
+#+end_quote
+
+* 多媒体
+
+- [[https://www.bilibili.com/video/BV1eoQwYPEeu][我的人生目标，就是和你维持现状！｜北海道旅拍]] (04:44)
+- [[https://www.bilibili.com/video/BV1uEQuYVEjX][台湾：一本名为青春的纪念册]] (27:38)
+- [[https://www.bilibili.com/video/BV1i3QVYeEpx][热烈欢迎胡彦斌！他来了他来了，他带着最近“上头”的东西走来了！从数码到穿戴应有尽有！]] (24:36)
+  #+begin_quote
+  我自己觉得，人生如果过不好，就是因为你会看自己太多的不足，我觉得一定要去看到自己特别棒的地方，要肯定自己。
+  #+end_quote
+- [[https://www.bilibili.com/video/BV1P6QSYnERz][用滑动方块的碰撞次数来计算圆周率]] (23:37)
+- [[https://www.bilibili.com/video/BV1LFQDYqEKn][流行100年，胶片还会陪我们多久？]]
+- 小宇宙
+
+* Music
