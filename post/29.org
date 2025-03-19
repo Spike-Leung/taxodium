@@ -292,6 +292,56 @@ https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progres
 [[https://persevering.substack.com/p/super-crispy-svg-icons#:~:text=I%E2%80%99m%20always%20a,art%20than%20science.][Source]]
 #+end_quote
 
+** [[https://norahsakal.com/blog/mcp-vs-api-model-context-protocol-explained/][What is Model Context Protocol (MCP)? How it simplifies AI integrations compared to APIs]]
+
+一篇 MCP 扫盲文章，文章中还将 MCP 和 API 进行了对比。
+
+#+CAPTION: MCP 架构图
+https://norahsakal.com/assets/images/mcp_overview-641a298352ff835488af36be3d8eee52.png
+
+MCP 就像是一个 USB 接口，你可以将 MCP Server 插上去，从而获得 MCP Server 提供的功能和能力。
+
+例如 GMail MCP Server 可以通过操作邮件相关的能力。
+
+本地数据，网络搜索，远程服务等也都可以通过 MCP Server 提供。
+
+一个 USB 接口只能插入一个设备，类似的，MCP Server 和 MCP Client 的关系也是一对一的。
+
+（可能是因为 MCP 是双向通讯，双向通讯的对象需要一对一？）
+
+但是只要你机器性能足够，你可以拥有很多个接口，建立很多 MCP 连接。
+
+你可以写 MCP Client 去和 MCP Server 交互，但是感觉很可能我们都不需要写，而都是通过 LLM 应用 （MCP Host）作为入口使用。
+
+我们通过 LLM 应用描述需求，LLM 应用创建 MCP Client 和对应的 MCP Server 连接完成相关工作，再将结果返回给我们。
+
+除了 MCP，我最近还看到 2 个提议 [[https://docs.wild-card.ai/agentsjson/introduction][agents.json]] 和 [[https://llmstxt.org/][/llms.txt]]。
+
+简单来说，它们像是专门给 LLM 准备的站点地图（也像 robot.txt），告诉 LLM 内容怎么找，可以怎么用。
+
+agents.json 用于提供 API 的站点地图。
+
+API 是为开发者设计的，开发人员自己看文档，写对应的 API 调用。
+
+#+CAPTION: 传统 API 调用
+https://mintlify.s3.us-west-1.amazonaws.com/wildcard/static/TraditionalFlowDiagram.png
+
+但是对于 LLM，它不知道 API 之间是怎么关联的，参数格式也可能不清楚。
+
+#+CAPTION: LLM 客户端调用 API
+https://mintlify.s3.us-west-1.amazonaws.com/wildcard/static/AirgapFlowDiagram.png
+
+agents.json 就是为了填补这个空缺，让 LLM 知道怎么调用 API。
+
+#+CAPTION: LLM 客户端结合 agents.json 调用 API
+https://mintlify.s3.us-west-1.amazonaws.com/wildcard/static/LlmWorksDiagram.png
+
+/llms.txt 用于提供网站内容的站点地图。
+
+它提供网站简要的背景信息、指导和指向详细 markdown 文件的链接。
+
+你可以看看 [[https://answerdotai.github.io/fasthtml/llms.txt][FastHTML 的 /llms.txt]] 参考一下。
+
 * Tutorial | Resource
 
 ** [[https://javascriptgametutorials.com/][JavaScript Game Tutorials]]
