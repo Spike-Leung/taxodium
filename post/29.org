@@ -458,6 +458,137 @@ Git checkout 似乎故意让这个命令变成一个绝对的灾难。
 
 作者去追寻女性交友诈骗邮件的过程，非常长的文章，感兴趣可以看看。
 
+** [[https://antirez.com/news/147][Big LLMs weights are a piece of history]]
+
+每年都有一部份旧网页会从互联网消逝，所以如果有自己在意的内容最好保存到本地。
+
+当然也有一些组织在做这样的事情，例如 [[https://web.archive.org/][Internet Archive]]。
+
+但是目前 LLM 都会使用互联网的预料作为训练材料，如果网页内容被作为预料训练了，那么这些内容就能随着 LLM 的存活而存活。
+
+#+begin_quote
+这是一个众所周知的问题，我相信试图保存一切的明显方法将会失败，
+
+原因是实际的：大量的努力没有经济收益：当前的世界并不是一个进行高成本努力而没有回报的最佳场所。
+
+这就是为什么我相信 LLMs 压缩信息的能力，即使不精确、虚构、缺乏，也总比没有好。
+
+DeepSeek V3 已经是一个可用的、公开的互联网有损压缩视图，其他一些非常大的最先进模型也是如此。
+
+这不会让我们失去的所有东西都回来，我们应该努力支持互联网档案馆和其他类似的机构和努力。
+
+但与此同时，我们应该专注于一个更简单的努力：确保 LLMs 公开发布的权重不会丢失，并确保档案也是预训练集的一部分。
+
+[[https://antirez.com/news/147#:~:text=This%20is%20a,set%20as%20well.][Source]]
+#+end_quote
+
+** [[https://www.nickcraux.com/blog/cursor-tips][I use Cursor daily - here's how I avoid the garbage parts]]
+
+作者使用 Cursor 的一些经验：
+
+- 制定 cursorrules，用来给 LLM 一些约束。但不要试图囊括一切，保持简洁，逐步构建。
+- 告诉 LLM 需要的内容在哪，提供足够的上下文
+- 不要盲目接受代码。这总会让你后悔。(认同，最近我用 LLM 写代码，有的没有 review，它把原来一些功能给移除了，我测试才知道。)
+- 学会在何时最好手动解决问题。
+- 如果这是一个重要的任务，或者你正在为一个功能奠定基础，请在编写代码之前让它问你任何问题，以确保它完全理解你想要做的事情。
+- ...
+
+#+begin_quote
+人工智能最好的地方之一就是，当你的大脑疲惫时，你仍然可以编写代码，而解决一个问题通常会超出你的能力范围。
+
+在沙发上坐着写一些大致不错的代码是很不错的，但有时你会花一个小时追逐 “你说得对” “我现在明白问题了”，结果却比你开始时更糟。
+
+但我建议你尝试使用它，并学习如何最好地与它交流。
+
+它不会消失，它只是你可以使用的另一种工具。
+
+如果你是一个初级开发者，我当然会对此非常谨慎。
+
+实际上，任何人都应该如此。
+
+我确实认为我的编码技能正在退化，这一点是有道理的。
+
+[[https://www.nickcraux.com/blog/cursor-tips#:~:text=One%20of%20the,my%20coding%20skills.][Source]]
+#+end_quote
+
+这周我也用 [[https://aider.chat/][aider]] 写了一周的代码，有 90% 的代码都是它帮我写的，我只负责写 prompt 描述需求，然后测试和 review。
+
+当然它不是全部都能帮我写，一些相对复杂的样式和交互，我也不知道如何跟它描述，我就会自己去实现。
+
+用下来，我觉得 LLM 确实能很大程度提高效率，同样的逻辑，我也可以写，但是 LLM 可以更快地写完。
+
+但是用多了，就会产生 LLM 依赖，一些代码自己就不想写了，都想通过 LLM 来完成，正如作者说的，会有一种编码技能正在退化的感觉。
+
+毕竟技能都是需要练习才能熟练的，如果放弃练习，最后就会变得生疏。
+
+另一个问题是，都靠 LLM 写代码，虽然大致的实现是清楚的，但是毕竟不是自己写的，对于一些逻辑的实现理解的可能没有那么深刻，真的自己来写，实现肯定是不同的。
+
+还有就是用多了，由于 LLM 改动的代码量不小，review 其实也是需要不少时间的，但是人总是想偷懒，渐渐地，review 得可能没有那么仔细，就会忽略了一些 LLM 产生的问题。
+
+至于怎么用好 LLM，我的经验是：
+
+- 控制上下文，不要让 LLM 处理太多文件，专注于当前需求涉及的文件。
+- 为了控制上下文大小，这要求每一次 prompt 实现的功能应该是相对比较小的，逻辑相对单一的。
+- 不同任务之间，上下文可能关联不大，可以考虑先清空之前的上下文再开始下一个任务。
+- 给 LLM 提供足够的上下文，例如给他一些相关示例，提供相关文档等。
+- 要提醒自己，保证足够的测试，review，不然很可能忽略了 LLM 产生的问题。
+
+** [[https://planetscale.com/blog/io-devices-and-latency][IO devices and latency]]
+
+一篇关于 IO 设备和延迟的交互式文章。
+
+** [[https://simonschreibt.de/gat/the-high-heel-problem/][The High Heel Problem]]
+
+作者探讨了游戏中的高跟鞋问题，不同高跟鞋高度不同，会影响角色的高度，从而影响角色和环境的交互。
+
+** [[https://maxwellforbes.com/posts/dont-try-to-reform-science/][Don't Try to Reform Science]]
+
+世界上很多事情都是人与人之间的合作，他们形成了自己的圈子。
+
+如果想改变这个圈子，就需要有发言权，有资本说话，不然根本就没人听你的想法。
+
+#+begin_quote
+有两种科学:
+
+- 科学 1: 一种理想化的概念。试图理解世界是如何运作的。寻求和描述真理。 “纯科学。”
+- 科学 2: 人类尝试进行科学 1 的方式。一种跨越多个社会的文化实践。“实践中的科学。”
+  + 人们需要培训和资金（想想：薪水、资助，学生到教授的过渡）
+  + 很多人正在尝试合作（想想：花费大量时间沟通工作）
+  + 很多人在争夺有限的资源（想想：需要确定谁比其他人更有资格的方法）
+
+科学 2 是一种社会实践，因为它必须如此。
+
+虽然孤狼可以独自进行科学 1，但如果你在阅读这篇文章，那可能不是你。
+
+我所知道的过去有影响力的独立研究者都是贵族（例如，博伊尔、牛顿、达尔文、麦克斯韦）在不成熟的领域工作。
+
+即使是缺乏科学界接受的伟大想法也会沉寂多年（例如，孟德尔、维根、玻尔兹曼）。
+
+此外，请记住，许多杰出且富有成效的研究者在合作中茁壮成长（例如，沃森/克里克、爱因斯坦/玻尔、厄尔德什/其他人）。
+
+因为科学 2 是一种社会活动，所以大多数发生的事情都是人类之间的交流。
+
+科学 2 就像一支庞大的船队，所有船只都在驶向探索某个大海洋。
+
+你在一只船上（或者，你可能只是在你导师的船上）试图绘制新的领土。
+
+你必须大喊 “来看看我去哪里！” 然后人们必须决定是否听你说话，或者完全忽视你。
+
+如果没有人知道你是谁，为什么他们会信任你呢？
+
+...
+
+我写这篇文章是因为博士生似乎吸引了很多聪明、理想主义的年轻人，
+
+他们对进行科学研究（科学 1）感兴趣，却没有意识到他们已经报名参加了科学实践（科学 2）。
+
+然后在第一年，他们跳下导师的船，开始在一块木板上划船，向整个科学界大喊要改变科学 2，以使其与科学 1 对齐。
+
+但在他们发表第二篇论文之前，这一切都还为时已晚。还没有。没有人能听到你。还没有。
+
+[[https://maxwellforbes.com/posts/dont-try-to-reform-science/#:~:text=Let%E2%80%99s%20call%20them,they%20trust%20you%3F][Source]]
+#+end_quote
+
 * Tutorial | Resource
 
 ** [[https://javascriptgametutorials.com/][JavaScript Game Tutorials]]
@@ -486,7 +617,20 @@ WebGPU 教程。
 
 ** [[https://stevelosh.com/blog/2013/09/teach-dont-tell/][Teach, Don't Tell]]
 
-一篇关于如何写好文档的文章。（我真的挺喜欢看这类文章的，想学习更多写好文档的技巧，也想写出高质量的文档。）
+一篇关于如何写好文档的文章。
+
+（我真的挺喜欢看这类文章的，想学习更多写好文档的技巧，也想写出高质量的文档。）
+
+作者也是文档大致分成了 4 种：
+
+- 初次接触 (First Contact) :: 向读者解释这是什么东西？为什么要关心这个东西？学习这个东西值得吗？
+- 黑色三角形 (The Black Triangle) :: 一个相对简短的指南，帮助用户启动并运行您的项目，以便他们可以进行探索。（引导用户完成检索、安装和探索您的项目或语言的过程。）
+- 乱麻 (The Hairball) :: 各种杂乱的东西，是教学中扭曲、纠结的迷宫，它将把这些新手转变为专家用户。它将一点一点地塑造他们的思维，直到他们对你的项目运作有相当好的理解。
+- 参考 (The Reference) :: 为那些经历过 “乱麻” 并成功走到另一边的用户准备的。他们现在是你的专家，参考文档应该支持他们在日常工作中使用你的项目。
+
+#+begin_details
+#+html: <summary>摘录</summary>
+
 
 #+begin_quote
 技术文档的目的是带领一个从未见过你的项目的人，教会他们成为该项目的专家用户，并在他们成为专家后给予支持。
@@ -516,6 +660,8 @@ WebGPU 教程。
 如果文档的目标是将新手转变为专家，那么文档必须进行教学。
 
 你应该把你的文档视为一节课（或一系列课程），因为这就是它的本质。
+
+[[https://stevelosh.com/blog/2013/09/teach-dont-tell/#:~:text=If%20you%20want,it%20is.][Source]]
 #+end_quote
 
 #+begin_quote
@@ -544,6 +690,8 @@ WebGPU 教程。
 我们看不到另一端的人因为缺少我们认为显而易见的东西而感到无助和困惑。
 
 面对面地教导某人可以帮助你学会预见这种情况，这将对你的用户在你撰写文档时大有裨益。
+
+[[https://stevelosh.com/blog/2013/09/teach-dont-tell/#:~:text=There%27s%20no%20substitute,you%27re%20writing%20documentation.][Source]]
 #+end_quote
 
 #+begin_quote
@@ -574,11 +722,26 @@ WebGPU 教程。
 这不是教学。这是在告知。
 
 人们不是通过被告知来学习的，而是通过被教导来学习的。
+
+[[https://stevelosh.com/blog/2013/09/teach-dont-tell/#:~:text=The%20best%20%5Bway,being%20taught.][Source]]
 #+end_quote
+#+end_details
 
 ** [[https://www.evanmiller.org/statistical-formulas-for-programmers.html][Statistical Formulas For Programmers]]
 
 作者整理了一些他认为比较有用的统计学的公式。
+
+** [[https://www.tcl-lang.org/man/tcl8.5/tutorial/tcltutorial.html][Tcl Tutorial]]
+
+Tcl 教程。
+
+** [[https://lobste.rs/s/wsw3ue/what_s_best_git_tutorial][What’s the best git tutorial?]]
+
+Lobste 上的一个问题，想大家征集好的 git 教程。
+
+** [[https://www.makingsoftware.com/][MAKING SOFTWARE]]
+
+一本还没完成的手册，解释计算机是如何工作的，页面制作的相当不错。蹲一下后续。
 
 * Code Related
 ** [[https://devblogs.microsoft.com/typescript/typescript-native-port/][A 10x Faster TypeScript]]
@@ -671,6 +834,14 @@ CSS 实现的动态背景。
 IntersectionObserver 是独立于浏览器主线程运行的，因此不会阻塞主线程，相比监听 scroll，change，resize 等，性能更好。
 
 * Cool Bit
+
+** [[https://wattenberger.com/thoughts/our-interfaces-have-lost-their-senses][Our interfacess have lost their senses]]
+
+一个设计和交互很棒的页面，关于和计算机的交互。
+
+作者认为可以结合多种不同方式，让交互丰富起来，构建可以让人在感官之间多任务处理的界面。
+
+有人也看到了这篇文章，虽然他支持文章的想法，但他觉得目前的交互界面的存在是合理的，[[https://www.datagubbe.se/futui/][新的交互界面的出现，是出于其必要性]]，缺少必要性就可能不会被广泛接受。
 
 ** [[https://www.fourmilab.ch/gravitation/foobar/][Bending Spacetime in the Basement]]
 
@@ -771,6 +942,18 @@ https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/putty-icons/putty-origina
 
 这个 404 页面蛮有趣的。
 
+** [[https://docko.app/][Docko - Your virtual pet in your macOS Dock]]
+
+在 Dock 上养电子宠物。
+
+** [[https://same.new/][same]]
+
+输入网站地址，返回像素级别的复刻网站。
+
+** [[https://www.thewkblog.com/2025/03/16/i-built-myself-a-watch/][I built myself a watch]]
+
+作者自己组装了一个机械表，cool。
+
 * Tool | Library
 ** [[https://github.com/addyosmani/filter][addyosmani/filter: Filter - Web Image Editor]]
 
@@ -793,6 +976,16 @@ https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/putty-icons/putty-origina
 
 Notion 或 Outline 的开源替代品。
 #+end_quote
+
+** [[https://github.com/VikParuchuri/surya][Surya]]
+
+#+begin_quote
+OCR，支持布局分析，不同阅读顺序，90 多种语言的表格识别。
+#+end_quote
+
+** [[https://testing.gimp.org/news/2025/03/16/gimp-3-0-released/][GIMP 3.0 Released]]
+
+GIMP (GNU Image Manipulation Program) 是一款自由开源的图像编辑软件，最近发布了 3.0。
 
 * Emacs
 - [[https://sachachua.com/blog/2014/04/emacs-beginner-resources/][Emacs beginner resources]] [[https://sachachua.com/blog/][Sacha Chua]] 整理的一些 Emacs 入门教程。
@@ -959,6 +1152,37 @@ Gulf of Mexico 甚至还有 [[https://www.youtube.com/watch?v=QRKnrFEjDF0&ab_cha
 8. 尽量理解对方。
 #+end_quote
 
+** [[https://thymer.com/local-first-ejectable][Ejectable Apps]]
+
+#+begin_quote
+确保您可以永远完全访问云应用中的数据的重要要求是使后端同步服务器可用于本地自托管。
+
+这就是可弹出应用的意义所在。
+
+...
+
+可弹出应用允许用户随时 “弹出”，并通过以下方式切换到自托管（或反之亦然）：
+
+- 保存一个 =workspace.zip= ，其中包含他们的所有状态。
+- 下载一个 =server.exe= / =.bin= 以自托管后端同步服务器（甚至可以选择他们喜欢的应用版本）。
+- 能够在本地运行服务器可执行文件。这应该允许您简单地打开工作区数据，并继续您之前的工作。
+- 使弹出功能完全可逆，因为离开云版本而没有回退的自由仍然是使用它的一个障碍。从自托管版本弹出，注册云版本并再次导入。
+
+[[https://thymer.com/local-first-ejectable#:~:text=An%20ejectable%20app,and%20import%20again.][Source]]
+#+end_quote
+
+上了云，也要保证可以随时从云上下来，要考虑有一天云服务厂商可能会倒闭。
+
+** [[https://www.jono.fyi/][Artistic & Studio Work of Jono]]
+
+#+begin_quote
+就像一位画家，我观察，然后描绘我所看到的。我不断重复这个过程。
+
+信息是我的颜料，技术是我的画笔，创造物体和体验是我的画布。
+
+[[https://www.jono.fyi/#:~:text=My%20name%20is,commercial%2C%20continue%20scrolling.][Source]]
+#+end_quote
+
 * 多媒体
 ** 视频
 - [[https://www.bilibili.com/video/BV1eoQwYPEeu][我的人生目标，就是和你维持现状！｜北海道旅拍]] (04:44)
@@ -970,6 +1194,9 @@ Gulf of Mexico 甚至还有 [[https://www.youtube.com/watch?v=QRKnrFEjDF0&ab_cha
 - [[https://www.bilibili.com/video/BV1P6QSYnERz][用滑动方块的碰撞次数来计算圆周率]] (23:37)
 - [[https://www.bilibili.com/video/BV1FEXzYUEuK][陶喆从未曝光过的新专 demo!丨HOPICO X 陶喆丨未曝光的音轨]] (24:12)
 - [[https://www.bilibili.com/video/BV1LFQDYqEKn][流行100年，胶片还会陪我们多久？]] (13:22)
+- [[https://www.bilibili.com/video/BV1HMXWYgEbQ][萨克斯转音注入灵魂！《爱爱爱 x Love Song》致永远的 Soulboy - 方大同]] (03:31)
+- [[https://www.youtube.com/watch?v=-aGyDDoaHww&ab_channel=CraftvsCruft][Anthropic CEO Declares Programming Over, We Respond]] (23:03)
+-
 ** 博客
 
 * Music
