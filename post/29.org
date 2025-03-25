@@ -1,7 +1,7 @@
 #+title: Weekly#29
 #+INDEX: weekly!#29
-#+date: <2025-03-16 Sun>
-#+lastmod: <2025-03-16 Sun 17:30>
+#+date: <2025-03-25 Tue>
+#+lastmod: <2025-03-25 Tue>
 #+author: Spike Leung
 #+email: l-yanlei@hotmail.com
 #+description: "Weekly info collected by Spike Leung"
@@ -26,7 +26,9 @@
 
 这周加班很严重，忙得很，加班也就算了，领导还阴阳怪气，让我挺生气的。
 
-我可以选择离职，很多时刻都非常冲动地想直接提离职，但还是忍耐下来了。如今这个环境，还是骑驴找马吧。
+我可以选择离职，很多时刻都非常冲动地想直接提离职，但还是忍耐下来了。
+
+如今这个环境，还是骑驴找马吧。
 
 #+begin_quote
 不要和猪打架，不要和杠精抬杠，他们找你，你就说，感谢大佬的指点，然后果断把他们拉黑。
@@ -73,7 +75,7 @@
 
   LLM 说到底还是通过预测可能的 token 返回结果，所以它们还是会出错。
 
-  不用因为它们时而出错而弃而不用，也不要完全相信它们返回的结果，利用它们来增强自己的能力。
+  不要因为它们时而出错而弃而不用，也不要完全相信它们返回的结果，利用它们来增强自己的能力。
 
 - 注意 LLM 的训练截止日期
 
@@ -178,39 +180,204 @@
   #+end_quote
 #+end_details
 
-** [[http://11spades.net/posts/on-naming-things/][On Naming Things]]
+** [[https://norahsakal.com/blog/mcp-vs-api-model-context-protocol-explained/][What is Model Context Protocol (MCP)? How it simplifies AI integrations compared to APIs]]
 
-编码中命名是一件让人头疼的事，一般而言，会使用名称作为描述，描述对应的变量或者函数。
+一篇 MCP 扫盲文章，文章中还将 MCP 和 API 进行了对比。
 
-但是变量和函数的功能可能会发生变化，可能会导致命名的描述不再准确，甚至造成误解。
+#+CAPTION: MCP 架构图
+https://norahsakal.com/assets/images/mcp_overview-641a298352ff835488af36be3d8eee52.png
+
+MCP 就像是一个 USB 接口，你可以将 MCP Server 插上去，从而获得 MCP Server 提供的功能和能力。
+
+例如 GMail MCP Server 可以通过操作邮件相关的能力。
+
+本地数据，网络搜索，远程服务等也都可以通过 MCP Server 提供。
+
+一个 USB 接口只能插入一个设备，类似的，MCP Server 和 MCP Client 的关系也是一对一的。
+
+（可能是因为 MCP 是双向通讯，双向通讯的对象需要一对一？）
+
+但是只要你机器性能足够，你可以拥有很多个接口，建立很多 MCP 连接。
+
+你可以写 MCP Client 去和 MCP Server 交互，但是感觉很可能我们都不需要写，而都是通过 LLM 应用 （MCP Host）作为入口使用。
+
+我们通过 LLM 应用描述需求，LLM 应用创建 MCP Client 和对应的 MCP Server 连接完成相关工作，再将结果返回给我们。
+
+除了 MCP，我最近还看到 2 个提议 [[https://docs.wild-card.ai/agentsjson/introduction][agents.json]] 和 [[https://llmstxt.org/][/llms.txt]]。
+
+简单来说，它们像是专门给 LLM 准备的站点地图（也像 robot.txt），告诉 LLM 内容怎么找，可以怎么用。
+
+agents.json 用于提供 API 的站点地图。
+
+API 是为开发者设计的，开发人员自己看文档，写对应的 API 调用。
+
+#+CAPTION: 传统 API 调用
+https://mintlify.s3.us-west-1.amazonaws.com/wildcard/static/TraditionalFlowDiagram.png
+
+但是对于 LLM，它不知道 API 之间是怎么关联的，参数格式也可能不清楚。
+
+#+CAPTION: LLM 客户端调用 API
+https://mintlify.s3.us-west-1.amazonaws.com/wildcard/static/AirgapFlowDiagram.png
+
+agents.json 就是为了填补这个空缺，让 LLM 知道怎么调用 API。
+
+#+CAPTION: LLM 客户端结合 agents.json 调用 API
+https://mintlify.s3.us-west-1.amazonaws.com/wildcard/static/LlmWorksDiagram.png
+
+/llms.txt 用于提供网站内容的站点地图。
+
+它提供网站简要的背景信息、指导和指向详细 markdown 文件的链接。
+
+你可以看看 [[https://answerdotai.github.io/fasthtml/llms.txt][FastHTML 的 /llms.txt]] 参考一下。
+
+** [[https://ghuntley.com/tradecraft/][Yes, Claude Code can decompile itself. Here's the source code.]]
+
+作者用 Claude 反编译了一个 5 MB 左右的源码，虽然过程不算容易，但最终还是成功了。
+
+发布的代码一般会经过混淆和压缩，减少体积，也避免别人查看页面源码时轻易找到程序的一些漏洞。
+
+但是现在有了 LLM，它很擅长处理文字，只要它能处理的上下文足够大，知道源码是通过什么混淆过来的，它或许就能轻松将其还原回去。
 
 #+begin_quote
-例如，在命名一个可变变量或一个抽象链上的高级函数时，对象的性质有可能随着时间的推移而偏离其描述。
+现在，一个敏锐的头脑应该已经意识到上述内容的含义，但我还是要说出来。
 
-事实上，我非常确信这一点：每当你使用一个描述作为能够变化的事物的名称时，你就是在告诉自己一个最终的谎言，而在这个谎言被识破之前，你所拥有的时间是该对象及其依赖关系所经历的变化的频率和幅度的函数。
+使用上述技术，你可以在几个小时内清理任何现有软件。
 
-将来要解决这个问题，代价可能会很高，也可能不会很高。
+所有那些在上一个繁荣时期筹集了大量资金的 “源代码可用” 创始人现在都陷入困境。
 
-如果你在很多地方都调用了这个名称，或者这个名称的选择使得查找和替换操作会返回很多不相关的匹配结果，那么重构依赖于这个名称的逻辑可能会很麻烦。
+因为任何人都可以利用上述技术在几个小时内重新实现他们的“专有功能”，从而以更低的运营成本启动竞争对手的初创公司。
 
-[[https://11spades.net/posts/on-naming-things/#:~:text=But%20these%20benefits,that%20depends%20thereupon][Source]]
+[[https://ghuntley.com/tradecraft/#:~:text=Now%2C%20a%20sharp,operating%20costs][Source]]
 #+end_quote
 
-对此，作者的建议是减少变量和函数的复杂度，让它们尽可能简单、原子化，从而减少它们变化的可能性。
+** [[https://antirez.com/news/147][Big LLMs weights are a piece of history]]
+
+每年都有一部份旧网页会从互联网消逝，所以如果有自己在意的内容最好保存到本地。
+
+当然也有一些组织在做这样的事情，例如 [[https://web.archive.org/][Internet Archive]]。
+
+但是目前 LLM 都会使用互联网的预料作为训练材料，如果网页内容被作为预料训练了，那么这些内容就能随着 LLM 的存活而存活。
 
 #+begin_quote
-我们有几种方法可以避免这种繁琐的重构。
+这是一个众所周知的问题，我相信试图保存一切的明显方法将会失败，
 
-最明显的就是限制需要命名的对象在目的和组成方面的复杂性。
+原因是实际的：大量的努力没有经济收益：当前的世界并不是一个进行高成本努力而没有回报的最佳场所。
 
-具有原子目的的精益对象通常会经历较少和较小的实用特性变化，这反过来又意味着我们的债务会更少，需要偿还的次数也会更少。
+这就是为什么我相信 LLMs 压缩信息的能力，即使不精确、虚构、缺乏，也总比没有好。
 
-顺便提一下，应用这一原则还能避免使用过于冗长、近乎可憎的名称，如 RemoteConnectorFactoryFactoryConfigurerFactory，同时还能让你不必在脑海中映射这些令人发指的名称的含义。
+DeepSeek V3 已经是一个可用的、公开的互联网有损压缩视图，其他一些非常大的最先进模型也是如此。
 
-因此，当你遇到一个对象确实应该有一个描述性的名称，但却莫名其妙地很难命名，或者虽然可以命名，但却必须重命名很多次时，就毁掉它，另辟蹊径吧。
+这不会让我们失去的所有东西都回来，我们应该努力支持互联网档案馆和其他类似的机构和努力。
 
-[[https://11spades.net/posts/on-naming-things/#:~:text=We%20have%20a,a%20new%20way][Source]]
+但与此同时，我们应该专注于一个更简单的努力：确保 LLMs 公开发布的权重不会丢失，并确保档案也是预训练集的一部分。
+
+[[https://antirez.com/news/147#:~:text=This%20is%20a,set%20as%20well.][Source]]
 #+end_quote
+
+** [[https://www.nickcraux.com/blog/cursor-tips][I use Cursor daily - here's how I avoid the garbage parts]]
+
+作者使用 Cursor 的一些经验：
+
+- 制定 cursorrules，用来给 LLM 一些约束。但不要试图囊括一切，保持简洁，逐步构建。
+- 告诉 LLM 需要的内容在哪，提供足够的上下文
+- 不要盲目接受代码。这总会让你后悔。(认同，最近我用 LLM 写代码，有的没有 review，它把原来一些功能给移除了，我测试才知道。)
+- 学会在何时最好手动解决问题。
+- 如果这是一个重要的任务，或者你正在为一个功能奠定基础，请在编写代码之前让它问你任何问题，以确保它完全理解你想要做的事情。
+- ...
+
+#+begin_quote
+人工智能最好的地方之一就是，当你的大脑疲惫时，你仍然可以编写代码，而解决一个问题通常会超出你的能力范围。
+
+在沙发上坐着写一些大致不错的代码是很不错的，但有时你会花一个小时追逐 “你说得对” “我现在明白问题了”，结果却比你开始时更糟。
+
+但我建议你尝试使用它，并学习如何最好地与它交流。
+
+它不会消失，它只是你可以使用的另一种工具。
+
+如果你是一个初级开发者，我当然会对此非常谨慎。
+
+实际上，任何人都应该如此。
+
+我确实认为我的编码技能正在退化，这一点是有道理的。
+
+[[https://www.nickcraux.com/blog/cursor-tips#:~:text=One%20of%20the,my%20coding%20skills.][Source]]
+#+end_quote
+
+这周我也用 [[https://aider.chat/][aider]] 写了一周的代码，有 90% 的代码都是它帮我写的，我只负责写 prompt 描述需求，然后测试和 review。
+
+当然它不是全部都能帮我写，一些相对复杂的样式和交互，我也不知道如何跟它描述，我就会自己去实现。
+
+用下来，我觉得 LLM 确实能很大程度提高效率，同样的逻辑，我也可以写，但是 LLM 可以更快地写完。
+
+但是用多了，就会产生 LLM 依赖，一些代码自己就不想写了，都想通过 LLM 来完成，正如作者说的，会有一种编码技能正在退化的感觉。
+
+毕竟技能都是需要练习才能熟练的，如果放弃练习，最后就会变得生疏。
+
+另一个问题是，都靠 LLM 写代码，虽然大致的实现是清楚的，但是毕竟不是自己写的，对于一些逻辑的实现理解的可能没有那么深刻，真的自己来写，实现肯定是不同的。
+
+还有就是用多了，由于 LLM 改动的代码量不小，review 其实也是需要不少时间的，但是人总是想偷懒，渐渐地，review 得可能没有那么仔细，就会忽略了一些 LLM 产生的问题。
+
+至于怎么用好 LLM，我的经验是：
+
+- 控制上下文，不要让 LLM 处理太多文件，专注于当前需求涉及的文件。
+- 为了控制上下文大小，这要求每一次 prompt 实现的功能应该是相对比较小的，逻辑相对单一的。
+- 不同任务之间，上下文可能关联不大，可以考虑先清空之前的上下文再开始下一个任务。
+- 给 LLM 提供足够的上下文，例如给他一些相关示例，提供相关文档等。
+- 要提醒自己，保证足够的测试，review，不然很可能忽略了 LLM 产生的问题。
+
+要提醒自己不要过于依赖 LLM，[[https://eli.cx/blog/ai-is-making-developers-dumb][过度依赖，可能会让你变笨]]。
+
+** [[https://seldo.com/posts/ai-effect-on-programming-jobs][AI's effects on programming jobs]]
+
+有人认为 AI 会取代所有编程工作，有人认为不会取代任何人。
+
+作者有个不同的观点，他认为 AI 可能会创造出更多程序员。
+
+因为 AI 让程序构建的门槛变低，任何人有需求需要用程序实现，他就可以借用 AI 自己构建。
+
+#+begin_details
+#+html: <summary>摘录</summary>
+
+#+begin_quote
+人工智能创造了一种非常强大的新抽象，可能会使开发者的工作不再需要了解编程语言。 [[https://x.com/karpathy/status/1886192184808149383][Karpathy 称之为 “氛围编码(vide coding)”。]]
+
+[...]
+
+这些新开发者将知道如何以结构化的方式思考，他们将了解软件在架构上应该如何运作的原则，但他们对编程语言的构造和语法了解较少。
+
+他们将更多地是架构师，而不是开发者，指示人工智能为他们组装软件，而无需了解 “低级” 实现，也就是代码。
+
+就像当前的编码者不需要考虑汇编代码是如何工作的。
+
+[[https://seldo.com/posts/ai-effect-on-programming-jobs#:~:text=AI%20has%20created,will%20be%20redundant.][Source]]
+#+end_quote
+
+#+begin_quote
+这一切对编程市场的最终结果是：更多的软件，更好的软件，更多的程序员，更好的程序员。
+
+但调整不会没有痛苦：在我们弄清楚如何为 AI 驱动的开发设置保护措施之前，一些糟糕的软件将被发布。
+
+一些目前正在发布平庸软件的程序员会在他们自己学会 AI 工具之前被更新、更快的 AI 辅助开发者取代。
+
+每个人都将有很多学习要做。
+
+但还有什么是新的呢？
+
+软件开发一直在快速演变。拥抱变化，你就会没事。
+
+我想我已经为这种新型的 AI 辅助开发者决定了一个名字：我们可以称他们为软件开发者 (Software Developers)。
+
+给他们其他名字会造成不必要的门槛，这会错误地暗示他们永远无法向下转型。
+
+我在这个行业待得太久，无法陷入这个陷阱。
+
+他们开发软件，所以他们是软件开发者。
+
+这是他们所需的唯一资格。
+
+[[https://seldo.com/posts/ai-effect-on-programming-jobs#:~:text=The%20net%20result,qualification%20they%20need.][Source]]
+#+end_quote
+#+end_details
 
 ** [[https://mislav.net/2014/02/hidden-documentation/][Every line of code is always documented]]
 
@@ -288,6 +455,32 @@
 #+end_quote
 
 作者这段感悟，有种 “绝知此事要躬行” 的感觉，只有自己实践过，才会理解得更深入。
+
+** [[https://mirawelner.com/posts/checkout.html][Can we communally deprecate git checkout?]]
+
+作者呼吁大家放弃 =git checkout= ，而替换成 =git switch= 和 =git restore= 。
+
+原因是 =git checkout= 代表的含义过于复杂，除非对 git 非常熟悉，不然很容易产生困惑。
+
+#+begin_quote
+Git checkout 似乎故意让这个命令变成一个绝对的灾难。
+
+官方的 git 文档将 =git checkout= 描述为一个 “切换分支或恢复工作树文件” 的功能。
+
+这已经是两件几乎没有关系的事情，而且这还不是这个庞大、超负荷的命令所能做的全部。
+
+我认为更全面的描述应该是：
+
+“它可以让你从一个分支移动到另一个分支，或者创建一个新的分支并将你移动到该分支，或者将特定文件恢复到 n 次提交之前的版本。
+
+它还可以在恢复已暂存文件到它们被暂存时的版本时，删除所有未暂存的文件，或者它可以创建一个分离的 HEAD 状态。”
+
+这到底是什么意思？这甚至不是一个连贯的句子！
+
+为什么人们决定让一个命令执行 Git 的所有功能？这是什么疯狂？
+
+[[https://mirawelner.com/posts/checkout.html#:~:text=Git%20checkout%20seems,is%20this%20madness%3F][Source]]
+#+end_quote
 
 ** [[https://www.tibinotes.com/p/practical-ux-for-startups-surviving][Practical UX for startups surviving without a designer]]
 
@@ -375,55 +568,39 @@ https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progres
 [[https://persevering.substack.com/p/super-crispy-svg-icons#:~:text=I%E2%80%99m%20always%20a,art%20than%20science.][Source]]
 #+end_quote
 
-** [[https://norahsakal.com/blog/mcp-vs-api-model-context-protocol-explained/][What is Model Context Protocol (MCP)? How it simplifies AI integrations compared to APIs]]
+** [[http://11spades.net/posts/on-naming-things/][On Naming Things]]
 
-一篇 MCP 扫盲文章，文章中还将 MCP 和 API 进行了对比。
+编码中命名是一件让人头疼的事，一般而言，会使用名称作为描述，描述对应的变量或者函数。
 
-#+CAPTION: MCP 架构图
-https://norahsakal.com/assets/images/mcp_overview-641a298352ff835488af36be3d8eee52.png
+但是变量和函数的功能可能会发生变化，可能会导致命名的描述不再准确，甚至造成误解。
 
-MCP 就像是一个 USB 接口，你可以将 MCP Server 插上去，从而获得 MCP Server 提供的功能和能力。
+#+begin_quote
+例如，在命名一个可变变量或一个抽象链上的高级函数时，对象的性质有可能随着时间的推移而偏离其描述。
 
-例如 GMail MCP Server 可以通过操作邮件相关的能力。
+事实上，我非常确信这一点：每当你使用一个描述作为能够变化的事物的名称时，你就是在告诉自己一个最终的谎言，而在这个谎言被识破之前，你所拥有的时间是该对象及其依赖关系所经历的变化的频率和幅度的函数。
 
-本地数据，网络搜索，远程服务等也都可以通过 MCP Server 提供。
+将来要解决这个问题，代价可能会很高，也可能不会很高。
 
-一个 USB 接口只能插入一个设备，类似的，MCP Server 和 MCP Client 的关系也是一对一的。
+如果你在很多地方都调用了这个名称，或者这个名称的选择使得查找和替换操作会返回很多不相关的匹配结果，那么重构依赖于这个名称的逻辑可能会很麻烦。
 
-（可能是因为 MCP 是双向通讯，双向通讯的对象需要一对一？）
+[[https://11spades.net/posts/on-naming-things/#:~:text=But%20these%20benefits,that%20depends%20thereupon][Source]]
+#+end_quote
 
-但是只要你机器性能足够，你可以拥有很多个接口，建立很多 MCP 连接。
+对此，作者的建议是减少变量和函数的复杂度，让它们尽可能简单、原子化，从而减少它们变化的可能性。
 
-你可以写 MCP Client 去和 MCP Server 交互，但是感觉很可能我们都不需要写，而都是通过 LLM 应用 （MCP Host）作为入口使用。
+#+begin_quote
+我们有几种方法可以避免这种繁琐的重构。
 
-我们通过 LLM 应用描述需求，LLM 应用创建 MCP Client 和对应的 MCP Server 连接完成相关工作，再将结果返回给我们。
+最明显的就是限制需要命名的对象在目的和组成方面的复杂性。
 
-除了 MCP，我最近还看到 2 个提议 [[https://docs.wild-card.ai/agentsjson/introduction][agents.json]] 和 [[https://llmstxt.org/][/llms.txt]]。
+具有原子目的的精益对象通常会经历较少和较小的实用特性变化，这反过来又意味着我们的债务会更少，需要偿还的次数也会更少。
 
-简单来说，它们像是专门给 LLM 准备的站点地图（也像 robot.txt），告诉 LLM 内容怎么找，可以怎么用。
+顺便提一下，应用这一原则还能避免使用过于冗长、近乎可憎的名称，如 RemoteConnectorFactoryFactoryConfigurerFactory，同时还能让你不必在脑海中映射这些令人发指的名称的含义。
 
-agents.json 用于提供 API 的站点地图。
+因此，当你遇到一个对象确实应该有一个描述性的名称，但却莫名其妙地很难命名，或者虽然可以命名，但却必须重命名很多次时，就毁掉它，另辟蹊径吧。
 
-API 是为开发者设计的，开发人员自己看文档，写对应的 API 调用。
-
-#+CAPTION: 传统 API 调用
-https://mintlify.s3.us-west-1.amazonaws.com/wildcard/static/TraditionalFlowDiagram.png
-
-但是对于 LLM，它不知道 API 之间是怎么关联的，参数格式也可能不清楚。
-
-#+CAPTION: LLM 客户端调用 API
-https://mintlify.s3.us-west-1.amazonaws.com/wildcard/static/AirgapFlowDiagram.png
-
-agents.json 就是为了填补这个空缺，让 LLM 知道怎么调用 API。
-
-#+CAPTION: LLM 客户端结合 agents.json 调用 API
-https://mintlify.s3.us-west-1.amazonaws.com/wildcard/static/LlmWorksDiagram.png
-
-/llms.txt 用于提供网站内容的站点地图。
-
-它提供网站简要的背景信息、指导和指向详细 markdown 文件的链接。
-
-你可以看看 [[https://answerdotai.github.io/fasthtml/llms.txt][FastHTML 的 /llms.txt]] 参考一下。
+[[https://11spades.net/posts/on-naming-things/#:~:text=We%20have%20a,a%20new%20way][Source]]
+#+end_quote
 
 ** [[https://dynomight.net/noise/][My stupid noise journey]]
 
@@ -432,6 +609,9 @@ https://mintlify.s3.us-west-1.amazonaws.com/wildcard/static/LlmWorksDiagram.png
 身边的人建议他搬家或者试试降噪耳机，但是他认为降噪耳机治标不治本，他想从根本上减少噪音的影响。
 
 他尝试了各种办法，如耳罩，隔音耳塞等，效果都不好，就这样过了 2 年多，直到他第一次使用降噪耳机，惊呼 yyds。
+
+#+begin_details
+#+html: <summary>摘录</summary>
 
 #+begin_quote
 所以让我们回顾一下：我有一个问题。
@@ -464,26 +644,7 @@ https://mintlify.s3.us-west-1.amazonaws.com/wildcard/static/LlmWorksDiagram.png
 
 [[https://dynomight.net/noise/#:~:text=So%20let%E2%80%99s%20review,are%20so%20easy][Source]]
 #+end_quote
-
-** [[https://ghuntley.com/tradecraft/][Yes, Claude Code can decompile itself. Here's the source code.]]
-
-作者用 Claude 反编译了一个 5 MB 左右的源码，虽然过程不算容易，但最终还是成功了。
-
-发布的代码一般会经过混淆和压缩，减少体积，也避免别人查看页面源码时轻易找到程序的一些漏洞。
-
-但是现在有了 LLM，它很擅长处理文字，只要它能处理的上下文足够大，知道源码是通过什么混淆过来的，它或许就能轻松将其还原回去。
-
-#+begin_quote
-现在，一个敏锐的头脑应该已经意识到上述内容的含义，但我还是要说出来。
-
-使用上述技术，你可以在几个小时内清理任何现有软件。
-
-所有那些在上一个繁荣时期筹集了大量资金的 “源代码可用” 创始人现在都陷入困境。
-
-因为任何人都可以利用上述技术在几个小时内重新实现他们的“专有功能”，从而以更低的运营成本启动竞争对手的初创公司。
-
-[[https://ghuntley.com/tradecraft/#:~:text=Now%2C%20a%20sharp,operating%20costs][Source]]
-#+end_quote
+#+end_details
 
 ** [[https://steveklabnik.com/writing/choosing-languages/][Choosing Languages]]
 
@@ -511,112 +672,9 @@ https://mintlify.s3.us-west-1.amazonaws.com/wildcard/static/LlmWorksDiagram.png
 [[https://steveklabnik.com/writing/choosing-languages/#:~:text=But%20at%20that,that%20ever%20again.][Source]]
 #+end_quote
 
-** [[https://mirawelner.com/posts/checkout.html][Can we communally deprecate git checkout?]]
-
-作者呼吁大家放弃 =git checkout= ，而替换成 =git switch= 和 =git restore= 。
-
-原因是 =git checkout= 代表的含义过于复杂，除非对 git 非常熟悉，不然很容易产生困惑。
-
-#+begin_quote
-Git checkout 似乎故意让这个命令变成一个绝对的灾难。
-
-官方的 git 文档将 =git checkout= 描述为一个 “切换分支或恢复工作树文件” 的功能。
-
-这已经是两件几乎没有关系的事情，而且这还不是这个庞大、超负荷的命令所能做的全部。
-
-我认为更全面的描述应该是：
-
-“它可以让你从一个分支移动到另一个分支，或者创建一个新的分支并将你移动到该分支，或者将特定文件恢复到 n 次提交之前的版本。
-
-它还可以在恢复已暂存文件到它们被暂存时的版本时，删除所有未暂存的文件，或者它可以创建一个分离的 HEAD 状态。”
-
-这到底是什么意思？这甚至不是一个连贯的句子！
-
-为什么人们决定让一个命令执行 Git 的所有功能？这是什么疯狂？
-
-[[https://mirawelner.com/posts/checkout.html#:~:text=Git%20checkout%20seems,is%20this%20madness%3F][Source]]
-#+end_quote
-
 ** [[https://www.bentasker.co.uk/posts/blog/security/seducing-a-romance-scammer.html][My Scammer Girlfriend: Baiting A Romance Fraudster]]
 
 作者去追寻女性交友诈骗邮件的过程，非常长的文章，感兴趣可以看看。
-
-** [[https://antirez.com/news/147][Big LLMs weights are a piece of history]]
-
-每年都有一部份旧网页会从互联网消逝，所以如果有自己在意的内容最好保存到本地。
-
-当然也有一些组织在做这样的事情，例如 [[https://web.archive.org/][Internet Archive]]。
-
-但是目前 LLM 都会使用互联网的预料作为训练材料，如果网页内容被作为预料训练了，那么这些内容就能随着 LLM 的存活而存活。
-
-#+begin_quote
-这是一个众所周知的问题，我相信试图保存一切的明显方法将会失败，
-
-原因是实际的：大量的努力没有经济收益：当前的世界并不是一个进行高成本努力而没有回报的最佳场所。
-
-这就是为什么我相信 LLMs 压缩信息的能力，即使不精确、虚构、缺乏，也总比没有好。
-
-DeepSeek V3 已经是一个可用的、公开的互联网有损压缩视图，其他一些非常大的最先进模型也是如此。
-
-这不会让我们失去的所有东西都回来，我们应该努力支持互联网档案馆和其他类似的机构和努力。
-
-但与此同时，我们应该专注于一个更简单的努力：确保 LLMs 公开发布的权重不会丢失，并确保档案也是预训练集的一部分。
-
-[[https://antirez.com/news/147#:~:text=This%20is%20a,set%20as%20well.][Source]]
-#+end_quote
-
-** [[https://www.nickcraux.com/blog/cursor-tips][I use Cursor daily - here's how I avoid the garbage parts]]
-
-作者使用 Cursor 的一些经验：
-
-- 制定 cursorrules，用来给 LLM 一些约束。但不要试图囊括一切，保持简洁，逐步构建。
-- 告诉 LLM 需要的内容在哪，提供足够的上下文
-- 不要盲目接受代码。这总会让你后悔。(认同，最近我用 LLM 写代码，有的没有 review，它把原来一些功能给移除了，我测试才知道。)
-- 学会在何时最好手动解决问题。
-- 如果这是一个重要的任务，或者你正在为一个功能奠定基础，请在编写代码之前让它问你任何问题，以确保它完全理解你想要做的事情。
-- ...
-
-#+begin_quote
-人工智能最好的地方之一就是，当你的大脑疲惫时，你仍然可以编写代码，而解决一个问题通常会超出你的能力范围。
-
-在沙发上坐着写一些大致不错的代码是很不错的，但有时你会花一个小时追逐 “你说得对” “我现在明白问题了”，结果却比你开始时更糟。
-
-但我建议你尝试使用它，并学习如何最好地与它交流。
-
-它不会消失，它只是你可以使用的另一种工具。
-
-如果你是一个初级开发者，我当然会对此非常谨慎。
-
-实际上，任何人都应该如此。
-
-我确实认为我的编码技能正在退化，这一点是有道理的。
-
-[[https://www.nickcraux.com/blog/cursor-tips#:~:text=One%20of%20the,my%20coding%20skills.][Source]]
-#+end_quote
-
-这周我也用 [[https://aider.chat/][aider]] 写了一周的代码，有 90% 的代码都是它帮我写的，我只负责写 prompt 描述需求，然后测试和 review。
-
-当然它不是全部都能帮我写，一些相对复杂的样式和交互，我也不知道如何跟它描述，我就会自己去实现。
-
-用下来，我觉得 LLM 确实能很大程度提高效率，同样的逻辑，我也可以写，但是 LLM 可以更快地写完。
-
-但是用多了，就会产生 LLM 依赖，一些代码自己就不想写了，都想通过 LLM 来完成，正如作者说的，会有一种编码技能正在退化的感觉。
-
-毕竟技能都是需要练习才能熟练的，如果放弃练习，最后就会变得生疏。
-
-另一个问题是，都靠 LLM 写代码，虽然大致的实现是清楚的，但是毕竟不是自己写的，对于一些逻辑的实现理解的可能没有那么深刻，真的自己来写，实现肯定是不同的。
-
-还有就是用多了，由于 LLM 改动的代码量不小，review 其实也是需要不少时间的，但是人总是想偷懒，渐渐地，review 得可能没有那么仔细，就会忽略了一些 LLM 产生的问题。
-
-至于怎么用好 LLM，我的经验是：
-
-- 控制上下文，不要让 LLM 处理太多文件，专注于当前需求涉及的文件。
-- 为了控制上下文大小，这要求每一次 prompt 实现的功能应该是相对比较小的，逻辑相对单一的。
-- 不同任务之间，上下文可能关联不大，可以考虑先清空之前的上下文再开始下一个任务。
-- 给 LLM 提供足够的上下文，例如给他一些相关示例，提供相关文档等。
-- 要提醒自己，保证足够的测试，review，不然很可能忽略了 LLM 产生的问题。
-
-要提醒自己不要过于依赖 LLM，[[https://eli.cx/blog/ai-is-making-developers-dumb][过度依赖，可能会让你变笨]]。
 
 ** [[https://planetscale.com/blog/io-devices-and-latency][IO devices and latency]]
 
@@ -932,58 +990,6 @@ Facebook 的 Zuck 常说他的法则是高于 25 分钟的任务他会分解。
 #+end_quote
 #+end_details
 
-** [[https://seldo.com/posts/ai-effect-on-programming-jobs][AI's effects on programming jobs]]
-
-有人认为 AI 会取代所有编程工作，有人认为不会取代任何人。
-
-作者有个不同的观点，他认为 AI 可能会创造出更多程序员。
-
-因为 AI 让程序构建的门槛变低，任何人有需求需要用程序实现，他就可以借用 AI 自己构建。
-
-#+begin_details
-#+html: <summary>摘录</summary>
-
-#+begin_quote
-人工智能创造了一种非常强大的新抽象，可能会使开发者的工作不再需要了解编程语言。 [[https://x.com/karpathy/status/1886192184808149383][Karpathy 称之为 “氛围编码(vide coding)”。]]
-
-[...]
-
-这些新开发者将知道如何以结构化的方式思考，他们将了解软件在架构上应该如何运作的原则，但他们对编程语言的构造和语法了解较少。
-
-他们将更多地是架构师，而不是开发者，指示人工智能为他们组装软件，而无需了解 “低级” 实现，也就是代码。
-
-就像当前的编码者不需要考虑汇编代码是如何工作的。
-
-[[https://seldo.com/posts/ai-effect-on-programming-jobs#:~:text=AI%20has%20created,will%20be%20redundant.][Source]]
-#+end_quote
-
-#+begin_quote
-这一切对编程市场的最终结果是：更多的软件，更好的软件，更多的程序员，更好的程序员。
-
-但调整不会没有痛苦：在我们弄清楚如何为 AI 驱动的开发设置保护措施之前，一些糟糕的软件将被发布。
-
-一些目前正在发布平庸软件的程序员会在他们自己学会 AI 工具之前被更新、更快的 AI 辅助开发者取代。
-
-每个人都将有很多学习要做。
-
-但还有什么是新的呢？
-
-软件开发一直在快速演变。拥抱变化，你就会没事。
-
-我想我已经为这种新型的 AI 辅助开发者决定了一个名字：我们可以称他们为软件开发者 (Software Developers)。
-
-给他们其他名字会造成不必要的门槛，这会错误地暗示他们永远无法向下转型。
-
-我在这个行业待得太久，无法陷入这个陷阱。
-
-他们开发软件，所以他们是软件开发者。
-
-这是他们所需的唯一资格。
-
-[[https://seldo.com/posts/ai-effect-on-programming-jobs#:~:text=The%20net%20result,qualification%20they%20need.][Source]]
-#+end_quote
-#+end_details
-
 ** [[https://bemorewithless.com/simplify-daily-habits/][12 Daily Habits That Will Help You Simplify Your Life]]
 
 作者分享了 12 个简化生活的习惯。
@@ -1004,16 +1010,6 @@ Facebook 的 Zuck 常说他的法则是高于 25 分钟的任务他会分解。
 #+end_quote
 
 * Tutorial | Resource
-
-** [[https://javascriptgametutorials.com/][JavaScript Game Tutorials]]
-
-JS 编写游戏的教程，目前的教程主要是用 [[https://threejs.org/][three.js]] 实现的。
-
-** [[https://okaydev.co/articles/dive-into-webgpu-part-1][Dive Into WebGPU—Part 1]]
-
-WebGPU 教程。
-
-实现的效果挺炫酷的，但是我的电脑打开网页很卡，估计对资源要求比较高。
 
 ** [[https://chrisnicholas.dev/blog/how-to-write-exceptional-documentation][How to write exceptional documentation]]
 
@@ -1141,6 +1137,16 @@ WebGPU 教程。
 #+end_quote
 #+end_details
 
+** [[https://javascriptgametutorials.com/][JavaScript Game Tutorials]]
+
+JS 编写游戏的教程，目前的教程主要是用 [[https://threejs.org/][three.js]] 实现的。
+
+** [[https://okaydev.co/articles/dive-into-webgpu-part-1][Dive Into WebGPU—Part 1]]
+
+WebGPU 教程。
+
+实现的效果挺炫酷的，但是我的电脑打开网页很卡，估计对资源要求比较高。
+
 ** [[https://www.evanmiller.org/statistical-formulas-for-programmers.html][Statistical Formulas For Programmers]]
 
 作者整理了一些他认为比较有用的统计学的公式。
@@ -1177,11 +1183,24 @@ Lobste 上的一个问题，想大家征集好的 git 教程。
 之前推荐过 [[https://taxodium.ink/12.html#0c159cd6-130d-45d9-894e-d4e86c73c4dc][【高能干货】这个视频将会颠覆你对英语学习的认知——总述·阅读篇]]，强调的是可理解输入。
 
 或许网站上 level 1 的读物算得上是。
-** [[https://vectorcraftr.com/][vectorCraftr]]
+** [[https://vectorcraftr.com/][Vector Craftr]]
 
 一些免费的看起来还不错的插画。
 
 * Code Related
+** [[https://matklad.github.io/2025/03/21/use-long-options-in-scripts.html][Use Long Options in Scripts]]
+
+写脚本的时候，使用较长的 options 而不是缩写，这样能提高脚本的可读性。
+
+#+begin_quote
+许多命令行工具支持短格式选项 (=-f=) 和长格式选项 (=--force= )。
+
+短格式用于交互式使用。
+
+在脚本中，使用长格式。
+
+长格式选项对读者来说更具自我解释性。
+#+end_quote
 ** [[https://devblogs.microsoft.com/typescript/typescript-native-port/][A 10x Faster TypeScript]]
 
 TypeScript 使用 GO 进行了重写，使得 TS 的构建速度缩短了 10 倍，Cool！
@@ -1212,6 +1231,9 @@ TS 团队计划在 6.x 版本引入一些 breaking changes，以与即将发布�
 ** [[https://evilmartians.com/chronicles/better-web-video-with-av1-codec][How to make web videos way smaller in 2025 using the AV1 codec]]
 
 文章介绍了如何使用 [[https://en.wikipedia.org/wiki/AV1][AV1]] 减少视频大小，同时保证视频的质量。
+
+#+begin_details
+#+html: <summary>摘录</summary>
 
 #+begin_quote
 首先，让我们放大并注意到，在处理静态图像时，无需三思而后行：选择所有浏览器都支持的 WebP、JPEG 或 PNG，或者尝试使用谷歌为较新浏览器开发的更紧凑的 AVIF。
@@ -1246,10 +1268,15 @@ TS 团队计划在 6.x 版本引入一些 breaking changes，以与即将发布�
 
 [[https://evilmartians.com/chronicles/better-web-video-with-av1-codec#:~:text=First%20up%2C%20let%E2%80%99s,or%20something%20else.][Source]]
 #+end_quote
+#+end_details
 
 ** [[https://www.bram.us/2025/03/11/view-transitions-border-radius/][View Transitions Applied: Smoothly animating a border-radius with a View Transition]]
 
 使用 View Transition 实现 border 的平滑过渡。
+
+** [[https://www.bram.us/2025/03/11/view-transitions-border-radius][View Transitions Applied: Smoothly animating a border-radius with a View Transition]]
+
+使用 View Transition 实现 border-radius 的平滑过渡。
 
 ** [[https://css-tricks.com/grouping-selection-list-items-together-with-css-grid/][Grouping Selection List Items Together With CSS Grid]]
 
@@ -1259,10 +1286,6 @@ TS 团队计划在 6.x 版本引入一些 breaking changes，以与即将发布�
 
 CSS 实现的动态背景。
 
-** [[https://www.bram.us/2025/03/11/view-transitions-border-radius][View Transitions Applied: Smoothly animating a border-radius with a View Transition]]
-
-使用 View Transition 实现 border-radius 的平滑过渡。
-
 ** [[https://www.debugbear.com/blog/lazy-load-background-images-intersection-observer][Lazy Load Background Images with the IntersectionObserver API]]
 
 文章介绍了如何用 [[https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver][IntersectionObserver]] 实现图片懒加载。
@@ -1271,19 +1294,6 @@ CSS 实现的动态背景。
 
 IntersectionObserver 是独立于浏览器主线程运行的，因此不会阻塞主线程，相比监听 scroll，change，resize 等，性能更好。
 
-** [[https://matklad.github.io/2025/03/21/use-long-options-in-scripts.html][Use Long Options in Scripts]]
-
-写脚本的时候，使用较长的 options 而不是缩写，这样能提高脚本的可读性。
-
-#+begin_quote
-许多命令行工具支持短格式选项 (=-f=) 和长格式选项 (=--force= )。
-
-短格式用于交互式使用。
-
-在脚本中，使用长格式。
-
-长格式选项对读者来说更具自我解释性。
-#+end_quote
 ** [[https://ckeditor.com/blog/how-we-made-our-rich-text-editor-load-faster-part-1/][How we made our rich text editor load faster - Part 1]]
 
 作者总结的 CKEditor 优化过程，经过优化，文档加载速度快了 6 - 7 倍。
@@ -1352,6 +1362,37 @@ https://i0.wp.com/frontendmasters.com/blog/wp-content/uploads/2025/03/416732169-
 
 有人也看到了这篇文章，虽然他支持文章的想法，但他觉得目前的交互界面的存在是合理的，[[https://www.datagubbe.se/futui/][新的交互界面的出现，是出于其必要性]]，缺少必要性就可能不会被广泛接受。
 
+** [[https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/putty-icons/][Iconography of the PuTTY tools]]
+
+有人好奇 PuTTY 的图标由来，给作者发了邮件，于是作者写了篇文章来回答。
+
+作者讲述了 PuTTY 许多图标的由来和演变过程，挺有趣的。
+
+#+begin_quote
+有时我会收到一封邮件，询问一个问题，当我回答完这个问题时，我意识到这个问题值得写成一篇博文。
+
+这一次，我在开始打字之前就知道这将是一个这样的问题，因为这个问题既有平面设计的角度，也有技术的角度。
+
+所以我有很多话要说。
+
+[[https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/putty-icons/#:~:text=Sometimes%20I%20receive,lot%20to%20say][Source]]
+#+end_quote
+
+#+begin_quote
+#+OPTIONS: PuTTY 的图标
+https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/putty-icons/putty-original.png
+
+我觉得我没有仔细考虑过设计。
+
+因为我需要一个图标，所以我就把它画下来了。
+
+两台电脑的画风在 90 年代很常见：一个系统盒放在一个 CRT 显示器下面，右端有一个软盘驱动器。
+
+它们之间用闪电连接，暗示着它们之间的电气通信。
+
+[[https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/putty-icons/#:~:text=I%20don%E2%80%99t%20think,be%20immediately%20understandable][Source]]
+#+end_quote
+
 ** [[https://www.fourmilab.ch/gravitation/foobar/][Bending Spacetime in the Basement]]
 
 作者在地下室设计了一个实验，去观察物体之间的引力，探索万有引力。
@@ -1359,6 +1400,9 @@ https://i0.wp.com/frontendmasters.com/blog/wp-content/uploads/2025/03/416732169-
 牛顿发现了万有引力，推动了启蒙运动及随后的科技发展，作者就好奇为什么牛顿之前的人没有发现？
 
 在阿基米德的年代，能否通过相同的实验发现万有引力？
+
+#+begin_details
+#+html: <summary>摘录</summary>
 
 #+begin_quote
 好吧，人到中年固然有其弊端，但至少你可以开展这样的项目，而不用担心被“妈妈！开尔文在地下室弯曲时空！”的喊声扼杀在萌芽状态。
@@ -1409,37 +1453,7 @@ https://i0.wp.com/frontendmasters.com/blog/wp-content/uploads/2025/03/416732169-
 
 [[https://www.fourmilab.ch/gravitation/foobar/#:~:text=The%20universality%20of%20gravitation%20means%20that%20every%20object%20in%20the%20universe%20is%20interlinked%20in%20a%20web%20of%20mutual%20attraction%3B%20the%20universe%20is%20transparent%20to%20gravitation.%20The%20most%20distant%20galaxies%20exert%20a%20pull%20on%20you%2C%20as%20you%20do%20upon%20them%E2%80%94immeasurably%20tiny%20to%20be%20sure%2C%20but%20present%20just%20the%20same.][Source]]
 #+end_quote
-
-** [[https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/putty-icons/][Iconography of the PuTTY tools]]
-
-有人好奇 PuTTY 的图标由来，给作者发了邮件，于是作者写了篇文章来回答。
-
-作者讲述了 PuTTY 许多图标的由来和演变过程，挺有趣的。
-
-#+begin_quote
-有时我会收到一封邮件，询问一个问题，当我回答完这个问题时，我意识到这个问题值得写成一篇博文。
-
-这一次，我在开始打字之前就知道这将是一个这样的问题，因为这个问题既有平面设计的角度，也有技术的角度。
-
-所以我有很多话要说。
-
-[[https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/putty-icons/#:~:text=Sometimes%20I%20receive,lot%20to%20say][Source]]
-#+end_quote
-
-#+begin_quote
-#+OPTIONS: PuTTY 的图标
-https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/putty-icons/putty-original.png
-
-我觉得我没有仔细考虑过设计。
-
-因为我需要一个图标，所以我就把它画下来了。
-
-两台电脑的画风在 90 年代很常见：一个系统盒放在一个 CRT 显示器下面，右端有一个软盘驱动器。
-
-它们之间用闪电连接，暗示着它们之间的电气通信。
-
-[[https://www.chiark.greenend.org.uk/~sgtatham/quasiblog/putty-icons/#:~:text=I%20don%E2%80%99t%20think,be%20immediately%20understandable][Source]]
-#+end_quote
+#+end_details
 
 ** [[https://forum.cursor.com/t/cursor-told-me-i-should-learn-coding-instead-of-asking-it-to-generate-it-limit-of-800-locs/61132][Cursor told me I should learn coding instead of asking it to generate it]]
 
@@ -1496,14 +1510,31 @@ Be My Eyes 通过实时视频和人工智能，将需要视力帮助的盲人和
 CSS 实现的龙卷风。
 
 * Tool | Library
-** [[https://github.com/addyosmani/filter][addyosmani/filter]]
-
-网页版本的图像编辑工具。可以对图片裁剪，设置滤镜和水印。
 ** [[https://a11ysupport.io/][Accessibility Support]]
 
 类似 [[https://caniuse.com/][Can I use]]，输入一个功能特性，查询浏览器对这个特性的支持程度。
 
 这个网站回答的是屏幕阅读器（Screen Reader）对这些特性的无障碍的支持。
+** [[https://github.com/addyosmani/filter][addyosmani/filter]]
+
+网页版本的图像编辑工具。可以对图片裁剪，设置滤镜和水印。
+** [[https://testing.gimp.org/news/2025/03/16/gimp-3-0-released/][GIMP 3.0 Released]]
+
+GIMP (GNU Image Manipulation Program) 是一款自由开源的图像编辑软件，最近发布了 3.0。
+
+** [[https://github.com/VikParuchuri/surya][Surya]]
+
+#+begin_quote
+OCR，支持布局分析，不同阅读顺序，90 多种语言的表格识别。
+#+end_quote
+
+** [[https://motion.dev/blog/introducing-motion-for-vue][Introducing Motion for Vue]]
+
+[[https://github.com/motiondivision/motion][Motion]] 支持 Vue 了，Vue 在写动画上可以更轻松一些了。
+
+** [[https://crawlchat.app/w/67d221efb4b9de65095a2579?embed=true][konva]]
+
+一个 JS Canvas 2d 库，提供了方便地 API 与 Canvas 交互。
 ** [[https://www.i18ncode.com/en][I18n Code]]
 
 将 JSON，markdown，text 的内容翻译成其他语言的工具。
@@ -1521,16 +1552,6 @@ CSS 实现的龙卷风。
 
 Notion 或 Outline 的开源替代品。
 #+end_quote
-
-** [[https://github.com/VikParuchuri/surya][Surya]]
-
-#+begin_quote
-OCR，支持布局分析，不同阅读顺序，90 多种语言的表格识别。
-#+end_quote
-
-** [[https://testing.gimp.org/news/2025/03/16/gimp-3-0-released/][GIMP 3.0 Released]]
-
-GIMP (GNU Image Manipulation Program) 是一款自由开源的图像编辑软件，最近发布了 3.0。
 
 ** [[https://www.httrack.com/][HTTrack]]
 
@@ -1588,13 +1609,6 @@ PoW 不需要任何第三方或权威来执行规则，它基于数学和宇宙�
 oRPC 是 RPC 和 OpenAPI 的强大结合，使构建端到端类型安全且遵循 OpenAPI 标准的 API 变得简单，确保了顺畅和愉快的开发者体验。
 #+end_quote
 
-** [[https://motion.dev/blog/introducing-motion-for-vue][Introducing Motion for Vue]]
-
-[[https://github.com/motiondivision/motion][Motion]] 支持 Vue 了，Vue 在写动画上可以更轻松一些了。
-
-** [[https://crawlchat.app/w/67d221efb4b9de65095a2579?embed=true][konva]]
-
-一个 JS Canvas 2d 库，提供了方便地 API 与 Canvas 交互。
 * Emacs
 - [[https://sachachua.com/blog/2014/04/emacs-beginner-resources/][Emacs beginner resources]] [[https://sachachua.com/blog/][Sacha Chua]] 整理的一些 Emacs 入门教程。
 - [[https://www.masteringemacs.org/article/introduction-magit-emacs-mode-git][An introduction to Magit, an Emacs mode for Git]] magit 是我目前用过的最好的 git 管理工具，没有之一。
@@ -1629,13 +1643,6 @@ oRPC 是 RPC 和 OpenAPI 的强大结合，使构建端到端类型安全且遵�
 谁也不想成为第一个因为使用 X 框架而遇到 Y 问题的团队，或者成为最后一个使用非主流技术导致项目停滞的团队。
 
 [[https://allenpike.com/2025/javascript-fatigue-ssr#:~:text=When%20we%20choose,more%20modern%20toys.][Source]]
-#+end_quote
-** [[https://z.arlmy.me/posts/MastodonArchives/2025/MastodonTootsArchives_20250308/][Toots 2025 Mar.2 - Mar.8]]
-
-#+begin_quote
-故事，也是时间的另一个名字。
-
-[[https://z.arlmy.me/posts/MastodonArchives/2025/MastodonTootsArchives_20250308/#:~:text=%E6%9C%BA%E6%A0%B8%20GCORES-,%E6%95%85%E4%BA%8B%EF%BC%8C%E4%B9%9F%E6%98%AF%E6%97%B6%E9%97%B4%E7%9A%84%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%90%8D%E5%AD%97%E3%80%82,-Mar.3][Source]]
 #+end_quote
 ** [[https://www.aha.io/engineering/articles/rails-views-web-components-react][Rails views, web components, React. Why make a choice?]]
 
@@ -1791,24 +1798,6 @@ Gulf of Mexico 甚至还有 [[https://www.youtube.com/watch?v=QRKnrFEjDF0&ab_cha
 [[https://www.jono.fyi/#:~:text=My%20name%20is,commercial%2C%20continue%20scrolling.][Source]]
 #+end_quote
 
-** [[https://www.pseudoyu.com/zh/2025/03/18/weekly_review_87/][周报 #87 - 我们主持了自己的宝可梦婚礼，还为它办了一个展]]
-
-#+begin_quote
-在所有不知名的角落
-
-生活各自发生着
-
-人们随机的聚集在一起
-
-然后再散落到各地
-
-庆祝喜事发生
-
-于是 灯亮起
-
-[[https://www.pseudoyu.com/zh/2025/03/18/weekly_review_87/#:~:text=%E5%9C%A8%E6%89%80%E6%9C%89%E4%B8%8D%E7%9F%A5,%E4%BA%8E%E6%98%AF%20%E7%81%AF%E4%BA%AE%E8%B5%B7][Source]]
-#+end_quote
-
 ** [[https://alexalejandre.com/programming/deliberate-practice-for-developers/][Deliberate Practice for Developers]]
 
 #+begin_quote
@@ -1894,6 +1883,64 @@ Gulf of Mexico 甚至还有 [[https://www.youtube.com/watch?v=QRKnrFEjDF0&ab_cha
 我观察到的 “氛围编码” 中的持续疏忽对任何规模的客户群体来说都是可怕和不可接受的。
 
 [[https://cendyne.dev/posts/2025-03-19-vibe-coding-vs-reality.html#:~:text=I%20cannot%20%E2%80%94%20and%20would%20not%20%E2%80%94%20trust%20a%20team%20member%20who%20vibe%20codes%20in%20a%20production%20application.%20The%20constant%20negligence%20I%20observe%20when%20%22Vibe%20Coding%22%20is%20atrocious%20and%20unacceptable%20to%20a%20customer%20base%20of%20any%20size.][Source]]
+#+end_quote
+
+** [[https://www.pseudoyu.com/zh/2025/03/18/weekly_review_87/][周报 #87 - 我们主持了自己的宝可梦婚礼，还为它办了一个展]]
+
+#+begin_quote
+在所有不知名的角落
+
+生活各自发生着
+
+人们随机的聚集在一起
+
+然后再散落到各地
+
+庆祝喜事发生
+
+于是 灯亮起
+
+[[https://www.pseudoyu.com/zh/2025/03/18/weekly_review_87/#:~:text=%E5%9C%A8%E6%89%80%E6%9C%89%E4%B8%8D%E7%9F%A5,%E4%BA%8E%E6%98%AF%20%E7%81%AF%E4%BA%AE%E8%B5%B7][Source]]
+#+end_quote
+
+** [[https://z.arlmy.me/posts/MastodonArchives/2025/MastodonTootsArchives_20250308/][Toots 2025 Mar.2 - Mar.8]]
+
+#+begin_quote
+故事，也是时间的另一个名字。
+
+[[https://z.arlmy.me/posts/MastodonArchives/2025/MastodonTootsArchives_20250308/#:~:text=%E6%9C%BA%E6%A0%B8%20GCORES-,%E6%95%85%E4%BA%8B%EF%BC%8C%E4%B9%9F%E6%98%AF%E6%97%B6%E9%97%B4%E7%9A%84%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%90%8D%E5%AD%97%E3%80%82,-Mar.3][Source]]
+#+end_quote
+** [[https://www.owenyoung.com/blog/journals/2025-03-24/][2025.03.24: 各种链接]]
+
+#+begin_quote
+人们是否热爱自己所做的事情的测试在于，如果没有报酬，他们是否仍然愿意去做——即使他们必须在其他工作中谋生。
+
+有多少企业律师会在没有报酬的情况下，在业余时间做他们目前的工作，并且还要做服务员来维持生计呢？
+
+[[https://www.owenyoung.com/blog/journals/2025-03-24/#:~:text=%E2%80%9C%E4%BA%BA%E4%BB%AC%E6%98%AF%E5%90%A6%E7%83%AD%E7%88%B1%E8%87%AA%E5%B7%B1%E6%89%80%E5%81%9A%E7%9A%84%E4%BA%8B%E6%83%85%E7%9A%84%E6%B5%8B%E8%AF%95%E5%9C%A8%E4%BA%8E%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%B2%A1%E6%9C%89%E6%8A%A5%E9%85%AC%EF%BC%8C%E4%BB%96%E4%BB%AC%E6%98%AF%E5%90%A6%E4%BB%8D%E7%84%B6%E6%84%BF%E6%84%8F%E5%8E%BB%E5%81%9A%E2%80%94%E2%80%94%E5%8D%B3%E4%BD%BF%E4%BB%96%E4%BB%AC%E5%BF%85%E9%A1%BB%E5%9C%A8%E5%85%B6%E4%BB%96%E5%B7%A5%E4%BD%9C%E4%B8%AD%E8%B0%8B%E7%94%9F%E3%80%82%E6%9C%89%E5%A4%9A%E5%B0%91%E4%BC%81%E4%B8%9A%E5%BE%8B%E5%B8%88%E4%BC%9A%E5%9C%A8%E6%B2%A1%E6%9C%89%E6%8A%A5%E9%85%AC%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%EF%BC%8C%E5%9C%A8%E4%B8%9A%E4%BD%99%E6%97%B6%E9%97%B4%E5%81%9A%E4%BB%96%E4%BB%AC%E7%9B%AE%E5%89%8D%E7%9A%84%E5%B7%A5%E4%BD%9C%EF%BC%8C%E5%B9%B6%E4%B8%94%E8%BF%98%E8%A6%81%E5%81%9A%E6%9C%8D%E5%8A%A1%E5%91%98%E6%9D%A5%E7%BB%B4%E6%8C%81%E7%94%9F%E8%AE%A1%E5%91%A2%EF%BC%9F%E2%80%9D][Source]]
+#+end_quote
+
+#+begin_quote
+不要将社会认可与对你来说正确的事情混淆。
+
+社会认可的存在是为了吸引参与者进入一场最终有利于集体但以个人为代价的游戏。
+
+[...]
+
+关键不是避免努力工作，而是专注于你觉得有意义的事情，完全忽视你认为客观上正确的事情（这往往是社会灌输给你的观念）。
+
+[[https://www.owenyoung.com/blog/journals/2025-03-24/#:~:text=%E4%B8%8D%E8%A6%81%E5%B0%86%E7%A4%BE%E4%BC%9A,%E7%BB%99%E4%BD%A0%E7%9A%84%E8%A7%82%E5%BF%B5%EF%BC%89%E3%80%82][Source]]
+#+end_quote
+
+
+#+begin_quote
+任何值得读者关注的文章都是写作者努力的结果。
+
+写作过程中的努力并不能保证最终产品值得一读，但没有努力就不可能写出有价值的作品。
+
+阅读个人电子邮件时的关注类型与阅读商业报告时的关注类型是不同的，但在这两种情况下，只有当作者花了一些心思时，才值得关注。
+
+[[https://www.owenyoung.com/blog/journals/2025-03-24/#:~:text=%E4%BB%BB%E4%BD%95%E5%80%BC%E5%BE%97%E8%AF%BB%E8%80%85%E5%85%B3%E6%B3%A8%E7%9A%84%E6%96%87%E7%AB%A0%E9%83%BD%E6%98%AF%E5%86%99%E4%BD%9C%E8%80%85%E5%8A%AA%E5%8A%9B%E7%9A%84%E7%BB%93%E6%9E%9C%E3%80%82%E5%86%99%E4%BD%9C%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%8A%AA%E5%8A%9B%E5%B9%B6%E4%B8%8D%E8%83%BD%E4%BF%9D%E8%AF%81%E6%9C%80%E7%BB%88%E4%BA%A7%E5%93%81%E5%80%BC%E5%BE%97%E4%B8%80%E8%AF%BB%EF%BC%8C%E4%BD%86%E6%B2%A1%E6%9C%89%E5%8A%AA%E5%8A%9B%E5%B0%B1%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%86%99%E5%87%BA%E6%9C%89%E4%BB%B7%E5%80%BC%E7%9A%84%E4%BD%9C%E5%93%81%E3%80%82%E9%98%85%E8%AF%BB%E4%B8%AA%E4%BA%BA%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6%E6%97%B6%E7%9A%84%E5%85%B3%E6%B3%A8%E7%B1%BB%E5%9E%8B%E4%B8%8E%E9%98%85%E8%AF%BB%E5%95%86%E4%B8%9A%E6%8A%A5%E5%91%8A%E6%97%B6%E7%9A%84%E5%85%B3%E6%B3%A8%E7%B1%BB%E5%9E%8B%E6%98%AF%E4%B8%8D%E5%90%8C%E7%9A%84%EF%BC%8C%E4%BD%86%E5%9C%A8%E8%BF%99%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5%E4%B8%8B%EF%BC%8C%E5%8F%AA%E6%9C%89%E5%BD%93%E4%BD%9C%E8%80%85%E8%8A%B1%E4%BA%86%E4%B8%80%E4%BA%9B%E5%BF%83%E6%80%9D%E6%97%B6%EF%BC%8C%E6%89%8D%E5%80%BC%E5%BE%97%E5%85%B3%E6%B3%A8%E3%80%82][Source]]
 #+end_quote
 
 * 多媒体
