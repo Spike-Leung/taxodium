@@ -15,14 +15,152 @@
 
 * News | Article
 
+** [[https://martinfowler.com/articles/exploring-gen-ai.html][Exploring Generative AI]]
+
+作者用了一段时间 AI IDE，她认为距离 AI 能够自主编写复杂任务还很遥远。
+
+#+begin_quote
+这些经历意味着，在我个人的想象中，我们在一年内不会有 AI 能够自主编写 90% 的代码。
+
+它会在编写 90% 的代码方面提供帮助吗？也许。对于某些团队和某些代码库来说。
+
+它在今天的情况下帮助我解决了 80%的问题（在一个适度复杂、相对较小的 15K LOC 代码库中）。
+
+[[https://martinfowler.com/articles/exploring-gen-ai.html#memo-13:~:text=These%20experiences%20mean,15K%20LOC%20codebase).][Source]]
+#+end_quote
+
+** [[https://www.solipsys.co.uk/new/SellYourselfSellYourWork.html][Sell yourself, Sell Your Work]]
+
+如果你做了一些什么东西出来，不要期待有人会主动发现，而应该自己主动去宣传它，否则你做的东西可能就无人问津。
+
+但宣传也讲究技巧，可以不花里胡哨，但要简洁清晰。
+
+#+begin_details
+#+html: <summary>摘录</summary>
+
+#+begin_quote
+尽管技术上做得极其出色可能足以满足个人成就感，但你绝不应该认为这就够了。
+
+如果你将自己锁在房间里做了最精彩的工作但不告诉任何人，那么没有人会知道，没有人会从中受益，这项工作也将付诸东流。
+
+你可能从中获得了个人满足，但就更广阔的世界而言，你就像是从未费心去做过。
+
+要让世界从你的工作中受益，进而让你自己充分受益，你必须让它为人所知。
+
+[[https://www.solipsys.co.uk/new/SellYourselfSellYourWork.html#:~:text=Doing%20technically%20brilliant,make%20it%20known.][Source]]
+#+end_quote
+
+#+begin_quote
+...你必须写作，你必须告诉人们，并且你必须以一种他们会注意到的方式来做。
+
+你不一定需要让它华丽、炫酷、多彩和动画化，但你确实需要好好展示它。
+
+拼写错误可能不会掩盖意思，但你会失去一部分观众。
+
+糟糕的标点符号可能对你来说无所谓，但你的目标观众可能会因此而感到厌烦。
+
+模糊的写作没有明确的目的使读者很难理解你的观点。
+
+然而，清晰简洁地写作，你的工作可能会节省他人的时间和精力，并为你赢得声誉。
+
+[[https://www.solipsys.co.uk/new/SellYourselfSellYourWork.html#:~:text=You%20have%20to%20write,to%20understand%20your%20point.][Source]]
+#+end_quote
+
+#+begin_quote
+...你可以以一种方式进行，使人们确实能够在你所做的基础上进行构建，或者你可以以一种方式进行，使下一个人必须基本上重复你所做的事情...
+
+...做一份工作是不够的，你必须推销它。
+
+对科学家来说，“推销”是一件尴尬的事情。
+
+这非常丑陋；你不应该这样做。
+
+世界应该在等待，当你做出伟大的事情时，他们应该冲出来欢迎它。
+
+但事实是每个人都忙于自己的工作。
+
+你必须把它呈现得如此出色，以至于他们会放下手头的工作，看看你所做的，阅读它，然后回来对你说：“是的，这很好。”
+
+...问问自己为什么你会阅读某些文章而不是其他文章。
+
+你最好写好你的报告，以便在发表时...当读者翻页时，他们不仅会翻你的页，还会停下来阅读你的内容。
+
+如果他们不愿意停下来读你的内容，你将得不到认可。
+
+你必须学会清晰而良好地写作，以便人们愿意阅读，你还必须学会进行相对正式的演讲，同时也必须学会进行非正式的演讲。
+
+[[https://www.solipsys.co.uk/new/SellYourselfSellYourWork.html#:~:text=...%20you%20can%20either,and%20Your%20Research%22.][Source]]
+#+end_quote
+#+end_details
+
 * Tutorial | Resource
 
 * Code Related
+** [[https://alexwlchan.net/2025/github-actions-audit/][Whose code am I running in GitHub Actions?]]
+
+#+begin_quote
+有人向 =tj-actions/changed-files= GitHub Action 添加了恶意代码。
+
+如果你使用了被攻击的动作，它会将秘密泄露到你的构建日志中。
+
+这些构建日志对于公共仓库是公开的，因此任何人都可以看到你的秘密。
+#+end_quote
+
+GitHub Action 中可以用 [[https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses][uses]] 引用别人写好的 action，例如 =uses: actions/checkout@v4= ，通过 =@v4= 可以指定对应的 tag。
+
+但是 tag 指向的内容可能会发生变化，也许之前是安全的，但是有人故意将其指向成到恶意代码中，当你执行 action 的时候，就会拉取对应的恶意代码执行。
+
+也可以指定 commit，例如 =uses: actions/checkout@8f4b7f848= ，这样通过 commit 指向的版本是固定的，一旦别人后面改了，引用的代码也不会变化。
+
+作者认为需要去评估你的 GitHub Action 的安全性，看看它们都是谁提供的，是否可信任，尽可能使用大组织提供的 action。
+
+作者还提供了一个脚本，可以扫描仓库下的 workflow 文件，返回所有使用到的 action，便于分析当前的 action 都是什么，以及是谁提供的。
 
 * Cool Bit
+** [[https://xeiaso.net/talks/2025/surreal-joy-homelab/][The surreal joy of having an overprovisioned homelab]]
+
+作者的自托管历程，文章蛮有趣的。
 
 * Tool | Library
+** [[https://github.com/errsole/errsole.js][errsole/errsole.js]]
 
+#+begin_quote
+Errsole is an open-source logger for Node.js apps.
+
+It comes with a built-in log viewer to view, filter, and search your app logs.
+#+end_quote
+** [[https://github.com/ladjs/supertest][ladjs/supertest]]
+
+NodeJS 的一个用于测试 HTTP 的库，让 HTTP 断言变得简单。
+** [[https://github.com/xxnuo/MTranServer][xxnuo/MTranServer]]
+
+#+begin_quote
+一个超低资源消耗超快的离线翻译服务器，英译中模型仅需 860MB 内存即可运行，无需显卡。
+
+单个请求平均响应时间 50ms。支持全世界主要语言的翻译。
+
+翻译质量与 Google 翻译相当。
+
+专注于速度和多种设备私有部署。
+#+end_quote
+** [[https://github.com/skim-rs/skim][skim-rs/skim]]
+
+#+begin_quote
+Life is short, skim!
+
+我们生活的一半时间都花在导航上：文件、行、命令......你需要 Skim！它是一个通用的模糊查找工具，能为你节省时间。
+#+end_quote
+
+终端上的模糊搜索工具。
+
+BTW，我用的是 [[https://github.com/cantino/mcfly][mcfly]]，替代 =ctrl-r= ，用于搜索历史相当方便。
+** [[https://reactos.org/][ReactOS]]
+
+#+begin_quote
+想象一下，在一个值得信赖的开源环境中运行您最喜爱的 Windows 应用程序和驱动程序。
+
+这就是 ReactOS 的使命！
+#+end_quote
 * Emacs
 
 * 一些话 | 摘抄
@@ -43,6 +181,33 @@
 [[https://www.wheresyoured.at/empty-laughter/#:~:text=Art%20by%20definition,he%20existed%20in][Source]]
 #+end_quote
 
+** [[https://takeonrules.com/2025/03/25/re-on-keeping-a-notebook/][Re: On Keeping a Notebook]]
+
+#+begin_quote
+我们写作是为了品尝两次人生，一次是当下，一次是回顾。
+
+[[https://takeonrules.com/2025/03/25/re-on-keeping-a-notebook/#:~:text=We%20write%20to%20taste%20life%20twice%2C%20in%20the%20moment%20and%20in%20retrospection.][Source]]
+#+end_quote
+
+#+begin_quote
+我的大部分写作都是在电脑上进行的；我承认，在享受所有便利的同时，也会失去一些东西。
+
+失去了墨水在纸上的相对缓慢，这种缓慢让思想在不同的光线下流动和发展。
+
+我在电脑上写的东西需要电脑和它的所有功能才能阅读，而那些纸质笔记本则需要纸质笔记本。
+
+[[https://takeonrules.com/2025/03/25/re-on-keeping-a-notebook/#:~:text=I%20do%20most,the%20paper%20notebook.][Source]]
+#+end_quote
+
+#+begin_quote
+写作是一种释放，就好像我的心灵是一座蓄满雨水和融雪的水库。
+
+我感觉到堤坝的压力；而写作就是我打开堤坝，让生命之水流淌出来。
+
+因为我无法阻挡它们，因为它们会喷涌出毁灭的洪水。
+
+[[https://takeonrules.com/2025/03/25/re-on-keeping-a-notebook/#:~:text=Writing%20is%20a%20release%2C%20as%20though%20my%20mind%20were%20a%20dammed%20reservoir%2C%20with%20rain%20and%20snow%2Dmelt%20filling%20it%20up.%20I%20feel%20the%20levies%20strain%3B%20and%20writing%20is%20my%20opening%20the%20dam%20and%20letting%20flow%20forth%20the%20life%20waters.%20For%20I%20cannot%20hold%20them%20back%2C%20a%20follow%20that%20will%20spill%20forth%20ruinous%20flood.][Source]]
+#+end_quote
 * 多媒体
 
 * Music
