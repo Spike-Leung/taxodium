@@ -11,8 +11,6 @@
 #+LANGUAGE: zh-CN
 #+startup: content indent
 
-
-
 * News | Article
 
 ** [[https://martinfowler.com/articles/exploring-gen-ai.html][Exploring Generative AI]]
@@ -93,6 +91,25 @@
 #+end_quote
 #+end_details
 
+** [[https://www.lighthouseproofreading.co.uk/blog/how-to-use-an-en-dash-and-em-dash-correctly][What’s the difference between an en dash and em dash?]]
+
+一篇讲述 hyphen（连字符）, en dash, em dash 的区别的文章。
+
+平时写的时候注意的不多，以后要多注意。
+
+| - | hyphen      | 一般用于连接单词。例如 extra-marital。                                                         |
+| – | en dash     | 一般用于表达范围，前后没有空格。例如 7–10pm。                                                  |
+| — | em dash     | 1.当需要比一对逗号更强的强调时，或者就像一对括号一样。 2.附带说明或后记。 3.言语中的突然中断。 |
+| ⸺ | two em dash | 更接近中文的破折号。em dash 更接近中文的 en dash。                                             |
+
+另见：[[https://github.com/ruanyf/document-style-guide/blob/master/docs/marks.md][中文技术文档的写作规范—标点符号]]
+
+** [[https://www.clientserver.dev/p/war-story-the-hardest-bug-i-ever][War story: the hardest bug I ever debugged]]
+
+作者定位一个 Gooogle Docs 错误的经历，这个 bug 是“偶现”的，但是作者先是找办法去复现，再通过排除法去逼近问题根源。
+
+解决这样的“偶现”问题真的很不容易，作者也是依靠了同事的专业知识，才最终定位了问题。
+
 * Tutorial | Resource
 
 * Code Related
@@ -115,6 +132,35 @@ GitHub Action 中可以用 [[https://docs.github.com/en/actions/writing-workflow
 作者认为需要去评估你的 GitHub Action 的安全性，看看它们都是谁提供的，是否可信任，尽可能使用大组织提供的 action。
 
 作者还提供了一个脚本，可以扫描仓库下的 workflow 文件，返回所有使用到的 action，便于分析当前的 action 都是什么，以及是谁提供的。
+** [[https://css-tricks.com/revisiting-css-border-image/][Revisiting CSS border-image]]
+
+一篇不错的，介绍 [[https://developer.mozilla.org/en-US/docs/Web/CSS/border-image][border-image]] 的文章。
+
+- [[https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-source][border-image-source]] 指定图片。
+- [[https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-slice][border-image-slice]] 设置上下左右的分割线，分隔图片，使得图片分成 9 个部分。也可以理解为设置 4 个角的截取范围。
+- [[https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-repeat][border-image-repeat]] 设置四条边的图片如何重复。
+- [[https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-outset][border-image-outset]] 设置图片距离边框的距离，有的时候希望图片在边框之外，就能通过这个属性设置。
+
+** [[https://developer.chrome.com/blog/a-customizable-select?hl=en][The <select> element can now be customized with CSS]]
+
+文章视频中的自定义 select 的效果相当不错。
+
+see also: [[https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Customizable_select][Customizable select elements]]
+** [[https://web.dev/articles/baseline-and-polyfills?hl=en][How to think about Baseline and polyfills]]
+
+当你想用某些新特性，但是浏览器没有广泛支持的时候，可以引入对应的 polyfills，使得缺少特性的浏览器也能运行对应功能。
+
+但是 polyfills 是有代价的，它要求用户加载更多的内容；polyfills 可能无法忠实还原特性；polyfills 是 JS，还可能影响性能。
+
+是否使用 polyfills，可以考虑缺少对应特性对用户的影响，如果严重影响用户使用，或许还是需要 polyfills。
+
+在考虑是否需要 polyfills 的时候也可以参考对应特性的 baseline:
+
+- Limited availability :: 该功能并不支持所有主要浏览器。
+- Newly available :: 该功能在过去 30 个月内已在所有主要浏览器中出现。
+- Widely available :: 该功能在所有主要浏览器中已支持超过 30 个月。
+
+如果特性是 Widely available，基本是可以放心使用而不用 polyfills 的。
 
 * Cool Bit
 ** [[https://xeiaso.net/talks/2025/surreal-joy-homelab/][The surreal joy of having an overprovisioned homelab]]
@@ -161,8 +207,29 @@ BTW，我用的是 [[https://github.com/cantino/mcfly][mcfly]]，替代 =ctrl-r=
 
 这就是 ReactOS 的使命！
 #+end_quote
-* Emacs
+** [[https://github.com/SparkAudio/Spark-TTS/tree/main][SparkAudio/Spark-TTS]]
 
+一个不错的文本转语音 (TTS, text-to-speech) 系统，支持语音克隆。
+** [[https://github.com/medialab/xan][medialab/xan: The CSV magician]]
+
+#+begin_quote
+xan 是一个可以直接从 shell 处理 CSV 文件的命令行工具。
+
+[...]甚至可以用于绘制基本的数据可视化。
+#+end_quote
+** [[https://github.com/microsoft/playwright-mcp][microsoft/playwright-mcp]]
+
+#+begin_quote
+一个模型上下文协议（MCP）服务器，使用 Playwright 提供浏览器自动化功能。
+
+该服务器使 LLMs 能够通过结构化的可访问性快照与网页交互，绕过了对屏幕截图或视觉调优模型的需求。
+#+end_quote
+
+* Emacs
+- [[https://plaindrops.de/blog/2025/tenyearsofemacs/][My 10 Years with Emacs]]
+- [[https://www.evalapply.org/posts/why-and-how-i-use-org-mode/index.html][Why and How I use "Org Mode" for my writing and more]]
+- [[https://github.com/jamescherti/minimal-emacs.d][jamescherti/minimal-emacs.d]] Starter-Kit with Better Emacs Defaults and Faster Startup.
+- [[https://emacsredux.com/blog/2025/03/18/you-have-no-idea-how-powerful-isearch-is/][You have no idea how powerful isearch is!]]
 * 一些话 | 摘抄
 
 ** [[https://www.wheresyoured.at/empty-laughter/][Empty Laughter]]
@@ -208,6 +275,45 @@ BTW，我用的是 [[https://github.com/cantino/mcfly][mcfly]]，替代 =ctrl-r=
 
 [[https://takeonrules.com/2025/03/25/re-on-keeping-a-notebook/#:~:text=Writing%20is%20a%20release%2C%20as%20though%20my%20mind%20were%20a%20dammed%20reservoir%2C%20with%20rain%20and%20snow%2Dmelt%20filling%20it%20up.%20I%20feel%20the%20levies%20strain%3B%20and%20writing%20is%20my%20opening%20the%20dam%20and%20letting%20flow%20forth%20the%20life%20waters.%20For%20I%20cannot%20hold%20them%20back%2C%20a%20follow%20that%20will%20spill%20forth%20ruinous%20flood.][Source]]
 #+end_quote
+** [[https://www.commentary.org/articles/joseph-epstein/rest-work-purpose/][Rest Easy]]
+
+#+begin_quote
+工作可以是繁重的，也可以是光辉的。
+
+无论哪种方式，它都是我们大多数人生活的中心。
+
+当工作被撤回时，即使是以最慷慨的条件退休，它也会留下一个空洞，这个空洞常常被一种孤寂的感觉填满，有时甚至接近创伤。
+
+尽管与监禁或流亡并不在同一惩罚类别中，退休可以是一种强制休息。
+
+我听说过（主要是）男性寻求治疗，以克服退休带来的巨大失落感。
+
+看来，休息必须是自我选择的，绝不能被强加，才能真正起到恢复的作用。
+#+end_quote
+
+#+begin_quote
+美好生活的一个定义是有用的工作与满足的休息之间的完美平衡。
+
+Michael Oakeshott，这位值得深思的思想家，持不同看法。
+
+他写道：“我们花费一生试图发现如何生活，完美的生活方式，生活的意义。但我们永远无法找到它。
+
+生活就是对它的追寻；成功的生活是那种投入到这场追寻中的生活；
+
+而当我们认为自己找到了它时，我们离它却最远。
+
+自欺欺人地认为我们找到了它，劝说自己至少在这里有一个可以休息的点——生活一下子变得无生气。
+
+正如要保持爱情，我们必须不断地坠入爱河，要保持生活，我们必须不断地努力生活。”
+#+end_quote
+** [[https://www.shirleywu.studio/notebook/2025-02-innovation-killer][what killed innovation?]]
+
+#+begin_quote
+我认为每一波技术或方法的变化都遵循一个可预测的模式：最初的炒作周期，广泛采用的时期，然后是最终的平稳期，只有最实用的元素得以持续。
+
+[[https://www.shirleywu.studio/notebook/2025-02-innovation-killer#:~:text=Giorgia%20contextualizes%20what,practical%20elements%20endure.%E2%80%9D][Source]]
+#+end_quote
+
 * 多媒体
 
 * Music
