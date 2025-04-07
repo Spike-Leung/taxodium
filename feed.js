@@ -128,6 +128,10 @@ function generateAtomFeed(entries) {
     <email>${CONFIG.feedAuthorEmail}</email>
   </author>
   <follow_challenge>
+    <feedId>58021783497765889</feedId>
+    <userId>72185894417953792</userId>
+  </follow_challenge>
+  <follow_challenge>
     <feedId>63132271001948160</feedId>
     <userId>72185894417953792</userId>
   </follow_challenge>
