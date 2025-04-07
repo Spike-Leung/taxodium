@@ -11,7 +11,7 @@ const CONFIG = {
   feedId: 'https://taxodium.ink',
   feedLink: 'https://taxodium.ink/atom.xml',
   feedUpdated: new Date().toISOString(),
-  postsToInclude: 10,
+  postsToInclude: 15,
   postsSource: path.join(__dirname, 'post/index.org'),
   postsDir: path.join(__dirname, 'publish'),
   outputFile: path.join(__dirname, 'publish/rss.xml')
@@ -144,7 +144,7 @@ function generateAtomFeed(entries) {
     if (!entry) continue;
 
     // Ensure URLs are properly encoded
-    const entryUrl = `${CONFIG.feedId}${encodeURI(entry.file)}`;
+    const entryUrl = `${CONFIG.feedId}/${encodeURI(entry.file)}`;
 
     feed += `  <entry>
     <title>${entry.title}</title>
