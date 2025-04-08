@@ -1,10 +1,12 @@
-const fs = require('fs');
-const path = require('path');
-const { parse } = require('node-html-parser');
-const pLimit = require('p-limit');
+import fs from 'fs';
+import path from 'path';
+import { parse } from 'node-html-parser';
+import { fileURLToPath } from 'url';
+import pLimit from 'p-limit';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-
 const CONFIG = {
   feedTitle: 'Taxodium',
   feedSubtitle: 'That the powerful play goes on, and you may contribute a verse',
@@ -246,4 +248,4 @@ async function generateFeed() {
   }
 }
 
-generateFeed();
+await generateFeed();
