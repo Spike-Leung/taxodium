@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parse } = require('node-html-parser');
+const pLimit = require('p-limit');
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
@@ -221,13 +222,17 @@ async function generateFeed() {
     const entries = parseOrgIndex(indexContent);
 
     // 3. Get content for each post
-    const processedEntries = [];
-    for (const entry of entries.slice(0, CONFIG.postsToInclude)) {
-      const processed = await processPost(entry);
-      if (processed) {
-        processedEntries.push(processed);
-      }
-    }
+    const limit = pLimit(8);
+
+    const limitedEntries = entries.slice(0, CONFIG.postsToInclude);
+
+    const processingPromises = limitedEntries.map(entry =>
+      limit(() => processPost(entry))
+    );
+
+    const processedResults = await Promise.all(processingPromises);
+
+    const processedEntries = processedResults.filter(Boolean);
 
     // 4. Generate Atom XML
     const feed = generateAtomFeed(processedEntries);
