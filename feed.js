@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const { parse } = require('node-html-parser');
 
-// Configuration
 const CONFIG = {
   feedTitle: 'Taxodium',
   feedSubtitle: 'That the powerful play goes on, and you may contribute a verse',
@@ -10,11 +9,16 @@ const CONFIG = {
   feedAuthorEmail: 'l-yanlei@hotmail.com',
   feedId: 'https://taxodium.ink',
   feedLink: 'https://taxodium.ink/atom.xml',
+  feedIcon: 'https://taxodium.ink/favicon.ico',
   feedUpdated: new Date().toISOString(),
   postsToInclude: 15,
   postsSource: path.join(__dirname, 'post/index.org'),
   postsDir: path.join(__dirname, 'publish'),
-  outputFile: path.join(__dirname, 'publish/rss.xml')
+  outputFile: path.join(__dirname, 'publish/rss.xml'),
+  follows: [
+    { feedId: '58021783497765889', userId: '72185894417953792' },
+    { feedId: '63132271001948160', userId: '72185894417953792' }
+  ]
 };
 
 function parseDateString(dateStr) {
@@ -119,23 +123,24 @@ function generateAtomFeed(entries) {
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>${CONFIG.feedTitle}</title>
   <subtitle>${CONFIG.feedSubtitle}</subtitle>
-  <link href="${CONFIG.feedLink}" rel="self" />
-  <link href="${CONFIG.feedId}" />
+  <link href="${CONFIG.feedLink}" rel="self" type="application/atom+xml" />
+  <link href="${CONFIG.feedId}" rel="alternate" type="text/html" />
   <id>${CONFIG.feedId}</id>
+  <icon>${CONFIG.feedIcon}</icon>
   <updated>${feedUpdated}</updated>
   <author>
     <name>${CONFIG.feedAuthor}</name>
     <email>${CONFIG.feedAuthorEmail}</email>
   </author>
-  <follow_challenge>
-    <feedId>58021783497765889</feedId>
-    <userId>72185894417953792</userId>
-  </follow_challenge>
-  <follow_challenge>
-    <feedId>63132271001948160</feedId>
-    <userId>72185894417953792</userId>
-  </follow_challenge>
-\n`;
+  <generator uri="https://github.com/Spike-Leung/taxodium/blob/org-publish/feed.js">Taxodium Feed Generator</generator>
+`;
+
+  for (const follow of CONFIG.follows) {
+    feed += `  <follow_challenge>
+    <feedId>${follow.feedId}</feedId>
+    <userId>${follow.userId}</userId>
+  </follow_challenge>\n`;
+  }
 
   // Sort entries by date (newest first)
   entries.sort((a, b) => new Date(b.updated) - new Date(a.updated));
@@ -152,7 +157,7 @@ function generateAtomFeed(entries) {
     <id>${entryUrl}</id>
     <updated>${entry.updated}</updated>
     <published>${entry.date}</published>
-    <content type="html"><![CDATA[${entry.content}]]></content>
+    <content type="html" xml:lang="zh-CN" xml:base="${entryUrl}"><![CDATA[${entry.content}]]></content>
   </entry>\n`;
   }
 
