@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const { parse } = require('node-html-parser');
 
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+
 const CONFIG = {
   feedTitle: 'Taxodium',
   feedSubtitle: 'That the powerful play goes on, and you may contribute a verse',
@@ -20,6 +22,44 @@ const CONFIG = {
     { feedId: '63132271001948160', userId: '72185894417953792' }
   ]
 };
+
+async function generateSummary(text) {
+  if (!OPENROUTER_API_KEY) {
+    console.warn('No OpenRouter API key set, skipping summary generation.');
+    return '';
+  }
+
+  try {
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'openrouter/quasar-alpha',
+        messages: [
+          {
+            role: 'system',
+            content: '你是一个擅长用简洁中文总结博客文章的助手。'
+          },
+          {
+            role: 'user',
+            content: `请用不超过300字的中文总结以下文章内容：\n\n${text}`
+          }
+        ],
+        max_tokens: 150,
+        temperature: 0.5
+      })
+    });
+
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content?.trim() || '';
+  } catch (error) {
+    console.warn('Error generating summary:', error);
+    return '';
+  }
+}
 
 function parseDateString(dateStr) {
   // Handle formats like "2025-04-07 Mon" or "2025-04-07 Mon 15:09"
@@ -105,10 +145,16 @@ async function processPost(entry) {
       }
     }
 
+    const contentHtml = contentDiv.toString();
+    const plainText = contentDiv.textContent.trim().replace(/\s+/g, ' ').slice(0, 2000); // limit prompt size
+
+    const summary = await generateSummary(plainText);
+
     return {
       ...entry,
-      content: contentDiv.toString(),
-      updated: updatedDate
+      content: contentHtml,
+      updated: updatedDate,
+      summary
     };
   } catch (error) {
     console.error(`Error processing ${entry.file}:`, error);
@@ -153,10 +199,11 @@ function generateAtomFeed(entries) {
 
     feed += `  <entry>
     <title>${entry.title}</title>
-    <link href="${entryUrl}" />
+    <link href="${entryUrl}" rel="alternate" type="text/html" />
     <id>${entryUrl}</id>
     <updated>${entry.updated}</updated>
     <published>${entry.date}</published>
+    ${entry.summary ? `<summary><![CDATA[${entry.summary}]]></summary>` : ''}
     <content type="html" xml:lang="zh-CN" xml:base="${entryUrl}"><![CDATA[${entry.content}]]></content>
   </entry>\n`;
   }
