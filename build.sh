@@ -6,7 +6,7 @@ set -x
 # Only build when `publish` change
 git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF publish
 
-npm install
+pnpm install
 
 node feed.js
 
