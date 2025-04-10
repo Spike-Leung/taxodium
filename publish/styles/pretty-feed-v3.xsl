@@ -113,11 +113,9 @@ This file is in BETA. Please test and contribute to the discussion:
             top: -4px;
           }
           .copyFeedBtn {
-            font-size: var(--font-size);
+            font-size: 16px;
             margin: 0 8px;
             cursor: pointer;
-            padding: 0;
-            border: none;
           }
         </style>
         <script src="/js/color-scheme.js"></script>
