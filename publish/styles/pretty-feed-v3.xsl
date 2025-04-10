@@ -112,8 +112,14 @@ This file is in BETA. Please test and contribute to the discussion:
             position: relative;
             top: -4px;
           }
+          .copyFeedBtn {
+            font-size: var(--font-size);
+            margin: 0 8px;
+            cursor: pointer;
+          }
         </style>
         <script src="/js/color-scheme.js"></script>
+        <script src="/js/copy-feed-url.js"></script>
       </head>
       <body>
         <div id="preamble" class="status">
@@ -140,7 +146,9 @@ This file is in BETA. Please test and contribute to the discussion:
           </nav>
         </div>
         <section>
-          <p><mark>这是一个 Atom 订阅流 (Atom feed)，你可以复制浏览器当前的 URL 进行订阅 ლ(´ڡ`ლ)</mark></p>
+          <p>
+            <mark>这是一个 Atom 订阅流 (Atom feed) 你可以<button type="button" onclick="copyFeedUrl()" class="copyFeedBtn">复制当前 URL</button>进行订阅ლ(´ڡ`ლ)</mark>
+          </p>
           <p><mark>如果你对订阅流不了解, 你可以看看 <a href="https://aboutfeeds.com">About Feeds</a>。</mark></p>
         </section>
         <div class="container">
