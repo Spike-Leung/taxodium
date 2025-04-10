@@ -1,7 +1,17 @@
 # https://docs.netlify.com/configure-builds/ignore-builds/
+
 [build]
-    command = "./build.sh"
-    ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF publish"
+  command = "./build.sh"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF publish"
+
 [cache]
+
   [[cache.paths]]
     path = "node_modules"
+
+[[headers]]
+  for = "/*.xml"
+
+  [headers.values]
+    Content-Type = "application/xml; charset=utf-8"
+    X-Content-Type-Options = "nosniff"

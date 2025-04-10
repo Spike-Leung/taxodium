@@ -176,6 +176,7 @@ function generateAtomFeed(entries) {
   const feedUpdated = new Date().toISOString();
 
   let feed = `<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="/styles/pretty-feed-v3.xsl" type="text/xsl"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>${CONFIG.feedTitle}</title>
   <subtitle>${CONFIG.feedSubtitle}</subtitle>
