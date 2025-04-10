@@ -116,6 +116,8 @@ This file is in BETA. Please test and contribute to the discussion:
             font-size: var(--font-size);
             margin: 0 8px;
             cursor: pointer;
+            padding: 0;
+            border: none;
           }
         </style>
         <script src="/js/color-scheme.js"></script>
