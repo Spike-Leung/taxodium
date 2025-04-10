@@ -3,22 +3,15 @@
 # Enable command printing (debug mode)
 set -x
 
-# 判断 publish/index.html 是否有变化
-if ! git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- publish/index.html; then
-  echo "index.html changed, regenerating RSS feed"
-  pnpm install
-  node feed.js
-  cp -f publish/rss.xml publish/index.xml
-else
-  echo "index.html unchanged, skip RSS feed generation"
-fi
+pnpm install
 
-# 判断 publish/ 目录是否有变化
-if ! git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- publish; then
-  echo "publish directory changed, running pagefind"
-  npx -y pagefind --site publish --force-language zh-CN
-else
-  echo "publish directory unchanged, skip pagefind"
-fi
+# build feed
+node feed.js
+
+# copy rss.xml to index.xml, use for https://www.v2ex.com/xna
+cp -f publish/rss.xml publish/index.xml
+
+# pagefind index, for search
+npx -y pagefind --site publish --force-language zh-CN
 
 set +x
