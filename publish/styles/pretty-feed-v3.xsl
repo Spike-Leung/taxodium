@@ -149,7 +149,7 @@ This file is in BETA. Please test and contribute to the discussion:
           <p>
             <mark>这是一个 Atom 订阅流 (Atom feed) 你可以<button type="button" onclick="copyFeedUrl()" class="copyFeedBtn">复制当前 URL</button>进行订阅ლ(´ڡ`ლ)</mark>
           </p>
-          <p><mark>如果你对订阅流不了解, 你可以看看 <a href="https://aboutfeeds.com">About Feeds</a>。</mark></p>
+          <p><mark>如果你对订阅流不了解, 你可以看看 <a href="https://taxodium.ink/about-feeds.html">About Feeds</a>。</mark></p>
         </section>
         <div class="container">
           <header>
