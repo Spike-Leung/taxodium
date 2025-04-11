@@ -40,7 +40,7 @@ async function generateSummary(text) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'openrouter/quasar-alpha',
+        model: 'openrouter/optimus-alpha',
         messages: [
           {
             role: 'system',
@@ -58,7 +58,7 @@ async function generateSummary(text) {
             content: `请阅读以下文章内容，并为我生成一份简明扼要的总结。\n\n${text}`
           }
         ],
-        max_tokens: 800,
+        max_tokens: 500,
         temperature: 0.8
       })
     });
