@@ -153,7 +153,7 @@ This file is in BETA. Please test and contribute to the discussion:
             <mark>如果你是 Emacs 用户，可以使用 <a href="https://github.com/skeeto/elfeed">elfeed</a> 订阅，或者你可以用 <a href="https://follow.is">Folo</a> 这样的应用进行订阅 :)</mark>
           </p>
           <p><mark>如果你对订阅流不了解, 你可以阅读一下 <a href="https://taxodium.ink/about-feeds.html">About Feeds</a>。</mark></p>
-          <p><mark>有任何问题，欢迎留言~</mark></p>
+          <p><mark>有任何问题，欢迎<a href="mailto:l-yanlei@hotmail.com">邮件</a>或者留言给我。</mark></p>
         </section>
         <div class="container">
           <header>
