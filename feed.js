@@ -172,6 +172,15 @@ async function processPost(entry) {
   }
 }
 
+const ALL_CATEGORIES = [
+  { term: 'blog', label: '博客' },
+  { term: 'weekly', label: '周记' },
+  { term: 'writing', label: '写作' },
+  { term: 'emacs', label: 'Emacs' },
+  { term: 'music', label: '音乐' },
+  { term: 'frontend', label: '前端' }
+];
+
 function generateAtomFeed(entries) {
   const feedUpdated = new Date().toISOString();
 
@@ -190,6 +199,7 @@ function generateAtomFeed(entries) {
     <email>${CONFIG.feedAuthorEmail}</email>
   </author>
   <generator uri="https://github.com/Spike-Leung/taxodium/blob/org-publish/feed.js">Taxodium Feed Generator</generator>
+${ALL_CATEGORIES.map(cat => `  <category term="${cat.term}" label="${cat.label}" />`).join('\n')}
 `;
 
   for (const follow of CONFIG.follows) {
