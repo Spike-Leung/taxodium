@@ -86,6 +86,16 @@ This file is in BETA. Please test and contribute to the discussion:
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:atom="http://www.w3.org/2005/Atom">
   <xsl:output method="html" version="4.0" encoding="UTF-8" indent="yes"/>
+  <xsl:template name="format-date">
+    <xsl:param name="date"/>
+    <xsl:variable name="short" select="substring($date, 1, 16)"/>
+    <xsl:variable name="year" select="substring($short, 1, 4)"/>
+    <xsl:variable name="month" select="substring($short, 6, 2)"/>
+    <xsl:variable name="day" select="substring($short, 9, 2)"/>
+    <xsl:variable name="hour" select="substring($short, 12, 2)"/>
+    <xsl:variable name="minute" select="substring($short, 15, 2)"/>
+    <xsl:value-of select="concat($year, ' 年 ', number($month), ' 月 ', number($day), ' 日 ', $hour, ':', $minute)"/>
+  </xsl:template>
   <xsl:template match="/">
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
       <head>
@@ -201,7 +211,10 @@ This file is in BETA. Please test and contribute to the discussion:
         </a>
       </h3>
       <small class="gray">
-        Published: <xsl:value-of select="atom:updated" />
+        发布/更新于：
+        <xsl:call-template name="format-date">
+          <xsl:with-param name="date" select="atom:updated"/>
+        </xsl:call-template>
       </small>
       <details style="margin-top: 0.5em;">
         <summary>摘要</summary>
