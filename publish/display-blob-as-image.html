@@ -254,11 +254,11 @@ img 的 src。
 <div class="org-src-container">
 <pre class="src src-typescript"><span style="color: #531ab6;">const</span> <span style="color: #005e8b;">imageURL</span> = <span style="color: #3548cf;">"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"</span>
 
-<span style="color: #721045;">fetch</span><span style="color: #000000;">(</span>imageURL<span style="color: #000000;">)</span>.<span style="color: #721045;">then</span><span style="color: #000000;">(</span><span style="color: #dd22dd;">(</span><span style="color: #005e8b;">res</span><span style="color: #dd22dd;">)</span> <span style="color: #531ab6;">=&gt;</span> <span style="color: #dd22dd;">{</span>
-  <span style="color: #531ab6;">return</span> res.<span style="color: #721045;">blob</span><span style="color: #008899;">()</span>
-<span style="color: #dd22dd;">}</span><span style="color: #000000;">)</span>.<span style="color: #721045;">then</span><span style="color: #000000;">(</span><span style="color: #dd22dd;">(</span><span style="color: #005e8b;">blob</span><span style="color: #dd22dd;">)</span> <span style="color: #531ab6;">=&gt;</span> <span style="color: #dd22dd;">{</span>
-  <span style="color: #531ab6;">const</span> <span style="color: #005e8b;">imageObjectURL</span> = URL.<span style="color: #721045;">createObjectURL</span><span style="color: #008899;">(</span>blob<span style="color: #008899;">)</span>;
-  document.<span style="color: #721045;">querySelector</span><span style="color: #008899;">(</span><span style="color: #3548cf;">"#img"</span><span style="color: #008899;">)</span>.src = imageObjectURL
+<span style="color: #e78c45;">fetch</span><span style="color: #000000;">(</span>imageURL<span style="color: #000000;">)</span>.<span style="color: #e78c45;">then</span><span style="color: #000000;">(</span><span style="color: #dd22dd;">(</span><span style="color: #005e8b;">res</span><span style="color: #dd22dd;">)</span> <span style="color: #531ab6;">=&gt;</span> <span style="color: #dd22dd;">{</span>
+  <span style="color: #531ab6;">return</span> res.<span style="color: #e78c45;">blob</span><span style="color: #008899;">()</span>
+<span style="color: #dd22dd;">}</span><span style="color: #000000;">)</span>.<span style="color: #e78c45;">then</span><span style="color: #000000;">(</span><span style="color: #dd22dd;">(</span><span style="color: #005e8b;">blob</span><span style="color: #dd22dd;">)</span> <span style="color: #531ab6;">=&gt;</span> <span style="color: #dd22dd;">{</span>
+  <span style="color: #531ab6;">const</span> <span style="color: #005e8b;">imageObjectURL</span> = URL.<span style="color: #e78c45;">createObjectURL</span><span style="color: #008899;">(</span>blob<span style="color: #008899;">)</span>;
+  document.<span style="color: #e78c45;">querySelector</span><span style="color: #008899;">(</span><span style="color: #3548cf;">"#img"</span><span style="color: #008899;">)</span>.src = imageObjectURL
 <span style="color: #dd22dd;">}</span><span style="color: #000000;">)</span>
 </pre>
 </div>
@@ -275,7 +275,7 @@ img 的 src。
 
 
 
-<figure id="orgdcc955b">
+<figure id="org797da5e">
 <img src="./images/display-blob-as-image/createObjectURL.png" alt="createObjectURL.png">
 
 </figure>
@@ -302,24 +302,24 @@ result 属性将包含一个data:URL 格式的字符串（base64 编码）以表
 
 <span style="color: #531ab6;">function</span> <span style="color: #721045;">blob2Base64</span><span style="color: #000000;">(</span><span style="color: #005e8b;">blob</span><span style="color: #000000;">)</span> <span style="color: #000000;">{</span>
   <span style="color: #531ab6;">const</span> <span style="color: #005e8b;">reader</span> = <span style="color: #531ab6;">new</span> <span style="color: #005f5f;">FileReader</span><span style="color: #dd22dd;">()</span>;
-  reader.<span style="color: #721045;">readAsDataURL</span><span style="color: #dd22dd;">(</span>blob<span style="color: #dd22dd;">)</span>;
+  reader.<span style="color: #e78c45;">readAsDataURL</span><span style="color: #dd22dd;">(</span>blob<span style="color: #dd22dd;">)</span>;
 
   <span style="color: #531ab6;">return</span> <span style="color: #531ab6;">new</span> <span style="color: #005f5f;">Promise</span><span style="color: #dd22dd;">(</span><span style="color: #008899;">(</span><span style="color: #005e8b;">resolve</span><span style="color: #008899;">)</span> <span style="color: #531ab6;">=&gt;</span> <span style="color: #008899;">{</span>
     reader.onloadend = <span style="color: #972500;">()</span> <span style="color: #531ab6;">=&gt;</span> <span style="color: #972500;">{</span>
-      <span style="color: #721045;">resolve</span><span style="color: #808000;">(</span>reader.result<span style="color: #808000;">)</span>
+      <span style="color: #e78c45;">resolve</span><span style="color: #808000;">(</span>reader.result<span style="color: #808000;">)</span>
     <span style="color: #972500;">}</span>;
   <span style="color: #008899;">}</span><span style="color: #dd22dd;">)</span>
 <span style="color: #000000;">}</span>
 
-<span style="color: #721045;">fetch</span><span style="color: #000000;">(</span>imageURL<span style="color: #000000;">)</span>.<span style="color: #721045;">then</span><span style="color: #000000;">(</span><span style="color: #dd22dd;">(</span><span style="color: #005e8b;">res</span><span style="color: #dd22dd;">)</span> <span style="color: #531ab6;">=&gt;</span> <span style="color: #dd22dd;">{</span>
-  <span style="color: #531ab6;">return</span> res.<span style="color: #721045;">blob</span><span style="color: #008899;">()</span>
-<span style="color: #dd22dd;">}</span><span style="color: #000000;">)</span>.<span style="color: #721045;">then</span><span style="color: #000000;">(</span><span style="color: #531ab6;">async</span> <span style="color: #dd22dd;">(</span><span style="color: #005e8b;">blob</span><span style="color: #dd22dd;">)</span> <span style="color: #531ab6;">=&gt;</span> <span style="color: #dd22dd;">{</span>
-  document.<span style="color: #721045;">querySelector</span><span style="color: #008899;">(</span><span style="color: #3548cf;">"#img"</span><span style="color: #008899;">)</span>.src = <span style="color: #531ab6;">await</span> <span style="color: #721045;">blob2Base64</span><span style="color: #008899;">(</span>blob<span style="color: #008899;">)</span>
+<span style="color: #e78c45;">fetch</span><span style="color: #000000;">(</span>imageURL<span style="color: #000000;">)</span>.<span style="color: #e78c45;">then</span><span style="color: #000000;">(</span><span style="color: #dd22dd;">(</span><span style="color: #005e8b;">res</span><span style="color: #dd22dd;">)</span> <span style="color: #531ab6;">=&gt;</span> <span style="color: #dd22dd;">{</span>
+  <span style="color: #531ab6;">return</span> res.<span style="color: #e78c45;">blob</span><span style="color: #008899;">()</span>
+<span style="color: #dd22dd;">}</span><span style="color: #000000;">)</span>.<span style="color: #e78c45;">then</span><span style="color: #000000;">(</span><span style="color: #531ab6;">async</span> <span style="color: #dd22dd;">(</span><span style="color: #005e8b;">blob</span><span style="color: #dd22dd;">)</span> <span style="color: #531ab6;">=&gt;</span> <span style="color: #dd22dd;">{</span>
+  document.<span style="color: #e78c45;">querySelector</span><span style="color: #008899;">(</span><span style="color: #3548cf;">"#img"</span><span style="color: #008899;">)</span>.src = <span style="color: #531ab6;">await</span> <span style="color: #e78c45;">blob2Base64</span><span style="color: #008899;">(</span>blob<span style="color: #008899;">)</span>
 <span style="color: #dd22dd;">}</span><span style="color: #000000;">)</span>
 </pre>
 </div>
 
-<figure id="org08a15ac">
+<figure id="org873a376">
 <img src="./images/display-blob-as-image/FileReader.png" alt="FileReader.png">
 
 </figure>
@@ -332,6 +332,7 @@ result 属性将包含一个data:URL 格式的字符串（base64 编码）以表
 <p class="date">Date: 2022-08-09 Tue 00:00</p>
 <p class="date">Last Modified: 2024-12-06 Fri 00:02</p>
 <p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<script src="/js/sidenote.js"></script>
 <script src="https://giscus.app/client.js"
         data-repo="Spike-Leung/taxodium"
         data-repo-id="MDEwOlJlcG9zaXRvcnkzOTYyNDQwMzk="
