@@ -32,6 +32,8 @@
   --table-border: 2px solid var(--color-text);
   --table-cell-border: 1px solid var(--color-border);
   --pagefind-ui-font: var(--font-family);
+
+  --content-width: 1024px;
 }
 
 @media (prefers-color-scheme: dark),
@@ -186,7 +188,6 @@ body {
   background: var(--color-bg);
   background: light-dark(var(--color-bg), var(--dark-color-bg));
   margin: 20px auto;
-  max-width: 650px;
   padding: 0 10px;
   font-family: var(--font-family);
   text-wrap: pretty;
@@ -456,9 +457,62 @@ details {
   }
 }
 
-@media screen and (min-width: 1300px) {
-  /** 在这个宽度下，页面内容整体居中，观感比较好 */
+@media screen and (min-width: 1200px) {
   body {
-    max-width: 1024px;
+    max-width: var(--content-width);
   }
+}
+
+@media screen and (min-width: 1600px) {
+  .sidenote-container {
+      width: calc((100vw - var(--content-width)) / 2);
+  }
+}
+
+@media (max-width: 1600px) {
+  .sidenote-container, .sidenote {
+    display: none !important;
+  }
+}
+
+.sidenote-container {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  pointer-events: none;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.sidenote {
+  width: 100%;
+  font-size: 0.85em;
+  color: var(--color-text-secondary);
+  color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  padding: 0 3em;
+  box-sizing: border-box;
+  pointer-events: auto;
+  display: flex;
+  gap: 0.2em;
+  align-items: flex-start;
+}
+
+.sidenote-num {
+  display: inline-block;
+  color: var(--color-link);
+  color: light-dark(var(--color-link), var(--dark-color-link));
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.sidenote-num:hover {
+    background: var(--color-selection-background);
+    background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
+}
+
+.sidenote-ref-highlight {
+  background: var(--color-selection-background);
+  background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
+  transition: background 0.2s;
 }
