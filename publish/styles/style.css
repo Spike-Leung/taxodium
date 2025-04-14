@@ -300,26 +300,57 @@ summary {
   cursor: pointer;
 }
 
-:is(.org-ol, .org-ul, dd) :is(pre.example, pre.src ) {
+:is(.org-ol, .org-ul, dd) :is(pre.example, .org-src-container) {
     margin-left: -40px;
 }
+
+.org-src-container {
+  position: relative;
+  padding-top: 2em;
+  border-color: var(--color-border);
+  border-color: light-dark(var(--color-border), var(--dark-color-border));
+  border-width: 1px;
+  border-style: solid;
+  background-color: var(--color-bg-src-block);
+  background-color: light-dark(var(--color-bg-src-block), var(--dark-color-bg-src-block));
+  margin: 0.5em 0;
+}
+
+.code-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  z-index: 2;
+  font-size: 0.9em;
+  padding: 2px 0px;
+  cursor: pointer;
+  border: none;
+  transition: color 0.2s;
+  color: var(--color-text);
+  color: light-dark(var(--color-text), var(--dark-color-text));
+  background: unset;
+
+  &:hover {
+    color: var(--color-link);
+    color: light-dark(var(--color-link), var(--dark-color-link));
+  }
+}
+
 
 pre.example,
 pre.src {
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, "Courier New", Courier, monospace;
   color: var(--color-text);
   color: light-dark(var(--color-text), var(--dark-color-text));
-  border-color: var(--color-border);
-  border-color: light-dark(var(--color-border), var(--dark-color-border));
-  background-color: var(--color-bg-src-block);
-  background-color: light-dark(var(--color-bg-src-block), var(--dark-color-bg-src-block));
   font-size: .8em;
   margin-left: 0;
   margin-right: 0;
 }
 
 pre.src {
-  margin: 0;
+    margin: 0;
+    border: unset;
+    background: unset;
 }
 
 pre.src::before {
@@ -525,29 +556,4 @@ details {
   background: var(--color-selection-background);
   background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
   transition: background 0.2s;
-}
-
-.org-src-container {
-  position: relative;
-  padding-top: 2em;
-  border: 1px dashed var(--color-border);
-}
-
-.code-copy-btn {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  z-index: 2;
-  font-size: 0.9em;
-  padding: 2px 0px;
-  cursor: pointer;
-  border: none;
-  transition: color 0.2s;
-  color: var(--color-text);
-  color: light-dark(var(--color-text), var(--dark-color-text));
-
-  &:hover {
-    color: var(--color-link);
-    color: light-dark(var(--color-link), var(--dark-color-link));
-  }
 }
