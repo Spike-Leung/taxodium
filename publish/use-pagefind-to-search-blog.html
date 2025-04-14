@@ -270,7 +270,7 @@
 <li><a href="#d0cb0641-caef-4bb1-8bd5-f55349aa923c">配置 pagefind</a>
 <ul>
 <li><a href="#8a7bf407-8909-44d5-ad65-75a4d48ba47a">CI/CD 中添加索引指令</a></li>
-<li><a href="#23066128-897c-40cf-8243-04d8238d55cc">引用 findpage 资源</a></li>
+<li><a href="#23066128-897c-40cf-8243-04d8238d55cc">引用 pagefind 资源</a></li>
 </ul>
 </li>
 <li><a href="#1f87fbcb-c481-404c-b4ac-97db76feb1ad">写在最后</a></li>
@@ -403,21 +403,21 @@ pagefind 的一些特点：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #969896;">#</span><span style="color: #8a290f;">!/bin/bash</span>
+<pre class="src src-diff"><span style="color: #8a290f;">#</span><span style="color: #8a290f;">!/bin/bash</span>
 
-<span style="color: #969896;">#</span><span style="color: #8a290f;"> Enable command printing (debug mode)</span>
+<span style="color: #8a290f;">#</span><span style="color: #8a290f;"> Enable command printing (debug mode)</span>
 set -x
 
-<span style="color: #969896;">#</span><span style="color: #8a290f;"> Only build when `publish` change</span>
+<span style="color: #8a290f;">#</span><span style="color: #8a290f;"> Only build when `publish` change</span>
 git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF publish
 
-<span style="color: #969896;">#</span><span style="color: #8a290f;"> index.xml is for https://www.v2ex.com/xna</span>
+<span style="color: #8a290f;">#</span><span style="color: #8a290f;"> index.xml is for https://www.v2ex.com/xna</span>
 cp -f publish/rss.xml publish/index.xml
 
 <span style="color: #008900;">+</span><span style="color: #006800;"> # see: https://pagefind.app/docs/multilingual/#opting-out-of-multilingual-search</span>
 <span style="color: #008900;">+</span><span style="color: #006800;"> npx -y pagefind --site publish --force-language zh-CN</span>
 
-<span style="color: #969896;">#</span><span style="color: #8a290f;"> Disable debug mode</span>
+<span style="color: #8a290f;">#</span><span style="color: #8a290f;"> Disable debug mode</span>
 set +x
 </pre>
 </div>
@@ -436,7 +436,7 @@ set +x
 </div>
 </div>
 <div id="outline-container-23066128-897c-40cf-8243-04d8238d55cc" class="outline-3">
-<h3 id="23066128-897c-40cf-8243-04d8238d55cc">引用 findpage 资源</h3>
+<h3 id="23066128-897c-40cf-8243-04d8238d55cc">引用 pagefind 资源</h3>
 <div class="outline-text-3" id="text-23066128-897c-40cf-8243-04d8238d55cc">
 <p>
 相比于在文章页面上添加搜索，我更倾向于一个独立的搜索页面，避免搜索结果影响文章页面的布局。
@@ -447,7 +447,7 @@ set +x
 </p>
 
 <div class="org-src-container">
-<pre class="src src-html" id="org5ff6197">&lt;<span style="color: #531ab6;">!DOCTYPE</span> html&gt;
+<pre class="src src-html" id="org0c6df02">&lt;<span style="color: #531ab6;">!DOCTYPE</span> html&gt;
 &lt;<span style="color: #721045;">html</span> <span style="color: #005e8b;">lang</span>=<span style="color: #3548cf;">"zh-CN"</span>&gt;
   &lt;<span style="color: #721045;">head</span>&gt;
     &lt;<span style="color: #721045;">meta</span> <span style="color: #005e8b;">http-equiv</span>=<span style="color: #3548cf;">"Content-Type"</span> <span style="color: #005e8b;">content</span>=<span style="color: #3548cf;">"text/html;charset=utf-8"</span> /&gt;
@@ -474,7 +474,7 @@ set +x
 </div>
 
 <p>
-页面上我设置了 <code>lang="zh-CN"</code> ，findpage 会基于 lang 去匹配索引和组件的多语言文字。
+页面上我设置了 <code>lang="zh-CN"</code> ，pagefind 会基于 lang 去匹配索引和组件的多语言文字。
 </p>
 
 <p>
@@ -522,10 +522,9 @@ set +x
 
 <p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">Date: 2024-11-16 Sat 00:00</p>
-<p class="date">Last Modified: 2024-12-04 Wed 15:10</p>
+<p class="date">Last Modified: 2025-04-14 Mon 20:32</p>
 <p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <script src="/js/sidenote.js"></script>
-<script src="/js/code-enhanced.js"></script>
 <script src="https://giscus.app/client.js"
         data-repo="Spike-Leung/taxodium"
         data-repo-id="MDEwOlJlcG9zaXRvcnkzOTYyNDQwMzk="
