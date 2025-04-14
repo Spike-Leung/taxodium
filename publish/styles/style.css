@@ -319,10 +319,14 @@ pre.src {
 }
 
 pre.src::before {
-  display: none;
   font-size: .8em;
   color: light-dark(var(--color-text), var(--dark-color-text));
   background-color: transparent;
+}
+
+/* 不太重要，且和复制按钮重叠，所以隐藏 */
+pre.src:hover::before {
+  display: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -506,15 +510,36 @@ details {
   text-decoration: none;
   cursor: pointer;
   transition: color 0.2s;
-}
 
-.sidenote-num:hover {
+  &:hover {
     background: var(--color-selection-background);
     background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
+  }
 }
 
 .sidenote-ref-highlight {
   background: var(--color-selection-background);
   background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
   transition: background 0.2s;
+}
+
+.org-src-container {
+  position: relative;
+}
+
+.code-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  z-index: 2;
+  font-size: 0.9em;
+  padding: 2px 8px;
+  cursor: pointer;
+  border: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--color-link);
+    color: light-dark(var(--color-link), var(--dark-color-link));
+  }
 }
