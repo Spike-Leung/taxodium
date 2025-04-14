@@ -40,7 +40,7 @@ async function generateSummary(text) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'openrouter/optimus-alpha',
+        model: 'google/gemini-2.0-flash-001',
         messages: [
           {
             role: 'system',
@@ -70,7 +70,9 @@ async function generateSummary(text) {
     });
 
     const data = await response.json();
-    return data.choices?.[0]?.message?.content?.trim() || '';
+    console.log('>>>>>>>>>>>>>>>>> LLM RESPONSE <<<<<<<<<<<<<<<<<<')
+    console.log(data)
+    return data.choices?.[0]?.message?.content?.trim() || 'LLM 罢工啦，直接看原文吧 _​(:3 」∠)_​';
   } catch (error) {
     console.warn('Error generating summary:', error);
     return '';
@@ -163,8 +165,7 @@ async function processPost(entry) {
 
     const contentHtml = contentDiv.toString();
     const plainText = contentDiv.textContent.trim().replace(/\s+/g, ' ').slice(0, 2000); // limit prompt size
-    const llmSummary  = await generateSummary(plainText)
-    const summary = llmSummary ?? 'LLM 罢工啦，直接看原文吧 _​(:3 」∠)_​'
+    const summary  = await generateSummary(plainText)
 
     return {
       ...entry,
