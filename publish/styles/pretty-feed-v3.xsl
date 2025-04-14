@@ -103,8 +103,6 @@ This file is in BETA. Please test and contribute to the discussion:
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="color-scheme" content="light dark" />
         <title><xsl:value-of select="atom:feed/atom:title"/></title>
-        <link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css" />
-        <link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css" />
         <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
         <style type="text/css">
           details p {
