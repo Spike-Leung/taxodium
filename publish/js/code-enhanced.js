@@ -36,8 +36,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-  // 2. Auto-scroll pre.src when mouse is near left/right edge
-  document.querySelectorAll("pre.src").forEach(function (pre) {
+  // 2. Auto-scroll pre.src and pre.example when mouse is near left/right edge
+  document.querySelectorAll("pre.src, pre.example").forEach(function (pre) {
     let scrollDirection = 0; // -1 for left, 1 for right, 0 for none
     let rafId = null;
 
