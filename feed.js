@@ -163,8 +163,8 @@ async function processPost(entry) {
 
     const contentHtml = contentDiv.toString();
     const plainText = contentDiv.textContent.trim().replace(/\s+/g, ' ').slice(0, 2000); // limit prompt size
-
-    const summary = await generateSummary(plainText);
+    const llmSummary  = await generateSummary(plainText)
+    const summary = llmSummary ?? 'LLM 罢工啦，直接看原文吧 _​(:3 」∠)_​'
 
     return {
       ...entry,
