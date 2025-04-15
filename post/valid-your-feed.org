@@ -19,7 +19,7 @@
 
 我去校验了一下我的订阅流，确实存在一些不符合规范的地方：
 
-- id 不符合 [[https://validator.w3.org/feed/docs/warning/NonCanonicalURI.html][canonical form]]
+- id 不符合 [[https://validator.w3.org/feed/docs/warning/NonCanonicalURI.html][canonical form]] [fn:1]
 
   #+begin_src diff
     - feedId: 'https://taxodium.ink',
@@ -27,7 +27,7 @@
 
   #+end_src
 
-- <follow_challenge> 不是合法的 feed 元素。[fn:1]我将它移除了，移动到了 <subtitle> 中声明。
+- <follow_challenge> 不是合法的 feed 元素。[fn:2]我将它移除了，移动到了 <subtitle> 中声明。
 
   Folo 声明自己的订阅流有三种办法：
 
@@ -48,20 +48,24 @@
 
   但遗憾的是 <follow_challenge> 不属于合法的 feed 元素，会导致 feed 校验失败。
 
-- 订阅流中不允许包含 <iframe> 标签 [fn:2]，部分 CSS 属性也不允许写在 style 中[fn:3]。
+- 订阅流中不允许包含 <iframe> 标签 [fn:3]，部分 CSS 属性也不允许写在 style 中[fn:4]。
 
   我的订阅流包含一些用 <iframe> 写的代码示例，以及为了实现标题的 view-transition 效果，标题我都添加了 style="view-transition-name: xxx"。
 
   但是它们目前都是不允许被包含在订阅流的 XML 中的，所以我在生成订阅流的时候将它们移除了。
 
-目前我已经都调整好了，如果你是自己生成的订阅流，生成完之后，可以用 [[https://validator.w3.org/feed/][Feed Validation Service]] 验证一下～
+目前我已经都调整好了[fn:5]，如果你是自己生成的订阅流，生成完之后，可以用 [[https://validator.w3.org/feed/][Feed Validation Service]] 验证一下～
 
 Happy hacking (ﾉ>ω<)ﾉ
 
 * Footnotes
 
-[fn:1] [[https://validator.w3.org/feed/docs/error/UndefinedElement.html][Undefined parent element: child]]
+[fn:1] id 是一个订阅流的唯一标识，更新之后可能会认为这是一个新的 feed，导致内容重复或者未读变已读？我已经 reset 过了，如果有问题可以试试取消订阅后，再重新订阅看看。
 
-[fn:2] [[https://validator.w3.org/feed/docs/warning/SecurityRisk.html][element should not contain script tag]]
+[fn:2] [[https://validator.w3.org/feed/docs/error/UndefinedElement.html][Undefined parent element: child]]
 
-[fn:3] [[https://validator.w3.org/feed/docs/warning/DangerousStyleAttr.html][style attribute contains potentially dangerous content]]
+[fn:3] [[https://validator.w3.org/feed/docs/warning/SecurityRisk.html][element should not contain script tag]]
+
+[fn:4] [[https://validator.w3.org/feed/docs/warning/DangerousStyleAttr.html][style attribute contains potentially dangerous content]]
+
+[fn:5] 如果你感兴趣，这是 [[https://github.com/Spike-Leung/taxodium/compare/27f7d47...06cf1ae][相关的代码改动]]。
