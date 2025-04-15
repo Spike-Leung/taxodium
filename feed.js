@@ -12,7 +12,7 @@ const CONFIG = {
   feedSubtitle: 'That the powerful play goes on, and you may contribute a verse.',
   feedAuthor: 'Spike Leung',
   feedAuthorEmail: 'l-yanlei@hotmail.com',
-  feedId: 'https://taxodium.ink',
+  feedId: 'https://taxodium.ink/',
   feedLink: 'https://taxodium.ink/atom.xml',
   feedIcon: 'https://taxodium.ink/favicon.ico',
   feedUpdated: new Date().toISOString(),
