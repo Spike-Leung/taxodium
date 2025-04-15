@@ -311,7 +311,7 @@ Emacs 是通过 auth-source 去实现身份验证的，一般将验证信息 (�
 一些例子：
 </p>
 
-<pre class="example" id="org2b1f82c">
+<pre class="example" id="orgbe7b1bf">
 machine localhost login spike port sudo password xxxx
 machine 192.168.100.100 login root port ssh password xxxx
 machine api.deepseek.com login apikey password xxxx
@@ -332,22 +332,22 @@ machine openrouter.ai/api login apikey password xxxx
 <a href="https://github.com/Elilif/emacs-immersive-translate/blob/1d00d558363985fa988fc40cd5093bfc6926d83e/immersive-translate.el#L197-L212">immersive-translate-api-key</a>:
 </p>
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">immersive-translate-api-key</span> <span style="color: #dd22dd;">(</span>host user<span style="color: #dd22dd;">)</span>
-  <span style="color: #2a5045;">"Lookup api key in the auth source.</span>
+<pre class="src src-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">immersive-translate-api-key</span> <span style="color: #ff66ff;">(</span>host user<span style="color: #ff66ff;">)</span>
+  <span style="color: #9ac8e0;">"Lookup api key in the auth source.</span>
 
-<span style="color: #2a5045;">By default, `</span><span style="color: #0000b0;">immersive-translate-chatgpt-host</span><span style="color: #2a5045;">' is used as HOST</span>
-<span style="color: #2a5045;">and </span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #2a5045;">apikey</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #2a5045;"> as USER in Chatgpt backend.</span>
-<span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #2a5045;">fanyi-api.baidu.com</span><span style="color: #721045;">\</span><span style="color: #00663f;">"</span><span style="color: #2a5045;"> is used as HOST and</span>
-<span style="color: #2a5045;">`</span><span style="color: #0000b0;">immersive-translate-baidu-appid</span><span style="color: #2a5045;">' as USER in Baidu backend."</span>
-  <span style="color: #dd22dd;">(</span>if-let <span style="color: #008899;">(</span><span style="color: #972500;">(</span>secret <span style="color: #808000;">(</span>plist-get <span style="color: #531ab6;">(</span>car <span style="color: #008900;">(</span>auth-source-search
-                                    <span style="color: #8f0075;">:host</span> host
-                                    <span style="color: #8f0075;">:user</span> user
-                                    <span style="color: #8f0075;">:require</span> '<span style="color: #3548cf;">(</span><span style="color: #8f0075;">:secret</span><span style="color: #3548cf;">)</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
-                              <span style="color: #8f0075;">:secret</span><span style="color: #808000;">)</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span>
-      <span style="color: #008899;">(</span><span style="color: #531ab6;">if</span> <span style="color: #972500;">(</span>functionp secret<span style="color: #972500;">)</span>
-          <span style="color: #972500;">(</span>encode-coding-string <span style="color: #808000;">(</span>funcall secret<span style="color: #808000;">)</span> 'utf-8<span style="color: #972500;">)</span>
-        secret<span style="color: #008899;">)</span>
-    <span style="color: #008899;">(</span>user-error <span style="color: #3548cf;">"No %s found in the auth source"</span> user<span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+<span style="color: #9ac8e0;">By default, `</span><span style="color: #00bcff;">immersive-translate-chatgpt-host</span><span style="color: #9ac8e0;">' is used as HOST</span>
+<span style="color: #9ac8e0;">and </span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #9ac8e0;">apikey</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #9ac8e0;"> as USER in Chatgpt backend.</span>
+<span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #9ac8e0;">fanyi-api.baidu.com</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #9ac8e0;"> is used as HOST and</span>
+<span style="color: #9ac8e0;">`</span><span style="color: #00bcff;">immersive-translate-baidu-appid</span><span style="color: #9ac8e0;">' as USER in Baidu backend."</span>
+  <span style="color: #ff66ff;">(</span>if-let <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>secret <span style="color: #efef00;">(</span>plist-get <span style="color: #b6a0ff;">(</span>car <span style="color: #44df44;">(</span>auth-source-search
+                                    <span style="color: #f78fe7;">:host</span> host
+                                    <span style="color: #f78fe7;">:user</span> user
+                                    <span style="color: #f78fe7;">:require</span> '<span style="color: #79a8ff;">(</span><span style="color: #f78fe7;">:secret</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+                              <span style="color: #f78fe7;">:secret</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
+      <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">if</span> <span style="color: #ff6b55;">(</span>functionp secret<span style="color: #ff6b55;">)</span>
+          <span style="color: #ff6b55;">(</span>encode-coding-string <span style="color: #efef00;">(</span>funcall secret<span style="color: #efef00;">)</span> 'utf-8<span style="color: #ff6b55;">)</span>
+        secret<span style="color: #00eff0;">)</span>
+    <span style="color: #00eff0;">(</span>user-error <span style="color: #79a8ff;">"No %s found in the auth source"</span> user<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 </pre>
 </div>
 
@@ -356,11 +356,11 @@ machine openrouter.ai/api login apikey password xxxx
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #969896;">;; </span><span style="color: #8a290f;">...&#20854;&#20182;&#20195;&#30721;</span>
-<span style="color: #000000;">(</span><span style="color: #3548cf;">"Authorization"</span> . ,<span style="color: #dd22dd;">(</span>concat <span style="color: #3548cf;">"Bearer "</span> <span style="color: #008899;">(</span>immersive-translate-api-key
+<pre class="src src-lisp"><span style="color: #969896;">;; </span><span style="color: #db7b5f;">...&#20854;&#20182;&#20195;&#30721;</span>
+<span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"Authorization"</span> . ,<span style="color: #ff66ff;">(</span>concat <span style="color: #79a8ff;">"Bearer "</span> <span style="color: #00eff0;">(</span>immersive-translate-api-key
                                        immersive-translate-chatgpt-host
-                                       <span style="color: #3548cf;">"apikey"</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span><span style="color: #d54e53; background-color: #ff8f88; font-weight: bold;">)))</span>
-<span style="color: #969896;">;; </span><span style="color: #8a290f;">...&#20854;&#20182;&#20195;&#30721;</span>
+                                       <span style="color: #79a8ff;">"apikey"</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span><span style="color: #d54e53; background-color: #9d1f1f; font-weight: bold;">)))</span>
+<span style="color: #969896;">;; </span><span style="color: #db7b5f;">...&#20854;&#20182;&#20195;&#30721;</span>
 </pre>
 </div>
 
@@ -377,7 +377,7 @@ machine openrouter.ai/api login apikey password xxxx
 所以按照默认配置，当你获取到 openai 的 API key 后，要这样配置:
 </p>
 
-<pre class="example" id="org870220a">
+<pre class="example" id="org4efa12e">
 machine api.openai.com login apikey password your_openai_api_key
 </pre>
 
@@ -410,7 +410,7 @@ machine api.openai.com login apikey password your_openai_api_key
 创建完成后可以通过 <code>gpg --list-keys</code> 查看当前得密钥，例如我执行后会得到：
 </p>
 
-<pre class="example" id="org324013e">
+<pre class="example" id="org9b73b65">
 /home/spike/.gnupg/pubring.kbx
 ------------------------------
 pub   rsa4096 2025-02-27 [SC]
@@ -471,7 +471,7 @@ Emacs 内置的 EasyPG Assistant<sup><a id="fnr.3" class="footref" href="#fn.3" 
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #000000;">(</span><span style="color: #531ab6;">setq</span> epa-pinentry-mode <span style="color: #531ab6;">'</span><span style="color: #0000b0;">loopback</span><span style="color: #000000;">)</span> <span style="color: #969896;">;; </span><span style="color: #8a290f;">&#22312; minibuffer &#36755;&#20837;&#23494;&#30721;</span>
+<pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">setq</span> epa-pinentry-mode <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">loopback</span><span style="color: #ffffff;">)</span> <span style="color: #969896;">;; </span><span style="color: #db7b5f;">&#22312; minibuffer &#36755;&#20837;&#23494;&#30721;</span>
 </pre>
 </div>
 
@@ -517,7 +517,7 @@ pass 更侧重于密码管理，可以方便地在多个设备管理密钥，Ema
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #000000;">(</span>auth-source-pass-enable<span style="color: #000000;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span>auth-source-pass-enable<span style="color: #ffffff;">)</span>
 </pre>
 </div>
 </div>

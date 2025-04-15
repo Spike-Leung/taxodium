@@ -448,17 +448,17 @@ reverse_proxy &lt;http2-path&gt; localhost:&lt;v2ray-port&gt; {
 </p>
 
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #969896;"># </span><span style="color: #8a290f;">&#21551;&#21160; caddy &#26381;&#21153;</span>
+<pre class="src src-shell"><span style="color: #969896;"># </span><span style="color: #db7b5f;">&#21551;&#21160; caddy &#26381;&#21153;</span>
 systemctl start caddy
-<span style="color: #969896;"># </span><span style="color: #8a290f;">&#20572;&#27490;</span>
+<span style="color: #969896;"># </span><span style="color: #db7b5f;">&#20572;&#27490;</span>
 systemctl stop caddy
-<span style="color: #969896;"># </span><span style="color: #8a290f;">&#37325;&#21551;</span>
+<span style="color: #969896;"># </span><span style="color: #db7b5f;">&#37325;&#21551;</span>
 systemctl restart caddy
-<span style="color: #969896;"># </span><span style="color: #8a290f;">&#26597;&#30475; caddy &#26381;&#21153;&#30340;&#29366;&#24577;&#65292;&#21487;&#20197;&#29992;&#20110;&#25490;&#38169;</span>
+<span style="color: #969896;"># </span><span style="color: #db7b5f;">&#26597;&#30475; caddy &#26381;&#21153;&#30340;&#29366;&#24577;&#65292;&#21487;&#20197;&#29992;&#20110;&#25490;&#38169;</span>
 systemctl status caddy
-<span style="color: #969896;"># </span><span style="color: #8a290f;">&#37325;&#26032;&#21152;&#36733; caddy &#37197;&#32622;&#65292;&#20363;&#22914;&#20462;&#25913;&#20102; /etc/caddy/Caddyfile &#20043;&#21518;</span>
+<span style="color: #969896;"># </span><span style="color: #db7b5f;">&#37325;&#26032;&#21152;&#36733; caddy &#37197;&#32622;&#65292;&#20363;&#22914;&#20462;&#25913;&#20102; /etc/caddy/Caddyfile &#20043;&#21518;</span>
 systemctl reload caddy
-<span style="color: #969896;"># </span><span style="color: #8a290f;">&#26597;&#30475; caddy &#36816;&#34892;&#26085;&#24535;</span>
+<span style="color: #969896;"># </span><span style="color: #db7b5f;">&#26597;&#30475; caddy &#36816;&#34892;&#26085;&#24535;</span>
 journalctl -u caddy --no-pager | less +G
 </pre>
 </div>
@@ -479,107 +479,107 @@ journalctl -u caddy --no-pager | less +G
 </p>
 
 <div class="org-src-container">
-<pre class="src src-json"><span style="color: #000000;">{</span>
-  <span style="color: #531ab6;">"log"</span>: <span style="color: #dd22dd;">{</span>
-    <span style="color: #531ab6;">"loglevel"</span>: <span style="color: #3548cf;">"warning"</span>
-  <span style="color: #dd22dd;">}</span>,
-  <span style="color: #531ab6;">"inbounds"</span>: <span style="color: #dd22dd;">[</span>
-    <span style="color: #008899;">{</span>
-    <span style="color: #531ab6;">"port"</span>: &lt;v<span style="color: #0000b0;">2</span>ray-port&gt;,
-    <span style="color: #531ab6;">"listen"</span>: <span style="color: #3548cf;">"127.0.0.1"</span>,
-    <span style="color: #531ab6;">"tag"</span>: <span style="color: #3548cf;">"vmess-inbound"</span>,
-    <span style="color: #531ab6;">"protocol"</span>: <span style="color: #3548cf;">"vmess"</span>,
-    <span style="color: #531ab6;">"settings"</span>: <span style="color: #972500;">{</span>
-      <span style="color: #531ab6;">"auth"</span>: <span style="color: #3548cf;">"noauth"</span>,
-      <span style="color: #531ab6;">"udp"</span>: <span style="color: #0000b0;">false</span>,
-      <span style="color: #531ab6;">"ip"</span>: <span style="color: #3548cf;">"127.0.0.1"</span>,
-      <span style="color: #531ab6;">"clients"</span>: <span style="color: #808000;">[</span>
-        <span style="color: #531ab6;">{</span>
-        <span style="color: #531ab6;">"id"</span>: <span style="color: #3548cf;">"&lt;uuid&gt;"</span>,
-        <span style="color: #531ab6;">"level"</span>: <span style="color: #0000b0;">0</span>,
-        <span style="color: #531ab6;">"alterId"</span>: <span style="color: #0000b0;">0</span>,
-      <span style="color: #531ab6;">}</span>,
-      <span style="color: #808000;">]</span>
-    <span style="color: #972500;">}</span>,
-    <span style="color: #531ab6;">"streamSettings"</span>: <span style="color: #972500;">{</span>
-      <span style="color: #531ab6;">"network"</span>: <span style="color: #3548cf;">"h2"</span>,
-      <span style="color: #531ab6;">"security"</span>: <span style="color: #3548cf;">"none"</span>,
-      <span style="color: #531ab6;">"httpSettings"</span>: <span style="color: #808000;">{</span>
-        <span style="color: #531ab6;">"path"</span>: <span style="color: #3548cf;">"&lt;http2-path&gt;"</span>,
-        <span style="color: #531ab6;">"host"</span>: <span style="color: #531ab6;">[</span><span style="color: #3548cf;">"&lt;domain&gt;"</span><span style="color: #531ab6;">]</span>
-      <span style="color: #808000;">}</span>,
-      <span style="color: #531ab6;">"tlsSettings"</span>: <span style="color: #808000;">{</span>
-        <span style="color: #531ab6;">"serverName"</span>: <span style="color: #3548cf;">"&lt;domain&gt;"</span>
-      <span style="color: #808000;">}</span>
-    <span style="color: #972500;">}</span>,
-    <span style="color: #531ab6;">"sniffing"</span>: <span style="color: #972500;">{</span>
-      <span style="color: #531ab6;">"enabled"</span>: <span style="color: #0000b0;">true</span>,
-      <span style="color: #531ab6;">"destOverride"</span>: <span style="color: #808000;">[</span><span style="color: #3548cf;">"http"</span>, <span style="color: #3548cf;">"tls"</span><span style="color: #808000;">]</span>
-    <span style="color: #972500;">}</span>
-  <span style="color: #008899;">}</span>
-  <span style="color: #dd22dd;">]</span>,
-  <span style="color: #531ab6;">"outbounds"</span>: <span style="color: #dd22dd;">[</span>
-    <span style="color: #008899;">{</span>
-    <span style="color: #531ab6;">"protocol"</span>: <span style="color: #3548cf;">"freedom"</span>,
-    <span style="color: #531ab6;">"settings"</span>: <span style="color: #972500;">{}</span>,
-    <span style="color: #531ab6;">"tag"</span>: <span style="color: #3548cf;">"direct"</span>
-  <span style="color: #008899;">}</span>,
-    <span style="color: #008899;">{</span>
-    <span style="color: #531ab6;">"protocol"</span>: <span style="color: #3548cf;">"blackhole"</span>,
-    <span style="color: #531ab6;">"settings"</span>: <span style="color: #972500;">{}</span>,
-    <span style="color: #531ab6;">"tag"</span>: <span style="color: #3548cf;">"blocked"</span>
-  <span style="color: #008899;">}</span>
-  <span style="color: #dd22dd;">]</span>,
-  <span style="color: #531ab6;">"routing"</span>: <span style="color: #dd22dd;">{</span>
-    <span style="color: #531ab6;">"domainStrategy"</span>: <span style="color: #3548cf;">"IPOnDemand"</span>,
-    <span style="color: #531ab6;">"rules"</span>: <span style="color: #008899;">[</span>
-      <span style="color: #972500;">{</span>
-      <span style="color: #531ab6;">"type"</span>: <span style="color: #3548cf;">"field"</span>,
-      <span style="color: #531ab6;">"ip"</span>: <span style="color: #808000;">[</span><span style="color: #3548cf;">"geoip:private"</span><span style="color: #808000;">]</span>,
-      <span style="color: #531ab6;">"outboundTag"</span>: <span style="color: #3548cf;">"blocked"</span>
-    <span style="color: #972500;">}</span>,
-      <span style="color: #972500;">{</span>
-      <span style="color: #531ab6;">"type"</span>: <span style="color: #3548cf;">"field"</span>,
-      <span style="color: #531ab6;">"domain"</span>: <span style="color: #808000;">[</span><span style="color: #3548cf;">"geosite:category-ads"</span><span style="color: #808000;">]</span>,
-      <span style="color: #531ab6;">"outboundTag"</span>: <span style="color: #3548cf;">"blocked"</span>
-    <span style="color: #972500;">}</span>
-    <span style="color: #008899;">]</span>
-  <span style="color: #dd22dd;">}</span>,
-  <span style="color: #531ab6;">"dns"</span>: <span style="color: #dd22dd;">{</span>
-    <span style="color: #531ab6;">"hosts"</span>: <span style="color: #008899;">{</span>
-      <span style="color: #531ab6;">"domain:v2ray.com"</span>: <span style="color: #3548cf;">"www.vicemc.net"</span>,
-      <span style="color: #531ab6;">"domain:github.io"</span>: <span style="color: #3548cf;">"pages.github.com"</span>,
-      <span style="color: #531ab6;">"domain:wikipedia.org"</span>: <span style="color: #3548cf;">"www.wikimedia.org"</span>,
-      <span style="color: #531ab6;">"domain:shadowsocks.org"</span>: <span style="color: #3548cf;">"electronicsrealm.com"</span>
-    <span style="color: #008899;">}</span>,
-    <span style="color: #531ab6;">"servers"</span>: <span style="color: #008899;">[</span>
-      <span style="color: #3548cf;">"1.1.1.1"</span>,
-      <span style="color: #972500;">{</span>
-        <span style="color: #531ab6;">"address"</span>: <span style="color: #3548cf;">"114.114.114.114"</span>,
-        <span style="color: #531ab6;">"port"</span>: <span style="color: #0000b0;">53</span>,
-        <span style="color: #531ab6;">"domains"</span>: <span style="color: #808000;">[</span><span style="color: #3548cf;">"geosite:cn"</span><span style="color: #808000;">]</span>
-      <span style="color: #972500;">}</span>,
-      <span style="color: #3548cf;">"8.8.8.8"</span>,
-      <span style="color: #3548cf;">"localhost"</span>
-    <span style="color: #008899;">]</span>
-  <span style="color: #dd22dd;">}</span>,
-  <span style="color: #531ab6;">"policy"</span>: <span style="color: #dd22dd;">{</span>
-    <span style="color: #531ab6;">"levels"</span>: <span style="color: #008899;">{</span>
-      <span style="color: #531ab6;">"0"</span>: <span style="color: #972500;">{</span>
-        <span style="color: #531ab6;">"uplinkOnly"</span>: <span style="color: #0000b0;">0</span>,
-        <span style="color: #531ab6;">"downlinkOnly"</span>: <span style="color: #0000b0;">0</span>,
-        <span style="color: #531ab6;">"bufferSize"</span>: <span style="color: #0000b0;">204800</span>,
-        <span style="color: #531ab6;">"handshake"</span>: <span style="color: #0000b0;">10</span>
-      <span style="color: #972500;">}</span>
-    <span style="color: #008899;">}</span>,
-    <span style="color: #531ab6;">"system"</span>: <span style="color: #008899;">{</span>
-      <span style="color: #531ab6;">"statsInboundUplink"</span>: <span style="color: #0000b0;">false</span>,
-      <span style="color: #531ab6;">"statsInboundDownlink"</span>: <span style="color: #0000b0;">false</span>,
-      <span style="color: #531ab6;">"statsOutboundUplink"</span>: <span style="color: #0000b0;">false</span>,
-      <span style="color: #531ab6;">"statsOutboundDownlink"</span>: <span style="color: #0000b0;">false</span>
-    <span style="color: #008899;">}</span>
-  <span style="color: #dd22dd;">}</span>
-<span style="color: #000000;">}</span>
+<pre class="src src-json"><span style="color: #ffffff;">{</span>
+  <span style="color: #b6a0ff;">"log"</span>: <span style="color: #ff66ff;">{</span>
+    <span style="color: #b6a0ff;">"loglevel"</span>: <span style="color: #79a8ff;">"warning"</span>
+  <span style="color: #ff66ff;">}</span>,
+  <span style="color: #b6a0ff;">"inbounds"</span>: <span style="color: #ff66ff;">[</span>
+    <span style="color: #00eff0;">{</span>
+    <span style="color: #b6a0ff;">"port"</span>: &lt;v<span style="color: #00bcff;">2</span>ray-port&gt;,
+    <span style="color: #b6a0ff;">"listen"</span>: <span style="color: #79a8ff;">"127.0.0.1"</span>,
+    <span style="color: #b6a0ff;">"tag"</span>: <span style="color: #79a8ff;">"vmess-inbound"</span>,
+    <span style="color: #b6a0ff;">"protocol"</span>: <span style="color: #79a8ff;">"vmess"</span>,
+    <span style="color: #b6a0ff;">"settings"</span>: <span style="color: #ff6b55;">{</span>
+      <span style="color: #b6a0ff;">"auth"</span>: <span style="color: #79a8ff;">"noauth"</span>,
+      <span style="color: #b6a0ff;">"udp"</span>: <span style="color: #00bcff;">false</span>,
+      <span style="color: #b6a0ff;">"ip"</span>: <span style="color: #79a8ff;">"127.0.0.1"</span>,
+      <span style="color: #b6a0ff;">"clients"</span>: <span style="color: #efef00;">[</span>
+        <span style="color: #b6a0ff;">{</span>
+        <span style="color: #b6a0ff;">"id"</span>: <span style="color: #79a8ff;">"&lt;uuid&gt;"</span>,
+        <span style="color: #b6a0ff;">"level"</span>: <span style="color: #00bcff;">0</span>,
+        <span style="color: #b6a0ff;">"alterId"</span>: <span style="color: #00bcff;">0</span>,
+      <span style="color: #b6a0ff;">}</span>,
+      <span style="color: #efef00;">]</span>
+    <span style="color: #ff6b55;">}</span>,
+    <span style="color: #b6a0ff;">"streamSettings"</span>: <span style="color: #ff6b55;">{</span>
+      <span style="color: #b6a0ff;">"network"</span>: <span style="color: #79a8ff;">"h2"</span>,
+      <span style="color: #b6a0ff;">"security"</span>: <span style="color: #79a8ff;">"none"</span>,
+      <span style="color: #b6a0ff;">"httpSettings"</span>: <span style="color: #efef00;">{</span>
+        <span style="color: #b6a0ff;">"path"</span>: <span style="color: #79a8ff;">"&lt;http2-path&gt;"</span>,
+        <span style="color: #b6a0ff;">"host"</span>: <span style="color: #b6a0ff;">[</span><span style="color: #79a8ff;">"&lt;domain&gt;"</span><span style="color: #b6a0ff;">]</span>
+      <span style="color: #efef00;">}</span>,
+      <span style="color: #b6a0ff;">"tlsSettings"</span>: <span style="color: #efef00;">{</span>
+        <span style="color: #b6a0ff;">"serverName"</span>: <span style="color: #79a8ff;">"&lt;domain&gt;"</span>
+      <span style="color: #efef00;">}</span>
+    <span style="color: #ff6b55;">}</span>,
+    <span style="color: #b6a0ff;">"sniffing"</span>: <span style="color: #ff6b55;">{</span>
+      <span style="color: #b6a0ff;">"enabled"</span>: <span style="color: #00bcff;">true</span>,
+      <span style="color: #b6a0ff;">"destOverride"</span>: <span style="color: #efef00;">[</span><span style="color: #79a8ff;">"http"</span>, <span style="color: #79a8ff;">"tls"</span><span style="color: #efef00;">]</span>
+    <span style="color: #ff6b55;">}</span>
+  <span style="color: #00eff0;">}</span>
+  <span style="color: #ff66ff;">]</span>,
+  <span style="color: #b6a0ff;">"outbounds"</span>: <span style="color: #ff66ff;">[</span>
+    <span style="color: #00eff0;">{</span>
+    <span style="color: #b6a0ff;">"protocol"</span>: <span style="color: #79a8ff;">"freedom"</span>,
+    <span style="color: #b6a0ff;">"settings"</span>: <span style="color: #ff6b55;">{}</span>,
+    <span style="color: #b6a0ff;">"tag"</span>: <span style="color: #79a8ff;">"direct"</span>
+  <span style="color: #00eff0;">}</span>,
+    <span style="color: #00eff0;">{</span>
+    <span style="color: #b6a0ff;">"protocol"</span>: <span style="color: #79a8ff;">"blackhole"</span>,
+    <span style="color: #b6a0ff;">"settings"</span>: <span style="color: #ff6b55;">{}</span>,
+    <span style="color: #b6a0ff;">"tag"</span>: <span style="color: #79a8ff;">"blocked"</span>
+  <span style="color: #00eff0;">}</span>
+  <span style="color: #ff66ff;">]</span>,
+  <span style="color: #b6a0ff;">"routing"</span>: <span style="color: #ff66ff;">{</span>
+    <span style="color: #b6a0ff;">"domainStrategy"</span>: <span style="color: #79a8ff;">"IPOnDemand"</span>,
+    <span style="color: #b6a0ff;">"rules"</span>: <span style="color: #00eff0;">[</span>
+      <span style="color: #ff6b55;">{</span>
+      <span style="color: #b6a0ff;">"type"</span>: <span style="color: #79a8ff;">"field"</span>,
+      <span style="color: #b6a0ff;">"ip"</span>: <span style="color: #efef00;">[</span><span style="color: #79a8ff;">"geoip:private"</span><span style="color: #efef00;">]</span>,
+      <span style="color: #b6a0ff;">"outboundTag"</span>: <span style="color: #79a8ff;">"blocked"</span>
+    <span style="color: #ff6b55;">}</span>,
+      <span style="color: #ff6b55;">{</span>
+      <span style="color: #b6a0ff;">"type"</span>: <span style="color: #79a8ff;">"field"</span>,
+      <span style="color: #b6a0ff;">"domain"</span>: <span style="color: #efef00;">[</span><span style="color: #79a8ff;">"geosite:category-ads"</span><span style="color: #efef00;">]</span>,
+      <span style="color: #b6a0ff;">"outboundTag"</span>: <span style="color: #79a8ff;">"blocked"</span>
+    <span style="color: #ff6b55;">}</span>
+    <span style="color: #00eff0;">]</span>
+  <span style="color: #ff66ff;">}</span>,
+  <span style="color: #b6a0ff;">"dns"</span>: <span style="color: #ff66ff;">{</span>
+    <span style="color: #b6a0ff;">"hosts"</span>: <span style="color: #00eff0;">{</span>
+      <span style="color: #b6a0ff;">"domain:v2ray.com"</span>: <span style="color: #79a8ff;">"www.vicemc.net"</span>,
+      <span style="color: #b6a0ff;">"domain:github.io"</span>: <span style="color: #79a8ff;">"pages.github.com"</span>,
+      <span style="color: #b6a0ff;">"domain:wikipedia.org"</span>: <span style="color: #79a8ff;">"www.wikimedia.org"</span>,
+      <span style="color: #b6a0ff;">"domain:shadowsocks.org"</span>: <span style="color: #79a8ff;">"electronicsrealm.com"</span>
+    <span style="color: #00eff0;">}</span>,
+    <span style="color: #b6a0ff;">"servers"</span>: <span style="color: #00eff0;">[</span>
+      <span style="color: #79a8ff;">"1.1.1.1"</span>,
+      <span style="color: #ff6b55;">{</span>
+        <span style="color: #b6a0ff;">"address"</span>: <span style="color: #79a8ff;">"114.114.114.114"</span>,
+        <span style="color: #b6a0ff;">"port"</span>: <span style="color: #00bcff;">53</span>,
+        <span style="color: #b6a0ff;">"domains"</span>: <span style="color: #efef00;">[</span><span style="color: #79a8ff;">"geosite:cn"</span><span style="color: #efef00;">]</span>
+      <span style="color: #ff6b55;">}</span>,
+      <span style="color: #79a8ff;">"8.8.8.8"</span>,
+      <span style="color: #79a8ff;">"localhost"</span>
+    <span style="color: #00eff0;">]</span>
+  <span style="color: #ff66ff;">}</span>,
+  <span style="color: #b6a0ff;">"policy"</span>: <span style="color: #ff66ff;">{</span>
+    <span style="color: #b6a0ff;">"levels"</span>: <span style="color: #00eff0;">{</span>
+      <span style="color: #b6a0ff;">"0"</span>: <span style="color: #ff6b55;">{</span>
+        <span style="color: #b6a0ff;">"uplinkOnly"</span>: <span style="color: #00bcff;">0</span>,
+        <span style="color: #b6a0ff;">"downlinkOnly"</span>: <span style="color: #00bcff;">0</span>,
+        <span style="color: #b6a0ff;">"bufferSize"</span>: <span style="color: #00bcff;">204800</span>,
+        <span style="color: #b6a0ff;">"handshake"</span>: <span style="color: #00bcff;">10</span>
+      <span style="color: #ff6b55;">}</span>
+    <span style="color: #00eff0;">}</span>,
+    <span style="color: #b6a0ff;">"system"</span>: <span style="color: #00eff0;">{</span>
+      <span style="color: #b6a0ff;">"statsInboundUplink"</span>: <span style="color: #00bcff;">false</span>,
+      <span style="color: #b6a0ff;">"statsInboundDownlink"</span>: <span style="color: #00bcff;">false</span>,
+      <span style="color: #b6a0ff;">"statsOutboundUplink"</span>: <span style="color: #00bcff;">false</span>,
+      <span style="color: #b6a0ff;">"statsOutboundDownlink"</span>: <span style="color: #00bcff;">false</span>
+    <span style="color: #00eff0;">}</span>
+  <span style="color: #ff66ff;">}</span>
+<span style="color: #ffffff;">}</span>
 
 </pre>
 </div>
@@ -605,38 +605,38 @@ journalctl -u caddy --no-pager | less +G
 </p>
 
 <div class="org-src-container">
-<pre class="src src-yaml"><span style="color: #8a290f;">---</span>
-<span style="color: #969896;"># </span><span style="color: #8a290f;">https://github.com/Dreamacro/clash/wiki/configuration</span>
-<span style="color: #005e8b;">port</span>: 7890
-<span style="color: #005e8b;">socks-port</span>: 7891
-<span style="color: #005e8b;">allow-lan</span>: <span style="color: #0000b0;">false</span>
-<span style="color: #005e8b;">bind-address</span>: <span style="color: #3548cf;">'*'</span>
-<span style="color: #005e8b;">mode</span>: rule
-<span style="color: #005e8b;">log-level</span>: info
-<span style="color: #005e8b;">ipv6</span>: <span style="color: #0000b0;">true</span>
-<span style="color: #005e8b;">proxies</span>:
-  - <span style="color: #005e8b;">name</span>: <span style="color: #3548cf;">"proxy"</span>
-    <span style="color: #005e8b;">type</span>: vmess
-    <span style="color: #005e8b;">server</span>: &lt;domain&gt;
-    <span style="color: #005e8b;">port</span>: 443
-    <span style="color: #005e8b;">uuid</span>: &lt;uuid&gt;
-    <span style="color: #005e8b;">alterId</span>: 0
-    <span style="color: #005e8b;">cipher</span>: auto
-    <span style="color: #005e8b;">network</span>: h2
-    <span style="color: #005e8b;">tls</span>: <span style="color: #0000b0;">true</span>
-    <span style="color: #005e8b;">h2-opts</span>:
-      <span style="color: #005e8b;">host</span>:
+<pre class="src src-yaml"><span style="color: #db7b5f;">---</span>
+<span style="color: #969896;"># </span><span style="color: #db7b5f;">https://github.com/Dreamacro/clash/wiki/configuration</span>
+<span style="color: #00d3d0;">port</span>: 7890
+<span style="color: #00d3d0;">socks-port</span>: 7891
+<span style="color: #00d3d0;">allow-lan</span>: <span style="color: #00bcff;">false</span>
+<span style="color: #00d3d0;">bind-address</span>: <span style="color: #79a8ff;">'*'</span>
+<span style="color: #00d3d0;">mode</span>: rule
+<span style="color: #00d3d0;">log-level</span>: info
+<span style="color: #00d3d0;">ipv6</span>: <span style="color: #00bcff;">true</span>
+<span style="color: #00d3d0;">proxies</span>:
+  - <span style="color: #00d3d0;">name</span>: <span style="color: #79a8ff;">"proxy"</span>
+    <span style="color: #00d3d0;">type</span>: vmess
+    <span style="color: #00d3d0;">server</span>: &lt;domain&gt;
+    <span style="color: #00d3d0;">port</span>: 443
+    <span style="color: #00d3d0;">uuid</span>: &lt;uuid&gt;
+    <span style="color: #00d3d0;">alterId</span>: 0
+    <span style="color: #00d3d0;">cipher</span>: auto
+    <span style="color: #00d3d0;">network</span>: h2
+    <span style="color: #00d3d0;">tls</span>: <span style="color: #00bcff;">true</span>
+    <span style="color: #00d3d0;">h2-opts</span>:
+      <span style="color: #00d3d0;">host</span>:
         - &lt;domain&gt;
-      <span style="color: #005e8b;">path</span>: &lt;http2-path&gt;
-<span style="color: #005e8b;">rules</span>:
-  <span style="color: #969896;"># </span><span style="color: #8a290f;">proxy</span>
+      <span style="color: #00d3d0;">path</span>: &lt;http2-path&gt;
+<span style="color: #00d3d0;">rules</span>:
+  <span style="color: #969896;"># </span><span style="color: #db7b5f;">proxy</span>
   - DOMAIN,google.com,proxy
 
-  <span style="color: #969896;"># </span><span style="color: #8a290f;">REJECT</span>
+  <span style="color: #969896;"># </span><span style="color: #db7b5f;">REJECT</span>
   - DOMAIN-SUFFIX,ad.com,REJECT
 
-  <span style="color: #969896;"># </span><span style="color: #8a290f;">optional param "no-resolve" for IP rules (GEOIP, IP-CIDR, IP-CIDR6)</span>
-  <span style="color: #969896;"># </span><span style="color: #8a290f;">DIRECT</span>
+  <span style="color: #969896;"># </span><span style="color: #db7b5f;">optional param "no-resolve" for IP rules (GEOIP, IP-CIDR, IP-CIDR6)</span>
+  <span style="color: #969896;"># </span><span style="color: #db7b5f;">DIRECT</span>
   - SRC-IP-CIDR,192.168.1.201/32,DIRECT
   - IP-CIDR,127.0.0.0/8,DIRECT
   - GEOIP,CN,DIRECT
@@ -656,10 +656,10 @@ journalctl -u caddy --no-pager | less +G
 </p>
 
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #969896;"># </span><span style="color: #8a290f;">&#26816;&#26597;&#36816;&#34892;&#29366;&#24577;</span>
+<pre class="src src-shell"><span style="color: #969896;"># </span><span style="color: #db7b5f;">&#26816;&#26597;&#36816;&#34892;&#29366;&#24577;</span>
 systemctl status candy
 systemctl status v2ray
-<span style="color: #969896;"># </span><span style="color: #8a290f;">&#26816;&#26597;&#36755;&#20986;&#30340;&#26085;&#24535;</span>
+<span style="color: #969896;"># </span><span style="color: #db7b5f;">&#26816;&#26597;&#36755;&#20986;&#30340;&#26085;&#24535;</span>
 journalctl -u caddy --no-pager | less +G
 journalctl -u v2ray --no-pager | less +G
 </pre>

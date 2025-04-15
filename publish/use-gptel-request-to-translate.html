@@ -231,7 +231,7 @@
 <header>
 <h1 style="view-transition-name: spike-use-gptel-request-to-translate" class="title">使用 gpt-request 封装一个翻译方法</h1>
 </header>
-<figure id="org9e2751b">
+<figure id="orge4f6b39">
 <img src="./images/use-gptel-request-to-translate/demo.gif" alt="demo.gif">
 
 <figcaption><span class="figure-number">&#22270;1&nbsp; </span>一个 GIF 图，演示了选中中文，然后调用 spike-leung/translate-region-to-english 翻译成英文。</figcaption>
@@ -256,47 +256,47 @@
 </ol>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #000000;">(</span><span style="color: #531ab6;">defun</span> <span style="color: #721045;">spike-leung/translate-region-to-english</span> <span style="color: #dd22dd;">()</span>
-  <span style="color: #2a5045;">"Translate the selected region to English using gptel and replace it in the buffer.</span>
-<span style="color: #2a5045;">If no region is active, try to guess the sentence or paragraph at point."</span>
-  <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">interactive</span><span style="color: #dd22dd;">)</span>
-  <span style="color: #dd22dd;">(</span><span style="color: #531ab6;">let*</span> <span style="color: #008899;">(</span><span style="color: #972500;">(</span>has-region <span style="color: #808000;">(</span>use-region-p<span style="color: #808000;">)</span><span style="color: #972500;">)</span>
-         <span style="color: #972500;">(</span>bounds
-          <span style="color: #808000;">(</span><span style="color: #531ab6;">cond</span>
-           <span style="color: #531ab6;">(</span>has-region
-            <span style="color: #008900;">(</span>cons <span style="color: #3548cf;">(</span>region-beginning<span style="color: #3548cf;">)</span> <span style="color: #3548cf;">(</span>region-end<span style="color: #3548cf;">)</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
-           <span style="color: #531ab6;">(</span><span style="color: #008900;">(</span>use-region-p<span style="color: #008900;">)</span>
-            <span style="color: #008900;">(</span>cons <span style="color: #3548cf;">(</span>region-beginning<span style="color: #3548cf;">)</span> <span style="color: #3548cf;">(</span>region-end<span style="color: #3548cf;">)</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
-           <span style="color: #531ab6;">(</span><span style="color: #008900;">(</span><span style="color: #531ab6;">and</span> <span style="color: #3548cf;">(</span>fboundp <span style="color: #531ab6;">'</span><span style="color: #0000b0;">bounds-of-thing-at-point</span><span style="color: #3548cf;">)</span><span style="color: #008900;">)</span>
-            <span style="color: #008900;">(</span><span style="color: #531ab6;">or</span> <span style="color: #3548cf;">(</span>bounds-of-thing-at-point <span style="color: #531ab6;">'</span><span style="color: #0000b0;">sentence</span><span style="color: #3548cf;">)</span>
-                <span style="color: #3548cf;">(</span>bounds-of-thing-at-point <span style="color: #531ab6;">'</span><span style="color: #0000b0;">paragraph</span><span style="color: #3548cf;">)</span>
-                <span style="color: #3548cf;">(</span>bounds-of-thing-at-point <span style="color: #531ab6;">'</span><span style="color: #0000b0;">line</span><span style="color: #3548cf;">)</span>
-                <span style="color: #3548cf;">(</span>cons <span style="color: #8f0075;">(</span>point<span style="color: #8f0075;">)</span> <span style="color: #8f0075;">(</span>point<span style="color: #8f0075;">)</span><span style="color: #3548cf;">)</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span>
-           <span style="color: #531ab6;">(</span>t <span style="color: #008900;">(</span>cons <span style="color: #3548cf;">(</span>point<span style="color: #3548cf;">)</span> <span style="color: #3548cf;">(</span>point<span style="color: #3548cf;">)</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span><span style="color: #808000;">)</span><span style="color: #972500;">)</span>
-         <span style="color: #972500;">(</span>start <span style="color: #808000;">(</span>car bounds<span style="color: #808000;">)</span><span style="color: #972500;">)</span>
-         <span style="color: #972500;">(</span>end <span style="color: #808000;">(</span>cdr bounds<span style="color: #808000;">)</span><span style="color: #972500;">)</span>
-         <span style="color: #972500;">(</span>text <span style="color: #808000;">(</span>buffer-substring-no-properties start end<span style="color: #808000;">)</span><span style="color: #972500;">)</span>
-         <span style="color: #972500;">(</span>model <span style="color: #531ab6;">'</span><span style="color: #0000b0;">openai/gpt-4.1-nano</span><span style="color: #972500;">)</span>
-         <span style="color: #972500;">(</span>backend <span style="color: #808000;">(</span>gptel-make-openai <span style="color: #3548cf;">"OpenRouter"</span>
-                    <span style="color: #8f0075;">:host</span> <span style="color: #3548cf;">"openrouter.ai"</span>
-                    <span style="color: #8f0075;">:endpoint</span> <span style="color: #3548cf;">"/api/v1/chat/completions"</span>
-                    <span style="color: #8f0075;">:stream</span> t
-                    <span style="color: #8f0075;">:key</span> <span style="color: #531ab6;">(</span>spike-leung/get-openrouter-api-key<span style="color: #531ab6;">)</span>
-                    <span style="color: #8f0075;">:models</span> spike-leung/openrouter-models<span style="color: #808000;">)</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span>
-    <span style="color: #008899;">(</span><span style="color: #531ab6;">if</span> <span style="color: #972500;">(</span>string-blank-p text<span style="color: #972500;">)</span>
-        <span style="color: #972500;">(</span><span style="color: #884900; font-weight: bold;">user-error</span> <span style="color: #3548cf;">"No text to translate"</span><span style="color: #972500;">)</span>
-      <span style="color: #972500;">(</span><span style="color: #531ab6;">let</span> <span style="color: #808000;">(</span><span style="color: #531ab6;">(</span>gptel-backend backend<span style="color: #531ab6;">)</span>
-            <span style="color: #531ab6;">(</span>gptel-model model<span style="color: #531ab6;">)</span>
-            <span style="color: #531ab6;">(</span>gptel-use-tools nil<span style="color: #531ab6;">)</span>
-            <span style="color: #531ab6;">(</span>gptel-use-context nil<span style="color: #531ab6;">)</span><span style="color: #808000;">)</span>
-        <span style="color: #808000;">(</span>gptel-request
-            <span style="color: #531ab6;">(</span>format <span style="color: #3548cf;">"Translate the following text to English:</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #721045;">\</span><span style="color: #00663f;">n</span><span style="color: #3548cf;">%s"</span> text<span style="color: #531ab6;">)</span>
-          <span style="color: #8f0075;">:callback</span> <span style="color: #531ab6;">(</span><span style="color: #531ab6;">lambda</span> <span style="color: #008900;">(</span>response _<span style="color: #008900;">)</span>
-                      <span style="color: #008900;">(</span><span style="color: #531ab6;">when</span> response
-                        <span style="color: #3548cf;">(</span><span style="color: #531ab6;">save-excursion</span>
-                          <span style="color: #8f0075;">(</span>delete-region start end<span style="color: #8f0075;">)</span>
-                          <span style="color: #8f0075;">(</span>goto-char start<span style="color: #8f0075;">)</span>
-                          <span style="color: #8f0075;">(</span>insert response<span style="color: #8f0075;">)</span><span style="color: #3548cf;">)</span><span style="color: #008900;">)</span><span style="color: #531ab6;">)</span><span style="color: #808000;">)</span><span style="color: #972500;">)</span><span style="color: #008899;">)</span><span style="color: #dd22dd;">)</span><span style="color: #000000;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/translate-region-to-english</span> <span style="color: #ff66ff;">()</span>
+  <span style="color: #9ac8e0;">"Translate the selected region to English using gptel and replace it in the buffer.</span>
+<span style="color: #9ac8e0;">If no region is active, try to guess the sentence or paragraph at point."</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">interactive</span><span style="color: #ff66ff;">)</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">let*</span> <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>has-region <span style="color: #efef00;">(</span>use-region-p<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #ff6b55;">(</span>bounds
+          <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">cond</span>
+           <span style="color: #b6a0ff;">(</span>has-region
+            <span style="color: #44df44;">(</span>cons <span style="color: #79a8ff;">(</span>region-beginning<span style="color: #79a8ff;">)</span> <span style="color: #79a8ff;">(</span>region-end<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+           <span style="color: #b6a0ff;">(</span><span style="color: #44df44;">(</span>use-region-p<span style="color: #44df44;">)</span>
+            <span style="color: #44df44;">(</span>cons <span style="color: #79a8ff;">(</span>region-beginning<span style="color: #79a8ff;">)</span> <span style="color: #79a8ff;">(</span>region-end<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+           <span style="color: #b6a0ff;">(</span><span style="color: #44df44;">(</span><span style="color: #b6a0ff;">and</span> <span style="color: #79a8ff;">(</span>fboundp <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">bounds-of-thing-at-point</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span>
+            <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">or</span> <span style="color: #79a8ff;">(</span>bounds-of-thing-at-point <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">sentence</span><span style="color: #79a8ff;">)</span>
+                <span style="color: #79a8ff;">(</span>bounds-of-thing-at-point <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">paragraph</span><span style="color: #79a8ff;">)</span>
+                <span style="color: #79a8ff;">(</span>bounds-of-thing-at-point <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">line</span><span style="color: #79a8ff;">)</span>
+                <span style="color: #79a8ff;">(</span>cons <span style="color: #f78fe7;">(</span>point<span style="color: #f78fe7;">)</span> <span style="color: #f78fe7;">(</span>point<span style="color: #f78fe7;">)</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+           <span style="color: #b6a0ff;">(</span>t <span style="color: #44df44;">(</span>cons <span style="color: #79a8ff;">(</span>point<span style="color: #79a8ff;">)</span> <span style="color: #79a8ff;">(</span>point<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #ff6b55;">(</span>start <span style="color: #efef00;">(</span>car bounds<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #ff6b55;">(</span>end <span style="color: #efef00;">(</span>cdr bounds<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #ff6b55;">(</span>text <span style="color: #efef00;">(</span>buffer-substring-no-properties start end<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #ff6b55;">(</span>model <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">openai/gpt-4.1-nano</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #ff6b55;">(</span>backend <span style="color: #efef00;">(</span>gptel-make-openai <span style="color: #79a8ff;">"OpenRouter"</span>
+                    <span style="color: #f78fe7;">:host</span> <span style="color: #79a8ff;">"openrouter.ai"</span>
+                    <span style="color: #f78fe7;">:endpoint</span> <span style="color: #79a8ff;">"/api/v1/chat/completions"</span>
+                    <span style="color: #f78fe7;">:stream</span> t
+                    <span style="color: #f78fe7;">:key</span> <span style="color: #b6a0ff;">(</span>spike-leung/get-openrouter-api-key<span style="color: #b6a0ff;">)</span>
+                    <span style="color: #f78fe7;">:models</span> spike-leung/openrouter-models<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
+    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">if</span> <span style="color: #ff6b55;">(</span>string-blank-p text<span style="color: #ff6b55;">)</span>
+        <span style="color: #ff6b55;">(</span><span style="color: #fec43f; font-weight: bold;">user-error</span> <span style="color: #79a8ff;">"No text to translate"</span><span style="color: #ff6b55;">)</span>
+      <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">let</span> <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">(</span>gptel-backend backend<span style="color: #b6a0ff;">)</span>
+            <span style="color: #b6a0ff;">(</span>gptel-model model<span style="color: #b6a0ff;">)</span>
+            <span style="color: #b6a0ff;">(</span>gptel-use-tools nil<span style="color: #b6a0ff;">)</span>
+            <span style="color: #b6a0ff;">(</span>gptel-use-context nil<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
+        <span style="color: #efef00;">(</span>gptel-request
+            <span style="color: #b6a0ff;">(</span>format <span style="color: #79a8ff;">"Translate the following text to English:</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">n</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">n</span><span style="color: #79a8ff;">%s"</span> text<span style="color: #b6a0ff;">)</span>
+          <span style="color: #f78fe7;">:callback</span> <span style="color: #b6a0ff;">(</span><span style="color: #b6a0ff;">lambda</span> <span style="color: #44df44;">(</span>response _<span style="color: #44df44;">)</span>
+                      <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">when</span> response
+                        <span style="color: #79a8ff;">(</span><span style="color: #b6a0ff;">save-excursion</span>
+                          <span style="color: #f78fe7;">(</span>delete-region start end<span style="color: #f78fe7;">)</span>
+                          <span style="color: #f78fe7;">(</span>goto-char start<span style="color: #f78fe7;">)</span>
+                          <span style="color: #f78fe7;">(</span>insert response<span style="color: #f78fe7;">)</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 </pre>
 </div>
 
