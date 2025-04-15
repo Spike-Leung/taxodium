@@ -40,7 +40,7 @@ async function generateSummary(text) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.0-flash-001',
+        model: 'openai/gpt-4.1-nano',
         messages: [
           {
             role: 'system',
