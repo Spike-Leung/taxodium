@@ -241,7 +241,7 @@ ${ALL_CATEGORIES.map(cat => `  <category term="${cat.term}" label="${cat.label}"
   // }
 
   // Sort entries by date (newest first)
-  entries.sort((a, b) => new Date(b.updated) - new Date(a.updated));
+  entries.sort((a, b) => new Date(b.date) - new Date(a.date));
 
   for (const entry of entries) {
     if (!entry) continue;
