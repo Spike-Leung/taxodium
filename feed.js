@@ -13,7 +13,7 @@ const CONFIG = {
   feedAuthor: 'Spike Leung',
   feedAuthorEmail: 'l-yanlei@hotmail.com',
   feedId: 'https://taxodium.ink/',
-  feedLink: 'https://taxodium.ink/atom.xml',
+  feedLink: 'https://taxodium.ink/rss.xml',
   feedIcon: 'https://taxodium.ink/favicon.ico',
   feedUpdated: new Date().toISOString(),
   postsToInclude: 15,
@@ -198,7 +198,7 @@ function generateAtomFeed(entries) {
   <subtitle>${CONFIG.feedSubtitle}</subtitle>
   <link href="${CONFIG.feedLink}" rel="self" type="application/atom+xml" />
   <link href="${CONFIG.feedId}" rel="alternate" type="text/html" />
-  <id>${CONFIG.feedId}</id>
+  <id>${CONFIG.feedId.endsWith('/') ? CONFIG.feedId : CONFIG.feedId + '/'}</id>
   <icon>${CONFIG.feedIcon}</icon>
   <updated>${feedUpdated}</updated>
   <author>
