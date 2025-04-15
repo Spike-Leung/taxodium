@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const CONFIG = {
   feedTitle: 'Taxodium',
-  feedSubtitle: 'That the powerful play goes on, and you may contribute a verse.',
+  feedSubtitle: 'That the powerful play goes on, and you may contribute a verse. (Claim Folo feed: feedId:63132271001948160+userId:72185894417953792)',
   feedAuthor: 'Spike Leung',
   feedAuthorEmail: 'l-yanlei@hotmail.com',
   feedId: 'https://taxodium.ink/',
@@ -20,10 +20,10 @@ const CONFIG = {
   postsSource: path.join(__dirname, 'post/index.org'),
   postsDir: path.join(__dirname, 'publish'),
   outputFile: path.join(__dirname, 'publish/rss.xml'),
-  follows: [
-    { feedId: '58021783497765889', userId: '72185894417953792' },
-    { feedId: '63132271001948160', userId: '72185894417953792' }
-  ]
+  // follows: [
+  //   { feedId: '58021783497765889', userId: '72185894417953792' },
+  //   { feedId: '63132271001948160', userId: '72185894417953792' }
+  // ]
 };
 
 async function generateSummary(text) {
@@ -233,12 +233,12 @@ function generateAtomFeed(entries) {
 ${ALL_CATEGORIES.map(cat => `  <category term="${cat.term}" label="${cat.label}" />`).join('\n')}
 `;
 
-  for (const follow of CONFIG.follows) {
-    feed += `  <follow_challenge>
-    <feedId>${follow.feedId}</feedId>
-    <userId>${follow.userId}</userId>
-  </follow_challenge>\n`;
-  }
+  // for (const follow of CONFIG.follows) {
+  //   feed += `  <follow_challenge>
+  //   <feedId>${follow.feedId}</feedId>
+  //   <userId>${follow.userId}</userId>
+  // </follow_challenge>\n`;
+  // }
 
   // Sort entries by date (newest first)
   entries.sort((a, b) => new Date(b.updated) - new Date(a.updated));

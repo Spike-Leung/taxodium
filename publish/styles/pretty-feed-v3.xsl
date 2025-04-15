@@ -184,7 +184,8 @@ This file is in BETA. Please test and contribute to the discussion:
               </svg>
               <xsl:value-of select="atom:feed/atom:title"/>
             </h1>
-            <p><xsl:value-of select="atom:feed/atom:subtitle | atom:feed/atom:description"/></p>
+            <p>That the powerful play goes on, and you may contribute a verse.</p>
+            <!-- <p><xsl:value-of select="atom:feed/atom:subtitle | atom:feed/atom:description"/></p> -->
             <a>
               <xsl:attribute name="href">
                 <xsl:value-of select="atom:feed/atom:link[@rel='alternate']/@href"/>
