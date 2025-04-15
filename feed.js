@@ -142,9 +142,33 @@ async function processPost(entry) {
       return null;
     }
 
+    // Remove all <iframe> elements
+    contentDiv.querySelectorAll('iframe').forEach(el => el.remove());
+
+    // Remove not allowed style attributes from all elements
+    const notAllowedStyles = ['view-transition-name', 'word-break'];
+    contentDiv.querySelectorAll('[style]').forEach(el => {
+      const style = el.getAttribute('style');
+      if (!style) return;
+      // Remove all not allowed style properties, preserve others
+      const newStyle = style
+        .split(';')
+        .map(s => s.trim())
+        .filter(s => {
+          return !notAllowedStyles.some(attr => new RegExp(`^${attr}\\s*:`).test(s));
+        })
+        .filter(Boolean)
+        .join('; ');
+      if (newStyle) {
+        el.setAttribute('style', newStyle);
+      } else {
+        el.removeAttribute('style');
+      }
+    });
+
     // Remove navigation and other non-content elements
-    // const toRemove = contentDiv.querySelectorAll('nav, #preamble, #postamble');
-    // toRemove.forEach(el => el.remove());
+    const toRemove = contentDiv.querySelectorAll('nav, #preamble, #postamble');
+    toRemove.forEach(el => el.remove());
 
     // Extract and parse dates more reliably
     let updatedDate = entry.date;
