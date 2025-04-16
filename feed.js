@@ -40,7 +40,7 @@ async function generateSummary(text) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'openai/gpt-4.1-nano',
+        model: 'openai/gpt-4.1-mini',
         messages: [
           {
             role: 'system',
