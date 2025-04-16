@@ -20,13 +20,20 @@
 1. 找到当前选中区域，或者基于当前 point 获取对应的行/段落，作为要翻译的内容。
 2. 绑定一些本地变量，如 model，backend，因为翻译只需要一个快速便宜的模型。
 3. 调用 =gptel-request= ，写一个翻译的 prompt，发起请求，得到响应后覆盖第 1 步选中的内容。
-   - 偶尔碰到 openai 的模型会失效，Google 的相对稳定一点，设置一个 fallback 的模型，如果失效了就调用 fallback 模型重试。
+
+更新:
+
+- 偶尔碰到 openai 的模型会失效，Google 的相对稳定一点，设置一个 fallback 的模型，如果失效了就调用 fallback 模型重试。
+- 支持自定义 prompt，有时可能需要翻译成别的语言可能有用。
 
 #+begin_src emacs-lisp
-  (defun spike-leung/translate-region-to-english ()
-    "Translate the selected region to English using gptel and replace it in the buffer.
-  If no region is active, try to guess the sentence or paragraph at point."
-    (interactive)
+  (defun spike-leung/translate-region (prompt)
+    "Translate the selected region (default to English) replace it.
+  If no region is active, try to guess the sentence or paragraph at point.
+  With prefix argument, PROMPT is used as the translation prompt."
+    (interactive
+     (list (when current-prefix-arg
+             (read-string "Translation prompt: " "Translate the following text to English:"))))
     (require 'gptel)
     (let* ((has-region (use-region-p))
            (bounds
@@ -43,7 +50,8 @@
              (t (cons (point) (point)))))
            (start (car bounds))
            (end (cdr bounds))
-           (text (buffer-substring-no-properties start end)))
+           (text (buffer-substring-no-properties start end))
+           (prompt-text (or prompt "Translate the following text to English:")))
       (if (string-blank-p text)
           (user-error "No text to translate")
         (let ((openrouter-backend (gptel-make-openai "OpenRouter"
@@ -62,7 +70,7 @@
                        (gptel-use-tools nil)
                        (gptel-use-context nil))
                    (gptel-request
-                       (format "Translate the following text to English:\n\n%s" text)
+                       (format "%s\n\n%s" prompt-text text)
                      :callback
                      (lambda (response _)
                        (if (and response (not (string-blank-p response)))
