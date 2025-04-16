@@ -20,12 +20,14 @@
 1. 找到当前选中区域，或者基于当前 point 获取对应的行/段落，作为要翻译的内容。
 2. 绑定一些本地变量，如 model，backend，因为翻译只需要一个快速便宜的模型。
 3. 调用 =gptel-request= ，写一个翻译的 prompt，发起请求，得到响应后覆盖第 1 步选中的内容。
+   - 偶尔碰到 openai 的模型会失效，Google 的相对稳定一点，设置一个 fallback 的模型，如果失效了就调用 fallback 模型重试。
 
 #+begin_src emacs-lisp
   (defun spike-leung/translate-region-to-english ()
     "Translate the selected region to English using gptel and replace it in the buffer.
   If no region is active, try to guess the sentence or paragraph at point."
     (interactive)
+    (require 'gptel)
     (let* ((has-region (use-region-p))
            (bounds
             (cond
@@ -41,36 +43,47 @@
              (t (cons (point) (point)))))
            (start (car bounds))
            (end (cdr bounds))
-           (text (buffer-substring-no-properties start end))
-           (model 'openai/gpt-4.1-nano)
-           (backend (gptel-make-openai "OpenRouter"
-                      :host "openrouter.ai"
-                      :endpoint "/api/v1/chat/completions"
-                      :stream t
-                      :key (spike-leung/get-openrouter-api-key)
-                      :models spike-leung/openrouter-models)))
+           (text (buffer-substring-no-properties start end)))
       (if (string-blank-p text)
           (user-error "No text to translate")
-        (let ((gptel-backend backend)
-              (gptel-model model)
-              (gptel-use-tools nil)
-              (gptel-use-context nil))
-          (gptel-request
-              (format "Translate the following text to English:\n\n%s" text)
-            :callback (lambda (response _)
-                        (when response
-                          (save-excursion
-                            (delete-region start end)
-                            (goto-char start)
-                            (insert response)))))))))
+        (let ((openrouter-backend (gptel-make-openai "OpenRouter"
+                                    :host "openrouter.ai"
+                                    :endpoint "/api/v1/chat/completions"
+                                    :stream t
+                                    :key (spike-leung/get-openrouter-api-key)
+                                    :models spike-leung/openrouter-models))
+              (primary-model 'openai/gpt-4.1-nano)
+              (fallback-model 'google/gemini-2.0-flash-001))
+          (cl-labels
+              ((do-translate
+                 (model)
+                 (let ((gptel-backend openrouter-backend)
+                       (gptel-model model)
+                       (gptel-use-tools nil)
+                       (gptel-use-context nil))
+                   (gptel-request
+                       (format "Translate the following text to English:\n\n%s" text)
+                     :callback
+                     (lambda (response _)
+                       (if (and response (not (string-blank-p response)))
+                           (save-excursion
+                             (delete-region start end)
+                             (goto-char start)
+                             (insert response))
+                         (if (eq model primary-model)
+                             (progn
+                               (message "Primary model failed, retrying with fallback model...")
+                               (do-translate fallback-model))
+                           (message "Translation failed with both models."))))))))
+            (do-translate primary-model))))))
 #+end_src
 
 利用 =gptel-request= ，封装一些 prompt，可以方便地解决平时一些重复的、可以使用 LLM 解决的任务。
 
 * Footnotes
 
-[fn:1] [[https://manateelazycat.github.io/2022/11/07/how-i-use-emacs/#:~:text=%E5%B8%83%E5%B1%80%EF%BC%8C%20%E9%9D%9E%E5%B8%B8%E6%96%B9%E4%BE%BF%E3%80%82-,%E8%8B%B1%E6%96%87%E7%BF%BB%E8%AF%91,-%E5%81%9A%E4%B8%BA%E4%B8%80%E4%B8%AA%E8%8B%B1%E6%96%87][Manatee LazyCat 的英文翻译]]里还有更多的工具介绍。
+[fn:1] [[https://manateelazycat.github.io/2022/11/07/how-i-use-emacs/#:~:text=%E5%B8%83%E5%B1%80%EF%BC%8C%20%E9%9D%9E%E5%B8%B8%E6%96%B9%E4%BE%BF%E3%80%82-,%E8%8B%B1%E6%96%87%E7%BF%BB%E8%AF%91,-%E5%81%9A%E4%B8%BA%E4%B8%80%E4%B8%AA%E8%8B%B1%E6%96%87][Manatee LazyCat 的英文翻译]] 里还有更多的工具介绍。
 
-[fn:2] 函数源码可以看 [[https://github.com/Spike-Leung/emacs.d/blob/708364651f70b0e51c6fb46c951f54f4bf5831e3/lisp/my-lisp/init-gptel.el#L75][init-gptel]]。
+[fn:2] 源码可以看 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-gptel.el][init-gptel]]。
 
 [fn:3] Folo 感觉有个 bug，设置里开启了行内样式渲染，代码块会使用 style 的颜色，但是我默认是浅色背景，Folo 的代码块默认是黑色背景，就会导致我的代码块很刺眼。目前先都统一成 dark mode 了。
