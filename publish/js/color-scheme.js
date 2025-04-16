@@ -47,6 +47,16 @@ function setModeSelectValue(mode) {
   modeSelect && (modeSelect.value = mode);
 }
 
+function setBodyClass(mode) {
+  // Set body class for color scheme
+  if (document.body) {
+    document.body.classList.remove("light", "dark");
+    if (mode === "light" || mode === "dark") {
+      document.body.classList.add(mode);
+    }
+  }
+}
+
 /**
  * 切换 Gitcus 的主题
  * @param { ColorSchemeMode } mode - 当前主题模式
@@ -147,5 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedMode = getSavedColorScheme();
   initGiscusTheme(savedMode);
   setModeSelectValue(savedMode);
+  setBodyClass(savedMode);
   requestAnimationFrame(() => switchIframeColorScheme(savedMode));
 });
