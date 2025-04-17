@@ -184,8 +184,6 @@ antfu 的博客看起来挺舒服的，日文的标注，人/组织的头像显�
 
 正如作者的第一段所说：“[...]直接去源头。通常情况下，它出乎意料地易于获取且写得很好。”
 
-** [[https://git.apcacontrast.com/documentation/APCAeasyIntro][The Easy Intro to the APCA Contrast Method | APCA]]
-
 * Tutorial | Resource
 ** [[https://health.art/][Health Art]]
 
@@ -202,7 +200,7 @@ Health Art 致力于将前沿的健康科学知识转化为实用的生活指南
 #+begin_quote
 1. 保证充足的8小时睡眠机会
 
-- *将睡眠视为 "不可协商" 的健康基础，而非可选的奢侈品*
+- @@html:<mark>睡眠视为 "不可协商" 的健康基础，而非可选的奢侈品</mark>@@
 - 记住：睡眠是健康的基础，营养和运动建立在这个基础之上
 - 即使只少睡 2 小时（从 8 小时减至 6 小时），可能损失高达 70% 的 REM 睡眠
 
@@ -218,6 +216,91 @@ Health Art 致力于将前沿的健康科学知识转化为实用的生活指南
 
 你也可以向他提交自己的博客。
 * Code Related
+** [[https://git.apcacontrast.com/documentation/APCAeasyIntro][The Easy Intro to the APCA Contrast Method]]
+
+在无障碍方面，最广为人知的应该是 [[https://www.w3.org/TR/WCAG22/][Web Content Accessibility Guidelines (WCAG) 2.2]]（Web 内容无障碍指南）了。
+
+为了让读者看清楚页面的文字，WCAG 定义了 [[https://www.w3.org/TR/WCAG22/#contrast-minimum][最低颜色对比度]]：
+
+- [[https://www.w3.org/TR/WCAG22/#contrast-minimum][Level AA]]：文本和文本图像的视觉呈现对比度至少为 *4.5:1* ，如果是字体比较大[fn:1]，则至少应该为 *3:1* 。
+- [[https://www.w3.org/TR/WCAG22/#contrast-enhanced][Level AAA]]：文本和文本图像的视觉呈现对比度至少为 *7:1* ，如果是字体比较大，则至少应该为 *4.5:1* 。
+
+但是 WCAG 2.x 诞生于智能手机和平板电脑出现之前的时代，对于现在来说不够用了，尤其是在暗黑模式下，即使设置了 4.5:1 的对比度，可能也看不清。
+
+#+CAPTION: 这是一张在暗黑模式下的图，整个图片背景都是黑色的。左边是 WCAG 规范的文字示例，右边是 APCA 规范的文字示例，他们都展示了各自不同对比度，不同字号下的字体表现。APCA 在暗黑模式下看得更清楚一些。(From git.apcacontrast.com)
+https://git.apcacontrast.com/images/DarkModeComparev2_2022.png
+
+而 WCAG 3 的一个提案 [[https://github.com/Myndex/SAPC-APCA][APCA (Accessible Perceptual Contrast Algorithm)]] (可访问感知对比算法) 则更好地解决了颜色对比度的问题。
+
+APCA 提出了 *明亮对比度 (Lightness contrast，Lc)* ，基于 Lc 去定义颜色，就可以保证在文字在暗黑模式下也能轻松阅读。
+
+#+CAPTION: WCAG 和 APCA 不同值下的文字呈现对比，可以看到在暗的背景下，APCA 的表现更好。(From git.apcacontrast.com)
+https://git.apcacontrast.com/images/ColumnCompareAll400.png
+
+Lc 分成几个等级，[[https://git.apcacontrast.com/documentation/APCA_in_a_Nutshell#:~:text=Use%2DCase%20%26%20Size%20Ranges][你可以参照用途定义，使用不同的等级]]。
+
+官方也[[https://git.apcacontrast.com/documentation/thirdpartytools][提供了工具]]，用于查看颜色的 Lc 值。
+
+另外推荐看一下 [[https://www.smashingmagazine.com/2022/09/realities-myths-contrast-color/][The Realities And Myths Of Contrast And Color]]，文章从人如何感受色彩，到如何让文本容易阅读，讲得很细致。
+
+#+begin_details
+#+html: <summary>摘录</summary>
+
+#+begin_quote
+像颜色一样，对比并不是绝对意义上的“真实”，它是一种感知。
+
+它是你的大脑对周围视觉信息差异的解释。
+
+对比并不是两个颜色之间差异的简单度量。
+
+像所有感知一样，两种颜色之间的对比度对环境非常敏感。
+
+这意味着周围的其他物体会影响你的视觉感受。
+
+线条粗细或文字重量和大小的“空间特性”决定了我们的对比敏感度。
+
+这些是我们对明暗视觉对比感知的主要因素。（有时称为亮度对比）
+
+为了可读性，我们需要充足的明度对比，而不考虑色相中的颜色。
+
+色彩对比，即色相/饱和度，对可读性没有主要影响。
+
+但充足的明暗对比能实现最佳的阅读速度和理解力。
+
+这对于小号正文字体尤为重要，比如列或块状文本。
+
+超过某个阈值后，关键对比恒定性可能会生效。
+
+这意味着超过关键对比的增加不会带来更好的可读性。
+
+[[https://git.apcacontrast.com/documentation/APCAeasyIntro#:~:text=Like%20color%2C%20contrast,of%20text%20%26%20background.][Source]]
+#+end_quote
+
+#+begin_quote
+色盲和可读性：虽然色觉障碍（CVD）会影响区分某些颜色的能力，但对于常见类型的 CVD，亮度感知与标准视觉相同。
+
+因此，在可读性方面，绿盲（deutan）、红盲（protan）、蓝盲（tritan）类型对亮度对比的需求与标准视觉相同。
+
+唯一的例外是红色与黑色的搭配，因为患有红盲（protan）形式的 CVD 者对红色不敏感。
+
+因此，红色与黑色的对比度在红盲者眼中大大降低，红/黑组合作为文本或语义非文本应避免使用。
+
+[[https://www.smashingmagazine.com/2022/09/realities-myths-contrast-color/#:~:text=Color%20Insensitive%20and,semantic%20non%2Dtext.][Source]]
+#+end_quote
+
+#+begin_quote
+为了强调，我要重申，@@html:<mark>字体的粗细和大小在可读性对比中远比光度和颜色的差异或比率更为重要。</mark>@@
+
+在这个示例图中，(设置了多个轮廓) 所有轮廓 (outline) 使用的颜色都是相同的，具有 3:1 的对比度比率。
+
+#+CAPTION: 示例图: 首先是细的 1 像素轮廓，然后是 2 像素轮廓，接着如你所见的 3 像素轮廓，描边开始侵入字母内部，所以在最后一个示例中，4 像素轮廓时，我们将描边设置为仅向外，这也增加了内部字体的粗细。（From archive.smashing.media）
+https://archive.smashing.media/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/8a7d6371-669b-4a1a-8c2e-d536c4065dee/10-realities-myths-contrast-color.png
+
+在每种情况下，使用的颜色完全相同，但随着轮廓变厚，每一行的空间频率降低，因此对比度更强，比上面一行更容易阅读。
+
+[[https://www.smashingmagazine.com/2022/09/realities-myths-contrast-color/#:~:text=To%20emphasize%2C%20I%E2%80%99ll,inner%20font%2Dweight.][Source]]
+#+end_quote
+#+end_details
 
 * Cool Bit
 ** [[https://www.tokyoweekender.com/entertainment/middle-aged-man-trading-cards-go-viral-in-japan/][Middle-Aged Man Trading Cards Go Viral in Rural Japan Town]]
@@ -396,3 +479,12 @@ http://p2.music.126.net/qhMCtRw_3Uf_WoaYSuRY0A==/109951170674738110.jpg?param=17
 http://p2.music.126.net/F-6szuTFPGKWLGuGnnId0g==/109951170677118218.jpg?param=177y177
 
 就木异象的新专辑，这张专辑我也是刚听，第一首歌的前奏我挺喜欢，但是后面摇滚起来就不太喜欢了，最近好像不太喜欢吵闹的摇滚。
+
+* Footnotes
+
+[fn:1] [[https://www.w3.org/TR/WCAG22/#dfn-large-scale][大字体 (large-scale)]] 的定义是：至少使用 18 磅 (point) 或 14 磅
+加粗字体，或能产生等效大小的中文、日文和韩文（CJK）字体大小。大致对应
+是 24px 和 18px。也就是说，font-size 设置为 24px 以上, 或者 font-size
+为 18px 以上且加粗，则可以认为是大字体。不同语言的文字可能存在差异，例
+如同样的 24px，中文可能比英文小，此时也需要适当增大字号才能符合大字体
+的定义。
