@@ -26,6 +26,7 @@ function switchMode(mode, isInit = false) {
     function setColorScheme() {
       colorSchemeMeta.setAttribute("content", scheme);
       localStorage.setItem("color-scheme", mode);
+      setBodyClass(mode);
       switchGiscusTheme(mode);
       switchIframeColorScheme(mode);
     }
