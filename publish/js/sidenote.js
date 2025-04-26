@@ -11,19 +11,91 @@ const SIDENOTE_NUM_CLASS = 'sidenote-num';
 const SIDENOTE_CONTENT_CLASS = 'sidenote-content';
 const SIDENOTE_REF_HIGHLIGHT_CLASS = 'sidenote-ref-highlight';
 
-document.addEventListener("DOMContentLoaded", function() {
-  // ===== 移除已存在的 sidenote =====
-  document.querySelectorAll('.' + SIDENOTE_CLASS).forEach(el => el.remove());
-  document.querySelectorAll('.' + SIDENOTE_CONTAINER_CLASS).forEach(el => el.remove());
+/**
+ * Dynamically load a CSS file if not already loaded.
+ */
+function loadCSS(href) {
+  if (document.querySelector(`link[href="${href}"]`)) return;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
+  document.head.appendChild(link);
+}
 
+/**
+ * Dynamically load a JS file if not already loaded, returns a Promise.
+ */
+function loadJS(src) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) {
+      resolve();
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.type = 'application/javascript';
+    script.onload = resolve;
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+}
+
+let littlefootInstance = null;
+let littlefootLoaded = false;
+
+async function ensureLittlefootMounted() {
+  if (!littlefootLoaded) {
+    loadCSS('https://unpkg.com/littlefoot/dist/littlefoot.css');
+    await loadJS('https://unpkg.com/littlefoot/dist/littlefoot.js');
+    littlefootLoaded = true;
+  }
+  if (!window.littlefoot) return;
+  if (!littlefootInstance) {
+    littlefootInstance = window.littlefoot.littlefoot({
+      anchorPattern: /(fn|footnote|note)[:\-\._\d]/gi,
+      footnoteSelector: 'div'
+    });
+  }
+}
+
+function unmountLittlefoot() {
+  if (littlefootInstance && littlefootInstance.unmount) {
+    littlefootInstance.unmount();
+    littlefootInstance = null;
+  }
+}
+
+function isSidenoteVisible() {
+  // Sidenotes are hidden at max-width: 1600px
+  return window.matchMedia('(min-width: 1601px)').matches;
+}
+
+function handleFootnoteMode() {
+  if (isSidenoteVisible()) {
+    // Sidenotes visible, unmount littlefoot, mount sidenotes
+    unmountLittlefoot();
+    mountSidenotes();
+  } else {
+    // Sidenotes hidden, unmount sidenotes, mount littlefoot
+    unmountSidenotes();
+    ensureLittlefootMounted();
+  }
+}
+
+// ===== sidenote 生成/移除逻辑提取为函数 =====
+let sidenoteCleanup = null;
+function mountSidenotes() {
+  if (sidenoteCleanup) return; // 已挂载
   // ===== 创建 sidenote 容器 =====
   const content = document.querySelector('#content');
   if (!content) return;
+  // 移除已存在的 sidenote
+  document.querySelectorAll('.' + SIDENOTE_CLASS).forEach(el => el.remove());
+  document.querySelectorAll('.' + SIDENOTE_CONTAINER_CLASS).forEach(el => el.remove());
+
   const sidenoteContainer = document.createElement('div');
   sidenoteContainer.className = SIDENOTE_CONTAINER_CLASS;
   content.appendChild(sidenoteContainer);
-
-  // ===== 工具函数 =====
 
   // 高亮/取消高亮正文脚注引用
   function highlightRef(refParent, highlight) {
@@ -138,4 +210,26 @@ document.addEventListener("DOMContentLoaded", function() {
   // 监听滚动和窗口变化
   window.addEventListener('resize', positionSidenotes);
   window.addEventListener('scroll', positionSidenotes, true);
+
+  // 提供 cleanup 方法
+  sidenoteCleanup = function() {
+    window.removeEventListener('resize', positionSidenotes);
+    window.removeEventListener('scroll', positionSidenotes, true);
+    if (sidenoteContainer.parentNode) {
+      sidenoteContainer.parentNode.removeChild(sidenoteContainer);
+    }
+    sidenoteCleanup = null;
+  };
+}
+
+function unmountSidenotes() {
+  if (sidenoteCleanup) {
+    sidenoteCleanup();
+    sidenoteCleanup = null;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  handleFootnoteMode();
+  window.addEventListener('resize', handleFootnoteMode);
 });
