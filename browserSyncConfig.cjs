@@ -6,9 +6,12 @@ module.exports = {
         res.setHeader("Content-Type", "application/xml; charset=utf-8");
         res.setHeader("x-content-type-options", "nosniff");
       }
+
       next();
     },
   },
+  https: true,
+  cors: true,
   files: ["publish/**/*"],
   open: true,
 };
