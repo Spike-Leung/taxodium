@@ -64,9 +64,13 @@ function setBodyClass(mode) {
  */
 function switchGiscusTheme(mode) {
   const theme = {
-    auto: "preferred_color_scheme",
-    light: "light_high_contrast",
-    dark: "dark_high_contrast",
+    // for debug
+    // auto: "https://localhost:3000/styles/giscus/preferred-color-scheme.css",
+    // light: "https://localhost:3000/styles/giscus/light-high-contrast.css",
+    // dark: "https://localhost:3000/styles/giscus/dark-high-contrast.css",
+    auto: "https://taxodium.ink/styles/giscus/preferred-color-scheme.css",
+    light: "https://taxodium.ink/styles/giscus/light-high-contrast.css",
+    dark: "https://taxodium.ink/styles/giscus/dark-high-contrast.css",
   };
 
   try {
