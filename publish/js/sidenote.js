@@ -34,6 +34,7 @@ function loadJS(src) {
     const script = document.createElement('script');
     script.src = src;
     script.type = 'application/javascript';
+    script.defer = true;
     script.onload = resolve;
     script.onerror = reject;
     document.body.appendChild(script);
