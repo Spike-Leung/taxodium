@@ -68,7 +68,7 @@ function unmountLittlefoot() {
 
 function isSidenoteVisible() {
   // Sidenotes are hidden at max-width: 1600px
-  return window.matchMedia('(min-width: 1601px)').matches;
+  return window.matchMedia('(min-width: 1921px)').matches;
 }
 
 function handleFootnoteMode() {
