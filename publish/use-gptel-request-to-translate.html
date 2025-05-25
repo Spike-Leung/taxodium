@@ -231,7 +231,7 @@
 <header>
 <h1 style="view-transition-name: spike-use-gptel-request-to-translate" class="title">使用 gptel-request 封装一个翻译方法</h1>
 </header>
-<figure id="orgd44c9d1">
+<figure id="org6f1431c">
 <img src="./images/use-gptel-request-to-translate/demo.gif" alt="demo.gif">
 
 <figcaption><span class="figure-number">&#22270;1&nbsp; </span>一个 GIF 图，演示了选中中文，然后调用 spike-leung/translate-region-to-english 翻译成英文。</figcaption>
@@ -264,6 +264,9 @@
 <li>支持自定义 prompt，有时可能需要翻译成别的语言可能有用。</li>
 </ul>
 
+<details id="orgf6a6711">
+<summary>spike-leung/translate-region</summary>
+
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/translate-region</span> <span style="color: #ff66ff;">(</span>prompt<span style="color: #ff66ff;">)</span>
   <span style="color: #9ac8e0;">"Translate the selected region (default to English) replace it.</span>
@@ -291,7 +294,7 @@
          <span style="color: #ff6b55;">(</span>text <span style="color: #efef00;">(</span>buffer-substring-no-properties start end<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
          <span style="color: #ff6b55;">(</span>prompt-text <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">or</span> prompt <span style="color: #79a8ff;">"Translate the following text to English:"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
     <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">if</span> <span style="color: #ff6b55;">(</span>string-blank-p text<span style="color: #ff6b55;">)</span>
-        <span style="color: #ff6b55;">(</span><span style="color: #fec43f; font-weight: bold;">user-error</span> <span style="color: #79a8ff;">"No text to translate"</span><span style="color: #ff6b55;">)</span>
+        <span style="color: #ff6b55;">(</span><span style="color: #fec43f;">user-error</span> <span style="color: #79a8ff;">"No text to translate"</span><span style="color: #ff6b55;">)</span>
       <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">let</span> <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">(</span>openrouter-backend <span style="color: #44df44;">(</span>gptel-make-openai <span style="color: #79a8ff;">"OpenRouter"</span>
                                   <span style="color: #f78fe7;">:host</span> <span style="color: #79a8ff;">"openrouter.ai"</span>
                                   <span style="color: #f78fe7;">:endpoint</span> <span style="color: #79a8ff;">"/api/v1/chat/completions"</span>
@@ -324,6 +327,8 @@
           <span style="color: #b6a0ff;">(</span>do-translate primary-model<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 </pre>
 </div>
+</details>
+
 
 <p>
 利用 <code>gptel-request</code> ，封装一些 prompt，可以方便地解决平时一些重复的、可以使用 LLM 解决的任务。
@@ -355,7 +360,7 @@ Folo 感觉有个 bug，设置里开启了行内样式渲染，代码块会使�
 
 <p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">Date: 2025-04-15 Tue 00:00</p>
-<p class="date">Last Modified: 2025-04-26 Sat 15:51</p>
+<p class="date">Last Modified: 2025-05-25 Sun 17:08</p>
 <p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <script src="/js/sidenote.js"></script>
 <script src="/js/code-enhanced.js"></script>
