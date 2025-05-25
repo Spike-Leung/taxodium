@@ -27,11 +27,12 @@ mac mini 是没有键盘鼠标的，首次开机的时候没法直接连接蓝�
 - 用户名设置为 ~spike~ ，因为部分 PATH 写死了这个用户，后面看看如何优化
 - 检查 icloud 配置，避免同步了不需要的文件夹，导致 icloud 存储被占用
 - Mouse 中关闭 Natural scrolling
+  + 如果是 macbook，配置开关在 Trackpad 的 scroll&zoom 中
 - 在 Keyboard 中找到 Keyboard Shortcuts[fn:1]
   + Modifier Keys 中，将 Caps Lock 换成 Control；Option 和 Command 交换
   + Input Source 中，将 Select the previous input source 换成 Option + Space
   + Spotlight 中，将 Show Spotlight search 关闭，因为后面会替换成 Raycast
-- 在 Screenshots 中关闭 Screenshot and recording options，因为会和 Emacs 冲突
+  + Screenshots 中，关闭 Screenshot and recording options，因为会和 Emacs 冲突
 - Audio MIDI 中设置一下音频的输出采样率
 
 * 网络配置
@@ -63,6 +64,8 @@ mac mini 是没有键盘鼠标的，首次开机的时候没法直接连接蓝�
   #+end_src
 
 安装过程中如果网络比较慢，可以考虑试试手机热点，手机热点不需要开代理。
+
+安装完成之后可以访问 http://localhost:2017 进行配置。
 
 * 安装软件
 :PROPERTIES:
@@ -118,7 +121,7 @@ Makefile 中做的主要的事情：
   	ln -sf ~/Dropbox/notes ~/notes
   	ln -sf ~/Dropbox/org ~/org
   	ln -sf ~/Dropbox/beancount ~/beancount
-  	ln -sf ~/Dropbox/init/.authinfo.gpg ~/.authinfo.gpg
+  	ln -sf ~/Dropbox/elfeed ~/.elfeed
 
   dependence:
   	# 确保 /usr/local/bin 存在且有权限
@@ -160,7 +163,9 @@ Makefile 中做的主要的事情：
   	brew install fzf
 
   	# mcfly, for search history
+  	# Add the following to the end of ~/.zshrc: eval "$(mcfly init zsh)"
   	brew install mcfly
+  	brew install ripgrep
   nodejs:
   	# volta
   	curl https://get.volta.sh | bash
