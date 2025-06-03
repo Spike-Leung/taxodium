@@ -91,7 +91,6 @@ Folo 是一个很棒的 RSS 应用，能够订阅各种内容，支持多端，�
 
 也许我会错过一些最新的内容，但是没关系，有空的时候再看看就好了，或者找一个时间专门看，反正它们就在那。
 
-
 * News | Article
 
 ** [[https://borretti.me/article/you-can-choose-tools-that-make-you-happy][You Can Choose Tools That Make You Happy]]
@@ -553,7 +552,83 @@ Versatile typeface for code, from code.
 * Code Related
 ** [[https://matklad.github.io/2023/11/15/push-ifs-up-and-fors-down.html][Push Ifs Up And Fors Down]]
 
+作者建议将 if 判断往上提，将 for 循环往下放。
 
+将 if 判断往上提，可以将 if 判断集中在一起地方，便于了解整体的判断逻辑，而不是分散在很多子函数里，从而减少错误。
+
+往上提，一些判断可能可以合并，一定程度上会减少整体判断的次数。
+
+将 for 往下放，不是创建一个 for 循环执行函数，而是创建一个函数，里面完成遍历，这样可以减少函数创建的开销，提高性能。
+
+#+begin_src javascript
+  // GOOD
+  frobnicate_batch(walruses)
+  // BAD
+  for walrus in walruses {
+    frobnicate(walrus)
+  }
+#+end_src
+
+两者可以结合:
+
+#+begin_src javascript
+  // GOOD
+  if condition {
+    for walrus in walruses {
+      walrus.frobnicate()
+    }
+  } else {
+    for walrus in walruses {
+      walrus.transmogrify()
+    }
+  }
+  // BAD
+  for walrus in walruses {
+    if condition {
+      walrus.frobnicate()
+    } else {
+      walrus.transmogrify()
+    }
+  }
+#+end_src
+
+#+begin_details
+#+html: <summary>摘录</summary>
+
+#+begin_quote
+[...] 这种情况经常出现在前置条件中：
+
+一个函数可能在内部检查前置条件，如果不满足则“什么也不做”，或者它可以将前置条件检查的任务推给调用者，并通过类型（或断言）来强制前置条件成立。
+
+尤其是对于前置条件，“向上推”可能会呈现病毒式传播，最终减少整体检查次数，这也是该经验法则的一个动机。
+
+另一个动机是控制流和 if 很复杂，且是错误的来源。
+
+通过将 if 向上推，你通常会将控制流集中在一个具有复杂分支逻辑的函数中，但所有实际工作都委托给直线子程序。
+
+如果你的控制流很复杂，最好将其放在一个函数中，使其能在一个屏幕内显示，而不是分散在整个文件中。
+
+更重要的是，当所有流程集中在一个地方时，通常可以发现冗余和无效条件。
+
+[[https://matklad.github.io/2023/11/15/push-ifs-up-and-fors-down.html#:~:text=As%20in%20the,dead%20conditions.%20Compare%3A][Source]]
+#+end_quote
+
+#+begin_quote
+这个想法来自数据导向的思路。
+
+少量的事物是少量，大量的事物是大量。
+
+程序通常处理大量的对象。或者至少热点路径通常涉及处理多个实体。正是实体的数量使得该路径成为热点。
+
+因此，引入“批量”对象的概念通常是明智的，并使批量操作成为基本情况，而标量版本是批量版本的特例。
+
+这里的主要好处是性能。
+
+大量的性能，在极端情况下更是如此。
+
+[[https://matklad.github.io/2023/11/15/push-ifs-up-and-fors-down.html#:~:text=This%20comes%20from,extreme%20cases.][Source]]
+#+end_quote
+#+end_details
 * Cool Bit
 
 ** [[https://aporee.org/maps/][Radio Aporee]]
@@ -750,6 +825,13 @@ HTML 就像一台相机。
 归根结底，观众不会在意你用了哪台相机。
 
 [[https://robbowen.digital/wrote-about/html-is-like-a-camera/#:~:text=If%20you%20were%20able%20to%20take%20a%20great%20photo%20on%20a%20camera%20from%201979%20then%20that%20same%20camera%20can%20still%20take%20a%20great%20photo%20today.%20New%20and%20shiny%20tech%20may%20make%20certain%20things%20easier%2C%20but%20a%20good%20photo%20is%20a%20good%20photo.%20Ultimately%2C%20the%20viewer%20won%27t%20give%20a%20shit%20which%20camera%20you%20used][Source]]
+#+end_quote
+** [[https://blog.kagi.com/first-three-years][Kagi status update: First three years]]
+
+#+begin_quote
+每当看到某样东西被“免费”提供时，人们应该训练自己问一个问题：到底是谁在为此买单，为什么？
+
+[[https://blog.kagi.com/first-three-years#:~:text=(As%20a%20side%20note%20%2D%20the%20one%20question%20that%20one%20should%20train%20to%20ask%20themselves%20whenever%20they%20see%20something%20offered%20for%20%E2%80%9Cfree%E2%80%9D%20is%20who%20is%20actually%20paying%20for%20it%20and%20why%3F)][Source]]
 #+end_quote
 * 多媒体
 - [[https://www.bilibili.com/video/BV1fXj5zcEYL][【官方双语】黏性指进：液体为何自发形成分形图案？]] (11:01)
