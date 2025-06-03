@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const CONFIG = {
   feedTitle: 'Taxodium',
-  feedSubtitle: 'That the powerful play goes on, and you may contribute a verse. (Claim Folo feed: feedId:63132271001948160+userId:72185894417953792)',
+  feedSubtitle: 'That the powerful play goes on, and you may contribute a verse.',
   feedAuthor: 'Spike Leung',
   feedAuthorEmail: 'l-yanlei@hotmail.com',
   feedId: 'https://taxodium.ink/',
