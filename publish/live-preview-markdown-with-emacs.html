@@ -266,13 +266,13 @@ HTML 中加载 <a href="https://github.com/markedjs/marked">Marked</a>，将 mar
 最终，我就得到这样一个 <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-my-markdown.el">markdown 的实时预览方法</a>:
 </p>
 
-<details id="orgfdc9941">
+<details id="orga78f892">
 <summary>init-my-markdown.el</summary>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">init-my-markdown.el --- use impatient-mode to preview markdown</span>
-<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">Commentary:</span>
-<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">@see:  https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type</span>
-<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">Code:</span>
+<pre class="src src-emacs-lisp"><span style="color: #74321f;">;;; </span><span style="color: #db7b5f;">init-my-markdown.el --- use impatient-mode to preview markdown</span>
+<span style="color: #74321f;">;;; </span><span style="color: #db7b5f;">Commentary:</span>
+<span style="color: #74321f;">;;; </span><span style="color: #db7b5f;">@see:  https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type</span>
+<span style="color: #74321f;">;;; </span><span style="color: #db7b5f;">Code:</span>
 
 <span style="color: #ffffff;">(</span>maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">impatient-mode</span><span style="color: #ffffff;">)</span>
 
@@ -319,14 +319,10 @@ HTML 中加载 <a href="https://github.com/markedjs/marked">Marked</a>，将 mar
          <span style="color: #00eff0;">(</span>current-buffer<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/preview-markdown</span> <span style="color: #ff66ff;">()</span>
-  <span style="color: #9ac8e0;">"Preview markdown."</span>
+  <span style="color: #9ac8e0;">"Live Preview markdown."</span>
   <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">interactive</span><span style="color: #ff66ff;">)</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">progn</span>
-    <span style="color: #00eff0;">(</span>httpd-start<span style="color: #00eff0;">)</span>
-    <span style="color: #00eff0;">(</span>impatient-mode nil<span style="color: #00eff0;">)</span>
-    <span style="color: #00eff0;">(</span>imp-set-user-filter <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">spike-leung/imp-markdown-filter</span><span style="color: #00eff0;">)</span>
-    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">let</span> <span style="color: #ff6b55;">(</span><span style="color: #efef00;">(</span>port httpd-port<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
-      <span style="color: #ff6b55;">(</span>browse-url <span style="color: #efef00;">(</span>concat <span style="color: #79a8ff;">"http://localhost:"</span> <span style="color: #b6a0ff;">(</span>number-to-string port<span style="color: #b6a0ff;">)</span> <span style="color: #79a8ff;">"/imp"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+  <span style="color: #ff66ff;">(</span>imp-visit-buffer<span style="color: #ff66ff;">)</span>
+  <span style="color: #ff66ff;">(</span>imp-set-user-filter <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">spike-leung/imp-markdown-filter</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/disable-preview-markdown</span> <span style="color: #ff66ff;">()</span>
   <span style="color: #9ac8e0;">"Disable preview markdown."</span>
@@ -337,8 +333,7 @@ HTML 中加载 <a href="https://github.com/markedjs/marked">Marked</a>，将 mar
     <span style="color: #00eff0;">(</span>imp-remove-user-filter<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">provide</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-my-markdown</span><span style="color: #ffffff;">)</span>
-<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">init-my-markdown.el ends here</span>
-
+<span style="color: #74321f;">;;; </span><span style="color: #db7b5f;">init-my-markdown.el ends here</span>
 </pre>
 </div>
 </details>
@@ -348,7 +343,7 @@ HTML 中加载 <a href="https://github.com/markedjs/marked">Marked</a>，将 mar
 </p>
 
 
-<figure id="org1b658c8">
+<figure id="orga6831e5">
 <img src="images/live-preview-markdown-with-emacs/screenshot.png" alt="screenshot.png">
 
 <figcaption><span class="figure-number">&#22270;1&nbsp; </span>Emacs 预览 markdown 的效果，左边是预览效果，右边是 Emacs 中 buffer 内容</figcaption>
@@ -379,7 +374,7 @@ HTML 中加载 <a href="https://github.com/markedjs/marked">Marked</a>，将 mar
 
 <p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">Date: 2025-06-20 Fri 00:00</p>
-<p class="date">Last Modified: 2025-06-20 Fri 16:30</p>
+<p class="date">Last Modified: 2025-06-21 Sat 13:55</p>
 <p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <script src="/js/sidenote.js"></script>
 <script src="/js/code-enhanced.js"></script>
