@@ -179,6 +179,14 @@ function mountSidenotes() {
     refs.forEach(function(ref, idx) {
       const sidenote = sidenoteContainer.querySelector(`.${SIDENOTE_CLASS}[data-ref-index="${idx}"]`);
       if (!sidenote) return;
+
+      const detailsParent = ref.closest('details');
+      if (detailsParent && !detailsParent.open) {
+        sidenote.style.display = 'none';
+        return;
+      }
+      sidenote.style.display = '';
+
       // 先重置高度，避免内容变化导致高度不准
       sidenote.style.top = '0px';
       sidenote.style.right = '0';
