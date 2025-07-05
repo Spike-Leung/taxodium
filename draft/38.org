@@ -1020,6 +1020,152 @@ BTW，这个博客挺有趣的，作者给每篇文章都配了一个封面，�
 #+end_quote
 
 [[https://2ality.com/2025/06/ecmascript-2025.html#new-set-methods][Set 也新增了一些方法]]，例如求并集，交集，差集等。
+** [[https://muffinman.io/blog/css-image-glitch][CSS-only glitch effect]]
+
+纯 CSS 实现图片故障的效果。
+** [[https://frontendmasters.com/blog/reanimating-the-css-day-buttons][Reanimating the CSS Day Buttons]]
+
+作者优化了 [[https://cssday.nl/][CSS Day]] 的按钮，过渡效果看起来更平滑了。
+
+- background-image 动画实现平滑的渐变过渡。
+- 使用 clip-path 打造独特的按钮形状。
+- 伪元素用于创建动态点状按钮效果
+
+** [[https://www.youtube.com/watch?v=0O0ssm70g1g][What is CSS Owl Selector (* + *)?]]
+
+Owl Selector (~* + *~) 可以用来选择所有的兄弟元素，排除第一个元素。
+
+和 ~:not(:first-child)~ 作用接近，但 ~* + *~ 不会增加选择器的 [[https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascade/Specificity][特殊性]]，从而可以轻松地覆盖样式。
+
+** [[https://dev.to/madsstoumann/guitar-chords-in-css-3hk8][Guitar Chords in CSS]]
+
+使用 [[https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout][Grid 布局]] 实现吉他和弦谱，Cool!
+
+** [[https://codepen.io/donotfold/pen/ZYYYJRV][Text circle animation (CSS only)]]
+
+仅使用 CSS 实现的文字圆环动画，Cool! 看起来像是一个太阳。
+
+** [[https://gomakethings.com/the-css-layer-at-rule][The CSS @layer at-rule]]
+
+#+begin_quote
+~@layer~ 规则允许你将选择器分配到不同的组中，并定义这些组在层叠中的加载顺序，而不管它们在源代码中的加载顺序如何。
+#+end_quote
+
+利用 ~@layer~ 可以将一些样式分组，控制样式的加载顺序，从而灵活的组织和应用样式。
+
+** [[https://frontendmasters.com/blog/curved-box-cutouts-in-css/][Curved Box Cutouts in CSS]]
+
+#+begin_quote
+本文探讨了一种技巧，用于创建一个元素附加到另一个元素上，并在两者之间留有间隙且角落带有弧形边缘的视觉效果。
+#+end_quote
+
+#+begin_src html :exports none
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <style>
+        .outer {
+            --outer-radius: 12px;
+            --inner-width: 160px;
+            --inner-height: 60px;
+            --outline-width: 8px;
+            /* 形状是 1/4 的圆，基于需要覆盖的角，当前应该是取左上角部分的 1/4 圆的形状，所以定位是 circle at bottom */
+            --radial-circle-position: bottom right;
+            /* 背景贴片的大小是半径 + outline 的宽度 */
+            --background-size: calc(var(--outer-radius) + var(--outline-width)) calc(var(--outer-radius) + var(--outline-width));
+            --background-position-offset: calc(-1 * var(--outline-width));
+            width: 250px;
+            aspect-ratio: 1;
+            border-radius: var(--outer-radius);
+            background:
+                /* 通过一个背景贴片，半径大小和 outer 的半径大小相同，从透明渐变到白色，覆盖住那些突出的角 */
+                /* 背景的定位需要基于 outline 做一定的偏移调整 */
+                var(--inner-width) var(--background-position-offset) / var(--background-size) radial-gradient(circle at var(--radial-circle-position), transparent var(--outer-radius), white var(--outer-radius)),
+                var(--background-position-offset) var(--inner-height) / var(--background-size) radial-gradient(circle at var(--radial-circle-position), transparent var(--outer-radius), white var(--outer-radius)),
+                dodgerblue;
+            background-repeat: no-repeat;
+            overflow: hidden;
+
+            .inner {
+                width: var(--inner-width);
+                height: var(--inner-height);
+                border-radius: inherit;
+                background: skyblue;
+                /* outline 的层级更高，会覆盖 outer 的 background */
+                outline: var(--outline-width) solid white;
+            }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="outer">
+        <div class="inner"></div>
+      </div>
+    </body>
+  </html>
+
+#+end_src
+#+begin_export html
+<iframe style="width:100%" srcdoc=" &lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;style&gt; .outer { --outer-radius: 12px; --inner-width: 160px; --inner-height: 60px; --outline-width: 8px; /* 形状是 1/4 的圆，基于需要覆盖的角，当前应该是取左上角部分的 1/4 圆的形状，所以定位是 circle at bottom */ --radial-circle-position: bottom right; /* 背景贴片的大小是半径 + outline 的宽度 */ --background-size: calc(var(--outer-radius) + var(--outline-width)) calc(var(--outer-radius) + var(--outline-width)); --background-position-offset: calc(-1 * var(--outline-width)); width: 250px; aspect-ratio: 1; border-radius: var(--outer-radius); background: /* 通过一个背景贴片，半径大小和 outer 的半径大小相同，从透明渐变到白色，覆盖住那些突出的角 */ /* 背景的定位需要基于 outline 做一定的偏移调整 */ var(--inner-width) var(--background-position-offset) / var(--background-size) radial-gradient(circle at var(--radial-circle-position), transparent var(--outer-radius), white var(--outer-radius)), var(--background-position-offset) var(--inner-height) / var(--background-size) radial-gradient(circle at var(--radial-circle-position), transparent var(--outer-radius), white var(--outer-radius)), dodgerblue; background-repeat: no-repeat; overflow: hidden; .inner { width: var(--inner-width); height: var(--inner-height); border-radius: inherit; background: skyblue; /* outline 的层级更高，会覆盖 outer 的 background */ outline: var(--outline-width) solid white; } } &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div class=&#34;outer&#34;&gt; &lt;div class=&#34;inner&#34;&gt;&lt;/div&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt; "></iframe>
+#+end_export
+
+实现思路是用 outline 实现 div 之间的空隙，然后使用叠加的 background，去覆盖那些突出的部分，从而实现平滑的圆角。
+
+** [[https://frontendmasters.com/blog/creating-flower-shapes-using-clip-path-shape/][Creating Flower Shapes using clip-path: shape()]]
+
+使用 [[https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path][clip-path]] 实现花朵图案，可以用来学习 clip-path。
+
+see also: [[https://frontendmasters.com/blog/creating-blob-shapes-using-clip-path-shape/][Creating Blob Shapes using clip-path: shape()]]
+
+** [[https://adactio.com/journal/21896][CSS snippets]]
+
+作者分享了一些他最近比较推荐的 CSS 片段。
+
+例如：
+
+#+begin_src css
+  figcaption {
+    max-inline-size: max-content;
+    margin-inline: auto;
+  }
+#+end_src
+
+这个样式会使文本居中对齐，直到它换行超过一行，此时它就不再居中。
+
+抄到博客样式里了 へ(゜∇、°)へ
+
+** [[https://www.youtube.com/watch?v=EeM5wnhO9iI][CSS Tips: Flexible Wrapping CSS Grid]]
+
+#+begin_quote
+一个快速技巧，教你如何创建一个灵活的 CSS Grid，能够根据项目数量的变化自动扩展、收缩并换行，以适应一行中可以容纳的项目数量。
+#+end_quote
+
+很不错的技巧，在实际开发中应该会用到。
+
+#+begin_details
+#+html: <summary>code</summary>
+
+#+begin_src css
+  .grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(
+        auto-fit,
+        minmax(
+            min(20rem, 100%),
+            1fr
+        )
+      );
+#+end_src
+#+end_details
+
+** [[https://www.youtube.com/watch?v=0C-y59betmY&ab_channel=RyanCarniato][The 3 Ways JavaScript Frameworks Render the DOM]]
+
+#+begin_quote
+多年来可能出现过数十种 JavaScript 框架，但它们渲染 DOM 的方式几乎总是相同的。
+
+在本视频中，我们将探讨所有声明式 JavaScript 框架更新 DOM 的方法，以更好地理解它们的工作原理及其优缺点。
+#+end_quote
 
 * Cool Bit
 ** [[https://rms.sexy][Our GNU/Lord and GNU/Savior is 100% sexy!]]
@@ -1415,6 +1561,25 @@ A simple editor for simple needs.
 - [[https://github.com/dimsemenov/PhotoSwipe][PhotoSwipe]]
 - [[https://github.com/dimsemenov/Magnific-Popup][Magnific Popup Repository]]
 - [[https://github.com/lokesh/lightbox2][lightbox2]]
+** [[https://namedesigntokens.guide/][Design Tokens Name Generator]]
+
+#+begin_quote
+为您的设计系统创建一致且可扩展的命名规范。
+#+end_quote
+** [[https://www.jsfontpicker.com/][Javascript Font Picker]]
+
+#+begin_quote
+一个开源、免费的（免费啤酒式）、多功能、灵活且轻量级的 Javascript 字体选择器组件，支持系统字体、Google 字体和自定义（woff/ttf）字体。
+
+具备动态字体加载、收藏夹、键盘导航、模糊搜索、高级指标过滤、属性排序等多种功能。
+
+提供多语言版本。
+#+end_quote
+** [[https://github.com/xdadda/mini-photo-editor][mini-photo-editor]]
+
+#+begin_quote
+在线 WebGL 照片编辑器，支持特效、滤镜和裁剪。
+#+end_quote
 * Emacs
 - [[https://www.youtube.com/watch?v=-i-ShfdMSTw&ab_channel=ChrisMaiorana][Emacs vibe-talkin: making my modeline personal]] (9:27) 自定义 modeline，使用 Emoji 显示 buffer 的保存状态；显示当前文章的字数。
 - [[https://www.youtube.com/watch?v=adEvbf3zoxk&ab_channel=RaoulComninos][Store snippets of information fast with Emacs Remember]] (3:26) 使用 [[https://www.gnu.org/software/emacs/manual/html_mono/remember.html][remember-mode]] 对一些内容迅速地快照。
@@ -1423,6 +1588,8 @@ A simple editor for simple needs.
 - [[https://www.youtube.com/watch?v=Mp2SCv8BFvc&ab_channel=EmacsElements][Emacs Repeat Commands]] (9:44) Emacs 的一些 Repeat 方法介绍，可以方便地重复执行一些命令。
 - [[https://www.youtube.com/watch?v=osViM1W6wkM][Better Grep Defaults for Emacs]] (4:18)
 - [[https://github.com/tumashu/vertico-posframe][vertico-posframe]] vertico-posframe 是一个 vertico 扩展，允许 vertico 使用 posframe 来显示其候选菜单。
+- [[https://www.youtube.com/watch?v=ROQ3Pzuz3JE][Emacs' Transient.el — a bunch of practical examples.]] 作者分享了 [[https://github.com/magit/transient][transient]] 的使用例子，里面有挺多有趣的分享，例如按照时间切换主题；调用 npm 包；在 Emacs 中控制视频播放等。
+
 * 一些话 | 摘抄
 
 ** 费曼
