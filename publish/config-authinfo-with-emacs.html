@@ -311,7 +311,7 @@ Emacs 是通过 auth-source 去实现身份验证的，一般将验证信息 (�
 一些例子：
 </p>
 
-<pre class="example" id="orgba96873">
+<pre class="example" id="org4888700">
 machine localhost login spike port sudo password xxxx
 machine 192.168.100.100 login root port ssh password xxxx
 machine api.deepseek.com login apikey password xxxx
@@ -333,12 +333,12 @@ machine openrouter.ai/api login apikey password xxxx
 </p>
 <div class="org-src-container">
 <pre class="src src-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">immersive-translate-api-key</span> <span style="color: #ff66ff;">(</span>host user<span style="color: #ff66ff;">)</span>
-  <span style="color: #9ac8e0;">"Lookup api key in the auth source.</span>
+  <span style="color: #9ac8e0;">"Lookup api key in the auth source.
 
-<span style="color: #9ac8e0;">By default, `</span><span style="color: #00bcff;">immersive-translate-chatgpt-host</span><span style="color: #9ac8e0;">' is used as HOST</span>
-<span style="color: #9ac8e0;">and </span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #9ac8e0;">apikey</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #9ac8e0;"> as USER in Chatgpt backend.</span>
-<span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #9ac8e0;">fanyi-api.baidu.com</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #9ac8e0;"> is used as HOST and</span>
-<span style="color: #9ac8e0;">`</span><span style="color: #00bcff;">immersive-translate-baidu-appid</span><span style="color: #9ac8e0;">' as USER in Baidu backend."</span>
+By default, `</span><span style="color: #00bcff;">immersive-translate-chatgpt-host</span><span style="color: #9ac8e0;">' is used as HOST
+and </span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #9ac8e0;">apikey</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #9ac8e0;"> as USER in Chatgpt backend.
+</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #9ac8e0;">fanyi-api.baidu.com</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #9ac8e0;"> is used as HOST and
+`</span><span style="color: #00bcff;">immersive-translate-baidu-appid</span><span style="color: #9ac8e0;">' as USER in Baidu backend."</span>
   <span style="color: #ff66ff;">(</span>if-let <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>secret <span style="color: #efef00;">(</span>plist-get <span style="color: #b6a0ff;">(</span>car <span style="color: #44df44;">(</span>auth-source-search
                                     <span style="color: #f78fe7;">:host</span> host
                                     <span style="color: #f78fe7;">:user</span> user
@@ -356,8 +356,8 @@ machine openrouter.ai/api login apikey password xxxx
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">...&#20854;&#20182;&#20195;&#30721;</span>
-<span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"Authorization"</span> . ,<span style="color: #ff66ff;">(</span>concat <span style="color: #79a8ff;">"Bearer "</span> <span style="color: #00eff0;">(</span>immersive-translate-api-key
+<pre class="src src-lisp"><span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">...&#20854;&#20182;&#20195;&#30721;
+</span><span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"Authorization"</span> . ,<span style="color: #ff66ff;">(</span>concat <span style="color: #79a8ff;">"Bearer "</span> <span style="color: #00eff0;">(</span>immersive-translate-api-key
                                        immersive-translate-chatgpt-host
                                        <span style="color: #79a8ff;">"apikey"</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span><span style="color: #ffffff; background-color: #9d1f1f; font-weight: bold;">)))</span>
 <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">...&#20854;&#20182;&#20195;&#30721;</span>
@@ -377,7 +377,7 @@ machine openrouter.ai/api login apikey password xxxx
 所以按照默认配置，当你获取到 openai 的 API key 后，要这样配置:
 </p>
 
-<pre class="example" id="orgd4af1bc">
+<pre class="example" id="org02ffe18">
 machine api.openai.com login apikey password your_openai_api_key
 </pre>
 
@@ -410,7 +410,7 @@ machine api.openai.com login apikey password your_openai_api_key
 创建完成后可以通过 <code>gpg --list-keys</code> 查看当前得密钥，例如我执行后会得到：
 </p>
 
-<pre class="example" id="org239e532">
+<pre class="example" id="orgd713645">
 /home/spike/.gnupg/pubring.kbx
 ------------------------------
 pub   rsa4096 2025-02-27 [SC]
