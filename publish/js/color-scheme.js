@@ -74,18 +74,33 @@ function switchGiscusTheme(mode) {
   };
 
   try {
-    // {@link https://github.com/giscus/giscus/issues/336}
+    const iframe = document.querySelector("iframe.giscus-frame");
+
+    // @link: https://github.com/giscus/giscus/issues/336
     function sendMessage(message) {
-      const iframe = document.querySelector("iframe.giscus-frame");
       if (!iframe) return;
       iframe.contentWindow.postMessage({ giscus: message }, "https://giscus.app");
     }
+    function setGisSrc(theme) {
+      if (!iframe) return;
+      const iframeSrc = iframe.src;
+      const iframeUrl = new URL(iframeSrc);
+      const iframeSearchParams = iframeUrl.searchParams;
+      iframeSearchParams.set('theme', theme);
 
-    sendMessage({
-      setConfig: {
-        theme: theme[mode],
-      },
-    });
+      iframe.src = iframeUrl.toString();
+    };
+
+    // Giscus doesn't accept messages if it's not loaded
+    if (iframe?.classList.contains('giscus-frame--loading')) {
+      setGisSrc(theme[mode]);
+    } else {
+      sendMessage({
+        setConfig: {
+          theme: theme[mode],
+        },
+      });
+    }
   } catch (err) {
     console.error(err);
   }
