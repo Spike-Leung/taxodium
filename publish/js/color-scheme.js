@@ -139,7 +139,7 @@ function initGiscusTheme(mode) {
       setTimeout(() => switchGiscusTheme(mode), 200);
     });
     clearInterval(interval);
-  }, 1000);
+  }, 50);
 }
 
 /**
