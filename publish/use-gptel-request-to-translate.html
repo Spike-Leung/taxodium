@@ -194,8 +194,8 @@
 
 <meta name="color-scheme" content="light dark" />
 <script src="/js/color-scheme.js"></script>
-<link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css" />
-<link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
 <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Regular-102a.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Bold-102a.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Italic-102a.woff2" as="font" type="font/woff2" crossorigin>
@@ -233,7 +233,7 @@
 <header>
 <h1 style="view-transition-name: spike-use-gptel-request-to-translate" class="title">使用 gptel-request 封装一个翻译方法</h1>
 </header>
-<figure id="org8fb6ad4">
+<figure id="org69b5e17">
 <img src="./images/use-gptel-request-to-translate/demo.gif" alt="demo.gif">
 
 <figcaption><span class="figure-number">&#22270;1&nbsp; </span>一个 GIF 图，演示了选中中文，然后调用 spike-leung/translate-region-to-english 翻译成英文。</figcaption>
@@ -266,18 +266,18 @@
 <li>支持自定义 prompt，有时可能需要翻译成别的语言可能有用。</li>
 </ul>
 
-<details id="orgb0d9eef">
+<details id="org376ac42">
 <summary>spike-leung/translate-region</summary>
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/translate-region</span> <span style="color: #ff66ff;">(</span>prompt<span style="color: #ff66ff;">)</span>
-  <span style="color: #9ac8e0;">"Translate the selected region (default to English) replace it.
+  <span style="color: #9ac8e0; font-style: italic;">"Translate the selected region (default to English) replace it.
 If no region is active, try to guess the sentence or paragraph at point.
 With prefix argument, PROMPT is used as the translation prompt."</span>
   <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">interactive</span>
    <span style="color: #00eff0;">(</span>list <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">when</span> current-prefix-arg
            <span style="color: #efef00;">(</span>read-string <span style="color: #79a8ff;">"Translation prompt: "</span> <span style="color: #79a8ff;">"Translate the following text to English:"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">require</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gptel</span><span style="color: #ff66ff;">)</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">require</span> <span style="color: #ffffff;">'</span><span style="color: #00bcff;">gptel</span><span style="color: #ff66ff;">)</span>
   <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">let*</span> <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>has-region <span style="color: #efef00;">(</span>use-region-p<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
          <span style="color: #ff6b55;">(</span>bounds
           <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">cond</span>
@@ -285,10 +285,10 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
             <span style="color: #44df44;">(</span>cons <span style="color: #79a8ff;">(</span>region-beginning<span style="color: #79a8ff;">)</span> <span style="color: #79a8ff;">(</span>region-end<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
            <span style="color: #b6a0ff;">(</span><span style="color: #44df44;">(</span>use-region-p<span style="color: #44df44;">)</span>
             <span style="color: #44df44;">(</span>cons <span style="color: #79a8ff;">(</span>region-beginning<span style="color: #79a8ff;">)</span> <span style="color: #79a8ff;">(</span>region-end<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
-           <span style="color: #b6a0ff;">(</span><span style="color: #44df44;">(</span><span style="color: #b6a0ff;">and</span> <span style="color: #79a8ff;">(</span>fboundp <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">bounds-of-thing-at-point</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span>
-            <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">or</span> <span style="color: #79a8ff;">(</span>bounds-of-thing-at-point <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">sentence</span><span style="color: #79a8ff;">)</span>
-                <span style="color: #79a8ff;">(</span>bounds-of-thing-at-point <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">paragraph</span><span style="color: #79a8ff;">)</span>
-                <span style="color: #79a8ff;">(</span>bounds-of-thing-at-point <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">line</span><span style="color: #79a8ff;">)</span>
+           <span style="color: #b6a0ff;">(</span><span style="color: #44df44;">(</span><span style="color: #b6a0ff;">and</span> <span style="color: #79a8ff;">(</span>fboundp <span style="color: #ffffff;">'</span><span style="color: #eedc82;">bounds-of-thing-at-point</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span>
+            <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">or</span> <span style="color: #79a8ff;">(</span>bounds-of-thing-at-point <span style="color: #ffffff;">'</span><span style="color: #eedc82;">sentence</span><span style="color: #79a8ff;">)</span>
+                <span style="color: #79a8ff;">(</span>bounds-of-thing-at-point <span style="color: #ffffff;">'</span><span style="color: #eedc82;">paragraph</span><span style="color: #79a8ff;">)</span>
+                <span style="color: #79a8ff;">(</span>bounds-of-thing-at-point <span style="color: #ffffff;">'</span><span style="color: #eedc82;">line</span><span style="color: #79a8ff;">)</span>
                 <span style="color: #79a8ff;">(</span>cons <span style="color: #f78fe7;">(</span>point<span style="color: #f78fe7;">)</span> <span style="color: #f78fe7;">(</span>point<span style="color: #f78fe7;">)</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
            <span style="color: #b6a0ff;">(</span>t <span style="color: #44df44;">(</span>cons <span style="color: #79a8ff;">(</span>point<span style="color: #79a8ff;">)</span> <span style="color: #79a8ff;">(</span>point<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
          <span style="color: #ff6b55;">(</span>start <span style="color: #efef00;">(</span>car bounds<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
@@ -303,8 +303,8 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
                                   <span style="color: #f78fe7;">:stream</span> t
                                   <span style="color: #f78fe7;">:key</span> <span style="color: #79a8ff;">(</span>spike-leung/get-openrouter-api-key<span style="color: #79a8ff;">)</span>
                                   <span style="color: #f78fe7;">:models</span> spike-leung/openrouter-models<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
-            <span style="color: #b6a0ff;">(</span>primary-model <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">openai/gpt-4.1-nano</span><span style="color: #b6a0ff;">)</span>
-            <span style="color: #b6a0ff;">(</span>fallback-model <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">google/gemini-2.0-flash-001</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
+            <span style="color: #b6a0ff;">(</span>primary-model <span style="color: #ffffff;">'</span><span style="color: #eedc82;">openai/gpt-4.1-nano</span><span style="color: #b6a0ff;">)</span>
+            <span style="color: #b6a0ff;">(</span>fallback-model <span style="color: #ffffff;">'</span><span style="color: #eedc82;">google/gemini-2.0-flash-001</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
         <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">cl-labels</span>
             <span style="color: #b6a0ff;">(</span><span style="color: #44df44;">(</span>do-translate
                <span style="color: #79a8ff;">(</span>model<span style="color: #79a8ff;">)</span>
@@ -313,7 +313,7 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
                      <span style="color: #ffffff;">(</span>gptel-use-tools nil<span style="color: #ffffff;">)</span>
                      <span style="color: #ffffff;">(</span>gptel-use-context nil<span style="color: #ffffff;">)</span><span style="color: #f78fe7;">)</span>
                  <span style="color: #f78fe7;">(</span>gptel-request
-                     <span style="color: #ffffff;">(</span>format <span style="color: #79a8ff;">"%s</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">n</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">n</span><span style="color: #79a8ff;">%s"</span> prompt-text text<span style="color: #ffffff;">)</span>
+                     <span style="color: #ffffff;">(</span>format <span style="color: #79a8ff;">"%s</span><span style="color: #feacd0; font-weight: bold;">\</span><span style="color: #00c06f; font-weight: bold;">n</span><span style="color: #feacd0; font-weight: bold;">\</span><span style="color: #00c06f; font-weight: bold;">n</span><span style="color: #79a8ff;">%s"</span> prompt-text text<span style="color: #ffffff;">)</span>
                    <span style="color: #f78fe7;">:callback</span>
                    <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">lambda</span> <span style="color: #ff66ff;">(</span>response _<span style="color: #ff66ff;">)</span>
                      <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">if</span> <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">and</span> response <span style="color: #ff6b55;">(</span>not <span style="color: #efef00;">(</span>string-blank-p response<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
