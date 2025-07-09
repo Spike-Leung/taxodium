@@ -194,6 +194,8 @@
 
 <meta name="color-scheme" content="light dark" />
 <script src="/js/color-scheme.js"></script>
+<link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css" />
+<link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css" />
 <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Regular-102a.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Bold-102a.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Italic-102a.woff2" as="font" type="font/woff2" crossorigin>
@@ -425,7 +427,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
          <span style="color: #f78fe7;">:base-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/post"</span>
          <span style="color: #f78fe7;">:base-extension</span> <span style="color: #79a8ff;">"org"</span>
          <span style="color: #f78fe7;">:html-head</span> ,spike-leung/html-head
-         <span style="color: #77266e;">;; </span><span style="color: #db7b5f;">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
+         <span style="color: #adade0;">;; </span><span style="color: #db7b5f;">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
 </span>         <span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 </pre>
 </div>
@@ -457,7 +459,7 @@ This provides a way to include constant symbols and lists, which are not self-ev
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #675462;">    (defconst spike-leung/html-head "
+<pre class="src src-diff"><span style="color: #aea6b8;">    (defconst spike-leung/html-head "
       &lt;link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/&gt;
       &lt;link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\"&gt;
       "
@@ -466,7 +468,7 @@ This provides a way to include constant symbols and lists, which are not self-ev
     (setq org-publish-project-alist
 </span><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;">          '(("orgfiles"
 </span><span style="color: #44df44;">+</span><span style="color: #44bc44;">          `(("orgfiles"
-</span><span style="color: #675462;">             :base-directory "~/git/taxodium/post"
+</span><span style="color: #aea6b8;">             :base-directory "~/git/taxodium/post"
              :base-extension "org"
              :html-head ,spike-leung/html-head
              ;; ... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
@@ -516,9 +518,9 @@ The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value i
 <details id="org768213c">
 <summary>init-org-publish.el</summary>
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #77266e;">;;; </span><span style="color: #db7b5f;">init-org-publish.el --- org publish config for my blog -*- lexical-binding: t -*-
-</span><span style="color: #77266e;">;;; </span><span style="color: #db7b5f;">Commentary:
-</span><span style="color: #77266e;">;;; </span><span style="color: #db7b5f;">Code:
+<pre class="src src-elisp"><span style="color: #adade0;">;;; </span><span style="color: #db7b5f;">init-org-publish.el --- org publish config for my blog -*- lexical-binding: t -*-
+</span><span style="color: #adade0;">;;; </span><span style="color: #db7b5f;">Commentary:
+</span><span style="color: #adade0;">;;; </span><span style="color: #db7b5f;">Code:
 </span>
 <span style="color: #ffffff;">(</span>maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">ox-rss</span><span style="color: #ffffff;">)</span>
 
@@ -566,7 +568,7 @@ PROJECT is the current project.
               <span style="color: #79a8ff;">"long time ago..."</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 
 
-<span style="color: #77266e;">;; </span><span style="color: #db7b5f;">@see: https://writepermission.com/org-blogging-rss-feed.html
+<span style="color: #adade0;">;; </span><span style="color: #db7b5f;">@see: https://writepermission.com/org-blogging-rss-feed.html
 </span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">rw/org-rss-publish-to-rss</span> <span style="color: #ff66ff;">(</span>plist filename pub-dir<span style="color: #ff66ff;">)</span>
   <span style="color: #9ac8e0;">"Publish RSS with PLIST, only when FILENAME is '</span><span style="color: #00bcff;">rss.org</span><span style="color: #9ac8e0;">'.
 PUB-DIR is when the output will be placed."</span>
@@ -595,7 +597,7 @@ PROJECT is the current project."</span>
              <span style="color: #b6a0ff;">(</span>buffer-string<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
            <span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
         <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>eq style <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">tree</span><span style="color: #ff6b55;">)</span>
-         <span style="color: #77266e;">;; </span><span style="color: #db7b5f;">Return only last subdir.
+         <span style="color: #adade0;">;; </span><span style="color: #db7b5f;">Return only last subdir.
 </span>         <span style="color: #ff6b55;">(</span>file-name-nondirectory <span style="color: #efef00;">(</span>directory-file-name entry<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
         <span style="color: #00eff0;">(</span>t entry<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 
@@ -685,7 +687,7 @@ PROJECT is the current project."</span>
         <span style="color: #00eff0;">(</span><span style="color: #79a8ff;">"website"</span> <span style="color: #f78fe7;">:components</span> <span style="color: #ff6b55;">(</span><span style="color: #79a8ff;">"orgfiles"</span> <span style="color: #79a8ff;">"sitemap"</span> <span style="color: #79a8ff;">"rss"</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">provide</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-org-publish</span><span style="color: #ffffff;">)</span>
-<span style="color: #77266e;">;;; </span><span style="color: #db7b5f;">init-org-publish.el ends here</span>
+<span style="color: #adade0;">;;; </span><span style="color: #db7b5f;">init-org-publish.el ends here</span>
 </pre>
 </div>
 </details>
@@ -716,7 +718,7 @@ PROJECT is the current project."</span>
 例如这是我用于<a href="https://github.com/Spike-Leung/emacs.d/blob/windows/snippets/org-mode/weekly">写周刊的 snippet</a>:
 </p>
 
-<details id="org02afa13">
+<details id="orgddb84d8">
 <summary>weekly snippet</summary>
 <div class="org-src-container">
 <pre class="src src-elisp"># -*- mode: snippet -*-
@@ -768,7 +770,7 @@ $0
 然后就可以这么用：
 </p>
 
-<pre class="example" id="orgf02cf74">
+<pre class="example" id="orga3c6b08">
 #+begin_details
 #+HTML: &lt;summary&gt;Demo Code&lt;/summary&gt;
 #+begin_src JavaScript
@@ -785,7 +787,7 @@ console.log('Hello world!')
 如果你想在文字中间插入一张图片<img src="./images/org-publish-blog/avatar.jpg" alt="avatar.jpg" class="inline-image">，同时你希望控制图片的大小，可以这样：
 </p>
 
-<pre class="example" id="org6d321e0">
+<pre class="example" id="org7e3afaa">
 #+ATTR_HTML: :class inline-image
 如果你想在文字中间插入一张图片[[file:./images/org-publish-blog/avatar.jpg]]，同时你希望控制图片的大小，可以这样：
 </pre>
@@ -795,10 +797,10 @@ console.log('Hello world!')
 </p>
 
 <div class="org-src-container">
-<pre class="src src-css"><span style="color: #675462; font-weight: bold; font-style: italic;">img.inline-image</span> <span style="color: #ffffff;">{</span>
-  <span style="color: #683455; font-weight: bold;">width</span>: 1em;
-  <span style="color: #683455; font-weight: bold;">height</span>: 1em;
-  <span style="color: #683455; font-weight: bold;">vertical-align</span>: -3.5px;
+<pre class="src src-css"><span style="color: #aea6b8; font-weight: bold; font-style: italic;">img.inline-image</span> <span style="color: #ffffff;">{</span>
+  <span style="color: #c0ddf2; font-weight: bold;">width</span>: 1em;
+  <span style="color: #c0ddf2; font-weight: bold;">height</span>: 1em;
+  <span style="color: #c0ddf2; font-weight: bold;">vertical-align</span>: -3.5px;
 <span style="color: #ffffff;">}</span>
 </pre>
 </div>
