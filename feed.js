@@ -57,6 +57,7 @@ async function generateSummary(text) {
             1. 中文和英文之间要有间隔，例如：这是 English 的拼写。
             2. 避免很长的段落，如果内容比较多，可以尝试一句话一行。
             3. 返回的格式不要用 markdown，用纯文本，每一段文字不要太长，适当换行。
+            4. 使用中文返回
             `
           },
           {
@@ -64,14 +65,12 @@ async function generateSummary(text) {
             content: `请阅读以下文章内容，并为我生成一份简明扼要的总结。\n\n${text}`
           }
         ],
-        max_tokens: 500,
-        temperature: 0.8
+        max_tokens: 1000,
+        temperature: 0.7
       })
     });
 
     const data = await response.json();
-    // console.log('>>>>>>>>>>>>>>>>> LLM RESPONSE <<<<<<<<<<<<<<<<<<')
-    // console.log(data)
     return data.choices?.[0]?.message?.content?.trim() || 'LLM 罢工啦，直接看原文吧 _​(:3 」∠)_​';
   } catch (error) {
     console.warn('Error generating summary:', error);
