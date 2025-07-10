@@ -40,7 +40,7 @@ async function generateSummary(text) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'openai/gpt-4.1-mini',
+        model: 'google/gemini-2.5-flash-lite-preview-06-17',
         messages: [
           {
             role: 'system',
@@ -70,8 +70,8 @@ async function generateSummary(text) {
     });
 
     const data = await response.json();
-    console.log('>>>>>>>>>>>>>>>>> LLM RESPONSE <<<<<<<<<<<<<<<<<<')
-    console.log(data)
+    // console.log('>>>>>>>>>>>>>>>>> LLM RESPONSE <<<<<<<<<<<<<<<<<<')
+    // console.log(data)
     return data.choices?.[0]?.message?.content?.trim() || 'LLM 罢工啦，直接看原文吧 _​(:3 」∠)_​';
   } catch (error) {
     console.warn('Error generating summary:', error);
