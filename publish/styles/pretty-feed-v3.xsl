@@ -103,6 +103,12 @@ This file is in BETA. Please test and contribute to the discussion:
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="color-scheme" content="light dark" />
         <title><xsl:value-of select="atom:feed/atom:title"/></title>
+        <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+        <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+        <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Regular-102a.woff2" as="font" type="font/woff2" />
+        <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Bold-102a.woff2" as="font" type="font/woff2" />
+        <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Italic-102a.woff2" as="font" type="font/woff2" />
+        <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-BoldItalic-102a.woff2" as="font" type="font/woff2" />
         <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
         <style type="text/css">
           details p {
@@ -124,6 +130,10 @@ This file is in BETA. Please test and contribute to the discussion:
             font-size: 16px;
             margin: 0 8px;
             cursor: pointer;
+          }
+          section.info {
+            color: var(--color-text-secondary);
+            color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary))
           }
         </style>
         <script src="/js/color-scheme.js"></script>
@@ -153,8 +163,8 @@ This file is in BETA. Please test and contribute to the discussion:
             </select>
           </nav>
         </div>
-        <section>
-          <p>这是一个 Atom 订阅流 (Atom feed) 你可以<button type="button" onclick="copyFeedUrl()" class="copyFeedBtn">复制当前 URL</button>进行订阅ლ(´ڡ`ლ)</p>
+        <section class="info">
+          <p>这是一个 Atom 订阅流 (Atom feed) 你可以<button type="button" onclick="copyFeedUrl()" class="copyFeedBtn">复制当前 URL</button>进行订阅 ლ(´ڡ`ლ)</p>
           <p>如果你是 Emacs 用户，可以使用 <a href="https://github.com/skeeto/elfeed">elfeed</a> 订阅，或者你可以用 <a href="https://follow.is">Folo</a> 这样的应用进行订阅 :)</p>
           <p>如果你对订阅流不了解, 你可以阅读一下 <a href="https://taxodium.ink/about-feeds.html">About Feeds</a>。</p>
           <p>有任何问题，欢迎 <a href="mailto:l-yanlei@hotmail.com">邮件</a> 或者留言给我。</p>
