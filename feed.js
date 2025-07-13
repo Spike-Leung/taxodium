@@ -40,7 +40,7 @@ async function generateSummary(text) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash-lite-preview-06-17',
+        model: 'google/gemini-2.5-flash',
         messages: [
           {
             role: 'system',
@@ -65,8 +65,8 @@ async function generateSummary(text) {
             content: `请阅读以下文章内容，并为我生成一份简明扼要的总结。\n\n${text}`
           }
         ],
-        max_tokens: 1000,
-        temperature: 0.7
+        max_tokens: 800,
+        temperature: 0.8
       })
     });
 
