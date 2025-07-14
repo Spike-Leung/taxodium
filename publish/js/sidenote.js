@@ -175,11 +175,15 @@ function mountSidenotes() {
 
   // ===== 定位 sidenote =====
   function positionSidenotes() {
-    let lastBottom = 0;
+    let lastBottomRight = 0;
+    let lastBottomLeft = 0;
     refs.forEach(function(ref, idx) {
       const sidenote = sidenoteContainer.querySelector(`.${SIDENOTE_CLASS}[data-ref-index="${idx}"]`);
+      const prevSidenote = sidenoteContainer.querySelector(`.${SIDENOTE_CLASS}[data-ref-index="${idx - 2}"]`);
+
       if (!sidenote) return;
 
+      // 如果是 details 内的 sidenote，为展开则不展示
       const detailsParent = ref.closest('details');
       if (detailsParent && !detailsParent.open) {
         sidenote.style.display = 'none';
@@ -187,23 +191,39 @@ function mountSidenotes() {
       }
       sidenote.style.display = '';
 
+      const padding = '3em';
+      const sidenoteGap = 8;
+
       // 先重置高度，避免内容变化导致高度不准
       sidenote.style.top = '0px';
-      sidenote.style.right = '0';
-      sidenote.style.left = 'auto';
       sidenote.style.position = 'absolute';
-      // 计算目标 top
       const refParent = ref.parentElement;
       const rect = refParent.getBoundingClientRect();
       const contentRect = content.getBoundingClientRect();
       let top = rect.top - contentRect.top + content.scrollTop;
-      // 避免重叠
-      if (top < lastBottom + 8) { // 8px 间距
-        top = lastBottom + 8;
+
+      // 将 sidenote 分布到内容的两边
+      if (idx % 2 === 0) {
+        sidenote.style.left = '100%';
+        sidenote.style.paddingInlineStart = padding;
+      } else {
+        sidenote.style.left = `${-1 * sidenote.getBoundingClientRect().width}px`;
+        sidenote.style.paddingInlineEnd = padding;
+        sidenote.style.justifyContent = 'flex-end';
       }
+
+      // 避免 sidenote 重叠
+      if (prevSidenote && prevSidenote.style.display !== 'none') {
+        const { height: prevSidenoteHeight } = prevSidenote.getBoundingClientRect();
+        const prevSidenoteTop = Number.parseInt(prevSidenote.style.top, 10);
+        const prevSidenoteBottom = prevSidenoteTop + prevSidenoteHeight;
+
+        if (top - prevSidenoteBottom < sidenoteGap) {
+          top = prevSidenoteBottom + sidenoteGap
+        }
+      }
+
       sidenote.style.top = `${top}px`;
-      // 更新 lastBottom
-      lastBottom = top + sidenote.offsetHeight;
     });
     // 设置 sidenote-container 的 position
     sidenoteContainer.style.position = 'absolute';

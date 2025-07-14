@@ -642,13 +642,7 @@ details {
   }
 }
 
-@media screen and (min-width: 1600px) {
-  .sidenote-container {
-      /* 减去 1em 避免溢出屏幕 */
-      width: calc((100vw - var(--content-width)) / 2 - 1em);
-  }
-}
-
+/* ------------------------------ sidenote ------------------------------ */
 @media (max-width: 1920px) {
   .sidenote-container, .sidenote {
     display: none !important;
@@ -658,18 +652,19 @@ details {
 .sidenote-container {
   position: absolute;
   top: 0;
-  left: 100%;
+  left: 0;
+  right: 0;
   pointer-events: none;
   z-index: 1;
   box-sizing: border-box;
 }
 
 .sidenote {
-  width: 100%;
+  /* 屏幕宽度减去内容宽度后，剩余 margin 的一半用于展示 sidenote, 宽度减少 1em 避免内容溢出到右侧，导致横向滚动条 */
+  width: calc((100vw - var(--content-width)) / 2 - 1em);
   font-size: 0.85em;
   color: var(--color-text-secondary);
   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
-  padding: 0 3em;
   box-sizing: border-box;
   pointer-events: auto;
   display: flex;
@@ -696,6 +691,8 @@ details {
   background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
   transition: background 0.2s;
 }
+
+/* ------------------------------ sidenote ------------------------------ */
 
 .todo {
   color: var(--color-todo);
