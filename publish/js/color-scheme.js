@@ -146,6 +146,8 @@ function switchIframeColorScheme(mode) {
  * @param { ColorSchemeMode } mode - 当前主题模式
  */
 function initGiscusTheme(mode) {
+  const IgnorePages = ['index', 'search', 'rss', 'about']
+  if (IgnorePages.some((path) => location.href.includes(`${path}.html`))) return;
   let giscusAttributes = {
     "src": "https://giscus.app/client.js",
     "data-repo": "Spike-Leung/taxodium",
