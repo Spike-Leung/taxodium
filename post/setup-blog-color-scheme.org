@@ -28,6 +28,7 @@
 - dark mode 下 giscus 的处理
 - dark mode 下 iframe 的处理
 - dark mode 下代码块高亮的处理
+- 第三方兼容
 
 * 设置 dark mode
 
@@ -161,9 +162,13 @@ main {
 
 除了读者主动切换 =<select>= ，我还需要在页面初始化的时候，还原读者之前选择的 color-scheme。
 
-从 [[https://github.com/giscus/giscus/blob/e2368de91c3382ee256a4632628de00dd05a0e94/pages/index.tsx#L102-L120][giscus 源码]] 看，giscus 初始化的时候也是通过 postMessage 去设置主题的，这里似乎存在一个竞态问题， gisucs 初始化的 postMessage 有时比我切换主题的 postMessage 执行得晚，会将我设置的主题重置。
++从 [[https://github.com/giscus/giscus/blob/e2368de91c3382ee256a4632628de00dd05a0e94/pages/index.tsx#L102-L120][giscus 源码]] 看，giscus 初始化的时候也是通过 postMessage 去设置主题的，这里似乎存在一个竞态问题， gisucs 初始化的 postMessage 有时比我切换主题的 postMessage 执行得晚，会将我设置的主题重置。+
 
-为了避免这个问题，我通过 [[https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout][setTimeout()]] 延缓切换主题的 postMesssage 的执行，在很大程度上能够解决问题，基本很少出现被覆盖的情况。
++为了避免这个问题，我通过 [[https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout][setTimeout()]] 延缓切换主题的 postMesssage 的执行，在很大程度上能够解决问题，基本很少出现被覆盖的情况。+
+
+可以通过动态加载 giscus 解决问题，在加载 giscus 之前先基于当前的 color-scheme 设置 giscus 使用的主题，就可以确保 giscus 加载时的主题是正确的。
+
+代码可以参考 [[https://github.com/giscus/giscus/issues/336#issuecomment-1009551934][laymonage 的回答]] 。
 
 ** dark mode 下 iframe 的处理
 
@@ -203,17 +208,33 @@ publish 生成的代码高亮的颜色是单独写在 =<span>= 上的，没有�
 
 这样既复用了亮色主题的高亮，也能在 dark mode 下看得比较清楚，凑合能用了 (´・ω・`)
 
+** 第三方兼容
+
+页面中可能使用了一些第三方的库，例如 [[https://pagefind.app/][pagefind]] [fn:1], 这些库有自己的样式，没有做 dark mode 的适配，可能需要自己去调整对应的 CSS 样式。
+
+可以在主题切换的时候，给 body 元素设置一个类名，如 ~<body class="dark">~ ，然后通过 ~.dark~ 这个类名去设置对应的 dark mode 颜色。
+
+具体你可以看看我的实现：
+
+- [[https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/js/color-scheme.js][color-scheme.js]]
+- [[https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/style.css][style.css]]
+
 * TODO Todos
 
 除了上面的问题，其实还有一些没解决的：
 
-- [ ] 不同 color-scheme 下图片的处理，dark mode 下出现白底的图片，还是有点刺眼
+- [X] 不同 color-scheme 下图片的处理，dark mode 下出现白底的图片，还是有点刺眼 -> 不做处理，暂时可以接受
 - [ ] 一些 CSS 特性的兼容性测试，有的浏览器可能不兼容
-- [ ] 稳定 iframe，giscus 的主题切换，避免切换失败的情况
-- [ ] 更好看的 dark mode 配色
+- [X] 稳定 iframe，giscus 的主题切换，避免切换失败的情况 -> 已解决，通过动态加载 giscus 实现，具体可以往上面翻翻看
+- [X] 更好看的 dark mode 配色  ->  调整过一阵子，对目前的颜色还算满意，除了好看，还应该考虑可读性，可访问性，可以参考 [[https://git.apcacontrast.com/documentation/APCAeasyIntro][APCA]] 进行配色。[fn:2]
 
 * 写在最后
 
 所以现在博客有 dark mode 可以用啦 \m/ >_< \m/
 
 你可以尝试看看，如果使用下来有什么问题，或者更好的建议，欢迎留言呀~
+
+* Footnotes
+[fn:2] 感兴趣也可以看看博客的 [[file:changelog.org][CHANGELOG]]。
+
+[fn:1] 我的博客就是用 pagefind 实现搜索的，感兴趣可以看看我的实践：[[file:use-pagefind-to-search-blog.org][使用 pagefind 添加博客搜索功能]]
