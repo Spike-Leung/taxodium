@@ -5,6 +5,16 @@
 
 const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
 
+const GiscusTheme = {
+  // for debug
+  // auto: "https://localhost:3000/styles/giscus/preferred-color-scheme.css",
+  // light: "https://localhost:3000/styles/giscus/light-high-contrast.css",
+  // dark: "https://localhost:3000/styles/giscus/dark-high-contrast.css",
+  auto: "https://taxodium.ink/styles/giscus/preferred-color-scheme.css",
+  light: "https://taxodium.ink/styles/giscus/light-high-contrast.css",
+  dark: "https://taxodium.ink/styles/giscus/dark-high-contrast.css",
+};
+
 function getSavedColorScheme() {
   return localStorage.getItem("color-scheme") || "auto";
 }
@@ -63,21 +73,12 @@ function setBodyClass(mode) {
  * @param { ColorSchemeMode } mode - 当前主题模式
  */
 function switchGiscusTheme(mode) {
-  const theme = {
-    // for debug
-    // auto: "https://localhost:3000/styles/giscus/preferred-color-scheme.css",
-    // light: "https://localhost:3000/styles/giscus/light-high-contrast.css",
-    // dark: "https://localhost:3000/styles/giscus/dark-high-contrast.css",
-    auto: "https://taxodium.ink/styles/giscus/preferred-color-scheme.css",
-    light: "https://taxodium.ink/styles/giscus/light-high-contrast.css",
-    dark: "https://taxodium.ink/styles/giscus/dark-high-contrast.css",
-  };
-
   try {
     const iframe = document.querySelector("iframe.giscus-frame");
 
     // @link: https://github.com/giscus/giscus/issues/336
     function sendMessage(message) {
+      console.log({ iframe })
       if (!iframe) return;
       iframe.contentWindow.postMessage({ giscus: message }, "https://giscus.app");
     }
@@ -93,11 +94,11 @@ function switchGiscusTheme(mode) {
 
     // Giscus doesn't accept messages if it's not loaded
     if (iframe?.classList.contains('giscus-frame--loading')) {
-      setGisSrc(theme[mode]);
+      setGisSrc(GiscusTheme[mode]);
     } else {
       sendMessage({
         setConfig: {
-          theme: theme[mode],
+          theme: GiscusTheme[mode],
         },
       });
     }
@@ -145,16 +146,27 @@ function switchIframeColorScheme(mode) {
  * @param { ColorSchemeMode } mode - 当前主题模式
  */
 function initGiscusTheme(mode) {
-  const interval = setInterval(() => {
-    // 因为 giscus 是加载 script 后动态渲染，DOMContentLoaded 时可能还没能拿到，增加一定的定时等待
-    const iframe = document.querySelector("iframe.giscus-frame");
-    if (!iframe) return;
-    iframe.addEventListener("load", () => {
-      // giscus 的主题也是通过 postMessage 的形式更新的，如果同时 sendMessage，可能这里执行的更早，就会导致设置的主题被覆盖，因此延后 postMessage 的时间
-      setTimeout(() => switchGiscusTheme(mode), 200);
-    });
-    clearInterval(interval);
-  }, 50);
+  let giscusAttributes = {
+    "src": "https://giscus.app/client.js",
+    "data-repo": "Spike-Leung/taxodium",
+    "data-repo-id": "MDEwOlJlcG9zaXRvcnkzOTYyNDQwMzk=",
+    "data-category": "Announcements",
+    "data-category-id": "DIC_kwDOF540R84Ci61D",
+    "data-mapping": "pathname",
+    "data-strict": "0",
+    "data-reactions-enabled": "1",
+    "data-emit-metadata": "0",
+    "data-input-position": "top",
+    "data-theme": GiscusTheme[mode],
+    "data-lang": "zh-CN",
+    "data-loading": "lazy",
+    "crossorigin": "anonymous",
+    "async": "",
+  };
+
+  let giscusScript = document.createElement("script");
+  Object.entries(giscusAttributes).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+  document.body.appendChild(giscusScript);
 }
 
 /**
