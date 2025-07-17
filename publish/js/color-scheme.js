@@ -28,7 +28,7 @@ function switchMode(mode, isInit = false) {
       localStorage.setItem("color-scheme", mode);
       setBodyClass(mode);
       // from giscus.js
-      switchGiscusTheme(mode);
+      switchGiscusTheme && switchGiscusTheme(mode);
       switchIframeColorScheme(mode);
     }
 
@@ -111,7 +111,6 @@ initColorScheme();
 
 document.addEventListener("DOMContentLoaded", () => {
   const savedMode = getSavedColorScheme();
-  initGiscusTheme(savedMode);
   setModeSelectValue(savedMode);
   setBodyClass(savedMode);
   requestAnimationFrame(() => switchIframeColorScheme(savedMode));
