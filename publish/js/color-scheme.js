@@ -5,16 +5,6 @@
 
 const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
 
-const GiscusTheme = {
-  // for debug
-  // auto: "https://localhost:3000/styles/giscus/preferred-color-scheme.css",
-  // light: "https://localhost:3000/styles/giscus/light-high-contrast.css",
-  // dark: "https://localhost:3000/styles/giscus/dark-high-contrast.css",
-  auto: "https://taxodium.ink/styles/giscus/preferred-color-scheme.css",
-  light: "https://taxodium.ink/styles/giscus/light-high-contrast.css",
-  dark: "https://taxodium.ink/styles/giscus/dark-high-contrast.css",
-};
-
 function getSavedColorScheme() {
   return localStorage.getItem("color-scheme") || "auto";
 }
@@ -37,6 +27,7 @@ function switchMode(mode, isInit = false) {
       colorSchemeMeta.setAttribute("content", scheme);
       localStorage.setItem("color-scheme", mode);
       setBodyClass(mode);
+      // from giscus.js
       switchGiscusTheme(mode);
       switchIframeColorScheme(mode);
     }
@@ -59,51 +50,11 @@ function setModeSelectValue(mode) {
 }
 
 function setBodyClass(mode) {
-  // Set body class for color scheme
   if (document.body) {
     document.body.classList.remove("light", "dark");
     if (mode === "light" || mode === "dark") {
       document.body.classList.add(mode);
     }
-  }
-}
-
-/**
- * 切换 Gitcus 的主题
- * @param { ColorSchemeMode } mode - 当前主题模式
- */
-function switchGiscusTheme(mode) {
-  try {
-    const iframe = document.querySelector("iframe.giscus-frame");
-
-    // @link: https://github.com/giscus/giscus/issues/336
-    function sendMessage(message) {
-      console.log({ iframe })
-      if (!iframe) return;
-      iframe.contentWindow.postMessage({ giscus: message }, "https://giscus.app");
-    }
-    function setGisSrc(theme) {
-      if (!iframe) return;
-      const iframeSrc = iframe.src;
-      const iframeUrl = new URL(iframeSrc);
-      const iframeSearchParams = iframeUrl.searchParams;
-      iframeSearchParams.set('theme', theme);
-
-      iframe.src = iframeUrl.toString();
-    };
-
-    // Giscus doesn't accept messages if it's not loaded
-    if (iframe?.classList.contains('giscus-frame--loading')) {
-      setGisSrc(GiscusTheme[mode]);
-    } else {
-      sendMessage({
-        setConfig: {
-          theme: GiscusTheme[mode],
-        },
-      });
-    }
-  } catch (err) {
-    console.error(err);
   }
 }
 
@@ -141,35 +92,6 @@ function switchIframeColorScheme(mode) {
   });
 }
 
-/**
- * 初始化 Giscus 主题
- * @param { ColorSchemeMode } mode - 当前主题模式
- */
-function initGiscusTheme(mode) {
-  const IgnorePages = ['index', 'search', 'rss', 'about']
-  if (IgnorePages.some((path) => location.href.includes(`${path}.html`))) return;
-  let giscusAttributes = {
-    "src": "https://giscus.app/client.js",
-    "data-repo": "Spike-Leung/taxodium",
-    "data-repo-id": "MDEwOlJlcG9zaXRvcnkzOTYyNDQwMzk=",
-    "data-category": "Announcements",
-    "data-category-id": "DIC_kwDOF540R84Ci61D",
-    "data-mapping": "pathname",
-    "data-strict": "0",
-    "data-reactions-enabled": "1",
-    "data-emit-metadata": "0",
-    "data-input-position": "top",
-    "data-theme": GiscusTheme[mode],
-    "data-lang": "zh-CN",
-    "data-loading": "lazy",
-    "crossorigin": "anonymous",
-    "async": "",
-  };
-
-  let giscusScript = document.createElement("script");
-  Object.entries(giscusAttributes).forEach(([key, value]) => giscusScript.setAttribute(key, value));
-  document.body.appendChild(giscusScript);
-}
 
 /**
  * 初始化主题
