@@ -75,8 +75,7 @@ function initGiscusTheme(mode) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // getSavedColorScheme from color-scheme.js
-  let colorScheme = 'auto';
+  let colorScheme = localStorage.getItem("color-scheme") || "auto";
   if (typeof getSavedColorScheme === 'function') {
     colorScheme = getSavedColorScheme();
   }
