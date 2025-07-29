@@ -263,7 +263,7 @@
 </div>
 </nav>
 
-<figure id="org61722a4">
+<figure id="org4c77481">
 <img src="./images/setup-macos/desktop.jpg" alt="desktop.jpg">
 
 <figcaption><span class="figure-number">&#22270;1&nbsp; </span>我的电脑桌面，mac mini 放在了左边，小小一个很节省空间。</figcaption>
@@ -325,13 +325,13 @@ mac mini 是没有键盘鼠标的，首次开机的时候没法直接连接蓝�
 <div class="org-src-container">
 <pre class="src src-sh">brew tap v2raya/v2raya
 
-<span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">install
+<span style="color: #74321f;"># </span><span style="color: #db7b5f;">install
 </span>brew install v2raya
 
-<span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">run on terminal
+<span style="color: #74321f;"># </span><span style="color: #db7b5f;">run on terminal
 </span>v2raya --lite
 
-<span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">run as a brew service
+<span style="color: #74321f;"># </span><span style="color: #db7b5f;">run as a brew service
 </span>brew services start v2raya
 </pre>
 </div></li>
@@ -406,7 +406,7 @@ Makefile 中做的主要的事情：
 <li>配置 <a href="https://github.com/ohmyzsh/ohmyzsh">ohmyzsh</a>，<a href="https://github.com/starship/starship">starship</a>，<a href="https://github.com/tmux/tmux">tmux</a>，<a href="https://github.com/volta-cli/volta">volta</a> (NodeJS 相关配置) 以及我积攒了一阵子的 dotfiles<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>。</li>
 </ul>
 
-<details id="orge4cef68">
+<details id="org9d8366f">
 <summary>Makefile</summary>
 <div class="org-src-container">
 <pre class="src src-makefile"><span style="color: #feacd0;">.PHONY</span>: init link dependence install nodejs python git emacs
@@ -420,11 +420,11 @@ Makefile 中做的主要的事情：
         ln -sf ~/Dropbox/elfeed ~/.elfeed
 
 <span style="color: #feacd0;">dependence</span>:
-        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#30830;&#20445; /usr/local/bin &#23384;&#22312;&#19988;&#26377;&#26435;&#38480;
+        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">&#30830;&#20445; /usr/local/bin &#23384;&#22312;&#19988;&#26377;&#26435;&#38480;
 </span>        sudo mkdir -p /usr/local/bin
-        <span style="color: #feacd0;">sudo chown -R $</span><span style="color: #ffffff;">(</span><span style="color: #feacd0;">shell</span><span style="color: #feacd0;"> whoami</span><span style="color: #ffffff;">)</span>:admin /usr/local/bin
+        <span style="color: #feacd0;">sudo chown -R $</span><span style="color: #ffffff;">(</span><span style="color: #feacd0; font-style: italic;">shell</span><span style="color: #feacd0;"> whoami</span><span style="color: #ffffff;">)</span>:admin /usr/local/bin
 
-        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#26816;&#26597;&#24182;&#23433;&#35013; ohmyzsh
+        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">&#26816;&#26597;&#24182;&#23433;&#35013; ohmyzsh
 </span>        if <span style="color: #ffffff;">[</span> ! -d <span style="color: #79a8ff;">"$$HOME/.oh-my-zsh"</span> <span style="color: #ffffff;">]</span>; then \
                 echo <span style="color: #79a8ff;">"Installing ohmyzsh..."</span>; \
                 sh -c <span style="color: #79a8ff;">"$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</span>; \
@@ -432,7 +432,7 @@ Makefile 中做的主要的事情：
                 echo <span style="color: #79a8ff;">"ohmyzsh already installed. Skipping."</span>; \
         fi
 
-        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#26816;&#26597;&#24182;&#23433;&#35013; starship
+        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">&#26816;&#26597;&#24182;&#23433;&#35013; starship
 </span>        if ! command -v starship &gt;/dev/null; then \
                 echo <span style="color: #79a8ff;">"Installing starship..."</span>; \
                 curl -sS https://starship.rs/install.sh | sh; \
@@ -440,7 +440,7 @@ Makefile 中做的主要的事情：
                 echo <span style="color: #79a8ff;">"starship already installed. Skipping."</span>; \
         fi
 
-        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#23433;&#35013; zsh &#25554;&#20214;&#21644;&#24037;&#20855;
+        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">&#23433;&#35013; zsh &#25554;&#20214;&#21644;&#24037;&#20855;
 </span>        brew install zsh-syntax-highlighting
         <span style="color: #feacd0;">echo </span><span style="color: #feacd0;">"source $$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"</span><span style="color: #feacd0;"> &gt;&gt; $$</span><span style="color: #ffffff;">{</span><span style="color: #feacd0;">ZDOTDIR</span>:-$$HOME<span style="color: #ffffff;">}</span>/.zshrc
 
@@ -448,22 +448,22 @@ Makefile 中做的主要的事情：
                 git clone git@github.com:zsh-users/zsh-autosuggestions $$<span style="color: #ffffff;">{</span>ZSH_CUSTOM:-$$HOME/.oh-my-zsh/custom<span style="color: #ffffff;">}</span>/plugins/zsh-autosuggestions; \
         fi
 
-        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">GNU related
+        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">GNU related
 </span>        brew install coreutils
         brew install gnupg
 
-        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">tmux
+        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">tmux
 </span>        brew install tmux
 
-        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">fzf
+        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">fzf
 </span>        brew install fzf
 
-        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">mcfly, for search history
-</span>        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">Add the following to the end of ~/.zshrc: eval "$(</span><span style="color: #00d3d0;">mcfly</span><span style="color: #db7b5f;"> init zsh)"
+        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">mcfly, for search history
+</span>        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">Add the following to the end of ~/.zshrc: eval "$(</span><span style="color: #00d3d0; font-style: italic;">mcfly</span><span style="color: #db7b5f;"> init zsh)"
 </span>        brew install mcfly
         brew install ripgrep
 <span style="color: #feacd0;">nodejs</span>:
-        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">volta
+        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">volta
 </span>        <span style="color: #feacd0;">curl https</span>://get.volta.sh | bash
 
         volta install node
@@ -476,15 +476,15 @@ Makefile 中做的主要的事情：
         git config --global user.email <span style="color: #79a8ff;">"l-yanlei@hotmail.com"</span>
 
 <span style="color: #feacd0;">python</span>:
-        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">require phthon: https://www.python.org/
-</span>        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">aider
+        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">require phthon: https://www.python.org/
+</span>        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">aider
 </span>        python3 -m pip install aider-install &amp;&amp; aider-install
 
-        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">beancount
+        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">beancount
 </span>        sudo -H python3 -m pip install beancount
         python3 -m pip install fava
 
-        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">fix: omz_urlencode:5: command not found: pygmentize
+        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">fix: omz_urlencode:5: command not found: pygmentize
 </span>        python3 -m pip install Pygments
 
 <span style="color: #feacd0;">emacs</span>:
@@ -492,7 +492,7 @@ Makefile 中做的主要的事情：
         sudo ln -s /Applications/Emacs.app/Contents/MacOS/bin/emacsclient /usr/local/bin
 
 <span style="color: #feacd0;">install</span>:
-        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#23433;&#35013; dotfiles
+        <span style="color: #74321f;"># </span><span style="color: #db7b5f;">&#23433;&#35013; dotfiles
 </span>        cd ~/Dropbox/dotfiles &amp;&amp; ./install.sh
 </pre>
 </div>
@@ -516,10 +516,10 @@ git config --global user.email <span style="color: #79a8ff;">"your.email@example
 </p>
 
 <div class="org-src-container">
-<pre class="src src-sh"><span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">generate ssh keys
+<pre class="src src-sh"><span style="color: #74321f;"># </span><span style="color: #db7b5f;">generate ssh keys
 </span>ssh-keygen
 
-<span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">copy ssh keys
+<span style="color: #74321f;"># </span><span style="color: #db7b5f;">copy ssh keys
 </span>pbcopy &lt; ~/.ssh/id_ed25519.pub
 </pre>
 </div>
@@ -665,7 +665,6 @@ macOS 下如何方便地切换中英文？总是切换输入法感觉有点麻�
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/image-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
-<script src="/js/giscus.js" defer></script>
 <noscript>
   <style>
     .js-required {
