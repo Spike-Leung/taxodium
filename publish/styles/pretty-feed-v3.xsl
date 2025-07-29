@@ -131,10 +131,11 @@ This file is in BETA. Please test and contribute to the discussion:
             margin: 0 8px;
             cursor: pointer;
           }
-          section.info {
+          section.info, .tip {
             color: var(--color-text-secondary);
             color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary))
           }
+
         </style>
         <script src="/js/color-scheme.js"></script>
         <script src="/js/copy-feed-url.js"></script>
@@ -200,6 +201,7 @@ This file is in BETA. Please test and contribute to the discussion:
             </a>
           </header>
           <h2>最近更新</h2>
+          <mark class="tip">摘要使用 LLM 生成，仅供参考。</mark>
           <xsl:apply-templates select="atom:feed/atom:entry" />
         </div>
       </body>
