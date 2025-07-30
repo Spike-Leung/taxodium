@@ -210,9 +210,6 @@
     <li>
       <a id="skip-content" href="#content">Skip to main content</a>
     </li>
-    <li>
-      <a id="skip-postamble" href="#postamble">Skip to comments</a>
-    </li>
   </ul>
 
 <nav>
@@ -251,7 +248,7 @@
 </div>
 </nav>
 
-<figure id="org8633c29">
+<figure id="org5faa942">
 <img src="./images/translate-in-emacs/screenshot.png" alt="screenshot.png">
 
 <figcaption><span class="figure-number">&#22270;1&nbsp; </span>Emacs 中翻译插件的使用截图，包括 emacs-immersive-translate, go-translate, fanyi</figcaption>
@@ -340,7 +337,7 @@ fanyi 则是当作字典使用，碰到一两个单词不熟悉，就使用 fany
 <div class="org-src-container">
 <pre class="src src-elisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">push</span> <span style="color: #ff66ff;">(</span>expand-file-name <span style="color: #79a8ff;">"lisp/my-lisp/emacs-immersive-translate"</span> user-emacs-directory<span style="color: #ff66ff;">)</span> load-path<span style="color: #ffffff;">)</span>
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">require</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">immersive-translate</span><span style="color: #ffffff;">)</span>
-<span style="color: #74321f;">;; </span><span style="color: #db7b5f;">need to add deepseek api-key with user `apikey` in `.authinfo`
+<span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">need to add deepseek api-key with user `apikey` in `.authinfo`
 </span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">setq</span> immersive-translate-backend <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">chatgpt</span>
       immersive-translate-chatgpt-host <span style="color: #79a8ff;">"api.deepseek.com"</span>
       immersive-translate-chatgpt-model <span style="color: #79a8ff;">"deepseek-chat"</span>
@@ -353,7 +350,7 @@ fanyi 则是当作字典使用，碰到一两个单词不熟悉，就使用 fany
 API Key 在 <code>~/.authinfo</code> <sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup><sup>, </sup><sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>中配置，由于 emacs-immersive-translate 是查找 user 为 <code>apikey</code> 的配置，因此 user 这里需要设置为 <code>apikey</code> 。
 </p>
 <div class="org-src-container">
-<pre class="src src-authinfo"><span style="color: #00d3d0; font-style: italic;">machine</span> <span style="color: #f78fe7;">api.deepseek.com</span> <span style="color: #74321f;">login</span> <span style="color: #b6a0ff;">apikey</span> <span style="color: #74321f;">password</span> <span style="color: #9ac8e0;">********************************</span>
+<pre class="src src-authinfo"><span style="color: #00d3d0;">machine</span> <span style="color: #f78fe7;">api.deepseek.com</span> <span style="color: #db7b5f;">login</span> <span style="color: #b6a0ff;">apikey</span> <span style="color: #db7b5f;">password</span> <span style="color: #9ac8e0;">********************************</span>
 </pre>
 </div>
 </div>
@@ -370,7 +367,7 @@ go-translate 也是可以在 MELPA 上直接安装。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #74321f;">;; </span><span style="color: #db7b5f;">@see: https://github.com/lorniu/go-translate
+<pre class="src src-elisp"><span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">@see: https://github.com/lorniu/go-translate
 </span><span style="color: #ffffff;">(</span>maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">go-translate</span><span style="color: #ffffff;">)</span>
 <span style="color: #ffffff;">(</span>maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">plz</span><span style="color: #ffffff;">)</span>
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">go-translate</span>
@@ -393,10 +390,10 @@ go-translate 也是可以在 MELPA 上直接安装。
 API Key 也是配置在 <code>~/.authinfo</code> ，使用 <code>spike-leung/get-deepseek-api-key</code> 这个方法从文件中查找对应的密钥。
 </p>
 
-<details id="org4561cef">
+<details id="org5bbb113">
 <summary>spike-leung/get-deepseek-api-key</summary>
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #74321f;">;;; </span><span style="color: #db7b5f;">function to get api-key from authinfo
+<pre class="src src-elisp"><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">function to get api-key from authinfo
 </span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/get-api-key</span> <span style="color: #ff66ff;">(</span>service<span style="color: #ff66ff;">)</span>
   <span style="color: #9ac8e0;">"Retrieve the API key for SERVICE from authinfo."</span>
   <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">let*</span> <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>host <span style="color: #efef00;">(</span>format <span style="color: #79a8ff;">"api.%s.com"</span> service<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
@@ -449,8 +446,8 @@ API Key 也是放在 <code>~/.authinfo</code> ，和 go-translate 共用。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #74321f;">;; </span><span style="color: #db7b5f;">init-gptel.el --- gptel
-</span><span style="color: #74321f;">;;; </span><span style="color: #db7b5f;">Commentary:
+<pre class="src src-elisp"><span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">init-gptel.el --- gptel
+</span><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">Commentary:
 </span>
 <span style="color: #ffffff;">(</span>maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gptel</span><span style="color: #ffffff;">)</span>
 
@@ -474,7 +471,7 @@ API Key 也是放在 <code>~/.authinfo</code> ，和 go-translate 共用。
 <span style="color: #ffffff;">(</span>global-set-key <span style="color: #ff66ff;">(</span>kbd <span style="color: #79a8ff;">"M-o g"</span><span style="color: #ff66ff;">)</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gptel-menu</span><span style="color: #ffffff;">)</span>
 
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">provide</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-gptel</span><span style="color: #ffffff;">)</span>
-<span style="color: #74321f;">;;; </span><span style="color: #db7b5f;">init-gptel.el ends here</span>
+<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">init-gptel.el ends here</span>
 </pre>
 </div>
 
@@ -499,11 +496,11 @@ deepseek V3 的价格足够便宜，也足够智能，目前我已经退了 Chat
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #74321f;">;; </span><span style="color: #db7b5f;">gptel
+<pre class="src src-elisp"><span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">gptel
 </span><span style="color: #ffffff;">(</span>global-set-key <span style="color: #ff66ff;">(</span>kbd <span style="color: #79a8ff;">"M-o g"</span><span style="color: #ff66ff;">)</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gptel-menu</span><span style="color: #ffffff;">)</span>
 
-<span style="color: #74321f;">;; </span><span style="color: #db7b5f;">translate stuff
-</span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defvar</span> <span style="color: #00d3d0; font-style: italic;">spike-leung/my-translate-keymap</span> <span style="color: #ff66ff;">(</span>make-sparse-keymap<span style="color: #ff66ff;">)</span>
+<span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">translate stuff
+</span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defvar</span> <span style="color: #00d3d0;">spike-leung/my-translate-keymap</span> <span style="color: #ff66ff;">(</span>make-sparse-keymap<span style="color: #ff66ff;">)</span>
   <span style="color: #9ac8e0;">"Keymap for translation commands."</span><span style="color: #ffffff;">)</span>
 
 <span style="color: #ffffff;">(</span>define-key spike-leung/my-translate-keymap <span style="color: #ff66ff;">(</span>kbd <span style="color: #79a8ff;">"i"</span><span style="color: #ff66ff;">)</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">immersive-translate-buffer</span><span style="color: #ffffff;">)</span>
@@ -515,14 +512,14 @@ deepseek V3 的价格足够便宜，也足够智能，目前我已经退了 Chat
 </div>
 
 
-<figure id="orgd09b53a">
+<figure id="org314828a">
 <img src="./images/translate-in-emacs/M-o.png" alt="M-o.png">
 
 <figcaption><span class="figure-number">&#22270;2&nbsp; </span>M-o 绑定的函数，包括 gptel，avy 以及翻译的前缀键</figcaption>
 </figure>
 
 
-<figure id="orgc44ded2">
+<figure id="orgf6c2c98">
 <img src="./images/translate-in-emacs/M-o-t.png" alt="M-o-t.png">
 
 <figcaption><span class="figure-number">&#22270;3&nbsp; </span>M-o t 绑定的函数，主要是翻译相关的</figcaption>
