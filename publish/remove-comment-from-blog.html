@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>移除博客的留言</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="&quot;从博客里移除了 giscus 留言系统，并解释移除的缘由&quot;" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Regular-102a.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Bold-102a.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Italic-102a.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-BoldItalic-102a.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 style="view-transition-name: spike-remove-comment-from-blog" class="title">移除博客的留言</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org9569ab8">当初为什么要添加评论？</a></li>
+<li><a href="#orgc21e2dd">为什么要移除呢？</a></li>
+<li><a href="#org8adf63d">如果你想留言</a></li>
+<li><a href="#org84251b2">其他人关于留言的一些看法</a></li>
+</ul>
+</div>
+</nav>
+<p>
+如果你留意的话，会发现博客文章中的 <a href="https://giscus.app/">giscus</a> 留言消失了，不是不小心，是故意的。
+</p>
+<div id="outline-container-org9569ab8" class="outline-2">
+<h2 id="org9569ab8">当初为什么要添加评论？</h2>
+<div class="outline-text-2" id="text-org9569ab8">
+<ol class="org-ol">
+<li>我希望能收到反馈，希望知道有人喜欢我的内容，或者给我一些建议，哪怕点个赞也好。<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup></li>
+<li>我确实也收到了一些反馈，指出了我内容中的问题，纠正了我对某个知识点的认识。有时评论区的讨论也可以延伸内容。</li>
+<li>不少博客都有，我也想有。</li>
+<li>博客的框架内置了，开启了试试。</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgc21e2dd" class="outline-2">
+<h2 id="orgc21e2dd">为什么要移除呢？</h2>
+<div class="outline-text-2" id="text-orgc21e2dd">
+<ol class="org-ol">
+<li>留言的人并不是很多。</li>
+
+<li><p>
+需要额外加载一个第三方的脚本。
+</p>
+
+<p>
+偶尔在切换明暗主题的时候也存在 <a href="setup-blog-color-scheme.html#org2f7e18e">一些主题错乱的问题</a>，少一个功能我就可以少维护一些东西。
+</p></li>
+
+<li>giscus 是依赖 GitHub 账号的，有的读者或许想留言，但还要登录 GitHub，或许就放弃了。</li>
+
+<li><p>
+giscus 没有审查。
+</p>
+
+<p>
+虽然我能删除留言，但总归不会那么及时。
+</p>
+
+<p>
+我不太确定会有什么内容，会不会有人利用来投广告，或者发布一些恶意言论？
+</p>
+
+<p>
+或者单纯就是不喜欢我的内容，拉踩我一下？
+</p>
+
+<p>
+我不喜欢负面的内容一直挂着，但随便删除读者留言也不太友好，让人纠结，纠结就会内耗，就会不开心，我不想不开心。
+</p></li>
+
+<li>除了 giscus，也有一些留言系统，是可以审核的，也支持输入邮箱直接留言而不需要注册账号，但往往也需要依赖一些第三方服务，嫌麻烦。<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup></li>
+
+<li><p>
+回复留言有时让我感到有压力。
+</p>
+
+<p>
+有人说喜欢我要表达一下感谢；有人给出建议，我要考虑要不要调整；有人推荐了一些东西，我要去尝试一下才能回复；
+</p>
+
+<p>
+有时我什么不想回，但不回又觉得似乎冷落了对方；回复也需要斟酌语言……
+</p></li>
+
+<li><p>
+我会经常翻 GitHub，看看有没有回复，大多数时候我都有点失落，因为什么回复都没有。
+</p>
+
+<p>
+我也不想因为评论而频繁刷 GitHub，就像 <a href="36.org#1EFD9AB8-6A53-4C58-B744-C674DF322CA4">之前用 Folo 一样</a>，我总会过一段时间就看看，感觉有点病态。
+</p>
+
+<p>
+太在乎有没有人看、有多少人看以及别人的意见。
+</p></li>
+
+<li><p>
+如果读者真的想和我交流，可以通过邮件，这样更直接，更私密，也可以更深入。
+</p>
+
+<p>
+有的留言系统还需要考虑如何通知读者，而邮件本身就带有这样的功能，不需要额外维护什么服务。
+</p>
+
+<p>
+缺点是，关于文章的交流不是公开的，但如果讨论内容有价值，其实可以手动整理到文章中。
+</p></li>
+
+<li><p>
+没有了留言，或许会有点孤独感，不知道有没有在看，有没有人关注。
+</p>
+
+<p>
+但说到底写博客还是为自己而写的，有人看固然很好，没人看也无所谓，自己开心就好。
+</p>
+
+<p>
+既然是为自己而写，那也不用太在乎读者会怎么看，不用太在乎写得好不好，想怎么写就怎么写，或许表达上会更自由。
+</p>
+
+<p>
+我也希望我的博客成为我的 <a href="https://sightlessscribbles.com/posts/20250606/#:~:text=Again%2C%20my%20website,they%20feel%20comfortable.">安全空间</a>，我不用担心什么，我自在，读者也自在。
+</p></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org8adf63d" class="outline-2">
+<h2 id="org8adf63d">如果你想留言</h2>
+<div class="outline-text-2" id="text-org8adf63d">
+<ol class="org-ol">
+<li>可以通过 <a href="mailto:l-yanlei@hotmail.com">邮件联系我</a>。</li>
+<li>如果你发现一些错误希望告诉我，也可以 <a href="https://github.com/Spike-Leung/taxodium/issues">给我提 issue</a>。</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org84251b2" class="outline-2">
+<h2 id="org84251b2">其他人关于留言的一些看法</h2>
+<div class="outline-text-2" id="text-org84251b2">
+<ul class="org-ul">
+<li><a href="https://www.owenyoung.com/blog/de-roboticization/#2-xie-bo-ke">我想让自己说话不那么“端着”</a></li>
+<li><a href="https://sightlessscribbles.com/posts/20250606/#:~:text=It%27s%20true%20I%20don%27t%20have%20comments%20on%20this%20blog.%20I%20never%20will.%20Comments%20are%20not%20email.%20If%20you%20want%20to%20talk%20about%20me%2C%20do%20it%20on%20your%20own%20platform%20instead%20of%20mine.%20My%20space%20is%20a%20space%20for%20you%20to%20talk%20to%20me%20directly.%20I%27m%20not%20sorry%20if%20that%20makes%20you%20uncomfortable.">My website is my safe space</a></li>
+<li><a href="https://blog.solazy.me/20250716/">没有留言板的博客</a></li>
+<li><a href="https://www.geedea.pro/posts/weekly/38/#%E6%B2%A1%E6%9C%89%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E7%9A%84%E5%8D%9A%E5%AE%A2">稻草人周刊 Vol.38</a></li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+人还是渴望被看见的吧。
+</p>
+
+<blockquote>
+<p>
+推论是，如果你发现了那篇帖子，就说点什么。
+</p>
+
+<p>
+给作者发个消息，留个评论。
+</p>
+
+<p>
+没有其他人这样做。
+</p>
+
+<p>
+互联网上有成千上万的人在发布优质内容，却不知道是否有人看到或欣赏。
+</p>
+
+<p>
+<a href="https://news.ycombinator.com/item?id=43155587#:~:text=The%20corollary%20is%20that%20if%20you%20find%20that%20post%2C%20say%20something.%20Drop%20the%20author%20a%20note%2C%20leave%20a%20comment.%20No%20one%20else%20does.%20For%20every%20YT%20celebrity%2C%20there%20are%20thousands%20of%20people%20posting%20good%20content%20on%20the%20internet%20and%20not%20knowing%20if%20it%27s%20being%20seen%20or%20appreciated%20by%20anyone">Source</a>
+</p>
+</blockquote></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+在 <a href="https://www.owenyoung.com/blog/de-roboticization/#2-xie-bo-ke">我想让自己说话不那么“端着”</a> 中我还了解到了另外一种可以用于留言的技术 ⸺ <a href="https://indieweb.org/Webmention">Webmention</a>。
+但它需要不少的处理，也是嫌麻烦，懒得维护。
+而且读者可能觉得登录 GitHub 都麻烦，更别说发一个 webmention 了。
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<p class="author">Author: <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">Date: 2025-07-31 Thu 15:30</p>
+<p class="date">Last Modified: 2025-07-31 Thu 15:44</p>
+<p class="license">License: <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">Support me: <a href="https://taxodium.ink/support-me.html">Pay what you like</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
