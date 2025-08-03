@@ -504,13 +504,24 @@ summary {
     margin-block: 0;
 }
 
-:is(.org-ol, .org-ul) li > details {
-    margin-block: 1em;
-    margin-inline-start: -30px;
-}
-
 :is(.org-ol, .org-ul) li > details :is(pre.example, .org-src-container) {
     margin-inline-start: 0;
+}
+
+:is(.footpara, .sidenote-content) :is(.org-ul, .org-ol) {
+    margin-block: 0;
+}
+
+@media screen and (max-width: 400px) {
+    #table-of-contents ul,
+    #content :is(.org-ul) {
+        padding-inline-start: 1em;
+    }
+
+    :is(.org-ol, .org-ul) li > details {
+        margin-block: 1em;
+        margin-inline-start: -1em;
+    }
 }
 
 .org-src-container {
@@ -743,12 +754,6 @@ details {
   background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
   transition: background 0.2s;
 }
-
-
-:is(.footpara, .sidenote-content) .org-ul {
-    margin-block: 0;
-}
-
 /* ------------------------------ sidenote ------------------------------ */
 
 .todo {
