@@ -1,5 +1,6 @@
 #+title: Emoji 正则匹配
 #+INDEX: Emoji 正则匹配
+#+author: Spike Leung
 #+date: <2024-05-09 Thu 00:00>
 #+lastmod: <2024-10-23 Wed>
 #+keywords: JavaScript Emoji RegExp
@@ -8,6 +9,8 @@
 #+tags: JavaScript Emoji RegExp
 #+categories[]: blog
 #+LANGUAGE: zh-CN
+#+OPTIONS: toc:1 ^:{}
+#+startup: content indent
 
 * 前言
 :PROPERTIES:
@@ -61,9 +64,27 @@
 
 其实没办法用一个固定的范围去表达，因为 Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicode ，没办法用一个固定的范围去表达所有的 Emoji。
 
-于是又搜索了一下，StackOverflow 有一个[[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][回答]]，里面提到了用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape]] 进行匹配，也就是  ~/\p{Emoji}/u~ 和 ~/\p{Extended_Pictographic}/u~ 。
+于是又搜索了一下，StackOverflow 有一个 [[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][回答]]，里面提到了用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape]] 进行匹配，也就是 ~/\p{Emoji}/u~ 和 ~/\p{Extended_Pictographic}/u~ 。
 
-- ~/\p{Emoji}/u~ :: 既然是匹配 Emoji，那么 loneProperty (\p{loneProperty}) 就应该是 Emoji ? 实际测试并不符合需求，因为在[[https://www.unicode.org/Public/15.1.0/ucd/emoji/emoji-data.txt][Emoji 官方文档]]中， =123456789*#= 也是被看作是 Emoji，
+#+begin_details
+#+html: <summary>什么是 Unicode character class escpae</summary>
+
+[[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape: \p{...}, \P{...}]] 是 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_class_escape][Character class escape]] 中的一种。
+
+平时正则中常用的 ~\d~ 、 ~\D~ 、 ~\w~ 、 ~\W~ 就是 Character class escape，它们是用来表达一组字符的转义序列 (escape sequence)。
+
+例如 =\d= 这个转义序列表达的就是 =[0-9]= 的一组字符 。
+
+而 =\p{...}= , =\P{...}= 也是类似的，只是他们用来表达一组 Unicdoe 字符，通过指定 [[https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties][Unicode property]] 决定匹配什么 Unicode。
+
+例如可以用 =/\p{Hex_Digit}/u= 去匹配 16 进制的字符：
+
+[[file:./images/emoji-regexp/regexp101-emoji-hex-digit.png]]
+
+需要注意的是，使用 Unicode character class escpae 要启用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode#unicode-aware_mode][unicode-aware mode]]，即加上 =/u= 标记。
+#+end_details
+
+- ~/\p{Emoji}/u~ :: 这个正则实际测试并不符合需求，因为在 [[https://www.unicode.org/Public/15.1.0/ucd/emoji/emoji-data.txt][Emoji 官方文档]] 中， =123456789*#= 也是被看作是 Emoji，
   如果用这个正则的话，就会把数字也认为是 Emoji，不符合只排除特殊表情的要求。
 
 - ~/\p{Extended_Pictographic}/u~ :: 而 Extended_Pictographic 表示的 Emoji 才是我们认为的那些表情符号。
@@ -81,29 +102,22 @@
   )
 #+end_src
 
-* Unicode character class escpae
+* 为什么 /(\ud83c[\udf00-\udfff].../u 的正则无法匹配 🉐
 :PROPERTIES:
-:CUSTOM_ID: e9a4bc9a-66a8-4875-af52-618a5fec283e
+:CUSTOM_ID: 981cd9a6-3bc0-4c8d-8144-da19e135b56c
 :END:
 
-[[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape: \p{...}, \P{...}]] 是 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_class_escape][Character class escape]] 中的一种。
+现在，使用 Unicode character class escpae 可以匹配 Emoji 了，但是为什么一开始 Google 搜到的正则 ~/(\ud83c[\udf00-\udfff].../u~ 无法匹配 🉐 呢？
 
-平时正则中常用的 \d,\D,\w,\W 就是 Character class escape，就是用来表达一组字符的转义序列(escape sequence)。
+为此，首先需要知道 🉐 在 JS 中到底是什么。
 
-例如 =\d= 这个转义序列表达的就是 =[0-9]= 的一组字符 。
-
-而 =\p{...}= , =\P{...}= 也是类似的，只是他们用来表达一组 Unicdoe 字符，通过指定 [[https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties][Unicode property]] 决定匹配什么 Unicode。
-
-例如可以用 =/\p{Hex_Digit}/u= 去匹配 16 进制的字符：
-
-[[file:./images/emoji-regexp/regexp101-emoji-hex-digit.png]]
-
-需要注意的是，使用 Unicode character class escpae 要启用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode#unicode-aware_mode][unicode-aware mode]]，即加上 =/u= 标记。
-
-* String & Unicode
+** String & Unicode
 :PROPERTIES:
 :CUSTOM_ID: 02f1594b-e08e-43d6-a94d-36f1d534eae0
 :END:
+
+#+begin_details
+#+html: <summary>UTF-16 characters, Unicode code points, and grapheme clusters</summary>
 
 #+begin_quote
 Strings are represented fundamentally as sequences of [[https://en.wikipedia.org/wiki/UTF-16][UTF-16]] code
@@ -127,8 +141,9 @@ code units, is also called a *Unicode code point*. Each Unicode code
 point can be written in a string with \u{xxxxxx} where xxxxxx
 represents 1–6 hex digits.
 
-—— [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters][UTF-16 characters, Unicode code points, and grapheme clusters]]
+[[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters:~:text=Strings%20are%20represented,6%20hex%20digits.][Source]]
 #+end_quote
+#+end_details
 
 在 JavaScript 中，String 实际是 UTF-16  (16-bit Unicode Transformation Format) 编码的，它以 16 位去表示一个字符（code unit），最多可以表示 65536 (0x0000 - 0xFFFF) 个字符。
 
@@ -140,24 +155,17 @@ represents 1–6 hex digits.
 
 规定前 10 位作为 *高代理位 (high-surrogate)* ，取值范围是 0xD800 - 0xDBFF。
 
-后 10 位为 *低代理位 (low-surrogate)* ，取值范围是 0xDC00 - 0xDFFF。
+后 10 位为 *低代理位 (low-surrogate)* ，取值范围是 0xDC00 - 0xDFFF。[fn:1] [fn:2]
 
 高代理位和低代理位组成代理对 (surrogate pairs) 。
 
 由于有 20 位的长度，因此可以表达 1048576 个字符，可以在原来 65536 个字符之上，再增加 1048576 个字符。
 
-为什么 Unicode 要这么设计，可以参考 [[https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm][Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?]]
-
-为什么高代理和低代理这么取值，可以参考 [[https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen][How was the position of the Surrogates Area (UTF-16) chosen?]]）
-
-概括来说，就是在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。
+概括来说，在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。
 
 而超出 65535 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
 
-* 为什么 /(\ud83c[\udf00-\udfff].../u 的正则无法匹配🉐
-:PROPERTIES:
-:CUSTOM_ID: 981cd9a6-3bc0-4c8d-8144-da19e135b56c
-:END:
+** 为什么匹配不到
 
 现在已经知道 Emoji 是通过代理对表示的，那么 🉐 的代理对是什么呢？
 
@@ -169,14 +177,12 @@ represents 1–6 hex digits.
   '🉐'.split("") // ['\uD83C', '\uDE50']
 #+end_src
 
-所以 🉐 的高代理是 \uD83C，低代理是 \uDE50。
+所以 🉐 的高代理是 ~\uD83C~ ，低代理是 ~\uDE50~ 。
 
-和 =(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]= 对比可以发现，正则的范围不包括 \uD83C\uDE50，所以匹配不到🉐。
+和 =(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]= 对比可以发现，正则的范围不包括 ~\uD83C\uDE50~ ，所以匹配不到 🉐。
 
-* String 中的相关方法
-:PROPERTIES:
-:CUSTOM_ID: ae6fda15-0cd6-4aa6-b072-a9836204a9e4
-:END:
+#+begin_details
+#+html: <summary>String 中的相关方法</summary>
 
 - [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charAt][String.prototype.charAt()]] ::
 
@@ -263,7 +269,7 @@ represents 1–6 hex digits.
 - [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint][String.fromCodePoint()]] ::
 
   #+begin_quote
-The String.fromCodePoint() static method returns a string created from the specified sequence of code points.
+  The String.fromCodePoint() static method returns a string created from the specified sequence of code points.
   #+end_quote
 
   fromCodePoint() 可以接受多个 codePoint 数字，返回对应的字符串。
@@ -283,9 +289,9 @@ The String.fromCodePoint() static method returns a string created from the speci
     String.fromCharCode(127568) // ''
     String.fromCharCode(55356, 56912) // '🉐'
   #+end_src
+#+end_details
 
-
-* 注意点
+* 一些注意点
 :PROPERTIES:
 :CUSTOM_ID: 6b858229-2717-4f33-85fb-b6e57f26d5e5
 :END:
@@ -326,3 +332,8 @@ The String.fromCodePoint() static method returns a string created from the speci
 - [[https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties][Binary Unicode property aliases and their canonical property names]]
 
 - [[https://v8.dev/features/regexp-v-flag][RegExp v flag with set notation and properties of strings]]
+
+* Footnotes
+
+[fn:1] 为什么 Unicode 要这么设计，可以参考 [[https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm][Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?]]
+[fn:2] 为什么高代理和低代理这么取值，可以参考 [[https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen][How was the position of the Surrogates Area (UTF-16) chosen?]]）
