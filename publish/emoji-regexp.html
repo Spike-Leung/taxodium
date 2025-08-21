@@ -289,7 +289,7 @@ How to match Emoji with RegExp with JavaScript" />
 <h2 id="3dd21c20-23d8-4d1c-a431-e8edf6b76a1e">TL;DR</h2>
 <div class="outline-text-2" id="text-3dd21c20-23d8-4d1c-a431-e8edf6b76a1e">
 <p>
-<del>如果你只是想要一个能够匹配表情的正则，下面这个应该就满足👇：</del>
+<del>如果你只是想要一个能够匹配表情的正则，下面这个应该就满足👇：</del> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
 </p>
 
 <div class="org-src-container">
@@ -299,7 +299,7 @@ How to match Emoji with RegExp with JavaScript" />
 </div>
 
 
-<figure id="orgd728efc">
+<figure id="org0f0ebbd">
 <img src="./images/emoji-regexp/regexp101-emoji-corret.png" alt="regexp101-emoji-corret.png">
 
 </figure>
@@ -310,10 +310,6 @@ How to match Emoji with RegExp with JavaScript" />
 
 <p>
 如果你只需要兼容高版本的浏览器（如 Chrome 112+），你也可以使用 <code>\p{RGI_Emoji}\gv</code> (参考 <a href="https://v8.dev/features/regexp-v-flag">RegExp v flag with set notation and properties of strings</a>)。
-</p>
-
-<p>
-相关讨论可以看评论区。
 </p>
 </div>
 </div>
@@ -338,7 +334,7 @@ How to match Emoji with RegExp with JavaScript" />
 </p>
 
 
-<figure id="org93a9df4">
+<figure id="org9609f7f">
 <img src="./images/emoji-regexp/regexp101-emoji-wrong.png" alt="regexp101-emoji-wrong.png">
 
 </figure>
@@ -359,7 +355,7 @@ How to match Emoji with RegExp with JavaScript" />
 于是又搜索了一下，StackOverflow 有一个 <a href="https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript">回答</a>，里面提到了用 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape">Unicode character class escape</a> 进行匹配，也就是 <code>/\p{Emoji}/u</code> 和 <code>/\p{Extended_Pictographic}/u</code> 。
 </p>
 
-<details id="orgcbb050d">
+<details id="orgebac54e">
 <summary>什么是 Unicode character class escpae</summary>
 
 <p>
@@ -383,7 +379,7 @@ How to match Emoji with RegExp with JavaScript" />
 </p>
 
 
-<figure id="orgcf2986a">
+<figure id="orgf56bf17">
 <img src="./images/emoji-regexp/regexp101-emoji-hex-digit.png" alt="regexp101-emoji-hex-digit.png">
 
 </figure>
@@ -429,7 +425,7 @@ How to match Emoji with RegExp with JavaScript" />
 <div id="outline-container-02f1594b-e08e-43d6-a94d-36f1d534eae0" class="outline-3">
 <h3 id="02f1594b-e08e-43d6-a94d-36f1d534eae0">String &amp; Unicode</h3>
 <div class="outline-text-3" id="text-02f1594b-e08e-43d6-a94d-36f1d534eae0">
-<details id="org6a85167">
+<details id="org97bb5de">
 <summary>UTF-16 characters, Unicode code points, and grapheme clusters</summary>
 
 <blockquote>
@@ -487,7 +483,7 @@ represents 1–6 hex digits.
 </p>
 
 <p>
-后 10 位为 <b>低代理位 (low-surrogate)</b> ，取值范围是 0xDC00 - 0xDFFF。<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> <sup>, </sup><sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>
+后 10 位为 <b>低代理位 (low-surrogate)</b> ，取值范围是 0xDC00 - 0xDFFF。<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup> <sup>, </sup><sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>
 </p>
 
 <p>
@@ -533,7 +529,7 @@ represents 1–6 hex digits.
 和 <code>(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]</code> 对比可以发现，正则的范围不包括 <code>\uD83C\uDE50</code> ，所以匹配不到 🉐。
 </p>
 
-<details id="orgdf9f880">
+<details id="org0058e48">
 <summary>String 中的相关方法</summary>
 
 <dl class="org-dl">
@@ -723,10 +719,14 @@ fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePo
 <div id="text-footnotes">
 
 <div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-为什么 Unicode 要这么设计，可以参考 <a href="https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm">Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?</a>
+感谢 <a href="https://github.com/JunQu">JunQu</a> 指出 <a href="https://github.com/Spike-Leung/taxodium/discussions/9">问题</a>。
 </p></div></div>
 
 <div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+为什么 Unicode 要这么设计，可以参考 <a href="https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm">Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 为什么高代理和低代理这么取值，可以参考 <a href="https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen">How was the position of the Surrogates Area (UTF-16) chosen?</a>）
 </p></div></div>
 
@@ -734,7 +734,7 @@ fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePo
 </div>
 </div></div>
 <div id="postamble" class="status">
-<p class="author">作 者：<a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p><p class="date">创建于：2024-05-09</p><p class="lastmode">修改于：2025-08-21 10:12</p><p class="license">许可证：<a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p><p class="support-me">支持我：<a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p><p><a href="https://github.com/Spike-Leung/taxodium/blob/org-publish/post/emoji-regexp.org">查看此文章的原始 org 文件</a></p><script src="/js/sidenote.js" defer></script><script src="/js/code-enhanced.js" defer></script><script src="/js/image-enhanced.js" defer></script><script src="/js/backtop.js" defer></script><noscript>
+<p class="author">作 者：<a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p><p class="date">创建于：2024-05-09</p><p class="lastmode">修改于：2025-08-21 10:15</p><p class="license">许可证：<a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p><p class="support-me">支持我：<a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p><p><a href="https://github.com/Spike-Leung/taxodium/blob/org-publish/post/emoji-regexp.org">查看此文章的原始 org 文件</a></p><script src="/js/sidenote.js" defer></script><script src="/js/code-enhanced.js" defer></script><script src="/js/image-enhanced.js" defer></script><script src="/js/backtop.js" defer></script><noscript>
         <style>
           .js-required {
              display: none;

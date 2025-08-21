@@ -10,6 +10,7 @@
 #+categories[]: blog
 #+LANGUAGE: zh-CN
 #+OPTIONS: toc:1 ^:{}
+
 #+startup: content indent
 
 * 前言
@@ -26,7 +27,7 @@
 :CUSTOM_ID: 3dd21c20-23d8-4d1c-a431-e8edf6b76a1e
 :END:
 
-+如果你只是想要一个能够匹配表情的正则，下面这个应该就满足👇：+
++如果你只是想要一个能够匹配表情的正则，下面这个应该就满足👇：+ [fn:1]
 
 #+begin_src typescript
     /\p{Extended_Pictographic}/gu.test("你好hello123😄hi🌷456🉐") // true
@@ -38,8 +39,6 @@
 如果你想匹配 Emoji，可以考虑使用 [[https://github.com/mathiasbynens/emoji-regex][emoji-regex]] 这个库。
 
 如果你只需要兼容高版本的浏览器（如 Chrome 112+），你也可以使用 =\p{RGI_Emoji}\gv= (参考 [[https://v8.dev/features/regexp-v-flag][RegExp v flag with set notation and properties of strings]])。
-
-相关讨论可以看评论区。
 
 * 解决过程
 :PROPERTIES:
@@ -155,7 +154,7 @@ represents 1–6 hex digits.
 
 规定前 10 位作为 *高代理位 (high-surrogate)* ，取值范围是 0xD800 - 0xDBFF。
 
-后 10 位为 *低代理位 (low-surrogate)* ，取值范围是 0xDC00 - 0xDFFF。[fn:1] [fn:2]
+后 10 位为 *低代理位 (low-surrogate)* ，取值范围是 0xDC00 - 0xDFFF。[fn:2] [fn:3]
 
 高代理位和低代理位组成代理对 (surrogate pairs) 。
 
@@ -335,5 +334,8 @@ represents 1–6 hex digits.
 
 * Footnotes
 
-[fn:1] 为什么 Unicode 要这么设计，可以参考 [[https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm][Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?]]
-[fn:2] 为什么高代理和低代理这么取值，可以参考 [[https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen][How was the position of the Surrogates Area (UTF-16) chosen?]]）
+[fn:1] 感谢 [[https://github.com/JunQu][JunQu]] 指出 [[https://github.com/Spike-Leung/taxodium/discussions/9][问题]]。
+
+[fn:2] 为什么 Unicode 要这么设计，可以参考 [[https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm][Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?]]
+
+[fn:3] 为什么高代理和低代理这么取值，可以参考 [[https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen][How was the position of the Surrogates Area (UTF-16) chosen?]]）
