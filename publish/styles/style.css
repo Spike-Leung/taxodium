@@ -45,217 +45,6 @@
   --pagefind-ui-scale: 1.2;
 }
 
-body {
-  color: var(--color-text);
-  color: light-dark(var(--color-text), var(--dark-color-text));
-  line-height: 3ex;
-  /* background: var(--color-bg); */
-  /* background: light-dark(var(--color-bg), var(--dark-color-bg)); */
-  /* background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZReReadymcllPAAAACFJREFUeNpiZGBg4GegAsBlCD8TqSYNQg2Mo6FEBAAIMACdPABtrSW/IQAAAABJRU5ErkJggg==); */
-  background-image: url("/images/background/xv.png");
-  background-attachment: fixed;
-  margin: 20px auto;
-  padding: 0 10px;
-  font-family: var(--font-family);
-  /* text-wrap: pretty; */
-}
-
-body.dark {
-    background-image: url("/images/background/xv.png");
-
-  --pagefind-ui-text: var(--dark-color-text);
-  --pagefind-ui-background: var(--dark-color-bg-secondary);
-  --pagefind-ui-primary: var(--dark-color-text);
-  --pagefind-ui-border: var(--dark-color-text-secondary);
-
-  & .littlefoot.littlefoot {
-      --popover-background-color: var(--dark-color-bg-secondary);
-      --popover-text-color: var(--dark-color-text);
-      --button-background-color: color(from var(--dark-color-selection-background) srgb r g b / 0.6);
-      --button-text-color: var(--dark-color-text);
-      --button-active-background-color: var(--dark-color-selection-background);
-      --button-active-text-color: var(--dark-color-selection-text);
-
-      & svg circle {
-          fill: var(--dark-color-text-secondary);
-      }
-  }
-}
-
-/* ------------------------------ littlefoot ------------------------------ */
-
-.littlefoot.littlefoot {
-    --popover-font-family: var(--font-family);
-    --popover-font-size: 1em;
-    --button-background-color: color(from var(--color-selection-background) srgb r g b / 0.6);
-    --button-text-color: var(--color-text);
-    --button-active-background-color: var(--color-selection-background);
-    --button-active-text-color: var(--color-selection-text);
-    --popover-vertical-padding: 1.2rem;
-
-    & svg {
-        overflow: visible;
-    }
-
-    & svg circle {
-        fill: var(--color-text-secondary);
-    }
-}
-
-/* .littlefoot--print.littlefoot--print { */
-/*     display: revert; */
-/* } */
-
-.littlefoot__button.littlefoot__button {
-    vertical-align: super;
-    padding: 0 .5em;
-    line-height: 1;
-}
-
-#footnotes:has(.littlefoot--print) {
-    display: none;
-}
-
-/* ------------------------------ littlefoot ------------------------------ */
-
-::selection {
-  background: var(--color-selection-background);
-  background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
-  color: var(--color-selection-text);
-  color: light-dark(var(--color-selection-text), var(--dark-color-selection-text));
-}
-
-::target-text {
-  text-decoration-line: underline;
-  text-decoration-style: wavy;
-  text-decoration-thickness: 3px;
-  text-decoration-skip-ink: auto;
-  text-underline-offset: 3px;
-  text-decoration-color: rebeccapurple;
-  background: unset;
-}
-
-@view-transition {
-  navigation: auto;
-}
-
-/**
-* @see: https://daverupert.com/2023/05/getting-started-view-transitions/#:~:text=I%20mostly%20use,a%20long%20time
-* 使得在进行 view-transition 的时候，标题的文字不会变得特别大
-*/
-.title {
-  width: fit-content;
-  /** 居中标题 */
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/**
- * @see: https://www.a11yproject.com/posts/understanding-vestibular-disorders/
- */
-@media (prefers-reduced-motion: reduce) {
-  @view-transition {
-    navigation: none;
-  }
-
-  a {
-    view-transition-name: none!important;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  *:focus-visible {
-    animation: outline-bounce .5s;
-  }
-}
-
-@keyframes outline-bounce {
-  0% { outline-offset: .25rem }
-  50% { outline-offset: .5rem }
-  100% { outline-offset: .25rem }
-}
-
-/** :focus-visible is a neat pseudo-class that only applies focus styles when users navigate with the keyboard. */
-*:focus-visible {
-  outline-color: currentColor;
-  outline-style: solid;
-  outline-offset: .25rem;
-  outline-width: .25rem;
-  border-radius: .25rem;
-}
-
-html {
-  font-size: var(--font-size);
-  scroll-behavior: smooth;
-}
-
-p {
-    margin-block: 0.8em;
-}
-
-/**
- * Disable anchor link animations for
- * users who prefer less motion.
- */
-@media (prefers-reduced-motion) {
-    html {
-        scroll-behavior: auto;
-    }
-}
-
-mark {
-  padding: .15rem;
-  background: var(--color-selection-background);
-  background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
-  color: var(--color-text);
-  color: light-dark(var(--color-text), var(--dark-color-text));
-  padding: 4px 4px 0;
-}
-
-hr {
-    border: none;
-    margin-block: 1.5em;
-}
-
-hr:before {
-    content: '* * *' ;
-    color: var(--color-text-secondary);
-    color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
-    display: block;
-    text-align: center;
-}
-
-/* hr:nth-of-type(odd):before { */
-/*     content: '♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙' ; */
-
-/* } */
-
-/* hr:nth-of-type(even):before { */
-/*     content: '♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖' ; */
-/* } */
-
-/** ------------------------------ pagefind-ui ------------------------------ */
-.pagefind-ui--reset mark {
-    background: var(--color-selection-background);
-    background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
-    color: var(--color-selection-text);
-    color: light-dark(var(--color-selection-text), var(--dark-color-selection-text));
-}
-
-.pagefind-ui--reset ::placeholder {
-  color: var(--color-text-secondary);
-  color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
-}
-
-.pagefind-ui--reset.pagefind-ui--reset.pagefind-ui--reset ::placeholder {
-  opacity: .5;
-}
-
-.pagefind-ui__result-nested + .pagefind-ui__result-nested {
-    margin-block-start: 1.5em;
-}
-
-/** ------------------------------ pagefind-ui ------------------------------ */
 
 /** ---------------------------------- 'Atkinson Hyperlegible' ----- */
 /** @see: https://www.brailleinstitute.org/freefont/ */
@@ -317,6 +106,182 @@ hr:before {
 
 /** ---------------------------------- 'Atkinson Hyperlegible' ----- */
 
+/* ------------------------------ common tag ------------------------------ */
+
+body {
+  color: var(--color-text);
+  color: light-dark(var(--color-text), var(--dark-color-text));
+  line-height: 3ex;
+  /* background: var(--color-bg); */
+  /* background: light-dark(var(--color-bg), var(--dark-color-bg)); */
+  /* background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZReReadymcllPAAAACFJREFUeNpiZGBg4GegAsBlCD8TqSYNQg2Mo6FEBAAIMACdPABtrSW/IQAAAABJRU5ErkJggg==); */
+  background-image: url("/images/background/xv.png");
+  background-attachment: fixed;
+  margin: 20px auto;
+  padding: 0 10px;
+  font-family: var(--font-family);
+  /* text-wrap: pretty; */
+
+  &.dark {
+    background-image: url("/images/background/xv.png");
+  }
+}
+
+/* media query */
+@media screen and (min-width: 900px) {
+  body {
+    max-width: 90vw;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  body {
+    max-width: var(--content-width);
+  }
+}
+
+::selection {
+  background: var(--color-selection-background);
+  background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
+  color: var(--color-selection-text);
+  color: light-dark(var(--color-selection-text), var(--dark-color-selection-text));
+}
+
+::target-text {
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-thickness: 3px;
+  text-decoration-skip-ink: auto;
+  text-underline-offset: 3px;
+  text-decoration-color: rebeccapurple;
+  background: unset;
+}
+
+@view-transition {
+  navigation: auto;
+}
+
+
+/**
+ * @see: https://www.a11yproject.com/posts/understanding-vestibular-disorders/
+ */
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+
+  a {
+    view-transition-name: none!important;
+  }
+}
+
+/** :focus-visible is a neat pseudo-class that only applies focus styles when users navigate with the keyboard. */
+*:focus-visible {
+  outline-color: currentColor;
+  outline-style: solid;
+  outline-offset: .25rem;
+  outline-width: .25rem;
+  border-radius: .25rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  *:focus-visible {
+    animation: outline-bounce .5s;
+  }
+}
+
+@keyframes outline-bounce {
+  0% { outline-offset: .25rem }
+  50% { outline-offset: .5rem }
+  100% { outline-offset: .25rem }
+}
+
+
+html {
+  font-size: var(--font-size);
+  scroll-behavior: smooth;
+}
+
+/**
+ * Disable anchor link animations for
+ * users who prefer less motion.
+ */
+@media (prefers-reduced-motion) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+p {
+  margin-block: 0.8em;
+
+  &.verse {
+    margin-left: 0;
+  }
+}
+
+mark {
+  padding: .15rem;
+  background: var(--color-selection-background);
+  background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
+  color: var(--color-text);
+  color: light-dark(var(--color-text), var(--dark-color-text));
+  padding: 4px 4px 0;
+}
+
+hr {
+  border: none;
+  margin-block: 1.5em;
+}
+
+hr:before {
+  content: '* * *' ;
+  color: var(--color-text-secondary);
+  color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  display: block;
+  text-align: center;
+}
+
+/* hr:nth-of-type(odd):before { */
+/*     content: '♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙' ; */
+
+/* } */
+
+/* hr:nth-of-type(even):before { */
+/*     content: '♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖' ; */
+/* } */
+
+kbd {
+  background-color: var(--color-bg);
+  background-color: light-dark(var(--color-bg), var(--dark-color-bg));
+  color: var(--color-text);
+  color: light-dark(var(--color-text), var(--dark-color-text));
+  border: 1px solid;
+  border-color: var(--color-border);
+  border-color: light-dark(var(--color-border), var(--dark-color-border));
+  border-radius: .25rem;
+  box-shadow: 1px 2px 2px var(--color-box-shadow);
+  box-shadow: 1px 2px 2px light-dark(var(--color-box-shadow), var(--dark-color-box-shadow));
+  display: inline-block;
+  font-weight: bold;
+  padding: 0 .25rem;
+  white-space: nowrap;
+}
+
+details {
+  padding: .7em 1em .5em;
+  border-radius: 15px;
+  font-size: 0.9em;
+  border: 1px solid var(--color-border);
+  border-color: light-dark(var(--color-border), var(--dark-color-border));
+  /* box-shadow: 0.05em 0.1em 5px 0.01em var(--color-box-shadow); */
+  /* box-shadow: 0.05em 0.1em 5px 0.01em light-dark(var(--color-box-shadow), var(--dark-color-box-shadow)); */
+}
+
+summary {
+  cursor: pointer;
+}
+
 code {
   font-family: var(--font-family);
 }
@@ -324,7 +289,6 @@ code {
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
 }
-
 
 b {
   color: var(--color-highlight);
@@ -346,17 +310,13 @@ blockquote {
   }
 }
 
-p.verse {
-    margin-left: 0;
-}
-
 .underline {
-    text-decoration-color: var(--color-text-secondary) ;
-    text-decoration-color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary)) ;
-    text-decoration-line: underline;
-    text-decoration-style: dashed;
-    text-underline-offset: 5px;
-    text-decoration-thickness: 2px;
+  text-decoration-color: var(--color-text-secondary) ;
+  text-decoration-color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary)) ;
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 2px;
 }
 
 a {
@@ -371,6 +331,91 @@ select {
   border-radius: .25rem;
   color: var(--color-text);
   color: light-dark(var(--color-text), var(--dark-color-text));
+}
+
+pre {
+  color: var(--color-text);
+  color: light-dark(var(--color-text), var(--dark-color-text));
+  background-color: var(--color-bg-src-block);
+  background-color: light-dark(var(--color-bg-src-block), var(--dark-color-bg-src-block));
+  border-color: var(--color-border);
+  border-color: light-dark(var(--color-border), var(--dark-color-border));
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, "Courier New", Courier, monospace;
+  font-size: .8em;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+pre.src {
+  margin: 0;
+  border: unset;
+  background: unset;
+  color: var(--dark-color-text);
+}
+
+/* 不太重要，且和复制按钮重叠，所以隐藏 */
+pre.src:hover::before {
+  display: none;
+}
+
+code {
+  background-color: var(--color-bg-code);
+  background-color: light-dark(var(--color-bg-code), var(--dark-color-bg-code));
+  border-radius: 6px;
+  padding: 0.05em .1em;
+}
+
+figure {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+
+figcaption {
+  font-size: 0.9em;
+  color: var(--color-text-secondary);
+  color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  max-inline-size: max-content;
+  margin-inline: auto;
+}
+
+.unset-figcation-margin-inline + figcaption {
+  margin-inline: unset;
+}
+/* ------------------------------ common tag ------------------------------ */
+
+
+/* ------------------------------ org-mode related ------------------------------ */
+/**
+ * @see: https://daverupert.com/2023/05/getting-started-view-transitions/#:~:text=I%20mostly%20use,a%20long%20time
+ * 使得在进行 view-transition 的时候，标题的文字不会变得特别大
+ */
+.title {
+  width: fit-content;
+  /** 居中标题 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.todo {
+  color: var(--color-todo);
+  color: light-dark(var(--color-todo), var(--dark-color-todo));
+}
+
+.text-emphasis {
+  text-emphasis: dot;
+  text-emphasis-position: under;
+}
+
+#postamble::before {
+  content: 'EASY COME, EASY GO ...';
+  color: var(--color-border);
+  color: light-dark(var(--color-border), var(--dark-color-border));
+  display: block;
+  text-align: end;
 }
 
 #preamble nav {
@@ -422,13 +467,6 @@ select {
 /*   padding: 8px 0; */
 /* } */
 
-figure {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-}
-
 .content img {
   max-width: 100%;
   object-fit: contain;
@@ -464,69 +502,41 @@ img.inline-image {
   border: 1px dashed light-dark(var(--color-border), var(--dark-color-border));
 }
 
-code {
-  background-color: var(--color-bg-code);
-  background-color: light-dark(var(--color-bg-code), var(--dark-color-bg-code));
-  border-radius: 6px;
-  padding: 0.05em .1em;
-}
-
-figure {
-  padding: 0;
-  margin: 0;
-}
-
-figcaption {
-  font-size: 0.9em;
-  color: var(--color-text-secondary);
-  color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
-  max-inline-size: max-content;
-  margin-inline: auto;
-}
-
-.unset-figcation-margin-inline + figcaption {
-    margin-inline: unset;
-}
-
-summary {
-  cursor: pointer;
-}
-
 :is(.org-ol, .org-ul) li {
-    margin-block: .5em;
+  margin-block: .5em;
 }
 
 :is(.org-ol, .org-ul) li > p:first-child {
-    margin-block: 0;
+  margin-block: 0;
 }
 
 :is(.org-ol, .org-ul) li > details :is(pre.example, .org-src-container) {
-    margin-inline-start: 0;
+  margin-inline-start: 0;
 }
 
 :is(.footpara, .sidenote-content) :is(.org-ul, .org-ol) {
-    margin-block: 0;
+  margin-block: 0;
 }
 
 @media screen and (max-width: 400px) {
-    #table-of-contents ul,
-    #content :is(.org-ul) {
-        padding-inline-start: 1em;
-    }
+  #table-of-contents ul,
+  #content :is(.org-ul) {
+    padding-inline-start: 1em;
+  }
 
-    #content .org-dl dd {
-        margin-inline-start: 1em;
-    }
+  #content .org-dl dd {
+    margin-inline-start: 1em;
+  }
 
-    :is(.org-ol, .org-ul) li > details {
-        margin-block: 1em;
-        margin-inline-start: -1em;
-    }
+  :is(.org-ol, .org-ul) li > details {
+    margin-block: 1em;
+    margin-inline-start: -1em;
+  }
 
-    :is(.org-ol, .org-ul) li > :is(pre.example, .org-src-container) {
-        margin-block: 1em;
-        margin-inline-start: -1em;
-    }
+  :is(.org-ol, .org-ul) li > :is(pre.example, .org-src-container) {
+    margin-block: 1em;
+    margin-inline-start: -1em;
+  }
 }
 
 .org-src-container {
@@ -539,7 +549,9 @@ summary {
   background-color: var(--dark-color-bg-src-block);
   margin: 0.5em 0;
 }
+/* ------------------------------ org-mode related ------------------------------ */
 
+/* ------------------------------ code copy ------------------------------ */
 .code-copy-btn {
   position: absolute;
   top: 8px;
@@ -558,31 +570,105 @@ summary {
     color: light-dark(var(--color-link), var(--dark-color-link));
   }
 }
+/* ------------------------------ code copy ------------------------------ */
 
-pre {
-  color: var(--color-text);
-  color: light-dark(var(--color-text), var(--dark-color-text));
-  background-color: var(--color-bg-src-block);
-  background-color: light-dark(var(--color-bg-src-block), var(--dark-color-bg-src-block));
-  border-color: var(--color-border);
-  border-color: light-dark(var(--color-border), var(--dark-color-border));
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, "Courier New", Courier, monospace;
-  font-size: .8em;
-  margin-left: 0;
-  margin-right: 0;
+/* ------------------------------ littlefoot ------------------------------ */
+.littlefoot.littlefoot {
+  --popover-font-family: var(--font-family);
+  --popover-font-size: 1em;
+  --button-background-color: color(from var(--color-selection-background) srgb r g b / 0.6);
+  --button-text-color: var(--color-text);
+  --button-active-background-color: var(--color-selection-background);
+  --button-active-text-color: var(--color-selection-text);
+  --popover-vertical-padding: 1.2rem;
+
+  & svg {
+    overflow: visible;
+  }
+
+  & svg circle {
+    fill: var(--color-text-secondary);
+  }
 }
 
-pre.src {
-    margin: 0;
-    border: unset;
-    background: unset;
-    color: var(--dark-color-text);
+/* .littlefoot--print.littlefoot--print { */
+/*     display: revert; */
+/* } */
+
+.littlefoot__button.littlefoot__button {
+  vertical-align: super;
+  padding: 0 .5em;
+  line-height: 1;
 }
 
-/* 不太重要，且和复制按钮重叠，所以隐藏 */
-pre.src:hover::before {
+#footnotes:has(.littlefoot--print) {
   display: none;
 }
+
+body {
+  &.dark {
+    & .littlefoot.littlefoot {
+      --popover-background-color: var(--dark-color-bg-secondary);
+      --popover-text-color: var(--dark-color-text);
+      --button-background-color: color(from var(--dark-color-selection-background) srgb r g b / 0.6);
+      --button-text-color: var(--dark-color-text);
+      --button-active-background-color: var(--dark-color-selection-background);
+      --button-active-text-color: var(--dark-color-selection-text);
+
+      & svg circle {
+        fill: var(--dark-color-text-secondary);
+      }
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    & .littlefoot.littlefoot {
+      --popover-background-color: var(--dark-color-bg-secondary);
+      --popover-text-color: var(--dark-color-text);
+      --button-background-color: color(from var(--dark-color-selection-background) srgb r g b / 0.6);
+      --button-text-color: var(--dark-color-text);
+      --button-active-background-color: var(--dark-color-selection-background);
+      --button-active-text-color: var(--dark-color-selection-text);
+
+      & svg circle {
+        fill: var(--dark-color-text-secondary);
+      }
+    }
+  }
+}
+
+/* ------------------------------ littlefoot ------------------------------ */
+
+/** ------------------------------ pagefind-ui ------------------------------ */
+.pagefind-ui--reset mark {
+  background: var(--color-selection-background);
+  background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
+  color: var(--color-selection-text);
+  color: light-dark(var(--color-selection-text), var(--dark-color-selection-text));
+}
+
+.pagefind-ui--reset ::placeholder {
+  color: var(--color-text-secondary);
+  color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+}
+
+.pagefind-ui--reset.pagefind-ui--reset.pagefind-ui--reset ::placeholder {
+  opacity: .5;
+}
+
+.pagefind-ui__result-nested + .pagefind-ui__result-nested {
+  margin-block-start: 1.5em;
+}
+
+body.dark {
+  --pagefind-ui-text: var(--dark-color-text);
+  --pagefind-ui-background: var(--dark-color-bg-secondary);
+  --pagefind-ui-primary: var(--dark-color-text);
+  --pagefind-ui-border: var(--dark-color-text-secondary);
+}
+
+/** ------------------------------ pagefind-ui ------------------------------ */
+
+/* ------------------------------ ally-nav ------------------------------ */
 
 .ally-nav {
   position: absolute;
@@ -609,6 +695,10 @@ pre.src:hover::before {
   text-decoration: none;
   top: 10rem;
 }
+
+/* ------------------------------ ally-nav ------------------------------ */
+
+/* ------------------------------ table ------------------------------ */
 
 /*
  * table
@@ -668,47 +758,7 @@ td,th {
   vertical-align: baseline;
 }
 
-/* kbd */
-
-kbd {
-  background-color: var(--color-bg);
-  background-color: light-dark(var(--color-bg), var(--dark-color-bg));
-  color: var(--color-text);
-  color: light-dark(var(--color-text), var(--dark-color-text));
-  border: 1px solid;
-  border-color: var(--color-border);
-  border-color: light-dark(var(--color-border), var(--dark-color-border));
-  border-radius: .25rem;
-  box-shadow: 1px 2px 2px var(--color-box-shadow);
-  box-shadow: 1px 2px 2px light-dark(var(--color-box-shadow), var(--dark-color-box-shadow));
-  display: inline-block;
-  font-weight: bold;
-  padding: 0 .25rem;
-  white-space: nowrap;
-}
-
-details {
-    padding: .7em 1em .5em;
-    border-radius: 15px;
-    font-size: 0.9em;
-    border: 1px solid var(--color-border);
-    border-color: light-dark(var(--color-border), var(--dark-color-border));
-    /* box-shadow: 0.05em 0.1em 5px 0.01em var(--color-box-shadow); */
-    /* box-shadow: 0.05em 0.1em 5px 0.01em light-dark(var(--color-box-shadow), var(--dark-color-box-shadow)); */
-}
-
-/* media query */
-@media screen and (min-width: 900px) {
-  body {
-    max-width: 90vw;
-  }
-}
-
-@media screen and (min-width: 1200px) {
-  body {
-    max-width: var(--content-width);
-  }
-}
+/* ------------------------------ table ------------------------------ */
 
 /* ------------------------------ sidenote ------------------------------ */
 @media (max-width: 1920px) {
@@ -761,11 +811,6 @@ details {
 }
 /* ------------------------------ sidenote ------------------------------ */
 
-.todo {
-  color: var(--color-todo);
-  color: light-dark(var(--color-todo), var(--dark-color-todo));
-}
-
 /* ------------------------------ backtop ------------------------------ */
 #back-to-top {
   position: fixed;
@@ -792,15 +837,15 @@ details {
 
 @media screen and (min-width: 1200px) {
   #back-to-top {
-      right: calc((100vw - var(--content-width)) / 2 - 4em);
+    right: calc((100vw - var(--content-width)) / 2 - 4em);
   }
 }
 
 #back-to-top svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-    fill: currentColor;
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 #back-to-top.show {
@@ -811,18 +856,4 @@ details {
 #back-to-top.show:hover {
   opacity: 1;
 }
-
 /* ------------------------------ backtop ------------------------------ */
-
-.text-emphasis {
-    text-emphasis: dot;
-    text-emphasis-position: under;
-}
-
-#postamble::before {
-    content: 'EASY COME, EASY GO ...';
-    color: var(--color-border);
-    color: light-dark(var(--color-border), var(--dark-color-border));
-    display: block;
-    text-align: end;
-}
