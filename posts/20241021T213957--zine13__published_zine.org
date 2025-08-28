@@ -1,0 +1,913 @@
+#+title:      Zine#13
+#+export_file_name: 13
+#+date:       [2024-10-21 Mon 21:39]
+#+filetags:   :published:zine:
+#+identifier: 20241021T213957
+#+description: Zine 第 13 期
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: toc:1 ^:{}
+#+startup: content indent
+
+这周收到了新买的键盘 Unicomp Mini M，用起来还不错，写了两篇博客记录购买过程和键盘的使用感受：
+
+- [[https://taxodium.ink/an-overseas-shopping-adventure][一次海外购物经历]]
+- [[https://taxodium.ink/keyboards][我的键盘]]
+
+也去检查了一下身体，吞咽不舒服，做了一次[[https://taxodium.ink/gastroscopy][胃镜检查]]。
+
+女朋友送了小米手环 9，好久没用小米手环了，现在的手环看起来还不错，交互上的动画更流畅，数据展示维度也更多。
+
+因为手环上会有一天目标，强迫自己完成当天的步数和卡路里，以及活力指数，倒是起到了让自己多运动的效果。
+
+周末回了家，买了糕点和气泡酒，家人都还挺喜欢。
+
+和邻居散步聊天，和老弟一起吃了顿夜宵，喝完了带回来的啤酒，过得还算开心。
+
+女朋友有同事来家里，做了顿饭，都是按照小红书上的食谱做的，所幸大家都吃得还行。
+
+一周又过去了，好好休息，好好锻炼，祝好！ ヾ(*´∀ ˋ*)ﾉ
+
+* News | Article
+:PROPERTIES:
+:CUSTOM_ID: 81cb4be0-6ff4-4ddd-96df-fe9310b0b9d1
+:END:
+
+** [[https://jsomers.net/blog/gettiers][The three-page paper that shook philosophy: Gettiers in software engineering]]
+:PROPERTIES:
+:CUSTOM_ID: bc04daf4-c7c4-4efc-b6cf-dfc40352c321
+:END:
+
+#+begin_quote
+假设你站在田野里，看到远处有一头奶牛。
+
+但假设你看到的并不是一头奶牛，而是一个用纸糊的栩栩如生的奶牛模型。
+
+你看到的不是奶牛，而是模型。
+
+一方面，你有一个“田里有一头牛”的合理的真实信念：
+
+1.你相信田里有一头牛；
+
+2.这个信念不是凭空产生的，而是因为你看到了一个长得很像牛的东西；
+
+3.事实上，田里确实有一头牛。
+
+不过，我们还是不愿意说你 /知道/ 田里有一头牛，因为从某种意义上说，你是幸运的：
+
+因为一个奇怪的巧合，那里碰巧真的有一头牛 -- 一头你一无所知的牛。
+#+end_quote
+
+#+begin_quote
+Gettier 可以用来形容程序员可能遇到的最棘手的情况之一：
+
+*一个问题有多个潜在原因，而你完全有理由相信其中一个原因，即使另一个原因在暗中起作用。*
+
+我认为，为这些棘手的情况设置一个术语，可以让你对它们保持稍微的警觉。
+
+这样，你就能成为一个更好的开发者。
+#+end_quote
+
+确实，这周开发的时候我也碰到类似的情况。
+
+子组件有一个输入框，用于输入一个自定义数值，另一个组件会基于输入框的值变化而变化。
+
+但是测试发现，当输入一个值，例如200，切换到其他预设数值，再切换回来输入 200，第一次会触发另一个组件更新，而第二次输入不会。
+
+最开始我以为是因为变化的值没有 emit 到父组件，所以就在变化的地方触发了对应值的更新。
+
+但是后来再想想，第一次是能够更新的，说明变化值在某个情况下是能 emit 出去的。
+
+再看看组件的更新链路，发现从输入框切换到预设值后，输入框的值会被重置，但是重置的值没有 emit 到父组件。
+
+父组件就缓存了第一次输入的 200，当再输入 200，尽管 emit 到父组件，但父组件判断值没有变化，就不触发另一个组件的更新。
+
+所以问题还是要尽可能地更进一步，找到根本问题，不能停留在表面，不然就会像文章说的，你以为自己知道了，当其实你并不知道。
+
+引申出来就是要多想想，解决问题的时候更近一步。([[https://matklad.github.io/2024/09/06/fix-one-level-deeper.html][Try to Fix It One Level Deeper]])
+
+** [[https://taylor.town/history-of-microwave-ovens][A History of Microwave Ovens]]
+:PROPERTIES:
+:CUSTOM_ID: cb8a03e2-b97d-4051-a665-6389d8262b53
+:END:
+
+微波炉的发展史，感兴趣可以看看。
+
+** [[https://web.archive.org/web/20241129051045/https://cupofsquid.com/post/not-real/][Let Google Decide]]
+:PROPERTIES:
+:CUSTOM_ID: 98f7b054-6eb7-4d1a-b221-8a1f2d9afc6b
+:END:
+
+作者搬家到了一个地方，这个地方没有在谷歌上被记录，所以谷歌不承认存在这个地方。 这导致作者收寄件都很麻烦。
+
+这表明我们的生活，可能很大程度上都被一些大公司主宰着。
+
+还有的数据，很多都需要云同步，存储在服务商的服务器上，如果哪天他们倒闭了，属于个人的数据可能就丢失了。
+
+我还是更喜欢本地优先的存储，不想数据太多地存储在第三方，要掌握在自己的手上。
+
+就像博客，能够拥有自己的空间，想怎么折腾都行，不需要担心第三方平台的审核，限制。
+
+#+begin_quote
+...我学会了没有什么比与一个真实的、活生生的人交谈更重要，尤其是那些就在街边的人。
+#+end_quote
+
+** [[https://web.archive.org/web/20180224075941/http://this-page-intentionally-left-blank.org/whythat.html][The "This Page Intentionally Left Blank" Project]]
+:PROPERTIES:
+:CUSTOM_ID: 48678a07-3a3e-4464-8448-8f3a49cd130a
+:END:
+
+网上冲浪看到 [[https://blakewatson.com/][Blake Watson]] 的博客，下面有一个 Blank Page 链接，好奇点开看，是一个空白页面，上面有一句话：
+
+"This page intentionally left blank."
+
+然后点开了页面链接，就看到了这个 [[https://web.archive.org/web/20180224075941/http://this-page-intentionally-left-blank.org/whythat.html][The "This Page Intentionally Left Blank" Project]] 。
+
+#+begin_quote
+以前的印刷手册会有一些空白页，通常会注明 "此页故意留空"。在大多数情况下，这是有技术原因的。
+
+...试图将这些空白页再次引入网络。
+
+原因之一是为了让人们记住这些著名的历史空白页。
+
+但最主要的原因还是为了在拥挤不堪的万维网上为网络漫游者提供一个安静和简洁的空间⸺让浮躁的心灵得到放松的空白页。
+#+end_quote
+
+我也跟着做了一个 [[https://taxodium.ink/_blank][_blank]] 页面。
+
+文章里还提到了 [[https://www.w3.org/Provider/Style/URI][Cool URIs don't change]]，之前我调整了博客的发布（见[[file:org-publish-blog.org][使用 org-publish 发布博客]]），URI 我也换了，从 =/post/index.html= 变成了 =/index.html= 。
+
+看来我是一点都不 Cool 呀 ╮(╯▽╰)╭ 不过以后还是要保证 URI 不变，除非没钱续费域名了。∠( ᐛ 」∠)＿
+
+在搜索 blank page 相关的内容的时候，还发现有人注册了 [[https://blank.page/][blank.page]] 域名，做成了一个网页笔记。
+
+** [[https://webdirections.org/blog/on-the-web-and-optimism/][On the web, and optimism]]
+:PROPERTIES:
+:CUSTOM_ID: 493fd1da-1816-4ad3-9232-c52d119516bf
+:END:
+
+#+begin_quote
+几年前，我记得我在天知道什么地方写过一篇文章，说网络的出现恰恰是我们需要的时候，几乎是奇迹般地出现了。
+
+就在我们作为一个物种和一个星球面临全球性生存挑战的时候，一种将我们连接到全球的方式出现了。
+#+end_quote
+
+#+begin_quote
+网络有别于其他技术；对我来说，它天生就更有趣。
+
+硅谷（包括风险投资生态系统）起源于国防技术。
+
+相比之下，网络是为学术学习和相互发现服务而创建的，两者都是本着免费开放的精神建立和共享的。
+
+Tim Berners-Lee、Robert Cailliau 和欧洲核子研究中心 (CERN) 建立了一个原型并将其免费开放，这是一件了不起的事情。
+
+[[https://home.cern/science/computing/birth-web/short-history-web][欧洲核子研究中心在其关于网络历史的网页上指出]]：
+
+*一个重要的观点是，网络应保持开放标准，供所有人使用，任何人都不应将其锁定为专有系统。*
+
+这种精神是它成功的原因，也是网络改变世界的原因。
+
+这也是为什么像我这样的人--在苏格兰，没有任何关系网、财富或特权可言--能够闯入并建立起吸引人们注意力的东西。
+
+这也是我一开始对互联网感兴趣的原因。
+
+我常说：“互联网就是人”；网络不仅仅是协议和管道，更是我们共同构建的互联结构。
+
+甚至在一开始，有些人看到网络就想，"这是我能赚大钱的一种方式"。
+
+对我来说，这始终是一种大规模建立社区的方式。
+#+end_quote
+** [[https://www.johndcook.com/blog/2024/10/13/why-does-fm-sound-better-than-am/][Why does FM sound better than AM?]]
+:PROPERTIES:
+:CUSTOM_ID: 686f1b80-edbe-44b5-b679-8bdd54ccb3c0
+:END:
+
+以前听收音机，上面会有 AM 和 FM，大部分时间听的都是 FM，AM 听过，但发现噪音往往比 FM 更多，而且频道好像比较少。
+
+#+begin_quote
+阿姆斯特朗认为，随机噪声的作用主要是对载波进行振幅调制，而不会持续产生频率衍射。
+#+end_quote
+
+AM 是调幅，FM 是调频，由于噪声主要是对振幅产生影响，FM 传递信息靠的是频率而不是振幅，所以受到噪声的影响更小。
+
+** [[https://www.ftium4.com/miit-yztc.html][一个被忽视的细节：手机号注销后的隐私灾难]]
+:PROPERTIES:
+:CUSTOM_ID: 3fda9704-d55a-48b4-9551-7e6dd5bac33b
+:END:
+
+手机号注销了，但是没有解绑手机号关联的互联网账号，当这个手机号被分配给了新主人，这个人就能看到你关联的互联网账号的内容。
+
+** [[https://simonwillison.net/2024/Oct/17/video-scraping/][Video scraping: extracting JSON data from a 35 second screen capture for less than 1/10th of a cent]]
+:PROPERTIES:
+:CUSTOM_ID: 709dbaa1-caf6-4bea-b3e6-4a543f7451c9
+:END:
+
+用相对较低的价格，利用 LLM 从视频中解析 JSON 数据。
+
+** [[https://www.thecoder.cafe/p/unit-tests-as-documentation][#9: Unit Tests As Documentation]]
+:PROPERTIES:
+:CUSTOM_ID: f4bde6c4-038b-4bf8-a5c5-0c003094f2ac
+:END:
+
+#+begin_quote
+提到文档，我们会想到注释、README 文件或 Notion 或 Confluence 等工具。
+
+然而，我们经常会忘记一种存在于代码本身的文档形式：单元测试。
+
+事实上，单元测试的作用不仅仅是验证我们的代码是否按预期运行；
+
+它们还可以作为活文档 (living documentation) 解释我们的代码是如何运行的。
+#+end_quote
+
+#+begin_quote
+单元测试不仅仅是只是验证代码的一种方法。
+
+如果编写得当，它们可以作为文档反映代码的行为。
+
+因此，让我们确保我们的测试尽可能可读、易懂。
+
+请注意，我并不是建议用单元测试来取代任何形式的文档，而是建议用单元测试来补充和丰富文档。
+#+end_quote
+
+** [[https://blog.scalingdevtools.com/i-interviewed-100-devtools-founders/][I interviewed 100 DevTools founders and this is what I learned]]
+:PROPERTIES:
+:CUSTOM_ID: 1404d107-9469-448a-b38a-83b1e654222a
+:END:
+
+- 不可忽视的一课：了解用户
+  + “听着不要活在自己的脑海里。只管听它就在那里。用户在告诉你，你错了。”
+- 做产品难，但增长更难
+  + 如果你不知道如何找到你的第一批客户，那就说明你出了问题，或者是你让恐惧说服了你，使你放弃了你需要做的事情
+- 实验是唯一的途径
+  + 最优秀的人都知道，你要不断尝试，然后多做有用的事情
+  + 最适合你的方法可能是别人都不做的
+- 您可能需要“销售”
+- 你应该”制作内容“ (应该是指多写一些相关文章？）
+- 分享您的原始进度并使其可视化
+- 不同胜过更好
+  + “在产品方面，人们知道，如果你的产品不受欢迎--如果只是稍微好一点--你就会失败。一般的结果不会让我们起步。但同样的道理也适用于营销方面。”
+- 从开发者世界之外寻找灵感
+- 拥有观点
+  + 例如，"为什么我选择 Vue.js 而不是 React "这个标题就比 "Vue vs React "好得多。
+- 梗图是有效的
+  + (不要那么严肃，搞笑一点更平易近人)
+- 包装非常重要
+  + 不要只是做完功能就发布，为你的工具进行应有的包装：好的 README、好的文档、好的网站，而这些可能比实际工作花费的时间更长。
+- 创始人应直接并积极参与营销和社区活动
+- 不要追逐过多的增长渠道
+- 拥抱自己
+  + 你知道有句俗话说，狗最终会变得和主人一样吗？
+  + 但重要的是要记住，虽然你可以擅长很多事情，但不可能样样精通。这也没关系。
+  + 你应该向自己的执着靠拢，不要害怕承认自己的弱点。
+  + 对于很多弱点，你可以置之不理。例如，如果你不幽默，就不要尝试制作搞笑备忘录。只要专注于你擅长的其他事情就可以了。
+- 如果你想做大，就要获得资金。否则，就自筹资金。
+  + 在我看来，只有在你正在解决一个真正的大问题，能够建立一个价值数十亿美元的公司时，才应该寻求风险投资融资。具体来说，你不应该只是让投资者觉得这是一个十亿美元的机会。你应该对此深信不疑。
+  + 所以除非你的目标是彻底改变世界和/或成为亿万富翁，否则我建议你尝试在不融资的情况下实现目标。
+- 你应该享受乐趣
+  + 这是一条漫长的道路，要建立一家庞大的公司，你需要享受这个过程。
+- 雇佣那些对事情上心，主动的人
+  + Don't hire the people who do hoover when asked
+  + Hire the ones who notice when it needs doing
+
+
+*If you take away one thing from this article: talk to your users.*
+
+** [[https://iceprosurface.com/%E7%9F%A5%E8%AF%86%E5%BA%93/%E6%80%9D%E8%80%83/%E6%80%8E%E6%A0%B7%E5%B8%A6%E5%A5%BD%E4%B8%80%E4%B8%AA%E5%9B%A2%E9%98%9F][怎样带好一个团队]]
+:PROPERTIES:
+:CUSTOM_ID: 08fd416c-726f-4ee7-81f0-dcbd04850820
+:END:
+
+关于一些优化是否需要做，我觉得作者提供了一个挺好的衡量方法:
+
+#+begin_quote
+你作为管理者，必然会面对很多资源分配和调度的问题，对于资源分配和调度，最关键的问题是要把重要的资源放在核心问题上。
+
+并且要抓紧核心问题，除此以外维持项目健康度的内容不能放下。
+
+至于什么是核心问题，最重要的一点是能带来收益的才是核心问题。譬如一个经典的问题：
+
+Vue2 需要升级 Vue3 么？
+
+站在一个技术人的角度，需要，因为未来长期来看 Vue3 必然会占据整个市场的主体地位——这点是不容质疑的。
+
+但是升级 Vue3 是公司的核心问题么？恐怕不是！
+
+升级 Vue3 能带来什么？对于公司而言除了增加 2-3 个月的无产出期、大量的人力占用、新增的大量 bug 意外，没有任何收益。
+
+所以作为管理者，你需要的是调度的团队资源优先去完成赚钱的项目，在完成这样的项目以后再去考虑升级。
+
+除此以外，你需要找到升级 Vue3 的必要性，这个必要性是站在公司角度的。
+
+比如你花费了 20 人天，但是未来的 3 个月内你能节省出 20 人天来收回成本，那就是有效的。
+#+end_quote
+
+对于一些规范的落实，我也很认同作者的说法：
+
+#+begin_quote
+很多团队无法达成共识的很大原因是无法严格执行规范，你作为领导者首要的是以身作则，你必须要实打实的去完成团队制定的规范，严格的监督每一个团队成员的执行，并且要发动团队其他成员互相监督。
+
+抓了不抓紧就没有意义，会丧失团队的凝聚力，会让团队制定的规则失去威信，最终整个项目快速劣化。
+
+另外一点就是规范要让所有团队成员一起参与制定，并且要让所有团队成员认可，至少认可的这一个选项必须是满足所有团队成员底线的原则。这样才能让团队里面的所有成员执行。
+#+end_quote
+
+之前也尝试叫团队成员，一定要在发布之前完成 review，尽量通过 GitLab 的 merge request 去 review，留言，这样可以看得仔细一点，也节省大家开会 review 的时间。
+
+但是我不是 leader，只是个小喽啰，也不好强制别人实施，或许也是我自己的一厢情愿，没有得到所有人的认可，所以最终这个事情都没有落实。
+
+** [[https://www.greptile.com/blog/how-we-engineer][Splitting engineering teams into defense and offense]]
+:PROPERTIES:
+:CUSTOM_ID: 328659f1-7f37-40d9-97dc-55d5cac4cdae
+:END:
+
+#+begin_export html
+<img src="https://www.greptile.com/5-min.png" alt="Productivity chart">
+#+end_export
+
+#+begin_quote
+我们指示团队的一半（2 名工程师）在特定时间段内以 2-4 周为单位处理长期任务。
+
+这可能是重构、大功能等。在此期间，他们不需要处理任何支持工单或错误。
+
+他们唯一的工作就是专注于发布他们的 Pull Request。
+
+另一半的工程师必须保护前两者，避免任何支持工作、错误等。
+
+他们的工作是围绕长期运行的过程建立一个堡垒，捕捉所有事件驱动的工程工作。
+
+在周期结束时，我们进行交换。
+#+end_quote
+
+
+#+begin_quote
+当你让手工艺者不再分心时，就会发生令人惊叹的事情。他们可以花更多的时间在流程上，并在大脑的 "客户端 "保留大量的背景信息。
+
+重要的是，只需 1-2 次短暂中断，就能大幅减少工程师一天的工作量。
+
+由此可见，将干扰隔离给少数人，比分散干扰以 "保持每个人的工作效率 "要有用得多。
+
+如果你在支持上花费了一定的时间，那么在支持上花费更多的时间也不会对你的工作效率产生太大的影响。
+#+end_quote
+
+要想高效地做一些事情，需要给自己留足够长的高质量时间。
+
+对于团队，我觉得这种方法也挺好，如果所有人都忙着那些紧急重要，紧急不重要的事情，那就没有时间去处理那些不紧急但重要的事情了。
+
+例如一些重构，大功能的开发，这些都是需要投入足够连续的时间才能做得好。
+
+如果一直做那些临时来的，紧急的事情，时间久了，可能整个系统会变得越来越难扩展和维护。
+
+需要腾出时间来做这些真正重要，有价值的事情，但是也需要有人处理日常迭代，那么将团队分两拨人，一部分人专注做大功能，一部分人保护他们免打扰，确实是不错的法子。
+
+** [[https://help.kagi.com/kagi/why-kagi/why-pay-for-search.html][Why pay for search]]
+:PROPERTIES:
+:CUSTOM_ID: 6f599ae5-6b57-404a-95ba-c985bbdb4a8d
+:END:
+
+搜索引擎里充满了广告，不过搜索引擎维护也要成本，又是免费提供的，所以无可避免吧。
+
+如果你不想看到那些广告，Kagi 提供了付费的搜索引擎，你付费承担它的维护成本，这样就没有广告了。
+
+Kagi 也提供了一些 AI 功能。
+
+不过一个月订阅最低是 5 美元，我目前订阅的产品也不少，对于广告我也不是那么无法容忍，还是先用着免费的 Duck Duck Go 吧。
+
+** [[https://darioamodei.com/machines-of-loving-grace][Machines of Loving Grace]]
+:PROPERTIES:
+:CUSTOM_ID: 81020005-59f2-4cfd-aa9a-ec1d181c0773
+:END:
+
+[[https://www.anthropic.com/][Anthropic]] 的 CEO 分享的对于未来 AI 的一些推测。
+
+文章很长，冲杯咖啡慢慢看。
+
+** [[https://blog.cloudflare.com/the-story-of-web-framework-hono-from-the-creator-of-hono/][The story of web framework Hono, from the creator of Hono]]
+:PROPERTIES:
+:CUSTOM_ID: 714445d9-95be-49e8-a46c-41f60de941e7
+:END:
+
+Horo 创作者的一篇文章。
+
+#+begin_quote
+您可能会问：“为什么 Cloudflare 的员工要创建一个随处运行的框架？”
+
+最初，Hono 是专为 Cloudflare Workers 设计的。
+
+但是，从第 2 版开始，我增加了对 Deno 和 Bun 的支持。
+
+这是一个非常明智的决定。如果 Hono 只针对 Cloudflare Workers，可能不会吸引那么多用户。
+
+通过在更多的运行时上运行，它可以获得更多的用户，从而发现更多的错误并获得更多的反馈，最终产生更高质量的软件。
+#+end_quote
+
+Hono 结合 Cloudflare 的用法看起来确实不错，简单得多。
+
+
+* Tutorial
+:PROPERTIES:
+:CUSTOM_ID: 57bbdd06-8941-4cd7-9cc1-ddda144dfdbd
+:END:
+
+** [[https://joaquimrocha.com/2024/09/22/how-to-fork/][How to fork: Best practices and guide]]
+:PROPERTIES:
+:CUSTOM_ID: cf0ac2fe-4038-47db-8f39-9aad9152fedc
+:END:
+
+关于如何维护好 fork 的仓库的一些实践和指南。
+
+- Use atomic commits :: 提交只包含一个改动，颗粒度小，就容易维护。
+- Identify your fixes and non-fixes :: commit message 中区分 fix 和其他修改，fix 的可能是需要合并到上游的，如果不区分到时不好找。
+- No evil merges :: merge 不要包含其他变更，只是单纯的 merge
+- Rebase early, rebase often :: 及时和上游合并代码，进行 rebase，保持进度，到时需要 merge 就不会落后太多
+- Contribute changes back :: 将改动提交到上游，这样这部分代码就有其他人维护了，而不仅是自己
+- Keep a good relationship with upstream :: 符合上游的规范，建立和上游的信任，这样才能促进积极合作
+
+** [[https://uadesignsystem.com/][The Ultinamte E-book for Crafting Design Systems]]
+:PROPERTIES:
+:CUSTOM_ID: 6372e382-ed50-4109-843c-f8bfbf35d4fd
+:END:
+
+一本关于设计的电子书，完整书籍需要付费购买。
+
+** [[https://browser.engineering/index.html][Web Browser Engineering]]
+:PROPERTIES:
+:CUSTOM_ID: bea68173-0347-47e1-99f6-2ed3ff279811
+:END:
+
+#+begin_quote
+网络浏览器无处不在，但它们是如何工作的？
+
+本书解释了如何用几千行 Python 构建一个基本但完整的网络浏览器，从网络连接到 JavaScript。
+#+end_quote
+
+** [[https://react.dev/learn/thinking-in-react][Thinking in React]]
+:PROPERTIES:
+:CUSTOM_ID: 04437a2b-6594-4d82-a919-32c22e12930b
+:END:
+
+React 这篇关于如何编写页面的思考方式一读再读。
+
+有时写组件的时候欠缺一些思考就上手实现了，尽管实现了，但是拆分得可能没那么好，不利于后续的扩展。
+
+按照 React 的这个思考方式来应该能避免动手太快，思考太短，从而让最终的实现更健壮一些。
+
+** [[https://htmlforpeople.com/][HTML is for people]]
+:PROPERTIES:
+:CUSTOM_ID: e6fbc170-1af5-4c24-9191-61cc40e4d837
+:END:
+
+[[https://taxodium.ink/12][Zine#12]] 中读了 [[https://kristoff.it/blog/static-site-paradox/][The Static Site Paradox]] 提倡让网页开发简单，这样非专业人士也能参与。
+
+而这篇文章的作者，则写了一个教程，教非专业的人如何搭建一个个人博客。
+
+整体还是比较容易的，即使没有学过编程，应该也能轻松完成教程。
+
+** [[https://www.btbytes.com/posts/optimize-images-imagemagick-pngcrush][Optimizing images using ImageMagick, pngcrush (and ChatGPT)]]
+:PROPERTIES:
+:CUSTOM_ID: 07bcf5fc-abad-4950-8fe4-0ea52e7a3f04
+:END:
+
+前阵子写博客，想把图片压缩一下减少体积，看到可以用 [[https://imagemagick.org/][ImageMagick]] 和 [[https://pmt.sourceforge.io/pngcrush/][pngcrush]]，这是一篇简单的教程，讲述怎么使用这两个工具编写 bash 脚本完成压缩。
+** [[https://registerspill.thorstenball.com/p/how-i-use-git][How I use git]]
+:PROPERTIES:
+:CUSTOM_ID: dade5433-3e3c-4d5d-bfab-50c63f10c50b
+:END:
+
+关于一个提交应该包含什么内容，作者的判断值得借鉴：
+
+- 易于他人理解的，包含一个改动的完整内容
+- 可回退的，如果不小心做错了，是否只需要回退 (git revert) 一个改动，还是需要回退其他很多个不相关的改动？
+- 可二分 (bisectable)，如果一个改动包含 3000 行提交，二分法时就不容易找到发生错误的地方
+
+#+begin_quote
+I commit early and commit often.
+
+My mental model for a commit: a quicksave in a video game.
+
+You survived those three zombies hidden behind the corner? Quicksave.
+
+You fixed that nasty bug that required changes that you don’t really understand yet but it works? Quicksave.
+#+end_quote
+
+作者把提交比作游戏里的存档点，我觉得很合适，尽早提交，每次提交只包含一个独立改动。
+
+就像玩游戏，总希望多一些存档点，死了不用重新跑图，写代码也是的，多点存档点不好吗。
+
+
+* Code
+:PROPERTIES:
+:CUSTOM_ID: 4581f680-d946-4982-a9ff-0f084cf413a9
+:END:
+
+** [[https://evanhahn.com/set-big-timeout/][setBigTimeout]]
+:PROPERTIES:
+:CUSTOM_ID: 7246aac9-ba33-4fbb-a268-0b6332ce003f
+:END:
+
+#+begin_quote
+JavaScript 的 setTimeout 会在 ~25 天后崩溃。
+
+我制作了 setBigTimeout 这个愚蠢的模块来解决这个问题。
+#+end_quote
+
+
+** [[https://www.robinwieruch.de/react-folder-structure/][React Folder Structure in 5 Steps [2024]​]]
+:PROPERTIES:
+:CUSTOM_ID: 54d8f9ac-36b0-4451-b12b-8919a90c2382
+:END:
+
+大型 React 项目的文件组织形式方法，可以借鉴一下。
+
+作者从单文件慢慢扩展到复杂的目录结构，分享了一些比较好的实践。
+
+
+** [[https://abhisaha.com/blog/interactive-post-oklch-color-space/][Interactive post on OKLCH color space]]
+:PROPERTIES:
+:CUSTOM_ID: 8a6db9c6-24df-43da-9159-80396f2902a7
+:END:
+
+文章揭示了为什么 sRGB 色彩空间过度不平滑，以及它存在的问题。
+
+同时也解释了 OKLCH 的一些原理，为什么它看起来更平滑，更符合人的感受。
+
+#+begin_quote
+OKlch 采用的是感知色彩空间，因此色彩之间的过渡更加平滑，视觉效果也更加准确。
+
+当您在 OKlch 空间中对两种颜色进行插值时，所产生的渐变会尊重人类感知明度、饱和度（色度）和色调变化的方式。
+
+切换到 OKlch 并不重要，重要的是要了解它是如何工作的，以及它将带来什么。
+
+如果您正在处理主要使用 sRGB 的现有项目或系统，切换到 OKlch 可能会带来一些复杂性。
+
+sRGB 仍然是许多应用中的主流色彩空间。
+
+不过，如果您正在启动一个新项目，尤其是那些专注于色彩交互的项目（如艺术应用程序、设计工具等），采用 OKlch 可以让您的工作更有未来性。
+#+end_quote
+
+
+** [[https://css-tricks.com/css-tricks-that-use-only-one-gradient/][CSS Tricks That Use Only One Gradient]]
+:PROPERTIES:
+:CUSTOM_ID: bcdd0112-bce7-4e83-99a4-f3beabc6447b
+:END:
+
+作者只用一个 gradient，创造出了很多复杂的图案，感觉可以用在博客的背景中。
+
+
+** [[https://www.trysmudford.com/blog/i-spent-a-day-making-the-website-go-2ms-faster/][I wasted a day on CSS selector performance to make a website load 2ms faster]]
+:PROPERTIES:
+:CUSTOM_ID: 87a7eaf3-521a-4f02-9fb3-d6d903535e63
+:END:
+
+#+begin_quote
+我突然发现了多年前就被我束之高阁的一个知识点。
+
+在 CSS 中，选择器是从右向左读取的。
+
+这种自下而上的解析形式在匹配 DOM 节点时对浏览器来说更有效。
+
+不过，您可以开始理解为什么像 =.parent > * + *= 这样的选择器会被标记为效率较低的选择器之一。
+#+end_quote
+
+要避免选择太多的 CSS 选择器，太多这样的选择器，会让 CSS 的效率降低很多。
+
+
+** [[https://frontendmasters.com/blog/css-fan-out-with-grid-and-property/][CSS Fan Out with Grid and @property]]
+:PROPERTIES:
+:CUSTOM_ID: 0b535160-4e31-4151-8e04-ad3674207038
+:END:
+
+使用 CSS 实现列表的收起展开效果。
+
+#+begin_export html
+<iframe height="500" style="width: 100%;" scrolling="no" title="CSS Reveal (grid-template-rows + @property)" src="https://codepen.io/rpsthecoder/embed/xxvRrYQ?default-tab=result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href="https://codepen.io/rpsthecoder/pen/xxvRrYQ">
+  CSS Reveal (grid-template-rows + @property)</a> by Preethi Sam (<a href="https://codepen.io/rpsthecoder">@rpsthecoder</a>)
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+#+end_export
+
+
+** [[https://www.framer.com/blog/sites-interactive-faster][Sites Now Become Interactive 50% Faster]]
+:PROPERTIES:
+:CUSTOM_ID: 0b5651c3-d9ee-42e0-bfb8-e82ad4a2ca9f
+:END:
+
+通过 Suspense 将网页速度提高了 50%。
+
+** [[https://www.joshuawootonn.com/react-drag-to-select][Drag to Select]]
+:PROPERTIES:
+:CUSTOM_ID: e4e3a975-9536-45dc-8cf0-9ca5d4168e2d
+:END:
+
+作者使用 React 实现一个拖拽选择的功能。
+
+包括创建 DOM，使用 [[https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent][PointerEvent]]，增加矢量信息处理拖拽方向，计算选择区域和待选元素的交集，处理滚动条问题，以及这些数据如何存储等。
+
+文章的代码示例很全，如果需要实现类似的功能，应该能从中得到很多启发。
+
+
+* Cool Bit
+:PROPERTIES:
+:CUSTOM_ID: a5b20915-8417-4de2-8122-7518c83e2dcb
+:END:
+
+** [[https://hackertyper.net/][Hacker Typer]]
+:PROPERTIES:
+:CUSTOM_ID: 4ef96e5f-0dcc-4a6c-8aa2-5521c1c13395
+:END:
+
+Hacker 风格的界面，随便在键盘敲什么，它会将预置的内容输出，适合用来假装 hacker。
+
+如果买了新键盘，想试试手感，打开这个网站一顿敲也挺好。
+
+** [[https://how-i-experience-web-today.com/][How I Experience Web Today]]
+:PROPERTIES:
+:CUSTOM_ID: ab57b57e-dca8-4388-ab98-1d0572fbd6fc
+:END:
+
+作者模拟现在网页的一些烦人的操作，点了四五步我已经不想继续点了。(╯°□°）╯︵ ┻━┻ ([[https://news.ycombinator.com/item?id=41859047][Hacker News Comments]])
+
+类似的，有人做了一个也是满屏广告还有花里胡哨特效的网站： [[https://modem.io/blog/blog-monetization/][How to Monetize a Blog]]。
+
+他还写了里面的一些特效如何实现的 [[https://modem.io/blog/blog-monetization-making-of/][How to Write a Blog Post About How to Monetize a Blog]] 。
+
+** [[https://mattferraro.dev/posts/caustics-engineering][Hiding Images in Plain Sight: The Physics Of Magic Windows]]
+:PROPERTIES:
+:CUSTOM_ID: d8552628-ddb0-453b-bf94-8560cb2497ef
+:END:
+
+作者在一块透明玻璃上刻了纹路，光线透过会看到一幅图画。
+
+里面的数学知识好多，看不太明白，但是看作者一步步解决问题的过程，也很 cool，这样的记录也值得学习。
+
+** [[https://busy.bar/?hn][Busy Status Bar]]
+:PROPERTIES:
+:CUSTOM_ID: 715f4282-5129-4c0b-b05b-e965a7adb1e2
+:END:
+
+想法很不错的产品，一个可以放在显示器上的状态栏，告诉别人你在忙，或者在通话，请不要打扰。
+
+#+begin_quote
+但遗憾的是，根据我的经验，在办公室里经常打断你说话的人，会忽略所有明确的信号。
+
+佩戴降噪耳机是“正在工作，请勿打扰”的公认标志，但有些人却觉得这不适用于他们。
+
+或者他们只是站在你的办公桌旁边等待你的注意。
+
+[[https://news.ycombinator.com/item?id=41838337][Source]]
+#+end_quote
+
+** [[https://github.com/arturbien/balloons-js][balloons-js]]
+:PROPERTIES:
+:CUSTOM_ID: 57309e4f-173f-422d-a01e-be6e991bc948
+:END:
+
+在页面上升起气球。
+
+** [[https://emoji.build/deal-with-it-generator/][Deal With It]]
+:PROPERTIES:
+:CUSTOM_ID: d0b97f49-ca14-4b6e-9b86-35505bcb1a8a
+:END:
+
+上传一个人物图片，生成带墨镜的 GIF 图。
+
+** [[https://www.bilibili.com/video/BV1VGmEYeE21/?spm_id_from=333.1007.tianma.1-3-3.click&vd_source=f80d9787e4afd6deb997dc42879718d0][任天堂闹钟！这东西凭啥卖断货？丨小宁子]]
+:PROPERTIES:
+:CUSTOM_ID: 9a25be5e-20e2-4d01-9bfd-0216b529c8cc
+:END:
+
+任天堂闹钟的测评，看起来挺有趣的。
+** [[https://dri.es/my-solar-powered-and-self-hosted-website][My solar-powered and self-hosted website]]
+:PROPERTIES:
+:CUSTOM_ID: 06cda22e-181a-4bdc-a652-14d5dacb65eb
+:END:
+
+作者用太阳能板和树莓派，搭建了一个网站，实现过程比较硬核，需要一些硬件知识。
+
+#+begin_quote
+是的，在阴天或寒冷的日子里，本网站可能会瘫痪。但不用担心！当太阳出来的时候，网站就会在阳光的照耀下恢复正常。
+#+end_quote
+
+#+begin_quote
+这个项目源于我的好奇心，我想让网站和虚拟主机更加环保，哪怕是小规模的环保。
+
+这也是一次探索本地优先方法的机会：证明在家中通过自己的互联网连接托管个人网站通常足以满足小型网站的需求。
+
+这符合我对开放网络和独立网络 ([[https://indieweb.org/][IndieWeb]]) 的承诺。
+#+end_quote
+
+#+begin_quote
+最后，还必须记住，太阳能发电不仅仅是为了省钱或减少排放。
+
+在没有电网的偏远地区或救灾期间，太阳能可能是保证通信系统运行的唯一途径。
+
+在危机情况下，一个小型太阳能装置可以使人们与世隔绝，或与重要信息和支持保持联系。
+#+end_quote
+
+#+begin_quote
+许多网站，包括我的网站，都不是关键任务型网站。即使偶尔离线，世界也不会毁灭。
+#+end_quote
+** [[https://pudding.cool/2024/10/crokinole/][Crokinole]]
+:PROPERTIES:
+:CUSTOM_ID: ea695482-e2bf-434b-92f4-301748315b83
+:END:
+
+桌面冰球游戏，记得任天堂的世界游戏大全 51 里也有一个类似的游戏，不过实体游戏感觉更好玩。
+
+文章里做了一个交互式的教程，让你了解 Crokinole 的游戏规则。
+
+** [[https://tympanus.net/codrops/2024/10/16/staggered-3d-grid-animations-with-scroll-triggered-effects/][Staggered (3D) Grid Animations with Scroll-Triggered Effects]]
+:PROPERTIES:
+:CUSTOM_ID: b9fd5ab7-82c8-401b-98e6-4f28cb53600c
+:END:
+
+作者实现了一个挺炫酷的页面，页面基于滚动的动画，实现了透视，滤镜等效果。
+
+推荐看一看。
+** [[https://www.essay.ink][Essay]]
+:PROPERTIES:
+:CUSTOM_ID: 64a29961-0a89-4d25-8ce1-f6646c50b720
+:END:
+
+#+begin_quote
+Essay 最初源于一个想法：AI 模型就是我们这个世界的缩影，从今往后，会不断吸收我们产生的数据，
+
+如果有一个公开的地方能记录我的所见所闻所想，我存在事实就会永远被人工智能留下。
+
+但自己文笔不好，每次写博客都没能坚持下来，所以 Essay 上线了。
+
+最初的想法无从验证，但我想就这么一直写，漫无目的写，寥寥几笔也行，
+
+记录我见过的景，遇到的人，读过的书、听过的歌、看过的电影、闪过的念头...，往后每年将一整年的记录打印成册保存下来。
+
+可能某天，会有人读到我的文字，脑子里会见到我见过的景，遇到我遇见过的人、读到我读过的书…，无论我在还是不在。
+
+[[https://www.essay.ink/essays/zoxtwrhypbjsmfmkekok][Source]]
+#+end_quote
+
+Essay 这个文字社区看起来挺简洁的，不过还是更倾向于把文字记录在自己的博客。
+
+放在平台也许访问量会更高，但是数据不归属自己，内容也受到限制，不符合 [[https://indieweb.org/][IndieWeb]] 的原则。
+
+
+* Tool | Library
+:PROPERTIES:
+:CUSTOM_ID: a9209a7f-e7ea-4689-9cee-cff260c65d84
+:END:
+
+** [[https://www.explainshell.com/][explainshell.com]]
+:PROPERTIES:
+:CUSTOM_ID: abe8c12a-0e99-4d76-8866-b1cd192291d9
+:END:
+
+一个可以解释 shell 命令的网站，对于学习 shell 命令应该会挺有帮助。
+
+** [[https://www.dobrowser.io/][dobrowser]]
+:PROPERTIES:
+:CUSTOM_ID: 49dbff4c-138e-424f-9dbc-7a1bbaddf19e
+:END:
+
+通过 prompt 指导浏览器帮你完成一些任务。Chrome 本身自带 Gemini，或许以后 Chrome 能自带这个功能？
+
+** [[https://mermaid-ascii.art/][Mermaid ASCII]]
+:PROPERTIES:
+:CUSTOM_ID: 89d6d57f-655b-429d-b0a0-9c6aad4dfc3c
+:END:
+
+可以将 [[https://mermaid.js.org/][Mermaid]] 转换成 ASCII，不过支持的类型不是很多，像 Sequence diagrams 目前还不支持。
+
+** [[https://once.com/writebook][Writebook]]
+:PROPERTIES:
+:CUSTOM_ID: ee0d67c7-18c0-48ee-9628-084868922c0f
+:END:
+
+#+begin_quote
+博客和社交媒体发帖很简单。
+
+但为什么在网上出版一本完整的书却如此困难？现在不再是这样了。
+
+Writebook 是一款非常简单的软件，允许您以简单、可浏览的在线书籍格式发布文本和图片。
+#+end_quote
+
+** [[https://gamma.app/][Gamma]]
+:PROPERTIES:
+:CUSTOM_ID: b526cf2d-60e3-4d90-8a00-f79af102c7bf
+:END:
+
+#+begin_quote
+A new medium for presenting ideas. Powered by AI.
+
+Beautiful presentations, documents, and websites. No design or coding skills required.
+#+end_quote
+
+** [[https://kaomoji.ai/zh][颜文字 (✪ω✪)]]
+:PROPERTIES:
+:CUSTOM_ID: 57c3646e-314a-438a-8603-fa5eec6c58ab
+:END:
+
+AI 生成颜文字。
+
+想着如果能在 Emacs 中方便输入颜文字就好了，没想到真有人做了: [[https://github.com/kuanyui/kaomoji.el][Kaomoji.el]]。 σ ﾟ∀ ﾟ) ﾟ∀ﾟ)σ
+
+** [[https://hitokoto.cn/][一言]]
+:PROPERTIES:
+:CUSTOM_ID: c30761f5-62bb-4204-9c66-7941b7c7f9a0
+:END:
+
+提供 API 获取随机的句子。
+
+** [[https://picsum.photos/][picsum.photos]]
+:PROPERTIES:
+:CUSTOM_ID: 0523095f-cee3-467a-941d-4115d6e3b40a
+:END:
+
+提供接口获取随机图片。
+
+** [[https://textbehindimage.rexanwong.xyz/][Text Behind Image]]
+:PROPERTIES:
+:CUSTOM_ID: 4ddc4458-9529-4075-810d-c79e45fb9846
+:END:
+
+上传图片，编写文字，生成文字在图片后的图片。
+
+#+begin_export html
+<img src="https://textbehindimage.rexanwong.xyz/_next/static/media/pov.f0636119.png" alt="thumbnail">
+#+end_export
+
+** [[https://jam.dev/][Jam]]
+:PROPERTIES:
+:CUSTOM_ID: 1d834d6b-6942-4fdb-ae99-c1e9dfdc47ff
+:END:
+
+一个 Chrome 扩展，生成浏览器快照，包括屏幕录制，console，network 等，然后你可以将快照直接发给开发人员，开发人员就会拥有很多上下文可以定位问题。
+
+但是它需要将数据上传到它的服务器，感觉数据上不够安全。
+
+** [[https://fontsensei.com/][Font sensei]]
+:PROPERTIES:
+:CUSTOM_ID: d34ab533-a819-4ae3-ab43-acfb92788fe9
+:END:
+
+“字体老师”，将 Google 字体按标签分类，方便查找字体下载。
+
+** [[https://www.dairiki.org/xface/xface.php][Online X-Face Converter]]
+:PROPERTIES:
+:CUSTOM_ID: 199c6871-6d00-4e26-aa14-e4900f57b30a
+:END:
+
+#+begin_quote
+=X-Face:= 标题允许您在电子邮件或 Usenet 新闻帖子的标题中包含 48x48 位图（每像素一位）图标。
+
+一些（“更好的”）电子邮件和新闻客户端可以在显示信息的同时显示这些图标。
+
+使用本页，您几乎可以将任何图像转换为 =X-Face:= 标头。
+#+end_quote
+
+
+* 一些话
+:PROPERTIES:
+:CUSTOM_ID: 50f9f294-8ba9-4ef5-af6d-cc22887b1474
+:END:
+
+- [[https://fika.bar/blogs/paoramen/why-is-everybody-talking-about-syncing-engines-01JAAEZTCMZA28DSESAJR3J30J][Why is everybody talking about sync engines?]]
+
+#+begin_quote
+我希望这篇文章的某些部分能让你会心一笑，甚至开怀大笑。
+
+我喜欢在文章中加入一些暗示，以表明我的文章不是由人工智能生成的。
+
+到目前为止，幽默感作为现代图灵测试似乎还不错。
+
+
+#+end_quote
+
+- [[https://technicalwriting.dev/strategy/decisions.html][Focus on decisions, not tasks#]]
+
+#+begin_quote
+In technical communication, we don’t talk much about decision support;
+
+we talk about task support…
+
+In many cases, the information people need to complete their tasks is not information on how to operate machines, but information to support their decision making…
+
+simply documenting the procedures is never enough…
+
+What I am talking about is documenting the context, letting users know what decisions they must make, making them aware of the consequences, and, as far as possible, leading them to resources and references that will assist them in deciding what to do.
+#+end_quote
+
+写一篇技术文章，不仅要告诉读者怎么做，更重要的要告诉读者为什么要这么做，让读者能够做决定要不要这么做。
+
+
+* Music
+:PROPERTIES:
+:CUSTOM_ID: d422641b-8150-4e76-a5b3-2661b38fcca4
+:END:
+
+这周，方大同的新专辑《[[https://music.163.com/#/album?id=250300440][梦想家 The Dreamer]]》发布了，感兴趣可以看看[[https://www.bilibili.com/video/BV1ZzyTYvEgq/?spm_id_from=333.788.top_right_bar_window_default_collection.content.click][可能是方大同新专辑的唯一专访!丨真假方大同终于同框丨HOPICO]]了解歌曲背后的故事。
+
+此外推荐几首 Jazz：
+
+- [[https://music.163.com/#/song?id=521267042][Airegin Baybridge Road]]
+- [[https://music.163.com/#/song?id=20783184][Love Theme from the Robe]]
+- [[https://music.163.com/#/song?id=20783181][Love Theme from Spartacus]]

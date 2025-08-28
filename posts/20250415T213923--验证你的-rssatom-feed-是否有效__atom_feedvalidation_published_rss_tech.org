@@ -1,0 +1,73 @@
+#+title:      验证你的 RSS/Atom feed 是否有效
+#+export_file_name: valid-your-feed
+#+date:       [2025-04-15 Tue 21:39]
+#+filetags:   :atom:feedvalidation:published:rss:tech:
+#+identifier: 20250415T213923
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 验证你的 RSS/Atom feed 是否符合 W3C 标准
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content indent
+
+[[file:blog-update-2025-04-08.org][最近改了订阅流]]，发现之前提交到 [[https://www.v2ex.com/xna][VXNA]] 的订阅流失效了，一直无法拉取更新。
+
+[[https://www.v2ex.com/t/1061054?p=1#reply11][和 Livid 沟通后]]，他给了我 [[https://validator.w3.org/feed/check.cgi?url=https%3A%2F%2Ftaxodium.ink%2Findex.xml][一个链接]]，是 [[https://validator.w3.org/feed/][Feed Validation Service]] 这个网站，你可以给它一个订阅流 URL，或者把整个订阅流的 XML 复制进去，然后校验你的订阅流是否有效。
+
+如果是有效的，你会看到 “This is a valid Atom 1.0 feed.” 或者 “This is a valid RSS feed.” 等类似的提示。
+
+如果是不符合规范的，你会看到 “This feed does not validate.”
+
+我去校验了一下我的订阅流，确实存在一些不符合规范的地方：
+
+- id 不符合 [[https://validator.w3.org/feed/docs/warning/NonCanonicalURI.html][canonical form]] [fn:1]
+
+  #+begin_src diff
+    - feedId: 'https://taxodium.ink',
+    + feedId: 'https://taxodium.ink/',
+
+  #+end_src
+
+- <follow_challenge> 不是合法的 feed 元素。[fn:2]我将它移除了，移动到了 <subtitle> 中声明。
+
+  Folo 声明自己的订阅流有三种办法：
+
+  1. 写一篇文章，包含 feedId 和 userId，并且文章始终包含到订阅流中
+
+  2. 在 <description> (RSS) 或者 <subtitle> (Atom) 中声明 feedId:xxxx+userId:xxxx
+
+  3. 使用 <follow_challenge>
+
+  #+begin_src xml
+    <follow_challenge>
+        <feedId>xxxx</feedId>
+        <userId>xxxx</userId>
+    </follow_challenge>
+  #+end_src
+
+  其中第 3 种是最好的，不会污染文章内容，也不会在 description 中显示出来。
+
+  但遗憾的是 <follow_challenge> 不属于合法的 feed 元素，会导致 feed 校验失败。
+
+- 订阅流中不允许包含 <iframe> 标签 [fn:3]，部分 CSS 属性也不允许写在 style 中[fn:4]。
+
+  我的订阅流包含一些用 <iframe> 写的代码示例，以及为了实现标题的 view-transition 效果，标题我都添加了 style="view-transition-name: xxx"。
+
+  但是它们目前都是不允许被包含在订阅流的 XML 中的，所以我在生成订阅流的时候将它们移除了。
+
+目前我已经都调整好了[fn:5]，如果你是自己生成的订阅流，生成完之后，可以用 [[https://validator.w3.org/feed/][Feed Validation Service]] 验证一下～
+
+Happy hacking (ﾉ>ω<)ﾉ
+
+* Footnotes
+
+[fn:1] id 是一个订阅流的唯一标识，更新之后可能会认为这是一个新的 feed，会导致出现重复的 feed entry（文章），目前我不太清楚如何修复。Folo 上，我尝试了 reset feed，rebuild database，以及 clean cache，好像都没有用。不过受影响的主要是历史的文章，新写的看起来不会重复。如果你碰到了，目前我只能说声抱歉了。
+
+[fn:2] [[https://validator.w3.org/feed/docs/error/UndefinedElement.html][Undefined parent element: child]]
+
+[fn:3] [[https://validator.w3.org/feed/docs/warning/SecurityRisk.html][element should not contain script tag]]
+
+[fn:4] [[https://validator.w3.org/feed/docs/warning/DangerousStyleAttr.html][style attribute contains potentially dangerous content]]
+
+[fn:5] 如果你感兴趣，这是 [[https://github.com/Spike-Leung/taxodium/compare/27f7d47...06cf1ae][相关的代码改动]]。

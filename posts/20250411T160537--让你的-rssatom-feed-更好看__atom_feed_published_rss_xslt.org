@@ -1,0 +1,92 @@
+#+title:      让你的 RSS/Atom feed 更好看
+#+export_file_name: pretty-feed
+#+date:       [2025-04-11 Fri 16:05]
+#+filetags:   :atom:feed:published:rss:xslt:
+#+identifier: 20250411T160537
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 使用 XMLT 美化 RSS 或 Atom feed 的技巧
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content indent
+
+在往下看之前，你可以先看看我现在的 [[https://taxodium.ink/rss.xml][Atom feed]][fn:1]，或许说不上很好看，但应该比枯燥的 XML 标签看起来要友好一点吧 (つд⊂)
+
+* 缘由
+:PROPERTIES:
+:CUSTOM_ID: D8B64803-B008-4238-A2F6-E44FCEA38BCE
+:END:
+
+最近在整理自己的订阅流[fn:2]， 在整理的过程中看到了 [[https://jakelazaroff.com/rss.xml][jakelazaroff.com]]，点开发现虽然 URL 是 https://jakelazaroff.com/rss.xml ，但是看起来和我平时看到的一堆 XML 标签不同，是个还挺好看的页面。
+
+于是我打开浏览器 Developer Tools 看看他是怎么做的，发现看到的是一个 HTML。
+
+嗯？既然 URL 上是 rss.xml，它的内容为什么不是一堆 XML 标签？
+
+再切换到 Sources 找到 rss.xml，这次看到的就是 XML 标签了。
+
+那他是怎么把 XML 转换成有样式的 HTML 的？
+
+在他页面中的 [[https://aboutfeeds.com/][About Feeds]] 中我找到了答案 ⸺ [[https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl][pretty-feed-v3.xsl]]。
+
+* 实现
+:PROPERTIES:
+:CUSTOM_ID: A9223BE7-CCDB-4D73-8433-1D73D3FE3B58
+:END:
+
+如果你是 RSS feed，只要在你的 XML 文件开头引入 [[https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl][pretty-feed-v3.xsl]]，你就可以得到一个好看的 HTML feed 页面了。[fn:3]
+
+#+begin_src xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <!-- 添加这行 XML 样式表，引用 pretty-feed-v3.xsl -->
+  <?xml-stylesheet href="/home/static/styles/pretty-feed-v3.xsl" type="text/xsl"?>
+  <!-- 你原来的 RSS 内容 -->
+  <rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"></rss>
+#+end_src
+
+如果你是 Atom feed，你需要修改一下 [[https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl][pretty-feed-v3.xsl]]，你可以参考 [[https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/pretty-feed-v3.xsl][我的实现]]，或者看看 [[https://github.com/genmon/aboutfeeds/issues/26][相关 issue]]。
+
+用到的技术是 [[https://www.w3.org/TR/xml-stylesheet/][xml-stylesheet]] 和 [[https://developer.mozilla.org/en-US/docs/Web/XML/XSLT/Guides/Transforming_XML_with_XSLT/An_Overview][XSLT(eXtensible Stylesheet Language/Transform)]]。
+
+如果你熟悉 HTML，我们可以做一个类比。
+
+~<?xml-stylesheet href="some.xsl" type="text/xsl"?>~ 就相当于 ~<link rel="stylesheet" href="some.css">~ , 作用是引用一个样式表。
+
+ [[https://www.w3.org/TR/xml-stylesheet/][xml-stylesheet]] 引用的样式表有自己的规则，但整体来说它很像 HTML，你也可以在里面写 HTML 标签，用 <style> 写样式。
+
+ 它也像一个模版，用 HTML 写模版，而数据则通过 [[https://developer.mozilla.org/en-US/docs/Web/XML/XSLT/Guides/Transforming_XML_with_XSLT/An_Overview][XSLT]] 从你的 RSS / Atom feed 的 XML 中读取，例如读取标题，作者，文章标题，发布时间，文章总结等。
+
+ 如果你只是想美化一下，你基于现有的文件修改就好了：[fn:4]
+
+ - 适用 RSS feed： [[https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl][Matt Webb's pretty-feed-v3.xsl]]
+ - 使用 Atom feed：[[https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/pretty-feed-v3.xsl][Spike Leung's pretty-feed-v3.xsl]]
+
+如果你嫌麻烦，也可以用 [[https://github.com/ccbikai/RSS.Beauty][RSS.Beauty]]，但自己写的话，定制化会更高，如果你还有更好的方法欢迎分享。
+
+* 我的一个呼吁
+:PROPERTIES:
+:CUSTOM_ID: 173A2CF7-9FC8-4AB1-9E5E-44C7927BB520
+:END:
+
+让订阅流变好看并不麻烦，我推荐你尝试一下，给读者一个更好的体验，如果你在实现过程中有什么问题，欢迎邮件或留言交流。
+
+另外，我呼吁大家在订阅流旁边引用 [[https://aboutfeeds.com/][About Feeds]]，让一些不熟悉订阅流的用户能够快速上手。
+
+我自己也写了一份 [[file:about-feeds.org][中文版 About Feeds]] ，针对中文用户做了一些调整，你可以引用我的，或者自己写一份。
+
+这样，我们可以鼓励更多的人使用订阅流，摆脱广告和算法，定制自己的信息流。
+
+最后，如果你愿意，可以尝试给 [[https://github.com/genmon/aboutfeeds][genmon/aboutfeeds]] 做贡献，例如增加 Atom feed 支持，增加多语言支持，方便更多的人。
+
+Happy hacking ｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡
+
+* Footnotes
+
+[fn:1] 补充几个例子： 1. [[https://blog.ursb.me/feed.xml][Airing 的博客]] 2. [[https://jakelazaroff.com/rss.xml][jakelazaroff.com]] 3. [[https://interconnected.org/home/feed][Matt Webb's blog feed]]
+
+[fn:2] 整理完之后我会导出 [[https://opml.org/][OPML]] 文件，导入到 [[https://follow.is/][Folo]] 里，如果你对我关注的内容感兴趣，欢迎你去订阅。(已经整理完啦 >w< )
+
+[fn:3] 我发现在 Folo 上，代码块的高亮很刺眼，如果你碰到这个问题，可以尝试在外观设置中，关闭行内样式渲染，这样代码会失去高亮，但至少不会刺眼。后续我看看如何调整。
+
+[fn:4] 如果你不熟悉 XSLT 也不用担心，问问 LLM 就好啦！可以适当进行 Vibe Coding ~
