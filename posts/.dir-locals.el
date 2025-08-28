@@ -5,11 +5,12 @@
 ((nil . ((denote-directory . "~/git/taxodium/posts")
          (denote-org-front-matter .
                                   "#+title:      %s
+#+export_file_name: 输入一个尽可能唯一的 URL
 #+date:       %s
 #+filetags:   %s
 #+identifier: %s
 #+bind:       denote-directory \"~/git/taxodium/posts\"
-#+description: Zine 第 25 期
+#+description: 大致描述这篇文章的内容
 #+language: zh-CN
 #+author: Spike Leung
 #+email: l-yanlei@hotmail.com
