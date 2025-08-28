@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Emacs 实时预览 markdown</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="分享我目前在 Emacs 中时预览 markdown 的方法" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Emacs 实时预览 markdown</h1>
+</header><p>
+最近在写离职交接文档，打算把一些项目的 README.md 更新一下，便于后续的人了解项目。
+</p>
+
+<p>
+Emacs 中可以集成 <a href="https://github.com/jrblevin/markdown-mode">markdown-mode</a> 扩展编辑 markdown 的能力，它默认用 <a href="https://www.gnu.org/software/emacs/manual/html_mono/eww.html">EWW</a> 进行预览，但 EWW 的样式相对比较简单。
+</p>
+
+<p>
+我希望预览的 markdown 样式和实际在 GitHub/GitLab 上看到是差不多的，这样可以提前发现一些排版问题。
+</p>
+
+<p>
+最早的时候，我参考 <a href="https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type">Live preview as you type</a>，使用 <a href="https://github.com/skeeto/impatient-mode">Impatient Mode</a> 和 <a href="https://github.com/Naereen/Strapdown.js/">StrapDown.js</a> 渲染。
+</p>
+
+<p>
+它的原理是开启一个 HTTP 服务，将 Emacs 中的 buffer<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> 渲染成 HTML 进行预览，每当 buffer 的内容变化，就主动发送新的 HTML 内容进行更新。
+</p>
+
+<p>
+HTML 中加载 <a href="https://github.com/markedjs/marked">Marked</a>，将 markdown 内容转换 HTML 标签展示。
+</p>
+
+<p>
+尽管 StrapDown.js 提供了不少 <a href="https://bootswatch.com/">主题</a>，但都和 GitHub 上的样式有差异。
+</p>
+
+<p>
+主题其实就是加载 CSS，所以，通过替换对应的 CSS 文件，就可以实现 GitHub 的 markdown 样式，例如使用 <a href="https://github.com/sindresorhus/github-markdown-css">github-markdown-css</a>。
+</p>
+
+<p>
+最终，我就得到这样一个 <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-my-markdown.el">markdown 的实时预览方法</a>:
+</p>
+
+<details id="orgdba6b94">
+<summary>init-my-markdown.el</summary>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">init-my-markdown.el --- use impatient-mode to preview markdown
+</span><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">Commentary:
+</span><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">@see:  https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type
+</span><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">Code:
+</span>
+<span style="color: #ffffff;">(</span>maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">impatient-mode</span><span style="color: #ffffff;">)</span>
+
+<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/imp-markdown-filter</span> <span style="color: #ff66ff;">(</span>buffer<span style="color: #ff66ff;">)</span>
+  <span style="color: #9ac8e0;">"Define imp markdown filter.
+Wrap BUFFER with HTML, render with https://github.com/markedjs/marked and style with https://github.com/sindresorhus/github-markdown-css"</span>
+  <span style="color: #ff66ff;">(</span>princ <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">with-current-buffer</span> buffer
+           <span style="color: #ff6b55;">(</span>format <span style="color: #79a8ff;">"&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;title&gt;Markdown Preview&lt;/title&gt;
+  &lt;head&gt;
+    &lt;link
+      rel=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">stylesheet</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">
+      href=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">
+      integrity=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">sha512-BrOPA520KmDMqieeM7XFe6a3u3Sb3F1JBaQnrIAmWg3EYrciJ+Qqe6ZcKCdfPv26rGcgTrJnZ/IdQEct8h3Zhw==</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">
+      crossorigin=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">anonymous</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">
+      referrerpolicy=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">no-referrer</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">
+    /&gt;
+    &lt;style&gt;
+          .markdown-body {
+                  box-sizing: border-box;
+                  min-width: 200px;
+                  max-width: 980px;
+                  margin: 0 auto;
+                  padding: 45px;
+          }
+
+          @media (max-width: 767px) {
+                  .markdown-body {
+                          padding: 15px;
+                  }
+          }
+    &lt;/style&gt;
+    &lt;script src=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">https://cdn.jsdelivr.net/npm/marked/marked.min.js</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">markdown-body</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;"> class=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">markdown-body</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">&gt;&lt;/div&gt;
+    &lt;script&gt;
+      document.getElementById('</span><span style="color: #00bcff;">markdown-body</span><span style="color: #79a8ff;">').innerHTML = marked.parse(%s);
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;"</span>
+                   <span style="color: #efef00;">(</span>json-encode <span style="color: #b6a0ff;">(</span>buffer-substring-no-properties <span style="color: #44df44;">(</span>point-min<span style="color: #44df44;">)</span> <span style="color: #44df44;">(</span>point-max<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
+         <span style="color: #00eff0;">(</span>current-buffer<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+
+<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/preview-markdown</span> <span style="color: #ff66ff;">()</span>
+  <span style="color: #9ac8e0;">"Live Preview markdown."</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">interactive</span><span style="color: #ff66ff;">)</span>
+  <span style="color: #ff66ff;">(</span>imp-visit-buffer<span style="color: #ff66ff;">)</span>
+  <span style="color: #ff66ff;">(</span>imp-set-user-filter <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">spike-leung/imp-markdown-filter</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+
+<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/disable-preview-markdown</span> <span style="color: #ff66ff;">()</span>
+  <span style="color: #9ac8e0;">"Disable preview markdown."</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">interactive</span><span style="color: #ff66ff;">)</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">progn</span>
+    <span style="color: #00eff0;">(</span>httpd-stop<span style="color: #00eff0;">)</span>
+    <span style="color: #00eff0;">(</span>impatient-mode -1<span style="color: #00eff0;">)</span>
+    <span style="color: #00eff0;">(</span>imp-remove-user-filter<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+
+<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">provide</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-my-markdown</span><span style="color: #ffffff;">)</span>
+<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">init-my-markdown.el ends here</span>
+</pre>
+</div>
+</details>
+
+<p>
+效果图：
+</p>
+
+
+<figure id="org1544661">
+<img src="images/live-preview-markdown-with-emacs/screenshot.png" alt="screenshot.png">
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>Emacs 预览 markdown 的效果，左边是预览效果，右边是 Emacs 中 buffer 内容</figcaption>
+</figure>
+
+<p>
+在 <a href="https://emacs-china.org/t/topic/1549/5">Markdown 预览的效果有点差强人意</a> 里我还找了其他的一些方案，感兴趣可以看看：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/blak3mill3r/vmd-mode">vmd-mode.el</a> 快速的 Github 风格 Markdown 预览，与 emacs 缓冲区的更改同步（无需保存）。</li>
+<li><a href="https://github.com/shime/emacs-livedown">livedown.el</a> <a href="https://github.com/shime/livedown">Livedown</a> 的 Emacs 插件。</li>
+<li><a href="https://github.com/mola-T/flymd">FLYMD</a> 即时 Markdown 预览。</li>
+<li><a href="https://github.com/seagle0128/grip-mode">grip-mode</a> 使用 <a href="https://github.com/joeyespo/grip">grip</a> 实时预览 Github 风格的 Markdown/Org 文件</li>
+</ul>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+可以简单理解为文件内容，感兴趣可以看 <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html">Buffers</a>。
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： 2025-06-20 Fri 21:39</p>
+<p class="date">修改于： 2025-08-28 Thu 16:53</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

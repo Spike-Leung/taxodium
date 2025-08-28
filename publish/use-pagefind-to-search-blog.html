@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>使用 pagefind 添加博客搜索功能</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="博客使用 pagefind 添加搜索功能的记录" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">使用 pagefind 添加博客搜索功能</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#8146bd66-566b-49de-9e2b-796bc84fa98f">关于 pagefind</a></li>
+<li><a href="#d0cb0641-caef-4bb1-8bd5-f55349aa923c">配置 pagefind</a>
+<ul>
+<li><a href="#8a7bf407-8909-44d5-ad65-75a4d48ba47a">CI/CD 中添加索引指令</a></li>
+<li><a href="#23066128-897c-40cf-8243-04d8238d55cc">引用 pagefind 资源</a></li>
+</ul>
+</li>
+<li><a href="#1f87fbcb-c481-404c-b4ac-97db76feb1ad">写在最后</a></li>
+</ul>
+</div>
+</nav>
+<p>
+这周用 <a href="https://pagefind.app/">pagefind</a> 给博客添加一个 <a href="https://taxodium.ink/search">搜索页面</a>，如果你感兴趣可以搜索看看 (ﾉ&gt;ω&lt;)ﾉ
+</p>
+
+<p>
+一直都想给博客添加一个搜索功能，加上最近开始写周刊，里面整理了不少的链接，有时候我想找点东西，能够搜索的话就会方便很多。
+</p>
+
+<p>
+以前尝试过 <a href="https://www.algolia.com/">algolia</a> ，但配置起来有点麻烦，也显得很重，效果并不满意。
+</p>
+
+<p>
+这周看到了一个开源项目 <a href="https://pagefind.app/">pagefind</a>，它可以对构建好的 HTML 进行索引和搜索，配置简单，开箱即用，没有额外的第三方服务，很符合我的需要。
+</p>
+<div id="outline-container-8146bd66-566b-49de-9e2b-796bc84fa98f" class="outline-2">
+<h2 id="8146bd66-566b-49de-9e2b-796bc84fa98f">关于 pagefind</h2>
+<div class="outline-text-2" id="text-8146bd66-566b-49de-9e2b-796bc84fa98f">
+<blockquote>
+<p>
+Pagefind 是一个完全静态的搜索库，其目标是在大型网站上运行良好，同时尽可能少地占用用户带宽，并且无需托管任何基础设施。
+</p>
+
+<p>
+Pagefind 的目标是，拥有数万个页面的网站应能让用户在浏览器中进行搜索，同时尽可能减少带宽消耗。
+</p>
+
+<p>
+Pagefind 的搜索索引被分割成若干块，因此在浏览器中进行搜索只需加载搜索索引的一小部分。
+</p>
+
+<p>
+Pagefind 可以在一个 10,000 页的网站上运行全文搜索，包括 Pagefind 库本身在内的总网络有效载荷不到 300kB。 对于大多数网站来说，这将接近 100kB。
+</p>
+
+<p>
+<a href="https://pagefind.app/">pagefind</a>
+</p>
+</blockquote>
+
+<p>
+pagefind 的一些特点：
+</p>
+
+<ul class="org-ul">
+<li>零配置支持多语言网站</li>
+<li>使用 NodeJS 索引库索引 任何内容（例如 PDF、JSON 文件或字幕）</li>
+<li>以相同的低带宽占用提供所有功能</li>
+</ul>
+
+<p>
+对我来说，它最大的优点就是配置简单，不依赖第三方服务，而且搜索效果也不错。
+</p>
+
+<p>
+在 <a href="https://taxodium.ink/11.html">Zine#11</a> 中分享过一篇文章，里面的观点我觉得说的很对：
+</p>
+
+<blockquote>
+<p>
+
+</p>
+
+<p>
+入门（Getting Started）不应该是在构建产品之后才考虑的问题。入门就是产品！
+</p>
+
+<p>
+<b>我认为这值得重构你的整个产品，以便实现快速入门。去掉强制配置。让设置 API 令牌变得极其简单。消除所有障碍。让用户能够在几分钟内在他们的笔记本电脑上使用你的产品。</b>
+</p>
+
+<p>
+你可能会说，我不知道，"谁在乎懒惰的用户"。那就让我靠在豆袋椅上，打开一袋多力多滋，解释一下吧：
+</p>
+
+<p>
+目前有 7,000,000,000 种开发工具。用户没有那么多精力和耐心去深入了解你的 LRU 缓存 NPM 包或其他东西有什么不同。抱歉了！
+</p>
+
+<p>
+<a href="https://erikbern.com/2024/09/27/its-hard-to-write-code-for-humans.html#:~:text=Getting%20started%20shouldn%27t,or%20whatever.%20Sorry">It's hard to write code for computers, but it's even harder to write code for humans</a>!
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-d0cb0641-caef-4bb1-8bd5-f55349aa923c" class="outline-2">
+<h2 id="d0cb0641-caef-4bb1-8bd5-f55349aa923c">配置 pagefind</h2>
+<div class="outline-text-2" id="text-d0cb0641-caef-4bb1-8bd5-f55349aa923c">
+<p>
+配置 pagefind 很简单，你只需要两步：
+</p>
+
+<ol class="org-ol">
+<li>执行 <code>npx -y pagefind --site publish</code> 生成索引，其中 <code>publish</code> 是你的静态页面存放的目录。</li>
+
+<li>引用对应的 CSS，JS，并且添加一个 DOM 元素让 pagefind 挂载</li>
+</ol>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #feacd0;">link</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"/pagefind/pagefind-ui.css"</span> <span style="color: #00d3d0;">rel</span>=<span style="color: #79a8ff;">"stylesheet"</span>&gt;
+&lt;<span style="color: #feacd0;">script</span> <span style="color: #00d3d0;">src</span>=<span style="color: #79a8ff;">"/pagefind/pagefind-ui.js"</span>&gt;&lt;/<span style="color: #feacd0;">script</span>&gt;
+&lt;<span style="color: #feacd0;">div</span> <span style="color: #00d3d0;">id</span>=<span style="color: #79a8ff;">"search"</span>&gt;&lt;/<span style="color: #feacd0;">div</span>&gt;
+&lt;<span style="color: #feacd0;">script</span>&gt;
+  window.addEventListener('DOMContentLoaded', (event) =&gt; {
+  new PagefindUI({ element: "#search", showSubResults: true });
+  });
+&lt;/<span style="color: #feacd0;">script</span>&gt;
+</pre>
+</div>
+
+<p>
+这样你就拥有搜索功能了 ヾ(<b>´∀ ˋ</b>)ﾉ
+</p>
+
+<p>
+下面分享一下我是如何集成的。
+</p>
+</div>
+<div id="outline-container-8a7bf407-8909-44d5-ad65-75a4d48ba47a" class="outline-3">
+<h3 id="8a7bf407-8909-44d5-ad65-75a4d48ba47a">CI/CD 中添加索引指令</h3>
+<div class="outline-text-3" id="text-8a7bf407-8909-44d5-ad65-75a4d48ba47a">
+<p>
+我的博客<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>是部署在 <a href="https://www.netlify.com/">Netlify</a>，我只需要在构建的最后，添加一行执行索引的指令就完成索引了。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-diff"><span style="color: #db7b5f;">#</span><span style="color: #db7b5f;">!/bin/bash</span>
+
+<span style="color: #db7b5f;">#</span><span style="color: #db7b5f;"> Enable command printing (debug mode)</span>
+set -x
+
+<span style="color: #db7b5f;">#</span><span style="color: #db7b5f;"> Only build when `publish` change</span>
+git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF publish
+
+<span style="color: #db7b5f;">#</span><span style="color: #db7b5f;"> index.xml is for https://www.v2ex.com/xna</span>
+cp -f publish/rss.xml publish/index.xml
+
+<span style="color: #44df44;">+</span><span style="color: #44bc44;"> # see: https://pagefind.app/docs/multilingual/#opting-out-of-multilingual-search
+</span><span style="color: #44df44;">+</span><span style="color: #44bc44;"> npx -y pagefind --site publish --force-language zh-CN
+</span>
+<span style="color: #db7b5f;">#</span><span style="color: #db7b5f;"> Disable debug mode</span>
+set +x
+</pre>
+</div>
+
+<p>
+如果你仔细看的话，会发现我的指令添加了 <code>--force-language zh-CN</code> 的 option，这会告诉 pagefind 要将不同语言的页面都生成到同一个索引里。
+</p>
+
+<p>
+<a href="https://pagefind.app/docs/multilingual/#:~:text=When%20indexing%2C%20Pagefind%20will%20look%20for%20a%20lang%20attribute%20on%20your%20html%20element.%20Indexing%20will%20then%20run%20independently%20for%20each%20detected%20language.%20When%20Pagefind%20initializes%20in%20the%20browser%20it%20will%20check%20the%20same%20lang%20attribute%20and%20load%20the%20appropriate%20index.">pagefind 的默认逻辑是按照语言各自建立索引</a>，当你的页面的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang">lang</a> 是 en 的时候，它只会检索 en 页面对应的索引，而不会检索 zh-CN 页面的索引。
+</p>
+
+<p>
+但是我希望在一个统一的地方，能够搜索到我博客所有的内容，因此我需要它将不同语言的页面索引放到一起。
+</p>
+</div>
+</div>
+<div id="outline-container-23066128-897c-40cf-8243-04d8238d55cc" class="outline-3">
+<h3 id="23066128-897c-40cf-8243-04d8238d55cc">引用 pagefind 资源</h3>
+<div class="outline-text-3" id="text-23066128-897c-40cf-8243-04d8238d55cc">
+<p>
+相比于在文章页面上添加搜索，我更倾向于一个独立的搜索页面，避免搜索结果影响文章页面的布局。
+</p>
+
+<p>
+单独一个页面，在我不需要的时候也可以轻易移除。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html" id="org7aecc10">&lt;<span style="color: #b6a0ff;">!DOCTYPE</span> html&gt;
+&lt;<span style="color: #feacd0;">html</span> <span style="color: #00d3d0;">lang</span>=<span style="color: #79a8ff;">"zh-CN"</span>&gt;
+  &lt;<span style="color: #feacd0;">head</span>&gt;
+    &lt;<span style="color: #feacd0;">meta</span> <span style="color: #00d3d0;">http-equiv</span>=<span style="color: #79a8ff;">"Content-Type"</span> <span style="color: #00d3d0;">content</span>=<span style="color: #79a8ff;">"text/html;charset=utf-8"</span> /&gt;
+    &lt;<span style="color: #feacd0;">meta</span> <span style="color: #00d3d0;">name</span>=<span style="color: #79a8ff;">"viewport"</span> <span style="color: #00d3d0;">content</span>=<span style="color: #79a8ff;">"width=device-width, initial-scale=1"</span> /&gt;
+    &lt;<span style="color: #feacd0;">title</span>&gt;<span style="font-weight: bold; text-decoration: underline;">Search</span>&lt;/<span style="color: #feacd0;">title</span>&gt;
+    &lt;<span style="color: #feacd0;">meta</span> <span style="color: #00d3d0;">name</span>=<span style="color: #79a8ff;">"author"</span> <span style="color: #00d3d0;">content</span>=<span style="color: #79a8ff;">"Spike Leung"</span> /&gt;
+    &lt;<span style="color: #feacd0;">meta</span> <span style="color: #00d3d0;">name</span>=<span style="color: #79a8ff;">"description"</span> <span style="color: #00d3d0;">content</span>=<span style="color: #79a8ff;">"&amp;quot;&amp;quot;"</span> /&gt;
+    &lt;<span style="color: #feacd0;">meta</span> <span style="color: #00d3d0;">name</span>=<span style="color: #79a8ff;">"generator"</span> <span style="color: #00d3d0;">content</span>=<span style="color: #79a8ff;">"Org Mode"</span> /&gt;
+    &lt;<span style="color: #feacd0;">link</span> <span style="color: #00d3d0;">rel</span>=<span style="color: #79a8ff;">"stylesheet"</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"../styles/style.css"</span> <span style="color: #00d3d0;">type</span>=<span style="color: #79a8ff;">"text/css"</span>/&gt;
+    &lt;<span style="color: #feacd0;">link</span> <span style="color: #00d3d0;">rel</span>=<span style="color: #79a8ff;">"icon"</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"/favicon.ico"</span> <span style="color: #00d3d0;">type</span>=<span style="color: #79a8ff;">"image/x-icon"</span>&gt;
+    &lt;<span style="color: #feacd0;">link</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"/pagefind/pagefind-ui.css"</span> <span style="color: #00d3d0;">rel</span>=<span style="color: #79a8ff;">"stylesheet"</span>&gt;
+    &lt;<span style="color: #feacd0;">script</span> <span style="color: #00d3d0;">src</span>=<span style="color: #79a8ff;">"/pagefind/pagefind-ui.js"</span>&gt;&lt;/<span style="color: #feacd0;">script</span>&gt;
+  &lt;/<span style="color: #feacd0;">head</span>&gt;
+  &lt;<span style="color: #feacd0;">body</span>&gt;
+    &lt;<span style="color: #feacd0;">div</span> <span style="color: #00d3d0;">id</span>=<span style="color: #79a8ff;">"search"</span>&gt;&lt;/<span style="color: #feacd0;">div</span>&gt;
+    &lt;<span style="color: #feacd0;">script</span>&gt;
+      window.addEventListener('DOMContentLoaded', (event) =&gt; {
+      new PagefindUI({ element: "#search", showSubResults: true, showImages: false });
+      });
+    &lt;/<span style="color: #feacd0;">script</span>&gt;
+  &lt;/<span style="color: #feacd0;">body</span>&gt;
+&lt;/<span style="color: #feacd0;">html</span>&gt;
+</pre>
+</div>
+
+<p>
+页面上我设置了 <code>lang="zh-CN"</code> ，pagefind 会基于 lang 去匹配索引和组件的多语言文字。
+</p>
+
+<p>
+之前我的页面都是 <code>lang="en"</code> ，pagefind 将页面按照 en 索引，导致我搜索不到任何内容。
+</p>
+
+<p>
+因此我也更新了博客页面的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang">lang</a> 属性，从 en 改为了 zh-CN，这样<a href="https://www.youtube.com/watch?v=NP94u7y_KkQ">对于使用屏幕阅读器的人也会友好一点</a>。
+</p>
+
+<p>
+另外我将 <code>showIamges</code> 设置成了 false，因为我的博客文章基本没有封面图，图片还会增加搜索时的带宽消耗。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-1f87fbcb-c481-404c-b4ac-97db76feb1ad" class="outline-2">
+<h2 id="1f87fbcb-c481-404c-b4ac-97db76feb1ad">写在最后</h2>
+<div class="outline-text-2" id="text-1f87fbcb-c481-404c-b4ac-97db76feb1ad">
+<p>
+如果你还有更好的搜索服务，欢迎分享 (ﾟ∀。)
+</p>
+
+<p>
+感谢 pagefind 提供这样简单好用的搜索服务！\m/ &gt;_&lt; \m/
+</p>
+
+<p>
+如果你也有搜索静态页面的需要，试试看吧！
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+如果你对我的博客是如何搭建感兴趣，可以看 <a href="https://taxodium.ink/org-publish-blog">使用 org-publish 发布博客</a> (≖ᴗ≖๑)
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： 2024-11-16 Sat 16:26</p>
+<p class="date">修改于： 2025-08-28 Thu 16:53</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

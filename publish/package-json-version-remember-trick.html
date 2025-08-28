@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>pacakge.json 中依赖版本的记忆技巧</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="关于如何区分 package.json 中 ^ 和 ~ 的作用，以及个人的记忆技巧" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">pacakge.json 中依赖版本的记忆技巧</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgd4abbc1">TL;DR</a></li>
+<li><a href="#org123d029">关于版本号</a></li>
+<li><a href="#org0bc5cff">^ (Caret Ranges) 和 ~ (Tilde Ranges)</a></li>
+<li><a href="#orgc8faf61">写在最后</a></li>
+<li><a href="#org0638e41">Refs</a></li>
+</ul>
+</div>
+</nav>
+<p>
+如果你做过前端开发，那么对 <a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-json">pacakge.json</a> 一定不陌生，它描述了：
+</p>
+
+<ul class="org-ul">
+<li>项目名称、版本等基本信息</li>
+<li>项目依赖的外部工具/库</li>
+<li>运行项目所需的命令脚本</li>
+</ul>
+
+<p>
+而其中，依赖项都会有对应的版本号，例如:
+</p>
+
+<ul class="org-ul">
+<li><code>"vue": "^2.6.14"</code></li>
+<li><code>"vue-template-compiler": "~2.6.14"</code></li>
+</ul>
+
+<p>
+但你会不会总是搞不明白版本号前面的标记 <code>^</code> 和 <code>~</code> 的作用？
+</p>
+
+<p>
+例如上面的两个依赖，它们可使用的版本号范围是多少呢？
+</p>
+
+<details id="org9b370b5">
+<summary>答案</summary/>
+
+<p>
+<code>^2.6.14</code> :=<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> <code>&gt;=2.6.14 &lt;3.0.0-0</code>
+</p>
+
+<p>
+<code>~2.6.14</code> := <code>&gt;=2.6.14 &lt;2.(6+1).0-0</code> := <code>&gt;=2.6.14 &lt;2.7.0-0</code>
+</p>
+</details>
+
+<p>
+如果你答对了，我想你肯定有你的记忆方法，欢迎留言分享。
+</p>
+
+<p>
+如果你也容易忘记，那么接下来我想分享一个我的记忆方法，或许对你有帮助。
+</p>
+<div id="outline-container-orgd4abbc1" class="outline-2">
+<h2 id="orgd4abbc1">TL;DR</h2>
+<div class="outline-text-2" id="text-orgd4abbc1">
+<ul class="org-ul">
+<li><code>^</code> 可以用正则表达式的 <code>^</code> 记忆，表示开头，对应的含义就是从头(左边)找到第一位非 0 的版本号，固定非 0 的那一位版本号不变，后面(右)的版本号可以变。</li>
+<li><code>~</code> 可以用范围符号记忆，1 <code>~</code> 3 往往表示一个范围， <code>~</code> 是放在中间的，第二位版本号也是在中间，因此 <code>~</code> 主要是和第二位版本号(minor)有关。
+<ul class="org-ul">
+<li>第二位(minor)存在，则固定第二位，可以改第三位(patch)。</li>
+<li>第二位(minor)不存在，则固定第一位(major)，可以改第二位(minor)，第三位(patch)。</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org123d029" class="outline-2">
+<h2 id="org123d029">关于版本号</h2>
+<div class="outline-text-2" id="text-org123d029">
+<p>
+package.json 的版本号遵循<a href="https://semver.org/lang/zh-CN/">语义化版本 2.0.0</a>：
+</p>
+
+<blockquote>
+<p>
+版本格式： <code>主版本号.次版本号.修订号</code> ，版本号递增规则如下：
+</p>
+
+<dl class="org-dl">
+<dt>主版本号 (MAJOR)</dt><dd>当你做了不兼容的 API 修改。</dd>
+<dt>次版本号 (MINOR)</dt><dd>当你做了向下兼容的功能性新增。</dd>
+<dt>修订号 (PATCH)</dt><dd>当你做了向下兼容的问题修正。</dd>
+</dl>
+
+<p>
+先行版本号 (pre-release) 及版本编译信息 (build metadata) 可以加到 “ <code>主版本号.次版本号.修订号</code> ”的后面，作为延伸。
+</p>
+</blockquote>
+
+<p>
+package.json 中<a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-json#git-urls-as-dependencies">关于版本号范围的定义</a>是这样的:
+</p>
+
+<blockquote>
+<ul class="org-ul">
+<li>version : 必须完全匹配 <code>version</code></li>
+<li>&gt;version : 必须大于 <code>version</code></li>
+<li>&gt;=version : 大于等于 <code>version</code></li>
+<li>&lt;version : 必须小于 <code>version</code></li>
+<li>&lt;=version : 小于等于 <code>version</code></li>
+<li>~version : 大致相当于 <code>version</code> (参见 <a href="https://github.com/npm/node-semver#versions">semver</a>)</li>
+<li>^version : 与 <code>version</code> 兼容 (参见 <a href="https://github.com/npm/node-semver#versions">semver</a>)</li>
+<li>1.2.x : <code>1.2.0</code>, <code>1.2.1</code>, 等等，但不包括 <code>1.3.0</code></li>
+<li>* : 匹配任何版本</li>
+<li>"" : (空字符串) 等同于 <code>*</code></li>
+<li>version1 - version2 : 等同于 <code>&gt;=version1 &lt;=version2</code></li>
+<li>range1 || range2 : 如果 <code>range1</code> 或 <code>range2</code> 满足，则通过。</li>
+<li><a href="http://">http://</a>&#x2026; : 参见 <a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-json#urls-as-dependencies">URLs as Dependencies</a></li>
+<li>git&#x2026; : 参见 <a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-json#git-urls-as-dependencies">Git URLs as Dependencies</a></li>
+<li>user/repo : 参见 <a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-json#github-urls">GitHub URLs</a></li>
+<li>tag : 一个特定的版本，被标记并发布为 <code>tag</code> (参见 <a href="https://docs.npmjs.com/cli/v11/commands/npm-dist-tag">npm dist-tag</a>)</li>
+<li>path/path/path : 参见<a href="https://docs.npmjs.com/cli/v11/using-npm/package-spec#aliases">本地路径</a></li>
+<li>npm:@scope/pkg@version : 包的自定义别名 (参见 <a href="https://docs.npmjs.com/cli/v11/using-npm/package-spec#aliases">package-spec</a>)</li>
+</ul>
+</blockquote>
+
+<p>
+除了 <code>^</code> 和 <code>~</code> 其实都是比较容易明白的。
+</p>
+</div>
+</div>
+<div id="outline-container-org0bc5cff" class="outline-2">
+<h2 id="org0bc5cff">^ (Caret Ranges) 和 ~ (Tilde Ranges)</h2>
+<div class="outline-text-2" id="text-org0bc5cff">
+<dl class="org-dl">
+<dt><a href="https://github.com/npm/node-semver?tab=readme-ov-file#caret-ranges-123-025-004">^ (Caret Ranges)</a> </dt><dd>允许不修改 <code>[major, minor, patch]</code> 元组中最左边非零元素的更改。(Allows changes that do not modify the left-most non-zero element in the <code>[major, minor, patch]</code> tuple.)
+
+<ul class="org-ul">
+<li><code>^1.2.3</code> :=<sup><a id="fnr.1.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> <code>&gt;=1.2.3 &lt;2.0.0-0</code></li>
+<li><code>^0.2.3</code> := <code>&gt;=0.2.3 &lt;0.3.0-0</code></li>
+<li><code>^0.0.3</code> := <code>&gt;=0.0.3 &lt;0.0.4-0</code></li>
+<li><code>^1.2.3-beta.2</code> := <code>&gt;=1.2.3-beta.2 &lt;2.0.0-0</code></li>
+<li><code>^0.0.3-beta</code> := <code>&gt;=0.0.3-beta &lt;0.0.4-0</code></li>
+<li><code>^1.2.x</code> := <code>&gt;=1.2.0 &lt;2.0.0-0</code></li>
+<li><code>^0.0.x</code> := <code>&gt;=0.0.0 &lt;0.1.0-0</code></li>
+<li><code>^0.0</code> := <code>&gt;=0.0.0 &lt;0.1.0-0</code></li>
+<li><code>^1.x</code> := <code>&gt;=1.0.0 &lt;2.0.0-0</code></li>
+<li><code>^0.x</code> := <code>&gt;=0.0.0 &lt;1.0.0-0</code></li>
+</ul></dd>
+</dl>
+
+<p>
+在正则表达式中， <code>^</code> 表示匹配匹配字符串的开头，利用这个联想， <code>^</code> 表示的就是从头(最左边)开始，找第一个非 0 的版本号，固定这一位版本号。
+</p>
+
+<p>
+例如 <code>^0.1.2</code> ，从头开始第一个非 0 的版本号是第二位版本号 <code>1</code> ，因此第二位之前都是固定的，因此可以推断出它表示的范围是 <code>&gt;=0.1.2 &lt;0.2.0</code> 。
+</p>
+
+<p>
+再如 <code>^1</code> , 首先补全到 3 位版本号，即 <code>^1.0.0</code> ，从头开始第一个非 0 的版本号是第一位的 <code>1</code> ，因此第一位版本号是固定的，范围是 <code>&gt;=1.0.0 &lt;2.0.0</code> 。
+</p>
+
+<p>
+<i>特殊的</i> ，当 3 位版本号都是 0 的时候，即 <code>^0.0.0</code> , 此时从头往后找不到非 0 的版本号，则固定第一位，即固定主版本号，其他版本号随意，范围是 <code>&gt;=0.0.0 &lt;1.0.0</code> 。
+</p>
+
+<dl class="org-dl">
+<dt><a href="https://github.com/npm/node-semver?tab=readme-ov-file#tilde-ranges-123-12-1">~ (Tilde Ranges)</a> </dt><dd>如果存在 <code>次版本号</code> ，则允许进行 <code>修订号</code> 修改。如果没有，则允许 <code>次版本号</code> 的更改。
+
+<ul class="org-ul">
+<li><code>~1.2.3</code> := <code>&gt;=1.2.3 &lt;1.3.0-0</code></li>
+<li><code>~1.2</code> := <code>&gt;=1.2.0 &lt;1.3.0-0</code> (Same as <code>1.2.x</code>)</li>
+<li><code>~1</code> := <code>&gt;=1.0.0 &lt;2.0.0-0</code> (Same as <code>1.x</code>)</li>
+<li><code>~0.2.3</code> := <code>&gt;=0.2.3 &lt;0.3.0-0</code></li>
+<li><code>~0.2</code> := <code>&gt;=0.2.0 &lt;0.3.0-0</code> (Same as <code>0.2.x</code>)</li>
+<li><code>~0</code> := <code>&gt;=0.0.0 &lt;1.0.0-0</code> (Same as <code>0.x</code>)</li>
+<li><code>~1.2.3-beta.2</code> := <code>&gt;=1.2.3-beta.2 &lt;1.3.0-0</code></li>
+</ul></dd>
+</dl>
+
+<p>
+<code>~</code> 常见于表示的一个范围，例如 1 <code>~</code> 3, 它往往是夹在中间的，也就是中间第二位，而它的作用就是针对第二位的 <code>次版本号(minor)</code> 。
+</p>
+
+<p>
+如果第二位(minor)存在，则固定第二位(minor), 可以改第三位(patch)；
+</p>
+
+<p>
+如果第二位(minor)不存在，则可以改第二位(minor)，第一位(major)固定。
+</p>
+
+<p>
+例如 <code>~1.2.3</code> , 第二位是 <code>2</code> ，存在第二位，因此固定第二位，范围是 <code>&gt;=1.2.3 &lt; 1.3.0</code> 。
+</p>
+
+<p>
+例如 <code>~1.0.3</code> , 第二位是 <code>0</code> ，存在第二位，因此固定第二位，范围是 <code>&gt;=1.0.3 &lt; 1.1.0</code> 。
+</p>
+
+<p>
+例如 <code>~1</code>, 不存在第二位，因此可以修改第二位，固定第一位，范围是 <code>&gt;=1.0.0 &lt;2.0.0</code> 。
+</p>
+
+<p>
+例如 <code>~0</code>, 不存在第二位，因此可以修改第二位，固定第一位，范围是 <code>&gt;=0.0.0 &lt;1.0.0</code> 。
+</p>
+</div>
+</div>
+<div id="outline-container-orgc8faf61" class="outline-2">
+<h2 id="orgc8faf61">写在最后</h2>
+<div class="outline-text-2" id="text-orgc8faf61">
+<p>
+这个问题源于开发中碰到一个依赖版本升级了，看 package.json 的版本号我一时不知道它升级的版本对不对，看了一下文档，决定把这个语法记忆一下。
+</p>
+
+<p>
+或许文中的内容存在一些错误，如果你发现了欢迎留言指出。
+</p>
+
+<p>
+如果你有更好的记忆方法，也欢迎分享~
+</p>
+</div>
+</div>
+<div id="outline-container-org0638e41" class="outline-2">
+<h2 id="org0638e41">Refs</h2>
+<div class="outline-text-2" id="text-org0638e41">
+<ul class="org-ul">
+<li><a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-json#dependencies">package.json - dependencies</a></li>
+<li><a href="https://github.com/npm/node-semver#versions">node-semver#versions</a></li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<code>:=</code> 表示定义/表示为，a := b 的意思是，a 可以定义为 b 的表示。
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： 2025-02-21 Fri 21:39</p>
+<p class="date">修改于： 2025-08-28 Thu 16:53</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

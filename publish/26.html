@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Zine#26</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="Zine 第 26 期" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Zine#26</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org9499345">琐碎二三事</a></li>
+<li><a href="#org62aa007">News | Article</a></li>
+<li><a href="#orgb8b16cd">Tutorial | Resource</a></li>
+<li><a href="#orgdf805c5">Code Related</a></li>
+<li><a href="#orga30b9c3">Cool Bit</a></li>
+<li><a href="#org4f1699b">Tool | Library</a></li>
+<li><a href="#orga3c2760">Emacs</a></li>
+<li><a href="#org99bd4ec">一些话 | 摘抄</a></li>
+<li><a href="#org0b30f27">多媒体</a></li>
+<li><a href="#org161b49f">Music</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-org9499345" class="outline-2">
+<h2 id="org9499345">琐碎二三事</h2>
+<div class="outline-text-2" id="text-org9499345">
+<ol class="org-ol">
+<li><p>
+zine
+</p>
+
+<p>
+写 zine 有时会卡住，虽然有 deadline，但是却不愿意坐下来写，会感到一点焦虑。
+</p>
+
+<p>
+写下自己的想法，需要一定的努力让想法成型，过程中存在一些阻力的，有时不太愿意去克服，而更愿意干点轻松的事情。
+</p></li>
+
+<li><p>
+社康按摩
+</p>
+
+<p>
+周末和女朋友一起去附近的社康做肩颈按摩，感觉比外面按摩店的要舒服。
+</p>
+
+<p>
+一方面是医生按压的位置集中在肩颈，按压的地方比较到位；而按摩店的相对没那么到位，而且往往还需要抹润滑油。
+</p>
+
+<p>
+社康空间相对空旷，没有什么味道，也就一些艾灸的味道；按摩店是独立的房间，感觉有点闷，有点压抑，床感觉也不是那么干净。
+</p>
+
+<p>
+社康还能听到医生之间，小朋友以及其他患者的杂谈，有股生活的气息；按摩店就相对安静一点。
+</p></li>
+
+<li><p>
+理发
+</p>
+
+<p>
+周末还去理了发，原来的 Tony 已经离职了，这次找店长剪，但是感觉没有原来的 Tony 体贴。
+</p>
+
+<p>
+店长的手法比较粗鲁，拉头发力气比较大，甚至我的头会跟着晃动。
+</p>
+
+<p>
+梳头发的时候，梳子也总是会刮到我的耳朵，带来一点点疼痛感。
+</p>
+
+<p>
+总体来说体验不太好，作为 i 人我也不太好意思说，下次大概不会再找店长剪了。
+</p>
+
+<p>
+作为服务业，也是需要注意用户体验的，糟糕的用户体验会导致用户的流失，例如我。
+</p></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org62aa007" class="outline-2">
+<h2 id="org62aa007">News | Article</h2>
+<div class="outline-text-2" id="text-org62aa007">
+</div>
+<div id="outline-container-orgec9d5e7" class="outline-3">
+<h3 id="orgec9d5e7"><a href="https://perthirtysix.com/visualizing-data-is-an-art">Visualizing Data Is An Art - We Should Treat It Like One</a></h3>
+<div class="outline-text-3" id="text-orgec9d5e7">
+<p>
+作者将相同的数据，分别用饼图和柱状图呈现，然后让读者猜测对应的百分比。
+</p>
+
+<p>
+相比饼图，柱状图更容易猜中实际的百分比。
+</p>
+
+<p>
+也就是说，柱状图的图表精确度更高，更容易解读到实际表达的数字。
+</p>
+
+<blockquote>
+<p>
+快速、准确地解读图表的能力，我称之为图表的精确度，是数据可视化中为数不多可以衡量的能力之一。
+</p>
+
+<p>
+<a href="https://perthirtysix.com/visualizing-data-is-an-art#:~:text=The%20ability%20to%20quickly%20and%20accurately%20interpret%20a%20chart%2C%20which%20I%27ll%20call%20a%20chart%27s%20precision%2C%20is%20one%20of%20the%20few%20things%20that%20can%20be%20measured%20in%20data%20visualization">Source</a>
+</p>
+</blockquote>
+
+<p>
+但是，精确度固然重要，但不是唯一重要的。
+</p>
+
+<p>
+如果只是追求精确度，其实表格是最精确的，一眼就能知道数值。
+</p>
+
+<p>
+在数据呈现上，有时丢失一些精确度，使得呈现上更吸引人，更引起读者共鸣也是需要的。
+</p>
+
+<blockquote>
+<p>
+我们可以做到精确，却无法提供有趣的数据观点。
+</p>
+
+<p>
+我们可以做到精确，却无法引起任何人的共鸣。
+</p>
+
+<p>
+我们甚至可以做到精确而不道德。
+</p>
+
+<p>
+如果可视化的初衷是好的，无论是清晰度、故事性还是愉悦感，并且实现了这一目标，那么我认为它就是成功的。
+</p>
+
+<p>
+<a href="https://perthirtysix.com/visualizing-data-is-an-art#:~:text=We%20can%20be%20precise%20and%20not%20offer%20an%20interesting%20view%20of%20the%20data.%20We%20can%20be%20precise%20and%20not%20resonate%20with%20anyone.%20We%20can%20even%20be%20precise%20and%20unethical.%20If%20a%20visualization%20has%20good%20intentions%2C%20whether%20that%27s%20clarity%20or%20storytelling%20or%20delight%2C%20and%20accomplishes%20that%20goal%2C%20then%20I%20think%20it%27s%20a%20success">Source</a>
+</p>
+</blockquote>
+
+<p>
+作者建立了几个标准，判断一个图表呈现的好坏：
+</p>
+
+<dl class="org-dl">
+<dt>伦理</dt><dd>可视化是否存在任何误导？</dd>
+<dt>精确度</dt><dd>视觉效果是否能轻松映射到数字？读图是否能轻松知道对应的数值？</dd>
+<dt>美学</dt><dd>可视化在视觉上是否具有吸引力，使用体验是否愉快？</dd>
+<dt>认知负荷</dt><dd>理解可视化需要付出多少努力？</dd>
+<dt>背景</dt><dd>可视化是否明确添加了背景信息以提供引导？</dd>
+<dt>数据量</dt><dd>可视化是否能一次性展示大量数据？</dd>
+</dl>
+
+<p>
+作者还举了 2 个例子，解释他的标准，推荐一看。
+</p>
+
+<blockquote>
+<p>
+数据可视化让我们利用人类不可思议的模式识别能力，试图看到世界上存在的一些基本事实。
+</p>
+
+<p>
+但这只是一个透镜，我们每增加一层抽象，比如从现实世界的事件到数字，或从数字到图表，或从图表到故事，都会增加一层解释，并可能导致错误或误用。
+</p>
+
+<p>
+同时，它也增加了一层更深层次的理解、共鸣、愉悦和意义。
+</p>
+
+<p>
+责任重大，值得深思。
+</p>
+
+<p>
+<a href="https://perthirtysix.com/visualizing-data-is-an-art#:~:text=Visualizing%20data%20lets,worth%20some%20thoughtfulness">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orga5a3563" class="outline-3">
+<h3 id="orga5a3563"><a href="https://eligrey.com/blog/choosing-a-browser/">Choosing a browser</a></h3>
+<div class="outline-text-3" id="text-orga5a3563">
+<p>
+作者对当今最流行的浏览器的安全性、隐私性、可扩展性和道德规范进行了评估，对于浏览器选择给出一些参考。
+</p>
+
+<blockquote>
+<p>
+我们需要能真正让用户掌控一切的浏览器，这就意味着要在开放的环境中构建浏览器，而不存在困扰广告巨头的利益冲突。
+</p>
+
+<p>
+<a href="https://eligrey.com/#:~:text=We%20need%20browsers%20that%20truly%20put%20users%20in%20control%2C%20and%20that%20means%20building%20them%20in%20the%20open%E2%80%94without%20the%20conflicts%20of%20interest%20that%20plague%20ad%2Ddriven%20giants">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org7199fbe" class="outline-3">
+<h3 id="org7199fbe"><a href="https://arxiv.org/pdf/2502.09386">Code Style Sheets: CSS for Code</a></h3>
+<div class="outline-text-3" id="text-org7199fbe">
+<p>
+一篇论文，提出了“用于代码的 CSS”。
+</p>
+
+<p>
+CSS（Cascading Style Sheets，层叠样出表）在网页开发中，是用于选择页面元素，给页面元素添加样式（外观）的。
+</p>
+
+<p>
+论文提出，给代码文本也设置一套 CSS，可以通过类似 CSS 的用法，对代码的组成元素设置样式。
+</p>
+</div>
+</div>
+<div id="outline-container-orgc6252a3" class="outline-3">
+<h3 id="orgc6252a3"><a href="https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/">My LLM codegen workflow atm</a></h3>
+<div class="outline-text-3" id="text-orgc6252a3">
+<p>
+作者使用 LLM 的工作流，分成两个：
+</p>
+
+<ul class="org-ul">
+<li>从头开始的项目
+<ol class="org-ol">
+<li>和 LLM 对话，进行头脑风暴，让 LLM 基于头脑风暴结果，生成开发规范</li>
+<li>把规范丢给 LLM ，生成 prompt 计划，可以让 LLM 生成一个 TODO List，跟踪每一个 prompt 的执行情况</li>
+<li>基于规范文档、prompt 计划，丢给 LLM 编码工具进行开发</li>
+</ol></li>
+<li>从已有项目开始
+<ol class="org-ol">
+<li>使用 <a href="https://github.com/yamadashy/repomix">repomix</a> 和一些脚本，生成项目的上下文标记（readme，test，review，prompt，issues 等信息）</li>
+<li>使用 LLM 编码工具处理得到的上下文标记</li>
+</ol></li>
+</ul>
+
+
+<blockquote>
+<p>
+我发现，使用规划步骤有助于控制事态发展。至少，你会有一份可以反复检查的文档。
+</p>
+
+<p>
+我也相信测试是有帮助的，尤其是当你正在进行狂野风格的辅助编码时。这有助于保持良好和严密。
+</p>
+
+<p>
+<a href="https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/#:~:text=I%20find%20that%20using%20a%20planning%20step%20(ala%20the%20Greenfield%20process%20above)%20can%20help%20keep%20things%20under%20control.%20At%20least%20you%20will%20have%20a%20doc%20you%20can%20double%2Dcheck%20against.%20I%20also%20do%20believe%20that%20testing%20is%20helpful%20%2D%20especially%20if%20you%20are%20doing%20wild%20style%20aider%20coding.%20Helps%20keep%20things%20good%2C%20and%20tight">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orga3b73ef" class="outline-3">
+<h3 id="orga3b73ef"><a href="https://softwaredoug.com/blog/2024/09/07/your-team-needs-juniors">Your company needs Junior devs</a></h3>
+<div class="outline-text-3" id="text-orga3b73ef">
+<p>
+不少观点认为 LLM 会取代初级程序员，但作者认为公司还是需要招聘初级程序员。
+</p>
+
+<p>
+因为他们是公司的新鲜血液，在公司中能提供不同的观点，发现一些公司老员工熟视无睹的问题。
+</p>
+
+<p>
+同时新员工也需要老员工带，也会加深老员工对于业务/知识的理解。
+</p>
+</div>
+</div>
+<div id="outline-container-orgda6ad8f" class="outline-3">
+<h3 id="orgda6ad8f"><a href="https://sfstandard.com/2025/02/08/golden-gate-park-ranger-homelessness/">San Francisco homelessness: Park ranger helps one person at a time</a></h3>
+<div class="outline-text-3" id="text-orgda6ad8f">
+<p>
+一个公园管理员的故事，她努力帮助公园里的流浪汉申请住房。
+</p>
+
+<p>
+和其他人不同，她会和流浪汉建立连接，了解他们的需求。
+</p>
+</div>
+</div>
+<div id="outline-container-org5f68bbd" class="outline-3">
+<h3 id="org5f68bbd"><a href="https://aresluna.org/the-hardest-working-font-in-manhattan/#gorton-shapes">The hardest working font in Manhattan</a></h3>
+<div class="outline-text-3" id="text-org5f68bbd">
+<p>
+作者追寻一款字体 Gorton 的由来，很长的文章，图文丰富。
+</p>
+
+<p>
+字体看起来还不错，不过我不是做字体设计相关的，字体的差异我不太能区分得出来。
+</p>
+</div>
+</div>
+<div id="outline-container-org3ef2ea8" class="outline-3">
+<h3 id="org3ef2ea8"><a href="https://vale.rocks/posts/ai-is-stifling-tech-adoption">AI is Stifling Tech Adoption</a></h3>
+<div class="outline-text-3" id="text-org3ef2ea8">
+<p>
+作者认为人工智能阻碍了新技术的应用，因为大模型训练用的数据不是最新的。
+</p>
+
+<p>
+当用户询问最新技术的时候，得不到理想的结果，就会抑制这些用户使用新技术。
+</p>
+</div>
+</div>
+<div id="outline-container-orgac6d317" class="outline-3">
+<h3 id="orgac6d317"><a href="https://thirdshire.com/why-ynab-is-the-best/">记账软件 YNAB：为什么它是最强的记账 app</a></h3>
+<div class="outline-text-3" id="text-orgac6d317">
+<p>
+看起来不错的记账方式，它的核心是预算，通过预算管理自己的开支。
+</p>
+
+<p>
+我记账用的是 <a href="https://github.com/beancount/beancount">beancount</a>，用着也还行，好处是对账比较容易，因为所有账户相加的值一定是 0。
+</p>
+</div>
+</div>
+<div id="outline-container-org518418d" class="outline-3">
+<h3 id="org518418d"><a href="https://mp.weixin.qq.com/s/OKOXlbSg6rtf9ksKt-ELaQ">“预期”这道坎，多少好产品死在了这里？</a></h3>
+<div class="outline-text-3" id="text-org518418d">
+<p>
+一篇关于用户预期的文章。
+</p>
+
+<p>
+要管理用户的预期，首先是知道用户的预期是什么，一方面是做好前期的调研，另一方面是要有途径接收用户的反馈，及时调整。
+</p>
+</div>
+</div>
+<div id="outline-container-orgaae5f36" class="outline-3">
+<h3 id="orgaae5f36"><a href="https://idlewords.com/2025/02/the_shape_of_a_mars_mission.htm">The Shape of a Mars Mission (Part 2)</a></h3>
+<div class="outline-text-3" id="text-orgaae5f36">
+<p>
+作者对于火星任务的可行性分析，还是有非常多的问题需要克服。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb8b16cd" class="outline-2">
+<h2 id="orgb8b16cd">Tutorial | Resource</h2>
+<div class="outline-text-2" id="text-orgb8b16cd">
+</div>
+<div id="outline-container-org38dd5a2" class="outline-3">
+<h3 id="org38dd5a2"><a href="https://codecatalog.org/">Code Catalog</a></h3>
+<div class="outline-text-3" id="text-org38dd5a2">
+<p>
+学习编写更好的代码的方法之一，就是多阅读优秀的代码。
+</p>
+
+<p>
+然而在 GitHub 上找开源代码看，它们的规模往往都会比较大，阅读起来比较困难。
+</p>
+
+<p>
+Code Catalog 通过查找优秀示例、解释、注释和分类，让学习他人代码变得更容易。
+</p>
+</div>
+</div>
+<div id="outline-container-org16c8776" class="outline-3">
+<h3 id="org16c8776"><a href="https://github.com/ZJU-LLMs/Foundations-of-LLMs">大模型基础</a></h3>
+<div class="outline-text-3" id="text-org16c8776">
+<blockquote>
+<p>
+本书旨在为对大语言模型感兴趣的读者系统地讲解相关基础知识、介绍前沿技术。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orgcf36b85" class="outline-3">
+<h3 id="orgcf36b85"><a href="https://chenhuijing.com/blog/learning-web-extensions/#%F0%9F%8E%99">Learning web extensions</a></h3>
+<div class="outline-text-3" id="text-orgcf36b85">
+<p>
+文章介绍了写一个浏览器插件的基础知识。
+</p>
+</div>
+</div>
+<div id="outline-container-org8991cdf" class="outline-3">
+<h3 id="org8991cdf"><a href="https://fosdem.org/2025/schedule/event/fosdem-2025-4852-how-browsers-really-load-web-pages/">"Tight Mode": How browsers REALLY load Web pages</a></h3>
+<div class="outline-text-3" id="text-org8991cdf">
+<p>
+一个讲座，讲解浏览器如何加载资源。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgdf805c5" class="outline-2">
+<h2 id="orgdf805c5">Code Related</h2>
+<div class="outline-text-2" id="text-orgdf805c5">
+</div>
+<div id="outline-container-org8a6a0ea" class="outline-3">
+<h3 id="org8a6a0ea"><a href="https://eslint.org/blog/2025/02/eslint-css-support/">ESLint now officially supports linting of CSS</a></h3>
+<div class="outline-text-3" id="text-org8a6a0ea">
+<p>
+ESLint 支持对 CSS 的校验了！恐怕我的 CSS 要一片红了(つд⊂)
+</p>
+</div>
+</div>
+<div id="outline-container-orge65387a" class="outline-3">
+<h3 id="orge65387a"><a href="https://frontendmasters.com/blog/three-approaches-to-the-ampersand-selector-in-css/">Three Approaches to the “&amp;” (ampersand) Selector in CSS</a></h3>
+<div class="outline-text-3" id="text-orge65387a">
+<p>
+在 CSS 中使用 <code>&amp;</code> 选择符的三种场景。
+</p>
+</div>
+</div>
+<div id="outline-container-orgcb0d09a" class="outline-3">
+<h3 id="orgcb0d09a"><a href="https://polypane.app/blog/decoding-css-selectors-has-not-vs-not-has">Decoding CSS Selectors: :has(:not) vs :not(:has)</a></h3>
+<div class="outline-text-3" id="text-orgcb0d09a">
+<p>
+文章解析了 <code>:has(:not)</code> 和 <code>:not(:has)</code> 的作用。
+</p>
+
+<blockquote>
+<p>
+为了弄清某个 CSS 选择器的作用，我们最好有一个简单的 HTML 结构。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+当你试图弄清一个 CSS 选择器的作用时，将其分解成各个部分，然后由内而外地进行处理，可能会有所帮助。
+</p>
+
+<p>
+这样就能更容易地看出选择器的每个部分选择了哪些 HTML，然后再将它们重新组合，找出选择器所匹配的完整 HTML。
+</p>
+
+<p>
+<a href="https://polypane.app/blog/decoding-css-selectors-has-not-vs-not-has/#:~:text=When%20you%27re%20trying%20to%20figure%20out%20what%20a%20CSS%20selector%20does%2C%20it%20can%20be%20helpful%20to%20break%20it%20down%20into%20its%20parts%20and%20work%20from%20the%20inside%20out.%20This%20makes%20it%20easier%20to%20see%20what%20HTML%20each%20part%20of%20the%20selector%20selects%2C%20and%20you%20can%20then%20recombine%20them%20find%20the%20full%20HTML%20that%20the%20selector%20matches%20against">Source</a>
+</p>
+</blockquote>
+
+<p>
+不错的分析思路。
+</p>
+</div>
+</div>
+<div id="outline-container-orgc710b16" class="outline-3">
+<h3 id="orgc710b16"><a href="https://css-tricks.com/organizing-design-system-component-patterns-with-css-cascade-layers">Organizing Design System Component Patterns With CSS Cascade Layers</a></h3>
+<div class="outline-text-3" id="text-orgc710b16">
+<p>
+作者用 <a href="https://css-tricks.com/css-cascade-layers/">Cascade Layers</a> 来组织 CSS，将 CSS 按照功能分成几个部分，看起来还不错。
+</p>
+</div>
+</div>
+<div id="outline-container-orgf2b7a3c" class="outline-3">
+<h3 id="orgf2b7a3c"><a href="https://bhoot.dev/2024/on-linux-file-and-links/">A mental model for Linux file, hard and soft links</a></h3>
+<div class="outline-text-3" id="text-orgf2b7a3c">
+<p>
+作者探究了 Linux 中文件、硬链接 (hard links) 和软链接 (soft links) 之间的关系，以及操作它们会发生什么。
+</p>
+
+<blockquote>
+<p>
+硬链接是将一个路径名链接到一个 inode 的目录条目，而软链接则是将自己的路径名链接到另一个路径名的文件。
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="outline-container-orga30b9c3" class="outline-2">
+<h2 id="orga30b9c3">Cool Bit</h2>
+<div class="outline-text-2" id="text-orga30b9c3">
+</div>
+<div id="outline-container-org3038ff3" class="outline-3">
+<h3 id="org3038ff3"><a href="https://eieio.games/blog/running-pong-in-240-browser-tabs/">Running Pong in 240 Browser Tabs</a></h3>
+<div class="outline-text-3" id="text-org3038ff3">
+<p>
+用 240 个浏览器 tab 玩乒乓游戏。
+</p>
+</div>
+</div>
+<div id="outline-container-org5127483" class="outline-3">
+<h3 id="org5127483"><a href="https://weeks.ginatrapani.org/">My Life in Weeks by Gina Trapani</a></h3>
+<div class="outline-text-3" id="text-org5127483">
+<p>
+将一生的事件标记在一张图表中，每个格子代表一周，蛮有趣的呈现方式。
+</p>
+
+<p>
+感觉挺适合呈现一些人物的一生。
+</p>
+</div>
+</div>
+<div id="outline-container-org5118adf" class="outline-3">
+<h3 id="org5118adf"><a href="https://orteil.dashnet.org/cookieclicker/">Cookie Cliker</a></h3>
+<div class="outline-text-3" id="text-org5118adf">
+<p>
+和之前分享的 <a href="https://neal.fun/stimulation-clicker/">Stimulation Clicker</a> 类似的游戏，但更加完善，也没有那么多烦人的“广告”。
+</p>
+
+<p>
+写 zine 的时候挂着无聊点着玩。（但很容易让人分心）
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org4f1699b" class="outline-2">
+<h2 id="org4f1699b">Tool | Library</h2>
+<div class="outline-text-2" id="text-org4f1699b">
+</div>
+<div id="outline-container-org9b81c5c" class="outline-3">
+<h3 id="org9b81c5c"><a href="https://uchu.style/">uchū</a></h3>
+<div class="outline-text-3" id="text-org9b81c5c">
+<p>
+互联网爱好者的调色板，使用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch">oklch()</a> 定义颜色。
+</p>
+</div>
+</div>
+<div id="outline-container-org42400c7" class="outline-3">
+<h3 id="org42400c7"><a href="https://github.com/githubnext/monaspace">monaspace</a></h3>
+<div class="outline-text-3" id="text-org42400c7">
+<p>
+一款用于代码的等宽字体。
+</p>
+</div>
+</div>
+<div id="outline-container-org72db554" class="outline-3">
+<h3 id="org72db554"><a href="https://github.com/developit/web-worker">developit/web-worker</a></h3>
+<div class="outline-text-3" id="text-org72db554">
+<blockquote>
+<p>
+浏览器和 Node 中一致的 Web Worker。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orge6997d2" class="outline-3">
+<h3 id="orge6997d2"><a href="https://startpinch.com/">Pinch</a></h3>
+<div class="outline-text-3" id="text-orge6997d2">
+<p>
+可以实时人工智能语音翻译的视频通话工具。
+</p>
+</div>
+</div>
+<div id="outline-container-org9d89969" class="outline-3">
+<h3 id="org9d89969"><a href="https://haystackeditor.com/">Haystack</a></h3>
+<div class="outline-text-3" id="text-org9d89969">
+<blockquote>
+<p>
+Haystack 是建立在画布之上的集成开发环境，它能为您解决编码过程中的繁琐和困惑。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org4748366" class="outline-3">
+<h3 id="org4748366"><a href="https://github.com/parallax/jsPDF">jsPDF</a></h3>
+<div class="outline-text-3" id="text-org4748366">
+<p>
+jsPDF 是一个使用很广泛的 JS PDF 库，集成了很多生成 PDF 的功能。
+</p>
+
+<p>
+它发布了 3.0 版本，放弃了对 IE 的支持，没有其他破环性更改。
+</p>
+</div>
+</div>
+<div id="outline-container-orge6d1a75" class="outline-3">
+<h3 id="orge6d1a75"><a href="https://github.com/mastra-ai/mastra">mastra</a></h3>
+<div class="outline-text-3" id="text-orge6d1a75">
+<blockquote>
+<p>
+Mastra 是一个有主见的 Typescript 框架，可帮助您快速构建人工智能应用程序和功能。
+</p>
+
+<p>
+它为您提供了所需的基本功能：工作流、代理、RAG、集成和评估。
+</p>
+
+<p>
+您可以在本地机器上运行 Mastra，也可以将其部署到无服务器云上。
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="outline-container-orga3c2760" class="outline-2">
+<h2 id="orga3c2760">Emacs</h2>
+<div class="outline-text-2" id="text-orga3c2760">
+<ul class="org-ul">
+<li><p>
+<a href="https://gnulinux.ch/emacs-wird-2025-vierzig">Emacs wird 2025 vierzig! - GNU/Linux.ch</a>
+</p>
+<blockquote>
+<p>
+Emacs 目前（2025 年 1 月）的版本为 29.4，下一个版本预计将于今年推出。
+</p>
+
+<p>
+因此，已有 40 年历史的 Emacs 是一款历史悠久的软件，可以说是一个活化石。
+</p>
+
+<p>
+不过，与“活化石”相提并论也有一定的误导性，因为尽管 Emacs 保留了其基本结构，但它经历了巨大的进一步发展，在技术上仍能跻身顶级编程编辑器行列。
+</p>
+</blockquote></li>
+<li><a href="https://blog.tjll.net/a-beginners-guide-to-extending-emacs/">A Beginner's Guide to Extending Emacs</a></li>
+<li><a href="https://www.youtube.com/watch?v=HyMCzEwI4cU&amp;ab_channel=ChrisKauffman">Tool Time Session 1: Emacs Basics</a> (01:41:01)</li>
+<li><a href="https://www.youtube.com/watch?v=QlYQijQCNHU&amp;ab_channel=RaoulComninos">One and a half-hour advanced course on Org Mode</a> (01:31:14)</li>
+<li><a href="https://codeberg.org/joe-adams/display-buffer-alist-lesson">Controlling Emacs Windows: An In-depth Guide to Display Buffers and display-buffer-alist</a> Emacs window 相关指南</li>
+<li><a href="https://emacsredux.com/blog/2025/02/13/customizing-color-themes/">Customizing Color Themes</a></li>
+<li><a href="https://www.naiquev.in/recurring-checklists-using-org-mode-in-emacs.html">Recurring checklists using org mode in emacs</a> 作者用 org-mode 的 check-list 管理一些项目检查项，这些检查项往往检查完就没用了，因此做完之后作者会将其重置，反复利用。</li>
+<li><a href="https://charlbotha.com/til/Show-Emacs-org-timer-countdown-in-macOS-menubar#double-bonus-macos-do-not-disturb-during-pomodoro">Show Emacs org-timer countdown in macOS menubar</a></li>
+<li><a href="https://www.youtube.com/watch?v=SQ3Beqn2CEc&amp;ab_channel=ProtesilaosStavrou">Emacs: introduction to VC (version control framework)</a> (17:23)</li>
+<li><a href="https://github.com/magit/magit/commit/223461b52c35b0f426c053f4c6e7e7637c4a9b73">magit-format-file-function: New option · magit/magit@223461b</a> magit 原生支持显示 icon 了，配置了一下，顺便给 dired，iBuffer 也配置了 nerd-icons，多了些新鲜感。</li>
+<li><a href="https://blog.alarsyo.net/posts/2025/02/on-jujutsu-and-magit/">On Jujutsu and Magit</a> 作者用了一段时间 Jujutsu，觉得挺好的，但现阶段的体验还比不上 magit。</li>
+<li><a href="https://mbork.pl/2025-02-10_Running_one_own's_commands">Marcin Borkowski: 2025-02-10 Running one own's commands</a> 作者自定义了很多方法，但是总是忘记用。于是它定义了一个方法，用来查找并调用他定义的其他方法。</li>
+<li><a href="https://www.youtube.com/watch?v=-Qmt3RWR87M&amp;ab_channel=NFVblog">Introduzione al Emacs Lisp</a> (32:50)</li>
+<li><a href="https://www.youtube.com/watch?v=5IJVDCpE3vA&amp;ab_channel=PeterPrevos">Introduction to Emacs Writing Studio</a> (25:27)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org99bd4ec" class="outline-2">
+<h2 id="org99bd4ec">一些话 | 摘抄</h2>
+<div class="outline-text-2" id="text-org99bd4ec">
+</div>
+<div id="outline-container-orgdda1c6e" class="outline-3">
+<h3 id="orgdda1c6e"><a href="https://kk.org/thetechnium/50-years-of-travel-tips/">The Technium: 50 Years of Travel Tips</a></h3>
+<div class="outline-text-3" id="text-orgdda1c6e">
+<blockquote>
+<p>
+旅行有两种模式：休息模式和体验模式。
+</p>
+
+<p>
+人们常常旅行是为了逃避工作的日常，充电、放松、恢复活力和补充自己——休闲与恢复。
+</p>
+
+<p>
+在这种模式下，你旅行是为了摆脱日常生活，或者获得平时得不到的宠爱和关注，理想情况下是为了做有趣的事情而不是工作。
+</p>
+
+<p>
+因此，你会选择去那些轻松的地方。这被称为度假，或休闲与恢复。
+</p>
+
+<p>
+另一种模式是参与和体验。
+</p>
+
+<p>
+在这种模式下，你旅行是为了发现新事物，获得新体验，迎接一个结果不确定的冒险，去接触他者。
+</p>
+
+<p>
+你通过遇到在家中无法体验的乐趣和挑战来寻找自我。
+</p>
+
+<p>
+这种旅行是一种学习，在这两种模式中，这是我在这些建议中更倾向的方式。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+围绕爱好而不是目的地安排旅行。
+</p>
+
+<p>
+以不起眼的奶酪、海军历史、恐龙发掘或爵士乐为主题的行程，会比名胜古迹的盛大之旅带来更多的冒险和难忘的时光。
+</p>
+
+<p>
+这甚至不一定是你的爱好，也可以是朋友、家人的爱好，甚至是你在书中读到过的爱好。
+</p>
+
+<p>
+问题的关键在于，要从意料之中进入意料之外。
+</p>
+
+<p>
+<a href="https://kk.org/thetechnium/50-years-of-travel-tips/#:~:text=Organize%20your%20travel,into%20the%20unexpected">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+选择旅伴时最重要的标准是：他们会不会抱怨，即使抱怨是有道理的？
+</p>
+
+<p>
+拒绝抱怨！
+</p>
+
+<p>
+抱怨是留给旅行结束之后的。
+</p>
+
+<p>
+<a href="https://kk.org/thetechnium/50-years-of-travel-tips/#:~:text=The%20most%20significant%20criteria%20to%20use%20when%20selecting%20travel%20companions%20is%3A%20do%20they%20complain%20or%20not%2C%20even%20when%20complaints%20are%20justified%3F%20No%20complaining!%20Complaints%20are%20for%20the%20debriefing%20afterwards%20when%20travel%20is%20over">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+旅行计划不周全，去的地方不周全也没关系。
+</p>
+
+<p>
+大胆尝试。如果事情搞砸了，你的假期就变成了一次冒险。
+</p>
+
+<p>
+完美是给手表看的。旅行就应该是不完美的。如果没有任何差错，就不会有故事。
+</p>
+
+<p>
+<a href="https://kk.org/thetechnium/50-years-of-travel-tips/#:~:text=Sketchy%20travel%20plans%20and%20travel%20to%20sketchy%20places%20are%20ok.%20Take%20a%20chance.%20If%20things%20fall%20apart%2C%20your%20vacation%20has%20just%20turned%20into%20an%20adventure.%20Perfection%20is%20for%20watches.%20Trips%20should%20be%20imperfect.%20There%20are%20no%20stories%20if%20nothing%20goes%20amiss.%C2%A0">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+旅行的乐趣与行李的重量成反比。
+</p>
+
+<p>
+与直觉相反，旅行时间越长，携带的东西就越少。
+</p>
+
+<p>
+旅行者在 6 周的旅行中，只携带随身携带的行李也会让他们感到愉快。
+</p>
+
+<p>
+这样可以最大限度地提高灵活性，让您在没有电梯的情况下拖着行李上楼，或与人共用一辆嘟嘟车，有效地打包和拆包，而且不会丢失东西。
+</p>
+
+<p>
+此外，当你轻装上阵时，你会有意减少携带的物品，以增加你的生活体验。
+</p>
+
+<p>
+而如今的现实是，你几乎肯定可以在路上买到你所缺少的东西。
+</p>
+
+<p>
+<a href="https://kk.org/thetechnium/50-years-of-travel-tips/#:~:text=Your%20enjoyment%20of,on%20the%20road">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+53 年来，我与形形色色的人一起旅行，我发现在哪里吃饭与是否有肠道问题之间完全没有关联，因此，为了最大限度地享受当地美食，我的经验法则是，只要当地人看起来健康，就在哪里吃饭。
+</p>
+
+<p>
+<a href="https://kk.org/thetechnium/50-years-of-travel-tips/#:~:text=In%2053%20years%20of%20travelling%20with%20all%20kinds%20of%20people%2C%20I%E2%80%99ve%20seen%20absolutely%20no%20correlation%20between%20where%20you%20eat%20and%20whether%20you%20have%20intestinal%20problems%2C%20so%20to%20maximize%20the%20enjoyment%20of%20local%20foods%2C%20my%20rule%20of%20thumb%20is%20to%20eat%20wherever%20healthy%2Dlooking%20locals%20eat">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+最令人向往的旅游城市有一个显著的共同点，那就是它们都以步行为中心。
+</p>
+
+<p>
+只要有可能，我都会在最适合步行的地方附近预订酒店，这样我就可以走出房门，开始漫步。
+</p>
+
+<p>
+<a href="https://kk.org/thetechnium/50-years-of-travel-tips/#:~:text=The%20list%20of%20most%20coveted%20cities%20to%20visit%20have%20one%20striking%20thing%20in%20common%E2%80%94they%20are%20pedestrian%20centric">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+要想有一次真正难忘的旅行，可以不做预订，一路随心所欲。
+</p>
+
+<p>
+如果喜欢某个地方，就多住一天；如果不喜欢，就提前一天离开。
+</p>
+
+<p>
+如果火车客满，就坐汽车。
+</p>
+
+<p>
+这种自由可以让人解放。
+</p>
+
+<p>
+<a href="https://kk.org/thetechnium/50-years-of-travel-tips/#:~:text=For%20a%20truly%20memorable%20trip%2C%20go%20without%20reservations%2C%20just%20winging%20it%20along%20the%20way.%20If%20you%20like%20somewhere%2C%20stay%20a%20day%20longer%2C%20or%20if%20you%20don%E2%80%99t%2C%20split%20a%20day%20earlier.%20If%20the%20train%20is%20full%2C%20take%20a%20bus.%20That%20freedom%20can%20be%20liberating">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+你的速度并不取决于你走路、骑车或开车的速度，而是取决于你休息的时间有多长。
+</p>
+
+<p>
+放慢速度。多休息。
+</p>
+
+<p>
+最难忘的时刻&#x2013;与了不起的陌生人交谈、被邀请进入室内、看到隐藏的艺术品&#x2013;通常会在你休息的时候发生。
+</p>
+
+<p>
+<a href="https://kk.org/thetechnium/50-years-of-travel-tips/#:~:text=The%20rate%20you%20go%20is%20not%20determined%20by%20how%20fast%20you%20walk%2C%20bike%20or%20drive%2C%20but%20by%20how%20long%20your%20breaks%20are.%20Slow%20down.%20Take%20lots%20of%20breaks.%20The%20most%20memorable%20moments%E2%80%94conversations%20with%20amazing%20strangers%2C%20an%20invite%20inside%2C%20a%20hidden%20artwork%E2%80%94will%20usually%20happen%20when%20you%20are%20not%20moving">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+其他地方的人也不是圣人。你可能会被欺骗、诈骗或占便宜。
+</p>
+
+<p>
+矛盾的是，避免这种情况的最好办法就是给予陌生人信任，善待他们。
+</p>
+
+<p>
+对他们好，他们才会好。如果你表现得最好，他们也会表现得最好。反之亦然。
+</p>
+
+<p>
+为了保持安全，请保持微笑。要谦虚，尽量减少自负。
+</p>
+
+<p>
+我不知道为什么这在世界上任何地方都行得通，即使是名声“不好”的地方，但确实如此。
+</p>
+
+<p>
+<a href="https://kk.org/thetechnium/50-years-of-travel-tips/#:~:text=People%20in%20other,but%20it%20does">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+在著名旅游景点附近，您只需步行至少 5 个街区，就能品尝到价廉物美的地道美食。
+</p>
+
+<p>
+<a href="https://kk.org/thetechnium/50-years-of-travel-tips/#:~:text=You%20can%20get%20an%20inexpensive%20and%20authentic%20meal%20near%20a%20famous%20tourist%20spot%20simply%20by%20walking%20at%20least%20five%20blocks%20away%20from%20the%20epicenter.%C2%A0">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+要获得最佳旅行体验，可以投入大量资金，或者投入大量时间。
+</p>
+
+<p>
+在这两种方式中，投入时间，体验更好。
+</p>
+
+<p>
+虽然金钱可以买到很多体验，但却买不到投入时间的体验。
+</p>
+
+<p>
+你有足够的时间参加难得一见的节日，学习一些新单词，了解真实的价格，等待天气的变化，或者坐吉普车去那个需要一周时间的地方。
+</p>
+
+<p>
+时间是你能给予自己的唯一资源，所以，如果你还年轻，没有钱，就好好利用时间吧。
+</p>
+
+<p>
+<a href="https://kk.org/thetechnium/50-years-of-travel-tips/#:~:text=For%20the%20best,young%20without%20money">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+对于纪念品来说，仅仅漂亮、做工精细或便宜是不够的。
+</p>
+
+<p>
+它应该对旅行有一定的意义。
+</p>
+
+<p>
+在购买纪念品时，您可能要问自己一个很好的问题：当我回家后，这个纪念品会住在哪里？
+</p>
+
+<p>
+旅行中最好的纪念品就是你对旅行的回忆，所以要想办法纪念这些回忆；
+</p>
+
+<p>
+写日记、给朋友发送最新消息、带一本素描本、发表一些观察结果、制作一本照片集。
+</p>
+
+<p>
+<a href="https://kk.org/thetechnium/50-years-of-travel-tips/#:~:text=Being%20beautiful%2C%20or%20well%20crafted%2C%20or%20cheap%20is%20not%20enough%20for%20a%20souvenir.%20It%20should%20have%20some%20meaning%20from%20the%20trip.%20A%20good%20question%20you%20may%20want%20to%20ask%20yourself%20when%20buying%20a%20souvenir%20is%20where%20will%20this%20live%20when%20I%20get%20home%3F">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org0292b2b" class="outline-3">
+<h3 id="org0292b2b"><a href="https://sachachua.com/blog/2025/02/looking-at-landscapes-art-and-iteration/">Looking at landscapes; art and iteration</a></h3>
+<div class="outline-text-3" id="text-org0292b2b">
+<blockquote>
+<p>
+学习（和分享）的一个重要部分是如何放下阻碍我们前进的挫折感和自我怀疑，以便我们能够继续学习。这很难。
+</p>
+
+<p>
+<a href="https://sachachua.com/blog/2025/02/looking-at-landscapes-art-and-iteration/#:~:text=An%20important%20part%20to%20learn%20(and%20share)%20is%20how%20to%20let%20go%20of%20the%20frustration%20and%20self%2Ddoubt%20that%20get%20in%20the%20way%2C%20so%20that%20we%20can%20get%20on%20with%20the%20learning.%20That%27s%20hard">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+没有人告诉初学者这些，我希望有人告诉我。
+</p>
+
+<p>
+我们所有从事创意工作的人，都是因为品味好才进入这个行业的。
+</p>
+
+<p>
+但我们之间存在着差距。
+</p>
+
+<p>
+在最初的几年里，你做的东西并不是那么好。你想做得好，有潜力，但做不好。
+</p>
+
+<p>
+但你的品味，让你进入游戏的东西，仍然是杀手锏。
+</p>
+
+<p>
+你的品味就是你的作品让你失望的原因。很多人都过不了这个阶段，就放弃了。
+</p>
+
+<p>
+我认识的大多数从事有趣的、创造性工作的人都经历过多年的这个阶段。
+</p>
+
+<p>
+我们知道自己的作品没有我们想要的那种特别之处。我们都经历过这个阶段。
+</p>
+
+<p>
+如果你刚刚起步，或者还处在这个阶段，你必须知道这很正常，你能做的最重要的事情就是做大量的工作。
+</p>
+
+<p>
+给自己设定一个期限，每周完成一个故事。只有通过大量的工作，你才能缩小差距，你的作品才会像你的雄心一样出色。
+</p>
+
+<p>
+我比我见过的任何人都花了更长的时间去思考如何做到这一点。
+</p>
+
+<p>
+这需要一段时间。花点时间很正常。你只需要努力奋斗就可以了。
+</p>
+
+<p>
+<a href="https://sachachua.com/blog/2025/02/looking-at-landscapes-art-and-iteration/#:~:text=Nobody%20tells%20this,your%20way%20through">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org69b0db2" class="outline-3">
+<h3 id="org69b0db2"><a href="https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/">Why You Only Need to Test with 5 Users</a></h3>
+<div class="outline-text-3" id="text-org69b0db2">
+<blockquote>
+<p>
+最好的测试结果来自于不超过 5 个用户的测试，并在你能承受的范围内进行尽可能多的小规模测试。
+</p>
+
+<p>
+<a href="https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/#:~:text=waste%20of%20resources.-,The%20best%20results%20come%20from%20testing%20no%20more%20than%205%20users%20and%20running%20as%20many%20small%20tests%20as%20you%20can%20afford.,-%E6%9C%89%E4%BA%9B%E4%BA%BA%E8%AE%A4%E4%B8%BA%EF%BC%8C%E5%8F%AF%E7%94%A8%E6%80%A7">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org83d4b44" class="outline-3">
+<h3 id="org83d4b44"><a href="https://medium.com/mule-design/minimum-viable-ethnography-a047e9358df0">Minimum Viable Ethnography</a></h3>
+<div class="outline-text-3" id="text-org83d4b44">
+<blockquote>
+<p>
+提出一个要求。闭嘴，听他们说15分钟。尽你最大的努力把你自己和你的兴趣排除在外。
+</p>
+
+<p>
+咣当，你就完成了人种学研究（不是学术标准，而是“在社会环境中了解人们”的标准，就像在健怡可乐中加入曼妥思一样）。
+</p>
+
+<p>
+<a href="https://medium.com/mule-design/minimum-viable-ethnography-a047e9358df0#:~:text=That%E2%80%99s%20it.%20Present,is%20doing%20chemistry)">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org90a61cd" class="outline-3">
+<h3 id="org90a61cd"><a href="https://www.cosive.com/blog/my-washing-machine-refreshed-my-thinking-on-software-effort-estimation">My Washing Machine Refreshed My Thinking on Software Effort Estimation</a></h3>
+<div class="outline-text-3" id="text-org90a61cd">
+<blockquote>
+<p>
+最近，我与一台洗衣机之间发生了一段传奇故事，它提醒了我为什么软件开发人员最害怕和最讨厌的任务之一要从问题开始：
+</p>
+
+<p>
+“那你要花多长时间才能建好？”
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+第二天我在想这件事的时候，它以一种非常具体的形式提醒了我为什么软件开发估算如此困难。
+</p>
+
+<p>
+我们经常会被要求构建一些我们以前构建过的东西，因此我们会满怀信心地估计它可能需要一周的时间。
+</p>
+
+<p>
+我们没有考虑到的是，虽然项目的 90% 都是一样的，但过去 5 个项目和这个项目之间会有一个关键的不同点，这个不同点在估算时看起来微不足道，但会影响我们的整个进度。
+</p>
+
+<p>
+&#x2026;
+</p>
+
+<p>
+是的，我们可以（也必须）尽我们所能收集需求，但在某些时候，我们最终会在地面上与几十个我们意想不到的阻挡者战斗，即使我们认为这块土地看起来非常熟悉，10 分钟的工作变成了 4 个小时。
+</p>
+
+<p>
+<a href="https://www.cosive.com/blog/my-washing-machine-refreshed-my-thinking-on-software-effort-estimation#:~:text=So%20what%20do,to%20drill%20out">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-orga6e5ac2" class="outline-3">
+<h3 id="orga6e5ac2"><a href="https://mathwithbaddrawings.com/2016/12/28/why-the-number-line-freaks-me-out/">Why the Number Line Freaks Me Out</a></h3>
+<div class="outline-text-3" id="text-orga6e5ac2">
+<blockquote>
+<p>
+在数学中，你不理解事物。你只是习惯了它们。
+</p>
+
+<p>
+<a href="https://mathwithbaddrawings.com/2016/12/28/why-the-number-line-freaks-me-out/#:~:text=%E2%80%9CIn%20mathematics%20you%20don%E2%80%99t%20understand%20things.%20You%20just%20get%20used%20to%20them.%E2%80%9D">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org408e87c" class="outline-3">
+<h3 id="org408e87c"><a href="https://www.scientificamerican.com/article/broken-legs-and-ankles-heal-better-if-you-walk-on-them-within-weeks/">Broken Legs and Ankles Heal Better If You Walk on Them within Weeks</a></h3>
+<div class="outline-text-3" id="text-org408e87c">
+<blockquote>
+<p>
+19 世纪，德国外科医生和解剖学家 Julius Wolff 认识到，健康的骨骼会根据其所承受的负荷进行调整和改变。
+</p>
+
+<p>
+这就是为什么每个人&#x2013;尤其是比男性更容易患骨质疏松症的女性&#x2013;都应该随着年龄的增长而举重。
+</p>
+
+<p>
+举重能增加骨密度。
+</p>
+
+<p>
+<a href="https://www.scientificamerican.com/article/broken-legs-and-ankles-heal-better-if-you-walk-on-them-within-weeks/#:~:text=In%20the%2019th,increases%20bone%20density">Source</a>
+</p>
+</blockquote>
+
+<p>
+身体需要承受一些负荷，不然就会变得脆弱。
+</p>
+</div>
+</div>
+<div id="outline-container-orge25ab27" class="outline-3">
+<h3 id="orge25ab27"><a href="https://jazco.dev/2025/02/19/imperfection/">When Imperfect Systems are Good, Actually: Bluesky's Lossy Timelines</a></h3>
+<div class="outline-text-3" id="text-orge25ab27">
+<blockquote>
+<p>
+在设计系统时，我们通常会在数据一致性、可用性、延迟等方面追求完美。
+</p>
+
+<p>
+系统设计中最难的部分在于，很难（如果不是不可能的话）同时设计出具有完美一致性、完美可用性、难以置信的低延迟和难以置信的高吞吐量的系统。
+</p>
+
+<p>
+相反，当我们进行系统设计时，最好将这些特性视为不同坐标轴上的点，通过平衡这些点来找到 “最适合” 我们所支持应用的特性。
+</p>
+
+<p>
+<a href="https://jazco.dev/2025/02/19/imperfection/#:~:text=Often%20when%20designing,application%20we%E2%80%99re%20supporting">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="outline-container-org0b30f27" class="outline-2">
+<h2 id="org0b30f27">多媒体</h2>
+<div class="outline-text-2" id="text-org0b30f27">
+<ul class="org-ul">
+<li><a href="https://www.bilibili.com/video/BV15tAWeXEwX">它可能是世界上最长寿的音乐节目丨HOPICO</a> (18:23)</li>
+<li><a href="https://www.bilibili.com/video/BV16ZKceyEBb">100亿！哪吒凭什么？</a>(02:39)</li>
+<li><p>
+<a href="https://www.bilibili.com/video/BV17x6hYZEzJ/">你管这破玩意叫网络？</a>(12:22)
+</p>
+
+<p>
+从简单到复杂，讲述了 mac，ip，交换机，路由器之间的作用和关系。
+</p></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org161b49f" class="outline-2">
+<h2 id="org161b49f">Music</h2>
+<div class="outline-text-2" id="text-org161b49f">
+<p>
+福禄寿是一个三胞胎姐妹的组合，曲风很有特色，有种宗教色彩，声音也很有辨识度。
+</p>
+
+<p>
+但是三姐妹中的一个因为和毒品沾边，已经无法参与乐队活动了，后来乐队改名为 DOUDOU，由另外两个姐妹组成。
+</p>
+
+<p>
+2024 年的跨年夜和女朋友一起去听了演出，很精彩，如果还能买到票的话，还会去听听。
+</p>
+
+<p>
+DOUDOU 延续了福禄寿的风格，歌曲也很好听。
+</p>
+
+<p>
+最近看视频听到了她们一月份的新歌《嗵嗵》，已经单曲循环很多遍了，期待她们更多的歌曲。
+</p>
+
+<ul class="org-ul">
+<li><p>
+<a href="https://music.163.com/#/song?id=2613680870">DOUDOU - 春夏秋冬</a>
+</p>
+<p class="verse">
+春天 就让这繁花都开遍<br>
+夏天 我想你想了千万遍<br>
+秋天 当落叶画成一个圈<br>
+冬天 就在这冰封一瞬间<br>
+</p></li>
+<li><p>
+<a href="https://music.163.com/#/song?id=2052454512">DOUDOU - 南三环东路</a>
+</p>
+
+<p class="verse">
+污泥啊 血肉啊<br>
+石头和大地也是你啊<br>
+莫要哭 莫要怕<br>
+走过了东路就到家<br>
+</p></li>
+<li><p>
+<a href="https://music.163.com/#/song?id=2668317465">DOUDOU - 嗵嗵</a>
+</p>
+<p class="verse">
+嗵一声落下<br>
+果实嗵一声落下<br>
+我的脚下开了花<br>
+<br>
+嗵一声落下<br>
+骨头嗵一声落下<br>
+可以了可以了<br>
+可以变回孩子了<br>
+</p></li>
+<li><a href="https://music.163.com/#/song?id=1412597751">福禄寿FloruitShow - 玉珍</a> 一首对外婆的思念</li>
+<li><p>
+<a href="https://music.163.com/#/song?id=1818820553">福禄寿FloruitShow - 春暖花开去见你</a> 在唱到“砰…砰…砰…砰…”的时候，现场会有人放礼花～
+</p>
+
+<p class="verse">
+如果我想你三遍<br>
+天上乌云就散一点<br>
+等到春暖艳阳天<br>
+你我就相见<br>
+<br>
+如果我想你三十遍<br>
+天上星星不再熄灭<br>
+等到春暖艳阳天<br>
+你我就相见<br>
+<br>
+我要想你三百遍<br>
+狂风暴雨都停歇<br>
+如果我们撑得到那天<br>
+就不顾一切去爱这新世界<br>
+<br>
+这样想了千万遍<br>
+这悲伤的星球又转了半圈<br>
+记得春暖艳阳天<br>
+你我就相见<br>
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： 2025-02-24 Mon 10:50</p>
+<p class="date">修改于： 2025-08-28 Thu 13:28</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

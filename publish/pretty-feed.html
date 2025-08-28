@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>让你的 RSS/Atom feed 更好看</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="使用 XMLT 美化 RSS 或 Atom feed 的技巧" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">让你的 RSS/Atom feed 更好看</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#D8B64803-B008-4238-A2F6-E44FCEA38BCE">缘由</a></li>
+<li><a href="#A9223BE7-CCDB-4D73-8433-1D73D3FE3B58">实现</a></li>
+<li><a href="#173A2CF7-9FC8-4AB1-9E5E-44C7927BB520">我的一个呼吁</a></li>
+</ul>
+</div>
+</nav>
+<p>
+在往下看之前，你可以先看看我现在的 <a href="https://taxodium.ink/rss.xml">Atom feed</a><sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>，或许说不上很好看，但应该比枯燥的 XML 标签看起来要友好一点吧 (つд⊂)
+</p>
+<div id="outline-container-D8B64803-B008-4238-A2F6-E44FCEA38BCE" class="outline-2">
+<h2 id="D8B64803-B008-4238-A2F6-E44FCEA38BCE">缘由</h2>
+<div class="outline-text-2" id="text-D8B64803-B008-4238-A2F6-E44FCEA38BCE">
+<p>
+最近在整理自己的订阅流<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>， 在整理的过程中看到了 <a href="https://jakelazaroff.com/rss.xml">jakelazaroff.com</a>，点开发现虽然 URL 是 <a href="https://jakelazaroff.com/rss.xml">https://jakelazaroff.com/rss.xml</a> ，但是看起来和我平时看到的一堆 XML 标签不同，是个还挺好看的页面。
+</p>
+
+<p>
+于是我打开浏览器 Developer Tools 看看他是怎么做的，发现看到的是一个 HTML。
+</p>
+
+<p>
+嗯？既然 URL 上是 rss.xml，它的内容为什么不是一堆 XML 标签？
+</p>
+
+<p>
+再切换到 Sources 找到 rss.xml，这次看到的就是 XML 标签了。
+</p>
+
+<p>
+那他是怎么把 XML 转换成有样式的 HTML 的？
+</p>
+
+<p>
+在他页面中的 <a href="https://aboutfeeds.com/">About Feeds</a> 中我找到了答案 ⸺ <a href="https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl">pretty-feed-v3.xsl</a>。
+</p>
+</div>
+</div>
+<div id="outline-container-A9223BE7-CCDB-4D73-8433-1D73D3FE3B58" class="outline-2">
+<h2 id="A9223BE7-CCDB-4D73-8433-1D73D3FE3B58">实现</h2>
+<div class="outline-text-2" id="text-A9223BE7-CCDB-4D73-8433-1D73D3FE3B58">
+<p>
+如果你是 RSS feed，只要在你的 XML 文件开头引入 <a href="https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl">pretty-feed-v3.xsl</a>，你就可以得到一个好看的 HTML feed 页面了。<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-xml"><span style="color: #989898;">&lt;?</span><span style="color: #b6a0ff;">xml</span> <span style="color: #989898;">version="1.0" encoding="UTF-8"</span><span style="color: #989898;">?&gt;</span>
+<span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#28155;&#21152;&#36825;&#34892; XML &#26679;&#24335;&#34920;&#65292;&#24341;&#29992; pretty-feed-v3.xsl</span><span style="color: #db7b5f;"> --&gt;</span>
+<span style="color: #989898;">&lt;?</span><span style="color: #b6a0ff;">xml-stylesheet</span> <span style="color: #989898;">href="/home/static/styles/pretty-feed-v3.xsl" type="text/xsl"</span><span style="color: #989898;">?&gt;</span>
+<span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#20320;&#21407;&#26469;&#30340; RSS &#20869;&#23481;</span><span style="color: #db7b5f;"> --&gt;</span>
+<span style="color: #989898;">&lt;</span><span style="color: #feacd0;">rss</span> <span style="color: #6ae4b9;">xmlns</span><span style="color: #ffffff;">:</span><span style="color: #00d3d0;">atom</span>=<span style="color: #79a8ff;">"http://www.w3.org/2005/Atom"</span> <span style="color: #6ae4b9;">xmlns</span><span style="color: #ffffff;">:</span><span style="color: #00d3d0;">content</span>=<span style="color: #79a8ff;">"http://purl.org/rss/1.0/modules/content/"</span> <span style="color: #00d3d0;">version</span>=<span style="color: #79a8ff;">"2.0"</span><span style="color: #989898;">&gt;&lt;</span><span style="color: #989898;">/</span><span style="color: #feacd0;">rss</span><span style="color: #989898;">&gt;</span>
+</pre>
+</div>
+
+<p>
+如果你是 Atom feed，你需要修改一下 <a href="https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl">pretty-feed-v3.xsl</a>，你可以参考 <a href="https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/pretty-feed-v3.xsl">我的实现</a>，或者看看 <a href="https://github.com/genmon/aboutfeeds/issues/26">相关 issue</a>。
+</p>
+
+<p>
+用到的技术是 <a href="https://www.w3.org/TR/xml-stylesheet/">xml-stylesheet</a> 和 <a href="https://developer.mozilla.org/en-US/docs/Web/XML/XSLT/Guides/Transforming_XML_with_XSLT/An_Overview">XSLT(eXtensible Stylesheet Language/Transform)</a>。
+</p>
+
+<p>
+如果你熟悉 HTML，我们可以做一个类比。
+</p>
+
+<p>
+<code>&lt;?xml-stylesheet href="some.xsl" type="text/xsl"?&gt;</code> 就相当于 <code>&lt;link rel="stylesheet" href="some.css"&gt;</code> , 作用是引用一个样式表。
+</p>
+
+<p>
+<a href="https://www.w3.org/TR/xml-stylesheet/">xml-stylesheet</a> 引用的样式表有自己的规则，但整体来说它很像 HTML，你也可以在里面写 HTML 标签，用 &lt;style&gt; 写样式。
+</p>
+
+<p>
+它也像一个模版，用 HTML 写模版，而数据则通过 <a href="https://developer.mozilla.org/en-US/docs/Web/XML/XSLT/Guides/Transforming_XML_with_XSLT/An_Overview">XSLT</a> 从你的 RSS / Atom feed 的 XML 中读取，例如读取标题，作者，文章标题，发布时间，文章总结等。
+</p>
+
+<p>
+如果你只是想美化一下，你基于现有的文件修改就好了：<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>
+</p>
+
+<ul class="org-ul">
+<li>适用 RSS feed： <a href="https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl">Matt Webb's pretty-feed-v3.xsl</a></li>
+<li>使用 Atom feed：<a href="https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/pretty-feed-v3.xsl">Spike Leung's pretty-feed-v3.xsl</a></li>
+</ul>
+
+<p>
+如果你嫌麻烦，也可以用 <a href="https://github.com/ccbikai/RSS.Beauty">RSS.Beauty</a>，但自己写的话，定制化会更高，如果你还有更好的方法欢迎分享。
+</p>
+</div>
+</div>
+<div id="outline-container-173A2CF7-9FC8-4AB1-9E5E-44C7927BB520" class="outline-2">
+<h2 id="173A2CF7-9FC8-4AB1-9E5E-44C7927BB520">我的一个呼吁</h2>
+<div class="outline-text-2" id="text-173A2CF7-9FC8-4AB1-9E5E-44C7927BB520">
+<p>
+让订阅流变好看并不麻烦，我推荐你尝试一下，给读者一个更好的体验，如果你在实现过程中有什么问题，欢迎邮件或留言交流。
+</p>
+
+<p>
+另外，我呼吁大家在订阅流旁边引用 <a href="https://aboutfeeds.com/">About Feeds</a>，让一些不熟悉订阅流的用户能够快速上手。
+</p>
+
+<p>
+我自己也写了一份 <a href="about-feeds.html">中文版 About Feeds</a> ，针对中文用户做了一些调整，你可以引用我的，或者自己写一份。
+</p>
+
+<p>
+这样，我们可以鼓励更多的人使用订阅流，摆脱广告和算法，定制自己的信息流。
+</p>
+
+<p>
+最后，如果你愿意，可以尝试给 <a href="https://github.com/genmon/aboutfeeds">genmon/aboutfeeds</a> 做贡献，例如增加 Atom feed 支持，增加多语言支持，方便更多的人。
+</p>
+
+<p>
+Happy hacking ｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+补充几个例子： 1. <a href="https://blog.ursb.me/feed.xml">Airing 的博客</a> 2. <a href="https://jakelazaroff.com/rss.xml">jakelazaroff.com</a> 3. <a href="https://interconnected.org/home/feed">Matt Webb's blog feed</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+整理完之后我会导出 <a href="https://opml.org/">OPML</a> 文件，导入到 <a href="https://follow.is/">Folo</a> 里，如果你对我关注的内容感兴趣，欢迎你去订阅。(已经整理完啦 &gt;w&lt; )
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+我发现在 Folo 上，代码块的高亮很刺眼，如果你碰到这个问题，可以尝试在外观设置中，关闭行内样式渲染，这样代码会失去高亮，但至少不会刺眼。后续我看看如何调整。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+如果你不熟悉 XSLT 也不用担心，问问 LLM 就好啦！可以适当进行 Vibe Coding ~
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： 2025-04-11 Fri 16:05</p>
+<p class="date">修改于： 2025-08-28 Thu 16:53</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

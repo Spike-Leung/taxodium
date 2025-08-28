@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Zine#1</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="Zine 第一期" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Zine#1</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#185648b5-c76c-4563-aa75-49bbf64c8125">News | Article</a></li>
+<li><a href="#a581a939-96bd-4700-977d-cab4df1c6b02">Tutorial</a></li>
+<li><a href="#60c28127-a187-4a43-abae-0c243ae0947c">Code</a></li>
+<li><a href="#bdbbc301-0673-4ca0-be7e-2ee81a896d8c">Cool Bit</a></li>
+<li><a href="#e198e941-9359-4bd5-a296-6f81c17fcce7">Tool</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-185648b5-c76c-4563-aa75-49bbf64c8125" class="outline-2">
+<h2 id="185648b5-c76c-4563-aa75-49bbf64c8125">News | Article</h2>
+<div class="outline-text-2" id="text-185648b5-c76c-4563-aa75-49bbf64c8125">
+</div>
+<div id="outline-container-a1ffc77e-e299-495d-9f59-23ea7b5a9158" class="outline-3">
+<h3 id="a1ffc77e-e299-495d-9f59-23ea7b5a9158"><a href="https://survey.stackoverflow.co/2024/?utm_source=iterable&amp;utm_medium=email&amp;utm_campaign=dev-survey-2024&amp;utm_content=take-the-survey">StackOverflow 2024 Developer Survey</a></h3>
+<div class="outline-text-3" id="text-a1ffc77e-e299-495d-9f59-23ea7b5a9158">
+<p>
+StackOverflow 2024 年的问卷结果，可以看到 AI 在报告中的比重挺大的。
+</p>
+</div>
+</div>
+<div id="outline-container-7e5a0aba-5549-4fea-9844-579cb3966350" class="outline-3">
+<h3 id="7e5a0aba-5549-4fea-9844-579cb3966350"><a href="https://mbuffett.com/posts/programming-advice-younger-self/">A Bunch of Programming Advice I’d Give To Myself 15 Years Ago</a></h3>
+<div class="outline-text-3" id="text-7e5a0aba-5549-4fea-9844-579cb3966350">
+<p>
+一些编程建议。
+</p>
+
+<blockquote>
+<p>
+Spending time sharpening the axe is almost always worth it.
+</p>
+</blockquote>
+
+<p>
+想办法熟悉自己使用的编辑器，将开发环境打造得操作方便快捷，编写油猴脚本增强网页功能，买性能足够好的机器等。
+</p>
+
+<p>
+打磨自己的生产力工具，从而提高自己的效率。
+</p>
+
+<blockquote>
+<p>
+Try to solve bugs one layer deeper.
+</p>
+</blockquote>
+
+<p>
+大概就是改 bugs 要治本而不是治标的意思吧。
+</p>
+</div>
+</div>
+<div id="outline-container-366a58e4-31a3-4e81-882b-4eda1c99c7b7" class="outline-3">
+<h3 id="366a58e4-31a3-4e81-882b-4eda1c99c7b7"><a href="https://blog.brachiosoft.com/posts/git/">Git 的故事：這一次沒這麼好玩</a></h3>
+<div class="outline-text-3" id="text-366a58e4-31a3-4e81-882b-4eda1c99c7b7">
+<p>
+关于 Git，GitHub 的一些故事。
+</p>
+</div>
+</div>
+<div id="outline-container-f8b7aec9-1ed0-4acd-a43b-16c41d0d7ae2" class="outline-3">
+<h3 id="f8b7aec9-1ed0-4acd-a43b-16c41d0d7ae2"><a href="https://www.jvt.me/posts/2024/07/12/things-know-commits/">89 things I know about Git commits</a></h3>
+<div class="outline-text-3" id="text-f8b7aec9-1ed0-4acd-a43b-16c41d0d7ae2">
+<p>
+第一次知道还有 <code>git commit --fixup</code> 的用法，再结合 <code>git rebase --autosquash</code> 可以自动将 fixup 的 commit 进行 squash。
+</p>
+
+<p>
+平时还是使用 <code>git rebase -i</code> 手动调整的居多。
+</p>
+</div>
+</div>
+<div id="outline-container-a0f640f8-15c2-4342-be9e-85c14d2e96c7" class="outline-3">
+<h3 id="a0f640f8-15c2-4342-be9e-85c14d2e96c7"><a href="https://encore.dev/blog/queueing">Queueing - An interactive study of queueing strategies</a></h3>
+<div class="outline-text-3" id="text-a0f640f8-15c2-4342-be9e-85c14d2e96c7">
+<p>
+一篇解释队列很好的文章，交互式的方式让人阅读起来非常直观。
+</p>
+</div>
+</div>
+<div id="outline-container-c6ad9372-de4c-45c9-ba64-cac66b7d48d3" class="outline-3">
+<h3 id="c6ad9372-de4c-45c9-ba64-cac66b7d48d3"><a href="https://trufflesecurity.com/blog/anyone-can-access-deleted-and-private-repo-data-github">Anyone can Access Deleted and Private Repository Data on GitHub</a></h3>
+<div class="outline-text-3" id="text-c6ad9372-de4c-45c9-ba64-cac66b7d48d3">
+<p>
+一个 Repo 如果被 fork 过，只要 fork 还存在，即使把 Repo 删除了，fork 的仓库依然可以访问到被删除的 Repo 的提交。
+</p>
+</div>
+</div>
+<div id="outline-container-8a51189d-93c3-47f4-aaf8-ef12201c784f" class="outline-3">
+<h3 id="8a51189d-93c3-47f4-aaf8-ef12201c784f"><a href="https://github.com/nodejs/node/pull/53725">module: add &#x2013;experimental-strip-types #53725</a></h3>
+<div class="outline-text-3" id="text-8a51189d-93c3-47f4-aaf8-ef12201c784f">
+<blockquote>
+<p>
+It is possible to execute TypeScript files by setting the experimental flag <code>--experimental-strip-types</code>.
+Node.js will transpile TypeScript source code into JavaScript source code.
+During the transpilation process, no type checking is performed, and types are discarded.
+</p>
+</blockquote>
+
+<p>
+增加 <code>--experimental-strip-types</code> 标记后，可以在 NodeJS 中执行 TypeScript 代码了。
+</p>
+</div>
+</div>
+<div id="outline-container-0d4f1588-f38f-46a9-af81-65ef0312080e" class="outline-3">
+<h3 id="0d4f1588-f38f-46a9-af81-65ef0312080e"><a href="https://sunsetglow.net/posts/frontend-build-systems.html">Exposition of Frontend Build Systems</a></h3>
+<div class="outline-text-3" id="text-0d4f1588-f38f-46a9-af81-65ef0312080e">
+<p>
+前端项目构建涉及的每个部分，包括编译，打包，压缩等，一篇关于构建的科普类的文章。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-a581a939-96bd-4700-977d-cab4df1c6b02" class="outline-2">
+<h2 id="a581a939-96bd-4700-977d-cab4df1c6b02">Tutorial</h2>
+<div class="outline-text-2" id="text-a581a939-96bd-4700-977d-cab4df1c6b02">
+</div>
+<div id="outline-container-587df184-ecd5-4d06-aa4f-17b512b0ae48" class="outline-3">
+<h3 id="587df184-ecd5-4d06-aa4f-17b512b0ae48"><a href="https://jace-yang.github.io/Full-Stack_Data-Analyst/intro.html">全栈DS/DA养成手册</a></h3>
+<div class="outline-text-3" id="text-587df184-ecd5-4d06-aa4f-17b512b0ae48">
+</div>
+</div>
+<div id="outline-container-b69f05b4-99c2-49a9-a8ff-5e33365119c9" class="outline-3">
+<h3 id="b69f05b4-99c2-49a9-a8ff-5e33365119c9"><a href="https://book.mixu.net/css/">Learn CSS Layout</a></h3>
+<div class="outline-text-3" id="text-b69f05b4-99c2-49a9-a8ff-5e33365119c9">
+<p>
+关于 CSS 布局的教程，比较详尽。
+</p>
+</div>
+</div>
+<div id="outline-container-02a91066-d7a0-4398-bd44-565303221ce1" class="outline-3">
+<h3 id="02a91066-d7a0-4398-bd44-565303221ce1"><a href="https://0xinfection.github.io/reversing/">Reverse Engineering For Everyone!</a></h3>
+<div class="outline-text-3" id="text-02a91066-d7a0-4398-bd44-565303221ce1">
+</div>
+</div>
+<div id="outline-container-51175947-abbd-4e45-8e2f-20e1d9676739" class="outline-3">
+<h3 id="51175947-abbd-4e45-8e2f-20e1d9676739"><a href="https://linuxiac.com/how-to-use-cron-and-crontab-on-linux/#Editing_Cron_Jobs">How to Use Cron on Linux: Tips, Tricks, and Examples</a></h3>
+<div class="outline-text-3" id="text-51175947-abbd-4e45-8e2f-20e1d9676739">
+<p>
+<code>cron</code> 用于在 Linux 中定义定时任务，文章详细讲解了用法，以及一些技巧。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-60c28127-a187-4a43-abae-0c243ae0947c" class="outline-2">
+<h2 id="60c28127-a187-4a43-abae-0c243ae0947c">Code</h2>
+<div class="outline-text-2" id="text-60c28127-a187-4a43-abae-0c243ae0947c">
+</div>
+<div id="outline-container-71c0b1fc-7d3c-4295-9fa1-5b3ec037e58e" class="outline-3">
+<h3 id="71c0b1fc-7d3c-4295-9fa1-5b3ec037e58e"><a href="https://frontendmasters.com/blog/pure-css-circular-text-without-requiring-a-monospace-font/">Pure CSS Circular Text (without Requiring a Monospace Font)</a></h3>
+<div class="outline-text-3" id="text-71c0b1fc-7d3c-4295-9fa1-5b3ec037e58e">
+</div>
+</div>
+<div id="outline-container-7b73d326-948c-454d-9b25-ada6a3c8f03a" class="outline-3">
+<h3 id="7b73d326-948c-454d-9b25-ada6a3c8f03a"><a href="https://axesslab.com/alt-texts/">Alt-texts: The Ultimate Guide</a></h3>
+<div class="outline-text-3" id="text-7b73d326-948c-454d-9b25-ada6a3c8f03a">
+</div>
+</div>
+</div>
+<div id="outline-container-bdbbc301-0673-4ca0-be7e-2ee81a896d8c" class="outline-2">
+<h2 id="bdbbc301-0673-4ca0-be7e-2ee81a896d8c">Cool Bit</h2>
+<div class="outline-text-2" id="text-bdbbc301-0673-4ca0-be7e-2ee81a896d8c">
+</div>
+<div id="outline-container-bfdaf914-dff5-4ea6-ba04-425fc2a0857e" class="outline-3">
+<h3 id="bfdaf914-dff5-4ea6-ba04-425fc2a0857e"><a href="https://github.com/veggiedefender/open-and-shut">open-and-shut</a></h3>
+<div class="outline-text-3" id="text-bfdaf914-dff5-4ea6-ba04-425fc2a0857e">
+
+<figure id="org11754f8">
+<img src="https://user-images.githubusercontent.com/8890878/78181506-882c1a80-7432-11ea-89c0-bee00e9d183f.gif" alt="开关电脑屏幕输入摩斯电码的图片">
+
+</figure>
+
+<p>
+通过开关笔记本电脑屏幕，输入摩斯电码，感觉蛮喜感的。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-e198e941-9359-4bd5-a296-6f81c17fcce7" class="outline-2">
+<h2 id="e198e941-9359-4bd5-a296-6f81c17fcce7">Tool</h2>
+<div class="outline-text-2" id="text-e198e941-9359-4bd5-a296-6f81c17fcce7">
+</div>
+<div id="outline-container-2226d1d9-4b8a-4588-bd4f-548a24b43a37" class="outline-3">
+<h3 id="2226d1d9-4b8a-4588-bd4f-548a24b43a37"><a href="https://whats.new/shortcuts/">whats.new</a></h3>
+<div class="outline-text-3" id="text-2226d1d9-4b8a-4588-bd4f-548a24b43a37">
+<p>
+Google 的一个服务，例如 <a href="https://pen.new">pen.new</a> 会打开一个空白的 CodePen 页面。具体有那些 .new 网站，可以看看网站的列表。
+</p>
+</div>
+</div>
+<div id="outline-container-05761119-eb4e-474e-b939-f4be11f91b7e" class="outline-3">
+<h3 id="05761119-eb4e-474e-b939-f4be11f91b7e"><a href="https://github.com/IonicaBizau/git-stats">git-stats</a></h3>
+<div class="outline-text-3" id="text-05761119-eb4e-474e-b939-f4be11f91b7e">
+<p>
+获取本地的 git 提交数据，生成类似 GitHub 的提交日历。
+</p>
+</div>
+</div>
+<div id="outline-container-37460b26-922d-4c08-b1d8-5c451aee1625" class="outline-3">
+<h3 id="37460b26-922d-4c08-b1d8-5c451aee1625"><a href="https://jsoneditoronline.org/">JSON Editor Online</a></h3>
+<div class="outline-text-3" id="text-37460b26-922d-4c08-b1d8-5c451aee1625">
+<p>
+一个很好用的 JSON 编辑器网站，查看 JSON 数据比较方便，还支持比较差异。
+</p>
+</div>
+</div>
+<div id="outline-container-b0924ac4-dd23-4238-b291-b057c5b95690" class="outline-3">
+<h3 id="b0924ac4-dd23-4238-b291-b057c5b95690"><a href="https://github.com/AykutSarac/jsoncrack.com">jsoncrack.com</a></h3>
+<div class="outline-text-3" id="text-b0924ac4-dd23-4238-b291-b057c5b95690">
+<p>
+对于层次比较深的 JSON，可以用这个网站可视化成类似 xMind 的树形图，比较直观的看到 JSON 的结构。
+</p>
+</div>
+</div>
+<div id="outline-container-2ac6afb7-1077-4b12-9a97-23817732263a" class="outline-3">
+<h3 id="2ac6afb7-1077-4b12-9a97-23817732263a"><a href="https://immersivetranslate.com/">Immersive Translate</a></h3>
+<div class="outline-text-3" id="text-2ac6afb7-1077-4b12-9a97-23817732263a">
+<p>
+一个很好用的网页翻译工具，平时看一些英文文章就靠它翻译了。
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： 2024-07-28 Sun 19:10</p>
+<p class="date">修改于： 2025-08-28 Thu 12:32</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

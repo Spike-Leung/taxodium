@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>macOS 下个人开发环境搭建</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="个人 macOS 环境搭建，涉及 Emacs，Homebrew，Makefile，代理，Git，GitHub 等" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">macOS 下个人开发环境搭建</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#51D47A64-2908-4AFC-AE58-521BBB66CCC7">准备</a></li>
+<li><a href="#B6949421-7951-4B3A-A406-38AD7016EF5B">macOS 初始配置</a></li>
+<li><a href="#9DA8001C-4306-4109-BD13-8D8CAD8E9BA5">网络配置</a></li>
+<li><a href="#50A40D1E-A266-453B-8839-C3A937091085">安装软件</a></li>
+<li><a href="#1137C5A6-D010-434A-AE43-B6E18BFC0DA4">开发环境配置</a>
+<ul>
+<li><a href="#D3744C39-013C-4919-8AAF-2C57184F896F">Makefile</a></li>
+<li><a href="#D324601C-02BD-4DCB-8571-6CAF99B4F141">配置 Git</a>
+<ul>
+<li><a href="#FCED5049-D2FE-4C17-99A1-5504200C6D5C">GitHub</a></li>
+</ul>
+</li>
+<li><a href="#A7D7FF1F-1F48-4F17-829F-70B032D03AFA">配置 Emacs</a>
+<ul>
+<li><a href="#81F3026F-4AF1-40A2-A97E-E6F37E9EDD36">gpg</a></li>
+<li><a href="#B2CF9D55-0C40-4F01-80E2-474DF90615AF">python</a></li>
+<li><a href="#6DCB9EB2-62A4-4175-82D6-D8C82E3F4101">org-protocol</a></li>
+<li><a href="#org4a9d4c4">font</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#A136CB38-F59C-4410-B8FF-08B68862A6AA">写在最后</a></li>
+</ul>
+</div>
+</nav>
+
+<figure id="org1fe6649">
+<img src="./images/setup-macos/desktop.jpg" alt="desktop.jpg">
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>我的电脑桌面，mac mini 放在了左边，小小一个很节省空间。</figcaption>
+</figure>
+
+<p>
+女朋友买了一台 mac mini 给我当生日礼物，开心 (ﾉ&gt;ω&lt;)ﾉ，新电脑又需要重新配置一下，这篇文章记录我这次配置的过程，作为以后配置的 checklist。
+</p>
+<div id="outline-container-51D47A64-2908-4AFC-AE58-521BBB66CCC7" class="outline-2">
+<h2 id="51D47A64-2908-4AFC-AE58-521BBB66CCC7">准备</h2>
+<div class="outline-text-2" id="text-51D47A64-2908-4AFC-AE58-521BBB66CCC7">
+<p>
+mac mini 是没有键盘鼠标的，首次开机的时候没法直接连接蓝牙键盘（除非是苹果自己的妙控键盘），配置前需要准备好能够连接上的键盘，鼠标，屏幕，网络。
+</p>
+</div>
+</div>
+<div id="outline-container-B6949421-7951-4B3A-A406-38AD7016EF5B" class="outline-2">
+<h2 id="B6949421-7951-4B3A-A406-38AD7016EF5B">macOS 初始配置</h2>
+<div class="outline-text-2" id="text-B6949421-7951-4B3A-A406-38AD7016EF5B">
+<ul class="org-ul">
+<li>用户名设置为 <code>spike</code> ，因为部分 PATH 写死了这个用户，后面看看如何优化</li>
+<li>检查 icloud 配置，避免同步了不需要的文件夹，导致 icloud 存储被占用</li>
+<li>Mouse 中关闭 Natural scrolling
+<ul class="org-ul">
+<li>如果是 macbook，配置开关在 Trackpad 的 scroll&amp;zoom 中</li>
+</ul></li>
+<li>在 Keyboard 中找到 Keyboard Shortcuts<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
+<ul class="org-ul">
+<li>Modifier Keys 中，将 Caps Lock 换成 Control；Option 和 Command 交换</li>
+<li>Input Source 中，将 Select the previous input source 换成 Option + Space</li>
+<li>Spotlight 中，将 Show Spotlight search 关闭，因为后面会替换成 Raycast</li>
+<li>Screenshots 中，关闭 Screenshot and recording options，因为会和 Emacs 冲突</li>
+</ul></li>
+<li>Audio MIDI 中设置一下音频的输出采样率</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-9DA8001C-4306-4109-BD13-8D8CAD8E9BA5" class="outline-2">
+<h2 id="9DA8001C-4306-4109-BD13-8D8CAD8E9BA5">网络配置</h2>
+<div class="outline-text-2" id="text-9DA8001C-4306-4109-BD13-8D8CAD8E9BA5">
+<p>
+需要先配置好科学上网，不然只能用百度搜索东西，满屏的广告。
+</p>
+
+<ul class="org-ul">
+<li><p>
+安装 <a href="https://brew.sh/">Homebrew</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">/bin/bash -c <span style="color: #79a8ff;">"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</span>
+</pre>
+</div></li>
+
+<li><p>
+安装并配置 <a href="https://github.com/v2rayA/v2rayA">v2rayA</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">brew tap v2raya/v2raya
+
+<span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">install
+</span>brew install v2raya
+
+<span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">run on terminal
+</span>v2raya --lite
+
+<span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">run as a brew service
+</span>brew services start v2raya
+</pre>
+</div></li>
+</ul>
+
+<p>
+安装过程中如果网络比较慢，可以考虑试试手机热点，手机热点不需要开代理。
+</p>
+
+<p>
+安装完成之后可以访问 <a href="http://localhost:2017">http://localhost:2017</a> 进行配置。
+</p>
+</div>
+</div>
+<div id="outline-container-50A40D1E-A266-453B-8839-C3A937091085" class="outline-2">
+<h2 id="50A40D1E-A266-453B-8839-C3A937091085">安装软件</h2>
+<div class="outline-text-2" id="text-50A40D1E-A266-453B-8839-C3A937091085">
+<p>
+有了网络之后，可以连接 Google，找软件就方便了。
+</p>
+
+<ul class="org-ul">
+<li><a href="https://www.raycast.com/">Raycast</a>，主要作为应用启动器，需要修改唤醒快捷键，变成双击 control</li>
+<li><a href="https://www.google.com/chrome/">Chrome</a></li>
+<li><a href="https://music.163.com/">网易云音乐</a></li>
+<li><a href="https://www.dropbox.com/">Dropbox</a></li>
+<li><a href="https://emacsformacosx.com/">Emacs</a></li>
+<li>终端<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup></li>
+</ul>
+
+<p>
+播放音乐，继续安装。
+</p>
+</div>
+</div>
+<div id="outline-container-1137C5A6-D010-434A-AE43-B6E18BFC0DA4" class="outline-2">
+<h2 id="1137C5A6-D010-434A-AE43-B6E18BFC0DA4">开发环境配置</h2>
+<div class="outline-text-2" id="text-1137C5A6-D010-434A-AE43-B6E18BFC0DA4">
+<p>
+以前配置 macOS 都是想到什么就配置什么，碰到问题就查文档，这样可能遗漏一些配置，直到碰到问题才发现，而且也比较耗费时间。
+</p>
+
+<p>
+我不想每次都这么费劲，之前了解过一点 Makefile <sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>，这次就决定通过 Makefile 将相关环境配置好。
+</p>
+
+<p>
+前阵子在 <a href="https://taxodium.ink/31.html#:~:text=Ship%20Software%20That%20Does%20Nothing">zine#31</a> 分享过 <a href="https://kerrick.blog/articles/2025/ship-software-that-does-nothing/">Ship Software That Does Nothing</a>，里面作者建议先发布一个空的项目，将其部署起来，然后再慢慢构建功能。
+</p>
+
+<p>
+这次我构建 Makefile 也是类似的，一开始只有几行我能想到的配置，然后就执行 <code>make init</code> 安装验证，发现缺失的再补充，最终就得到了一个相对完整的 Makefile 文件。
+</p>
+
+<p>
+这样比我先安装好了，再整理成 Makefile 或者笔记要好，能够更早发现问题，验证 Makefile。
+</p>
+
+<p>
+以后再初始化 macOS 配置，我只需要执行 <code>make init</code> 就好了。
+</p>
+</div>
+<div id="outline-container-D3744C39-013C-4919-8AAF-2C57184F896F" class="outline-3">
+<h3 id="D3744C39-013C-4919-8AAF-2C57184F896F">Makefile</h3>
+<div class="outline-text-3" id="text-D3744C39-013C-4919-8AAF-2C57184F896F">
+<p>
+Makefile 中做的主要的事情：
+</p>
+
+<ul class="org-ul">
+<li>通过 symbolic link ，将 dropbox 中的一些文件链接到本地目录，便于操作</li>
+<li>配置 <a href="https://github.com/ohmyzsh/ohmyzsh">ohmyzsh</a>，<a href="https://github.com/starship/starship">starship</a>，<a href="https://github.com/tmux/tmux">tmux</a>，<a href="https://github.com/volta-cli/volta">volta</a> (NodeJS 相关配置) 以及我积攒了一阵子的 dotfiles<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>。</li>
+</ul>
+
+<details id="orgfac414a">
+<summary>Makefile</summary>
+<div class="org-src-container">
+<pre class="src src-makefile"><span style="color: #feacd0;">.PHONY</span>: init link dependence install nodejs python git emacs
+
+<span style="color: #feacd0;">init</span>: link dependence install nodejs
+
+<span style="color: #feacd0;">link</span>:
+        ln -sf ~/Dropbox/notes ~/notes
+        ln -sf ~/Dropbox/org ~/org
+        ln -sf ~/Dropbox/beancount ~/beancount
+        ln -sf ~/Dropbox/elfeed ~/.elfeed
+
+<span style="color: #feacd0;">dependence</span>:
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#30830;&#20445; /usr/local/bin &#23384;&#22312;&#19988;&#26377;&#26435;&#38480;
+</span>        sudo mkdir -p /usr/local/bin
+        <span style="color: #feacd0;">sudo chown -R $</span><span style="color: #ffffff;">(</span><span style="color: #feacd0;">shell</span><span style="color: #feacd0;"> whoami</span><span style="color: #ffffff;">)</span>:admin /usr/local/bin
+
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#26816;&#26597;&#24182;&#23433;&#35013; ohmyzsh
+</span>        if <span style="color: #ffffff;">[</span> ! -d <span style="color: #79a8ff;">"$$HOME/.oh-my-zsh"</span> <span style="color: #ffffff;">]</span>; then \
+                echo <span style="color: #79a8ff;">"Installing ohmyzsh..."</span>; \
+                sh -c <span style="color: #79a8ff;">"$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</span>; \
+        else \
+                echo <span style="color: #79a8ff;">"ohmyzsh already installed. Skipping."</span>; \
+        fi
+
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#26816;&#26597;&#24182;&#23433;&#35013; starship
+</span>        if ! command -v starship &gt;/dev/null; then \
+                echo <span style="color: #79a8ff;">"Installing starship..."</span>; \
+                curl -sS https://starship.rs/install.sh | sh; \
+        else \
+                echo <span style="color: #79a8ff;">"starship already installed. Skipping."</span>; \
+        fi
+
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#23433;&#35013; zsh &#25554;&#20214;&#21644;&#24037;&#20855;
+</span>        brew install zsh-syntax-highlighting
+        <span style="color: #feacd0;">echo </span><span style="color: #feacd0;">"source $$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"</span><span style="color: #feacd0;"> &gt;&gt; $$</span><span style="color: #ffffff;">{</span><span style="color: #feacd0;">ZDOTDIR</span>:-$$HOME<span style="color: #ffffff;">}</span>/.zshrc
+
+        if <span style="color: #ffffff;">[</span> ! -d <span style="color: #79a8ff;">"$${ZSH_CUSTOM:-$$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"</span> <span style="color: #ffffff;">]</span>; then \
+                git clone git@github.com:zsh-users/zsh-autosuggestions $$<span style="color: #ffffff;">{</span>ZSH_CUSTOM:-$$HOME/.oh-my-zsh/custom<span style="color: #ffffff;">}</span>/plugins/zsh-autosuggestions; \
+        fi
+
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">GNU related
+</span>        brew install coreutils
+        brew install gnupg
+
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">tmux
+</span>        brew install tmux
+
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">fzf
+</span>        brew install fzf
+
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">mcfly, for search history
+</span>        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">Add the following to the end of ~/.zshrc: eval "$(</span><span style="color: #00d3d0;">mcfly</span><span style="color: #db7b5f;"> init zsh)"
+</span>        brew install mcfly
+        brew install ripgrep
+<span style="color: #feacd0;">nodejs</span>:
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">volta
+</span>        <span style="color: #feacd0;">curl https</span>://get.volta.sh | bash
+
+        volta install node
+        volta install pnpm
+        volta install @antfu/ni
+        volta install browser-sync
+
+<span style="color: #feacd0;">git</span>:
+        git config --global user.name <span style="color: #79a8ff;">"Spike"</span>
+        git config --global user.email <span style="color: #79a8ff;">"l-yanlei@hotmail.com"</span>
+
+<span style="color: #feacd0;">python</span>:
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">require phthon: https://www.python.org/
+</span>        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">aider
+</span>        python3 -m pip install aider-install &amp;&amp; aider-install
+
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">beancount
+</span>        sudo -H python3 -m pip install beancount
+        python3 -m pip install fava
+
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">fix: omz_urlencode:5: command not found: pygmentize
+</span>        python3 -m pip install Pygments
+
+<span style="color: #feacd0;">emacs</span>:
+        sudo ln -s /Applications/Emacs.app/Contents/MacOS/Emacs /usr/local/bin/emacs
+        sudo ln -s /Applications/Emacs.app/Contents/MacOS/bin/emacsclient /usr/local/bin
+
+<span style="color: #feacd0;">install</span>:
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#23433;&#35013; dotfiles
+</span>        cd ~/Dropbox/dotfiles &amp;&amp; ./install.sh
+</pre>
+</div>
+</details>
+</div>
+</div>
+<div id="outline-container-D324601C-02BD-4DCB-8571-6CAF99B4F141" class="outline-3">
+<h3 id="D324601C-02BD-4DCB-8571-6CAF99B4F141">配置 Git</h3>
+<div class="outline-text-3" id="text-D324601C-02BD-4DCB-8571-6CAF99B4F141">
+<div class="org-src-container">
+<pre class="src src-bash">git config --global user.name <span style="color: #79a8ff;">"Your Name"</span>
+git config --global user.email <span style="color: #79a8ff;">"your.email@example.com"</span>
+</pre>
+</div>
+</div>
+<div id="outline-container-FCED5049-D2FE-4C17-99A1-5504200C6D5C" class="outline-4">
+<h4 id="FCED5049-D2FE-4C17-99A1-5504200C6D5C">GitHub</h4>
+<div class="outline-text-4" id="text-FCED5049-D2FE-4C17-99A1-5504200C6D5C">
+<p>
+配置 <a href="https://github.com/settings/keys">GitHub SSH keys</a>，用于拉取 GitHub 上的 Repos。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">generate ssh keys
+</span>ssh-keygen
+
+<span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">copy ssh keys
+</span>pbcopy &lt; ~/.ssh/id_ed25519.pub
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-A7D7FF1F-1F48-4F17-829F-70B032D03AFA" class="outline-3">
+<h3 id="A7D7FF1F-1F48-4F17-829F-70B032D03AFA">配置 Emacs</h3>
+<div class="outline-text-3" id="text-A7D7FF1F-1F48-4F17-829F-70B032D03AFA">
+<p>
+下载 <a href="https://github.com/Spike-Leung/emacs.d">我的 Emacs 配置</a>：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">git clone --recurse-submodules -j8 git@github.com:Spike-Leung/emacs.d.git ~/.emacs.d
+</pre>
+</div>
+</div>
+<div id="outline-container-81F3026F-4AF1-40A2-A97E-E6F37E9EDD36" class="outline-4">
+<h4 id="81F3026F-4AF1-40A2-A97E-E6F37E9EDD36">gpg</h4>
+<div class="outline-text-4" id="text-81F3026F-4AF1-40A2-A97E-E6F37E9EDD36">
+<p>
+由于 Emacs 配置中涉及到读取 <code>.authinfo.gpg</code> ，还需要配置好 gpg 密钥。
+</p>
+
+<p>
+需要在原来的电脑上导出密钥对：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">gpg --export-secret-keys --armor &lt;KeyID or Email&gt; &gt; my-private-key.asc
+</pre>
+</div>
+
+<p>
+然后通过 U 盘等相对安全的方法，将密钥对复制到当前电脑中，并导入：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">gpg --import my-private-key.asc
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-B2CF9D55-0C40-4F01-80E2-474DF90615AF" class="outline-4">
+<h4 id="B2CF9D55-0C40-4F01-80E2-474DF90615AF">python</h4>
+<div class="outline-text-4" id="text-B2CF9D55-0C40-4F01-80E2-474DF90615AF">
+<p>
+安装 <a href="https://www.python.org/">python</a><sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup><sup>, </sup><sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup>，很多工具依赖 python，例如 <a href="https://aider.chat/#">aider</a>，<a href="https://github.com/beancount/beancount">beancount</a> 等。
+</p>
+
+<p>
+我对 python 不是很熟，不太确定怎么安装比较好，目前是从官网下载安装。
+</p>
+</div>
+</div>
+<div id="outline-container-6DCB9EB2-62A4-4175-82D6-D8C82E3F4101" class="outline-4">
+<h4 id="6DCB9EB2-62A4-4175-82D6-D8C82E3F4101">org-protocol</h4>
+<div class="outline-text-4" id="text-6DCB9EB2-62A4-4175-82D6-D8C82E3F4101">
+<p>
+平时从浏览器收集阅读列表用的是 <a href="https://orgmode.org/worg/org-contrib/org-protocol.html">org-protocol</a>，通过 <a href="https://www.tampermonkey.net/">Tampermonkey</a> 集成了一些快捷键，看到想看的网站就执行 <code>alt + l</code> ，链接就会存储到我的 reading-list 笔记文件中。
+</p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/xuchunyang/setup-org-protocol-on-mac">xuchunyang/setup-org-protocol-on-mac</a></li>
+<li><a href="https://gist.github.com/Spike-Leung/19986df42333b6419b2eadaa73526d7b">org-protocol.user.js</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4a9d4c4" class="outline-4">
+<h4 id="org4a9d4c4">font</h4>
+<div class="outline-text-4" id="text-org4a9d4c4">
+<p>
+Emacs 中有一些 unicode 符号需要字体支持才能显示，例如 ⸺ ，可以下载 <a href="https://fonts.google.com/noto/specimen/Noto+Sans?family=Noto+Sans">Noto Sans</a> 和 <a href="https://github.com/subframe7536/maple-font">maple-font</a> 使得在 Emacs 中能正常显示。<sup><a id="fnr.7" class="footref" href="#fn.7" role="doc-backlink">7</a></sup>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-A136CB38-F59C-4410-B8FF-08B68862A6AA" class="outline-2">
+<h2 id="A136CB38-F59C-4410-B8FF-08B68862A6AA">写在最后</h2>
+<div class="outline-text-2" id="text-A136CB38-F59C-4410-B8FF-08B68862A6AA">
+<p>
+以上就是我使用电脑的基本配置啦，它能满足我上网、写代码和博客、记录和查阅笔记、终端的使用，基本覆盖了平时大部分的使用场景。
+</p>
+
+<p>
+当然还缺失了很多软件，例如 <a href="https://www.snipaste.com/">截图工具</a>，视频播放器，硬盘读取工具等，但相对而言无关紧要，需要的时候再慢慢安装就好了。
+</p>
+
+<p>
+如果涉及到基本配置相关的配置，我还是会优先更新 Makefile，从而减少下次配置的麻烦。
+</p>
+
+<p>
+另外如果你对我 Windows 上的配置感兴趣，也可以看看 <a href="my-windows-development-environment.html">Windows 下个人开发环境搭建</a>，不过已经有段时间了，等下次组装主机，我再更新一下，也会考虑用 Makefile 整理配置。
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+macOS 下如何方便地切换中英文？总是切换输入法感觉有点麻烦。不知道有没有更好的办法，像是 Windows，按一下 shift 就能切换就比较方便。原来用过 <a href="https://rime.im/">Rime</a>，但是现在懒得配置了，能用系统自带的就用自带的。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+原来用的是 <a href="https://iterm2.com/">iTerm2</a>，不过 iTerm2 也需要配置一阵子，就想着试试自带的终端用着如何，不行再换。现在更倾向于用一些系统自带的东西，减少一些软件的依赖。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://github.com/chaselambda/makefiletutorial">Makefile Tutorial</a> 是一个不错的 Makefile 入门教程。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+关于 dotfiles 建议看看 <a href="https://effective-shell.com/part-5-building-your-toolkit/managing-your-dotfiles/">Managing your Dotfiles</a>，维护一份你的 dotfiles，便于在不同环境保持一致的体验。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+安装后执行 pip 遇到 <a href="https://github.com/pypa/pip/issues/10939">ssl certificate errors</a>，关闭代理，进入到 <code>/Applications/Python 3.13</code> 目录执行 <code>Install Certificates.command</code> 后就好了，之后开代理也没关系。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+在安装 aider 时发现 aider-install 的执行文件路径不在 <code>$PATH</code> 中，还需要设置一下 <code>$PATH</code> ，这个路径和 python 版本号耦合，可能之后安装还会变化。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://github.com/be5invis/Iosevka">Iosevka</a> 也不错。
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： 2025-04-26 Sat 16:12</p>
+<p class="date">修改于： 2025-08-28 Thu 16:53</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

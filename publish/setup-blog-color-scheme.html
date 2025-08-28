@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>给博客添加 dark mode</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="如何给博客添加 dark-mode，利用 light-dark() 和 @media (prefers-color-scheme: dark)" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">给博客添加 dark mode</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgf2d7ebf">设置 dark mode</a></li>
+<li><a href="#org48c7189">踩坑</a>
+<ul>
+<li><a href="#org001649b">闪烁问题</a></li>
+<li><a href="#orgdf5904c">dark mode 下 giscus 的处理</a></li>
+<li><a href="#org5cb3f3a">dark mode 下 iframe 的处理</a></li>
+<li><a href="#org5f0fb34">dark mode 下代码块高亮的处理</a></li>
+<li><a href="#orgb9c2f35">第三方兼容</a></li>
+</ul>
+</li>
+<li><a href="#org2418541"><span class="todo TODO">TODO</span> Todos</a></li>
+<li><a href="#org26094c4">写在最后</a></li>
+</ul>
+</div>
+</nav>
+<p>
+在整理周刊的时候，看到 <a href="https://css-tricks.com/come-to-the-light-dark-side/">Come to the light-dark() Side</a>，一篇关于如何设置 dark mode 的很棒的文章。
+</p>
+
+<p>
+我个人比较喜欢 light mode，除了代码编辑器外，其他都是 light mode。
+</p>
+
+<p>
+我觉得 light mode 看起来比较舒服和自然，dark mode 下黑底白字比较刺眼。
+</p>
+
+<p>
+但是文章里说到，不同人群有不同的需要：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://zh.wikipedia.org/wiki/%E9%A3%9B%E8%9A%8A%E7%97%87">飞蚊症</a>患者可能更喜欢 dark mode（可能是 dark mode 下飞蚊不那么明显？）</li>
+<li>散光患者可能在 light mode 下更容易聚焦</li>
+</ul>
+
+<p>
+不管如何，或许有人需要 dark mode，我也想实践一下文章中的方法，所以我给博客加上了 dark mode 啦ヾ(<b>´∀ ˋ</b>)ﾉ
+</p>
+
+<p>
+本来以为是一件不怎么麻烦的事情，但实践下来要处理的内容还不少，接下来我会分享是如何实现的，以及碰到的问题，包括：
+</p>
+
+<ul class="org-ul">
+<li>设置 dark mode</li>
+<li>闪烁问题</li>
+<li>dark mode 下 giscus 的处理</li>
+<li>dark mode 下 iframe 的处理</li>
+<li>dark mode 下代码块高亮的处理</li>
+<li>第三方兼容</li>
+</ul>
+<div id="outline-container-orgf2d7ebf" class="outline-2">
+<h2 id="orgf2d7ebf">设置 dark mode</h2>
+<div class="outline-text-2" id="text-orgf2d7ebf">
+<p>
+<b>1. 在 <code>&lt;head&gt;</code> 中添加 <code>&lt;meta name="color-scheme" content="light dark"&gt;</code> (@see: <a href="https://github.com/Spike-Leung/emacs.d/blob/26402349a476c6118b2bc94fc09901fe45019b56/lisp/my-lisp/init-org-publish.el#L8-L9">init-org-publish.el</a>)</b>
+</p>
+
+<p>
+适配 dark mode 的一种方法是设置 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme">color-scheme</a>，可以在 <code>&lt;meta&gt;</code> 中添加，也可以在元素上设置，例如：
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #feacd0;">head</span>&gt;
+  <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#20854;&#20182;&#20869;&#23481;</span><span style="color: #db7b5f;"> --&gt;</span>
+  &lt;<span style="color: #feacd0;">meta</span> <span style="color: #00d3d0;">name</span>=<span style="color: #79a8ff;">"color-scheme"</span> <span style="color: #00d3d0;">content</span>=<span style="color: #79a8ff;">"light dark"</span>&gt;
+  <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#20854;&#20182;&#20869;&#23481;</span><span style="color: #db7b5f;"> --&gt;</span>
+&lt;/<span style="color: #feacd0;">head</span>&gt;
+
+<span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#20063;&#21487;&#20197;&#22312;&#20803;&#32032;&#19978;&#35774;&#32622;</span><span style="color: #db7b5f;"> --&gt;</span>
+&lt;<span style="color: #feacd0;">div</span> <span style="color: #00d3d0;">style</span>=<span style="color: #79a8ff;">"color-scheme: light dark;"</span>&gt;...&lt;/<span style="color: #feacd0;">div</span>&gt;
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #feacd0;">:root</span> <span style="color: #ffffff;">{</span>
+  <span style="color: #b6a0ff;">color-scheme</span>: light dark;
+<span style="color: #ffffff;">}</span>
+
+<span style="color: #feacd0;">main</span> <span style="color: #ffffff;">{</span>
+  <span style="color: #b6a0ff;">color-scheme</span>: light dark;
+<span style="color: #ffffff;">}</span>
+</pre>
+</div>
+
+<p>
+设置了 color-scheme 之后，浏览器就会自动适配页面的颜色，例如设置 <code>color-scheme: dark;</code> ，那么页面就会变成 dark mode， 整体偏黑色。
+</p>
+
+<p>
+但是浏览器只会改变那些没有主动设置颜色的元素，如果你给一个元素设置了 <code>color</code>, <code>background-color</code> 等，浏览器是不知道如何切换颜色的。
+</p>
+
+<p>
+所以，接下来需要用 CSS，告诉浏览器在 <code>color-scheme: dark;</code> 下用什么颜色。
+</p>
+
+<p>
+<b>2. CSS 中通过 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark">light-dark()</a> 设置不同的颜色</b>
+</p>
+
+<p>
+按照 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme">color-scheme</a> 文档中的介绍，有两种办法去适配颜色：
+</p>
+
+<ul class="org-ul">
+<li><p>
+使用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme">prefers-color-scheme</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #feacd0;">:root</span> <span style="color: #ffffff;">{</span>
+    <span style="color: #b6a0ff;">color-scheme</span>: light dark;
+<span style="color: #ffffff;">}</span>
+
+<span style="color: #f78fe7;">@media</span> <span style="color: #ffffff;">(</span>prefers-color-scheme: light<span style="color: #ffffff;">)</span> <span style="color: #ffffff;">{</span>
+    <span style="color: #feacd0;">.element</span> <span style="color: #ff66ff;">{</span>
+        <span style="color: #b6a0ff;">color</span>: <span style="color: #ffffff; background-color: #000000;">black</span>;
+        <span style="color: #b6a0ff;">background-color</span>: <span style="color: #000000; background-color: #ffffff;">white</span>;
+    <span style="color: #ff66ff;">}</span>
+<span style="color: #ffffff;">}</span>
+
+<span style="color: #f78fe7;">@media</span> <span style="color: #ffffff;">(</span>prefers-color-scheme: dark<span style="color: #ffffff;">)</span> <span style="color: #ffffff;">{</span>
+    <span style="color: #feacd0;">.element</span> <span style="color: #ff66ff;">{</span>
+        <span style="color: #b6a0ff;">color</span>: <span style="color: #000000; background-color: #ffffff;">white</span>;
+        <span style="color: #b6a0ff;">background-color</span>: <span style="color: #ffffff; background-color: #000000;">black</span>;
+    <span style="color: #ff66ff;">}</span>
+<span style="color: #ffffff;">}</span>
+
+</pre>
+</div></li>
+
+<li><p>
+使用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark">light-dark()</a>
+这是 <a href="https://css-tricks.com/come-to-the-light-dark-side/">Come to the light-dark() Side</a> 中推荐的方法。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #feacd0;">:root</span> <span style="color: #ffffff;">{</span>
+    <span style="color: #b6a0ff;">color-scheme</span>: light dark;
+<span style="color: #ffffff;">}</span>
+
+<span style="color: #feacd0;">.element</span> <span style="color: #ffffff;">{</span>
+    <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">fallback &#30340;&#39068;&#33394;&#65292;&#24403;&#29992;&#25143;&#27983;&#35272;&#22120;&#19981;&#25903;&#25345; color: light-dark(</span><span style="color: #ffffff; background-color: #000000;">black</span><span style="color: #db7b5f;">, </span><span style="color: #000000; background-color: #FFFFFF;">white</span><span style="color: #db7b5f;">); &#26102;&#65292;&#22238;&#36864;&#21040;&#36825;&#20010;&#39068;&#33394;</span><span style="color: #db7b5f;"> */</span>
+    <span style="color: #b6a0ff;">color</span>: <span style="color: #ffffff; background-color: #000000;">black</span>;
+    <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">light mode &#19979; color &#29992; </span><span style="color: #ffffff; background-color: #000000;">black</span><span style="color: #db7b5f;">, dark mode &#19979; color &#29992; </span><span style="color: #000000; background-color: #FFFFFF;">white</span><span style="color: #db7b5f;"> */</span>
+    <span style="color: #b6a0ff;">color</span>: light-dark<span style="color: #ff66ff;">(</span><span style="color: #ffffff; background-color: #000000;">black</span>, <span style="color: #000000; background-color: #ffffff;">white</span><span style="color: #ff66ff;">)</span>;
+    <span style="color: #b6a0ff;">background-color</span>: <span style="color: #000000; background-color: #ffffff;">white</span>;
+    <span style="color: #b6a0ff;">background-color</span>: light-dark<span style="color: #ff66ff;">(</span><span style="color: #000000; background-color: #ffffff;">white</span>, <span style="color: #ffffff; background-color: #000000;">black</span><span style="color: #ff66ff;">)</span>;
+<span style="color: #ffffff;">}</span>
+
+</pre>
+</div></li>
+</ul>
+
+<p>
+博客中，我主要是用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark">light-dark()</a> 去设置不同的颜色，部分地方使用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme">prefers-color-scheme</a>，具体可以看博客的 <a href="https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/style.css">style.css</a>。
+</p>
+
+<p>
+需要注意的是，浏览器可能不支持 <code>light-dark()</code> ，需要设置一个回退的样式，例如:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #feacd0;">.element</span> <span style="color: #ffffff;">{</span>
+  <span style="color: #b6a0ff;">color</span>: <span style="color: #ffffff; background-color: #000000;">black</span>;
+  <span style="color: #b6a0ff;">color</span>: light-dark<span style="color: #ff66ff;">(</span><span style="color: #ffffff; background-color: #000000;">black</span>, <span style="color: #000000; background-color: #ffffff;">white</span><span style="color: #ff66ff;">)</span>;
+<span style="color: #ffffff;">}</span>
+</pre>
+</div>
+
+<p>
+关于兼容性问题，推荐看看 <a href="https://www.joshwcomeau.com/css/browser-support">A Framework for Evaluating Browser Support</a>，里面介绍了在使用较新的 CSS 特性的时候需要考虑什么，以及如何测试。
+</p>
+
+<p>
+<b>3. 页面上通过 <code>&lt;select&gt;</code> 去切换 <code>&lt;meta name="color-scheme"&gt;</code> 的值，记住读者选择的 color-scheme</b>
+</p>
+
+<p>
+经过上面 1，2 两步，现在已经拥有一个基于 color-scheme 的博客了。
+</p>
+
+<p>
+如果你设置的是 <code>color-scheme: light dark;</code> ，浏览器会基于系统的设置，自动切换 light mode 和 dark mode。
+</p>
+
+<p>
+但是可能有的读者喜欢 light mode，有的读者喜欢 dark mode，希望能固定 color-scheme ，所以还需要在页面提供一个切换 color-scheme 的地方。
+</p>
+
+<p>
+方法有很多，我是在博客的导航栏右侧放置了一个 <code>&lt;select&gt;</code> ，然后写了一点 JavaScript 去控制，具体见 <a href="https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/js/color-scheme.js">color-scheme.js</a>。
+</p>
+
+<p>
+除了开放切换 color-scheme 外，还需要记住读者的 color-scheme 配置，这样读者下次进来就还是他之前的配置，相对友好一些，目前我是存储在 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">localStorage</a> 中。
+</p>
+
+<p>
+这样就拥有一个可以切换 light ，dark 的博客啦 ｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡
+</p>
+
+<p>
+但事情并没有这么简单，过程中我还碰到了不少问题，接下来逐个看看。
+</p>
+</div>
+</div>
+<div id="outline-container-org48c7189" class="outline-2">
+<h2 id="org48c7189">踩坑</h2>
+<div class="outline-text-2" id="text-org48c7189">
+</div>
+<div id="outline-container-org001649b" class="outline-3">
+<h3 id="org001649b">闪烁问题</h3>
+<div class="outline-text-3" id="text-org001649b">
+<p>
+最开始 color-scheme.js 是放在 HTML 的最后加载的，避免影响页面内容的加载和渲染。
+</p>
+
+<p>
+但因为 <code>&lt;meta name="color-scheme"&gt;</code> 的默认值是 <code>light dark</code> ，假如系统配置中是 light mode ，而读者之前选择了 dark mode，页面加载的时候就会出现从 light mode 到 dark mode 的一个短暂转换，看起来像闪烁了一下。
+</p>
+
+<p>
+为了避免这个问题，我将 color-scheme.js 挪到了 HTML 的开头部分，一开始就按照读者之前选择的值，设置 color-scheme，这样在内容渲染之前，color-scheme 就已经切换好了，避免闪烁。
+</p>
+
+<p>
+但这样又引入了另一个问题，由于 color-scheme.js 执行的时候，页面的 DOM 还没渲染，因此无法提前获取 DOM，设置 <code>&lt;select&gt;</code> 的选中值，以及其他 DOM 元素的样式。
+</p>
+
+<p>
+所以 color-scheme.js 中还需要监听 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event">DOMContentLoaded</a> 事件，当页面 DOM 加载完成后，执行一些获取 DOM ，设置 color-scheme 的逻辑。
+</p>
+</div>
+</div>
+<div id="outline-container-orgdf5904c" class="outline-3">
+<h3 id="orgdf5904c">dark mode 下 giscus 的处理</h3>
+<div class="outline-text-3" id="text-orgdf5904c">
+<p>
+我希望 <a href="https://github.com/giscus/giscus">giscus</a> 也会基于读者选择的 color-scheme 切换主题，博客中 giscus 是懒加载的，只有滚动到底部的时候才会加载。
+</p>
+
+<p>
+从 <a href="https://github.com/giscus/giscus/issues/336">Dynamic theme changing available? #336</a> 中找到了动态切换主题的方法，即用  <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage">postMessage()</a> 通知 giscus 切换主题，但这种方法只适用于手动点击 <code>&lt;select&gt;</code> 切换的情况。
+</p>
+
+<p>
+除了读者主动切换 <code>&lt;select&gt;</code> ，我还需要在页面初始化的时候，还原读者之前选择的 color-scheme。
+</p>
+
+<p>
+<del>从 <a href="https://github.com/giscus/giscus/blob/e2368de91c3382ee256a4632628de00dd05a0e94/pages/index.tsx#L102-L120">giscus 源码</a> 看，giscus 初始化的时候也是通过 postMessage 去设置主题的，这里似乎存在一个竞态问题， gisucs 初始化的 postMessage 有时比我切换主题的 postMessage 执行得晚，会将我设置的主题重置。</del>
+</p>
+
+<p>
+<del>为了避免这个问题，我通过 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout">setTimeout()</a> 延缓切换主题的 postMesssage 的执行，在很大程度上能够解决问题，基本很少出现被覆盖的情况。</del>
+</p>
+
+<p>
+可以通过动态加载 giscus 解决问题，在加载 giscus 之前先基于当前的 color-scheme 设置 giscus 使用的主题，就可以确保 giscus 加载时的主题是正确的。
+</p>
+
+<p>
+代码可以参考 <a href="https://github.com/giscus/giscus/issues/336#issuecomment-1009551934">laymonage 的回答</a> 。
+</p>
+</div>
+</div>
+<div id="outline-container-org5cb3f3a" class="outline-3">
+<h3 id="org5cb3f3a">dark mode 下 iframe 的处理</h3>
+<div class="outline-text-3" id="text-org5cb3f3a">
+<p>
+我的博客里会用 <a href="use-iframe-for-blog-demo.html">iframe 展示一些例子</a>，<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe">&lt;iframe&gt;</a> 是独立于我博客窗口的，不受 <a href="https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/style.css">style.css</a> 的影响，为了能够适配 color-scheme，我会遍历页面上所有的 iframe，然后在他们的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement/contentDocument">contentDocument</a> 设置 color-scheme 属性。
+</p>
+
+<p>
+这里也会存在一个时机的问题，需要在 iframe 加载完成后再设置 color-scheme 才行，不然 color-scheme 无法生效，实现上是通过监听 iframe 的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/load_event">load event</a> 进行设置的。
+</p>
+</div>
+</div>
+<div id="outline-container-org5f0fb34" class="outline-3">
+<h3 id="org5f0fb34">dark mode 下代码块高亮的处理</h3>
+<div class="outline-text-3" id="text-org5f0fb34">
+<p>
+我的博客是用 <a href="org-publish-blog.html">org-publish</a> 实现的，代码块的高亮颜色是 publish 时 Emacs 的主题颜色决定的，要么是亮色，要么是暗色，没法同时导出两种高亮主题。
+</p>
+
+<p>
+而我默认导出的是一个亮色的主题，这就导致了在 dark mode 下，代码高亮会看不清，或者很刺眼。
+</p>
+
+<p>
+publish 生成的代码高亮的颜色是单独写在 <code>&lt;span&gt;</code> 上的，没有类名，通过 CSS 也不方便选择元素设置颜色。
+</p>
+
+<p>
+最开始的方案是统一导出暗色主题，这样 dark mode 下看起来是正常的，light mode 上就将代码块的背景色设置成 dark mode 的背景色，也能看清，就是页面上会有很多黑色的代码块，有点突兀。
+</p>
+
+<p>
+后来突然想到可以用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter">CSS fitler</a> 的 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/invert">invert()</a> 将颜色进行反转，那是不是可以直接把亮色主题的代码颜色，反转一下，就能在 dark mode 下用了? (≖ᴗ≖๑)
+</p>
+
+<p>
+于是设置了 <code>filter: invert(100%);</code> ，在 dark mode 下代码确实能看清了，但是由于颜色反转过头，像是 diff 的颜色，绿色表示新增，红色表示移除，invert 之后已经不是这两个颜色了，不容易让人看明白。
+</p>
+
+<p>
+但思路应该是可行的，于是我在结合其他 filter 的属性，最终得到了一个相对还能用的 filter：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #f78fe7;">@media</span> <span style="color: #ffffff;">(</span>prefers-color-scheme: dark<span style="color: #ffffff;">)</span> <span style="color: #ffffff;">{</span>
+    <span style="color: #feacd0;">pre.src &gt; *,
+    pre.example &gt; *</span> <span style="color: #ff66ff;">{</span>
+        <span style="color: #b6a0ff;">filter</span>: invert<span style="color: #00eff0;">(</span>20%<span style="color: #00eff0;">)</span> brightness<span style="color: #00eff0;">(</span>200%<span style="color: #00eff0;">)</span>;
+    <span style="color: #ff66ff;">}</span>
+<span style="color: #ffffff;">}</span>
+
+<span style="color: #b6a0ff;">html</span>:has<span style="color: #ffffff;">(</span>meta<span style="color: #ff66ff;">[</span>name=<span style="color: #79a8ff;">"color-scheme"</span><span style="color: #ff66ff;">][</span>content=<span style="color: #79a8ff;">"dark"</span><span style="color: #ff66ff;">]</span><span style="color: #ffffff;">)</span> pre.src &gt; *,
+<span style="color: #b6a0ff;">html</span>:has<span style="color: #ffffff;">(</span>meta<span style="color: #ff66ff;">[</span>name=<span style="color: #79a8ff;">"color-scheme"</span><span style="color: #ff66ff;">][</span>content=<span style="color: #79a8ff;">"dark"</span><span style="color: #ff66ff;">]</span><span style="color: #ffffff;">)</span> pre.example &gt; * <span style="color: #ffffff;">{</span>
+  <span style="color: #b6a0ff;">filter</span>: invert<span style="color: #ff66ff;">(</span>20%<span style="color: #ff66ff;">)</span> brightness<span style="color: #ff66ff;">(</span>200%<span style="color: #ff66ff;">)</span>;
+<span style="color: #ffffff;">}</span>
+</pre>
+</div>
+
+<p>
+这样既复用了亮色主题的高亮，也能在 dark mode 下看得比较清楚，凑合能用了 (´・ω・`)
+</p>
+</div>
+</div>
+<div id="outline-container-orgb9c2f35" class="outline-3">
+<h3 id="orgb9c2f35">第三方兼容</h3>
+<div class="outline-text-3" id="text-orgb9c2f35">
+<p>
+页面中可能使用了一些第三方的库，例如 <a href="https://pagefind.app/">pagefind</a> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>, 这些库有自己的样式，没有做 dark mode 的适配，可能需要自己去调整对应的 CSS 样式。
+</p>
+
+<p>
+可以在主题切换的时候，给 body 元素设置一个类名，如 <code>&lt;body class="dark"&gt;</code> ，然后通过 <code>.dark</code> 这个类名去设置对应的 dark mode 颜色。
+</p>
+
+<p>
+具体你可以看看我的实现：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/js/color-scheme.js">color-scheme.js</a></li>
+<li><a href="https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/style.css">style.css</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org2418541" class="outline-2">
+<h2 id="org2418541"><span class="todo TODO">TODO</span> Todos</h2>
+<div class="outline-text-2" id="text-org2418541">
+<p>
+除了上面的问题，其实还有一些没解决的：
+</p>
+
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 不同 color-scheme 下图片的处理，dark mode 下出现白底的图片，还是有点刺眼 -&gt; 不做处理，暂时可以接受</li>
+<li class="off"><code>[&#xa0;]</code> 一些 CSS 特性的兼容性测试，有的浏览器可能不兼容</li>
+<li class="on"><code>[X]</code> 稳定 iframe，giscus 的主题切换，避免切换失败的情况 -&gt; 已解决，通过动态加载 giscus 实现，具体可以往上面翻翻看</li>
+<li class="on"><code>[X]</code> 更好看的 dark mode 配色  -&gt;  调整过一阵子，对目前的颜色还算满意，除了好看，还应该考虑可读性，可访问性，可以参考 <a href="https://git.apcacontrast.com/documentation/APCAeasyIntro">APCA</a> 进行配色。<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org26094c4" class="outline-2">
+<h2 id="org26094c4">写在最后</h2>
+<div class="outline-text-2" id="text-org26094c4">
+<p>
+所以现在博客有 dark mode 可以用啦 \m/ &gt;_&lt; \m/
+</p>
+
+<p>
+你可以尝试看看，如果使用下来有什么问题，或者更好的建议，欢迎留言呀~
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+我的博客就是用 pagefind 实现搜索的，感兴趣可以看看我的实践：<a href="use-pagefind-to-search-blog.html">使用 pagefind 添加博客搜索功能</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+感兴趣也可以看看博客的 <a href="changelog.html">CHANGELOG</a>。
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： 2024-12-21 Sat 16:11</p>
+<p class="date">修改于： 2025-08-28 Thu 16:53</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

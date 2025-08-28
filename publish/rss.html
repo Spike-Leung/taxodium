@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Taxodium</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="That the powerful play goes on, and you may contribute a verse. (feedId:63132271001948160+userId:72185894417953792)" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 style="view-transition-name: spike-rss" class="title">Taxodium</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgffae608">Weekly#29</a></li>
+<li><a href="#org7ba3e25">Weekly#28</a></li>
+<li><a href="#org2aca08d">Weekly#27</a></li>
+<li><a href="#orgd0b6ce3">Emacs 中配置 .authinfo.gpg</a></li>
+<li><a href="#org3c649d0">注释是你的好朋友</a></li>
+<li><a href="#org2861f6a">Weekly#26</a></li>
+<li><a href="#org629eb55">pacakge.json 中依赖版本的记忆技巧</a></li>
+<li><a href="#orgb44a7e7">Weekly#25</a></li>
+<li><a href="#org6420075">Weekly#24</a></li>
+<li><a href="#org3373f99">Weekly#23</a></li>
+<li><a href="#org7aa4cd9">Translation In Emacs</a></li>
+<li><a href="#org485d9c7">Weekly#22</a></li>
+<li><a href="#org4a989ca">Weekly#21</a></li>
+<li><a href="#org706c8a9">Weekly#20</a></li>
+<li><a href="#org327ad99">给博客添加 dark mode</a></li>
+<li><a href="#org8229de5">Weekly#19</a></li>
+<li><a href="#orgf1280c9">Weekly#18</a></li>
+<li><a href="#orgbd2d4f4">Weekly#17</a></li>
+<li><a href="#orgdcd7a4b">使用 pagefind 添加博客搜索功能</a></li>
+<li><a href="#orgafa2150">Weekly#16</a></li>
+<li><a href="#org115ed6e">Answer: 博客作者呀，我想采访你这 9 个问题！</a></li>
+<li><a href="#org158ab49">Weekly#15</a></li>
+<li><a href="#orgc5b10c1">Weekly#14</a></li>
+<li><a href="#orgfee635d">Weekly#13</a></li>
+<li><a href="#org224dee6">一次海外购物经历</a></li>
+<li><a href="#org4483062">我的键盘</a></li>
+<li><a href="#org7c0d243">胃镜检查</a></li>
+<li><a href="#org90d8641">Weekly#12</a></li>
+<li><a href="#orgcc609f9">Weekly#11</a></li>
+<li><a href="#org8583bed">香港迪士尼一日游</a></li>
+<li><a href="#org61e131c">Weekly#10</a></li>
+<li><a href="#org07e6ef3">使用 org-publish 发布博客</a></li>
+<li><a href="#orgfb13740">Weekly#9</a></li>
+<li><a href="#org646f21d">Weekly#8</a></li>
+<li><a href="#org085ab26">Weekly#7</a></li>
+<li><a href="#orgff97d86">Weekly#6</a></li>
+<li><a href="#orgb594fc0">Weekly#5</a></li>
+<li><a href="#org07ba3b4">Weekly#4</a></li>
+<li><a href="#org5b32f54">Weekly#3</a></li>
+<li><a href="#orgd0f2831">用 iframe 显示 HTML 例子</a></li>
+<li><a href="#orgaadccce">word-break: break-all;</a></li>
+<li><a href="#org5921b28">Weekly#2</a></li>
+<li><a href="#org3305673">Weekly#1</a></li>
+<li><a href="#org08d3b03">Weekly#0</a></li>
+<li><a href="#orgf674703">Emoji 正则匹配</a></li>
+<li><a href="#orgcc99e98">Date 的踩坑</a></li>
+<li><a href="#org954916c">往 PDF 上添加 form field</a></li>
+<li><a href="#orgc4336e7">tldr effective-shell</a></li>
+<li><a href="#org1ed2977">Git 的校验实践</a></li>
+<li><a href="#orga54f9ad">Windows 下个人开发环境搭建</a></li>
+<li><a href="#org929f26a">Flex 布局下，元素溢出的问题</a></li>
+<li><a href="#orgf2f13ba">单调栈</a></li>
+<li><a href="#org5bf4930">Display Blob as Image</a></li>
+<li><a href="#orgb0513ad">V2ray with Caddy + HTTP2 + TLS</a></li>
+<li><a href="#orged788fb">2022 CSS 技术一瞥</a></li>
+<li><a href="#org00dcc4c">Monorepo</a></li>
+<li><a href="#orgbdcd139">JS 中的定时任务</a></li>
+<li><a href="#orgb6f305d">KPM 算法的 JS 实现</a></li>
+<li><a href="#org2f348e7">Vue Router 为什么切换路由不刷新页面</a></li>
+<li><a href="#org16d15d4">长沙两日游</a></li>
+<li><a href="#org18778e5">武汉两日游</a></li>
+<li><a href="#orga824d5e">部署前端静态文件的简单步骤</a></li>
+<li><a href="#orga004616">使用 GitHub Actions 部署博客到 GitHub Pages</a></li>
+<li><a href="#orgf93d9a5">SVN Cheatsheet</a></li>
+<li><a href="#org5fff40f">根据国家显示国旗图标</a></li>
+<li><a href="#orgbf6f0fd">制作SVG地图轮廓</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-orgffae608" class="outline-2">
+<h2 id="orgffae608">Weekly#29</h2>
+<div class="outline-text-2" id="text-orgffae608">
+<p>
+Weekly#29
+</p>
+</div>
+</div>
+<div id="outline-container-org7ba3e25" class="outline-2">
+<h2 id="org7ba3e25">Weekly#28</h2>
+<div class="outline-text-2" id="text-org7ba3e25">
+<p>
+Weekly#28
+</p>
+</div>
+</div>
+<div id="outline-container-org2aca08d" class="outline-2">
+<h2 id="org2aca08d">Weekly#27</h2>
+<div class="outline-text-2" id="text-org2aca08d">
+<p>
+Weekly#27
+</p>
+</div>
+</div>
+<div id="outline-container-orgd0b6ce3" class="outline-2">
+<h2 id="orgd0b6ce3">Emacs 中配置 .authinfo.gpg</h2>
+<div class="outline-text-2" id="text-orgd0b6ce3">
+<p>
+Emacs 中配置 .authinfo.gpg
+</p>
+</div>
+</div>
+<div id="outline-container-org3c649d0" class="outline-2">
+<h2 id="org3c649d0">注释是你的好朋友</h2>
+<div class="outline-text-2" id="text-org3c649d0">
+<p>
+注释是你的好朋友
+</p>
+</div>
+</div>
+<div id="outline-container-org2861f6a" class="outline-2">
+<h2 id="org2861f6a">Weekly#26</h2>
+<div class="outline-text-2" id="text-org2861f6a">
+<p>
+Weekly#26
+</p>
+</div>
+</div>
+<div id="outline-container-org629eb55" class="outline-2">
+<h2 id="org629eb55">pacakge.json 中依赖版本的记忆技巧</h2>
+<div class="outline-text-2" id="text-org629eb55">
+<p>
+pacakge.json 中依赖版本的记忆技巧
+</p>
+</div>
+</div>
+<div id="outline-container-orgb44a7e7" class="outline-2">
+<h2 id="orgb44a7e7">Weekly#25</h2>
+<div class="outline-text-2" id="text-orgb44a7e7">
+<p>
+Weekly#25
+</p>
+</div>
+</div>
+<div id="outline-container-org6420075" class="outline-2">
+<h2 id="org6420075">Weekly#24</h2>
+<div class="outline-text-2" id="text-org6420075">
+<p>
+Weekly#24
+</p>
+</div>
+</div>
+<div id="outline-container-org3373f99" class="outline-2">
+<h2 id="org3373f99">Weekly#23</h2>
+<div class="outline-text-2" id="text-org3373f99">
+<p>
+Weekly#23
+</p>
+</div>
+</div>
+<div id="outline-container-org7aa4cd9" class="outline-2">
+<h2 id="org7aa4cd9">Translation In Emacs</h2>
+<div class="outline-text-2" id="text-org7aa4cd9">
+<p>
+Translation In Emacs
+</p>
+</div>
+</div>
+<div id="outline-container-org485d9c7" class="outline-2">
+<h2 id="org485d9c7">Weekly#22</h2>
+<div class="outline-text-2" id="text-org485d9c7">
+<p>
+Weekly#22
+</p>
+</div>
+</div>
+<div id="outline-container-org4a989ca" class="outline-2">
+<h2 id="org4a989ca">Weekly#21</h2>
+<div class="outline-text-2" id="text-org4a989ca">
+<p>
+Weekly#21
+</p>
+</div>
+</div>
+<div id="outline-container-org706c8a9" class="outline-2">
+<h2 id="org706c8a9">Weekly#20</h2>
+<div class="outline-text-2" id="text-org706c8a9">
+<p>
+Weekly#20
+</p>
+</div>
+</div>
+<div id="outline-container-org327ad99" class="outline-2">
+<h2 id="org327ad99">给博客添加 dark mode</h2>
+<div class="outline-text-2" id="text-org327ad99">
+<p>
+给博客添加 dark mode
+</p>
+</div>
+</div>
+<div id="outline-container-org8229de5" class="outline-2">
+<h2 id="org8229de5">Weekly#19</h2>
+<div class="outline-text-2" id="text-org8229de5">
+<p>
+Weekly#19
+</p>
+</div>
+</div>
+<div id="outline-container-orgf1280c9" class="outline-2">
+<h2 id="orgf1280c9">Weekly#18</h2>
+<div class="outline-text-2" id="text-orgf1280c9">
+<p>
+Weekly#18
+</p>
+</div>
+</div>
+<div id="outline-container-orgbd2d4f4" class="outline-2">
+<h2 id="orgbd2d4f4">Weekly#17</h2>
+<div class="outline-text-2" id="text-orgbd2d4f4">
+<p>
+Weekly#17
+</p>
+</div>
+</div>
+<div id="outline-container-orgdcd7a4b" class="outline-2">
+<h2 id="orgdcd7a4b">使用 pagefind 添加博客搜索功能</h2>
+<div class="outline-text-2" id="text-orgdcd7a4b">
+<p>
+使用 pagefind 添加博客搜索功能
+</p>
+</div>
+</div>
+<div id="outline-container-orgafa2150" class="outline-2">
+<h2 id="orgafa2150">Weekly#16</h2>
+<div class="outline-text-2" id="text-orgafa2150">
+<p>
+Weekly#16
+</p>
+</div>
+</div>
+<div id="outline-container-org115ed6e" class="outline-2">
+<h2 id="org115ed6e">Answer: 博客作者呀，我想采访你这 9 个问题！</h2>
+<div class="outline-text-2" id="text-org115ed6e">
+<p>
+Answer: 博客作者呀，我想采访你这 9 个问题！
+</p>
+</div>
+</div>
+<div id="outline-container-org158ab49" class="outline-2">
+<h2 id="org158ab49">Weekly#15</h2>
+<div class="outline-text-2" id="text-org158ab49">
+<p>
+Weekly#15
+</p>
+</div>
+</div>
+<div id="outline-container-orgc5b10c1" class="outline-2">
+<h2 id="orgc5b10c1">Weekly#14</h2>
+<div class="outline-text-2" id="text-orgc5b10c1">
+<p>
+Weekly#14
+</p>
+</div>
+</div>
+<div id="outline-container-orgfee635d" class="outline-2">
+<h2 id="orgfee635d">Weekly#13</h2>
+<div class="outline-text-2" id="text-orgfee635d">
+<p>
+Weekly#13
+</p>
+</div>
+</div>
+<div id="outline-container-org224dee6" class="outline-2">
+<h2 id="org224dee6">一次海外购物经历</h2>
+<div class="outline-text-2" id="text-org224dee6">
+<p>
+一次海外购物经历
+</p>
+</div>
+</div>
+<div id="outline-container-org4483062" class="outline-2">
+<h2 id="org4483062">我的键盘</h2>
+<div class="outline-text-2" id="text-org4483062">
+<p>
+我的键盘
+</p>
+</div>
+</div>
+<div id="outline-container-org7c0d243" class="outline-2">
+<h2 id="org7c0d243">胃镜检查</h2>
+<div class="outline-text-2" id="text-org7c0d243">
+<p>
+胃镜检查
+</p>
+</div>
+</div>
+<div id="outline-container-org90d8641" class="outline-2">
+<h2 id="org90d8641">Weekly#12</h2>
+<div class="outline-text-2" id="text-org90d8641">
+<p>
+Weekly#12
+</p>
+</div>
+</div>
+<div id="outline-container-orgcc609f9" class="outline-2">
+<h2 id="orgcc609f9">Weekly#11</h2>
+<div class="outline-text-2" id="text-orgcc609f9">
+<p>
+Weekly#11
+</p>
+</div>
+</div>
+<div id="outline-container-org8583bed" class="outline-2">
+<h2 id="org8583bed">香港迪士尼一日游</h2>
+<div class="outline-text-2" id="text-org8583bed">
+<p>
+香港迪士尼一日游
+</p>
+</div>
+</div>
+<div id="outline-container-org61e131c" class="outline-2">
+<h2 id="org61e131c">Weekly#10</h2>
+<div class="outline-text-2" id="text-org61e131c">
+<p>
+Weekly#10
+</p>
+</div>
+</div>
+<div id="outline-container-org07e6ef3" class="outline-2">
+<h2 id="org07e6ef3">使用 org-publish 发布博客</h2>
+<div class="outline-text-2" id="text-org07e6ef3">
+<p>
+使用 org-publish 发布博客
+</p>
+</div>
+</div>
+<div id="outline-container-orgfb13740" class="outline-2">
+<h2 id="orgfb13740">Weekly#9</h2>
+<div class="outline-text-2" id="text-orgfb13740">
+<p>
+Weekly#9
+</p>
+</div>
+</div>
+<div id="outline-container-org646f21d" class="outline-2">
+<h2 id="org646f21d">Weekly#8</h2>
+<div class="outline-text-2" id="text-org646f21d">
+<p>
+Weekly#8
+</p>
+</div>
+</div>
+<div id="outline-container-org085ab26" class="outline-2">
+<h2 id="org085ab26">Weekly#7</h2>
+<div class="outline-text-2" id="text-org085ab26">
+<p>
+Weekly#7
+</p>
+</div>
+</div>
+<div id="outline-container-orgff97d86" class="outline-2">
+<h2 id="orgff97d86">Weekly#6</h2>
+<div class="outline-text-2" id="text-orgff97d86">
+<p>
+Weekly#6
+</p>
+</div>
+</div>
+<div id="outline-container-orgb594fc0" class="outline-2">
+<h2 id="orgb594fc0">Weekly#5</h2>
+<div class="outline-text-2" id="text-orgb594fc0">
+<p>
+Weekly#5
+</p>
+</div>
+</div>
+<div id="outline-container-org07ba3b4" class="outline-2">
+<h2 id="org07ba3b4">Weekly#4</h2>
+<div class="outline-text-2" id="text-org07ba3b4">
+<p>
+Weekly#4
+</p>
+</div>
+</div>
+<div id="outline-container-org5b32f54" class="outline-2">
+<h2 id="org5b32f54">Weekly#3</h2>
+<div class="outline-text-2" id="text-org5b32f54">
+<p>
+Weekly#3
+</p>
+</div>
+</div>
+<div id="outline-container-orgd0f2831" class="outline-2">
+<h2 id="orgd0f2831">用 iframe 显示 HTML 例子</h2>
+<div class="outline-text-2" id="text-orgd0f2831">
+<p>
+用 iframe 显示 HTML 例子
+</p>
+</div>
+</div>
+<div id="outline-container-orgaadccce" class="outline-2">
+<h2 id="orgaadccce">word-break: break-all;</h2>
+<div class="outline-text-2" id="text-orgaadccce">
+<p>
+word-break: break-all;
+</p>
+</div>
+</div>
+<div id="outline-container-org5921b28" class="outline-2">
+<h2 id="org5921b28">Weekly#2</h2>
+<div class="outline-text-2" id="text-org5921b28">
+<p>
+Weekly#2
+</p>
+</div>
+</div>
+<div id="outline-container-org3305673" class="outline-2">
+<h2 id="org3305673">Weekly#1</h2>
+<div class="outline-text-2" id="text-org3305673">
+<p>
+Weekly#1
+</p>
+</div>
+</div>
+<div id="outline-container-org08d3b03" class="outline-2">
+<h2 id="org08d3b03">Weekly#0</h2>
+<div class="outline-text-2" id="text-org08d3b03">
+<p>
+Weekly#0
+</p>
+</div>
+</div>
+<div id="outline-container-orgf674703" class="outline-2">
+<h2 id="orgf674703">Emoji 正则匹配</h2>
+<div class="outline-text-2" id="text-orgf674703">
+<p>
+Emoji 正则匹配
+</p>
+</div>
+</div>
+<div id="outline-container-orgcc99e98" class="outline-2">
+<h2 id="orgcc99e98">Date 的踩坑</h2>
+<div class="outline-text-2" id="text-orgcc99e98">
+<p>
+Date 的踩坑
+</p>
+</div>
+</div>
+<div id="outline-container-org954916c" class="outline-2">
+<h2 id="org954916c">往 PDF 上添加 form field</h2>
+<div class="outline-text-2" id="text-org954916c">
+<p>
+往 PDF 上添加 form field
+</p>
+</div>
+</div>
+<div id="outline-container-orgc4336e7" class="outline-2">
+<h2 id="orgc4336e7">tldr effective-shell</h2>
+<div class="outline-text-2" id="text-orgc4336e7">
+<p>
+tldr effective-shell
+</p>
+</div>
+</div>
+<div id="outline-container-org1ed2977" class="outline-2">
+<h2 id="org1ed2977">Git 的校验实践</h2>
+<div class="outline-text-2" id="text-org1ed2977">
+<p>
+Git 的校验实践
+</p>
+</div>
+</div>
+<div id="outline-container-orga54f9ad" class="outline-2">
+<h2 id="orga54f9ad">Windows 下个人开发环境搭建</h2>
+<div class="outline-text-2" id="text-orga54f9ad">
+<p>
+Windows 下个人开发环境搭建
+</p>
+</div>
+</div>
+<div id="outline-container-org929f26a" class="outline-2">
+<h2 id="org929f26a">Flex 布局下，元素溢出的问题</h2>
+<div class="outline-text-2" id="text-org929f26a">
+<p>
+Flex 布局下，元素溢出的问题
+</p>
+</div>
+</div>
+<div id="outline-container-orgf2f13ba" class="outline-2">
+<h2 id="orgf2f13ba">单调栈</h2>
+<div class="outline-text-2" id="text-orgf2f13ba">
+<p>
+单调栈
+</p>
+</div>
+</div>
+<div id="outline-container-org5bf4930" class="outline-2">
+<h2 id="org5bf4930">Display Blob as Image</h2>
+<div class="outline-text-2" id="text-org5bf4930">
+<p>
+Display Blob as Image
+</p>
+</div>
+</div>
+<div id="outline-container-orgb0513ad" class="outline-2">
+<h2 id="orgb0513ad">V2ray with Caddy + HTTP2 + TLS</h2>
+<div class="outline-text-2" id="text-orgb0513ad">
+<p>
+V2ray with Caddy + HTTP2 + TLS
+</p>
+</div>
+</div>
+<div id="outline-container-orged788fb" class="outline-2">
+<h2 id="orged788fb">2022 CSS 技术一瞥</h2>
+<div class="outline-text-2" id="text-orged788fb">
+<p>
+2022 CSS 技术一瞥
+</p>
+</div>
+</div>
+<div id="outline-container-org00dcc4c" class="outline-2">
+<h2 id="org00dcc4c">Monorepo</h2>
+<div class="outline-text-2" id="text-org00dcc4c">
+<p>
+Monorepo
+</p>
+</div>
+</div>
+<div id="outline-container-orgbdcd139" class="outline-2">
+<h2 id="orgbdcd139">JS 中的定时任务</h2>
+<div class="outline-text-2" id="text-orgbdcd139">
+<p>
+JS 中的定时任务
+</p>
+</div>
+</div>
+<div id="outline-container-orgb6f305d" class="outline-2">
+<h2 id="orgb6f305d">KPM 算法的 JS 实现</h2>
+<div class="outline-text-2" id="text-orgb6f305d">
+<p>
+KPM 算法的 JS 实现
+</p>
+</div>
+</div>
+<div id="outline-container-org2f348e7" class="outline-2">
+<h2 id="org2f348e7">Vue Router 为什么切换路由不刷新页面</h2>
+<div class="outline-text-2" id="text-org2f348e7">
+<p>
+Vue Router 为什么切换路由不刷新页面
+</p>
+</div>
+</div>
+<div id="outline-container-org16d15d4" class="outline-2">
+<h2 id="org16d15d4">长沙两日游</h2>
+<div class="outline-text-2" id="text-org16d15d4">
+<p>
+长沙两日游
+</p>
+</div>
+</div>
+<div id="outline-container-org18778e5" class="outline-2">
+<h2 id="org18778e5">武汉两日游</h2>
+<div class="outline-text-2" id="text-org18778e5">
+<p>
+武汉两日游
+</p>
+</div>
+</div>
+<div id="outline-container-orga824d5e" class="outline-2">
+<h2 id="orga824d5e">部署前端静态文件的简单步骤</h2>
+<div class="outline-text-2" id="text-orga824d5e">
+<p>
+部署前端静态文件的简单步骤
+</p>
+</div>
+</div>
+<div id="outline-container-orga004616" class="outline-2">
+<h2 id="orga004616">使用 GitHub Actions 部署博客到 GitHub Pages</h2>
+<div class="outline-text-2" id="text-orga004616">
+<p>
+使用 GitHub Actions 部署博客到 GitHub Pages
+</p>
+</div>
+</div>
+<div id="outline-container-orgf93d9a5" class="outline-2">
+<h2 id="orgf93d9a5">SVN Cheatsheet</h2>
+<div class="outline-text-2" id="text-orgf93d9a5">
+<p>
+SVN Cheatsheet
+</p>
+</div>
+</div>
+<div id="outline-container-org5fff40f" class="outline-2">
+<h2 id="org5fff40f">根据国家显示国旗图标</h2>
+<div class="outline-text-2" id="text-org5fff40f">
+<p>
+根据国家显示国旗图标
+</p>
+</div>
+</div>
+<div id="outline-container-orgbf6f0fd" class="outline-2">
+<h2 id="orgbf6f0fd">制作SVG地图轮廓</h2>
+<div class="outline-text-2" id="text-orgbf6f0fd">
+<p>
+制作SVG地图轮廓
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： </p>
+<p class="date">修改于： 2025-04-26 Sat 15:51</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

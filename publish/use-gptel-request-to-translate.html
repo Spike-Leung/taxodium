@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>使用 gptel-request 封装一个翻译方法</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="使用 gptel 封装一些常用的使用 LLM 的场景" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">使用 gptel-request 封装一个翻译方法</h1>
+</header>
+<figure id="org8247bd8">
+<img src="./images/use-gptel-request-to-translate/demo.gif" alt="demo.gif">
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>一个 GIF 图，演示了选中中文，然后调用 spike-leung/translate-region-to-english 翻译成英文。</figcaption>
+</figure>
+
+<p>
+最近用 LLM 挺多的，尝试用英文写 prompt，但有时我不知道怎么写（英文比较菜）就想着翻译一下。
+</p>
+
+<p>
+<a href="translation-in-emacs.html">当然 Emacs 中的翻译的工具很多</a> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>，写这个函数只是分享一下 <code>gptel-request</code> 的一种实现<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>。
+</p>
+
+<p>
+逻辑都是 LLM 写的，大体的逻辑是：<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> <sup>, </sup><sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>
+</p>
+
+<ol class="org-ol">
+<li>找到当前选中区域，或者基于当前 point 获取对应的行/段落，作为要翻译的内容。</li>
+<li>绑定一些本地变量，如 model，backend，因为翻译只需要一个快速便宜的模型。</li>
+<li>调用 <code>gptel-request</code> ，写一个翻译的 prompt，发起请求，得到响应后覆盖第 1 步选中的内容。</li>
+</ol>
+
+<p>
+更新:
+</p>
+
+<ul class="org-ul">
+<li>偶尔碰到 openai 的模型会失效，Google 的相对稳定一点，设置一个 fallback 的模型，如果失效了就调用 fallback 模型重试。</li>
+<li>支持自定义 prompt，有时可能需要翻译成别的语言可能有用。</li>
+</ul>
+
+<details id="org744203e">
+<summary>spike-leung/translate-region</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/translate-region</span> <span style="color: #ff66ff;">(</span>prompt<span style="color: #ff66ff;">)</span>
+  <span style="color: #9ac8e0;">"Translate the selected region (default to English) replace it.
+If no region is active, try to guess the sentence or paragraph at point.
+With prefix argument, PROMPT is used as the translation prompt."</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">interactive</span>
+   <span style="color: #00eff0;">(</span>list <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">when</span> current-prefix-arg
+           <span style="color: #efef00;">(</span>read-string <span style="color: #79a8ff;">"Translation prompt: "</span> <span style="color: #79a8ff;">"Translate the following text to English:"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">require</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gptel</span><span style="color: #ff66ff;">)</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">let*</span> <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>has-region <span style="color: #efef00;">(</span>use-region-p<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #ff6b55;">(</span>bounds
+          <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">cond</span>
+           <span style="color: #b6a0ff;">(</span>has-region
+            <span style="color: #44df44;">(</span>cons <span style="color: #79a8ff;">(</span>region-beginning<span style="color: #79a8ff;">)</span> <span style="color: #79a8ff;">(</span>region-end<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+           <span style="color: #b6a0ff;">(</span><span style="color: #44df44;">(</span>use-region-p<span style="color: #44df44;">)</span>
+            <span style="color: #44df44;">(</span>cons <span style="color: #79a8ff;">(</span>region-beginning<span style="color: #79a8ff;">)</span> <span style="color: #79a8ff;">(</span>region-end<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+           <span style="color: #b6a0ff;">(</span><span style="color: #44df44;">(</span><span style="color: #b6a0ff;">and</span> <span style="color: #79a8ff;">(</span>fboundp <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">bounds-of-thing-at-point</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span>
+            <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">or</span> <span style="color: #79a8ff;">(</span>bounds-of-thing-at-point <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">sentence</span><span style="color: #79a8ff;">)</span>
+                <span style="color: #79a8ff;">(</span>bounds-of-thing-at-point <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">paragraph</span><span style="color: #79a8ff;">)</span>
+                <span style="color: #79a8ff;">(</span>bounds-of-thing-at-point <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">line</span><span style="color: #79a8ff;">)</span>
+                <span style="color: #79a8ff;">(</span>cons <span style="color: #f78fe7;">(</span>point<span style="color: #f78fe7;">)</span> <span style="color: #f78fe7;">(</span>point<span style="color: #f78fe7;">)</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+           <span style="color: #b6a0ff;">(</span>t <span style="color: #44df44;">(</span>cons <span style="color: #79a8ff;">(</span>point<span style="color: #79a8ff;">)</span> <span style="color: #79a8ff;">(</span>point<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #ff6b55;">(</span>start <span style="color: #efef00;">(</span>car bounds<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #ff6b55;">(</span>end <span style="color: #efef00;">(</span>cdr bounds<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #ff6b55;">(</span>text <span style="color: #efef00;">(</span>buffer-substring-no-properties start end<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #ff6b55;">(</span>prompt-text <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">or</span> prompt <span style="color: #79a8ff;">"Translate the following text to English:"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
+    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">if</span> <span style="color: #ff6b55;">(</span>string-blank-p text<span style="color: #ff6b55;">)</span>
+        <span style="color: #ff6b55;">(</span><span style="color: #fec43f;">user-error</span> <span style="color: #79a8ff;">"No text to translate"</span><span style="color: #ff6b55;">)</span>
+      <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">let</span> <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">(</span>openrouter-backend <span style="color: #44df44;">(</span>gptel-make-openai <span style="color: #79a8ff;">"OpenRouter"</span>
+                                  <span style="color: #f78fe7;">:host</span> <span style="color: #79a8ff;">"openrouter.ai"</span>
+                                  <span style="color: #f78fe7;">:endpoint</span> <span style="color: #79a8ff;">"/api/v1/chat/completions"</span>
+                                  <span style="color: #f78fe7;">:stream</span> t
+                                  <span style="color: #f78fe7;">:key</span> <span style="color: #79a8ff;">(</span>spike-leung/get-openrouter-api-key<span style="color: #79a8ff;">)</span>
+                                  <span style="color: #f78fe7;">:models</span> spike-leung/openrouter-models<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+            <span style="color: #b6a0ff;">(</span>primary-model <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">openai/gpt-4.1-nano</span><span style="color: #b6a0ff;">)</span>
+            <span style="color: #b6a0ff;">(</span>fallback-model <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">google/gemini-2.0-flash-001</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
+        <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">cl-labels</span>
+            <span style="color: #b6a0ff;">(</span><span style="color: #44df44;">(</span>do-translate
+               <span style="color: #79a8ff;">(</span>model<span style="color: #79a8ff;">)</span>
+               <span style="color: #79a8ff;">(</span><span style="color: #b6a0ff;">let</span> <span style="color: #f78fe7;">(</span><span style="color: #ffffff;">(</span>gptel-backend openrouter-backend<span style="color: #ffffff;">)</span>
+                     <span style="color: #ffffff;">(</span>gptel-model model<span style="color: #ffffff;">)</span>
+                     <span style="color: #ffffff;">(</span>gptel-use-tools nil<span style="color: #ffffff;">)</span>
+                     <span style="color: #ffffff;">(</span>gptel-use-context nil<span style="color: #ffffff;">)</span><span style="color: #f78fe7;">)</span>
+                 <span style="color: #f78fe7;">(</span>gptel-request
+                     <span style="color: #ffffff;">(</span>format <span style="color: #79a8ff;">"%s</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">n</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">n</span><span style="color: #79a8ff;">%s"</span> prompt-text text<span style="color: #ffffff;">)</span>
+                   <span style="color: #f78fe7;">:callback</span>
+                   <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">lambda</span> <span style="color: #ff66ff;">(</span>response _<span style="color: #ff66ff;">)</span>
+                     <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">if</span> <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">and</span> response <span style="color: #ff6b55;">(</span>not <span style="color: #efef00;">(</span>string-blank-p response<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
+                         <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">save-excursion</span>
+                           <span style="color: #ff6b55;">(</span>delete-region start end<span style="color: #ff6b55;">)</span>
+                           <span style="color: #ff6b55;">(</span>goto-char start<span style="color: #ff6b55;">)</span>
+                           <span style="color: #ff6b55;">(</span>insert response<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
+                       <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">if</span> <span style="color: #ff6b55;">(</span>eq model primary-model<span style="color: #ff6b55;">)</span>
+                           <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">progn</span>
+                             <span style="color: #efef00;">(</span>message <span style="color: #79a8ff;">"Primary model failed, retrying with fallback model..."</span><span style="color: #efef00;">)</span>
+                             <span style="color: #efef00;">(</span>do-translate fallback-model<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+                         <span style="color: #ff6b55;">(</span>message <span style="color: #79a8ff;">"Translation failed with both models."</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span><span style="color: #f78fe7;">)</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+          <span style="color: #b6a0ff;">(</span>do-translate primary-model<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+</pre>
+</div>
+</details>
+
+
+<p>
+利用 <code>gptel-request</code> ，封装一些 prompt，可以方便地解决平时一些重复的、可以使用 LLM 解决的任务。
+</p>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://manateelazycat.github.io/2022/11/07/how-i-use-emacs/#:~:text=%E5%B8%83%E5%B1%80%EF%BC%8C%20%E9%9D%9E%E5%B8%B8%E6%96%B9%E4%BE%BF%E3%80%82-,%E8%8B%B1%E6%96%87%E7%BF%BB%E8%AF%91,-%E5%81%9A%E4%B8%BA%E4%B8%80%E4%B8%AA%E8%8B%B1%E6%96%87">Manatee LazyCat 的英文翻译</a> 里还有更多的工具介绍。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+在 <a href="https://emacs-china.org/t/gptel-request/29360">Emacs China 的讨论</a> 中，其他人还有别的实现方法。Emacs 中同一件事情可以有很多实现，也是折腾 Emacs 的乐趣之一吧。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+源码可以看 <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-gptel.el">init-gptel</a>。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Folo 感觉有个 bug，设置里开启了行内样式渲染，代码块会使用 style 的颜色，但是我默认是浅色背景，Folo 的代码块默认是黑色背景，就会导致我的代码块很刺眼。目前先都统一成 dark mode 了。
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： 2025-04-15 Tue 16:24</p>
+<p class="date">修改于： 2025-08-28 Thu 16:53</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>根据国家显示国旗图标</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="分享使用 emoji 和图片，显示国旗的方法" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">根据国家显示国旗图标</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#f6b14213-0e2c-4722-81d6-ebeaf7315b0f">前言</a></li>
+<li><a href="#aa8a8381-7b15-4183-98b6-480cb473f277">获取国旗图标</a></li>
+<li><a href="#5fddd548-b40a-4534-b951-4a09e0bb3818">Emoji 实现国旗图标</a></li>
+<li><a href="#02453d01-45f4-49c1-b685-03451c26cc2a">Emoji 存在的问题</a></li>
+<li><a href="#bdbf9289-aba5-4071-a4ca-2c45c9f46203">最终解决方案</a>
+<ul>
+<li><a href="#8f81655b-adbe-40e0-9538-a57fcd8236f3">Tips</a></li>
+</ul>
+</li>
+<li><a href="#8229d4a6-98d8-47ea-924b-9418348f686f">参考链接</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-f6b14213-0e2c-4722-81d6-ebeaf7315b0f" class="outline-2">
+<h2 id="f6b14213-0e2c-4722-81d6-ebeaf7315b0f">前言</h2>
+<div class="outline-text-2" id="text-f6b14213-0e2c-4722-81d6-ebeaf7315b0f">
+<p>
+项目中，要根据返回的国家名称显示对应的国旗图标。
+</p>
+
+<p>
+实现思路很简单，找到对应的国旗图片，然后根据返回的国家名匹配对应的图片就可以了。
+</p>
+</div>
+</div>
+<div id="outline-container-aa8a8381-7b15-4183-98b6-480cb473f277" class="outline-2">
+<h2 id="aa8a8381-7b15-4183-98b6-480cb473f277">获取国旗图标</h2>
+<div class="outline-text-2" id="text-aa8a8381-7b15-4183-98b6-480cb473f277">
+<p>
+一开始，打算在网上找点相关的 Icon，有的要付费如 <a href="https://www.flaticon.com/search?word=country%20flag">flaticon</a>，而不付费的又不好看。
+</p>
+
+<p>
+后来，找到了 <a href="https://www.countryflags.com/en/">COUNTRYFLAGS</a> 这个网站，国旗比较齐全也美观，可以选择下载的类型和尺寸也很多。
+</p>
+
+<p>
+唯一的不足是没找到批量下载的方法， 190+ 的国旗一个个下载也很费劲。
+</p>
+
+<p>
+于是想，有没有更简便的方法？
+</p>
+
+<p>
+无意中，看到了 Emoji ，想起来，在手机上输入 <code>中国</code> 的时候，会出现一个 Emoji 图标， <code>🇨🇳</code> 。
+</p>
+
+<p>
+所以是不是可以用 Emoji 实现呢？
+</p>
+</div>
+</div>
+<div id="outline-container-5fddd548-b40a-4534-b951-4a09e0bb3818" class="outline-2">
+<h2 id="5fddd548-b40a-4534-b951-4a09e0bb3818">Emoji 实现国旗图标</h2>
+<div class="outline-text-2" id="text-5fddd548-b40a-4534-b951-4a09e0bb3818">
+<p>
+简单的说，Emoji 本质是一些字符，可能是多个字符组合出来。
+</p>
+
+<p>
+例如中国国旗，其实是 <code>🇨🇳</code> ( <code>CN</code> )这两个字符组合而成的。
+</p>
+
+<p>
+注意这里不是我们平时使用的英文 <code>C</code> ， <code>N</code> ，而是 Unicode 字符集里非常靠后的另外两个字符。
+</p>
+
+<p>
+而为了让返回的国家和 Emoji 能够对应起来，我们需要一套<a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">规则</a>：
+</p>
+
+<p>
+<code>CN</code> 表示中国， <code>DE</code> 表示德国……，
+</p>
+
+<p>
+只要得到国家的国家编号，然后找到这两个字母在 Unicode 字符集的位置，
+</p>
+
+<p>
+获取可以生成 Emoji 的 Unicode 字符，然后把获取的字符渲染到页面即可。
+</p>
+
+<p>
+<a href="https://github.com/thekelvinliu/country-code-emoji/blob/master/src/index.js">Country Code Emoji</a> 中的方法可以帮我们根据国家编号 (<code>CN</code>) 找到其在 Unicode 中对应的位置。
+</p>
+</div>
+</div>
+<div id="outline-container-02453d01-45f4-49c1-b685-03451c26cc2a" class="outline-2">
+<h2 id="02453d01-45f4-49c1-b685-03451c26cc2a">Emoji 存在的问题</h2>
+<div class="outline-text-2" id="text-02453d01-45f4-49c1-b685-03451c26cc2a">
+<p>
+用 Emoji 实现国旗是很方便的，不需要下载图片，只要去找国家代码对应的 Unicode 然后进行渲染即可。
+</p>
+
+<p>
+但是遗憾的是，Window 系统下，并不支持国旗的 Emoji ，就 Mac 的系统支持。
+</p>
+
+<p>
+为了在不同的系统都能显示, 还是得使用 PNG 图片的形式。
+</p>
+</div>
+</div>
+<div id="outline-container-bdbf9289-aba5-4071-a4ca-2c45c9f46203" class="outline-2">
+<h2 id="bdbf9289-aba5-4071-a4ca-2c45c9f46203">最终解决方案</h2>
+<div class="outline-text-2" id="text-bdbf9289-aba5-4071-a4ca-2c45c9f46203">
+<p>
+到 <a href="https://www.countryflags.com/en/">COUNTRYFLAGS</a> 下载对应的国旗 PNG 图片，按照 <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1 alpha-2</a> 进行命名，然后根据国家编码去对应获取就好。
+</p>
+
+<p>
+如中国( <code>CN</code> )就渲染 <code>CN.png</code>.
+</p>
+</div>
+<div id="outline-container-8f81655b-adbe-40e0-9538-a57fcd8236f3" class="outline-3">
+<h3 id="8f81655b-adbe-40e0-9538-a57fcd8236f3">Tips</h3>
+<div class="outline-text-3" id="text-8f81655b-adbe-40e0-9538-a57fcd8236f3">
+<p>
+<del>在 <a href="https://www.countryflags.com/en/">COUNTRYFLAGS</a> 一张张点下载太慢了，可以写个小脚本（如 <a href="https://github.com/Spike-Leung/flag-download">flag-download</a>），批量下载。</del>
+</p>
+
+<p>
+<a href="https://www.countryflags.com/en/">COUNTRYFLAGS</a> 增加了一些反爬虫的机制， 以前写的脚本已经没法正常运行了。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-8229d4a6-98d8-47ea-924b-9418348f686f" class="outline-2">
+<h2 id="8229d4a6-98d8-47ea-924b-9418348f686f">参考链接</h2>
+<div class="outline-text-2" id="text-8229d4a6-98d8-47ea-924b-9418348f686f">
+<ul class="org-ul">
+<li><a href="https://www.countryflags.com/en/">COUNTRYFLAGS</a></li>
+<li><a href="https://www.kirupa.com/html5/emoji.htm">Using Emojis in HTML, CSS, and JavaScript</a></li>
+<li><a href="https://thekevinscott.com/emojis-in-javascript/">Emojis in Javascript</a></li>
+<li><a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1 alpha-2</a></li>
+<li><a href="https://github.com/thekelvinliu/country-code-emoji/blob/master/src/index.js">country-code-emoji</a></li>
+<li><a href="https://stackoverflow.com/questions/54519758/flag-emojis-not-rendering">Flag Emojis not rendering</a></li>
+<li id="<a href="https://github.com/lipis/flag-icons">flag-icons</a>">🎏 A curated collection of all country flags in SVG — plus the CSS for easier integration</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： 2020-07-12 Sun 21:39</p>
+<p class="date">修改于： 2025-08-28 Thu 16:53</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

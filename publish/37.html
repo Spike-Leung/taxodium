@@ -1,0 +1,3572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Zine#37</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="Zine 第 37 期" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">Zine#37</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#01ee5dbd-e2ec-4722-89c0-d71827f50316">News | Article</a></li>
+<li><a href="#6a240bfc-7fc4-4a46-aa63-d577a020b989">Tutorial | Resource</a></li>
+<li><a href="#c996bf2b-9b4f-465a-ba55-caaedb025711">Code Related</a></li>
+<li><a href="#6e4f68c9-2f02-465d-8af1-cb116c934c41">Cool Bit</a></li>
+<li><a href="#fb071e9e-e769-493a-98d9-fdf2de0119cb">Tool | Library</a></li>
+<li><a href="#d5d68349-74b6-42b2-b172-e02b546c9366">Emacs</a></li>
+<li><a href="#ba4e5271-f1f7-428e-b3f3-1e7656e630e2">一些话 | 摘抄</a></li>
+<li><a href="#ff870869-c43e-400e-8e60-6d229313624e">多媒体</a></li>
+<li><a href="#52106133-4c3e-4513-bc27-6a6e63969aff">Music</a></li>
+</ul>
+</div>
+</nav>
+
+<figure id="org93c1ef3">
+<img src="images/zine/37/font-screenshot.png" alt="font-screenshot.png">
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>Emacs 截图，左边是中文，使用的是落霞孤鹜字体，右边是代码，使用的是 Iosevka 字体</figcaption>
+</figure>
+
+<p>
+上周将编辑器字体更换成 <a href="https://github.com/be5invis/Iosevka">Iosevka</a> 和 <a href="https://github.com/lxgw/LxgwWenKai">霞鹜文楷</a>，整体看起来挺舒服的，无论是写博客还是写代码。
+</p>
+
+<p>
+如果你觉得好看可以尝试一下 (≖ᴗ≖๑)
+</p>
+<div id="outline-container-01ee5dbd-e2ec-4722-89c0-d71827f50316" class="outline-2">
+<h2 id="01ee5dbd-e2ec-4722-89c0-d71827f50316">News | Article</h2>
+<div class="outline-text-2" id="text-01ee5dbd-e2ec-4722-89c0-d71827f50316">
+</div>
+<div id="outline-container-4a93aa66-ab99-42b1-8e92-1cb75d97dc4e" class="outline-3">
+<h3 id="4a93aa66-ab99-42b1-8e92-1cb75d97dc4e"><a href="https://notes.hamatti.org/my-projects/talks/why-developers-should-write-blog-posts-(talk)">Why developers should write blog posts (talk)</a></h3>
+<div class="outline-text-3" id="text-4a93aa66-ab99-42b1-8e92-1cb75d97dc4e">
+<p>
+作者分享为什么你应该开始写博客，网站里还链接了很多关于博客的文章。
+</p>
+
+<blockquote>
+<p>
+“A year from now, you will wish you had started today.” ⸺ Karen Lamb
+</p>
+
+<p>
+「一年后，你会希望自己今天就开始。」 ⸺  Karen Lamb
+</p>
+</blockquote>
+
+<p>
+如果你还没拥有博客，不如现在就试试吧！
+</p>
+
+<blockquote>
+<p>
+提升沟通能力可以对你的职业生涯产生重大影响。
+</p>
+
+<p>
+[&#x2026;]
+</p>
+
+<p>
+有很多方法可以提升你的沟通能力。
+</p>
+
+<p>
+写个人博客就是一个很好的方式，因为你可以完全掌控沟通的内容、时间和方式。
+</p>
+
+<p>
+你在个人博客上投入的所有努力都会以多种方式带来回报，而不仅限于你当前的工作。
+</p>
+
+<p>
+<a href="https://hamatti.org/posts/better-communication-skills-can-lead-to-better-career-opportunities/#:~:text=There%20are%20many%20ways%20you%20can%20improve%20your%20communication%20skill.%20Writing%20a%20personal%20blog%20is%20a%20great%20one%20because%20you%20have%20full%20control%20of%20what%2C%20when%20and%20how%20you%20communicate.%20And%20all%20the%20effort%20you%20put%20into%20your%20personal%20blog%20will%20yield%20fruit%20in%20variety%20of%20ways%20and%20are%20not%20limited%20to%20your%20current%20job.">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-3050c884-bc4b-48b5-a0d5-925800808cbe" class="outline-3">
+<h3 id="3050c884-bc4b-48b5-a0d5-925800808cbe"><a href="https://chrismaiorana.com/fool-yourself-into-writing/">Fool yourself into writing</a></h3>
+<div class="outline-text-3" id="text-3050c884-bc4b-48b5-a0d5-925800808cbe">
+<p>
+很喜欢的一篇文章，文章强调重复阅读和编辑自己写的内容，而不必勉强自己一鼓作气地写完。
+</p>
+
+<p>
+通过编辑，做一些小改动，可以让自己热身起来，从而开始写一些新的内容。
+</p>
+
+<blockquote>
+<p>
+<span class="underline">有时候，进行写作的实际动作会很困难。</span>
+</p>
+
+<p>
+<span class="underline">这不是写作障碍，而是一种对辛苦工作的自然抗拒。</span>
+</p>
+
+<p>
+有时你只是感到懒惰或缺乏灵感。
+</p>
+
+<p>
+Murray 建议你要克服这种迟钝 ⸺ 不要等待灵感降临。
+</p>
+
+<p>
+启动写作的最好方法之一是通过反复阅读和编辑「欺骗自己」去写作。
+</p>
+
+<p>
+<span class="underline">对你已经写好的内容做一些小的调整，可以作为一个很好的热身，让笔（或键盘）开始写新的内容。</span>
+</p>
+
+<p>
+即使你没有产出大量优质的新材料，你仍然是高效的。
+</p>
+
+<p>
+<a href="https://chrismaiorana.com/fool-yourself-into-writing/#:~:text=Sometimes%20it%20can,were%20still%20productive.">Source</a>
+</p>
+</blockquote>
+
+<details id="org5b46540">
+<summary>摘录</summary>
+
+<blockquote>
+<p>
+在他的著作 <i>The Curmudgeon’s Guide To Getting Ahead</i> 中，作者 Charles Murray 就写作和思考提供了一些很好的建议。
+</p>
+
+<p>
+他针对你已经知道想表达什么和在即兴思考时的写作，给出了一些技巧。
+</p>
+
+<p>
+许多写作书籍强调在不回读或编辑的情况下，凭借原始的创造力冲刺完成草稿。
+</p>
+
+<p>
+Murray 的方法则与此相反。
+</p>
+
+<p>
+<span class="underline">他建议在整个写作过程中不断回读和编辑。</span>
+</p>
+
+<p>
+<span class="underline">多年来，我发现重读和轻度编辑是启动创作过程最可靠的方法。</span>
+</p>
+
+<p>
+然而，我始终无法摆脱那种传统观念的唠叨声：「别编辑太多，先写吧。」
+</p>
+
+<p>
+<span class="underline">对于喜欢反复琢磨的写作者来说，Murray 的建议或许正是你放松心情、享受写作过程所需要的许可。</span>
+</p>
+
+<p>
+<a href="https://chrismaiorana.com/fool-yourself-into-writing/#:~:text=In%20his%20book,enjoy%20your%20process.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<span class="underline">对自己作品保持一定程度的迷恋，有助于写出好文章。</span>
+</p>
+
+<p>
+Murray 建议在整个写作过程中不断重读。
+</p>
+
+<p>
+不要苛刻地审视，而是「滑过」文本，看看它的流畅度。
+</p>
+
+<p>
+如果有想修正的地方，就直接修正。
+</p>
+
+<p>
+允许自己在这里那里修改一个词。
+</p>
+
+<p>
+随意调整句子顺序。
+</p>
+
+<p>
+润色段落。
+</p>
+
+<p>
+激发灵感，玩味想法。
+</p>
+
+<p>
+<span class="underline">享受写作的乐趣。</span>
+</p>
+
+<p>
+<span class="underline">需要时不要害怕删减。</span>
+</p>
+
+<p>
+<span class="underline">享受你写作时的声音。</span>
+</p>
+
+<p>
+<span class="underline">删掉任何听起来不像你声音的内容，即使它很精彩。</span>
+</p>
+
+<p>
+<span class="underline">保持真实很重要。</span>
+</p>
+
+<p>
+<a href="https://chrismaiorana.com/fool-yourself-into-writing/#:~:text=A%20certain%20degree,to%20be%20authentic.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<span class="underline">有时候，进行写作的实际动作会很困难。</span>
+</p>
+
+<p>
+<span class="underline">这不是写作障碍，而是一种对辛苦工作的自然抗拒。</span>
+</p>
+
+<p>
+有时你只是感到懒惰或缺乏灵感。
+</p>
+
+<p>
+Murray 建议你要克服这种迟钝 ⸺ 不要等待灵感降临。
+</p>
+
+<p>
+启动写作的最好方法之一是通过反复阅读和编辑「欺骗自己」去写作。
+</p>
+
+<p>
+<span class="underline">对你已经写好的内容做一些小的调整，可以作为一个很好的热身，让笔（或键盘）开始写新的内容。</span>
+</p>
+
+<p>
+即使你没有产出大量优质的新材料，你仍然是高效的。
+</p>
+
+<p>
+<a href="https://chrismaiorana.com/fool-yourself-into-writing/#:~:text=Sometimes%20it%20can,were%20still%20productive.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+这不是一份完整的编辑指南，而是一个在起草过程中进行小幅修改的简短准则。
+</p>
+
+<dl class="org-dl">
+<dt>调整句子顺序</dt><dd><p>
+通读一段内容，重新排列句子以正确表达意思。
+</p>
+
+<p>
+如果使用文本编辑器，<a href="https://chrismaiorana.com/one-sentence-per-line/">每行写一句话</a> 会非常方便。
+</p></dd>
+
+<dt>精简冗长的句子</dt><dd><p>
+你经常会遇到让人听着不舒服且似乎不通顺的句子。
+</p>
+
+<p>
+很可能是该句试图表达的信息过多，导致难以承载。
+</p>
+
+<p>
+考虑将其拆分或简化。
+</p></dd>
+
+<dt>确保段落之间的衔接流畅</dt><dd>检查段落的最后一句，确保它能顺畅地过渡到下一段。</dd>
+</dl>
+
+<p>
+<a href="https://chrismaiorana.com/fool-yourself-into-writing/#:~:text=This%20is%20not%20a,nicely%20to%20the%20next.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+写完并编辑好一篇文章后，你可能会厌倦再看它。
+</p>
+
+<p>
+你最想做的就是把它发给编辑（或你的批评小组），然后开始做下一件事。
+</p>
+
+<p>
+<span class="underline">要避免这种诱惑。</span>
+</p>
+
+<p>
+Murray 建议让草稿放一晚冷静一下。
+</p>
+
+<p>
+<span class="underline">短暂休息后再回来，你肯定会发现一些大大小小的问题，并当场修正。</span>
+</p>
+
+<p>
+<a href="https://chrismaiorana.com/fool-yourself-into-writing/#:~:text=After%20you%20have,on%20the%20spot.">Source</a>
+</p>
+</blockquote>
+</details>
+</div>
+</div>
+<div id="outline-container-4b21aa80-6fd3-457a-85cd-c52a167acdeb" class="outline-3">
+<h3 id="4b21aa80-6fd3-457a-85cd-c52a167acdeb"><a href="https://wangrufei.com/archives/327">极简网站的理念</a></h3>
+<div class="outline-text-3" id="text-4b21aa80-6fd3-457a-85cd-c52a167acdeb">
+<p>
+作者推崇一种极简主义：
+</p>
+
+<blockquote>
+<p>
+我个人所认为的，极简网站不只是前端页面看着简洁，还要在资源加载方面同样保持极简。
+</p>
+
+<p>
+<a href="https://wangrufei.com/archives/327#:~:text=%E6%88%91%E4%B8%AA%E4%BA%BA%E6%89%80%E8%AE%A4%E4%B8%BA%E7%9A%84%EF%BC%8C%E6%9E%81%E7%AE%80%E7%BD%91%E7%AB%99%E4%B8%8D%E5%8F%AA%E6%98%AF%E5%89%8D%E7%AB%AF%E9%A1%B5%E9%9D%A2%E7%9C%8B%E7%9D%80%E7%AE%80%E6%B4%81%EF%BC%8C%E8%BF%98%E8%A6%81%E5%9C%A8%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD%E6%96%B9%E9%9D%A2%E5%90%8C%E6%A0%B7%E4%BF%9D%E6%8C%81%E6%9E%81%E7%AE%80%E3%80%82">Source</a>
+</p>
+</blockquote>
+
+<p>
+作者大概也受到一些 <a href="https://motherfuckingwebsite.com/">This is a motherfucking website.</a> 的影响，我也是，所以我也追求博客的简洁性。
+</p>
+
+<p>
+不过我的追求没有作者那么高，我没有对资源压缩得很极致，也没有太细究页面上加载了多少资源，但资源应该也不会很多，也就一些字体，CSS 和几个辅助的 JS。
+</p>
+
+<p>
+我的想法是渐进式增强，首先保证 HTML 的完整，然后用 CSS 让页面美观一些，再用一些 JS 增强页面的交互，例如明暗主题切换、代码复制、旁注、脚注。
+</p>
+
+<p>
+除此之外，有时看到一些关于无障碍的实践，我也会尝试一下，例如设置合适的对比度、明暗主题、容易辨识的字体、字体大小、方便的 tab 操作。
+</p>
+
+<p>
+如果你对我博客的改造感兴趣，可以移步 <a href="changelog.html">CHANGELOG</a>。
+</p>
+
+<p>
+博客是我的自由空间，可以随意的折腾，简单一点也好，复杂一点也好，我都乐在其中。
+</p>
+
+<p>
+BTW，作者文章里还有很多关于极简理念的网站，感兴趣可以翻翻看。
+</p>
+</div>
+</div>
+<div id="outline-container-e8d94940-f4b4-41b6-a6e6-1009277e316b" class="outline-3">
+<h3 id="e8d94940-f4b4-41b6-a6e6-1009277e316b"><a href="https://endler.dev/2025/reinvent-the-wheel/">Reinvent the Wheel</a></h3>
+<div class="outline-text-3" id="text-e8d94940-f4b4-41b6-a6e6-1009277e316b">
+<p>
+很多人会说，不要重复造轮子，但作者不同意这样的说法，他认为重复造轮子有助于加深对知识的理解，行动多少都会带来一些收获。
+</p>
+
+<details id="org0b3d550">
+<summary>摘录</summary>
+
+<blockquote>
+<p>
+「不要重新发明轮子」是最有害的建议之一。
+</p>
+
+<p>
+这个建议通常出于好意，但通常由两类人提出：
+</p>
+
+<ul class="org-ul">
+<li>那些尝试自己发明轮子并且知道这有多难的人</li>
+<li>那些从未尝试发明轮子却盲目遵循这一建议的人</li>
+</ul>
+
+<p>
+<span class="underline">无论哪种情况，这两种立场都会导致一种抑制好奇心和探索精神的氛围。</span>
+</p>
+
+<p>
+我很庆幸有些人没有遵循那个建议 ⸺ 我们欠他们现代生活中的许多便利。
+</p>
+
+<p>
+<a href="https://endler.dev/2025/reinvent-the-wheel/#:~:text=One%20of%20the,of%20modern%20life.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<span class="underline">要真正从根本上理解某样东西，你必须先能够实现一个简易版本。</span>
+</p>
+
+<p>
+<span class="underline">它好不好用无所谓；以后你可以把它扔掉。</span>
+</p>
+
+<p>
+例如，在计算机科学中，有许多概念通常被认为是普通人难以掌握的：协议、密码学和网络服务器就是例子。
+</p>
+
+<p>
+<span class="underline">更多人应该了解这些东西是如何运作的。</span>
+</p>
+
+<p>
+<span class="underline">因此，我认为人们不应该害怕重新创建它们。</span>
+</p>
+
+<p>
+<a href="https://endler.dev/2025/reinvent-the-wheel/#:~:text=To%20really%20understand,to%20recreate%20them.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+基本的东西常常被视为理所当然。
+</p>
+
+<p>
+例如，字符串或路径在编程中是非常复杂的概念。
+</p>
+
+<p>
+如果你对它们的工作原理感兴趣，自己实现一个字符串或路径库是一个很好的练习。
+</p>
+
+<p>
+<span class="underline">即使最终没有人使用你的作品，我敢打赌你会学到很多东西。</span>
+</p>
+
+<p>
+[&#x2026;]
+</p>
+
+<p>
+深入钻研某个领域本身就很有趣，但还有一个额外的好处：这是成为更优秀工程师的少数途径之一 ⸺ 但前提是你不能在实现出一个可用版本之前放弃。
+</p>
+
+<p>
+如果你频繁在项目之间跳来跳去，你将一无所获。
+</p>
+
+<p>
+<a href="https://endler.dev/2025/reinvent-the-wheel/#:~:text=Too%20often%2C%20fundamental,will%20learn%20nothing.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+重新发明轮子有很好的理由：
+</p>
+
+<ul class="org-ul">
+<li>打造一个更好的轮子（根据某种“更好”的定义）</li>
+<li>了解轮子的制造过程</li>
+<li>教别人关于轮子的知识</li>
+<li>了解轮子的发明者</li>
+<li>能够更换轮子或在轮子坏了时修理它们</li>
+<li>在过程中学习制造轮子所需的工具</li>
+<li>了解构建更大系统（例如车辆）的一小部分含义</li>
+<li>帮助需要特殊轮子的人。</li>
+</ul>
+
+<p>
+<a href="https://endler.dev/2025/reinvent-the-wheel/#:~:text=There%20are%20great,for%20a%20wheelchair%3F">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+当然，不要忽视他人的成果 ⸺ 学习他们的工作，并在合适的时候加以利用。
+</p>
+
+<p>
+<span class="underline">不要因为不信任或不了解他人的工作而重复造轮子。</span>
+</p>
+
+<p>
+另一方面，如果你从未尝试将自己的知识付诸实践，又如何能深入了解你的领域并推动其发展呢？
+</p>
+
+<p>
+我发现通过做小实验可以非常快速地前进。
+</p>
+
+<p>
+尤其是在软件工程中，构建小型原型既便宜又快速。
+</p>
+
+<p>
+解决你自己的问题，从小处开始，保持简单，反复迭代。
+</p>
+
+<p>
+所以，基于以上所有内容，我的建议是：
+</p>
+
+<p>
+<span class="underline">重新发明 (Reinvent) 以获得洞察。</span>
+</p>
+
+<p>
+<span class="underline">重复使用 (Resue) 以产生影响。</span>
+</p>
+
+<p>
+<a href="https://endler.dev/2025/reinvent-the-wheel/#:~:text=Of%20course%2C%20don%E2%80%99t,Reuse%20for%20impact.">Source</a>
+</p>
+</blockquote>
+</details>
+</div>
+</div>
+<div id="outline-container-c2c22913-ce57-4316-8253-5f31ac935a8b" class="outline-3">
+<h3 id="c2c22913-ce57-4316-8253-5f31ac935a8b"><a href="https://domenic.me/fsrs/">Spaced Repetition Systems Have Gotten Way Better</a></h3>
+<div class="outline-text-3" id="text-c2c22913-ce57-4316-8253-5f31ac935a8b">
+
+<figure id="org43aecae">
+<img src="https://domenic.me/images/fsrs-forgetting-curve.webp" alt="fsrs-forgetting-curve.webp">
+
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>遗忘曲线示意图，横轴是天数，纵轴是记忆保留数量。随着天数的增加，记忆保留数量一直在减少，也即时间过得越久，遗忘得越多。在合适的天数进行重复记忆，可以减少遗忘。 (图片来源：domenic.me)</figcaption>
+</figure>
+
+<p>
+我想你或多或少都听过遗忘曲线 ⸺ 一个刚接触的知识，随着时间越久，遗忘得就越多。
+</p>
+
+<p>
+所以就有人提出，在适当的时间进行重复记忆，减少遗忘，这种方法一般叫「间隔重复回顾」(Spaced repetition recap)。
+</p>
+
+<p>
+「间隔重复回顾」的大致逻辑是：
+</p>
+
+<ul class="org-ul">
+<li>如果一个知识点答对了，就会间隔几天后再出现，连续答对的次数越多，间隔时间就越长。</li>
+<li>如果一个知识点答错了，则第二天会再次出现。</li>
+</ul>
+
+<p>
+这个方法的间隔时间是固定的，如在第 1 天、第 6 天、第 \(2.5^{\text{times correct} + 1}\) 天重复<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>。
+</p>
+
+<p>
+但不同知识点的遗忘时间是不同的，固定重复的时间对于一些知识点未必适合。
+</p>
+
+<p>
+「间隔重复回顾」本质上是在遗忘到一定程度的时候进行重复记忆，从而加深记忆。
+</p>
+
+<p>
+如何判断这个遗忘程度？
+</p>
+
+<p>
+机器学习就很适合做这样的预测，而其中一种利用机器学习的方法是 <a href="https://github.com/open-spaced-repetition/fsrs4anki/wiki/ABC-of-FSRS">FSRS (Free Spaced Repetition Scheduler)</a> 。
+</p>
+
+<blockquote>
+<p>
+让我们用机器学习来找到合适的复习间隔，而不是使用任意的公式 ⸺ 是 FSRS 的核心。
+</p>
+</blockquote>
+
+<p>
+文章作者尝试了 FSRS 方法，和原来的重复方法对比，每天复习的卡片数量明显更少，所需时间更短，同时最终记忆的卡片数量更多。
+</p>
+
+<blockquote>
+<p>
+主观上，我发现 FSRS 相比之前基于 SuperMemo-2 的 Anki 算法，极大提升了我的复习质量。
+</p>
+
+<p>
+复习负担轻了很多。
+</p>
+
+<p>
+错过一张卡片时的绝望感明显减少，因为这不再会让你回到第一天。
+</p>
+
+<p>
+<a href="https://domenic.me/fsrs/#:~:text=Subjectively%2C%20I%E2%80%99ve%20found,in%20my%20brain.">Source</a>
+</p>
+</blockquote>
+
+<p>
+综合来看，FSRS 确实是一个更好的重复方法。
+</p>
+
+<p>
+不过目前支持的软件似乎不多，如果你感兴趣，可以试试 <a href="https://github.com/ankitects/anki">Anki</a><sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>。
+</p>
+</div>
+</div>
+<div id="outline-container-4f5e04b7-2a24-42aa-893a-aff06f1c4676" class="outline-3">
+<h3 id="4f5e04b7-2a24-42aa-893a-aff06f1c4676"><a href="https://boydkane.com/essays/experts">Experts have it easy</a></h3>
+<div class="outline-text-3" id="text-4f5e04b7-2a24-42aa-893a-aff06f1c4676">
+<p>
+作者以走迷宫为例，展示了专家和新手之间的差异。
+</p>
+
+<p>
+想起第一份工作的时候，也有一个新手同事。
+</p>
+
+<p>
+他会问不少问题，比较依赖别人，所以我更多时候会先让他自己多尝试一下，还给了他一套《<a href="https://github.com/getify/You-Dont-Know-JS">你不知道的 JavaScript</a>》让他加深学习。
+</p>
+
+<p>
+现在回想起来，我或许缺少了一些同情心和同理心，我有一定的经验，碰到一些问题会有大致的思路，但是他经验相对比较少，碰到问题他可能都不知道往什么方向研究，不清楚为什么要这样做。
+</p>
+
+<p>
+或许我需要更加设身处地地去思考他碰到的困境，给他更多的引导，而不是仅仅让他多思考，多尝试。
+</p>
+
+<p>
+能够教别人是一个难得的机会，可以加深自己对于某些内容的理解，也能锻炼引导别人的能力，了解到不同的看问题的角度。
+</p>
+
+<blockquote>
+<p>
+仅仅指示资深员工回答新人的问题是不够的，因为绝大多数学习来自于初学者观察专家如何运用技能，而不是直接的问答。
+</p>
+</blockquote>
+
+<p>
+观察一些大佬的思考和操作，也是能学习到不少的，偶尔看到 <a href="https://space.bilibili.com/668380">AntFu</a> 在 b 站直播，从他使用的工具，解决问题的思路，也能学到不少。
+</p>
+
+<details id="org9392a3b">
+<summary>摘录</summary>
+
+<blockquote>
+<p>
+另一方面， <span class="underline">初学者很容易做出一连串错误的决定，导致解决手头问题的成本不断增加。</span>
+</p>
+
+<p>
+你不仅在没有线团的迷宫中迷失了方向，还误入了一个起初看起来挺有趣的神秘洞穴，现在你被困在黑暗中。
+</p>
+
+<p>
+与此同时，世界级的专家则愉快地穿过迷宫中温暖阳光明媚的部分，因为他们知道那个洞穴最终会通向死胡同。
+</p>
+
+<p>
+我想在这里强调，这绝不是新手的错。
+</p>
+
+<p>
+<span class="underline">他们遵循了和任何专家一样的原则： ⸺  「采取当时可用的最佳行动」。</span>
+</p>
+
+<p>
+<span class="underline">告诉新手“只要变得更好”并不是建设性的反馈。</span>
+</p>
+
+<p>
+这种反馈不会让他们随着时间进步，因为从这个情境中唯一重要的视角（新手的视角）来看，他们已经采取了当时可用的最佳行动。
+</p>
+
+<p>
+如果你给出的反馈不能带来改进，那反馈还有什么意义呢？
+</p>
+
+<p>
+<a href="https://boydkane.com/essays/experts#:~:text=Often%20this%20trap,of%20the%20feedback%3F">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+新手常常花费精力去修复那些与他们想解决的实际问题无关的事情，而专家则能够更好地将精力集中在他们想解决的问题上。
+</p>
+
+<p>
+这导致新手对某个领域的认知极为扭曲，因为他们最终解决的问题既更难又比专家所处理的问题更无趣。
+</p>
+
+<p>
+没有人愿意花更多的努力去解决一个更无聊的问题。
+</p>
+
+<p>
+<a href="https://boydkane.com/essays/experts#:~:text=Novices%20often%20spend,more%20boring%20problem.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+对于新手 (Novice) 来说，绝大多数决策基本上必须随机做出，几乎没有什么信息可以用来辅助选择。
+</p>
+
+<p>
+如果所有决策都是顺序进行且不依赖于其他决策，那么一个专注的新手经过深思熟虑后，能够提出比随机更好的解决方案。
+</p>
+
+<p>
+但我们生活的世界是分形的 (fractal)、复杂依赖的；许多决策以新手根本不了解的方式相互依赖。
+</p>
+
+<p>
+即使是专注的新手，也会遇到必须先做出几个相互依赖的决策，才能获得这些决策效果反馈的情况。
+</p>
+
+<p>
+新手（起初）被迫做出完全任意的选择，并承担后果。
+</p>
+
+<p>
+希望他们能学会哪些后果是由哪些决策引起的，但这并不总是可行的。
+</p>
+
+<p>
+<a href="https://boydkane.com/essays/experts#:~:text=For%20a%20Novice,isn%E2%80%99t%20always%20feasible.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<span class="underline">有时候，初学者甚至不知道有决策需要做。</span>
+</p>
+
+<p>
+<span class="underline">当友善的专家指出需要做决策时，初学者往往能够做出正确的决定，或者在被展示正确方案时能够理解它。</span>
+</p>
+
+<p>
+但初学者一开始根本不知道有决策存在。
+</p>
+
+<p>
+这使得有抱负的初学者在没有外部帮助的情况下极难取得进展。
+</p>
+
+<p>
+他们不能仅仅「检查自己的工作是否有错误」，因为对于任何大量的工作，初学者很可能连一半的决策都无法指出。
+</p>
+
+<p>
+<a href="https://boydkane.com/essays/experts#:~:text=Sometimes%20the%20Novice,half%20their%20decisions.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<span class="underline">专家的直觉往往令人敬畏，但很少能被理解。</span>
+</p>
+
+<p>
+<span class="underline">他们无法清晰解释自己决策的原因，这正是初学者花时间与专家相处的价值所在。</span>
+</p>
+
+<p>
+通常存在一种潜在的模式，初学者通过细心观察可以捕捉到，即使专家和初学者都无法准确表达这种模式。
+</p>
+
+<p>
+<a href="https://boydkane.com/essays/experts#:~:text=The%20expert%E2%80%99s%20intuition,articulate%20this%20pattern.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+专家通常拥有一张人脉网络，或者（现在更常见的是）熟悉一系列能引导他们思考的在线网站和用户名。
+</p>
+
+<p>
+他们能迅速区分有用的见解和无助的泛泛总结，也不必花太多时间寻找所需信息。
+</p>
+
+<p>
+但新手根本不知道如何区分这两者，也不知道如何找到能有效帮助他们的社区。
+</p>
+
+<p>
+<a href="https://boydkane.com/essays/experts#:~:text=Experts%20often%20have,help%20them%20effectively.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<span class="underline">作为一个新手，你需要找到一个同情你的专家站在你这边，帮助你解决问题，并且你可以向他提出所有问题，无论这些问题看起来多么微不足道。</span>
+</p>
+
+<p>
+另一种替代方法是找到许多专家，这样你可以将负担分摊给他们。
+</p>
+
+<p>
+如今你可以在网上走得很远，借助人工智能工具更是如此。
+</p>
+
+<p>
+但许多新手容易陷入的困境并不会因为你能上网或使用聊天机器人而神奇地消失。
+</p>
+
+<p>
+你仍然不知道如何识别微妙的决策。
+</p>
+
+<p>
+你仍然不知道如何区分好主意和坏主意。
+</p>
+
+<p>
+你仍然不知道如何避免因错误选择而引发的长期连锁反应。
+</p>
+
+<p>
+互联网确实有帮助， <span class="underline">但有人在你身边则好得多。</span>
+</p>
+
+<p>
+有一件事可能很难向你那位友善的专家表达清楚， <span class="underline">那就是有时候你只是需要向他们展示你正在做的事情，而不带任何具体的问题。</span>
+</p>
+
+<p>
+我经常发现自己对所做的事情感到不安，然后与一位专家朋友交谈，很快就会发现我犯了一些错误，这些错误以后会带来麻烦。
+</p>
+
+<p>
+<span class="underline">有人愿意花时间「只是聊聊」而不带任何具体的解决目标，这将大有帮助。</span>
+</p>
+
+<p>
+在职场中，初学者与专家之间这种「只是聊聊」的互动方式对于知识传递和培训至关重要。
+</p>
+
+<p>
+但初学者很少有机会与关键决策者交流，因此促进这些互动往往被忽视。
+</p>
+
+<p>
+<span class="underline">仅仅指示资深员工回答新人的问题是不够的，因为绝大多数学习来自于初学者观察专家如何运用技能，而不是直接的问答。</span>
+</p>
+
+<p>
+使这一情境更加复杂的是，专家往往认为「只是聊聊」的互动基本上毫无价值，而回答具体问题则感觉更有用。
+</p>
+
+<p>
+另一方面，初学者如果有足够时间，很可能自己就能找到具体问题的答案。
+</p>
+
+<p>
+<span class="underline">但在专家与初学者「只是聊聊」过程中形成的直觉对初学者来说极其宝贵。</span>
+</p>
+
+<p>
+这也解释了当所有专家都远程工作时，培训新员工的难度，因为远程工作几乎消除了任何非正式的、无指导的茶水间交流。
+</p>
+
+<p>
+你可以独立完成的一件事（可能最好是在没有专家监督的情况下进行）是对该领域的探索。
+</p>
+
+<p>
+你一无所知，也没有关于什么可能有用或无用的偏见。
+</p>
+
+<p>
+每当你遇到一些感觉有深度的内容，比如一系列写得很好的文章或深入的技术剖析时，你需要投入大量时间去学习。
+</p>
+
+<p>
+作为新手，你的一个优势是所有东西对你来说都是新的，没人指望你速度快。
+</p>
+
+<p>
+正因为如此，你可以花时间尽可能多地学习。
+</p>
+
+<p>
+我真心觉得这不可能做得过头。
+</p>
+
+<p>
+在你所在领域花一周时间深入探索某些特定的奥秘，可能会带来丰厚的回报，因为你突然在该领域的这个（微小）方面达到了专家水平。
+</p>
+
+<p>
+你可以与专家正面交锋，因为他们上次阅读那个奇怪子领域的资料还是五年前。
+</p>
+
+<p>
+不要学习「常见」的东西，而是全力投入到小众领域。
+</p>
+
+<p>
+常见的东西足够普遍，无论你的主要活动是什么，你都会通过潜移默化学会它们。
+</p>
+
+<p>
+但小众的东西需要主动学习，忽视小众领域就是你保持新手状态的原因。
+</p>
+
+<p>
+在这一切之中，初学者需要勇气（在不了解后果的情况下做出决定）和自信（以便全心全意地投入到他们的决定中，赋予其最大的成功机会）。
+</p>
+
+<p>
+这些品质并不简单， <span class="underline">自信很容易被专家的一句讥讽话语击垮。</span>
+</p>
+
+<p>
+我不敢想象有多少有前途的初学者被那些平庸的专家所轻视。
+</p>
+
+<p>
+这样看来， <span class="underline">心怀怨恨的专家的建议比没有专家建议更糟，因为它有可能摧毁初学者的自信。</span>
+</p>
+
+<p>
+<a href="https://boydkane.com/essays/experts#:~:text=As%20a%20Novice,the%20novice%E2%80%99s%20confidence.">Source</a>
+</p>
+</blockquote>
+</details>
+</div>
+</div>
+<div id="outline-container-fc2f5076-0174-4762-bd92-45b91433ec22" class="outline-3">
+<h3 id="fc2f5076-0174-4762-bd92-45b91433ec22"><a href="https://dansinker.com/posts/2025-05-23-who-cares/">The Who Cares Era</a></h3>
+<div class="outline-text-3" id="text-fc2f5076-0174-4762-bd92-45b91433ec22">
+<p>
+作者发现报刊上刊登了一些 AI 编造的内容，但是没人在意。
+</p>
+
+<blockquote>
+<p>
+作者不在意。
+</p>
+
+<p>
+增刊的编辑们不在意。
+</p>
+
+<p>
+增刊买卖双方的商务人员不在意。
+</p>
+
+<p>
+制作人员也不在意。
+</p>
+
+<p>
+而且，竟然花了两天时间才有人发现这份印刷品中的这场史诗级错误，这意味着最终读者也不在意。
+</p>
+
+<p>
+这非常象征着我们所处的时代 ⸺ 「谁在乎时代」，在这个时代里，完全一次性的东西被粗制滥造，人们大多选择忽视它们。
+</p>
+
+<p>
+<a href="https://dansinker.com/posts/2025-05-23-who-cares/#:~:text=The%20writer%20didn%27t,to%20mostly%20ignore.">Source</a>
+</p>
+</blockquote>
+
+<p>
+不仅是报刊，就算是自己，也未必有几个人会在乎，最在乎自己的人就是自己。
+</p>
+
+<p>
+所以不用管别人在不在乎，自己在乎的东西认真对待就好了。
+</p>
+
+<details id="org1094d57">
+<summary>摘录</summary>
+
+<blockquote>
+<p>
+不想涉及太多细节，最近我参与了某项工作的数百份申请材料的审核。
+</p>
+
+<p>
+在审核过程中，我被几十份申请中几乎一模一样的措辞所震惊。
+</p>
+
+<p>
+起初感觉诡异，就像远处看到一个影子，随后感到沮丧，最终彻底心灰意冷：那是人工智能。
+</p>
+
+<p>
+无论出于什么原因，一些人使用聊天机器人来帮助撰写那些要求他们从自己独特的个人经历中汲取内容的问题答案。
+</p>
+
+<p>
+他们将简历、个人网站或真实的故事和经历输入机器，机器便像填字游戏一样填补空白。
+</p>
+
+<p>
+我感到非常沮丧。
+</p>
+
+<p>
+直到。直到我读到一份完全由人写的申请。
+</p>
+
+<p>
+然后又一份。再一份。
+</p>
+
+<p>
+<span class="underline">它们充满了喜悦、快乐、悲伤，以及每一个转折处的意外。</span>
+</p>
+
+<p>
+<span class="underline">它们是人性的。它们是由关心的人写的。</span>
+</p>
+
+<p>
+<span class="underline">在「谁在乎时代」，你能做的最激进的事情就是关心。</span>
+</p>
+
+<p>
+在机器大量生产平庸作品的时刻，自己动手做点什么。
+</p>
+
+<p>
+<span class="underline">做得不完美。做得粗糙。只管去做。</span>
+</p>
+
+<p>
+在政府冷漠的铁蹄压迫着我们所有人的脖子时，最好的反击方式就是关心。
+</p>
+
+<p>
+<span class="underline">大声关心。告诉别人。行动起来。</span>
+</p>
+
+<p>
+当「谁在乎时代」的文化逐渐滑向最低的共同标准时，支持那些在创造真实事物的人。
+</p>
+
+<p>
+全神贯注地听一段声音。
+</p>
+
+<p>
+把手机放在另一个房间，专心看一部作品。
+</p>
+
+<p>
+读一本真正的纸质杂志或书籍。
+</p>
+
+<p>
+<span class="underline">做你自己。(Be yourself.)</span>
+</p>
+
+<p>
+<span class="underline">不必完美。(Be imperfect.)</span>
+</p>
+
+<p>
+<span class="underline">像个人类一样。(Be human.)</span>
+</p>
+
+<p>
+<span class="underline">去关心你在乎的东西。(Care.)</span>
+</p>
+
+<p>
+<a href="https://dansinker.com/posts/2025-05-23-who-cares/#:~:text=all%20really%20is.-,Without%20getting%20into%20too%20many%20specifics%2C%20I%20recently%20was%20involved%20in,Care.,-Published%20May%2023">Source</a>
+</p>
+</blockquote>
+</details>
+</div>
+</div>
+<div id="outline-container-38672b26-c334-49c2-afcd-849fb6a3479a" class="outline-3">
+<h3 id="38672b26-c334-49c2-afcd-849fb6a3479a"><a href="https://voidzero.dev/posts/announcing-rolldown-vite">Announcing Rolldown-Vite</a></h3>
+<div class="outline-text-3" id="text-38672b26-c334-49c2-afcd-849fb6a3479a">
+<blockquote>
+<p>
+今天，我们很高兴地宣布，由 <a href="https://rolldown.rs/">Rolldown</a> 驱动的 Vite 版本已达到当前 Vite 的初步功能等价。
+</p>
+
+<p>
+这意味着你可以将其作为即插即用的替代品进行尝试，并作为技术预览立即体验其优势。
+</p>
+
+<p>
+[&#x2026;]
+</p>
+
+<p>
+结果令人印象深刻， <b>生产构建时间缩短了 3 倍到 16 倍，构建过程中的内存使用量最多减少了 100 倍。</b>
+</p>
+
+<p>
+<a href="https://voidzero.dev/posts/announcing-rolldown-vite#:~:text=Today%2C%20we%27re%20excited,for%20more%20details.">Source</a>
+</p>
+</blockquote>
+
+<p>
+rolldown-vite 性能提升很大，等 rolldown-vite 稳定之后，它会成为 vite 的默认打包工具。
+</p>
+</div>
+</div>
+<div id="outline-container-30bf42a2-298c-4280-83bc-2594a87d2a4b" class="outline-3">
+<h3 id="30bf42a2-298c-4280-83bc-2594a87d2a4b"><a href="https://www.chrbutler.com/digital-echoes-and-unquiet-minds">Digital Echoes and Unquiet Minds</a></h3>
+<div class="outline-text-3" id="text-30bf42a2-298c-4280-83bc-2594a87d2a4b">
+<p>
+作者在文章里提出了「数字回声」(Digital Echoes) 的说法：
+</p>
+
+<blockquote>
+<p>
+在智能手机上，每一项使用都会产生信息并传送到别处。
+</p>
+
+<p>
+这些信息绝大多数我们看不见 ⸺ 但并非感觉不到。
+</p>
+
+<p>
+人人都知道，数字设备内部以及其“监听”范围内不存在隐私。
+</p>
+
+<p>
+我们都清楚，智能手机为我们提供的信息量固然巨大，但为他人生成的信息量则呈指数级增长 ⸺ 那些人在观察、监听、测量并从中获利。
+</p>
+
+<p>
+「数字回声」不仅仅是对此的意识；它是知道我们的行为在别处生成数据所带来的认知负担。
+</p>
+
+<p>
+每当我们使用联网技术时，这种回声便存在，形成一种微妙但持续的意识，让我们知道自己的行为不仅仅属于自己。
+</p>
+
+<p>
+智能手机这类设备一直在产生「数字回声」，而且还有许多其他设备也是如此。
+</p>
+
+<p>
+<a href="https://www.chrbutler.com/digital-echoes-and-unquiet-minds#:~:text=On%20a%20smartphone,are%20as%20well.">Source</a>
+</p>
+</blockquote>
+
+<p>
+我倒是没有因为「数字回声」而产生太多心理负担，要保护自己的隐私，要做的事情实在是太多了。
+</p>
+
+<p>
+虽然不想泄露太多隐私信息，但也有点无可奈何，要保护隐私需要非常小心谨慎，联网、使用 APP，可能隐私就没了。
+</p>
+
+<p>
+不过在能选择的情况下，我都会尽可能选择本地优先，物理操作优先。
+</p>
+
+<p>
+可以不那么智能，最好不用联网，不用下载 APP。
+</p>
+
+<details id="org65025b6">
+<summary>摘录</summary>
+
+<blockquote>
+<p>
+比较两种不同的机动车辆可以很好地说明这一点。
+</p>
+
+<p>
+在像 特斯拉 这样的汽车中，我们可以将其视为“智能车”，因为它是一台可以驾驶的计算机，每一个功能都会产生数字信号。
+</p>
+
+<p>
+调节空调、转弯、开门 ⸺ 汽车都知道并记录这一切，将这些信息传输到远程服务器。
+</p>
+
+<p>
+相比之下，我那辆 15 年的 本田 车在执行所有功能时都不会产生这些数字回声。
+</p>
+
+<p>
+操作保持私密，只存在于发生的那一刻。
+</p>
+
+<p>
+在我们日益数字化的世界中，我开始感受到我车内舱室那种类似 SCIF (Sensitive Compartmented Information Facility) 的隔离感，而我很喜欢这种感觉。
+</p>
+
+<p>
+<a href="https://www.chrbutler.com/digital-echoes-and-unquiet-minds#:~:text=Comparing%20two%20different,I%20like%20it.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+这甚至将孤独的活动转变为隐含的社交互动。
+</p>
+
+<p>
+<span class="underline">它迫使我们在体验自我的同时，保持对“被观察自我”的意识，形成一种持续的自我意识。</span>
+</p>
+
+<p>
+我们成为自己生活中的表演者，而不仅仅是参与者。
+</p>
+
+<p>
+我认为这种日益增长的意识促使人们越来越倾向于回归单一功能设备和模拟技术。
+</p>
+
+<p>
+唱片机和胶片相机的复兴不仅仅是出于怀旧情绪，而是因为它们提供了与媒体截然不同的关系 ⸺ 这种关系以意图、存在感和专注为特征。
+</p>
+
+<p>
+<span class="underline">在我自己的生活中，这种认识促使我有意识地选择拥抱哪些技术，避免使用哪些技术。</span>
+</p>
+
+<p>
+以下是我随便想到的三个例子：
+</p>
+
+<ul class="org-ul">
+<li>用我自己拥有的媒体格式（CD、蓝光）替代流媒体服务，这些格式可以按照我的方式访问，不受平台变动或内容消失的影响。</li>
+<li>偏好纸质书籍，同时使用专用电子阅读器阅读数字文本 ⸺ 在这种情况下，当数字回声的好处（尤其是获得其他方式无法获取的资料）超过其代价时，接受某些数字回声。</li>
+<li>完全拒绝智能家居设备，认识到它们的便利性很少能证明其带来的额外复杂性和监控是合理的。</li>
+</ul>
+
+<p>
+你可能也做过类似动机的决定，或许是在生活的其他领域，或完全与其他事物相关。
+</p>
+
+<p>
+<span class="underline">我认为重要的是，这些选择并非拒绝技术，而是为了创造更多有意图的参与空间。</span>
+</p>
+
+<p>
+<span class="underline">它们代表了在一个日益默认最大连接性的世界中寻求平衡的努力。</span>
+</p>
+
+<p>
+<a href="https://www.chrbutler.com/digital-echoes-and-unquiet-minds#:~:text=This%20transforms%20even,to%20maximum%20connectivity.">Source</a>
+</p>
+</blockquote>
+</details>
+</div>
+</div>
+<div id="outline-container-c602a621-c0ad-4429-9274-6b2ec1b8973c" class="outline-3">
+<h3 id="c602a621-c0ad-4429-9274-6b2ec1b8973c"><a href="https://www.hecaitou.com/2025/06/Learn-from-children.html">向小朋友学习</a></h3>
+<div class="outline-text-3" id="text-c602a621-c0ad-4429-9274-6b2ec1b8973c">
+<p>
+作者在六一儿童节写的一篇文章，总结了他观察到的一些小朋友的特点，小朋友的状态真让人羡慕。
+</p>
+
+<details id="org82abaae">
+<summary>摘录</summary>
+
+<blockquote>
+<p>
+从孩子们身上我学到一点， <span class="underline">那就是直接说出自己的想法，直接说出来似乎会让人更快乐。</span>
+</p>
+
+<p>
+小朋友从早到晚总是在说「我喜欢」、「我讨厌」，或者「我要这个」、「我不要这个」，说之前连想都不想。
+</p>
+
+<p>
+<span class="underline">我感觉他们能这么直接说出口，自己就处于某种自由的状态，心灵不受任何压制和束缚。</span>
+</p>
+
+<p>
+等到有那么一天，小朋友不直接说「我想吃冰激凌」，而是指着冰淇凌明知故地问「这是什么」时，他们就开始长大，开始学坏了。
+</p>
+
+<p>
+很快，他们就能学会那些非常曲折的表达方式：我不是针对谁/我有句话不知当讲不当讲/我完全支持你的观点但要帮你补充一点/你要不要上来喝杯咖啡看我的家的猫咪后空翻。
+</p>
+
+<p>
+<a href="https://www.hecaitou.com/2025/06/Learn-from-children.html#:~:text=%E4%BB%8E%E5%AD%A9%E5%AD%90%E4%BB%AC,%E7%8C%AB%E5%92%AA%E5%90%8E%E7%A9%BA%E7%BF%BB......">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+孩子们还有一个成人不具备的特点， <span class="underline">他们没有多少时间概念，他们总是投入到当下。</span>
+</p>
+
+<p>
+昨天在我朋友圈里的每一个小朋友，都沉浸于自己的当时当地，我看他们中应该没有任何一个人在思虑今天早点该吃什么，回学校前要做完哪些作业。
+</p>
+
+<p>
+画画，他们就全心全意画画。
+</p>
+
+<p>
+攀岩，他们就全心全意攀岩。
+</p>
+
+<p>
+除了眼前自己正在做的事情，他们没有别的挂念。
+</p>
+
+<p>
+<span class="underline">如果眼前的事情刚好是他们喜欢的，那么他们眼里心里就只有快乐。</span>
+</p>
+
+<p>
+<span class="underline">如果眼前的事情刚好是他们讨厌的，那么他们也能全力去思考应该如何逃脱。</span>
+</p>
+
+<p>
+成人很少能做到这一点，面对着 A，想着的是 B，说出来的是 C，真正做的是 D，而 D 又通常和 A 没有任何关系。
+</p>
+
+<p>
+自己身处此刻，内心却不断在过去和未来之间往返，不断追悔过去，不断担忧未来，结果是让此刻白白流逝。
+</p>
+
+<p>
+于是，人就非常不快乐，觉得一切都在阻碍着自己，觉得总是无法得到自己想要的东西，丝毫不觉得自己其实一直在缺席 ⸺ 过去、未来、现在，没有一刻自己真正出现在其中。
+</p>
+
+<p>
+<a href="https://www.hecaitou.com/2025/06/Learn-from-children.html#:~:text=%E5%AD%A9%E5%AD%90%E4%BB%AC%E8%BF%98%E6%9C%89,%E5%87%BA%E7%8E%B0%E5%9C%A8%E5%85%B6%E4%B8%AD%E3%80%82">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+最后一点，也是我最为欣赏的一点， <span class="underline">是小朋友并不去区分幻想和现实</span> ，越小的孩子越是如此。
+</p>
+
+<p>
+和小朋友聊天的时候，我经常听他们描述那些想象出来的事物。
+</p>
+
+<p>
+哪怕我们眼前只是一片空无一物的水泥地面，在他们的眼中也能见到蓝色的巨人，一艘外星飞船，或者是一片大海。
+</p>
+
+<p>
+我自己经过许多年的训练，才稍许松动了一点对于现实世界的坚持，不再认为它们如我眼中所见那么坚固，那么真实。
+</p>
+
+<p>
+小朋友几乎是生下来就能做到这一点，简单地把现实视为一种和故事、想象杂糅在一起的存在。
+</p>
+
+<p>
+成人因为坚持这种区分，坚信这种坚固，坚信这种真实，所以总是会太过在意。
+</p>
+
+<p>
+于是，规则、流程、限制就会接踵而至，仿佛只要自己不遵守世界就会在眼前崩塌。
+</p>
+
+<p>
+一个白领在上午 9 点前没有挤进电梯，错过打卡，一整天的心情就败坏了。
+</p>
+
+<p>
+<span class="underline">非要等到他六十几岁退休那一天，才会醒悟 9 点是个幻觉，电梯是个幻觉，打卡机是个幻觉，绩效考核是个幻觉，大公司是个幻觉，改变人类的产品是个幻觉，一切都会像是个泡沫一样消散，而自己对于世界的真实其实一无所知，多年来学到的是自我限制，自我束缚，自我控制，这些东西都在不断摧毁快乐。</span>
+</p>
+
+<p>
+<span class="underline">而任何一个孩子只要愿意，就可以让一只蓝色的猛犸象站在我的秃顶上，然后他们就开始大笑，因为他们都能轻而易举地看到这一幕。</span>
+</p>
+
+<p>
+<a href="https://www.hecaitou.com/2025/06/Learn-from-children.html#:~:text=%E6%9C%80%E5%90%8E%E4%B8%80%E7%82%B9%EF%BC%8C%E4%B9%9F%E6%98%AF,%E7%9C%8B%E5%88%B0%E8%BF%99%E4%B8%80%E5%B9%95%E3%80%82">Source</a>
+</p>
+</blockquote>
+</details>
+</div>
+</div>
+<div id="outline-container-c52a144c-07ac-4654-8a03-bb38d61ea7e2" class="outline-3">
+<h3 id="c52a144c-07ac-4654-8a03-bb38d61ea7e2"><a href="https://manateelazycat.github.io/2016/03/03/my-life-before-28-years/">我人生的前 28 年</a></h3>
+<div class="outline-text-3" id="text-c52a144c-07ac-4654-8a03-bb38d61ea7e2">
+<p>
+大佬是 Deepin 的核心开发者，最近创业在做他的「懒猫微服」。
+</p>
+
+<p>
+他在 <a href="https://emacs-china.org/">Emacs China</a> 里也很活跃，我也是在论坛里认识到他的，他的一些 Emacs 包挺好用的。
+</p>
+
+<p>
+文章记录了他的前 28 年，这是一篇 2016 年的文章，很长，大佬的前 28 年也是有些坎坷的。
+</p>
+
+<p>
+感兴趣可以看看。
+</p>
+
+<blockquote>
+<p>
+原来玩 Emacs 的时候最喜欢的就是突然有一天从地球另外一边的用户写一封热情洋溢的感谢信，说你的一段代码简化了我的生活，让我有更多时间陪家人，那种感觉是别的任何东西都无法替代的，我想也是世界上大多数开源作者在最艰难的时候坚持下去的唯一理由……
+</p>
+
+<p>
+<a href="https://manateelazycat.github.io/2016/03/03/my-life-before-28-years/#:~:text=%E5%8E%9F%E6%9D%A5%E7%8E%A9%20Emacs%20%E7%9A%84%E6%97%B6%E5%80%99%E6%9C%80%E5%96%9C%E6%AC%A2%E7%9A%84%E5%B0%B1%E6%98%AF%E7%AA%81%E7%84%B6%E6%9C%89%E4%B8%80%E5%A4%A9%E4%BB%8E%E5%9C%B0%E7%90%83%E5%8F%A6%E5%A4%96%E4%B8%80%E8%BE%B9%E7%9A%84%E7%94%A8%E6%88%B7%E5%86%99%E4%B8%80%E5%B0%81%E7%83%AD%E6%83%85%E6%B4%8B%E6%BA%A2%E7%9A%84%E6%84%9F%E8%B0%A2%E4%BF%A1%EF%BC%8C%20%E8%AF%B4%E4%BD%A0%E7%9A%84%E4%B8%80%E6%AE%B5%E4%BB%A3%E7%A0%81%E7%AE%80%E5%8C%96%E4%BA%86%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB%EF%BC%8C%20%E8%AE%A9%E6%88%91%E6%9C%89%E6%9B%B4%E5%A4%9A%E6%97%B6%E9%97%B4%E9%99%AA%E5%AE%B6%E4%BA%BA%EF%BC%8C%20%E9%82%A3%E7%A7%8D%E6%84%9F%E8%A7%89%E6%98%AF%E5%88%AB%E7%9A%84%E4%BB%BB%E4%BD%95%E4%B8%9C%E8%A5%BF%E9%83%BD%E6%97%A0%E6%B3%95%E6%9B%BF%E4%BB%A3%E7%9A%84%EF%BC%8C%20%E6%88%91%E6%83%B3%E4%B9%9F%E6%98%AF%E4%B8%96%E7%95%8C%E4%B8%8A%E5%A4%A7%E5%A4%9A%E6%95%B0%E5%BC%80%E6%BA%90%E4%BD%9C%E8%80%85%E5%9C%A8%E6%9C%80%E8%89%B0%E9%9A%BE%E7%9A%84%E6%97%B6%E5%80%99%E5%9D%9A%E6%8C%81%E4%B8%8B%E5%8E%BB%E7%9A%84%E5%94%AF%E4%B8%80%E7%90%86%E7%94%B1%20%E2%80%A6">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+当我第一天学习 Haskell 的时候，简直把我自己震惊到了，如果说 Emacs 是第一次开拓我编程的眼界，Haskell 就是彻底颠覆我对编程的最最基本的价值观。
+</p>
+
+<p>
+<a href="https://manateelazycat.github.io/2016/03/03/my-life-before-28-years/#:~:text=%E5%BD%93%E6%88%91%E7%AC%AC%E4%B8%80%E5%A4%A9%E5%AD%A6%E4%B9%A0%20Haskell%20%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%20%E7%AE%80%E7%9B%B4%E6%8A%8A%E6%88%91%E8%87%AA%E5%B7%B1%E9%9C%87%E6%83%8A%E5%88%B0%E4%BA%86%EF%BC%8C%20%E5%A6%82%E6%9E%9C%E8%AF%B4%20Emacs%20%E6%98%AF%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%BC%80%E6%8B%93%E6%88%91%E7%BC%96%E7%A8%8B%E7%9A%84%E7%9C%BC%E7%95%8C%EF%BC%8C%20Haskell%20%E5%B0%B1%E6%98%AF%E5%BD%BB%E5%BA%95%E9%A2%A0%E8%A6%86%E6%88%91%E5%AF%B9%E7%BC%96%E7%A8%8B%E7%9A%84%E6%9C%80%E6%9C%80%E5%9F%BA%E6%9C%AC%E7%9A%84%E4%BB%B7%E5%80%BC%E8%A7%82%E3%80%82">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-afdc1d40-95c9-41f8-bc34-078f34010fe6" class="outline-3">
+<h3 id="afdc1d40-95c9-41f8-bc34-078f34010fe6"><a href="https://every.to/p/your-ceo-just-said-use-ai-or-else-here-s-what-to-do-next">Your CEO Just Said ‘Use AI or Else.’ Here’s What to Do Next.</a></h3>
+<div class="outline-text-3" id="text-afdc1d40-95c9-41f8-bc34-078f34010fe6">
+<p>
+文章分享了 5 步使用好 AI 的方法，都挺中肯的，推荐一读。
+</p>
+
+
+<figure id="org7546127">
+<img src="https://d24ovhgu8s7341.cloudfront.net/uploads/editor/posts/3549/optimized_Screenshot%202025-04-11%20at%2011.00.08%20AM.png" alt="optimized_Screenshot%202025-04-11%20at%2011.00.08%20AM.png">
+
+<figcaption><span class="figure-number">&#22270;3&nbsp; </span>图片分成了 5 个格子，第一行两个格子，第二行两个格子，第三行一个横跨两格的格子。从上到下是 5 个步骤，分别是：1)现在开始使用 AI 2)了解你如何创造价值 3)养成文档记录的习惯 4)你重复的事情，可以自动化 5)分享你的所学 (图片来源：d24ovhgu8s7341.cloudfront.net)</figcaption>
+</figure>
+
+<details id="org8919f52">
+<summary>摘录</summary>
+
+<blockquote>
+<p>
+<b>现在开始使用 AI</b>
+</p>
+
+<p>
+大多数人对待 AI 的方式是这样的：他们阅读文章。
+</p>
+
+<p>
+收藏提示指南。
+</p>
+
+<p>
+打开 ChatGPT，输入「帮我提高效率」，得到一个平平的回答，然后关闭标签页。
+</p>
+
+<p>
+反复如此，直到心情好转。
+</p>
+
+<p>
+<span class="underline">但真正提高使用 AI 能力的唯一方法是经常使用它，哪怕不完美，也不要过度思考。</span>
+</p>
+
+<p>
+第一步是邀请 AI 加入工作 ⸺ 字面意思。
+</p>
+
+<p>
+保持 ChatGPT 在浏览器标签页中打开。
+</p>
+
+<p>
+下载桌面应用程序。
+</p>
+
+<p>
+如果你有 iPhone，可以将动作按钮设置为一键启动 ChatGPT 的语音助手。
+</p>
+
+<p>
+目标是让 AI 感觉像坐在你旁边的队友，随时准备介入。
+</p>
+
+<p>
+就像一个新队友一样，刚开始可能会有些笨拙，可能会误解你的语气或做错一些事情。
+</p>
+
+<p>
+但随着时间推移，你会学会如何与它协作。
+</p>
+
+<p>
+[&#x2026;]
+</p>
+
+<p>
+<span class="underline">一个技巧：让 AI 先向你提问。</span>
+</p>
+
+<p>
+不要只是说「重写这个」，而是给它一个提示，比如「采访我关于这个项目的目标」，让它来采访我。
+</p>
+
+<p>
+这样的互动有助于它理解你真正需要的内容。
+</p>
+
+<p>
+[&#x2026;]
+</p>
+
+<p>
+<span class="underline">不用担心有没有「正确」的流程。</span>
+</p>
+
+<p>
+<span class="underline">目标是养成一个习惯 ⸺ 一种反射动作 ⸺ 在你的工作流程中融入 AI。</span>
+</p>
+
+<p>
+<a href="https://every.to/p/your-ceo-just-said-use-ai-or-else-here-s-what-to-do-next#:~:text=Here%E2%80%99s%20how%20most,in%20your%20process.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<b>了解你如何创造价值</b>
+</p>
+
+<p>
+<span class="underline">在 AI 能够成倍提升你的工作效率之前，你需要知道什么是值得成倍提升的。</span>
+</p>
+
+<p>
+这也是很多人容易犯错的地方。
+</p>
+
+<p>
+他们打开一个新的 AI 工具，问：「你能做什么？」
+</p>
+
+<p>
+<span class="underline">而正确的做法是先问：「我做的事情中，哪些对我和我的团队来说是重要的？」</span>
+</p>
+
+<p>
+如果你不清楚自己如何创造价值 ⸺  你擅长什么，团队依赖你做什么 ⸺  你就有可能用 AI 生成无用的内容：更多的文字、噪音或没人需要的演示文稿。
+</p>
+
+<p>
+<span class="underline">但如果你知道自己的优势，AI 就能成为一个杠杆点。</span>
+</p>
+
+<p>
+试着在一张空白纸上或 Obsidian 笔记中写作：
+</p>
+
+<ul class="org-ul">
+<li>如果你消失一周，你的团队会错过什么？</li>
+<li>人们会请你帮忙解决哪些问题？</li>
+<li>对你来说很容易，但对别人来说很难的是什么？</li>
+<li>你自己想要完成什么？</li>
+</ul>
+
+<p>
+现在选择其中一个优势，问自己：人工智能如何帮助我更快、更好，或者以一种以前无法做到的不同方式完成这项工作？
+</p>
+
+<p>
+泛泛地使用人工智能只见带来泛泛的结果。
+</p>
+
+<p>
+努力将你的专业知识用语言表达出来。
+</p>
+
+<p>
+<a href="https://every.to/p/your-ceo-just-said-use-ai-or-else-here-s-what-to-do-next#:~:text=Before%20AI%20can,expertise%20into%20words.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<b>养成文档记录的习惯</b>
+</p>
+
+<p>
+<span class="underline">如果说利用 AI 获得更多收益有一个被低估的关键，那就是：把事情写下来。</span>
+</p>
+
+<p>
+<span class="underline">这不是为了留存记录，而是为了提升效率。</span>
+</p>
+
+<p>
+<span class="underline">当你将良好的文档与 AI 结合时，你不仅仅是在节省时间 — — 你是在为自动化奠定基础。</span>
+</p>
+
+<p>
+把它想象成培训一个新队友。
+</p>
+
+<p>
+如果你只是模糊地吩咐他们 — — 「做市场推广！」、「修好它！」 — — 他们会手足无措。
+</p>
+
+<p>
+但如果你给他们结构、示例和背景，他们就能理解你要求他们完成的工作。
+</p>
+
+<p>
+同样的道理也适用于 AI。
+</p>
+
+<p>
+那些能最大化利用 AI 的人并非技术奇才，而是那些善于清晰沟通、管理和领导，懂得如何给出良好指令并从结果中学习的人。
+</p>
+
+<p>
+<span class="underline">AI 依赖于清晰度。它需要结构才能发挥最佳效果。</span>
+</p>
+
+<p>
+这个结构来自你提供的背景：你如何规划工作流程、记录步骤以及定义「完成」的标准。
+</p>
+
+<p>
+下次当你在做一些经常做的事情时 — — 撰写更新日志、分类处理错误、启动活动 — — 请写下：
+</p>
+<ul class="org-ul">
+<li>你的流程从什么开始？</li>
+<li>你采取哪些步骤？</li>
+<li>什么是「好的」输出？</li>
+</ul>
+
+<p>
+<span class="underline">定义「好」的含义 — — 是人类在人工智能驱动的世界上扮演的最关键角色之一。</span>
+</p>
+
+<p>
+<span class="underline">「好」具有深刻的情境性，且往往是主观的。</span>
+</p>
+
+<p>
+什么才是好的客户回复？
+</p>
+
+<p>
+什么才是好的产品功能？
+</p>
+
+<p>
+什么才是好的战略文件？
+</p>
+
+<p>
+这些都不是普遍的常量。
+</p>
+
+<p>
+<span class="underline">它们由你、你公司的价值观、你团队的需求以及你客户的期望共同塑造。</span>
+</p>
+
+<p>
+人工智能可以帮助你更快地达到目标，但你需要知道「目标」在哪里。
+</p>
+
+<p>
+你可以在你平时使用的任何系统中捕捉这些情境和期望：Notion、Google Docs、语音笔记、Slack、笔记本。
+</p>
+
+<p>
+最重要的是创建可重复使用的情境，因为那个文档将成为：
+</p>
+<ul class="org-ul">
+<li>一个现成的人工智能提示</li>
+<li>一个原型简介</li>
+<li>新队友的入职文档</li>
+<li>自动化的起点</li>
+</ul>
+
+<p>
+<span class="underline">良好的文档能将一次性实验转变为可重复的流程，而可重复的流程则转化为自动化的机会。</span>
+</p>
+
+<p>
+<a href="https://every.to/p/your-ceo-just-said-use-ai-or-else-here-s-what-to-do-next#:~:text=If%20there%E2%80%99s%20one,opportunities%20for%20automation.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<b>你重复的事情，可以自动化</b>
+也许你已经意识到自己总是在用同一个提示词来头脑风暴新想法，并将其转化为可执行的计划。
+</p>
+
+<p>
+也许你总是让 Claude 以相同的格式总结会议，或者你总是通过 ChatGPT 查看客户反馈。
+</p>
+
+<p>
+<span class="underline">你刚刚定义了一个工作流程。</span>
+</p>
+
+<p>
+<span class="underline">一旦有了工作流程，你就可以对其进行迭代，使其变得出色，而一个出色的提示词距离成为一个出色的内部工具或产品仅一步之遥。</span>
+</p>
+
+<p>
+<span class="underline">它是可重复的、可分享的、可扩展的。</span>
+</p>
+
+<p>
+（如何制作出色的提示词？靠反复试验 ⸺ 并关注有效的方法。）
+</p>
+
+<p>
+例如，我见过客户将他们精心设计的提示词 ⸺ 用于将新闻或研究论文转化为关键信息 ⸺ 赋能给一个机器人，该机器人会认真地梳理指定的来源，然后每天将报告发送到他们的邮箱。
+</p>
+
+<p>
+<span class="underline">这就是事情开始从「有帮助」转变为「高杠杆」的地方。</span>
+</p>
+
+<p>
+[&#x2026;]
+</p>
+
+<p>
+<span class="underline">如果它曾经有效一次，那么它可以有效十次；如果它有效十次，那么很可能值得分享或自动化。</span>
+</p>
+
+<p>
+<span class="underline">只要确保根据第二步中定义的价值，构建它是值得的。</span>
+</p>
+
+<p>
+<span class="underline">一种常见的失败模式是实验时不做记录 ⸺ 你在捕捉到有效的提示词或刚好合适的输出之前就关闭了聊天窗口。</span>
+</p>
+
+<p>
+只需再向 ChatGPT 发送一条消息，要求它将你的对话转换成模板。
+</p>
+
+<p>
+举个例子：
+</p>
+
+<p>
+「你能把这段对话变成一个可重复使用的模板吗？ 包括我给你的关键指令、输出的结构，以及别人如何将其适应到自己用例的建议。」
+</p>
+
+<p>
+<a href="https://every.to/p/your-ceo-just-said-use-ai-or-else-here-s-what-to-do-next#:~:text=Maybe%20you%20realize,Here%E2%80%99s%20an%20example%3A">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<b>分享你的所学</b>
+</p>
+
+<p>
+<span class="underline">现在是分享你所学的时候了 ⸺  不必等到完美无缺或变成一个成熟的工具之后。</span>
+</p>
+
+<p>
+<span class="underline">在一个员工大规模学习新事物的公司里，早期的透明度就是领导力。</span>
+</p>
+
+<p>
+当你分享你正在尝试的东西 ⸺  即使它还很混乱 ⸺  你给了你的团队一个蓝图，或者至少是尝试的许可。
+</p>
+
+<p>
+选择一件事 ⸺  一个 AI 驱动的工作流程、一个学到的教训，或者一个让你惊讶的提示 ⸺  并将其发布在公开的 Slack 或 Discord 频道。
+</p>
+
+<p>
+或者在下次团队会议上举办一个 15 分钟的「我尝试了什么」分享会。
+</p>
+
+<p>
+形式不必正式 ⸺  <span class="underline">你的目标是展示你的过程，而不仅仅是结果。</span>
+</p>
+
+<p>
+<span class="underline">这些展示和分享环节搭建了重要的桥梁：最接近问题的人可以解释他们的需求和解决方案，而技术团队则能发现自动化和扩展有效做法的机会。</span>
+</p>
+
+<p>
+分享你的实验能够建立信任和提升可见度。
+</p>
+
+<p>
+当绩效评估中包含有关 AI 使用的问题时（正如 Lutke 所说的那样），你就不必猜测答案。你将有确凿的证据。
+</p>
+
+<p>
+<a href="https://every.to/p/your-ceo-just-said-use-ai-or-else-here-s-what-to-do-next#:~:text=By%20now%2C%20you%E2%80%99re,You%E2%80%99ll%20have%20receipts.">Source</a>
+</p>
+</blockquote>
+</details>
+</div>
+</div>
+<div id="outline-container-e7c207c4-8c7a-49bf-b079-d1e71a31bec0" class="outline-3">
+<h3 id="e7c207c4-8c7a-49bf-b079-d1e71a31bec0"><a href="https://fly.io/blog/youre-all-nuts/">My AI Skeptic Friends Are All Nuts</a></h3>
+<div class="outline-text-3" id="text-e7c207c4-8c7a-49bf-b079-d1e71a31bec0">
+<p>
+作者在文章里反驳了很多反对使用 LLM 的观点:
+</p>
+
+<ul class="org-ul">
+<li>但你根本不知道代码是什么</li>
+<li>但它有幻觉</li>
+<li>但它写的代码很糟糕，就像初级开发者写的一样。</li>
+<li>但它在 Rust 语言方面表现不佳</li>
+<li>但它不算是手艺</li>
+<li>但它平庸</li>
+<li>但它永远不会成为通用人工智能</li>
+<li>但他们抢走了工作岗位</li>
+<li>但它存在抄袭问题</li>
+</ul>
+
+<p>
+感兴趣可以看看。
+</p>
+
+<details id="org1d868bf">
+<summary>摘录</summary>
+
+<blockquote>
+<p>
+你是那种靠感觉写代码的 YouTuber 吗？你不会看代码？
+</p>
+
+<p>
+如果是这样：说得很对。
+</p>
+
+<p>
+否则：你到底怎么了？
+</p>
+
+<p>
+<span class="underline">你一直对合并到 <code>main</code> 的内容负责。</span>
+</p>
+
+<p>
+<span class="underline">五年前是，现在也是，明天依然如此，无论你是否使用 LLM。</span>
+</p>
+
+<p>
+<span class="underline">如果你用 LLM 构建了人们会依赖的东西，那就去读代码。</span>
+</p>
+
+<p>
+事实上，你可能会做得更多。
+</p>
+
+<p>
+你会花 5 到 10 分钟把它改成你自己的风格。
+</p>
+
+<p>
+LLM 已经开始显示出适应本地习惯用语的迹象，但我们还没到那一步。
+</p>
+
+<p>
+人们抱怨 LLM 生成的代码是「概率性的」。
+</p>
+
+<p>
+其实不是。
+</p>
+
+<p>
+它是代码，不是 <a href="https://en.wikipedia.org/wiki/Yacc">Yacc (Yet Another Compiler-Compiler)</a> 的输出。
+</p>
+
+<p>
+它是可知的。
+</p>
+
+<p>
+<span class="underline">LLM 可能是随机的，但 LLM 本身并不重要。</span>
+</p>
+
+<p>
+<span class="underline">重要的是你是否能理解结果，以及你的防护措施是否有效。</span>
+</p>
+
+<p>
+<span class="underline">阅读别人的代码是工作的一部分。</span>
+</p>
+
+<p>
+<span class="underline">如果你无法消化 LLM 生成的那些无聊、重复的代码⸺ 那是技能问题！</span>
+</p>
+
+<p>
+你是如何应对人类开发者在截止日期前交出的混乱代码的？
+</p>
+
+<p>
+在过去的一个月左右，Gemini 2.5 一直是我的首选。
+</p>
+
+<p>
+它几乎没有生成过我不需要修改就能合并的代码。
+</p>
+
+<p>
+我相信让一个 SOTA 模型一次性完成一个功能并合并是有技巧的！
+</p>
+
+<p>
+但我不在乎。
+</p>
+
+<p>
+<span class="underline">我喜欢移动代码，边笑着边删除所有愚蠢的注释。</span>
+</p>
+
+<p>
+<span class="underline">反正我也得逐行阅读代码。</span>
+</p>
+
+<p>
+<a href="https://fly.io/blog/youre-all-nuts/#:~:text=Are%20you%20a,by%2Dline%20anyways.">Source</a>
+</p>
+</blockquote>
+</details>
+</div>
+</div>
+<div id="outline-container-e9b8d752-652a-4fb4-9ed6-b842a2080641" class="outline-3">
+<h3 id="e9b8d752-652a-4fb4-9ed6-b842a2080641"><a href="https://www.benkuhn.net/tmgr/">Advice for time management as a manager</a></h3>
+<div class="outline-text-3" id="text-e9b8d752-652a-4fb4-9ed6-b842a2080641">
+<p>
+当从个人开发变成管理者的角色，工作重心会发生很大的变化。
+</p>
+
+<p>
+当你是开发者的时候，你只管：
+</p>
+
+<blockquote>
+<ol class="org-ol">
+<li>决定你最重要的一件事。</li>
+<li>专注于它，直到完成。</li>
+<li>重复 1</li>
+</ol>
+</blockquote>
+
+<p>
+但是当你变成一个管理者：
+</p>
+
+<blockquote>
+<p>
+
+</p>
+
+<ul class="org-ul">
+<li>你不再只有一件最重要的事情。你必须学会如何同时处理多个相互竞争的优先事项。</li>
+<li>你最重要的责任是团队的产出，而不是你个人的产出。这意味着个人的工程工作在你潜在最重要事项的列表中排在最后。</li>
+<li>你需要开始按照 <a href="https://www.paulgraham.com/makersschedule.html">管理者的时间表</a> 安排部分时间。</li>
+</ul>
+</blockquote>
+
+<p>
+文章给出了一些帮助你转换角色的建议。
+</p>
+
+<details id="org0ea8076">
+<summary>摘录</summary>
+
+<blockquote>
+<p>
+<span class="underline">你对团队的责任会占用时间，更重要的是占用 <a href="https://www.benkuhn.net/attention/">注意力</a>。</span>
+</p>
+
+<p>
+<span class="underline">这意味着你在个人贡献 (IC, Individual Contributor) 工作上的产出会比过去少得多 ⸺ 尤其是在刚开始适应阶段。</span>
+</p>
+
+<p>
+此外，你的时间安排每周可能会更加不可预测，因为你可能需要花费不确定的时间来处理「进来的」工作。
+</p>
+
+<p>
+在最初几个月里，你应该把完成的任何个人工程工作视为额外收获。
+</p>
+
+<p>
+即使过了这段时间，你也应该预期每个你管理的工程师的个人产出会减少大约 10-20%，具体取决于你的经验、他们的经验等因素，并且每周的产出会有较大波动。
+</p>
+
+<p>
+为此， <span class="underline">我给自己定的规则是确保我的个人贡献工作重要但不紧急</span> ⸺ 也就是说，如果我接下来一周不得不忙于处理紧急事务而无法推进这些工作，也不会让任何人感到失望或导致计划被打乱。
+</p>
+
+<p>
+<a href="https://www.benkuhn.net/tmgr/#:~:text=Your%20responsibilities%20to,pushing%20it%20forward.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<span class="underline">上述内容的一个推论是，你必须非常重视优先安排工作内容，无论是按小时节奏，还是在更长的时间尺度上。</span>
+</p>
+
+<p>
+这里有一些启发式方法，帮助判断哪些事情最值得优先处理：
+</p>
+
+<dl class="org-dl">
+<dt>有截止日期且如果错过会带来不良后果的任务</dt><dd><p>
+（例如，为假日高峰期提前进行性能优化。）注意，错过截止日期的严重性差别很大。
+</p>
+
+<p>
+<span class="underline">养成习惯，针对任何有截止日期的项目都问一句：「这个截止日期的原因是什么？」</span>
+</p></dd>
+
+<dt>能够提升你或团队未来工作能力的任务</dt><dd><p>
+这可以包括招聘、解决技术/流程债务、自动化重复劳动、指导团队成员、减少报警（pager）负担等。
+</p>
+
+<p>
+一种有用的思考方式是根据“回报周期”（payback period）来排序这类工作，即衡量改进所节省的时间超过投入时间所需的时间长度。
+</p></dd>
+
+<dt>一对一会议</dt><dd><p>
+<span class="underline">尽量不要取消这些会议，除非你正在度假 ⸺ 在其他 39.5 小时里，他们专注于你需要他们做的事情，所以请不要轻视你花 0.5 小时专注于他们需要你做的事情。</span>
+</p>
+
+<p>
+如果你取消太多会议，预计你的下属会觉得提起棘手问题不那么安全，更多问题会因为没有及早解决而「爆发」。
+</p></dd>
+</dl>
+
+<p>
+<a href="https://www.benkuhn.net/tmgr/#:~:text=A%20corollary%20of,get%20addressed%20early.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<span class="underline">「增加你或你团队未来工作能力」的最重要工作类型之一是 <b>委派任务</b> 。</span>
+</p>
+
+<p>
+这方面已经有整本书专门讲解，但这里有一些避免新团队领导常见委派陷阱的方法：
+</p>
+
+<ul class="org-ul">
+<li><p>
+协商你要多亲力亲为。
+</p>
+
+<p>
+<span class="underline">有效的委派意味着在事无巨细地管理和把下属扔进狼群之间找到合适的平衡。</span>
+</p>
+
+<p>
+刻板印象是新经理常常过度管理，但在 Wave，我注意到新经理往往偏向管理不足，或者过于放手，可能是出于想表达对下属信任的意愿。
+</p>
+
+<p>
+如果你不确定，最好和你委派任务的人明确沟通他们希望获得多少支持。
+</p>
+
+<p>
+例如，「你想自己设计这个功能，还是让我做高层设计并补充细节，或者让我写完整的设计文档？」
+</p></li>
+
+<li><p>
+根据团队成员在相关任务上的成熟度进行调整，也就是他们独立完成某类任务的能力。
+</p>
+
+<p>
+高级工程师应该能够独立设计大多数功能（经过审核），但如果把同样的设计任务交给初级工程师，他们可能会手足无措，毫无进展。
+</p>
+
+<p>
+你应该在脑海中维护一张团队成员优缺点的地图，并随着时间推移和他们的成长不断更新。
+</p></li>
+
+<li><p>
+提前为未来的成长进行委派。
+</p>
+
+<p>
+团队的工作量会随着时间增加，所以即使你现在觉得工作不多，未来很可能会增加，除非你目前感觉工作量不足。
+</p>
+
+<p>
+你应该争取一种工作负载状态，在稳定期内感觉自己还有一定的余力。
+</p></li>
+
+<li><p>
+将「挑战性项目」委派出去，帮助你的团队提升能力。
+</p>
+
+<p>
+获得足够的缓冲时间可能需要你将目前团队中没有人能完成的工作委派出去。
+</p>
+
+<p>
+利用你对自己心理优势和劣势的认知，问问自己每个团队成员最重要的成长方向是什么，然后想办法给他们分配能在那个方向上锻炼他们的工作。
+</p>
+
+<p>
+注意，这些委派的任务可能需要更频繁的监督，因为你的下属在这些挑战性项目上的任务相关成熟度较低！
+</p></li>
+</ul>
+
+<p>
+<a href="https://www.benkuhn.net/tmgr/#:~:text=One%20of%20the,their%20stretch%20projects!">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+尽管你尽力遵循上述建议，但可能会有一段时间你会对手头的工作量感到非常有压力。
+</p>
+
+<p>
+到了那时，应该这样做：
+</p>
+
+<ul class="org-ul">
+<li>尽快与上司安排时间，优先处理你的待办事项清单。</li>
+<li>列出你当前所有的待办事项。是的，所有的事情，甚至包括那个已经在你的待办清单中放了三个月的代码审查。</li>
+<li>在你第一步安排的会议上，确定你能委派的所有事项，然后对剩下的事项进行优先级排序。</li>
+<li>现实地（参见对自己有准确的期望）决定你能完成清单上的多少任务。记得给自己留出一些余地，以应对突发情况！</li>
+<li>对于排在截止线之后的事项，决定不去做，并通知所有关心的人你可能无法完成这些任务。</li>
+</ul>
+
+<p>
+<a href="https://www.benkuhn.net/tmgr/#:~:text=Despite%20your%20best,get%20to%20it.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+我想补充一个针对技术主管的建议：将会议集中安排。
+</p>
+
+<p>
+我把所有会议都安排在周二和周四连续进行，这样可以让一周的其他时间尽可能空出来，专注于深度工作。
+</p>
+
+<p>
+<a href="https://www.benkuhn.net/tmgr/#:~:text=One%20tech%2Dlead%2Dspecific%20one%20that%20I%E2%80%99ll%20add%20is%20batching%20meetings%3A%20I%20schedule%20all%20my%20meetings%20back%2Dto%2Dback%20on%20Tuesdays%20and%20Thursdays%20to%20leave%20the%20rest%20of%20the%20week%20as%20free%20as%20possible%20for%20deep%20work.">Source</a>
+</p>
+</blockquote>
+</details>
+</div>
+</div>
+</div>
+<div id="outline-container-6a240bfc-7fc4-4a46-aa63-d577a020b989" class="outline-2">
+<h2 id="6a240bfc-7fc4-4a46-aa63-d577a020b989">Tutorial | Resource</h2>
+<div class="outline-text-2" id="text-6a240bfc-7fc4-4a46-aa63-d577a020b989">
+</div>
+<div id="outline-container-5ac50d04-b578-44d5-aab6-a636f3129a8c" class="outline-3">
+<h3 id="5ac50d04-b578-44d5-aab6-a636f3129a8c"><a href="https://zhuangit.ababtools.com/">装个机</a></h3>
+<div class="outline-text-3" id="text-5ac50d04-b578-44d5-aab6-a636f3129a8c">
+<p>
+一些装机指南，例如重装 Windows，macOS 系统等。
+</p>
+</div>
+</div>
+<div id="outline-container-27b9b5f1-62ac-4640-8da4-0ef3fc92b7d7" class="outline-3">
+<h3 id="27b9b5f1-62ac-4640-8da4-0ef3fc92b7d7"><a href="https://www.tongliaouniverse.cn/">通辽宇宙知识库</a></h3>
+<div class="outline-text-3" id="text-27b9b5f1-62ac-4640-8da4-0ef3fc92b7d7">
+<p>
+粉丝给 <a href="https://space.bilibili.com/23947287">小约翰可汗</a> 的内容整理的一个网站，可以在地图上选择区域了解对应的故事，完成度挺高的，忠实粉丝呀。
+</p>
+
+<p>
+通过地图可视化的了解故事发生在什么地方，也很直观。
+</p>
+</div>
+</div>
+<div id="outline-container-df5fd76a-63ef-4dfe-9570-6de3f7a200a0" class="outline-3">
+<h3 id="df5fd76a-63ef-4dfe-9570-6de3f7a200a0"><a href="https://evilmartians.com/chronicles/exploring-the-oklch-ecosystem-and-its-tools">Exploring the OKLCH ecosystem and its tools</a></h3>
+<div class="outline-text-3" id="text-df5fd76a-63ef-4dfe-9570-6de3f7a200a0">
+<p>
+文章整理了不少 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch">OKLCH</a> 相关的资源，工具。
+</p>
+
+<blockquote>
+<p>
+一致、连贯、无障碍且感知均匀。
+</p>
+
+<p>
+OKLCH 具备所有这些特性，它正在弥合编程与设计之间的鸿沟。
+</p>
+
+<p>
+OKLCH 不仅是一个新的颜色模型，更是一种描述颜色的新方式。
+</p>
+
+<p>
+<a href="https://evilmartians.com/chronicles/exploring-the-oklch-ecosystem-and-its-tools#:~:text=Consistent%2C%20cohesive%2C%20accessible%2C%20and%20perceptually%20uniform.%20OKLCH%20is%20all%20of%20these%2C%20and%20it%E2%80%99s%20bridging%20the%20gap%20between%20programming%20and%20design.%20OKLCH%20is%20not%20just%20a%20new%20color%20model%2C%20it%E2%80%99s%20also%20a%20new%20way%20of%20describing%20color.">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-f3667d2a-f514-41dd-910e-52ef61f628a5" class="outline-3">
+<h3 id="f3667d2a-f514-41dd-910e-52ef61f628a5"><a href="https://github.com/TakWolf/ark-pixel-font">方舟像素字体</a></h3>
+<div class="outline-text-3" id="text-f3667d2a-f514-41dd-910e-52ef61f628a5">
+<p>
+开源的泛中日韩像素字体。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-c996bf2b-9b4f-465a-ba55-caaedb025711" class="outline-2">
+<h2 id="c996bf2b-9b4f-465a-ba55-caaedb025711">Code Related</h2>
+<div class="outline-text-2" id="text-c996bf2b-9b4f-465a-ba55-caaedb025711">
+</div>
+<div id="outline-container-0056d8be-ab49-4e63-b77c-2fbf954233ca" class="outline-3">
+<h3 id="0056d8be-ab49-4e63-b77c-2fbf954233ca"><a href="https://theme-toggle.rdsx.dev/">Theme toggle effect</a></h3>
+<div class="outline-text-3" id="text-0056d8be-ab49-4e63-b77c-2fbf954233ca">
+<p>
+一些明暗主题切换的 CSS，可以复制过去直接用，提供了很多效果，甚至还能用 gif，很有趣！
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-6e4f68c9-2f02-465d-8af1-cb116c934c41" class="outline-2">
+<h2 id="6e4f68c9-2f02-465d-8af1-cb116c934c41">Cool Bit</h2>
+<div class="outline-text-2" id="text-6e4f68c9-2f02-465d-8af1-cb116c934c41">
+</div>
+<div id="outline-container-3b5b3c65-ebc2-4287-8556-cee677ec14e4" class="outline-3">
+<h3 id="3b5b3c65-ebc2-4287-8556-cee677ec14e4"><a href="https://oxfordamerican.org/oa-now/the-alabama-landline-that-keeps-ringing">The Alabama Landline That Keeps Ringing</a></h3>
+<div class="outline-text-3" id="text-3b5b3c65-ebc2-4287-8556-cee677ec14e4">
+
+<figure id="org9a22a76">
+<img src="https://oxfordamerican.org/media/pages/oa-now/the-alabama-landline-that-keeps-ringing/099259767a-1744917496/foy-information-desk-at-auburn-university.jpg" alt="foy-information-desk-at-auburn-university.jpg">
+
+<figcaption><span class="figure-number">&#22270;4&nbsp; </span>信息台图片。信息台是圆形的，前台放了一些 iMac 电脑，坐着两个人。 (图片来源：oxfordamerican.org/)</figcaption>
+</figure>
+
+<p>
+在 Auburn University 的学生中心有一个信息台，那里会有学生值守，接听电话，回答形形色色的人的各种各样的问题。
+</p>
+
+<p>
+挺有趣的，也挺温暖的。
+</p>
+
+<blockquote>
+<p>
+如果你坐在奥本大学 Melton 学生中心的 James E Foy 信息台，周三晚上接听电话，你可能需要回答这样一个问题：
+</p>
+
+<p>
+「如果你在手术台上死亡，医生宣布你法律上死亡并开具了死亡证明，但随后你复活了，法律后果会是什么？从技术上讲你是否不再存在？是否需要法官宣布你为不死者？」
+</p>
+
+<p>
+稍晚些时候，电话又会响起，来电者可能会问： 「世界上最著名的人是谁？」
+</p>
+
+<p>
+接着你的下一个问题是： 「在 <i>Call of Duty</i> 中如何获得超级血清？」
+</p>
+
+<p>
+最后，当你在接近十一点，也就是下班时间接起电话时，你可能会听到有人发出一个巨大的嘟嘴声 然后挂断。
+</p>
+</blockquote>
+
+<details id="orgead00f4">
+<summary>摘录</summary>
+
+<blockquote>
+<p>
+学生们慢慢地了解他们的常客。
+</p>
+
+<p>
+他们并没有被明确禁止提问，但这里是阿拉巴马，许多在接待台工作的学生都是在这里出生长大，或者来自邻近的南方州。
+</p>
+
+<p>
+即使是兄弟会派对上喝醉的人打电话来，许多学生工作人员也不会挂断电话，除非对方说了不合适的话。
+</p>
+
+<p>
+<span class="underline">毕竟，喝醉了并不意味着你没有合理的问题。</span>
+</p>
+
+<p>
+<span class="underline">Foy 的学生工作人员礼貌周到，他们不会去打探别人的私事。</span>
+</p>
+
+<p>
+<a href="https://oxfordamerican.org/oa-now/the-alabama-landline-that-keeps-ringing#:~:text=Students%20glean%20information,someone%20else%E2%80%99s%20business.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+在我坐在接待台的时间里，电话一个接二连三地打进来。
+</p>
+
+<p>
+有人打电话询问一位名叫 David Lichtenstein 的房地产投资者的净资产。
+</p>
+
+<p>
+另一个听起来像个小孩子，问地球到冥王星有多远。
+</p>
+
+<p>
+问题如此多样，如此独特，我问学生们：“你们难道不想知道这些人为什么打电话吗？”
+</p>
+
+<p>
+有时，他们会告诉我，但就他们而言，那不关他们的事情。
+</p>
+
+<p>
+他们承认，有些人觉得有必要解释为什么他们经常打电话 ⸺ 他们住在偏远地区或者负担不起互联网。
+</p>
+
+<p>
+<span class="underline">但对这些学生来说，打电话的人为什么打并不重要。他们的工作就是帮助。</span>
+</p>
+
+<p>
+<a href="https://oxfordamerican.org/oa-now/the-alabama-landline-that-keeps-ringing#:~:text=Call%20after%20call,job%20to%20help.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+几个小时后，Foy 即将关门，我们很可能已经听到了最后一个电话。
+</p>
+
+<p>
+学生们和我围坐在转椅上，他们开始讲述自己最喜欢的电话故事。
+</p>
+
+<p>
+许多故事他们以前从未分享过。
+</p>
+
+<p>
+就像大学里的深夜谈话一样，气氛变得坦诚起来。
+</p>
+
+<p>
+<span class="underline">Cora 说，她相信自己接到的电话都是命中注定要接的，没有巧合。</span>
+</p>
+
+<p>
+我想知道有没有哪通电话让学生们一直难以忘怀。
+</p>
+
+<p>
+其中一位讲述了她花了一个小时与一位来电者通话，帮她规划从亚利桑那到加拿大的旅行。
+</p>
+
+<p>
+另一位讲了一个孩子打电话来抱怨无聊，但显然他是孤单且非常孤独的。
+</p>
+
+<p>
+那是一次很长的通话。
+</p>
+
+<p>
+<a href="https://oxfordamerican.org/oa-now/the-alabama-landline-that-keeps-ringing#:~:text=Hours%20later%2C%20the,a%20long%20call.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+然后 Cora 告诉我们：两年前，她在上白班时接到一位年长绅士的电话。
+</p>
+
+<p>
+他有一份名人名单，想让她查找他们的生日，具体到月份和日期。
+</p>
+
+<p>
+「当我读出日期时，他会说『嗯嗯，好，好，这说得通。』」他说他只凭这些信息就能推断出关于这些人的一些事情。
+</p>
+
+<p>
+他们聊起了 Cora 的学习专业，以及她心中理想的职业。
+</p>
+
+<p>
+Cora 觉得这又是一个需要有人倾诉的来电者。
+</p>
+
+<p>
+「然后他问我的生日。」当 Cora 告诉他后，「他说，『哦，你不想做软件工程师，你想和人打交道。』」
+</p>
+
+<p>
+<a href="https://oxfordamerican.org/oa-now/the-alabama-landline-that-keeps-ringing#:~:text=Then%20Cora%20tells,work%20with%20people.%E2%80%99%E2%80%9D">Source</a>
+</p>
+</blockquote>
+</details>
+</div>
+</div>
+<div id="outline-container-4aa57d41-ab83-4616-91c0-71f2aa80fc36" class="outline-3">
+<h3 id="4aa57d41-ab83-4616-91c0-71f2aa80fc36"><a href="https://matthewstrom.com/writing/album-art/">The history of album art</a></h3>
+<div class="outline-text-3" id="text-4aa57d41-ab83-4616-91c0-71f2aa80fc36">
+
+<figure id="orge065fd3">
+<img src="https://matthewstrom.com/images/albumart-26.jpg" alt="albumart-26.jpg">
+
+<figcaption><span class="figure-number">&#22270;5&nbsp; </span>《Sgt. Pepper's Lonely Hearts Club Band》专辑封面 (图片来源：matthewstrom.com)</figcaption>
+</figure>
+
+<p>
+专辑封面艺术的历史，蛮有趣的，文章里封面也都很好看。
+</p>
+
+<details id="org88cff76">
+<summary>摘录</summary>
+
+<blockquote>
+<p>
+战争结束后，Steinweiss 回到哥伦比亚做自由职业者。
+</p>
+
+<p>
+1948 年一次午餐会上，公司总裁 Ted Wallerstein 提到哥伦比亚即将推出一种新型唱片，这种唱片以 33⅓ 转的较慢速度旋转，能容纳比旧的 78 转唱片更多的音乐。
+</p>
+
+<p>
+但存在一个问题：唱片上较小且更精细的凹槽被用于 78 转唱片的厚重纸套损坏。
+</p>
+
+<p>
+午餐会后，Steinweiss 开始着手为唱片设计一种新的、更安全的包装套。
+</p>
+
+<p>
+但他对新包装的构想不仅仅局限于结构。
+</p>
+
+<p>
+「唱片的销售方式简直荒谬」，Steinweiss 说。
+</p>
+
+<p>
+「封面都是棕色、褐色或绿色的纸张，既不吸引人，也缺乏销售吸引力。」
+</p>
+
+<p>
+他建议哥伦比亚应该在包装上投入更多资金，坚信引人注目的设计能帮助唱片销售。
+</p>
+
+<p>
+<a href="https://matthewstrom.com/writing/album-art/#:~:text=When%20the%20war,sell%20records.1">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+斯坦韦斯在 1940 年至 1945 年间为哥伦比亚设计了数百张唱片封面。
+</p>
+
+<p>
+他的方法非常严谨 ⸺ <span class="underline">这些封面不仅仅是漂亮的图片，更是音乐本身的视觉表现。</span>
+</p>
+
+<p>
+在大多数人还没有电视机的年代，斯坦韦斯的唱片封面是价格实惠的多感官娱乐。
+</p>
+
+<p>
+观看唱片封面并聆听音乐，创造出一种整体大于部分之和的体验。
+</p>
+
+<p>
+「我试图深入了解主题，」他解释道，「无论是通过音乐，还是作曲家的生活和时代。」
+</p>
+
+<p>
+例如，对于巴托克钢琴协奏曲 (Bartók's Concerto)，我取用了钢琴的元素 ⸺ 琴槌、琴键和琴弦 ⸺ 并用合适的色彩和表现手法，将它们组合在一个现代的环境中。
+</p>
+
+<p>
+由于巴托克是匈牙利人，我还加入了一个农民形象的暗示。」
+</p>
+
+
+<figure id="org19fd78a">
+<img src="https://matthewstrom.com/images/albumart-6.jpg" alt="albumart-6.jpg">
+
+<figcaption><span class="figure-number">&#22270;6&nbsp; </span>《Bartók's Concerto No. 3》专辑封面 (图片来源：matthewstrom.com)</figcaption>
+</figure>
+
+<p>
+<a href="https://matthewstrom.com/writing/album-art/#:~:text=Steinweiss%20would%20go,a%20peasant%20figure.%E2%80%9D">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+随着 1960 年代的临近，Blue Note 辛勤培养的音乐家们正在开创新的风格，抛弃了爵士乐作为舞曲的摇摆时代假象。
+</p>
+
+<p>
+Charlie Parker 和 Bud Powell 不断加快节奏，在和弦进行中塞入更多和弦。
+</p>
+
+<p>
+Max Roach 开始像拳击手一样打鼓，在节拍周围灵活闪避，伴随着轻快的镲片声，等待着用一次巨大的“砰”声的低音鼓击打出关键时刻。
+</p>
+
+<p>
+没有鼓维持稳定的节奏，像 Milt Hinton 和 Gene Ramey 这样的贝斯手不得不疯狂地用八分音符标记时间，通过上下拨动音阶穿越和弦。
+</p>
+
+<p>
+这就是 bebop<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>，它是属于音乐家的音乐。
+</p>
+
+<p>
+Blue Note 坚持艺术诚信的理念，为技艺高超的音乐家们提供了完美的培养环境，让他们发展出创新的声音 ⸺ 他们在小型乐队中演奏，通常只有五名成员，不断调整和重新编排乐器配置，演奏得更激烈、更快速、更响亮。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+Miles 封面的一个常见主题是强调 Wolff 的摄影作品。
+</p>
+
+<p>
+我们今天熟悉这些标志性的图像，但在当时它们是革命性的；此前，像 Louis Armstrong 和 Ella Fitzgerald 这样的黑人音乐家通常被描绘成穿着燕尾服和晚礼服，摆出和蔼可亲的微笑或大笑的姿态，形象被刻画得不冒犯主要是白人听众的感受。
+</p>
+
+<p>
+Wolff 的肖像则是抓拍的、真实的，展示了黑人音乐家们工作的状态。
+</p>
+
+<p>
+例如，Art Blakey 的 <i>The Freedom Rider</i> 专辑封面展示了 Blakey 沉浸在一个瞬间，几乎完全被一个钹遮挡。
+</p>
+
+<p>
+鼓手正抽着一支烟，但烟几乎挂在嘴角 ⸺ 他的嘴半开，眉头紧皱，仿佛处于痛苦或狂喜的瞬间。
+</p>
+
+<p>
+Miles 会让照片充满整个封面，把唱片名称挤进任何可用的空白处。
+</p>
+
+
+<figure id="org5bef611">
+<img src="https://matthewstrom.com/images/albumart-15.jpg" alt="albumart-15.jpg">
+
+<figcaption><span class="figure-number">&#22270;7&nbsp; </span>《The Freedom Rider》专辑封面(图片来源：matthewstrom.com)</figcaption>
+</figure>
+</blockquote>
+
+<blockquote>
+<p>
+藤田的抽象画作反映了 Mingus 和 Brubeck 音乐中纯粹的热情。
+</p>
+
+<p>
+在 Mingus 的 <i>Ah Um</i> 中，贯穿封面的分割和交叉就像一束光穿过异国情调的透镜、放大镜、折射器和棱镜；通过他的音乐，Mingus 在反思爵士乐从大众娱乐向开拓思维的创造性练习的转变。
+</p>
+
+
+<figure id="org4144521">
+<img src="https://matthewstrom.com/images/albumart-21.jpg" alt="albumart-21.jpg">
+
+<figcaption><span class="figure-number">&#22270;8&nbsp; </span>《Ah Um》专辑封面 (图片来源：matthewstrom.com)</figcaption>
+</figure>
+
+<p>
+对于 <i>Time Out</i> ，页面上展开的轮子和滚筒呼应了 Brubeck 四重奏如何实验将拍号相互锁定、倍增和分割，以创造全新的质感和音乐模式。
+</p>
+
+
+<figure id="org4630e4b">
+<img src="https://matthewstrom.com/images/albumart-22.jpg" alt="albumart-22.jpg">
+
+<figcaption><span class="figure-number">&#22270;9&nbsp; </span>《Time Out》专辑封面 (图片来源：matthewstrom.com)</figcaption>
+</figure>
+
+<p>
+<span class="underline">藤田的封面明确表达了：爵士乐就是艺术。</span>
+</p>
+
+<p>
+1959 年成为爵士乐和专辑艺术的分水岭。
+</p>
+
+<p>
+Brubeck 的 <i>Time Out</i> 在 1961 年登上流行榜第二名，成为第一张销量超过一百万张的爵士 LP。
+</p>
+
+<p>
+专辑中的热门单曲 <i>Take Five</i> 也成为第一首销量突破一百万的爵士单曲。
+</p>
+
+<p>
+在那个独特的时刻，音乐和艺术界正被一张商业上成功的唱片推动向前。
+</p>
+
+<p>
+藤田的画作进入了数百万家庭，推动了先锋爵士乐唱片的销量。
+</p>
+
+<p>
+<a href="https://matthewstrom.com/writing/album-art/#:~:text=Fujita%E2%80%99s%20abstract%20paintings,vanguards%20of%20jazz.">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+制作预算越来越大。
+</p>
+
+<p>
+The Beatles 的 <i>Sgt. Pepper’s Lonely Hearts Club Band</i> 专辑封面设计复杂，包含乐队成员的精美照片、57 个真人大小的照片剪影和九个蜡像雕塑。
+</p>
+
+<p>
+这是摇滚 EP 首次在封底印上歌曲歌词。
+</p>
+
+<p>
+另一个创新是内层纸套不再是白色，而是彩色抽象图案。
+</p>
+
+<p>
+内层还附有一张纸板剪贴，包括 Sgt. Pepper 的明信片肖像、假胡子、军士条纹、翻领徽章以及 The Beatles 乐队成员的立体剪影。
+</p>
+
+<p>
+Sgt. Pepper’s 的疯狂滑稽只能与一个装满玩具和游戏的荒诞礼品盒相媲美。
+</p>
+
+<p>
+The Beatles 下一张专辑的冷清孤独则配以一张纯白封面，正面 The Beatles 字样的印记甚至没有墨水填充。
+</p>
+
+
+<figure id="orgad72d2c">
+<img src="https://matthewstrom.com/images/albumart-26.jpg" alt="albumart-26.jpg">
+
+<figcaption><span class="figure-number">&#22270;10&nbsp; </span>《Sgt. Pepper's Lonely Hearts Club Band》专辑封面 (图片来源：matthewstrom.com)</figcaption>
+</figure>
+
+<p>
+<a href="https://matthewstrom.com/writing/album-art/#:~:text=Budgets%20for%20production,on%20the%20front.">Source</a>
+</p>
+</blockquote>
+</details>
+</div>
+</div>
+<div id="outline-container-84db07ee-69ed-4baf-8b18-7e8be9f7fce5" class="outline-3">
+<h3 id="84db07ee-69ed-4baf-8b18-7e8be9f7fce5"><a href="https://velvetshark.com/ai-company-logos-that-look-like-buttholes">Why do AI company logos look like buttholes?</a></h3>
+<div class="outline-text-3" id="text-84db07ee-69ed-4baf-8b18-7e8be9f7fce5">
+
+<figure id="org3278fd8">
+<img src="https://velvetshark.com/_next/image?url=%2Fimages%2Fai-company-logos-that-look-like-buttholes%2Fwhy-do-AI-company-logos-look-like-buttholes.png&amp;w=1920&amp;q=75" alt="image?url=%2Fimages%2Fai-company-logos-that-look-like-buttholes%2Fwhy-do-AI-company-logos-look-like-buttholes.png&amp;w=1920&amp;q=75">
+
+<figcaption><span class="figure-number">&#22270;11&nbsp; </span>图片中用浅灰色描绘了一个屁股的形状，屁股上点缀着各家 AI 公司的 logo，其中 Anthropic 的 logo 特别像屁眼，正好被放在了屁眼的位置。 (图片来源：<a href="https://velvetshark.com">https://velvetshark.com</a>)</figcaption>
+</figure>
+
+<p>
+文章探究为什么 AI 公司的 logo 都长得像屁眼的形状。
+</p>
+
+<p>
+一篇有趣又幽默的文章，但也不缺严肃的分析，推荐一看。
+</p>
+
+<details id="orgcf94a3f">
+<summary>摘录</summary>
+
+<blockquote>
+<p>
+为什么这种情况会不断发生？
+</p>
+
+<p>
+有几个因素在起作用：
+</p>
+
+<p>
+<b>圆形设计心理学</b>
+</p>
+
+<p>
+<span class="underline">圆形代表完整、圆满和无限 ⸺ 这些概念与 AI 的承诺相契合。</span>
+</p>
+
+<p>
+<span class="underline">它们也显得友好且无威胁</span> ，这是公司在推销可能取代人类工作的技术时极力想要传达的品质。
+</p>
+
+<p>
+<b>无意中的仿生学模仿</b>
+</p>
+
+
+<figure id="orge6a8954">
+<img src="https://velvetshark.com/_next/image?url=%2Fimages%2Fai-company-logos-that-look-like-buttholes%2Fface-on-mars.jpg&amp;w=1080&amp;q=75" alt="image?url=%2Fimages%2Fai-company-logos-that-look-like-buttholes%2Fface-on-mars.jpg&amp;w=1080&amp;q=75">
+
+<figcaption><span class="figure-number">&#22270;12&nbsp; </span>火星上的凸起的岩石，看起来像是一张脸 (图片来源：velvetshark.com)</figcaption>
+</figure>
+
+<p>
+<span class="underline">人脑会在随机形状中发现熟悉的图案（拟人错觉）</span> ，比如 <a href="https://en.wikipedia.org/wiki/Pareidolia">火星上的脸</a>，这是 Viking 1 轨道飞行器拍摄并由 NASA 于 1976 年发布的照片。
+</p>
+
+<p>
+但有时， <span class="underline">设计师无意中重现了生物形态，却没有意识到 ⸺ 解剖学上的含义。</span>
+</p>
+
+<p>
+<b>模仿效应</b>
+</p>
+
+<p>
+<span class="underline">一旦几个主要玩家采用了圆形括约肌美学，其他人纷纷效仿。</span>
+</p>
+
+<p>
+现在我们有了一个行业，想要脱颖而出却意味着看起来和别人家的「菊花」一模一样。
+</p>
+
+<p>
+基本上，原因和许多品牌更换标志后看起来都差不多一样。
+</p>
+
+<p>
+<b>委员会设计</b>
+</p>
+
+<p>
+另一个因素是这些标志是如何被设计出来的。
+</p>
+
+<p>
+<span class="underline">重要的公司决策涉及许多利益相关者。</span>
+</p>
+
+<p>
+<span class="underline">结果往往是最安全、最无害的选择，是大家意见的平均值。</span>
+</p>
+
+<p>
+在人工智能公司的设计会议上，讨论大概是这样的：
+</p>
+
+<ul class="org-ul">
+<li>我们能让它看起来更未来感一点吗？</li>
+<li>它需要感觉既先进又亲切。</li>
+<li>让我们添加一个细微的渐变来传达智能感。</li>
+</ul>
+
+<p>
+<span class="underline">没有任何一个人会建议设计一个像肛门一样的标志，但当每个人的反馈都被采纳时，结果往往就是这样。</span>
+</p>
+
+<p>
+企业环境中的风险规避自然会推动设计趋向熟悉的、「安全」的领域，而这显然意味着解剖学上的开口。
+</p>
+
+<p>
+<a href="https://velvetshark.com/ai-company-logos-that-look-like-buttholes#:~:text=Why%20does%20this%20keep%20happening%3F">Source</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<span class="underline">这一现象揭示了科技行业更深层次的问题：害怕过于突出。</span>
+</p>
+
+<p>
+<span class="underline">尽管声称创新和颠覆，但仍有巨大的压力去通过遵循既定的视觉语言来显得正规。</span>
+</p>
+
+<p>
+当 OpenAI 那个类似括约肌的标志获得成功时，它创造了一个模板，传达出「这就是严肃的人工智能」的形象。
+</p>
+
+<p>
+现在，任何不类似这种多彩解剖开口的新 AI 公司，都有可能被视为不严肃或不专业。
+</p>
+
+<p>
+<a href="https://velvetshark.com/ai-company-logos-that-look-like-buttholes#:~:text=This%20phenomenon%20reveals,unserious%20or%20unprofessional.">Source</a>
+</p>
+</blockquote>
+</details>
+</div>
+</div>
+<div id="outline-container-e0041920-c325-47ec-a8d0-b15d543c3252" class="outline-3">
+<h3 id="e0041920-c325-47ec-a8d0-b15d543c3252"><a href="https://www.smithsonianmag.com/smart-news/banksy-unveils-new-lighthouse-mural-with-the-words-i-want-to-be-what-you-saw-in-me-in-france-180986719/">Banksy Unveils New Lighthouse Mural With the Words ‘I Want to Be What You Saw in Me’ in France</a></h3>
+<div class="outline-text-3" id="text-e0041920-c325-47ec-a8d0-b15d543c3252">
+
+<figure id="org31f8d73">
+<img src="https://th-thumbnailer.cdn-si-edu.com/z_1EjDQ7PfNR1SVXnxbpGx78d00=/1026x684/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer_public/c4/aa/c4aae144-8636-4df8-b2f8-b97f26642316/gettyimages-2217056702.jpeg" alt="gettyimages-2217056702.jpeg">
+
+<figcaption><span class="figure-number">&#22270;13&nbsp; </span>一根街道立柱，他的影子延伸到墙壁上，从影子的底部开始，在墙上描绘了一座发光的灯塔，灯塔上写着 I WANT TO BE WHAT YOU SAW IN ME，即我想成为你在我身上看到的。仿佛立柱在说，它想成为灯塔。(图片来源：th-thumbnailer.cdn-si-edu.com)</figcaption>
+</figure>
+
+<p>
+挺有趣的一幅街头作品。
+</p>
+
+<p>
+这两幅也不错：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://www.instagram.com/banksy/p/DDpGU2WMwoV/">banksy/p/DDpGU2WMwoV/</a></li>
+<li><a href="https://www.instagram.com/banksy/p/C-ka78Ds53T/">banksy/p/C-ka78Ds53T/</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-fb071e9e-e769-493a-98d9-fdf2de0119cb" class="outline-2">
+<h2 id="fb071e9e-e769-493a-98d9-fdf2de0119cb">Tool | Library</h2>
+<div class="outline-text-2" id="text-fb071e9e-e769-493a-98d9-fdf2de0119cb">
+</div>
+<div id="outline-container-bb0822e6-b1ee-4407-9e54-405d2afc75e7" class="outline-3">
+<h3 id="bb0822e6-b1ee-4407-9e54-405d2afc75e7"><a href="https://github.com/zumerlab/snapdom">zumerlab/snapdom</a></h3>
+<div class="outline-text-3" id="text-bb0822e6-b1ee-4407-9e54-405d2afc75e7">
+<blockquote>
+<p>
+snapDOM 以极快的速度和高精度将 HTML 元素捕捉为图像。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-ce70e6ae-6259-4599-917a-4c7e3a127746" class="outline-3">
+<h3 id="ce70e6ae-6259-4599-917a-4c7e3a127746"><a href="https://foresightjs.com/">ForesightJS</a></h3>
+<div class="outline-text-3" id="text-ce70e6ae-6259-4599-917a-4c7e3a127746">
+<blockquote>
+<p>
+ForesightJS 是一个免费且开源的完全类型安全的 JavaScript 库，通过分析用户的鼠标移动和键盘导航，帮助预测用户接下来可能的操作。
+</p>
+
+<p>
+它允许开发者基于这些预测提前预取数据，而不是等待点击或悬停等操作发生。
+</p>
+
+<p>
+这样可以让网站对鼠标和键盘用户来说感觉更快、更响应，同时比起内容一进入视口就预取，更加节省资源
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-e5709957-a683-4059-958c-db8138af1e32" class="outline-3">
+<h3 id="e5709957-a683-4059-958c-db8138af1e32"><a href="https://hyperwood.org/">Hyperwood</a></h3>
+<div class="outline-text-3" id="text-e5709957-a683-4059-958c-db8138af1e32">
+<blockquote>
+<p>
+Hyperwood 是一个开源系统，用于用简单的木条制作家具。
+</p>
+
+<p>
+本着 E.F. Schumacher《小即是美》(<i>Small is Beautiful</i>) 的精神，并受 Enzo Mari《自我设计》(<i>Autoprogettazione</i>) 的启发，Hyperwood 使任何人 ⸺ 无论是 DIY 爱好者、设计师、室内建筑师还是小型制造商 ⸺ 都能使用最少的工具和本地材料打造美观且坚固的家具。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-3895f8b7-6dca-431f-8e3b-2191f4bcb2ae" class="outline-3">
+<h3 id="3895f8b7-6dca-431f-8e3b-2191f4bcb2ae"><a href="https://github.com/rough-stuff/rough-notation">rough notation</a></h3>
+<div class="outline-text-3" id="text-3895f8b7-6dca-431f-8e3b-2191f4bcb2ae">
+<blockquote>
+<p>
+在网页上创建和动画手绘注释。
+</p>
+</blockquote>
+
+<p>
+摘抄里有一些句子我想标记出来，加粗和高亮过于抢眼了，会导致忽略其他内容，只关注突出部分。
+</p>
+
+<p>
+所以就想着用下划线，最好是做成那种在书上划线做笔记的感觉。
+</p>
+
+<p>
+没找到纯 CSS 的方案，倒是找到了这个库，看起来很不错，但不想因为这么一个无关紧要的需求而引入一个库。
+</p>
+</div>
+</div>
+<div id="outline-container-37a27815-feaf-41de-b22b-d03f6924a4cd" class="outline-3">
+<h3 id="37a27815-feaf-41de-b22b-d03f6924a4cd"><a href="https://github.com/Redocly/redoc">redoc</a></h3>
+<div class="outline-text-3" id="text-37a27815-feaf-41de-b22b-d03f6924a4cd">
+<blockquote>
+<p>
+Redoc 是一个用于从 OpenAPI 定义生成文档的开源工具。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-b5dd84e5-5766-482b-8b59-fff4a2a0d9c1" class="outline-3">
+<h3 id="b5dd84e5-5766-482b-8b59-fff4a2a0d9c1"><a href="https://github.com/ranyitz/qnm">qnm</a></h3>
+<div class="outline-text-3" id="text-b5dd84e5-5766-482b-8b59-fff4a2a0d9c1">
+<blockquote>
+<p>
+用于查询 node_modules 目录的命令行工具。
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-0d9aae86-8794-4992-9aa1-ab4376e7b5db" class="outline-3">
+<h3 id="0d9aae86-8794-4992-9aa1-ab4376e7b5db"><a href="https://github.com/iamgio/quarkdown">qiarkdown</a></h3>
+<div class="outline-text-3" id="text-0d9aae86-8794-4992-9aa1-ab4376e7b5db">
+<blockquote>
+<p>
+Quarkdown 是一个现代的基于 Markdown 的排版系统，围绕多功能性的核心理念设计，能够无缝地将项目编译成可打印的书籍或交互式演示文稿。
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="outline-container-d5d68349-74b6-42b2-b172-e02b546c9366" class="outline-2">
+<h2 id="d5d68349-74b6-42b2-b172-e02b546c9366">Emacs</h2>
+<div class="outline-text-2" id="text-d5d68349-74b6-42b2-b172-e02b546c9366">
+<ul class="org-ul">
+<li><a href="https://www.youtube.com/watch?v=Hkih7jaqOnE&amp;ab_channel=GregGrubbs-TechandHistory">Agentic LLM use in Emacs using Model Context Protocol (MCP)</a> (46:54)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-ba4e5271-f1f7-428e-b3f3-1e7656e630e2" class="outline-2">
+<h2 id="ba4e5271-f1f7-428e-b3f3-1e7656e630e2">一些话 | 摘抄</h2>
+<div class="outline-text-2" id="text-ba4e5271-f1f7-428e-b3f3-1e7656e630e2">
+</div>
+<div id="outline-container-6d08eff5-350b-4b85-a669-a098d0d18573" class="outline-3">
+<h3 id="6d08eff5-350b-4b85-a669-a098d0d18573"><a href="https://manateelazycat.github.io/2025/06/05/ask-os/">操作系统技术是护城河吗？</a></h3>
+<div class="outline-text-3" id="text-6d08eff5-350b-4b85-a669-a098d0d18573">
+<blockquote>
+<p>
+同事：我们的护城河就是操作系统？
+</p>
+
+<p>
+我：不是的，产品、技术都不是护城河，因为我们是普通人，别人也是普通人。我们虽然除了芯片什么都可以造，但是别人也可以。没有本质区别
+</p>
+
+<p>
+同事：那我们的护城河是什么？
+</p>
+
+<p>
+我： <span class="underline">我们的护城河是真诚待人，服务用户。服务意识是唯一一个靠金钱没法去快速积累的竞争优势。因为服务需要靠人，每个人是否真心愿意服务别人，是装不出来的。</span>
+</p>
+
+<p>
+<a href="https://manateelazycat.github.io/2025/06/05/ask-os/#:~:text=%E5%90%8C%E4%BA%8B%EF%BC%9A%E6%88%91%E4%BB%AC%E7%9A%84,%E8%A3%85%E4%B8%8D%E5%87%BA%E6%9D%A5%E7%9A%84%E3%80%82">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-3d4725d6-a9f4-47de-8aa3-7612dfeca663" class="outline-3">
+<h3 id="3d4725d6-a9f4-47de-8aa3-7612dfeca663"><a href="https://antirez.com/news/153">Human coders are still better than LLMs</a></h3>
+<div class="outline-text-3" id="text-3d4725d6-a9f4-47de-8aa3-7612dfeca663">
+<blockquote>
+<p>
+嗯，总之，我刚刚完成了分析，停下来写这篇博客，我不确定是否会使用这个系统（但很可能会）。
+</p>
+
+<p>
+<span class="underline">不过，人类的创造力依然占有优势，我们能够真正跳出框架思考，设想一些奇怪且不精确但可能比其他方案更有效的解决方法。</span>
+</p>
+
+<p>
+这对 LLMs（Large Language Models，大型语言模型）来说极其困难。
+</p>
+
+<p>
+不过，为了验证我的所有想法，Gemini 非常有用，也许我之所以开始用这样的思路看待问题，是因为我有一个“聪明的橡皮鸭”可以交流。
+</p>
+
+<p>
+<a href="https://antirez.com/news/153#:~:text=Well%2C%20all%20this,to%20talk%20with.">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-dc3a4f86-5e9f-43e9-b441-6ee81783f1e3" class="outline-3">
+<h3 id="dc3a4f86-5e9f-43e9-b441-6ee81783f1e3"><a href="https://www.benkuhn.net/abyss/">Staring into the abyss as a core life skill</a></h3>
+<div class="outline-text-3" id="text-dc3a4f86-5e9f-43e9-b441-6ee81783f1e3">
+<blockquote>
+<p>
+凝视深渊意味着理性地思考那些让人不舒服的问题，比如反驳你的宗教信仰的论点，或者支持与你伴侣分手的理由。
+</p>
+
+<p>
+人们常常拖延认真思考这些问题，因为这可能需要你承认自己过去在某些事情上非常错误，甚至可能因此浪费了大量时间（例如，和错误的人约会或向错误的神祈祷）。
+</p>
+
+<p>
+然而，在大多数情况下，你最终要么承认这一点，要么如果永远不承认，就会把自己锁定在一个次优的未来生活轨迹中，所以最好是<a href="https://www.benkuhn.net/impatient/">急切地</a>直视那些令人不舒服的话题，直到你弄清楚该怎么办。
+</p>
+
+<p>
+<a href="https://www.benkuhn.net/abyss/#:~:text=Staring%20into%20the%20abyss%20means,figured%20out%20what%20to%20do.">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-50100b05-fcb6-46e1-8363-f38a8e9fefac" class="outline-3">
+<h3 id="50100b05-fcb6-46e1-8363-f38a8e9fefac"><a href="https://www.datagubbe.se/aficion/">Honest and Elitist Thoughts on Why Computers Were More Fun Before</a></h3>
+<div class="outline-text-3" id="text-50100b05-fcb6-46e1-8363-f38a8e9fefac">
+<blockquote>
+<p>
+关于复古计算为何变得如此流行，以及为什么 ⸺ 甚至是否 ⸺ 在家用电脑的黄金时代事情更有趣，有很多讨论。
+</p>
+
+<p>
+我们这些认同过去确实更好的观点的人，通常会给出几个标准理由，所有这些理由各有其真实性：
+</p>
+
+<ul class="org-ul">
+<li>旧硬件更简单。这意味着一个人可以全部，或者至少大部分，记住它的功能。</li>
+<li>旧硬件有限制。慢速处理器、低分辨率和廉价的声卡带来了限制，而通过创造性的问题解决来克服这些限制非常有趣。</li>
+<li>旧电脑是离线的。没有注意力经济，没有 SaaS 订阅模式。你可以学会一款软件，并且使用它长达十年而不会经历重大改版。</li>
+<li>互联网主要是基于文本的。响应速度相对较快，侧重于人与人之间的交流，而不是被动内容消费和臃肿的广告。</li>
+<li>像我这样的老家伙那时候还年轻。信不信由你，我们当时是站在技术前沿，而不是在苦苦追赶。</li>
+</ul>
+
+<p>
+作为对这种反动怀旧情绪的反驳，通常会列出一系列积极的发展：硬件比以往任何时候都更便宜、更快。
+</p>
+
+<p>
+即使是最花哨的场合，也有大量的软件可用。互联网对所有人开放，价格低廉且易于访问。
+</p>
+
+<p>
+易用的界面使得先进的计算机技术比以往任何时候都更易接触。
+</p>
+
+<p>
+然而，这种关于丰富资源的积极叙述触及了另一个常被忽略的因素，关于计算乐趣衰退的原因 ⸺ 也许是因为很难否认这在某种程度上带有精英主义、排他性甚至反民主的色彩，具体取决于想要怎样的解读。
+</p>
+
+<p>
+<span class="underline">这很简单但有争议：计算机在不是人人都能用的时候更有趣。</span>
+</p>
+
+<p>
+好了，我说了。
+</p>
+
+<p>
+<a href="https://www.datagubbe.se/aficion/#:~:text=There%27s%20a%20lot,I%20said%20it.">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-8072cdfb-0d95-4eb8-b947-890d6cf1923d" class="outline-3">
+<h3 id="8072cdfb-0d95-4eb8-b947-890d6cf1923d"><a href="https://rakhim.exotext.com/but-what-if-i-really-want-a-faster-horse">But what if I really want a faster horse?</a></h3>
+<div class="outline-text-3" id="text-8072cdfb-0d95-4eb8-b947-890d6cf1923d">
+<blockquote>
+<p>
+如今的 Spotify ⸺ 基本就是 Netflix。
+</p>
+
+<p>
+内容不断变化且不稳定，库工具薄弱，还有无休止的播客轰炸。
+</p>
+
+<p>
+总体来看，一致性、用户控制和真正的用户体验创新都在下降。
+</p>
+
+<p>
+一切都在向 TikTok 趋同 ⸺ 它基本上就是拥有无限频道的电视。
+</p>
+
+<p>
+你唯一能控制的就是换频道。
+</p>
+
+<p>
+这就像 <a href="https://zh.wikipedia.org/wiki/%E8%9F%B9%E5%8C%96">蟹化现象</a> (Carcinisation)，一种趋同进化的形式，不相关的甲壳类动物都进化成某种模糊的蟹形。
+</p>
+
+<p>
+这个列表还在继续：
+</p>
+
+<ul class="org-ul">
+<li>YouTube。曾经是一个带有社交发现功能的视频目录。现在呢？TikTok。</li>
+<li>LinkedIn。曾经是一个简历网络。现在呢？TikTok。</li>
+<li>Substack。是的，一个新闻通讯平台 ⸺ 现在推出了 TikTok 风格的视频。</li>
+</ul>
+
+<p>
+<a href="https://rakhim.exotext.com/but-what-if-i-really-want-a-faster-horse#:~:text=Spotify%20today%20is,videos.%20Seriously.">Source</a>
+</p>
+</blockquote>
+
+
+<figure id="org9e43776">
+<img src="https://img.exotext.com/1/rUsJccBXf09TTBnG2OD-r.jpg" alt="rUsJccBXf09TTBnG2OD-r.jpg">
+
+<figcaption><span class="figure-number">&#22270;14&nbsp; </span>图片里横轴是时间，纵轴是媒体的多样性，图上有多条曲线，随着时间推移，媒体多样性不断减少，趋同，最终都汇聚到了 TikTok 上，表示多样性最终都趋同于 TikTok，失去了媒体自身的多样性。 (图片来源：img.exotext.com)</figcaption>
+</figure>
+</div>
+</div>
+<div id="outline-container-9b488280-6c3d-4178-b788-a5dbbce6f94b" class="outline-3">
+<h3 id="9b488280-6c3d-4178-b788-a5dbbce6f94b"><a href="https://betterthanrandom.substack.com/p/if-you-are-useful-it-doesnt-mean">If you are useful, it doesn’t mean you are valued</a></h3>
+<div class="outline-text-3" id="text-9b488280-6c3d-4178-b788-a5dbbce6f94b">
+<blockquote>
+<p>
+随着你职业生涯的发展，理解「有用」和「被重视」之间的区别非常重要。
+</p>
+
+<p>
+乍一看，它们可能看起来相似，因为你收到的信号大致相同：晋升、超出预期的奖金、特别的股票奖励。
+</p>
+
+<p>
+这就是为什么深入挖掘并尝试察觉更细微的信号很重要。
+</p>
+
+<p>
+<span class="underline">「有用」意味着你擅长在某个特定领域完成任务，以至于上级可以完全委派给你。</span>
+</p>
+
+<p>
+<span class="underline">你可靠、高效，甚至在短期内不可或缺。</span>
+</p>
+
+<p>
+<span class="underline">但你主要被视为填补空缺的人，是完成必须做但不一定是公司战略核心部分的任务的人。</span>
+</p>
+
+<p>
+「处理好这件事，别搞砸」是你的使命，你给领导层制造的麻烦越少，获得的回报就越大。
+</p>
+
+<p>
+<span class="underline">而「被重视」则意味着你被更多地纳入讨论，不仅仅是执行任务，而是帮助塑造方向。</span>
+</p>
+
+<p>
+这伴随着成长的机会，并以对你和公司都有意义的方式做出贡献。
+</p>
+
+<p>
+我花了好几年才真正理解其中的区别。
+</p>
+
+<p>
+如果你被重视，你很可能会看到一条清晰的晋升和发展路径，可能会获得更多战略性角色并参与关键决策。
+</p>
+
+<p>
+如果你只是有用，你的角色可能会感觉更加停滞不前。
+</p>
+
+<p>
+<a href="https://betterthanrandom.substack.com/p/if-you-are-useful-it-doesnt-mean#:~:text=As%20you%20progress,feel%20more%20stagnant.">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-9f27effd-33e5-49e5-805e-b3269010cd6f" class="outline-3">
+<h3 id="9f27effd-33e5-49e5-805e-b3269010cd6f"><a href="https://hamel.dev/blog/posts/field-guide/">A Field Guide to Rapidly Improving AI Products</a></h3>
+<div class="outline-text-3" id="text-9f27effd-33e5-49e5-805e-b3269010cd6f">
+<blockquote>
+<p>
+AI 团队: 这是我们的代理架构 —— 这里有 RAG，那里有一个路由器，我们还在使用这个新的框架来……
+</p>
+
+<p>
+我: [举起手示意热情的技术负责人暂停。]  <span class="underline">「你能告诉我你是怎么衡量这些东西是否真的有效的吗？」</span>
+</p>
+
+<p>
+……房间安静下来
+</p>
+
+<p>
+<a href="https://hamel.dev/blog/posts/field-guide/#:~:text=AI%20TEAM,Room%20goes%20quiet">Source</a>
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="outline-container-ff870869-c43e-400e-8e60-6d229313624e" class="outline-2">
+<h2 id="ff870869-c43e-400e-8e60-6d229313624e">多媒体</h2>
+<div class="outline-text-2" id="text-ff870869-c43e-400e-8e60-6d229313624e">
+<ul class="org-ul">
+<li><a href="https://www.bilibili.com/video/BV1bWTTzvEpj">你可能不认识她,但我真诚地希望你听她写的歌丨秦凡淇打歌</a> (15:22) 专辑好听的。</li>
+<li><a href="https://www.bilibili.com/video/BV1CS7PzjEU5">一直游，从汕头游向戛纳！当一个女孩决定自己去看世界</a> (05:55) 「请尽情地去探索世界吧！」</li>
+<li><p>
+<a href="https://www.bilibili.com/video/BV1WD7mzvEz3">看不懂《珠玉》的歌词？请搭配红楼梦食用</a> (01:40)
+</p>
+
+<p>
+「珠玉」这首歌还是挺好听的，编曲没有什么传统器乐，但词也会让我感到一种偏古风的感觉。
+</p>
+
+<blockquote>
+<p>
+每想到一些
+</p>
+
+<p>
+天地都容纳不下的说法
+</p>
+
+<p>
+心里就烧起烟霞
+</p>
+</blockquote>
+
+<p>
+喜欢这句词和旋律。
+</p></li>
+<li><a href="https://www.bilibili.com/video/BV1auTqz4EaV">WWDC25 片尾曲《五星哪够，得六星》</a> (03:00)</li>
+<li><a href="https://www.bilibili.com/video/BV1CyTizyEo1">是的，我们有个孩子…</a> (12:24)</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-52106133-4c3e-4513-bc27-6a6e63969aff" class="outline-2">
+<h2 id="52106133-4c3e-4513-bc27-6a6e63969aff">Music</h2>
+<div class="outline-text-2" id="text-52106133-4c3e-4513-bc27-6a6e63969aff">
+</div>
+<div id="outline-container-cf411964-a83c-452e-8709-0cd87090b399" class="outline-3">
+<h3 id="cf411964-a83c-452e-8709-0cd87090b399"><a href="https://music.163.com/#/artist?id=29337">Bon Iver</a></h3>
+<div class="outline-text-3" id="text-cf411964-a83c-452e-8709-0cd87090b399">
+<p>
+最近还是在听 Bon Iver，听着当白噪音干活。
+</p>
+</div>
+</div>
+<div id="outline-container-8f7a11e6-25c9-4433-8635-2ab0fe6eb660" class="outline-3">
+<h3 id="8f7a11e6-25c9-4433-8635-2ab0fe6eb660"><a href="https://music.163.com/#/artist?id=14325">中川イサト</a></h3>
+<div class="outline-text-3" id="text-8f7a11e6-25c9-4433-8635-2ab0fe6eb660">
+<p>
+中川イサト 的吉他曲给人一种平静的感觉，旋律也好听。
+</p>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://super-memory.com/english/ol/sm2.htm">SuperMemo-2</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Anki 是一款闪卡程序，帮助你将更多时间花在有挑战性的内容上，而减少在已掌握内容上的时间。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://en.wikipedia.org/wiki/Cowboy_Bebop">Cowboy Bebop</a> 是我很喜欢的动画，里面也有很多 bebop 风格的音乐。
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： 2025-06-11 Wed 21:39</p>
+<p class="date">修改于： 2025-08-28 Thu 13:04</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
