@@ -320,27 +320,27 @@ PMT[i] 表示一个部分匹配值，描述的是在 0 ~ i 这个区间，最长
 <h3 id="95cbc6b6-87fa-4338-8561-5c6d0c47f4cb">PMT 代码实现</h3>
 <div class="outline-text-3" id="text-95cbc6b6-87fa-4338-8561-5c6d0c47f4cb">
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #b6a0ff;">function</span> <span style="color: #feacd0;">getPmt</span><span style="color: #ffffff;">(</span><span style="color: #00d3d0; font-style: italic;">s</span><span style="color: #ffffff;">)</span> <span style="color: #ffffff;">{</span>
-  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0; font-style: italic;">n</span> = s.length;
-  <span style="color: #e6a577;">// </span><span style="color: #db7b5f;">&#21021;&#22987;&#21270;&#20026; 0
-</span>  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0; font-style: italic;">pmt</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Array</span><span style="color: #ff66ff;">(</span>n<span style="color: #ff66ff;">)</span>.fill<span style="color: #ff66ff;">(</span>0<span style="color: #ff66ff;">)</span>;
+<pre class="src src-js"><span style="color: #b6a0ff;">function</span> <span style="color: #feacd0;">getPmt</span><span style="color: #ffffff;">(</span><span style="color: #00d3d0;">s</span><span style="color: #ffffff;">)</span> <span style="color: #ffffff;">{</span>
+  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">n</span> = s.length;
+  <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#21021;&#22987;&#21270;&#20026; 0
+</span>  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">pmt</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Array</span><span style="color: #ff66ff;">(</span>n<span style="color: #ff66ff;">)</span>.fill<span style="color: #ff66ff;">(</span>0<span style="color: #ff66ff;">)</span>;
 
-  <span style="color: #e6a577;">// </span><span style="color: #db7b5f;">i &#23545;&#24212;&#30340;&#26159;&#21518;&#32512;(&#38500;&#21435; 0 &#30340;&#20803;&#32032;)
-</span>  <span style="color: #e6a577;">// </span><span style="color: #db7b5f;">j &#23545;&#24212;&#30340;&#26159;&#21069;&#32512;&#65292;&#38169;&#20301;&#27604;&#36739;&#65292;&#35745;&#31639;&#20844;&#20849;&#21069;&#21518;&#32512;
-</span>  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0; font-style: italic;">i</span> = 1;
-  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0; font-style: italic;">j</span> = 0;
+  <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">i &#23545;&#24212;&#30340;&#26159;&#21518;&#32512;(&#38500;&#21435; 0 &#30340;&#20803;&#32032;)
+</span>  <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">j &#23545;&#24212;&#30340;&#26159;&#21069;&#32512;&#65292;&#38169;&#20301;&#27604;&#36739;&#65292;&#35745;&#31639;&#20844;&#20849;&#21069;&#21518;&#32512;
+</span>  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">i</span> = 1;
+  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">j</span> = 0;
 
   <span style="color: #b6a0ff;">while</span> <span style="color: #ff66ff;">(</span>i &lt; n<span style="color: #ff66ff;">)</span> <span style="color: #ff66ff;">{</span>
-    <span style="color: #e6a577;">// </span><span style="color: #db7b5f;">&#22914;&#26524;&#23383;&#31526;&#30456;&#21516;&#65292;&#21017;&#26377;&#30456;&#21516;&#21069;&#21518;&#32512;&#65292;&#32479;&#35745;&#38271;&#24230;
+    <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#22914;&#26524;&#23383;&#31526;&#30456;&#21516;&#65292;&#21017;&#26377;&#30456;&#21516;&#21069;&#21518;&#32512;&#65292;&#32479;&#35745;&#38271;&#24230;
 </span>    <span style="color: #b6a0ff;">if</span> <span style="color: #00eff0;">(</span>s<span style="color: #ff6b55;">[</span>i<span style="color: #ff6b55;">]</span> == s<span style="color: #ff6b55;">[</span>j<span style="color: #ff6b55;">]</span><span style="color: #00eff0;">)</span> <span style="color: #00eff0;">{</span>
       pmt<span style="color: #ff6b55;">[</span>i++<span style="color: #ff6b55;">]</span> = ++j;
     <span style="color: #00eff0;">}</span> <span style="color: #b6a0ff;">else</span> <span style="color: #00eff0;">{</span>
-      <span style="color: #e6a577;">// </span><span style="color: #db7b5f;">&#24403;&#23383;&#31526;&#20986;&#29616;&#19981;&#21305;&#37197;&#30340;&#26102;&#20505;&#65292;&#21028;&#26029; j &#21069;&#38754;&#26159;&#21542;&#36824;&#26377;&#20844;&#20849;&#21069;&#32512;&#65292;&#26377;&#21017;&#31227;&#21160;&#21040;&#21069;&#32512;&#30340;&#19979;&#19968;&#20301;
-</span>      <span style="color: #e6a577;">// </span><span style="color: #db7b5f;">&#21363; pmt[j - 1] (0 ~ j - 1 &#20013;&#65292;&#26368;&#38271;&#20844;&#20849;&#21069;&#21518;&#32512;&#38271;&#24230;&#65289;
+      <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#24403;&#23383;&#31526;&#20986;&#29616;&#19981;&#21305;&#37197;&#30340;&#26102;&#20505;&#65292;&#21028;&#26029; j &#21069;&#38754;&#26159;&#21542;&#36824;&#26377;&#20844;&#20849;&#21069;&#32512;&#65292;&#26377;&#21017;&#31227;&#21160;&#21040;&#21069;&#32512;&#30340;&#19979;&#19968;&#20301;
+</span>      <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#21363; pmt[j - 1] (0 ~ j - 1 &#20013;&#65292;&#26368;&#38271;&#20844;&#20849;&#21069;&#21518;&#32512;&#38271;&#24230;&#65289;
 </span>      <span style="color: #b6a0ff;">if</span> <span style="color: #ff6b55;">(</span>j &gt; 0<span style="color: #ff6b55;">)</span> <span style="color: #ff6b55;">{</span>
         j = pmt<span style="color: #efef00;">[</span>j - 1<span style="color: #efef00;">]</span>;
       <span style="color: #ff6b55;">}</span> <span style="color: #b6a0ff;">else</span> <span style="color: #ff6b55;">{</span>
-        <span style="color: #e6a577;">// </span><span style="color: #db7b5f;">&#22914;&#26524; j &#20026; 0&#65292;&#32943;&#23450;&#27809;&#26377;&#20844;&#20849;&#21069;&#36724;&#32512;&#65292;&#27492;&#26102; j &#26080;&#27861;&#31227;&#21160;&#65292;&#21482;&#33021;&#31227;&#21160; i
+        <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#22914;&#26524; j &#20026; 0&#65292;&#32943;&#23450;&#27809;&#26377;&#20844;&#20849;&#21069;&#36724;&#32512;&#65292;&#27492;&#26102; j &#26080;&#27861;&#31227;&#21160;&#65292;&#21482;&#33021;&#31227;&#21160; i
 </span>        i++;
       <span style="color: #ff6b55;">}</span>
     <span style="color: #00eff0;">}</span>
@@ -362,12 +362,12 @@ console.log<span style="color: #ffffff;">(</span>getPmt<span style="color: #ff66
 <h2 id="35cb4aab-c979-4b57-a038-86b0bfac55fa">KMP 实现</h2>
 <div class="outline-text-2" id="text-35cb4aab-c979-4b57-a038-86b0bfac55fa">
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #b6a0ff;">function</span> <span style="color: #feacd0;">kmp</span><span style="color: #ffffff;">(</span><span style="color: #00d3d0; font-style: italic;">s</span>, <span style="color: #00d3d0; font-style: italic;">p</span><span style="color: #ffffff;">)</span> <span style="color: #ffffff;">{</span>
-  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0; font-style: italic;">n</span> = s.length;
-  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0; font-style: italic;">m</span> = p.length;
+<pre class="src src-js"><span style="color: #b6a0ff;">function</span> <span style="color: #feacd0;">kmp</span><span style="color: #ffffff;">(</span><span style="color: #00d3d0;">s</span>, <span style="color: #00d3d0;">p</span><span style="color: #ffffff;">)</span> <span style="color: #ffffff;">{</span>
+  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">n</span> = s.length;
+  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">m</span> = p.length;
 
-  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0; font-style: italic;">pmt</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Array</span><span style="color: #ff66ff;">(</span>m<span style="color: #ff66ff;">)</span>.fill<span style="color: #ff66ff;">(</span>0<span style="color: #ff66ff;">)</span>;
-  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0; font-style: italic;">i</span> = 1, <span style="color: #00d3d0; font-style: italic;">j</span> = 0;
+  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">pmt</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Array</span><span style="color: #ff66ff;">(</span>m<span style="color: #ff66ff;">)</span>.fill<span style="color: #ff66ff;">(</span>0<span style="color: #ff66ff;">)</span>;
+  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">i</span> = 1, <span style="color: #00d3d0;">j</span> = 0;
 
   <span style="color: #b6a0ff;">while</span> <span style="color: #ff66ff;">(</span>i &lt; m<span style="color: #ff66ff;">)</span> <span style="color: #ff66ff;">{</span>
     <span style="color: #b6a0ff;">if</span> <span style="color: #00eff0;">(</span>p<span style="color: #ff6b55;">[</span>i<span style="color: #ff6b55;">]</span> === p<span style="color: #ff6b55;">[</span>j<span style="color: #ff6b55;">]</span><span style="color: #00eff0;">)</span> <span style="color: #00eff0;">{</span>
