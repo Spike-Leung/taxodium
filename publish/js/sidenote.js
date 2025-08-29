@@ -53,7 +53,7 @@ async function ensureLittlefootMounted() {
   if (!window.littlefoot) return;
   if (!littlefootInstance) {
     littlefootInstance = window.littlefoot.littlefoot({
-      anchorPattern: /(fn|footnote|note)[:\-\._\d]/gi,
+      anchorPattern: /#(fn|footnote|note)[:\-\._\d]/gi,
       footnoteSelector: 'div',
       buttonTemplate: `<button
   aria-label="脚注 <% number %>"
