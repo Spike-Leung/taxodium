@@ -188,7 +188,7 @@ denote 中的改动有两个地方：
         `(("orgfiles"
            :base-directory "~/git/taxodium/posts"
            :base-extension "org"
-           :exclude ,(spike-leung/org-publish-build-exclude-regexp '("draft" "blackhole") '("rss.org")) ;; <-- 过滤不需要的文件
+           :exclude ,(rx (or "rss.org" "_draft" "_blackhole"))
            :publishing-directory "~/git/taxodium/publish"
            :publishing-function spike-leung/org-html-publish-to-html-orgfiles
            :section-numbers nil
@@ -210,7 +210,7 @@ denote 中的改动有两个地方：
           ("draft"
            :base-directory "~/git/taxodium/posts"
            :base-extension "org"
-           :exclude ,(spike-leung/org-publish-build-exclude-regexp '("published" "blackhole") '("rss.org"))
+           :exclude ,(rx (or "rss.org" "_published" "_blackhole"))
            :publishing-directory "~/git/taxodium/publish"
            :publishing-function spike-leung/org-html-publish-to-html-orgfiles
            :section-numbers nil
@@ -225,29 +225,6 @@ denote 中的改动有两个地方：
 
           ;; 省略部分代码
           ))
-
-  ;; 一个生成 exclude 需要的正则表达式的方法
-  (defun spike-leung/org-publish-build-exclude-regexp (exclude-tag-keywords exclude-file-patterns)
-    "Construct a regular expression for the `org-publish` 'exclude' property.
-    Arguments:
-    - EXCLUDE-TAG-KEYWORDS: A list of strings representing keywords that follow an underscore in the filename.
-    - EXCLUDE-FILE-PATTERNS: A list of strings representing patterns to directly match against file paths.
-    Return value:
-    An `rx` expression, suitable as the `:exclude` value in an `org-publish` project configuration.
-    Returns `nil` if both lists are empty."
-    (let ((rx-components nil))
-      (when (and (listp exclude-tag-keywords)
-                 (not (null exclude-tag-keywords)))
-        (push (rx (seq "_" (or ,@exclude-tag-keywords))) rx-components))
-
-      (when (and (listp exclude-file-patterns)
-                 (not (null exclude-file-patterns)))
-        (dolist (pattern exclude-file-patterns)
-          (push (rx pattern) rx-components)))
-
-      (if rx-components
-          (rx (or ,@(nreverse rx-components)))
-        nil)))
 #+end_src
 #+end_details
 

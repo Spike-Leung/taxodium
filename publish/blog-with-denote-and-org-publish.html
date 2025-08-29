@@ -239,7 +239,7 @@
 </div>
 </nav>
 
-<figure id="org8b844f7">
+<figure id="orgce8f744">
 <img src="images/blog-with-denote-and-org-publish/blogging.jpg" alt="blogging.jpg">
 
 <figcaption><span class="figure-number">&#22270;1&nbsp; </span>一张描述写博客和折腾博客关系的图片，横轴是博客搭建相关的文章数量，纵轴是文章数量。用 WordPress 的位于左上角，用 org-mode 的位于右下角。图片想表达的是，那些折腾博客的人，往往都没有产出多少文章和内容；而那些产出很高的作者，往往会使用那些广泛使用、易用的平台，而不太会折腾博客搭建。 (图片来源：<a href="https://rakhim.org/honestly-undefined/19/">https://rakhim.org/honestly-undefined/19/</a>)</figcaption>
@@ -406,7 +406,7 @@ denote 中的改动有两个地方：
 对于 <code>denote:</code> 链接问题，需要覆盖 <code>denote-link-ol-export</code> 的实现，在生成链接的时候，通过 <code>denote:</code> 找到文件后，获取文件中的 <code>export_file_name</code> 作为最终的链接名称。
 </p>
 
-<details id="orgee1dcb4">
+<details id="orgfbcbce0">
 <summary>相关代码</summary>
 
 <p>
@@ -414,11 +414,11 @@ denote 中的改动有两个地方：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #93a1a1; font-style: italic;">;;; </span><span style="color: #db7b5f; font-style: italic;">https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8
+<pre class="src src-emacs-lisp"><span style="color: #e6a577;">;;; </span><span style="color: #db7b5f;">https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8
 </span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">setq</span> org-export-allow-bind-keywords t<span style="color: #ffffff;">)</span>
 
-<span style="color: #93a1a1; font-style: italic;">;;; </span><span style="color: #db7b5f; font-style: italic;">make denote-link-ol-export support #+export_file_name
-</span><span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">see also: https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/
+<span style="color: #e6a577;">;;; </span><span style="color: #db7b5f;">make denote-link-ol-export support #+export_file_name
+</span><span style="color: #e6a577;">;; </span><span style="color: #db7b5f;">see also: https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/
 </span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/my-denote--get-export-file-name</span> <span style="color: #ff66ff;">(</span>file<span style="color: #ff66ff;">)</span>
   <span style="color: #9ac8e0;">"Find #+export_file_name in FILE and return its value.
 Return nil if not found or FILE does not exist."</span>
@@ -457,7 +457,7 @@ backend."</span>
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">denote</span>
   <span style="color: #ff66ff;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">find-file-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">denote-fontify-links-mode-maybe</span><span style="color: #ff66ff;">)</span>
   <span style="color: #ff66ff;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">dired-mode-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">denote-dired-mode-in-directories</span><span style="color: #ff66ff;">)</span>
-  <span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">&#35206;&#30422; denote &#40664;&#35748;&#30340; export &#26041;&#27861;
+  <span style="color: #e6a577;">;; </span><span style="color: #db7b5f;">&#35206;&#30422; denote &#40664;&#35748;&#30340; export &#26041;&#27861;
 </span>  <span style="color: #ff66ff;">(</span>org-link-set-parameters <span style="color: #79a8ff;">"denote"</span> <span style="color: #f78fe7;">:export</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">spike-leung/denote-link-ol-export</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 
 </pre>
@@ -504,7 +504,7 @@ backend."</span>
 尽管 org-publish 提供了 <code>:inlucde</code> 关键字，但它只支持一个文件列表的字符串，无法用正则匹配 denote 文件名上的 keyword，所以我目前只能用 <code>:exclude</code> 关键字，将不需要的 keyword 排除掉。
 </p>
 
-<details id="orgc87bfe2">
+<details id="orgd8c9b53">
 <summary>相关代码</summary>
 
 <p>
@@ -520,8 +520,8 @@ backend."</span>
       <span style="color: #b6a0ff;">`</span><span style="color: #ff66ff;">(</span><span style="color: #00eff0;">(</span><span style="color: #79a8ff;">"orgfiles"</span>
          <span style="color: #f78fe7;">:base-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/posts"</span>
          <span style="color: #f78fe7;">:base-extension</span> <span style="color: #79a8ff;">"org"</span>
-         <span style="color: #f78fe7;">:exclude</span> ,<span style="color: #ff6b55;">(</span>spike-leung/org-publish-build-exclude-regexp <span style="color: #b6a0ff;">'</span><span style="color: #efef00;">(</span><span style="color: #79a8ff;">"draft"</span> <span style="color: #79a8ff;">"blackhole"</span><span style="color: #efef00;">)</span> <span style="color: #b6a0ff;">'</span><span style="color: #efef00;">(</span><span style="color: #79a8ff;">"rss.org"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span> <span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">&lt;-- &#36807;&#28388;&#19981;&#38656;&#35201;&#30340;&#25991;&#20214;
-</span>         <span style="color: #f78fe7;">:publishing-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/publish"</span>
+         <span style="color: #f78fe7;">:exclude</span> ,<span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">rx</span> <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">or</span> <span style="color: #79a8ff;">"rss.org"</span> <span style="color: #79a8ff;">"_draft"</span> <span style="color: #79a8ff;">"_blackhole"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #f78fe7;">:publishing-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/publish"</span>
          <span style="color: #f78fe7;">:publishing-function</span> spike-leung/org-html-publish-to-html-orgfiles
          <span style="color: #f78fe7;">:section-numbers</span> nil
          <span style="color: #f78fe7;">:with-toc</span> t
@@ -542,7 +542,7 @@ backend."</span>
         <span style="color: #00eff0;">(</span><span style="color: #79a8ff;">"draft"</span>
          <span style="color: #f78fe7;">:base-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/posts"</span>
          <span style="color: #f78fe7;">:base-extension</span> <span style="color: #79a8ff;">"org"</span>
-         <span style="color: #f78fe7;">:exclude</span> ,<span style="color: #ff6b55;">(</span>spike-leung/org-publish-build-exclude-regexp <span style="color: #b6a0ff;">'</span><span style="color: #efef00;">(</span><span style="color: #79a8ff;">"published"</span> <span style="color: #79a8ff;">"blackhole"</span><span style="color: #efef00;">)</span> <span style="color: #b6a0ff;">'</span><span style="color: #efef00;">(</span><span style="color: #79a8ff;">"rss.org"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #f78fe7;">:exclude</span> ,<span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">rx</span> <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">or</span> <span style="color: #79a8ff;">"rss.org"</span> <span style="color: #79a8ff;">"_published"</span> <span style="color: #79a8ff;">"_blackhole"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
          <span style="color: #f78fe7;">:publishing-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/publish"</span>
          <span style="color: #f78fe7;">:publishing-function</span> spike-leung/org-html-publish-to-html-orgfiles
          <span style="color: #f78fe7;">:section-numbers</span> nil
@@ -555,31 +555,8 @@ backend."</span>
          <span style="color: #f78fe7;">:author</span> <span style="color: #79a8ff;">"Spike Leung"</span>
          <span style="color: #f78fe7;">:email</span> <span style="color: #79a8ff;">"l-yanlei@hotmail.com"</span><span style="color: #00eff0;">)</span>
 
-        <span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">&#30465;&#30053;&#37096;&#20998;&#20195;&#30721;
+        <span style="color: #e6a577;">;; </span><span style="color: #db7b5f;">&#30465;&#30053;&#37096;&#20998;&#20195;&#30721;
 </span>        <span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
-
-<span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">&#19968;&#20010;&#29983;&#25104; exclude &#38656;&#35201;&#30340;&#27491;&#21017;&#34920;&#36798;&#24335;&#30340;&#26041;&#27861;
-</span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/org-publish-build-exclude-regexp</span> <span style="color: #ff66ff;">(</span>exclude-tag-keywords exclude-file-patterns<span style="color: #ff66ff;">)</span>
-  <span style="color: #9ac8e0;">"Construct a regular expression for the `org-publish` '</span><span style="color: #00bcff;">exclude</span><span style="color: #9ac8e0;">' property.
-  Arguments:
-  - EXCLUDE-TAG-KEYWORDS: A list of strings representing keywords that follow an underscore in the filename.
-  - EXCLUDE-FILE-PATTERNS: A list of strings representing patterns to directly match against file paths.
-  Return value:
-  An `rx` expression, suitable as the `:exclude` value in an `org-publish` project configuration.
-  Returns `nil` if both lists are empty."</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">let</span> <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>rx-components nil<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
-    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">and</span> <span style="color: #efef00;">(</span>listp exclude-tag-keywords<span style="color: #efef00;">)</span>
-               <span style="color: #efef00;">(</span>not <span style="color: #b6a0ff;">(</span>null exclude-tag-keywords<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
-      <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">push</span> <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">rx</span> <span style="color: #b6a0ff;">(</span>seq <span style="color: #79a8ff;">"_"</span> <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">or</span> ,@exclude-tag-keywords<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span> rx-components<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
-
-    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">and</span> <span style="color: #efef00;">(</span>listp exclude-file-patterns<span style="color: #efef00;">)</span>
-               <span style="color: #efef00;">(</span>not <span style="color: #b6a0ff;">(</span>null exclude-file-patterns<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
-      <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">dolist</span> <span style="color: #efef00;">(</span>pattern exclude-file-patterns<span style="color: #efef00;">)</span>
-        <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">push</span> <span style="color: #b6a0ff;">(</span><span style="color: #b6a0ff;">rx</span> pattern<span style="color: #b6a0ff;">)</span> rx-components<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
-
-    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">if</span> rx-components
-        <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">rx</span> <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">or</span> ,@<span style="color: #b6a0ff;">(</span>nreverse rx-components<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
-      nil<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 </pre>
 </div>
 </details>
@@ -588,7 +565,7 @@ backend."</span>
 另外，生成 sitemap 的时候，我希望使用 <code>export_file_name</code> 的作为链接名称，而不是 denote 的文件名，这需要调整 orgfiles 中 <code>:sitemap-format-entry</code> 的逻辑。
 </p>
 
-<details id="orgcf42bd0">
+<details id="org4071eea">
 <summary>相关代码</summary>
 
 <div class="org-src-container">
@@ -609,13 +586,13 @@ backend."</span>
          <span style="color: #f78fe7;">:auto-sitemap</span> t
          <span style="color: #f78fe7;">:sitemap-filename</span> <span style="color: #79a8ff;">"index.org"</span>
          <span style="color: #f78fe7;">:sitemap-title</span> <span style="color: #79a8ff;">"Taxodium"</span>
-         <span style="color: #f78fe7;">:sitemap-format-entry</span> spike-leung/sitemap-format-entry <span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">&lt;-- &#35843;&#25972; entry &#30340;&#36820;&#22238;
+         <span style="color: #f78fe7;">:sitemap-format-entry</span> spike-leung/sitemap-format-entry <span style="color: #e6a577;">;; </span><span style="color: #db7b5f;">&lt;-- &#35843;&#25972; entry &#30340;&#36820;&#22238;
 </span>         <span style="color: #f78fe7;">:sitemap-sort-files</span> anti-chronologically
          <span style="color: #f78fe7;">:sitemap-function</span> spike-leung/sitemap-function
          <span style="color: #f78fe7;">:author</span> <span style="color: #79a8ff;">"Spike Leung"</span>
          <span style="color: #f78fe7;">:email</span> <span style="color: #79a8ff;">"l-yanlei@hotmail.com"</span><span style="color: #00eff0;">)</span>
 
-        <span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">&#30465;&#30053;&#37096;&#20998;&#20195;&#30721;
+        <span style="color: #e6a577;">;; </span><span style="color: #db7b5f;">&#30465;&#30053;&#37096;&#20998;&#20195;&#30721;
 </span>        <span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/sitemap-format-entry</span> <span style="color: #ff66ff;">(</span>entry style project<span style="color: #ff66ff;">)</span>
@@ -632,7 +609,7 @@ PROJECT is the current project."</span>
                     entry<span style="color: #b6a0ff;">)</span>
                    <span style="color: #b6a0ff;">(</span>org-publish-find-title entry project<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
           <span style="color: #ff6b55;">(</span><span style="color: #efef00;">(</span>eq style <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">tree</span><span style="color: #efef00;">)</span>
-           <span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">Return only last subdir.
+           <span style="color: #e6a577;">;; </span><span style="color: #db7b5f;">Return only last subdir.
 </span>           <span style="color: #efef00;">(</span>file-name-nondirectory <span style="color: #b6a0ff;">(</span>directory-file-name entry<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
           <span style="color: #ff6b55;">(</span>t entry<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 
@@ -699,7 +676,7 @@ Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如
 
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： 2025-08-28 Thu 18:40</p>
-<p class="date">修改于： 2025-08-29 Fri 10:35</p>
+<p class="date">修改于： 2025-08-29 Fri 11:15</p>
 <p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <script src="/js/sidenote.js" defer></script>
