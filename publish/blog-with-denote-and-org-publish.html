@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>结合 denote 和 org-publish 写博客</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="结合 denote 和 org-publish 写博客，denote 可以更好的组织文件，org-publish 则用于发布，涉及一些 Elisp 使得 denote 能用于 org-publish" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">结合 denote 和 org-publish 写博客</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org2c97921">前言</a></li>
+<li><a href="#orga2e0247">denote</a></li>
+<li><a href="#org16028bb">org-publish</a></li>
+<li><a href="#org1dcbbed">博客文章</a></li>
+<li><a href="#org4c023de">写在最后</a></li>
+</ul>
+</div>
+</nav>
+
+<figure id="org555a427">
+<img src="images/blog-with-denote-and-org-publish/blogging.jpg" alt="blogging.jpg">
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>一张描述写博客和折腾博客关系的图片，横轴是博客搭建相关的文章数量，纵轴是文章数量。用 WordPress 的位于左上角，用 org-mode 的位于右下角。图片想表达的是，那些折腾博客的人，往往都没有产出多少文章和内容；而那些产出很高的作者，往往会使用那些广泛使用、易用的平台，而不太会折腾博客搭建。 (图片来源：<a href="https://rakhim.org/honestly-undefined/19/">https://rakhim.org/honestly-undefined/19/</a>)</figcaption>
+</figure>
+<div id="outline-container-org2c97921" class="outline-2">
+<h2 id="org2c97921">前言</h2>
+<div class="outline-text-2" id="text-org2c97921">
+<p>
+最近又折腾了一下博客的构建，起因是我打算写一些关于音乐专辑的分享文章，可能会写很多篇。
+</p>
+
+<p>
+类似 <a href="0.html">Zine</a> 一样，我可能取名为 album，然后从 album#0 一直往下写，文章的基本内容应该有专辑名称、创作者、创作年份。
+</p>
+
+<p>
+但问题是，从 album#0 中我不知道是关于什么专辑，什么创作者的，如果后面写得多了，我要判断有没有分享过，那只能搜索一下了。
+</p>
+
+<p>
+或许你会说，既然如此，把专辑名称、创作者等信息写到文件名里不就好了，例如 album-0&#x2013;album-name&#x2013;creator&#x2013;date.org。
+</p>
+
+<p>
+确实可以这样，不过需要处理 2 个问题：
+</p>
+
+<ol class="org-ol">
+<li>建立一个统一的命名规则</li>
+<li>专辑的信息可能会有变动，或许后续还想新增一些信息，此时文件名就会改变，而我发布的 URL 也是依赖文件名的，URL 也可能会变，我希望文章一旦发布之后，URL 就尽量固定下来，避免有人引用后跳转出现 404</li>
+</ol>
+
+<p>
+关于命名规则，我觉得 <a href="https://protesilaos.com/emacs/denote">denote</a> 的命名规则很好，我也一直在用 denote 来记笔记。
+</p>
+
+<p>
+于是我就搜索了一下有没有用 denote 写博客，还真找到了一些：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://systemcrafters.net/live-streams/september-9-2022/">Generating a Blog Site from Denote Entries | System Crafters</a></li>
+<li><a href="https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/">Blogging with Denote and Hugo | Jiewawa's blog</a></li>
+<li><a href="https://yejun.dev/posts/blogging-using-denote-and-hugo/">Blogging using Denote and Hugo | Yejun Su</a></li>
+<li><a href="https://merrick.luois.me/posts/blog-redecoration-2025">Blogging with Org Mode and Denote | Uncharted Mind Space</a></li>
+</ul>
+
+<p>
+我先是尝试了一下 <a href="https://systemcrafters.net/live-streams/september-9-2022/">Generating a Blog Site from Denote Entries | System Crafters</a> 里的方法，这篇文章使用 <a href="https://github.com/emacs-love/weblorg">weblorg</a> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>构建博客。
+</p>
+
+<p>
+weblorg 看起来挺不错的，简单，而且更重要的是它支持一个 <a href="https://emacs.love/weblorg/doc/file-properties.html#slug">slug</a> 属性，slug 优先于 title，如果存在 slug 就会用 slug 生成 html 的文件名，这正好解决了我的第二个问题，即固定 URL，不随着标题等变化。
+</p>
+
+<p>
+除此之外，weblorg 的 template 系统看起来也比 org-publish 用起来简单；它还有一直想要的目录 (category) 功能。
+</p>
+
+<p>
+当我兴冲冲的尝试了一下 weblorg 后，不太清楚是不是我的 org 文件有些复杂，构建了几次都失败了，有一个报错但没排查出问题来。
+</p>
+
+<p>
+而且 weblorg 似乎用的人不多，维护频率也不是很高，担心后面除了问题处理起来麻烦，就暂时搁置了。
+</p>
+
+<p>
+因为计划用 denote，denote 依赖文件顶部的 front matter 信息，所以我也计划将所有博客文章的 front matter 整理一下，为此又看了遍 org-publish 和 org-mode export 的 info，了解一下都有什么 front matter，以及它们的作用。
+</p>
+
+<p>
+在这个过程中，我发现了 EXPORT_FILE_NAME:
+</p>
+
+<blockquote>
+<p>
+The name of the output file to be generated.
+</p>
+
+<p>
+Otherwise, Org generates the file name based on the buffer name and the extension based on the backend format.
+</p>
+
+<p>
+<a href="https://orgmode.org/manual/Export-Settings.html#index-EXPORT_005fFILE_005fNAME_002c-keyword">Source</a>
+</p>
+</blockquote>
+
+<p>
+也就是说，通过 EXPORT_FILE_NAME 我可以改变 export 的文件名，而 org-publish 其实也是 export 的一种，所以也应该可以改变 org-publish 生成的 html 文件名。
+</p>
+
+<p>
+折腾了一下还真可以，这就解决了我上面的第二个问题，固定 URL，不随着文件名或标题变化而变化。
+</p>
+
+<p>
+两个问题基本解决了，但还有一个问题，一旦我迁移到 denote，文件之间的相互链接就不能用 <code>file:</code> 形式的链接了，因为文件名可能会变化，而需要用 <code>denote:</code> 形式的链接，而 <code>denote:</code> 这样的链接在 export 的时候，能否正常转换成实际的 html 路径是我不确定的。
+</p>
+
+<p>
+经过一些尝试和文档查阅，这个问题也解决了，所以迁移到 denote 来管理我的博客文件基本是没问题了。
+</p>
+
+<p>
+接下来会分享一下迁移到 denote 过程中碰到的一些问题，包括 denote 的改动、org-publish 的改动以及博客文章的改动。
+</p>
+</div>
+</div>
+<div id="outline-container-orga2e0247" class="outline-2">
+<h2 id="orga2e0247">denote</h2>
+<div class="outline-text-2" id="text-orga2e0247">
+<blockquote>
+<p>
+<a href="https://protesilaos.com/emacs/denote">Denote</a> 是由 Protesilaos Stavrou（也称 Prot）创建的一个简单记笔记工具，其理念是笔记文件名应遵循一种可预测且具描述性的命名方案。
+</p>
+
+<p>
+默认格式是 <code>DATE==SIGNATURE--TITLE__KEYWORDS.EXTENSION</code> ，例如 <code>20231007T104700--static-website-with-hugo-and-nix__hugo_nix.org</code> 。
+</p>
+
+<p>
+这种格式既适合用于 URL，又便于搜索。
+</p>
+
+<p>
+<a href="https://yejun.dev/posts/blogging-using-denote-and-hugo/#:~:text=Denote%20is%20a,easy%20to%20search.">Source</a>
+</p>
+</blockquote>
+
+<p>
+denote 这样的命名方案，通过看文件名就能获取很多信息。
+</p>
+
+<p>
+例如当前这篇文章的文件名是： <code>20250828T184037--结合-denote-和-org-publish-写博客__blog_denote_draft_emacs_orgpublish.org</code> ，从中我可以知道：
+</p>
+
+<ol class="org-ol">
+<li>创建时间：2025-08-28 18:40</li>
+<li>标题：结合-denote-和-org-publish-写博客</li>
+<li>关键字：blog、denote、draft、emacs、org-publish，其中 draft 是用来标记草稿的，草稿在不会构建到 sitemap 中。</li>
+</ol>
+
+<p>
+回到我文章最开始的需求，我计划写一些关于专辑的分享，我就可以把专辑的创作者、日期等记录在关键字里，后续可以通过关键字快速进行过滤。
+</p>
+
+<p>
+denote 中的改动有两个地方：
+</p>
+
+<ol class="org-ol">
+<li>由于博客文章和我的笔记是分开在不同目录的，在 denote 中称做 silos，需要处理 slios 的 export 问题。</li>
+<li>处理 <code>denote:</code> 链接问题，使得 export 的时候，优先使用 EXPORT_FILE_NAME 作为文件名，而不是 denote 本身的文件名。</li>
+</ol>
+
+<p>
+对于 slios 的到处问题，Prot 已经考虑到了：<a href="https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8">5.7.1. Make Org export work with silos</a>。
+</p>
+
+<details id="orgb730a00">
+<summary>代码改动</summary>
+
+<p>
+源文件见：<a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-denote.el">init-denote.el</a>。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #cda4df;">;;; </span><span style="color: #db7b5f;">https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8
+</span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">setq</span> org-export-allow-bind-keywords t<span style="color: #ffffff;">)</span>
+
+<span style="color: #cda4df;">;;; </span><span style="color: #db7b5f;">make denote-link-ol-export support #+export_file_name
+</span><span style="color: #cda4df;">;; </span><span style="color: #db7b5f;">see also: https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/
+</span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/my-denote--get-export-file-name</span> <span style="color: #ff66ff;">(</span>file<span style="color: #ff66ff;">)</span>
+  <span style="color: #9ac8e0;">"Find #+export_file_name in FILE and return its value.
+Return nil if not found or FILE does not exist."</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">and</span> file <span style="color: #ff6b55;">(</span>file-exists-p file<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
+    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">with-temp-buffer</span>
+      <span style="color: #ff6b55;">(</span>insert-file-contents file<span style="color: #ff6b55;">)</span>
+      <span style="color: #ff6b55;">(</span>goto-char <span style="color: #efef00;">(</span>point-min<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+      <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #efef00;">(</span>re-search-forward <span style="color: #79a8ff;">"^#</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">+export_file_name: </span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #00c06f;">(</span><span style="color: #79a8ff;">.*</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #00c06f;">)</span><span style="color: #79a8ff;">$"</span> nil t<span style="color: #efef00;">)</span>
+        <span style="color: #efef00;">(</span>string-trim <span style="color: #b6a0ff;">(</span>match-string-no-properties 1<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+
+<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/denote-link-ol-export</span> <span style="color: #ff66ff;">(</span>link description format<span style="color: #ff66ff;">)</span>
+  <span style="color: #9ac8e0;">"Export a `</span><span style="color: #00bcff;">denote:</span><span style="color: #9ac8e0;">' link from Org files.
+The LINK, DESCRIPTION, and FORMAT are handled by the export
+backend."</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">pcase-let*</span> <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">`</span><span style="color: #efef00;">(</span>,path ,query ,file-search<span style="color: #efef00;">)</span> <span style="color: #efef00;">(</span>denote-link--ol-resolve-link-to-target link <span style="color: #f78fe7;">:full-data</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+               <span style="color: #ff6b55;">(</span>export-file-name <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">when</span> path <span style="color: #b6a0ff;">(</span>spike-leung/my-denote--get-export-file-name path<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+               <span style="color: #ff6b55;">(</span>anchor <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">if</span> export-file-name
+                           export-file-name
+                         <span style="color: #b6a0ff;">(</span><span style="color: #b6a0ff;">when</span> path <span style="color: #44df44;">(</span>file-relative-name <span style="color: #79a8ff;">(</span>file-name-sans-extension path<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+               <span style="color: #ff6b55;">(</span>desc <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">cond</span>
+                      <span style="color: #b6a0ff;">(</span>description<span style="color: #b6a0ff;">)</span>
+                      <span style="color: #b6a0ff;">(</span>file-search <span style="color: #44df44;">(</span>format <span style="color: #79a8ff;">"denote:%s::%s"</span> query file-search<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+                      <span style="color: #b6a0ff;">(</span>t <span style="color: #44df44;">(</span>concat <span style="color: #79a8ff;">"denote:"</span> query<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
+    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">if</span> path
+        <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">pcase</span> format
+          <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">html</span> <span style="color: #b6a0ff;">(</span><span style="color: #b6a0ff;">if</span> file-search
+                     <span style="color: #44df44;">(</span>format <span style="color: #79a8ff;">"&lt;a href=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">%s.html%s</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">&gt;%s&lt;/a&gt;"</span> anchor file-search desc<span style="color: #44df44;">)</span>
+                   <span style="color: #44df44;">(</span>format <span style="color: #79a8ff;">"&lt;a href=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">%s.html</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">&gt;%s&lt;/a&gt;"</span> anchor desc<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
+          <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">latex</span> <span style="color: #b6a0ff;">(</span>format <span style="color: #79a8ff;">"</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">href{%s}{%s}"</span> <span style="color: #44df44;">(</span>replace-regexp-in-string <span style="color: #79a8ff;">"[</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">{}$%&amp;_#~^]"</span> <span style="color: #79a8ff;">"</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">&amp;"</span> path<span style="color: #44df44;">)</span> desc<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
+          <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">texinfo</span> <span style="color: #b6a0ff;">(</span>format <span style="color: #79a8ff;">"@uref{%s,%s}"</span> path desc<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
+          <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">ascii</span> <span style="color: #b6a0ff;">(</span>format <span style="color: #79a8ff;">"[%s] &lt;denote:%s&gt;"</span> desc path<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
+          <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">md</span> <span style="color: #b6a0ff;">(</span>format <span style="color: #79a8ff;">"[%s](%s)"</span> desc path<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
+          <span style="color: #efef00;">(</span>_ path<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+      <span style="color: #ff6b55;">(</span>format-message <span style="color: #79a8ff;">"[[Denote query for `</span><span style="color: #00bcff;">%s</span><span style="color: #79a8ff;">']]"</span> query<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+
+<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">denote</span>
+  <span style="color: #ff66ff;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">find-file-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">denote-fontify-links-mode-maybe</span><span style="color: #ff66ff;">)</span>
+  <span style="color: #ff66ff;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">dired-mode-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">denote-dired-mode-in-directories</span><span style="color: #ff66ff;">)</span>
+  <span style="color: #cda4df;">;; </span><span style="color: #db7b5f;">&#35206;&#30422; denote &#40664;&#35748;&#30340; export &#26041;&#27861;
+</span>  <span style="color: #ff66ff;">(</span>org-link-set-parameters <span style="color: #79a8ff;">"denote"</span> <span style="color: #f78fe7;">:export</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">spike-leung/denote-link-ol-export</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+
+</pre>
+</div>
+</details>
+</div>
+</div>
+<div id="outline-container-org16028bb" class="outline-2">
+<h2 id="org16028bb">org-publish</h2>
+</div>
+
+<div id="outline-container-org1dcbbed" class="outline-2">
+<h2 id="org1dcbbed">博客文章</h2>
+</div>
+
+<div id="outline-container-org4c023de" class="outline-2">
+<h2 id="org4c023de">写在最后</h2>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+本来打算折腾完 weblorg 之后写篇文章分享到 Emacs China，就先去 Emacs China 看看有没有写过，还真找到了一篇 <a href="https://emacs-china.org/t/org-mode-weblorg/25244">Org Mode 配合 weblorg 写博客还挺好用的</a>，文章里那张图就是从这个帖子里看到的。weblorg 这个名字也挺有趣的，是 web + blog + org 的组合，就可以看作是 web-lorg，也可以看作是 we-blorg。
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： 2025-08-28 Thu 18:40</p>
+<p class="date">修改于： 2025-08-29 Fri 08:12</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/image-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

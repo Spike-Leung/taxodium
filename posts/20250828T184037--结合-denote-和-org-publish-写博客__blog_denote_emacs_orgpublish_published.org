@@ -1,0 +1,165 @@
+#+title:      结合 denote 和 org-publish 写博客
+#+export_file_name: blog-with-denote-and-org-publish
+#+date:       [2025-08-28 Thu 18:40]
+#+filetags:   :blog:denote:emacs:orgpublish:published:
+#+identifier: 20250828T184037
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 结合 denote 和 org-publish 写博客，denote 可以更好的组织文件，org-publish 则用于发布，涉及一些 Elisp 使得 denote 能用于 org-publish
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content indent
+
+#+CAPTION: 一张描述写博客和折腾博客关系的图片，横轴是博客搭建相关的文章数量，纵轴是文章数量。用 WordPress 的位于左上角，用 org-mode 的位于右下角。图片想表达的是，那些折腾博客的人，往往都没有产出多少文章和内容；而那些产出很高的作者，往往会使用那些广泛使用、易用的平台，而不太会折腾博客搭建。 (图片来源：https://rakhim.org/honestly-undefined/19/)
+[[file:images/blog-with-denote-and-org-publish/blogging.jpg]]
+
+* 前言
+
+最近又折腾了一下博客的构建，起因是我打算写一些关于音乐专辑的分享文章，可能会写很多篇。
+
+类似 [[denote:20240727T191042][Zine]] 一样，我可能取名为 album，然后从 album#0 一直往下写，文章的基本内容应该有专辑名称、创作者、创作年份。
+
+但问题是，从 album#0 中我不知道是关于什么专辑，什么创作者的，如果后面写得多了，我要判断有没有分享过，那只能搜索一下了。
+
+或许你会说，既然如此，把专辑名称、创作者等信息写到文件名里不就好了，例如 album-0--album-name--creator--date.org。
+
+确实可以这样，不过需要处理 2 个问题：
+
+1. 建立一个统一的命名规则
+2. 专辑的信息可能会有变动，或许后续还想新增一些信息，此时文件名就会改变，而我发布的 URL 也是依赖文件名的，URL 也可能会变，我希望文章一旦发布之后，URL 就尽量固定下来，避免有人引用后跳转出现 404
+
+关于命名规则，我觉得 [[https://protesilaos.com/emacs/denote][denote]] 的命名规则很好，我也一直在用 denote 来记笔记。
+
+于是我就搜索了一下有没有用 denote 写博客，还真找到了一些：
+
+- [[https://systemcrafters.net/live-streams/september-9-2022/][Generating a Blog Site from Denote Entries | System Crafters]]
+- [[https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/][Blogging with Denote and Hugo | Jiewawa's blog]]
+- [[https://yejun.dev/posts/blogging-using-denote-and-hugo/][Blogging using Denote and Hugo | Yejun Su]]
+- [[https://merrick.luois.me/posts/blog-redecoration-2025][Blogging with Org Mode and Denote | Uncharted Mind Space]]
+
+我先是尝试了一下 [[https://systemcrafters.net/live-streams/september-9-2022/][Generating a Blog Site from Denote Entries | System Crafters]] 里的方法，这篇文章使用 [[https://github.com/emacs-love/weblorg][weblorg]] [fn:1]构建博客。
+
+weblorg 看起来挺不错的，简单，而且更重要的是它支持一个 [[https://emacs.love/weblorg/doc/file-properties.html#slug][slug]] 属性，slug 优先于 title，如果存在 slug 就会用 slug 生成 html 的文件名，这正好解决了我的第二个问题，即固定 URL，不随着标题等变化。
+
+除此之外，weblorg 的 template 系统看起来也比 org-publish 用起来简单；它还有一直想要的目录 (category) 功能。
+
+当我兴冲冲的尝试了一下 weblorg 后，不太清楚是不是我的 org 文件有些复杂，构建了几次都失败了，有一个报错但没排查出问题来。
+
+而且 weblorg 似乎用的人不多，维护频率也不是很高，担心后面除了问题处理起来麻烦，就暂时搁置了。
+
+因为计划用 denote，denote 依赖文件顶部的 front matter 信息，所以我也计划将所有博客文章的 front matter 整理一下，为此又看了遍 org-publish 和 org-mode export 的 info，了解一下都有什么 front matter，以及它们的作用。
+
+在这个过程中，我发现了 EXPORT_FILE_NAME:
+
+#+begin_quote
+The name of the output file to be generated.
+
+Otherwise, Org generates the file name based on the buffer name and the extension based on the backend format.
+
+[[https://orgmode.org/manual/Export-Settings.html#index-EXPORT_005fFILE_005fNAME_002c-keyword][Source]]
+#+end_quote
+
+也就是说，通过 EXPORT_FILE_NAME 我可以改变 export 的文件名，而 org-publish 其实也是 export 的一种，所以也应该可以改变 org-publish 生成的 html 文件名。
+
+折腾了一下还真可以，这就解决了我上面的第二个问题，固定 URL，不随着文件名或标题变化而变化。
+
+两个问题基本解决了，但还有一个问题，一旦我迁移到 denote，文件之间的相互链接就不能用 =file:= 形式的链接了，因为文件名可能会变化，而需要用 =denote:= 形式的链接，而 =denote:= 这样的链接在 export 的时候，能否正常转换成实际的 html 路径是我不确定的。
+
+经过一些尝试和文档查阅，这个问题也解决了，所以迁移到 denote 来管理我的博客文件基本是没问题了。
+
+接下来会分享一下迁移到 denote 过程中碰到的一些问题，包括 denote 的改动、org-publish 的改动以及博客文章的改动。
+
+* denote
+
+#+begin_quote
+[[https://protesilaos.com/emacs/denote][Denote]] 是由 Protesilaos Stavrou（也称 Prot）创建的一个简单记笔记工具，其理念是笔记文件名应遵循一种可预测且具描述性的命名方案。
+
+默认格式是 ~DATE==SIGNATURE--TITLE__KEYWORDS.EXTENSION~ ，例如 ~20231007T104700--static-website-with-hugo-and-nix__hugo_nix.org~ 。
+
+这种格式既适合用于 URL，又便于搜索。
+
+[[https://yejun.dev/posts/blogging-using-denote-and-hugo/#:~:text=Denote%20is%20a,easy%20to%20search.][Source]]
+#+end_quote
+
+denote 这样的命名方案，通过看文件名就能获取很多信息。
+
+例如当前这篇文章的文件名是： =20250828T184037--结合-denote-和-org-publish-写博客__blog_denote_draft_emacs_orgpublish.org= ，从中我可以知道：
+
+1. 创建时间：2025-08-28 18:40
+2. 标题：结合-denote-和-org-publish-写博客
+3. 关键字：blog、denote、draft、emacs、org-publish，其中 draft 是用来标记草稿的，草稿在不会构建到 sitemap 中。
+
+回到我文章最开始的需求，我计划写一些关于专辑的分享，我就可以把专辑的创作者、日期等记录在关键字里，后续可以通过关键字快速进行过滤。
+
+denote 中的改动有两个地方：
+
+1. 由于博客文章和我的笔记是分开在不同目录的，在 denote 中称做 silos，需要处理 slios 的 export 问题。
+2. 处理 =denote:= 链接问题，使得 export 的时候，优先使用 EXPORT_FILE_NAME 作为文件名，而不是 denote 本身的文件名。
+
+对于 slios 的到处问题，Prot 已经考虑到了：[[https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8][5.7.1. Make Org export work with silos]]。
+
+#+begin_details
+#+html: <summary>代码改动</summary>
+
+源文件见：[[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-denote.el][init-denote.el]]。
+
+#+begin_src emacs-lisp
+  ;;; https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8
+  (setq org-export-allow-bind-keywords t)
+
+  ;;; make denote-link-ol-export support #+export_file_name
+  ;; see also: https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/
+  (defun spike-leung/my-denote--get-export-file-name (file)
+    "Find #+export_file_name in FILE and return its value.
+  Return nil if not found or FILE does not exist."
+    (when (and file (file-exists-p file))
+      (with-temp-buffer
+        (insert-file-contents file)
+        (goto-char (point-min))
+        (when (re-search-forward "^#\\+export_file_name: \\(.*\\)$" nil t)
+          (string-trim (match-string-no-properties 1))))))
+
+  (defun spike-leung/denote-link-ol-export (link description format)
+    "Export a `denote:' link from Org files.
+  The LINK, DESCRIPTION, and FORMAT are handled by the export
+  backend."
+    (pcase-let* ((`(,path ,query ,file-search) (denote-link--ol-resolve-link-to-target link :full-data))
+                 (export-file-name (when path (spike-leung/my-denote--get-export-file-name path)))
+                 (anchor (if export-file-name
+                             export-file-name
+                           (when path (file-relative-name (file-name-sans-extension path)))))
+                 (desc (cond
+                        (description)
+                        (file-search (format "denote:%s::%s" query file-search))
+                        (t (concat "denote:" query)))))
+      (if path
+          (pcase format
+            ('html (if file-search
+                       (format "<a href=\"%s.html%s\">%s</a>" anchor file-search desc)
+                     (format "<a href=\"%s.html\">%s</a>" anchor desc)))
+            ('latex (format "\\href{%s}{%s}" (replace-regexp-in-string "[\\{}$%&_#~^]" "\\\\\\&" path) desc))
+            ('texinfo (format "@uref{%s,%s}" path desc))
+            ('ascii (format "[%s] <denote:%s>" desc path))
+            ('md (format "[%s](%s)" desc path))
+            (_ path))
+        (format-message "[[Denote query for `%s']]" query))))
+
+  (with-eval-after-load 'denote
+    (add-hook 'find-file-hook #'denote-fontify-links-mode-maybe)
+    (add-hook 'dired-mode-hook #'denote-dired-mode-in-directories)
+    ;; 覆盖 denote 默认的 export 方法
+    (org-link-set-parameters "denote" :export #'spike-leung/denote-link-ol-export))
+
+#+end_src
+#+end_details
+
+* org-publish
+
+* 博客文章
+
+* 写在最后
+
+* Footnotes
+
+[fn:1] 本来打算折腾完 weblorg 之后写篇文章分享到 Emacs China，就先去 Emacs China 看看有没有写过，还真找到了一篇 [[https://emacs-china.org/t/org-mode-weblorg/25244][Org Mode 配合 weblorg 写博客还挺好用的]]，文章里那张图就是从这个帖子里看到的。weblorg 这个名字也挺有趣的，是 web + blog + org 的组合，就可以看作是 web-lorg，也可以看作是 we-blorg。
