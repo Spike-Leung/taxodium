@@ -231,15 +231,15 @@
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
 <li><a href="#org2c97921">前言</a></li>
-<li><a href="#orga2e0247">denote</a></li>
-<li><a href="#org16028bb">org-publish</a></li>
+<li><a href="#orgfaaee4b">denote</a></li>
 <li><a href="#org1dcbbed">博客文章</a></li>
+<li><a href="#org16028bb">org-publish</a></li>
 <li><a href="#org4c023de">写在最后</a></li>
 </ul>
 </div>
 </nav>
 
-<figure id="org555a427">
+<figure id="org8b844f7">
 <img src="images/blog-with-denote-and-org-publish/blogging.jpg" alt="blogging.jpg">
 
 <figcaption><span class="figure-number">&#22270;1&nbsp; </span>一张描述写博客和折腾博客关系的图片，横轴是博客搭建相关的文章数量，纵轴是文章数量。用 WordPress 的位于左上角，用 org-mode 的位于右下角。图片想表达的是，那些折腾博客的人，往往都没有产出多少文章和内容；而那些产出很高的作者，往往会使用那些广泛使用、易用的平台，而不太会折腾博客搭建。 (图片来源：<a href="https://rakhim.org/honestly-undefined/19/">https://rakhim.org/honestly-undefined/19/</a>)</figcaption>
@@ -256,11 +256,11 @@
 </p>
 
 <p>
-但问题是，从 album#0 中我不知道是关于什么专辑，什么创作者的，如果后面写得多了，我要判断有没有分享过，那只能搜索一下了。
+但问题是，album#0 这个名字我看不出来是关于什么专辑，什么创作者的，如果后面写得多了，我要判断有没有分享过，那只能搜索一下了。
 </p>
 
 <p>
-或许你会说，既然如此，把专辑名称、创作者等信息写到文件名里不就好了，例如 album-0&#x2013;album-name&#x2013;creator&#x2013;date.org。
+或许你会说，把专辑名称、创作者等信息写到文件名里不就好了，例如 <code>album-0--album-name--creator--date.org</code> 。
 </p>
 
 <p>
@@ -269,11 +269,11 @@
 
 <ol class="org-ol">
 <li>建立一个统一的命名规则</li>
-<li>专辑的信息可能会有变动，或许后续还想新增一些信息，此时文件名就会改变，而我发布的 URL 也是依赖文件名的，URL 也可能会变，我希望文章一旦发布之后，URL 就尽量固定下来，避免有人引用后跳转出现 404</li>
+<li>专辑的信息可能会有变动，或许后续还想新增一些信息，此时文件名就会改变，而我发布的 URL 也是依赖文件名的，URL 也会跟着变，但我希望文章一旦发布之后，URL 就尽量固定下来，避免有人引用后跳转出现 404</li>
 </ol>
 
 <p>
-关于命名规则，我觉得 <a href="https://protesilaos.com/emacs/denote">denote</a> 的命名规则很好，我也一直在用 denote 来记笔记。
+关于命名规则，我觉得 <a href="https://protesilaos.com/emacs/denote">denote</a> 的命名规则很好，我也一直在用 denote 来记笔记，所以打算用 denote 来解决命名规则的问题。
 </p>
 
 <p>
@@ -292,19 +292,19 @@
 </p>
 
 <p>
-weblorg 看起来挺不错的，简单，而且更重要的是它支持一个 <a href="https://emacs.love/weblorg/doc/file-properties.html#slug">slug</a> 属性，slug 优先于 title，如果存在 slug 就会用 slug 生成 html 的文件名，这正好解决了我的第二个问题，即固定 URL，不随着标题等变化。
+weblorg 看起来挺不错，足够简单，而且更重要的是它支持一个 <a href="https://emacs.love/weblorg/doc/file-properties.html#slug">slug</a> 属性，slug 优先于 title，如果存在 slug 就会用 slug 生成 HTML 的文件名，这正好解决了我的第二个问题，即固定 URL，不随着标题等变化。
 </p>
 
 <p>
-除此之外，weblorg 的 template 系统看起来也比 org-publish 用起来简单；它还有一直想要的目录 (category) 功能。
+除此之外，weblorg 的 template 系统看起来也比 org-publish 用起来简单；它还有一直想要的文章分类 (category) 功能。
 </p>
 
 <p>
-当我兴冲冲的尝试了一下 weblorg 后，不太清楚是不是我的 org 文件有些复杂，构建了几次都失败了，有一个报错但没排查出问题来。
+兴冲冲的尝试了一下 weblorg ，不太清楚是不是我的 org 文件有些复杂，构建了几次都失败了，有一个报错但没排查出问题来。
 </p>
 
 <p>
-而且 weblorg 似乎用的人不多，维护频率也不是很高，担心后面除了问题处理起来麻烦，就暂时搁置了。
+又考虑到到 weblorg 似乎用的人不多，维护频率也不是很高，担心后面除了问题处理起来麻烦，就暂时搁置了。
 </p>
 
 <p>
@@ -330,7 +330,7 @@ Otherwise, Org generates the file name based on the buffer name and the extensio
 </blockquote>
 
 <p>
-也就是说，通过 EXPORT_FILE_NAME 我可以改变 export 的文件名，而 org-publish 其实也是 export 的一种，所以也应该可以改变 org-publish 生成的 html 文件名。
+也就是说，通过 EXPORT_FILE_NAME 我可以改变导出的 HTML 的文件名。
 </p>
 
 <p>
@@ -338,11 +338,11 @@ Otherwise, Org generates the file name based on the buffer name and the extensio
 </p>
 
 <p>
-两个问题基本解决了，但还有一个问题，一旦我迁移到 denote，文件之间的相互链接就不能用 <code>file:</code> 形式的链接了，因为文件名可能会变化，而需要用 <code>denote:</code> 形式的链接，而 <code>denote:</code> 这样的链接在 export 的时候，能否正常转换成实际的 html 路径是我不确定的。
+这两个问题基本解决了，又引出另一个问题，一旦我迁移到 denote，文件之间的相互链接就不能用 <code>file:</code> 形式的链接了，因为文件名可能会变化，需要用 <code>denote:</code> 形式的链接，但 <code>denote:</code> 这样的链接在导出的时候，能否正常转换成 <code>export_file_name</code> 对应的路径是我不确定的。
 </p>
 
 <p>
-经过一些尝试和文档查阅，这个问题也解决了，所以迁移到 denote 来管理我的博客文件基本是没问题了。
+经过一些尝试和文档查阅，这个问题也解决了，所以迁移到 denote 来管理我的博客文件基本是可以跑通了。
 </p>
 
 <p>
@@ -350,9 +350,9 @@ Otherwise, Org generates the file name based on the buffer name and the extensio
 </p>
 </div>
 </div>
-<div id="outline-container-orga2e0247" class="outline-2">
-<h2 id="orga2e0247">denote</h2>
-<div class="outline-text-2" id="text-orga2e0247">
+<div id="outline-container-orgfaaee4b" class="outline-2">
+<h2 id="orgfaaee4b">denote</h2>
+<div class="outline-text-2" id="text-orgfaaee4b">
 <blockquote>
 <p>
 <a href="https://protesilaos.com/emacs/denote">Denote</a> 是由 Protesilaos Stavrou（也称 Prot）创建的一个简单记笔记工具，其理念是笔记文件名应遵循一种可预测且具描述性的命名方案。
@@ -382,11 +382,11 @@ denote 这样的命名方案，通过看文件名就能获取很多信息。
 <ol class="org-ol">
 <li>创建时间：2025-08-28 18:40</li>
 <li>标题：结合-denote-和-org-publish-写博客</li>
-<li>关键字：blog、denote、draft、emacs、org-publish，其中 draft 是用来标记草稿的，草稿在不会构建到 sitemap 中。</li>
+<li>关键字：blog、denote、draft、emacs、org-publish，其中 draft 是用来标记草稿的，草稿不会构建到 sitemap 中。也可以基于关键字做一些事情。</li>
 </ol>
 
 <p>
-回到我文章最开始的需求，我计划写一些关于专辑的分享，我就可以把专辑的创作者、日期等记录在关键字里，后续可以通过关键字快速进行过滤。
+例如我要写一些关于专辑的分享，我可以把专辑的创作者、日期等记录在关键字里，后续就可以通过关键字快速进行过滤。
 </p>
 
 <p>
@@ -399,22 +399,26 @@ denote 中的改动有两个地方：
 </ol>
 
 <p>
-对于 slios 的到处问题，Prot 已经考虑到了：<a href="https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8">5.7.1. Make Org export work with silos</a>。
+对于 slios 的到处问题，Prot 已经考虑到了，参考 <a href="https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8">5.7.1. Make Org export work with silos</a>。
 </p>
 
-<details id="orgb730a00">
-<summary>代码改动</summary>
+<p>
+对于 <code>denote:</code> 链接问题，需要覆盖 <code>denote-link-ol-export</code> 的实现，在生成链接的时候，通过 <code>denote:</code> 找到文件后，获取文件中的 <code>export_file_name</code> 作为最终的链接名称。
+</p>
+
+<details id="orgee1dcb4">
+<summary>相关代码</summary>
 
 <p>
 源文件见：<a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-denote.el">init-denote.el</a>。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #cda4df;">;;; </span><span style="color: #db7b5f;">https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8
+<pre class="src src-emacs-lisp"><span style="color: #93a1a1; font-style: italic;">;;; </span><span style="color: #db7b5f; font-style: italic;">https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8
 </span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">setq</span> org-export-allow-bind-keywords t<span style="color: #ffffff;">)</span>
 
-<span style="color: #cda4df;">;;; </span><span style="color: #db7b5f;">make denote-link-ol-export support #+export_file_name
-</span><span style="color: #cda4df;">;; </span><span style="color: #db7b5f;">see also: https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/
+<span style="color: #93a1a1; font-style: italic;">;;; </span><span style="color: #db7b5f; font-style: italic;">make denote-link-ol-export support #+export_file_name
+</span><span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">see also: https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/
 </span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/my-denote--get-export-file-name</span> <span style="color: #ff66ff;">(</span>file<span style="color: #ff66ff;">)</span>
   <span style="color: #9ac8e0;">"Find #+export_file_name in FILE and return its value.
 Return nil if not found or FILE does not exist."</span>
@@ -453,7 +457,7 @@ backend."</span>
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">denote</span>
   <span style="color: #ff66ff;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">find-file-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">denote-fontify-links-mode-maybe</span><span style="color: #ff66ff;">)</span>
   <span style="color: #ff66ff;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">dired-mode-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">denote-dired-mode-in-directories</span><span style="color: #ff66ff;">)</span>
-  <span style="color: #cda4df;">;; </span><span style="color: #db7b5f;">&#35206;&#30422; denote &#40664;&#35748;&#30340; export &#26041;&#27861;
+  <span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">&#35206;&#30422; denote &#40664;&#35748;&#30340; export &#26041;&#27861;
 </span>  <span style="color: #ff66ff;">(</span>org-link-set-parameters <span style="color: #79a8ff;">"denote"</span> <span style="color: #f78fe7;">:export</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">spike-leung/denote-link-ol-export</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 
 </pre>
@@ -461,16 +465,213 @@ backend."</span>
 </details>
 </div>
 </div>
-<div id="outline-container-org16028bb" class="outline-2">
-<h2 id="org16028bb">org-publish</h2>
-</div>
-
 <div id="outline-container-org1dcbbed" class="outline-2">
 <h2 id="org1dcbbed">博客文章</h2>
-</div>
+<div class="outline-text-2" id="text-org1dcbbed">
+<p>
+对于博客文章，所有文章都需要添加 <code>#+export_file_name</code> 这个 front matter。
+</p>
 
+<p>
+此外，还需要利用 denote 提供的方法<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>，将文件重命名成 denote 的命名格式。
+</p>
+
+<p>
+趁这个机会，我整理了所有文章的 front matter，补充了文章的 description，这样分享的时候，或者在搜索引擎看到的时候，就有描述了。
+</p>
+
+<p>
+得益于 denote 的 keyword，我可以通过 draft 或者 published 等关键字区分文章是草稿还是已发布的，就可以不用目录去区分，于是我把所有文章都挪动到 posts 目录，统一通过 denote 维护。
+</p>
+
+<p>
+（看起来很简单，但因为有上百个文件，操作起来也花了不少时间）
+</p>
+</div>
+</div>
+<div id="outline-container-org16028bb" class="outline-2">
+<h2 id="org16028bb">org-publish</h2>
+<div class="outline-text-2" id="text-org16028bb">
+<p>
+(关于如何使用 org-publish 发布博客，在 <a href="org-publish-blog.html">使用 org-publish 发布博客</a> 中已经分享过，这里不再赘述。）
+</p>
+
+<p>
+对于 org-publish，由于我将所有的博客文件都放在了一个目录，要区分 draft 和 published，就不能通过原来的文件目录了。
+</p>
+
+<p>
+尽管 org-publish 提供了 <code>:inlucde</code> 关键字，但它只支持一个文件列表的字符串，无法用正则匹配 denote 文件名上的 keyword，所以我目前只能用 <code>:exclude</code> 关键字，将不需要的 keyword 排除掉。
+</p>
+
+<details id="orgc87bfe2">
+<summary>相关代码</summary>
+
+<p>
+源代码见: <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el">init-org-publish.el</a>。
+</p>
+
+<p>
+重点关注 exclude 部分。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">setq</span> org-publish-project-alist
+      <span style="color: #b6a0ff;">`</span><span style="color: #ff66ff;">(</span><span style="color: #00eff0;">(</span><span style="color: #79a8ff;">"orgfiles"</span>
+         <span style="color: #f78fe7;">:base-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/posts"</span>
+         <span style="color: #f78fe7;">:base-extension</span> <span style="color: #79a8ff;">"org"</span>
+         <span style="color: #f78fe7;">:exclude</span> ,<span style="color: #ff6b55;">(</span>spike-leung/org-publish-build-exclude-regexp <span style="color: #b6a0ff;">'</span><span style="color: #efef00;">(</span><span style="color: #79a8ff;">"draft"</span> <span style="color: #79a8ff;">"blackhole"</span><span style="color: #efef00;">)</span> <span style="color: #b6a0ff;">'</span><span style="color: #efef00;">(</span><span style="color: #79a8ff;">"rss.org"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span> <span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">&lt;-- &#36807;&#28388;&#19981;&#38656;&#35201;&#30340;&#25991;&#20214;
+</span>         <span style="color: #f78fe7;">:publishing-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/publish"</span>
+         <span style="color: #f78fe7;">:publishing-function</span> spike-leung/org-html-publish-to-html-orgfiles
+         <span style="color: #f78fe7;">:section-numbers</span> nil
+         <span style="color: #f78fe7;">:with-toc</span> t
+         <span style="color: #f78fe7;">:with-tags</span> t
+         <span style="color: #f78fe7;">:time-stamp-file</span> nil
+         <span style="color: #f78fe7;">:html-head</span> ,spike-leung/html-head
+         <span style="color: #f78fe7;">:html-preamble</span> ,spike-leung/html-preamble-content
+         <span style="color: #f78fe7;">:html-postamble</span> ,spike-leung/html-postamble
+         <span style="color: #f78fe7;">:auto-sitemap</span> t
+         <span style="color: #f78fe7;">:sitemap-filename</span> <span style="color: #79a8ff;">"index.org"</span>
+         <span style="color: #f78fe7;">:sitemap-title</span> <span style="color: #79a8ff;">"Taxodium"</span>
+         <span style="color: #f78fe7;">:sitemap-format-entry</span> spike-leung/sitemap-format-entry
+         <span style="color: #f78fe7;">:sitemap-sort-files</span> anti-chronologically
+         <span style="color: #f78fe7;">:sitemap-function</span> spike-leung/sitemap-function
+         <span style="color: #f78fe7;">:author</span> <span style="color: #79a8ff;">"Spike Leung"</span>
+         <span style="color: #f78fe7;">:email</span> <span style="color: #79a8ff;">"l-yanlei@hotmail.com"</span><span style="color: #00eff0;">)</span>
+
+        <span style="color: #00eff0;">(</span><span style="color: #79a8ff;">"draft"</span>
+         <span style="color: #f78fe7;">:base-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/posts"</span>
+         <span style="color: #f78fe7;">:base-extension</span> <span style="color: #79a8ff;">"org"</span>
+         <span style="color: #f78fe7;">:exclude</span> ,<span style="color: #ff6b55;">(</span>spike-leung/org-publish-build-exclude-regexp <span style="color: #b6a0ff;">'</span><span style="color: #efef00;">(</span><span style="color: #79a8ff;">"published"</span> <span style="color: #79a8ff;">"blackhole"</span><span style="color: #efef00;">)</span> <span style="color: #b6a0ff;">'</span><span style="color: #efef00;">(</span><span style="color: #79a8ff;">"rss.org"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #f78fe7;">:publishing-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/publish"</span>
+         <span style="color: #f78fe7;">:publishing-function</span> spike-leung/org-html-publish-to-html-orgfiles
+         <span style="color: #f78fe7;">:section-numbers</span> nil
+         <span style="color: #f78fe7;">:with-toc</span> t
+         <span style="color: #f78fe7;">:with-tags</span> t
+         <span style="color: #f78fe7;">:time-stamp-file</span> nil
+         <span style="color: #f78fe7;">:html-head</span> ,spike-leung/html-head
+         <span style="color: #f78fe7;">:html-postamble</span> ,spike-leung/html-postamble
+         <span style="color: #f78fe7;">:html-preamble</span> ,spike-leung/html-preamble-content
+         <span style="color: #f78fe7;">:author</span> <span style="color: #79a8ff;">"Spike Leung"</span>
+         <span style="color: #f78fe7;">:email</span> <span style="color: #79a8ff;">"l-yanlei@hotmail.com"</span><span style="color: #00eff0;">)</span>
+
+        <span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">&#30465;&#30053;&#37096;&#20998;&#20195;&#30721;
+</span>        <span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+
+<span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">&#19968;&#20010;&#29983;&#25104; exclude &#38656;&#35201;&#30340;&#27491;&#21017;&#34920;&#36798;&#24335;&#30340;&#26041;&#27861;
+</span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/org-publish-build-exclude-regexp</span> <span style="color: #ff66ff;">(</span>exclude-tag-keywords exclude-file-patterns<span style="color: #ff66ff;">)</span>
+  <span style="color: #9ac8e0;">"Construct a regular expression for the `org-publish` '</span><span style="color: #00bcff;">exclude</span><span style="color: #9ac8e0;">' property.
+  Arguments:
+  - EXCLUDE-TAG-KEYWORDS: A list of strings representing keywords that follow an underscore in the filename.
+  - EXCLUDE-FILE-PATTERNS: A list of strings representing patterns to directly match against file paths.
+  Return value:
+  An `rx` expression, suitable as the `:exclude` value in an `org-publish` project configuration.
+  Returns `nil` if both lists are empty."</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">let</span> <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>rx-components nil<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
+    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">and</span> <span style="color: #efef00;">(</span>listp exclude-tag-keywords<span style="color: #efef00;">)</span>
+               <span style="color: #efef00;">(</span>not <span style="color: #b6a0ff;">(</span>null exclude-tag-keywords<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+      <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">push</span> <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">rx</span> <span style="color: #b6a0ff;">(</span>seq <span style="color: #79a8ff;">"_"</span> <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">or</span> ,@exclude-tag-keywords<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span> rx-components<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
+
+    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">and</span> <span style="color: #efef00;">(</span>listp exclude-file-patterns<span style="color: #efef00;">)</span>
+               <span style="color: #efef00;">(</span>not <span style="color: #b6a0ff;">(</span>null exclude-file-patterns<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+      <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">dolist</span> <span style="color: #efef00;">(</span>pattern exclude-file-patterns<span style="color: #efef00;">)</span>
+        <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">push</span> <span style="color: #b6a0ff;">(</span><span style="color: #b6a0ff;">rx</span> pattern<span style="color: #b6a0ff;">)</span> rx-components<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
+
+    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">if</span> rx-components
+        <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">rx</span> <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">or</span> ,@<span style="color: #b6a0ff;">(</span>nreverse rx-components<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+      nil<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+</pre>
+</div>
+</details>
+
+<p>
+另外，生成 sitemap 的时候，我希望使用 <code>export_file_name</code> 的作为链接名称，而不是 denote 的文件名，这需要调整 orgfiles 中 <code>:sitemap-format-entry</code> 的逻辑。
+</p>
+
+<details id="orgcf42bd0">
+<summary>相关代码</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">setq</span> org-publish-project-alist
+      <span style="color: #b6a0ff;">`</span><span style="color: #ff66ff;">(</span><span style="color: #00eff0;">(</span><span style="color: #79a8ff;">"orgfiles"</span>
+         <span style="color: #f78fe7;">:base-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/posts"</span>
+         <span style="color: #f78fe7;">:base-extension</span> <span style="color: #79a8ff;">"org"</span>
+         <span style="color: #f78fe7;">:exclude</span> ,<span style="color: #ff6b55;">(</span>spike-leung/org-publish-build-exclude-regexp <span style="color: #b6a0ff;">'</span><span style="color: #efef00;">(</span><span style="color: #79a8ff;">"draft"</span> <span style="color: #79a8ff;">"blackhole"</span><span style="color: #efef00;">)</span> <span style="color: #b6a0ff;">'</span><span style="color: #efef00;">(</span><span style="color: #79a8ff;">"rss.org"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #f78fe7;">:publishing-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/publish"</span>
+         <span style="color: #f78fe7;">:publishing-function</span> spike-leung/org-html-publish-to-html-orgfiles
+         <span style="color: #f78fe7;">:section-numbers</span> nil
+         <span style="color: #f78fe7;">:with-toc</span> t
+         <span style="color: #f78fe7;">:with-tags</span> t
+         <span style="color: #f78fe7;">:time-stamp-file</span> nil
+         <span style="color: #f78fe7;">:html-head</span> ,spike-leung/html-head
+         <span style="color: #f78fe7;">:html-preamble</span> ,spike-leung/html-preamble-content
+         <span style="color: #f78fe7;">:html-postamble</span> ,spike-leung/html-postamble
+         <span style="color: #f78fe7;">:auto-sitemap</span> t
+         <span style="color: #f78fe7;">:sitemap-filename</span> <span style="color: #79a8ff;">"index.org"</span>
+         <span style="color: #f78fe7;">:sitemap-title</span> <span style="color: #79a8ff;">"Taxodium"</span>
+         <span style="color: #f78fe7;">:sitemap-format-entry</span> spike-leung/sitemap-format-entry <span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">&lt;-- &#35843;&#25972; entry &#30340;&#36820;&#22238;
+</span>         <span style="color: #f78fe7;">:sitemap-sort-files</span> anti-chronologically
+         <span style="color: #f78fe7;">:sitemap-function</span> spike-leung/sitemap-function
+         <span style="color: #f78fe7;">:author</span> <span style="color: #79a8ff;">"Spike Leung"</span>
+         <span style="color: #f78fe7;">:email</span> <span style="color: #79a8ff;">"l-yanlei@hotmail.com"</span><span style="color: #00eff0;">)</span>
+
+        <span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">&#30465;&#30053;&#37096;&#20998;&#20195;&#30721;
+</span>        <span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+
+<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/sitemap-format-entry</span> <span style="color: #ff66ff;">(</span>entry style project<span style="color: #ff66ff;">)</span>
+  <span style="color: #9ac8e0;">"Custom format for site map ENTRY, as a string.
+ENTRY is a file name.  STYLE is the style of the sitemap.
+PROJECT is the current project."</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">let*</span> <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>export-file-name <span style="color: #efef00;">(</span>spike-leung/org-publish-get-org-keyword entry project <span style="color: #79a8ff;">"export_file_name"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
+    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">cond</span> <span style="color: #ff6b55;">(</span><span style="color: #efef00;">(</span>not <span style="color: #b6a0ff;">(</span>directory-name-p entry<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
+           <span style="color: #efef00;">(</span>format <span style="color: #79a8ff;">"[[file:%s][%s]]"</span>
+                   <span style="color: #b6a0ff;">(</span><span style="color: #b6a0ff;">or</span>
+                    <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">if</span> export-file-name
+                        <span style="color: #79a8ff;">(</span>format <span style="color: #79a8ff;">"%s.org"</span> export-file-name<span style="color: #79a8ff;">)</span>
+                      nil<span style="color: #44df44;">)</span>
+                    entry<span style="color: #b6a0ff;">)</span>
+                   <span style="color: #b6a0ff;">(</span>org-publish-find-title entry project<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+          <span style="color: #ff6b55;">(</span><span style="color: #efef00;">(</span>eq style <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">tree</span><span style="color: #efef00;">)</span>
+           <span style="color: #93a1a1; font-style: italic;">;; </span><span style="color: #db7b5f; font-style: italic;">Return only last subdir.
+</span>           <span style="color: #efef00;">(</span>file-name-nondirectory <span style="color: #b6a0ff;">(</span>directory-file-name entry<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+          <span style="color: #ff6b55;">(</span>t entry<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+
+<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/org-publish-get-org-keyword</span> <span style="color: #ff66ff;">(</span>entry project keyword<span style="color: #ff66ff;">)</span>
+  <span style="color: #9ac8e0;">"Get the value of the given KEYWORD in the current Org file.
+KEYWORD is case-insensitive."</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">let</span> <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>file <span style="color: #efef00;">(</span>org-publish--expand-file-name entry project<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
+    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">and</span> <span style="color: #efef00;">(</span>file-readable-p file<span style="color: #efef00;">)</span> <span style="color: #efef00;">(</span>not <span style="color: #b6a0ff;">(</span>directory-name-p file<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+      <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">org-with-file-buffer</span> file
+        <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">let*</span> <span style="color: #b6a0ff;">(</span><span style="color: #44df44;">(</span>normalized-keyword <span style="color: #79a8ff;">(</span>s-upcase keyword<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span>
+               <span style="color: #44df44;">(</span>keywords <span style="color: #79a8ff;">(</span>org-collect-keywords <span style="color: #f78fe7;">(</span>list normalized-keyword<span style="color: #f78fe7;">)</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+          <span style="color: #b6a0ff;">(</span>car <span style="color: #44df44;">(</span>cdr <span style="color: #79a8ff;">(</span>assoc normalized-keyword keywords<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+</pre>
+</div>
+</details>
+</div>
+</div>
 <div id="outline-container-org4c023de" class="outline-2">
 <h2 id="org4c023de">写在最后</h2>
+<div class="outline-text-2" id="text-org4c023de">
+<p>
+经过一些折腾，目前我已经将博客文件迁移到用 denote 维护了，这样给我带来了一些好处：
+</p>
+
+<ol class="org-ol">
+<li>统一的文件命名， 通过文件名我可以一眼知道不少信息</li>
+<li>denote 提供了很多方法，可以更方便的查找文件、链接文件以及查看文件涉及的反向链接</li>
+<li>笔记和博客都使用 denote，两者的工作流统一了，后续如果打算将笔记转换成博客文章会更容易，</li>
+<li>由于文件名上有很多 keyword，我可以通过 keyword 区分哪些是 zine，哪些是关于 emacs 的，可以基于此生成它们各自的 RSS</li>
+</ol>
+
+<p>
+总的来说我觉得这次迁移带来的好处还是不少的。
+</p>
+
+<p>
+好啦，博客构建就折腾到这，要开始多写内容了！
+</p>
+</div>
 </div>
 <div id="footnotes">
 <h2 class="footnotes">&#33050;&#27880;: </h2>
@@ -480,6 +681,17 @@ backend."</span>
 本来打算折腾完 weblorg 之后写篇文章分享到 Emacs China，就先去 Emacs China 看看有没有写过，还真找到了一篇 <a href="https://emacs-china.org/t/org-mode-weblorg/25244">Org Mode 配合 weblorg 写博客还挺好用的</a>，文章里那张图就是从这个帖子里看到的。weblorg 这个名字也挺有趣的，是 web + blog + org 的组合，就可以看作是 web-lorg，也可以看作是 we-blorg。
 </p></div></div>
 
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如:
+</p>
+
+<dl class="org-dl">
+<dt>denote-rename-file-date</dt><dd>可以调整日期</dd>
+<dt>denote-rename-file</dt><dd>可以调整标题，关键字等</dd>
+<dt>denote-dired-rename-files</dt><dd>可以批量重命名</dd>
+<dt>denote-dired-rename-marked-files-add-keywords</dt><dd>可以批量添加 keyword，例如统一添加 draft 关键字</dd>
+</dl></div></div>
+
 
 </div>
 </div></div>
@@ -487,7 +699,7 @@ backend."</span>
 
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： 2025-08-28 Thu 18:40</p>
-<p class="date">修改于： 2025-08-29 Fri 08:12</p>
+<p class="date">修改于： 2025-08-29 Fri 10:35</p>
 <p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <script src="/js/sidenote.js" defer></script>
