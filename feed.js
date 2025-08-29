@@ -117,7 +117,7 @@ function parseOrgIndex(orgContent) {
   const entries = [];
 
   for (const line of lines) {
-    const match = line.match(/\[\[file:([^\]]+)\]\[([^\]]+)\]\]\s+<([^>]+)>/);
+    const match = line.match(/\[\[file:([^\]]+)\]\[([^\]]+)\]\]\s+\[([^>]+)\]/);
     if (match) {
       const [, file, title, dateStr] = match;
       const htmlFile = file.replace(/\.org$/, ".html");
