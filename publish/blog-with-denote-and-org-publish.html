@@ -239,7 +239,7 @@
 </div>
 </nav>
 
-<figure id="orgb09a633">
+<figure id="orgb5ceae2">
 <img src="images/blog-with-denote-and-org-publish/blogging.jpg" alt="blogging.jpg">
 
 <figcaption><span class="figure-number">&#22270;1&nbsp; </span>一张描述写博客和折腾博客关系的图片，横轴是博客搭建相关的文章数量，纵轴是文章数量。用 WordPress 的位于左上角，用 org-mode 的位于右下角。图片想表达的是，那些折腾博客的人，往往都没有产出多少文章和内容；而那些产出很高的作者，往往会使用那些广泛使用、易用的平台，而不太会折腾博客搭建。 (图片来源：<a href="https://rakhim.org/honestly-undefined/19/">https://rakhim.org/honestly-undefined/19/</a>)</figcaption>
@@ -406,7 +406,7 @@ denote 中的改动有两个地方：
 对于 <code>denote:</code> 链接问题，需要覆盖 <code>denote-link-ol-export</code> 的实现，在生成链接的时候，通过 <code>denote:</code> 找到文件后，获取文件中的 <code>export_file_name</code> 作为最终的链接名称。
 </p>
 
-<details id="org844795a">
+<details id="org0f70ac3">
 <summary>相关代码</summary>
 
 <p>
@@ -414,11 +414,11 @@ denote 中的改动有两个地方：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #a03068;">;;; </span><span style="color: #db7b5f;">https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8
+<pre class="src src-emacs-lisp"><span style="color: #adade0;">;;; </span><span style="color: #db7b5f;">https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8
 </span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">setq</span> org-export-allow-bind-keywords t<span style="color: #ffffff;">)</span>
 
-<span style="color: #a03068;">;;; </span><span style="color: #db7b5f;">make denote-link-ol-export support #+export_file_name
-</span><span style="color: #a03068;">;; </span><span style="color: #db7b5f;">see also: https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/
+<span style="color: #adade0;">;;; </span><span style="color: #db7b5f;">make denote-link-ol-export support #+export_file_name
+</span><span style="color: #adade0;">;; </span><span style="color: #db7b5f;">see also: https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/
 </span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/my-denote--get-export-file-name</span> <span style="color: #ff66ff;">(</span>file<span style="color: #ff66ff;">)</span>
   <span style="color: #9ac8e0;">"Find #+export_file_name in FILE and return its value.
 Return nil if not found or FILE does not exist."</span>
@@ -457,7 +457,7 @@ backend."</span>
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">denote</span>
   <span style="color: #ff66ff;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">find-file-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">denote-fontify-links-mode-maybe</span><span style="color: #ff66ff;">)</span>
   <span style="color: #ff66ff;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">dired-mode-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">denote-dired-mode-in-directories</span><span style="color: #ff66ff;">)</span>
-  <span style="color: #a03068;">;; </span><span style="color: #db7b5f;">&#35206;&#30422; denote &#40664;&#35748;&#30340; export &#26041;&#27861;
+  <span style="color: #adade0;">;; </span><span style="color: #db7b5f;">&#35206;&#30422; denote &#40664;&#35748;&#30340; export &#26041;&#27861;
 </span>  <span style="color: #ff66ff;">(</span>org-link-set-parameters <span style="color: #79a8ff;">"denote"</span> <span style="color: #f78fe7;">:export</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">spike-leung/denote-link-ol-export</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 
 </pre>
@@ -505,14 +505,14 @@ backend."</span>
 </p>
 
 <p>
-感谢 <a href="https://emacs-china.org/t/denote-org-publish/30027/2?u=spike-leung">Tommie Mami 的回复</a>，可以先 exlucde 所有文件，在 include 对应的 keyword 从而过滤需要的文件。
+感谢 <a href="https://emacs-china.org/t/denote-org-publish/30027/2?u=spike-leung">Tommie Mami 的回复</a>，可以先 exlucde 所有文件，再 include 对应的 keyword，从而过滤需要的文件。
 </p>
 
 <p>
 <code>:include</code> 需要传入一个文件列表，可以通过 denote 提供的方法 <code>denote-diretory-files</code> 获得，不过由于我用了 silos， <code>denote-diretory-files</code> 是不会去找 silos 中的文件的，我还需要临时改变一下 <code>denote-directory</code> 的值，使其指向 silos 的路径。
 </p>
 
-<details id="orgdc67968">
+<details id="org7a5cabf">
 <summary>相关代码</summary>
 
 <p>
@@ -572,7 +572,7 @@ TAG is string."</span>
          <span style="color: #f78fe7;">:author</span> <span style="color: #79a8ff;">"Spike Leung"</span>
          <span style="color: #f78fe7;">:email</span> <span style="color: #79a8ff;">"l-yanlei@hotmail.com"</span><span style="color: #00eff0;">)</span>
 
-        <span style="color: #a03068;">;; </span><span style="color: #db7b5f;">&#30465;&#30053;&#37096;&#20998;&#20195;&#30721;
+        <span style="color: #adade0;">;; </span><span style="color: #db7b5f;">&#30465;&#30053;&#37096;&#20998;&#20195;&#30721;
 </span>        <span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 </pre>
 </div>
@@ -582,7 +582,7 @@ TAG is string."</span>
 另外，生成 sitemap 的时候，我希望使用 <code>export_file_name</code> 的作为链接名称，而不是 denote 的文件名，这需要调整 orgfiles 中 <code>:sitemap-format-entry</code> 的逻辑。
 </p>
 
-<details id="org545ae8d">
+<details id="org4adc126">
 <summary>相关代码</summary>
 
 <div class="org-src-container">
@@ -603,13 +603,13 @@ TAG is string."</span>
          <span style="color: #f78fe7;">:auto-sitemap</span> t
          <span style="color: #f78fe7;">:sitemap-filename</span> <span style="color: #79a8ff;">"index.org"</span>
          <span style="color: #f78fe7;">:sitemap-title</span> <span style="color: #79a8ff;">"Taxodium"</span>
-         <span style="color: #f78fe7;">:sitemap-format-entry</span> spike-leung/sitemap-format-entry <span style="color: #a03068;">;; </span><span style="color: #db7b5f;">&lt;-- &#35843;&#25972; entry &#30340;&#36820;&#22238;
+         <span style="color: #f78fe7;">:sitemap-format-entry</span> spike-leung/sitemap-format-entry <span style="color: #adade0;">;; </span><span style="color: #db7b5f;">&lt;-- &#35843;&#25972; entry &#30340;&#36820;&#22238;
 </span>         <span style="color: #f78fe7;">:sitemap-sort-files</span> anti-chronologically
          <span style="color: #f78fe7;">:sitemap-function</span> spike-leung/sitemap-function
          <span style="color: #f78fe7;">:author</span> <span style="color: #79a8ff;">"Spike Leung"</span>
          <span style="color: #f78fe7;">:email</span> <span style="color: #79a8ff;">"l-yanlei@hotmail.com"</span><span style="color: #00eff0;">)</span>
 
-        <span style="color: #a03068;">;; </span><span style="color: #db7b5f;">&#30465;&#30053;&#37096;&#20998;&#20195;&#30721;
+        <span style="color: #adade0;">;; </span><span style="color: #db7b5f;">&#30465;&#30053;&#37096;&#20998;&#20195;&#30721;
 </span>        <span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/sitemap-format-entry</span> <span style="color: #ff66ff;">(</span>entry style project<span style="color: #ff66ff;">)</span>
@@ -626,7 +626,7 @@ PROJECT is the current project."</span>
                     entry<span style="color: #b6a0ff;">)</span>
                    <span style="color: #b6a0ff;">(</span>org-publish-find-title entry project<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
           <span style="color: #ff6b55;">(</span><span style="color: #efef00;">(</span>eq style <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">tree</span><span style="color: #efef00;">)</span>
-           <span style="color: #a03068;">;; </span><span style="color: #db7b5f;">Return only last subdir.
+           <span style="color: #adade0;">;; </span><span style="color: #db7b5f;">Return only last subdir.
 </span>           <span style="color: #efef00;">(</span>file-name-nondirectory <span style="color: #b6a0ff;">(</span>directory-file-name entry<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
           <span style="color: #ff6b55;">(</span>t entry<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 
@@ -697,7 +697,7 @@ Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如
 
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： 2025-08-28 Thu 18:40</p>
-<p class="date">修改于： 2025-08-29 Fri 16:30</p>
+<p class="date">修改于： 2025-08-29 Fri 16:41</p>
 <p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <script src="/js/sidenote.js" defer></script>
