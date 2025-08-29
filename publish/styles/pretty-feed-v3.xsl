@@ -169,6 +169,16 @@ This file is in BETA. Please test and contribute to the discussion:
           <p>如果你是 Emacs 用户，可以使用 <a href="https://github.com/skeeto/elfeed">elfeed</a> 订阅，或者你可以用 <a href="https://follow.is">Folo</a> 这样的应用进行订阅 :)</p>
           <p>如果你对订阅流不了解, 你可以阅读一下 <a href="https://taxodium.ink/about-feeds.html">About Feeds</a>。</p>
           <p>有任何问题，欢迎 <a href="mailto:l-yanlei@hotmail.com">邮件</a> 或者留言给我。</p>
+          <details>
+            <summary>Taxodium 提供的订阅流</summary>
+            <p>你可以基于感兴趣的内容，订阅对应的订阅流:</p>
+            <ul>
+              <li><a href="https://taxodium.ink/rss.xml">全部文章</a> 包含最新的 15 篇文章</li>
+              <li><a href="https://taxodium.ink/emacs.xml">Emacs</a> 包含所有的 Emacs 相关的内容</li>
+              <li><a href="https://taxodium.ink/zine.xml">Zine</a> 包含最新 3 篇的 <a href="https://taxodium.ink/0.html">Zine 期刊</a> 内容</li>
+            </ul>
+          </details>
+
         </section>
         <div class="container">
           <header>
