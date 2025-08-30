@@ -16,7 +16,8 @@
 * 前言
 :PROPERTIES:
 :CUSTOM_ID: a252e66a-efb6-4f6d-9692-767160e1cbde
-:ID:       958F607C-8D52-4FBF-BF22-20DEE094942D
+:CUSTOM_ID:       958F607C-8D52-4FBF-BF22-20DEE094942D
+:ID:       65B8366F-CA6B-403B-AF89-F1324C768D33
 :END:
 
 要求输入框能输入除了特殊表情外的任意字符。
@@ -26,7 +27,8 @@
 * TL;DR
 :PROPERTIES:
 :CUSTOM_ID: 3dd21c20-23d8-4d1c-a431-e8edf6b76a1e
-:ID:       052D35CE-BA3F-4E12-A0E4-AEE13967B83D
+:CUSTOM_ID:       052D35CE-BA3F-4E12-A0E4-AEE13967B83D
+:ID:       4B34D03B-CD42-4B69-B001-BB6E755A3E70
 :END:
 
 +如果你只是想要一个能够匹配表情的正则，下面这个应该就满足👇：+ [fn:1]
@@ -45,7 +47,8 @@
 * 解决过程
 :PROPERTIES:
 :CUSTOM_ID: 1347354e-0cd0-4408-b10f-efa68d00cb27
-:ID:       4DBDB35F-3BFB-4693-86EB-1AC2A75524D0
+:CUSTOM_ID:       4DBDB35F-3BFB-4693-86EB-1AC2A75524D0
+:ID:       2FB86304-D1A3-4636-AA30-C66A2AB08598
 :END:
 
 对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道 Emoji 和 Unicode 相关，但怎么用正则描述它呢？
@@ -107,7 +110,8 @@
 * 为什么 /(\ud83c[\udf00-\udfff].../u 的正则无法匹配 🉐
 :PROPERTIES:
 :CUSTOM_ID: 981cd9a6-3bc0-4c8d-8144-da19e135b56c
-:ID:       6B39F3DA-4DC5-4079-A5C0-2D50846588FE
+:CUSTOM_ID:       6B39F3DA-4DC5-4079-A5C0-2D50846588FE
+:ID:       FEE4F9A3-99A9-44C0-AA15-99CEE5CBF40A
 :END:
 
 现在，使用 Unicode character class escpae 可以匹配 Emoji 了，但是为什么一开始 Google 搜到的正则 ~/(\ud83c[\udf00-\udfff].../u~ 无法匹配 🉐 呢？
@@ -117,7 +121,8 @@
 ** String & Unicode
 :PROPERTIES:
 :CUSTOM_ID: 02f1594b-e08e-43d6-a94d-36f1d534eae0
-:ID:       27932DC1-43B2-4ADF-85B5-2D9ACC139218
+:CUSTOM_ID:       27932DC1-43B2-4ADF-85B5-2D9ACC139218
+:ID:       1BA1CF0E-AADA-4FEC-A783-881B05BA2C09
 :END:
 
 #+begin_details
@@ -171,7 +176,8 @@ represents 1–6 hex digits.
 
 ** 为什么匹配不到
 :PROPERTIES:
-:ID:       5D9B7985-E1CA-4BE5-826D-09D3869F9008
+:CUSTOM_ID:       5D9B7985-E1CA-4BE5-826D-09D3869F9008
+:ID:       D3CED168-058A-4596-89B9-18A04E0677BF
 :END:
 
 现在已经知道 Emoji 是通过代理对表示的，那么 🉐 的代理对是什么呢？
@@ -301,13 +307,15 @@ represents 1–6 hex digits.
 * 一些注意点
 :PROPERTIES:
 :CUSTOM_ID: 6b858229-2717-4f33-85fb-b6e57f26d5e5
-:ID:       B1F0270A-ED43-44E0-AB4E-C33AE2B4787C
+:CUSTOM_ID:       B1F0270A-ED43-44E0-AB4E-C33AE2B4787C
+:ID:       5B4F2AE0-9828-4B7C-A7A1-73B79B3F0E2D
 :END:
 
 ** 字符串长度
 :PROPERTIES:
 :CUSTOM_ID: d08ecef5-1d4f-42ac-b8e8-649bd603ae92
-:ID:       EE6E5AC1-0200-4C0A-A490-78754F2A680B
+:CUSTOM_ID:       EE6E5AC1-0200-4C0A-A490-78754F2A680B
+:ID:       AF35CB1F-0CFF-44C6-8FC3-8D6B172793E0
 :END:
 
 有的字符是由代理对组成的，是两个 UTF-16 编码单元，例如 Emoji。
@@ -323,7 +331,8 @@ represents 1–6 hex digits.
 ** Lone surrogates
 :PROPERTIES:
 :CUSTOM_ID: e849eebe-31a5-49e1-9bab-4c6e8bd69271
-:ID:       E0A57CA1-ED21-4C97-964F-04294BBD480D
+:CUSTOM_ID:       E0A57CA1-ED21-4C97-964F-04294BBD480D
+:ID:       C7010B10-B0DE-4ECD-9FD3-F50BD425AD85
 :END:
 
 代理对是由高代理和低代理组成的，如果单独把高代理拎出来，或者高代理和高代理组成代理对，是无法表达有含意的 Unicode 字符的。
@@ -333,7 +342,8 @@ represents 1–6 hex digits.
 * Refs
 :PROPERTIES:
 :CUSTOM_ID: 79e8a27e-35a0-4246-9bc6-5a8bdae90c45
-:ID:       644C1F6E-E9BB-4E52-932F-FC5AEBFCF23E
+:CUSTOM_ID:       644C1F6E-E9BB-4E52-932F-FC5AEBFCF23E
+:ID:       9E64BBD6-3201-4BED-AE49-A1D81ACFDFAB
 :END:
 
 - [[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][How to detect emoji using javascript]]
@@ -346,7 +356,8 @@ represents 1–6 hex digits.
 
 * Footnotes
 :PROPERTIES:
-:ID:       7E48FE13-3D13-44A4-8CC2-FF9603DA2E01
+:CUSTOM_ID:       7E48FE13-3D13-44A4-8CC2-FF9603DA2E01
+:ID:       3C34D4CD-7420-4EEF-B444-F92588BE9300
 :END:
 
 [fn:1] 感谢 [[https://github.com/JunQu][JunQu]] 指出 [[https://github.com/Spike-Leung/taxodium/discussions/9][问题]]。

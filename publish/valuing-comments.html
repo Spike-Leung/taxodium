@@ -230,16 +230,16 @@
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#C16D780A-EA9B-489F-9FB8-CD8BE1943910">为什么需要写注释</a></li>
-<li><a href="#E440678E-1350-4B5B-A22C-30519543F840">什么时候需要写注释</a>
+<li><a href="#DF7D524D-DC44-45F0-A9B0-950AC3EDD8C0">为什么需要写注释</a></li>
+<li><a href="#DE1208E9-18B4-4EC5-B1C1-E47852F6ED34">什么时候需要写注释</a>
 <ul>
-<li><a href="#4C076832-2AF2-44E9-B17A-28965056B41F">一些不建议使用注释的场景</a></li>
-<li><a href="#111E8644-CC89-4A55-9119-69329FF7EBCD">一些建议使用注释的场景</a></li>
+<li><a href="#B97905F9-1CF3-4DB6-9849-45F3F25F4C4E">一些不建议使用注释的场景</a></li>
+<li><a href="#542072F9-E79E-40E3-83E1-B4B4B799E8F4">一些建议使用注释的场景</a></li>
 </ul>
 </li>
-<li><a href="#3A1D37D2-61D9-4994-B96D-DFACEAB0670D">注释的分类</a></li>
-<li><a href="#A5B42663-D65A-4774-9844-8A6CAEF6012C">注释和代码同等重要</a></li>
-<li><a href="#F74205D1-9235-41CE-A51F-AA2A1DE61339">Refs</a></li>
+<li><a href="#81EA4493-998D-46F4-9D5D-078567BA08C1">注释的分类</a></li>
+<li><a href="#17D70924-12D3-4953-B63D-888E4678BEE9">注释和代码同等重要</a></li>
+<li><a href="#F3D95581-C754-4624-B72B-440D3870CA73">Refs</a></li>
 </ul>
 </div>
 </nav>
@@ -250,9 +250,9 @@
 <p>
 推荐去阅读一下原文，如果你有更好的文章，也欢迎分享 ヾ(<b>´∀ ˋ</b>)ﾉ
 </p>
-<div id="outline-container-C16D780A-EA9B-489F-9FB8-CD8BE1943910" class="outline-2">
-<h2 id="C16D780A-EA9B-489F-9FB8-CD8BE1943910">为什么需要写注释</h2>
-<div class="outline-text-2" id="text-C16D780A-EA9B-489F-9FB8-CD8BE1943910">
+<div id="outline-container-DF7D524D-DC44-45F0-A9B0-950AC3EDD8C0" class="outline-2">
+<h2 id="DF7D524D-DC44-45F0-A9B0-950AC3EDD8C0">为什么需要写注释</h2>
+<div class="outline-text-2" id="text-DF7D524D-DC44-45F0-A9B0-950AC3EDD8C0">
 <p>
 写代码是什么，不同的人有不同的答案，但有<a href="https://zverok.space/blog/2024-10-06-poetry.html#:~:text=Taking%20the%20definition%20of%20writing%20from%20earlier%2C%20we%20can%20say%20that%20writing%20code%20is%20sharing%20the%20experience%20of%20understanding%20the%20requirements/implementation.">一个答案</a>我很喜欢：
 </p>
@@ -297,24 +297,24 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Initial Stack: array</span><span style="color: #db7b5f;"> */</span>
+<pre class="src src-c"><span style="color: #999999;">/* </span><span style="color: #db7b5f;">Initial Stack: array</span><span style="color: #999999;"> */</span>
   <span style="color: #feacd0;">lua_getglobal</span><span style="color: #ffffff;">(</span>lua,<span style="color: #79a8ff;">"table"</span><span style="color: #ffffff;">)</span>;
   <span style="color: #feacd0;">lua_pushstring</span><span style="color: #ffffff;">(</span>lua,<span style="color: #79a8ff;">"sort"</span><span style="color: #ffffff;">)</span>;
-  <span style="color: #feacd0;">lua_gettable</span><span style="color: #ffffff;">(</span>lua,-2<span style="color: #ffffff;">)</span>;       <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #db7b5f;"> */</span>
-  <span style="color: #feacd0;">lua_pushvalue</span><span style="color: #ffffff;">(</span>lua,-3<span style="color: #ffffff;">)</span>;      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #db7b5f;"> */</span>
+  <span style="color: #feacd0;">lua_gettable</span><span style="color: #ffffff;">(</span>lua,-2<span style="color: #ffffff;">)</span>;       <span style="color: #999999;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #999999;"> */</span>
+  <span style="color: #feacd0;">lua_pushvalue</span><span style="color: #ffffff;">(</span>lua,-3<span style="color: #ffffff;">)</span>;      <span style="color: #999999;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #999999;"> */</span>
   <span style="color: #b6a0ff;">if</span> <span style="color: #ffffff;">(</span>lua_pcall<span style="color: #ff66ff;">(</span>lua,1,0,0<span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span> <span style="color: #ffffff;">{</span>
-      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, error</span><span style="color: #db7b5f;"> */</span>
+      <span style="color: #999999;">/* </span><span style="color: #db7b5f;">Stack: array, table, error</span><span style="color: #999999;"> */</span>
 
-      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">We are not interested in the error, we assume that the problem is
+      <span style="color: #999999;">/* </span><span style="color: #db7b5f;">We are not interested in the error, we assume that the problem is
        * that there are 'false' elements inside the array, so we try
        * again with a slower function but able to handle this case, that
-       * is: table.sort(table, __redis__compare_helper)</span><span style="color: #db7b5f;"> */</span>
-      lua_pop<span style="color: #ff66ff;">(</span>lua,1<span style="color: #ff66ff;">)</span>;             <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table</span><span style="color: #db7b5f;"> */</span>
-      lua_pushstring<span style="color: #ff66ff;">(</span>lua,<span style="color: #79a8ff;">"sort"</span><span style="color: #ff66ff;">)</span>; <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, sort</span><span style="color: #db7b5f;"> */</span>
-      lua_gettable<span style="color: #ff66ff;">(</span>lua,-2<span style="color: #ff66ff;">)</span>;       <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #db7b5f;"> */</span>
-      lua_pushvalue<span style="color: #ff66ff;">(</span>lua,-3<span style="color: #ff66ff;">)</span>;      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #db7b5f;"> */</span>
+       * is: table.sort(table, __redis__compare_helper)</span><span style="color: #999999;"> */</span>
+      lua_pop<span style="color: #ff66ff;">(</span>lua,1<span style="color: #ff66ff;">)</span>;             <span style="color: #999999;">/* </span><span style="color: #db7b5f;">Stack: array, table</span><span style="color: #999999;"> */</span>
+      lua_pushstring<span style="color: #ff66ff;">(</span>lua,<span style="color: #79a8ff;">"sort"</span><span style="color: #ff66ff;">)</span>; <span style="color: #999999;">/* </span><span style="color: #db7b5f;">Stack: array, table, sort</span><span style="color: #999999;"> */</span>
+      lua_gettable<span style="color: #ff66ff;">(</span>lua,-2<span style="color: #ff66ff;">)</span>;       <span style="color: #999999;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #999999;"> */</span>
+      lua_pushvalue<span style="color: #ff66ff;">(</span>lua,-3<span style="color: #ff66ff;">)</span>;      <span style="color: #999999;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #999999;"> */</span>
       lua_getglobal<span style="color: #ff66ff;">(</span>lua,<span style="color: #79a8ff;">"__redis__compare_helper"</span><span style="color: #ff66ff;">)</span>;
-      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array, __redis__compare_helper</span><span style="color: #db7b5f;"> */</span>
+      <span style="color: #999999;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array, __redis__compare_helper</span><span style="color: #999999;"> */</span>
       lua_call<span style="color: #ff66ff;">(</span>lua,2,0<span style="color: #ff66ff;">)</span>;
   <span style="color: #ffffff;">}</span>
 </pre>
@@ -418,16 +418,16 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </blockquote>
 </div>
 </div>
-<div id="outline-container-E440678E-1350-4B5B-A22C-30519543F840" class="outline-2">
-<h2 id="E440678E-1350-4B5B-A22C-30519543F840">什么时候需要写注释</h2>
-<div class="outline-text-2" id="text-E440678E-1350-4B5B-A22C-30519543F840">
+<div id="outline-container-DE1208E9-18B4-4EC5-B1C1-E47852F6ED34" class="outline-2">
+<h2 id="DE1208E9-18B4-4EC5-B1C1-E47852F6ED34">什么时候需要写注释</h2>
+<div class="outline-text-2" id="text-DE1208E9-18B4-4EC5-B1C1-E47852F6ED34">
 <p>
 <a href="https://testing.googleblog.com/2017/07/code-health-to-comment-or-not-to-comment.html">当代码不足以描述清楚逻辑的时候，就考虑补充注释</a>。
 </p>
 </div>
-<div id="outline-container-4C076832-2AF2-44E9-B17A-28965056B41F" class="outline-3">
-<h3 id="4C076832-2AF2-44E9-B17A-28965056B41F">一些不建议使用注释的场景</h3>
-<div class="outline-text-3" id="text-4C076832-2AF2-44E9-B17A-28965056B41F">
+<div id="outline-container-B97905F9-1CF3-4DB6-9849-45F3F25F4C4E" class="outline-3">
+<h3 id="B97905F9-1CF3-4DB6-9849-45F3F25F4C4E">一些不建议使用注释的场景</h3>
+<div class="outline-text-3" id="text-B97905F9-1CF3-4DB6-9849-45F3F25F4C4E">
 <ul class="org-ul">
 <li><p>
 可以使用含义更具体的变量，函数描述代码逻辑，而不需要注释
@@ -494,45 +494,45 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </ul>
 </div>
 </div>
-<div id="outline-container-111E8644-CC89-4A55-9119-69329FF7EBCD" class="outline-3">
-<h3 id="111E8644-CC89-4A55-9119-69329FF7EBCD">一些建议使用注释的场景</h3>
-<div class="outline-text-3" id="text-111E8644-CC89-4A55-9119-69329FF7EBCD">
+<div id="outline-container-542072F9-E79E-40E3-83E1-B4B4B799E8F4" class="outline-3">
+<h3 id="542072F9-E79E-40E3-83E1-B4B4B799E8F4">一些建议使用注释的场景</h3>
+<div class="outline-text-3" id="text-542072F9-E79E-40E3-83E1-B4B4B799E8F4">
 <ul class="org-ul">
 <li><p>
 揭示你的意图：解释代码 <i>为什么</i> 要做某些事情（而不是做什么）。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
+<pre class="src src-js"><span style="color: #999999;">// </span><span style="color: #db7b5f;">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
 </pre>
 </div></li>
 <li><p>
 保护未来善意的编辑人员不会错误地“修正”你的代码。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
+<pre class="src src-js"><span style="color: #999999;">// </span><span style="color: #db7b5f;">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
 </pre>
 </div></li>
 <li><p>
 澄清：代码审查过程中出现的问题，或代码读者可能提出/困惑的问题。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
+<pre class="src src-js"><span style="color: #999999;">// </span><span style="color: #db7b5f;">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
 </pre>
 </div></li>
 <li><p>
 解释你写不符合规范/要求的代码的理由
 </p>
 <div class="org-src-container">
-<pre class="src src-js">@SuppressWarnings<span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"unchecked"</span><span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
+<pre class="src src-js">@SuppressWarnings<span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"unchecked"</span><span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
 </pre>
 </div></li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-3A1D37D2-61D9-4994-B96D-DFACEAB0670D" class="outline-2">
-<h2 id="3A1D37D2-61D9-4994-B96D-DFACEAB0670D">注释的分类</h2>
-<div class="outline-text-2" id="text-3A1D37D2-61D9-4994-B96D-DFACEAB0670D">
+<div id="outline-container-81EA4493-998D-46F4-9D5D-078567BA08C1" class="outline-2">
+<h2 id="81EA4493-998D-46F4-9D5D-078567BA08C1">注释的分类</h2>
+<div class="outline-text-2" id="text-81EA4493-998D-46F4-9D5D-078567BA08C1">
 <p>
 <a href="https://github.com/antirez">antirez</a> 在他的博客 <a href="https://antirez.com/news/124">Writing system software: code comments.</a> 中对注释做了 9 个分类，里面还有大量的代码实例，推荐看看原文。
 </p>
@@ -628,9 +628,9 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 </dl>
 </div>
 </div>
-<div id="outline-container-A5B42663-D65A-4774-9844-8A6CAEF6012C" class="outline-2">
-<h2 id="A5B42663-D65A-4774-9844-8A6CAEF6012C">注释和代码同等重要</h2>
-<div class="outline-text-2" id="text-A5B42663-D65A-4774-9844-8A6CAEF6012C">
+<div id="outline-container-17D70924-12D3-4953-B63D-888E4678BEE9" class="outline-2">
+<h2 id="17D70924-12D3-4953-B63D-888E4678BEE9">注释和代码同等重要</h2>
+<div class="outline-text-2" id="text-17D70924-12D3-4953-B63D-888E4678BEE9">
 <p>
 常听到的说法是，注释会过时，如果不及时维护，注释反而成为了一种误导。
 </p>
@@ -692,9 +692,9 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 </p>
 </div>
 </div>
-<div id="outline-container-F74205D1-9235-41CE-A51F-AA2A1DE61339" class="outline-2">
-<h2 id="F74205D1-9235-41CE-A51F-AA2A1DE61339">Refs</h2>
-<div class="outline-text-2" id="text-F74205D1-9235-41CE-A51F-AA2A1DE61339">
+<div id="outline-container-F3D95581-C754-4624-B72B-440D3870CA73" class="outline-2">
+<h2 id="F3D95581-C754-4624-B72B-440D3870CA73">Refs</h2>
+<div class="outline-text-2" id="text-F3D95581-C754-4624-B72B-440D3870CA73">
 <ul class="org-ul">
 <li><a href="https://testing.googleblog.com/2017/07/code-health-to-comment-or-not-to-comment.html">Code Health: To Comment or Not to Comment?</a> Google 的一篇文章，讲述什么时候适合写注释</li>
 <li><a href="https://blogs.oracle.com/javamagazine/post/java-comments-reduce-technical-debt">Reduce technical debt by valuing comments as much as code</a> 注释的重要性</li>
@@ -737,7 +737,7 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： 2025-02-26 Wed 16:30</p>
-<p class="date">修改于： 2025-08-30 Sat 22:14</p>
+<p class="date">修改于： 2025-08-30 Sat 22:28</p>
 <p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <script src="/js/sidenote.js" defer></script>

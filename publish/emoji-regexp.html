@@ -262,28 +262,28 @@
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#a252e66a-efb6-4f6d-9692-767160e1cbde">前言</a></li>
-<li><a href="#3dd21c20-23d8-4d1c-a431-e8edf6b76a1e">TL;DR</a></li>
-<li><a href="#1347354e-0cd0-4408-b10f-efa68d00cb27">解决过程</a></li>
-<li><a href="#981cd9a6-3bc0-4c8d-8144-da19e135b56c">为什么 /(\ud83c[\udf00-\udfff]&#x2026;/u 的正则无法匹配 🉐</a>
+<li><a href="#958F607C-8D52-4FBF-BF22-20DEE094942D">前言</a></li>
+<li><a href="#052D35CE-BA3F-4E12-A0E4-AEE13967B83D">TL;DR</a></li>
+<li><a href="#4DBDB35F-3BFB-4693-86EB-1AC2A75524D0">解决过程</a></li>
+<li><a href="#6B39F3DA-4DC5-4079-A5C0-2D50846588FE">为什么 /(\ud83c[\udf00-\udfff]&#x2026;/u 的正则无法匹配 🉐</a>
 <ul>
-<li><a href="#02f1594b-e08e-43d6-a94d-36f1d534eae0">String &amp; Unicode</a></li>
-<li><a href="#D2F546AA-4F96-4D39-BACD-27C62774E3F8">为什么匹配不到</a></li>
+<li><a href="#27932DC1-43B2-4ADF-85B5-2D9ACC139218">String &amp; Unicode</a></li>
+<li><a href="#5D9B7985-E1CA-4BE5-826D-09D3869F9008">为什么匹配不到</a></li>
 </ul>
 </li>
-<li><a href="#6b858229-2717-4f33-85fb-b6e57f26d5e5">一些注意点</a>
+<li><a href="#B1F0270A-ED43-44E0-AB4E-C33AE2B4787C">一些注意点</a>
 <ul>
-<li><a href="#d08ecef5-1d4f-42ac-b8e8-649bd603ae92">字符串长度</a></li>
-<li><a href="#e849eebe-31a5-49e1-9bab-4c6e8bd69271">Lone surrogates</a></li>
+<li><a href="#EE6E5AC1-0200-4C0A-A490-78754F2A680B">字符串长度</a></li>
+<li><a href="#E0A57CA1-ED21-4C97-964F-04294BBD480D">Lone surrogates</a></li>
 </ul>
 </li>
-<li><a href="#79e8a27e-35a0-4246-9bc6-5a8bdae90c45">Refs</a></li>
+<li><a href="#644C1F6E-E9BB-4E52-932F-FC5AEBFCF23E">Refs</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-a252e66a-efb6-4f6d-9692-767160e1cbde" class="outline-2">
-<h2 id="a252e66a-efb6-4f6d-9692-767160e1cbde">前言</h2>
-<div class="outline-text-2" id="text-a252e66a-efb6-4f6d-9692-767160e1cbde">
+<div id="outline-container-958F607C-8D52-4FBF-BF22-20DEE094942D" class="outline-2">
+<h2 id="958F607C-8D52-4FBF-BF22-20DEE094942D">前言</h2>
+<div class="outline-text-2" id="text-958F607C-8D52-4FBF-BF22-20DEE094942D">
 <p>
 要求输入框能输入除了特殊表情外的任意字符。
 </p>
@@ -293,21 +293,21 @@
 </p>
 </div>
 </div>
-<div id="outline-container-3dd21c20-23d8-4d1c-a431-e8edf6b76a1e" class="outline-2">
-<h2 id="3dd21c20-23d8-4d1c-a431-e8edf6b76a1e">TL;DR</h2>
-<div class="outline-text-2" id="text-3dd21c20-23d8-4d1c-a431-e8edf6b76a1e">
+<div id="outline-container-052D35CE-BA3F-4E12-A0E4-AEE13967B83D" class="outline-2">
+<h2 id="052D35CE-BA3F-4E12-A0E4-AEE13967B83D">TL;DR</h2>
+<div class="outline-text-2" id="text-052D35CE-BA3F-4E12-A0E4-AEE13967B83D">
 <p>
 <del>如果你只是想要一个能够匹配表情的正则，下面这个应该就满足👇：</del> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>gu.<span style="color: #feacd0;">test</span><span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"&#20320;&#22909;hello123&#128516;hi&#127799;456&#127568;"</span><span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #00d3d0;">true</span><span style="color: #db7b5f;">
-</span><span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>gu.<span style="color: #feacd0;">test</span><span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"&#20320;&#22909;hello123"</span><span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #00d3d0;">false</span>
+<pre class="src src-typescript"><span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>gu.<span style="color: #f99157;">test</span><span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"&#20320;&#22909;hello123&#128516;hi&#127799;456&#127568;"</span><span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #00d3d0;">true</span><span style="color: #db7b5f;">
+</span><span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>gu.<span style="color: #f99157;">test</span><span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"&#20320;&#22909;hello123"</span><span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #00d3d0;">false</span>
 </pre>
 </div>
 
 
-<figure id="org41b294a">
+<figure id="org67395c6">
 <img src="./images/emoji-regexp/regexp101-emoji-corret.png" alt="regexp101-emoji-corret.png">
 
 </figure>
@@ -321,9 +321,9 @@
 </p>
 </div>
 </div>
-<div id="outline-container-1347354e-0cd0-4408-b10f-efa68d00cb27" class="outline-2">
-<h2 id="1347354e-0cd0-4408-b10f-efa68d00cb27">解决过程</h2>
-<div class="outline-text-2" id="text-1347354e-0cd0-4408-b10f-efa68d00cb27">
+<div id="outline-container-4DBDB35F-3BFB-4693-86EB-1AC2A75524D0" class="outline-2">
+<h2 id="4DBDB35F-3BFB-4693-86EB-1AC2A75524D0">解决过程</h2>
+<div class="outline-text-2" id="text-4DBDB35F-3BFB-4693-86EB-1AC2A75524D0">
 <p>
 对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道 Emoji 和 Unicode 相关，但怎么用正则描述它呢？
 </p>
@@ -342,7 +342,7 @@
 </p>
 
 
-<figure id="orgfd5c016">
+<figure id="orgbc740c7">
 <img src="./images/emoji-regexp/regexp101-emoji-wrong.png" alt="regexp101-emoji-wrong.png">
 
 </figure>
@@ -363,7 +363,7 @@
 于是又搜索了一下，StackOverflow 有一个 <a href="https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript">回答</a>，里面提到了用 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape">Unicode character class escape</a> 进行匹配，也就是 <code>/\p{Emoji}/u</code> 和 <code>/\p{Extended_Pictographic}/u</code> 。
 </p>
 
-<details id="org1d6b33b">
+<details id="org6323f71">
 <summary>什么是 Unicode character class escpae</summary>
 
 <p>
@@ -387,7 +387,7 @@
 </p>
 
 
-<figure id="org9789db4">
+<figure id="orgbd9de3e">
 <img src="./images/emoji-regexp/regexp101-emoji-hex-digit.png" alt="regexp101-emoji-hex-digit.png">
 
 </figure>
@@ -405,23 +405,23 @@
 </dl>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #6ae4b9;">console</span>.<span style="color: #feacd0;">log</span><span style="color: #ffffff;">(</span>
-  <span style="color: #79a8ff;">/\p{Emoji}/</span>u.<span style="color: #feacd0;">test</span><span style="color: #ff66ff;">(</span><span style="color: #79a8ff;">'flowers'</span><span style="color: #ff66ff;">)</span>, <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">false :)
-</span>  <span style="color: #79a8ff;">/\p{Emoji}/</span>u.<span style="color: #feacd0;">test</span><span style="color: #ff66ff;">(</span><span style="color: #79a8ff;">'flowers &#127804;&#127802;&#127800;'</span><span style="color: #ff66ff;">)</span>, <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">true :)
-</span>  <span style="color: #79a8ff;">/\p{Emoji}/</span>u.<span style="color: #feacd0;">test</span><span style="color: #ff66ff;">(</span><span style="color: #79a8ff;">'flowers 123'</span><span style="color: #ff66ff;">)</span>, <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">true :(
+<pre class="src src-typescript"><span style="color: #6ae4b9;">console</span>.<span style="color: #f99157;">log</span><span style="color: #ffffff;">(</span>
+  <span style="color: #79a8ff;">/\p{Emoji}/</span>u.<span style="color: #f99157;">test</span><span style="color: #ff66ff;">(</span><span style="color: #79a8ff;">'flowers'</span><span style="color: #ff66ff;">)</span>, <span style="color: #999999;">// </span><span style="color: #db7b5f;">false :)
+</span>  <span style="color: #79a8ff;">/\p{Emoji}/</span>u.<span style="color: #f99157;">test</span><span style="color: #ff66ff;">(</span><span style="color: #79a8ff;">'flowers &#127804;&#127802;&#127800;'</span><span style="color: #ff66ff;">)</span>, <span style="color: #999999;">// </span><span style="color: #db7b5f;">true :)
+</span>  <span style="color: #79a8ff;">/\p{Emoji}/</span>u.<span style="color: #f99157;">test</span><span style="color: #ff66ff;">(</span><span style="color: #79a8ff;">'flowers 123'</span><span style="color: #ff66ff;">)</span>, <span style="color: #999999;">// </span><span style="color: #db7b5f;">true :(
 </span><span style="color: #ffffff;">)</span>
-<span style="color: #6ae4b9;">console</span>.<span style="color: #feacd0;">log</span><span style="color: #ffffff;">(</span>
-  <span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>u.<span style="color: #feacd0;">test</span><span style="color: #ff66ff;">(</span><span style="color: #79a8ff;">'flowers'</span><span style="color: #ff66ff;">)</span>, <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">false :)
-</span>  <span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>u.<span style="color: #feacd0;">test</span><span style="color: #ff66ff;">(</span><span style="color: #79a8ff;">'flowers &#127804;&#127802;&#127800;'</span><span style="color: #ff66ff;">)</span>, <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">true :)
-</span>  <span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>u.<span style="color: #feacd0;">test</span><span style="color: #ff66ff;">(</span><span style="color: #79a8ff;">'flowers 123'</span><span style="color: #ff66ff;">)</span>, <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">false :)
+<span style="color: #6ae4b9;">console</span>.<span style="color: #f99157;">log</span><span style="color: #ffffff;">(</span>
+  <span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>u.<span style="color: #f99157;">test</span><span style="color: #ff66ff;">(</span><span style="color: #79a8ff;">'flowers'</span><span style="color: #ff66ff;">)</span>, <span style="color: #999999;">// </span><span style="color: #db7b5f;">false :)
+</span>  <span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>u.<span style="color: #f99157;">test</span><span style="color: #ff66ff;">(</span><span style="color: #79a8ff;">'flowers &#127804;&#127802;&#127800;'</span><span style="color: #ff66ff;">)</span>, <span style="color: #999999;">// </span><span style="color: #db7b5f;">true :)
+</span>  <span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>u.<span style="color: #f99157;">test</span><span style="color: #ff66ff;">(</span><span style="color: #79a8ff;">'flowers 123'</span><span style="color: #ff66ff;">)</span>, <span style="color: #999999;">// </span><span style="color: #db7b5f;">false :)
 </span><span style="color: #ffffff;">)</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-981cd9a6-3bc0-4c8d-8144-da19e135b56c" class="outline-2">
-<h2 id="981cd9a6-3bc0-4c8d-8144-da19e135b56c">为什么 /(\ud83c[\udf00-\udfff]&#x2026;/u 的正则无法匹配 🉐</h2>
-<div class="outline-text-2" id="text-981cd9a6-3bc0-4c8d-8144-da19e135b56c">
+<div id="outline-container-6B39F3DA-4DC5-4079-A5C0-2D50846588FE" class="outline-2">
+<h2 id="6B39F3DA-4DC5-4079-A5C0-2D50846588FE">为什么 /(\ud83c[\udf00-\udfff]&#x2026;/u 的正则无法匹配 🉐</h2>
+<div class="outline-text-2" id="text-6B39F3DA-4DC5-4079-A5C0-2D50846588FE">
 <p>
 现在，使用 Unicode character class escpae 可以匹配 Emoji 了，但是为什么一开始 Google 搜到的正则 <code>/(\ud83c[\udf00-\udfff].../u</code> 无法匹配 🉐 呢？
 </p>
@@ -430,10 +430,10 @@
 为此，首先需要知道 🉐 在 JS 中到底是什么。
 </p>
 </div>
-<div id="outline-container-02f1594b-e08e-43d6-a94d-36f1d534eae0" class="outline-3">
-<h3 id="02f1594b-e08e-43d6-a94d-36f1d534eae0">String &amp; Unicode</h3>
-<div class="outline-text-3" id="text-02f1594b-e08e-43d6-a94d-36f1d534eae0">
-<details id="org4290faf">
+<div id="outline-container-27932DC1-43B2-4ADF-85B5-2D9ACC139218" class="outline-3">
+<h3 id="27932DC1-43B2-4ADF-85B5-2D9ACC139218">String &amp; Unicode</h3>
+<div class="outline-text-3" id="text-27932DC1-43B2-4ADF-85B5-2D9ACC139218">
+<details id="orga666d61">
 <summary>UTF-16 characters, Unicode code points, and grapheme clusters</summary>
 
 <blockquote>
@@ -511,9 +511,9 @@ represents 1–6 hex digits.
 </p>
 </div>
 </div>
-<div id="outline-container-D2F546AA-4F96-4D39-BACD-27C62774E3F8" class="outline-3">
-<h3 id="D2F546AA-4F96-4D39-BACD-27C62774E3F8">为什么匹配不到</h3>
-<div class="outline-text-3" id="text-D2F546AA-4F96-4D39-BACD-27C62774E3F8">
+<div id="outline-container-5D9B7985-E1CA-4BE5-826D-09D3869F9008" class="outline-3">
+<h3 id="5D9B7985-E1CA-4BE5-826D-09D3869F9008">为什么匹配不到</h3>
+<div class="outline-text-3" id="text-5D9B7985-E1CA-4BE5-826D-09D3869F9008">
 <p>
 现在已经知道 Emoji 是通过代理对表示的，那么 🉐 的代理对是什么呢？
 </p>
@@ -523,9 +523,9 @@ represents 1–6 hex digits.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #feacd0;">charAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'\uD83C'
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #feacd0;">charAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'\uDE50'
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #feacd0;">split</span><span style="color: #ffffff;">(</span><span style="color: #79a8ff;">""</span><span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">['\uD83C', '\uDE50']</span>
+<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #f99157;">charAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">'\uD83C'
+</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #f99157;">charAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">'\uDE50'
+</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #f99157;">split</span><span style="color: #ffffff;">(</span><span style="color: #79a8ff;">""</span><span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">['\uD83C', '\uDE50']</span>
 </pre>
 </div>
 
@@ -537,7 +537,7 @@ represents 1–6 hex digits.
 和 <code>(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]</code> 对比可以发现，正则的范围不包括 <code>\uD83C\uDE50</code> ，所以匹配不到 🉐。
 </p>
 
-<details id="org63f319c">
+<details id="org6419cd6">
 <summary>String 中的相关方法</summary>
 
 <dl class="org-dl">
@@ -552,14 +552,14 @@ charAt() 返回字符串对应下标的单个 UTF-16 编码单元。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #feacd0;">charAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'\uD83C'
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #feacd0;">charAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'\uDE50'
+<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #f99157;">charAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">'\uD83C'
+</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #f99157;">charAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">'\uDE50'
 </span>
-<span style="color: #79a8ff;">'a'</span>.<span style="color: #feacd0;">charAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'a'
-</span><span style="color: #79a8ff;">'a'</span>.<span style="color: #feacd0;">charAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">''
+<span style="color: #79a8ff;">'a'</span>.<span style="color: #f99157;">charAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">'a'
+</span><span style="color: #79a8ff;">'a'</span>.<span style="color: #f99157;">charAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">''
 </span>
-<span style="color: #79a8ff;">'apple'</span>.<span style="color: #feacd0;">charAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'a'
-</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #feacd0;">charAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'p'</span>
+<span style="color: #79a8ff;">'apple'</span>.<span style="color: #f99157;">charAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">'a'
+</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #f99157;">charAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">'p'</span>
 </pre>
 </div></dd>
 
@@ -574,14 +574,14 @@ charCodeAt() 返回字符一个 <code>0-65535</code> 之间的 <code>数字(inte
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">55356
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">56912
+<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">55356
+</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">56912
 </span>
-<span style="color: #79a8ff;">'a'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">97
-</span><span style="color: #79a8ff;">'a'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #00d3d0;">NaN</span><span style="color: #db7b5f;">
+<span style="color: #79a8ff;">'a'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">97
+</span><span style="color: #79a8ff;">'a'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #00d3d0;">NaN</span><span style="color: #db7b5f;">
 </span>
-<span style="color: #79a8ff;">'apple'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">97
-</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">112</span>
+<span style="color: #79a8ff;">'apple'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">97
+</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">112</span>
 </pre>
 </div></dd>
 
@@ -600,16 +600,16 @@ fromCharCode() 和 charCodeAt() 是对应的。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">55356
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">56912
-</span>String.<span style="color: #feacd0;">fromCharCode</span><span style="color: #ffffff;">(</span>55356, 56912<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'&#127568;'
+<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">55356
+</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">56912
+</span>String.<span style="color: #f99157;">fromCharCode</span><span style="color: #ffffff;">(</span>55356, 56912<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">'&#127568;'
 </span>
-<span style="color: #79a8ff;">'apple'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">97
-</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">112
-</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>2<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">112
-</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>3<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">108
-</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>4<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">101
-</span>String.<span style="color: #feacd0;">fromCharCode</span><span style="color: #ffffff;">(</span>97, 112, 112, 108, 101<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'apple'</span>
+<span style="color: #79a8ff;">'apple'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">97
+</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">112
+</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>2<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">112
+</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>3<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">108
+</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>4<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">101
+</span>String.<span style="color: #f99157;">fromCharCode</span><span style="color: #ffffff;">(</span>97, 112, 112, 108, 101<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">'apple'</span>
 </pre>
 </div></dd>
 
@@ -628,14 +628,14 @@ codePointAt() 返回的是一个数字，是字符串对应下标的对应的 Un
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">55356
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #feacd0;">charCodeAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">56912
+<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">55356
+</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #f99157;">charCodeAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">56912
 </span>
-<span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #feacd0;">codePointAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">127568
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#38656;&#35201;&#27880;&#24847;&#30340;&#26159;&#65292;&#19979;&#26631;&#26159;&#22522;&#20110; UTF-16 &#35745;&#31639;&#30340;&#65292;&#127568; &#26159;&#30001;&#20004;&#20010; UTF-16 &#32452;&#25104;&#30340;
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#23545;&#20110;&#19979;&#26631; 0&#65292;&#21487;&#20197;&#25214;&#21040;&#19968;&#20010;&#20195;&#29702;&#23545;&#65292;&#23545;&#24212; Unicode code point&#65292;&#25152;&#20197;&#36820;&#22238;&#20102; 127568
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#23545;&#20110;&#19979;&#26631; 1&#65292;&#30001;&#20110;&#21482;&#26377;&#20302;&#20195;&#29702;&#20301;&#65292;&#26080;&#27861;&#32452;&#25104;&#20195;&#29702;&#23545;&#65292;&#23601;&#36820;&#22238;&#20302;&#20195;&#29702;&#20301;&#23545;&#24212;&#30340; Unicode Code Point
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #feacd0;">codePointAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">56912</span>
+<span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #f99157;">codePointAt</span><span style="color: #ffffff;">(</span>0<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">127568
+</span><span style="color: #999999;">// </span><span style="color: #db7b5f;">&#38656;&#35201;&#27880;&#24847;&#30340;&#26159;&#65292;&#19979;&#26631;&#26159;&#22522;&#20110; UTF-16 &#35745;&#31639;&#30340;&#65292;&#127568; &#26159;&#30001;&#20004;&#20010; UTF-16 &#32452;&#25104;&#30340;
+</span><span style="color: #999999;">// </span><span style="color: #db7b5f;">&#23545;&#20110;&#19979;&#26631; 0&#65292;&#21487;&#20197;&#25214;&#21040;&#19968;&#20010;&#20195;&#29702;&#23545;&#65292;&#23545;&#24212; Unicode code point&#65292;&#25152;&#20197;&#36820;&#22238;&#20102; 127568
+</span><span style="color: #999999;">// </span><span style="color: #db7b5f;">&#23545;&#20110;&#19979;&#26631; 1&#65292;&#30001;&#20110;&#21482;&#26377;&#20302;&#20195;&#29702;&#20301;&#65292;&#26080;&#27861;&#32452;&#25104;&#20195;&#29702;&#23545;&#65292;&#23601;&#36820;&#22238;&#20302;&#20195;&#29702;&#20301;&#23545;&#24212;&#30340; Unicode Code Point
+</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #f99157;">codePointAt</span><span style="color: #ffffff;">(</span>1<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">56912</span>
 </pre>
 </div></dd>
 
@@ -654,17 +654,17 @@ fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePo
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">fromCodePoint
-</span>String.<span style="color: #feacd0;">fromCodePoint</span><span style="color: #ffffff;">(</span>127568<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'&#127568;'
-</span>String.<span style="color: #feacd0;">fromCodePoint</span><span style="color: #ffffff;">(</span>55356, 56912<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'&#127568;'
+<pre class="src src-typescript"><span style="color: #999999;">// </span><span style="color: #db7b5f;">fromCodePoint
+</span>String.<span style="color: #f99157;">fromCodePoint</span><span style="color: #ffffff;">(</span>127568<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">'&#127568;'
+</span>String.<span style="color: #f99157;">fromCodePoint</span><span style="color: #ffffff;">(</span>55356, 56912<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">'&#127568;'
 </span>
-<span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">fromCharCode
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">fromCharCode &#21482;&#33021;&#22788;&#29702; 0-65535 &#20043;&#38388;&#30340;&#25968;&#23383;&#65292;&#23545;&#20110;&#36229;&#36807; 65535 &#30340;&#25968;&#23383;&#65292;&#21017;&#25130;&#26029;&#21040;&#26368;&#21518;&#30340; 16 &#20301;&#25968;&#23383;
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#31561;&#21516;&#20110; String.</span><span style="color: #feacd0;">fromCharCode</span><span style="color: #db7b5f;">(62032)
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">Number(127568).</span><span style="color: #feacd0;">toString</span><span style="color: #db7b5f;">(16) -&gt; '1f250' -&gt; &#25130;&#21462;&#26368;&#21518;&#30340; 16 &#20301;&#65292;&#21363; </span><span style="color: #00d3d0;">f250</span><span style="color: #db7b5f;">
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">Number.</span><span style="color: #feacd0;">parseInt</span><span style="color: #db7b5f;">('f250', 16) -&gt; 62032
-</span>String.<span style="color: #feacd0;">fromCharCode</span><span style="color: #ffffff;">(</span>127568<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'&#62032;'
-</span>String.<span style="color: #feacd0;">fromCharCode</span><span style="color: #ffffff;">(</span>55356, 56912<span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'&#127568;'</span>
+<span style="color: #999999;">// </span><span style="color: #db7b5f;">fromCharCode
+</span><span style="color: #999999;">// </span><span style="color: #db7b5f;">fromCharCode &#21482;&#33021;&#22788;&#29702; 0-65535 &#20043;&#38388;&#30340;&#25968;&#23383;&#65292;&#23545;&#20110;&#36229;&#36807; 65535 &#30340;&#25968;&#23383;&#65292;&#21017;&#25130;&#26029;&#21040;&#26368;&#21518;&#30340; 16 &#20301;&#25968;&#23383;
+</span><span style="color: #999999;">// </span><span style="color: #db7b5f;">&#31561;&#21516;&#20110; String.</span><span style="color: #f99157;">fromCharCode</span><span style="color: #db7b5f;">(62032)
+</span><span style="color: #999999;">// </span><span style="color: #db7b5f;">Number(127568).</span><span style="color: #f99157;">toString</span><span style="color: #db7b5f;">(16) -&gt; '1f250' -&gt; &#25130;&#21462;&#26368;&#21518;&#30340; 16 &#20301;&#65292;&#21363; </span><span style="color: #00d3d0;">f250</span><span style="color: #db7b5f;">
+</span><span style="color: #999999;">// </span><span style="color: #db7b5f;">Number.</span><span style="color: #f99157;">parseInt</span><span style="color: #db7b5f;">('f250', 16) -&gt; 62032
+</span>String.<span style="color: #f99157;">fromCharCode</span><span style="color: #ffffff;">(</span>127568<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">'&#62032;'
+</span>String.<span style="color: #f99157;">fromCharCode</span><span style="color: #ffffff;">(</span>55356, 56912<span style="color: #ffffff;">)</span> <span style="color: #999999;">// </span><span style="color: #db7b5f;">'&#127568;'</span>
 </pre>
 </div></dd>
 </dl>
@@ -672,13 +672,13 @@ fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePo
 </div>
 </div>
 </div>
-<div id="outline-container-6b858229-2717-4f33-85fb-b6e57f26d5e5" class="outline-2">
-<h2 id="6b858229-2717-4f33-85fb-b6e57f26d5e5">一些注意点</h2>
-<div class="outline-text-2" id="text-6b858229-2717-4f33-85fb-b6e57f26d5e5">
+<div id="outline-container-B1F0270A-ED43-44E0-AB4E-C33AE2B4787C" class="outline-2">
+<h2 id="B1F0270A-ED43-44E0-AB4E-C33AE2B4787C">一些注意点</h2>
+<div class="outline-text-2" id="text-B1F0270A-ED43-44E0-AB4E-C33AE2B4787C">
 </div>
-<div id="outline-container-d08ecef5-1d4f-42ac-b8e8-649bd603ae92" class="outline-3">
-<h3 id="d08ecef5-1d4f-42ac-b8e8-649bd603ae92">字符串长度</h3>
-<div class="outline-text-3" id="text-d08ecef5-1d4f-42ac-b8e8-649bd603ae92">
+<div id="outline-container-EE6E5AC1-0200-4C0A-A490-78754F2A680B" class="outline-3">
+<h3 id="EE6E5AC1-0200-4C0A-A490-78754F2A680B">字符串长度</h3>
+<div class="outline-text-3" id="text-EE6E5AC1-0200-4C0A-A490-78754F2A680B">
 <p>
 有的字符是由代理对组成的，是两个 UTF-16 编码单元，例如 Emoji。
 </p>
@@ -688,16 +688,16 @@ fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePo
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">'a'</span>.length <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">1
+<pre class="src src-typescript"><span style="color: #79a8ff;">'a'</span>.length <span style="color: #999999;">// </span><span style="color: #db7b5f;">1
 </span>
-<span style="color: #79a8ff;">'&#127568;'</span>.length <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">2</span>
+<span style="color: #79a8ff;">'&#127568;'</span>.length <span style="color: #999999;">// </span><span style="color: #db7b5f;">2</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-e849eebe-31a5-49e1-9bab-4c6e8bd69271" class="outline-3">
-<h3 id="e849eebe-31a5-49e1-9bab-4c6e8bd69271">Lone surrogates</h3>
-<div class="outline-text-3" id="text-e849eebe-31a5-49e1-9bab-4c6e8bd69271">
+<div id="outline-container-E0A57CA1-ED21-4C97-964F-04294BBD480D" class="outline-3">
+<h3 id="E0A57CA1-ED21-4C97-964F-04294BBD480D">Lone surrogates</h3>
+<div class="outline-text-3" id="text-E0A57CA1-ED21-4C97-964F-04294BBD480D">
 <p>
 代理对是由高代理和低代理组成的，如果单独把高代理拎出来，或者高代理和高代理组成代理对，是无法表达有含意的 Unicode 字符的。
 </p>
@@ -708,9 +708,9 @@ fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePo
 </div>
 </div>
 </div>
-<div id="outline-container-79e8a27e-35a0-4246-9bc6-5a8bdae90c45" class="outline-2">
-<h2 id="79e8a27e-35a0-4246-9bc6-5a8bdae90c45">Refs</h2>
-<div class="outline-text-2" id="text-79e8a27e-35a0-4246-9bc6-5a8bdae90c45">
+<div id="outline-container-644C1F6E-E9BB-4E52-932F-FC5AEBFCF23E" class="outline-2">
+<h2 id="644C1F6E-E9BB-4E52-932F-FC5AEBFCF23E">Refs</h2>
+<div class="outline-text-2" id="text-644C1F6E-E9BB-4E52-932F-FC5AEBFCF23E">
 <ul class="org-ul">
 <li><a href="https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript">How to detect emoji using javascript</a></li>
 
@@ -745,7 +745,7 @@ fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePo
 
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung Spike Leung</a></p>
 <p class="date">创建于： 2024-05-09 Thu 10:15</p>
-<p class="date">修改于： 2025-08-30 Sat 22:12</p>
+<p class="date">修改于： 2025-08-30 Sat 22:28</p>
 <p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <script src="/js/sidenote.js" defer></script>
