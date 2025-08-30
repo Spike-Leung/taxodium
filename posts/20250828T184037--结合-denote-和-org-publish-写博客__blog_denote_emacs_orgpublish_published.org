@@ -180,6 +180,10 @@ denote 中的改动有两个地方：
 
 =:include= 需要传入一个文件列表，可以通过 denote 提供的方法 =denote-diretory-files= 获得，不过由于我用了 silos， =denote-diretory-files= 是不会去找 silos 中的文件的，我还需要临时改变一下 =denote-directory= 的值，使其指向 silos 的路径。
 
+另外，因为 =setq org-publish-project-alist= 只执行了一次，后续新增了对应 keyword 的文章， =org-publish-project-alist= 里依然是上次设置的文件列表，而无法获取最新的文件列表。
+
+因此，还需要在执行 =org-publish= 之前，再次更新 =org-publish-project-alist= 。
+
 #+begin_details
 #+html: <summary>相关代码</summary>
 
@@ -195,49 +199,38 @@ denote 中的改动有两个地方：
     (cl-letf ((denote-directory (expand-file-name silos)))
       (denote-directory-files tag)))
 
-  (setq org-publish-project-alist
-        `(("orgfiles"
-           :base-directory "~/git/taxodium/posts"
-           :base-extension "org"
-           :exclude ".*"
-           :include  ,(spike-leung/get-file-list-from-denote-silo "~/git/taxodium/posts" "_published")
-           :publishing-directory "~/git/taxodium/publish"
-           :publishing-function spike-leung/org-html-publish-to-html-orgfiles
-           :section-numbers nil
-           :with-toc t
-           :with-tags t
-           :time-stamp-file nil
-           :html-head ,spike-leung/html-head
-           :html-preamble ,spike-leung/html-preamble-content
-           :html-postamble ,spike-leung/html-postamble
-           :auto-sitemap t
-           :sitemap-filename "index.org"
-           :sitemap-title "Taxodium"
-           :sitemap-format-entry spike-leung/sitemap-format-entry
-           :sitemap-sort-files anti-chronologically
-           :sitemap-function spike-leung/sitemap-function
-           :author "Spike Leung"
-           :email "l-yanlei@hotmail.com")
+  (defun spike-leung/setup-org-publish-project-alist (&rest _args)
+    "Setup `org-publish-project-alist'."
+    (message "setup org-publish-project-alist")
+    (setq org-publish-project-alist
+          `(("orgfiles"
+             :base-directory "~/git/taxodium/posts"
+             :base-extension "org"
+             :exclude ".*" ;; 排除所有文件
+             :include  ,(spike-leung/get-file-list-from-denote-silo "~/git/taxodium/posts" "_published") ;; 过滤获取对应 keyword 的文件
+             :publishing-directory "~/git/taxodium/publish"
+             :publishing-function spike-leung/org-html-publish-to-html-orgfiles
+             :section-numbers nil
+             :with-toc t
+             :with-tags t
+             :time-stamp-file nil
+             :html-head ,spike-leung/html-head
+             :html-preamble ,spike-leung/html-preamble-content
+             :html-postamble ,spike-leung/html-postamble
+             :auto-sitemap t
+             :sitemap-filename "index.org"
+             :sitemap-title "Taxodium"
+             :sitemap-format-entry spike-leung/sitemap-format-entry
+             :sitemap-sort-files anti-chronologically
+             :sitemap-function spike-leung/sitemap-function
+             :author "Spike Leung"
+             :email "l-yanlei@hotmail.com")
 
-          ("draft"
-           :base-directory "~/git/taxodium/posts"
-           :base-extension "org"
-           :exclude ".*"
-           :include  ,(spike-leung/get-file-list-from-denote-silo "~/git/taxodium/posts" "_draft")
-           :publishing-directory "~/git/taxodium/publish"
-           :publishing-function spike-leung/org-html-publish-to-html-orgfiles
-           :section-numbers nil
-           :with-toc t
-           :with-tags t
-           :time-stamp-file nil
-           :html-head ,spike-leung/html-head
-           :html-postamble ,spike-leung/html-postamble
-           :html-preamble ,spike-leung/html-preamble-content
-           :author "Spike Leung"
-           :email "l-yanlei@hotmail.com")
+            ;; 省略其他代码，具体可以看源码
+            )))
 
-          ;; 省略部分代码
-          ))
+  (spike-leung/setup-org-publish-project-alist) ;; 初始化 org-publish-project-alist
+  (advice-add 'org-publish :before #'spike-leung/setup-org-publish-project-alist) ;; 在执行 org-publish 之前更新 org-publish-project-alist
 #+end_src
 #+end_details
 
