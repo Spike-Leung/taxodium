@@ -16,6 +16,7 @@
 * 前言
 :PROPERTIES:
 :CUSTOM_ID: a252e66a-efb6-4f6d-9692-767160e1cbde
+:ID:       958F607C-8D52-4FBF-BF22-20DEE094942D
 :END:
 
 要求输入框能输入除了特殊表情外的任意字符。
@@ -25,6 +26,7 @@
 * TL;DR
 :PROPERTIES:
 :CUSTOM_ID: 3dd21c20-23d8-4d1c-a431-e8edf6b76a1e
+:ID:       052D35CE-BA3F-4E12-A0E4-AEE13967B83D
 :END:
 
 +如果你只是想要一个能够匹配表情的正则，下面这个应该就满足👇：+ [fn:1]
@@ -43,6 +45,7 @@
 * 解决过程
 :PROPERTIES:
 :CUSTOM_ID: 1347354e-0cd0-4408-b10f-efa68d00cb27
+:ID:       4DBDB35F-3BFB-4693-86EB-1AC2A75524D0
 :END:
 
 对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道 Emoji 和 Unicode 相关，但怎么用正则描述它呢？
@@ -104,6 +107,7 @@
 * 为什么 /(\ud83c[\udf00-\udfff].../u 的正则无法匹配 🉐
 :PROPERTIES:
 :CUSTOM_ID: 981cd9a6-3bc0-4c8d-8144-da19e135b56c
+:ID:       6B39F3DA-4DC5-4079-A5C0-2D50846588FE
 :END:
 
 现在，使用 Unicode character class escpae 可以匹配 Emoji 了，但是为什么一开始 Google 搜到的正则 ~/(\ud83c[\udf00-\udfff].../u~ 无法匹配 🉐 呢？
@@ -113,6 +117,7 @@
 ** String & Unicode
 :PROPERTIES:
 :CUSTOM_ID: 02f1594b-e08e-43d6-a94d-36f1d534eae0
+:ID:       27932DC1-43B2-4ADF-85B5-2D9ACC139218
 :END:
 
 #+begin_details
@@ -165,6 +170,9 @@ represents 1–6 hex digits.
 而超出 65535 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
 
 ** 为什么匹配不到
+:PROPERTIES:
+:ID:       5D9B7985-E1CA-4BE5-826D-09D3869F9008
+:END:
 
 现在已经知道 Emoji 是通过代理对表示的，那么 🉐 的代理对是什么呢？
 
@@ -293,11 +301,13 @@ represents 1–6 hex digits.
 * 一些注意点
 :PROPERTIES:
 :CUSTOM_ID: 6b858229-2717-4f33-85fb-b6e57f26d5e5
+:ID:       B1F0270A-ED43-44E0-AB4E-C33AE2B4787C
 :END:
 
 ** 字符串长度
 :PROPERTIES:
 :CUSTOM_ID: d08ecef5-1d4f-42ac-b8e8-649bd603ae92
+:ID:       EE6E5AC1-0200-4C0A-A490-78754F2A680B
 :END:
 
 有的字符是由代理对组成的，是两个 UTF-16 编码单元，例如 Emoji。
@@ -313,6 +323,7 @@ represents 1–6 hex digits.
 ** Lone surrogates
 :PROPERTIES:
 :CUSTOM_ID: e849eebe-31a5-49e1-9bab-4c6e8bd69271
+:ID:       E0A57CA1-ED21-4C97-964F-04294BBD480D
 :END:
 
 代理对是由高代理和低代理组成的，如果单独把高代理拎出来，或者高代理和高代理组成代理对，是无法表达有含意的 Unicode 字符的。
@@ -322,6 +333,7 @@ represents 1–6 hex digits.
 * Refs
 :PROPERTIES:
 :CUSTOM_ID: 79e8a27e-35a0-4246-9bc6-5a8bdae90c45
+:ID:       644C1F6E-E9BB-4E52-932F-FC5AEBFCF23E
 :END:
 
 - [[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][How to detect emoji using javascript]]
@@ -333,6 +345,9 @@ represents 1–6 hex digits.
 - [[https://v8.dev/features/regexp-v-flag][RegExp v flag with set notation and properties of strings]]
 
 * Footnotes
+:PROPERTIES:
+:ID:       7E48FE13-3D13-44A4-8CC2-FF9603DA2E01
+:END:
 
 [fn:1] 感谢 [[https://github.com/JunQu][JunQu]] 指出 [[https://github.com/Spike-Leung/taxodium/discussions/9][问题]]。
 

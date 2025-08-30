@@ -34,6 +34,9 @@
 - 第三方兼容
 
 * 设置 dark mode
+:PROPERTIES:
+:ID:       EF3F95F8-081E-492A-8DF0-569ED6EDC9DA
+:END:
 
 *1. 在 =<head>= 中添加 ~<meta name="color-scheme" content="light dark">~ (@see: [[https://github.com/Spike-Leung/emacs.d/blob/26402349a476c6118b2bc94fc09901fe45019b56/lisp/my-lisp/init-org-publish.el#L8-L9][init-org-publish.el]])*
 
@@ -144,8 +147,14 @@ main {
 但事情并没有这么简单，过程中我还碰到了不少问题，接下来逐个看看。
 
 * 踩坑
+:PROPERTIES:
+:ID:       55EC67A7-2946-4600-AE30-2D027471E472
+:END:
 
 ** 闪烁问题
+:PROPERTIES:
+:ID:       41667C8A-F0D5-4BFC-9553-5DE38D35E479
+:END:
 
 最开始 color-scheme.js 是放在 HTML 的最后加载的，避免影响页面内容的加载和渲染。
 
@@ -158,6 +167,9 @@ main {
 所以 color-scheme.js 中还需要监听 [[https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event][DOMContentLoaded]] 事件，当页面 DOM 加载完成后，执行一些获取 DOM ，设置 color-scheme 的逻辑。
 
 ** dark mode 下 giscus 的处理
+:PROPERTIES:
+:ID:       F1F6DC00-A573-4C44-AB96-D42DD21D73B4
+:END:
 
 我希望 [[https://github.com/giscus/giscus][giscus]] 也会基于读者选择的 color-scheme 切换主题，博客中 giscus 是懒加载的，只有滚动到底部的时候才会加载。
 
@@ -174,12 +186,18 @@ main {
 代码可以参考 [[https://github.com/giscus/giscus/issues/336#issuecomment-1009551934][laymonage 的回答]] 。
 
 ** dark mode 下 iframe 的处理
+:PROPERTIES:
+:ID:       5D052E08-D56E-43B9-BEA5-759547C28036
+:END:
 
 我的博客里会用 [[denote:20240805T162550][用 iframe 显示 HTML 例子]]，[[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe][<iframe>]] 是独立于我博客窗口的，不受 [[https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/style.css][style.css]] 的影响，为了能够适配 color-scheme，我会遍历页面上所有的 iframe，然后在他们的 [[https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement/contentDocument][contentDocument]] 设置 color-scheme 属性。
 
 这里也会存在一个时机的问题，需要在 iframe 加载完成后再设置 color-scheme 才行，不然 color-scheme 无法生效，实现上是通过监听 iframe 的 [[https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/load_event][load event]] 进行设置的。
 
 ** dark mode 下代码块高亮的处理
+:PROPERTIES:
+:ID:       0E86BEB5-D1F9-451D-8271-B63E836FE0A3
+:END:
 
 我的博客是用 [[denote:20240927T214034][org-publish]] 实现的，代码块的高亮颜色是 publish 时 Emacs 的主题颜色决定的，要么是亮色，要么是暗色，没法同时导出两种高亮主题。
 
@@ -212,6 +230,9 @@ publish 生成的代码高亮的颜色是单独写在 =<span>= 上的，没有�
 这样既复用了亮色主题的高亮，也能在 dark mode 下看得比较清楚，凑合能用了 (´・ω・`)
 
 ** 第三方兼容
+:PROPERTIES:
+:ID:       F6784368-F150-4A38-A630-38370F2324B7
+:END:
 
 页面中可能使用了一些第三方的库，例如 [[https://pagefind.app/][pagefind]] [fn:1], 这些库有自己的样式，没有做 dark mode 的适配，可能需要自己去调整对应的 CSS 样式。
 
@@ -223,6 +244,9 @@ publish 生成的代码高亮的颜色是单独写在 =<span>= 上的，没有�
 - [[https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/style.css][style.css]]
 
 * TODO Todos
+:PROPERTIES:
+:ID:       3C7BB611-9837-4446-99E6-CF104505C2DD
+:END:
 
 除了上面的问题，其实还有一些没解决的：
 
@@ -232,12 +256,18 @@ publish 生成的代码高亮的颜色是单独写在 =<span>= 上的，没有�
 - [X] 更好看的 dark mode 配色  ->  调整过一阵子，对目前的颜色还算满意，除了好看，还应该考虑可读性，可访问性，可以参考 [[https://git.apcacontrast.com/documentation/APCAeasyIntro][APCA]] 进行配色。[fn:2]
 
 * 写在最后
+:PROPERTIES:
+:ID:       2F13F371-0806-4934-9B33-D8508D2037CB
+:END:
 
 所以现在博客有 dark mode 可以用啦 \m/ >_< \m/
 
 你可以尝试看看，如果使用下来有什么问题，或者更好的建议，欢迎留言呀~
 
 * Footnotes
+:PROPERTIES:
+:ID:       CD4E8E3F-22A5-4A37-B3EA-14BB5DEB28B1
+:END:
 [fn:2] 感兴趣也可以看看博客的 [[denote:20250408T151102][CHANGELOG]]。
 
 [fn:1] 我的博客就是用 pagefind 实现搜索的，感兴趣可以看看我的实践：[[denote:20241116T162652][使用 pagefind 添加博客搜索功能]]。
