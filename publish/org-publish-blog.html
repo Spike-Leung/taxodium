@@ -331,16 +331,24 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 过程中碰到的几个问题：
 </p>
 
-<dl class="org-dl">
-<dt><b>构建后代码块的高亮</b></dt><dd><p>
+<ul class="org-ul">
+<li><p>
+<b>构建后代码块的高亮</b>
+</p>
+
+<p>
 高亮的颜色是基于 Emacs 当前的主题的，而我的博客整体是亮色的，因此需要 Emacs 中也使用亮色的主题才能得到合适的高亮颜色。
 </p>
 
 <p>
 为此写了 <code>spike-leung/apply-theme-when-publish</code> 用于在执行 <code>org-publish</code> 的时候切换主题。
-</p></dd>
+</p></li>
 
-<dt><b>RSS 的设置<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup></b></dt><dd><p>
+<li><p>
+<b>RSS 的设置<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup></b>
+</p>
+
+<p>
 <a href="https://github.com/emacsmirror/ox-rss">ox-rss</a> 可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成 RSS。
 </p>
 
@@ -373,9 +381,13 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 <li>删除博客相关的 buffer 试试（或者删除全部 buffer）</li>
 
 <li>检查一下是不是 <code>:exclude</code> 正则表达式写得有问题</li>
-</ul></dd>
+</ul></li>
 
-<dt><b>index 文件的设置</b></dt><dd><p>
+<li><p>
+<b>index 文件的设置</b>
+</p>
+
+<p>
 设置 <code>:makeindex t</code> 可以生成 index 文件，需要在 org 文件中设置 <code>#+INDEX</code> keyword。
 </p>
 
@@ -385,27 +397,45 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 
 <p>
 现在看到的 <a href="https://taxodium.ink/index.html">Home</a> 其实就是一个 sitemap。
-</p></dd>
+</p></li>
 
-<dt><code>#+date</code> <b>的设置</b></dt><dd><p>
+<li><p>
+<code>#+date</code> <b>的设置</b>
+</p>
+
+<p>
 原来 Hugo 生成的日期 (2023-05-31T13:38:39+08:00) 在转换成 sitemap 的时候似乎不能识别，
 </p>
 
 <p>
-于是改成 org 的日期格式 (<span class="timestamp-wrapper"><span class="timestamp">&lt;2023-05-31 Wed&gt;</span></span>)，这样 sitemap 就能正常按照时间排序了。
-</p></dd>
+于是改成 org 的日期格式 (<span class="timestamp-wrapper"><span class="timestamp">&lt;2023-05-31 Wed&gt;</span></span>)，这样 sitemap 就能正常按照时间排序了。<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>
+</p></li>
 
-<dt><b>缓存问题</b></dt><dd><p>
+<li><p>
+<b>缓存问题</b>
+</p>
+
+<p>
 执行 org-publish 之后，会在 <code>org-publish-timestamp-directory</code> 指定的目录下生成缓存，有时调整了页眉页脚，可能需要清除缓存才能看到效果。
 </p>
 
 <p>
 不过可以执行 <code>C-u M-x org-publish</code> 忽略缓存进行构建。
-</p></dd>
+</p></li>
 
-<dt>:time-stamp-file nil</dt><dd>设置 <code>:time-stamp-file nil</code> 可以避免每次执行 org-publish 的时候都往 HTML 插入最新的时间戳，导致每次变更的文件很多。</dd>
+<li><p>
+<b><code>:time-stamp-file nil</code></b>
+</p>
 
-<dt><code>:html-head</code> ， <code>:html-preamble</code> ， <code>:html-postamble</code> 的复用</dt><dd><p>
+<p>
+设置 <code>:time-stamp-file nil</code> 可以避免每次执行 org-publish 的时候都往 HTML 插入最新的时间戳，导致每次变更的文件很多。
+</p></li>
+
+<li><p>
+<b><code>:html-head</code> ， <code>:html-preamble</code> ， <code>:html-postamble</code> 的复用</b>
+</p>
+
+<p>
 最开始定义 <code>org-publish-project-alist</code> ， 我是这么写的，导致一直无法使用变量抽象一些公用的 string：
 </p>
 
@@ -498,8 +528,84 @@ The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value i
 
 <p>
 <code>`</code> 和 <code>'</code> 的不同是，它会执行 list 里面的内容， 这样 <code>,spike-leung/html-head</code> 就会被执行并返回对应的 string，满足 <code>:html-head</code> 的需要。
-</p></dd>
-</dl>
+</p></li>
+
+<li><p>
+<b>id 问题</b>
+</p>
+
+<p>
+org publish 的时候会给 heading、figure、details、pre 等元素生成 id，如果没有主动设置 id，则会使用 org-export 的默认 id 生成策略，生成一个形如 <code>org123456</code> 的 id。
+</p>
+
+<p>
+更大的问题是，如果清除缓存后再执行 org publish，这些 id 都会发生变化，如果有人引用了某个 heading 的 id，就会导致他跳转的时候，无法跳转到他引用的 heading。
+</p>
+
+<p>
+为此，我希望能够固定 heading 的 id，看了文档后，可以通过给 heading 添加 <code>CUSTOM_ID</code> ，导出时存在 <code>CUSTOM_ID</code> ，就会使用 <code>CUSTOM_ID</code> 。
+</p>
+
+<p>
+具体的做法是每次保存 org 文件的时候，我都为 heading 生成 <code>CUSTOM_ID</code> 。
+</p>
+
+<details>
+<summary>相关代码</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/org-add-custom-id-to-headings-in-files</span> <span style="color: #ff66ff;">()</span>
+  <span style="color: #9ac8e0;">"Add a CUSTOM_ID property to all headings in the current buffer, if it does not already exist."</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">interactive</span><span style="color: #ff66ff;">)</span>
+  <span style="color: #ff66ff;">(</span>org-map-entries
+   <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">progn</span>
+     <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">lambda</span> <span style="color: #efef00;">()</span>
+       <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">unless</span> <span style="color: #b6a0ff;">(</span>org-entry-get nil <span style="color: #79a8ff;">"CUSTOM_ID"</span><span style="color: #b6a0ff;">)</span>
+         <span style="color: #b6a0ff;">(</span><span style="color: #b6a0ff;">let</span> <span style="color: #44df44;">(</span><span style="color: #79a8ff;">(</span>custom-id <span style="color: #f78fe7;">(</span>org-id-new<span style="color: #f78fe7;">)</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span>
+           <span style="color: #44df44;">(</span>org-set-property <span style="color: #79a8ff;">"CUSTOM_ID"</span> custom-id<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+     <span style="color: #ff6b55;">(</span>org-id-get-create<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+
+<span style="color: #ffffff;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">org-mode-hook</span>
+          <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">lambda</span> <span style="color: #00eff0;">()</span>
+            <span style="color: #00eff0;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">before-save-hook</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">spike-leung/org-add-custom-id-to-headings-in-files</span> nil <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">local</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+
+</pre>
+</div>
+</details>
+
+<p>
+而对于 figure、details 这些元素，我其实不关心它们的 id，目前我不知道如何避免这些元素生成 id，我的做法是在导出成 HTML 之后，将它们的 id 属性移除。
+</p>
+
+<details>
+<summary>相关代码</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/remove-unnessary-id-from-html</span> <span style="color: #ff66ff;">(</span>text backend info<span style="color: #ff66ff;">)</span>
+  <span style="color: #9ac8e0;">"Remove unnecessarily id attibute.
+These elements's ID will be remove: figure,details,pre ..."</span>
+  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #00eff0;">(</span>org-export-derived-backend-p backend <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">html</span><span style="color: #00eff0;">)</span>
+    <span style="color: #00eff0;">(</span>replace-regexp-in-string <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">rx</span> <span style="color: #efef00;">(</span>seq <span style="color: #79a8ff;">"&lt;"</span>
+                                       <span style="color: #b6a0ff;">(</span>group <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">or</span> <span style="color: #79a8ff;">"figure"</span> <span style="color: #79a8ff;">"details"</span> <span style="color: #79a8ff;">"pre"</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+                                       <span style="color: #b6a0ff;">(</span>group <span style="color: #44df44;">(</span>zero-or-more <span style="color: #79a8ff;">(</span>not <span style="color: #79a8ff;">"&gt;"</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+                                       <span style="color: #b6a0ff;">(</span>group <span style="color: #44df44;">(</span>seq whitespace <span style="color: #79a8ff;">"id="</span> <span style="color: #79a8ff;">(</span>syntax string-quote<span style="color: #79a8ff;">)</span> <span style="color: #79a8ff;">"org"</span> <span style="color: #79a8ff;">(</span>zero-or-more hex<span style="color: #79a8ff;">)</span> <span style="color: #79a8ff;">(</span>syntax string-quote<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+                                       <span style="color: #b6a0ff;">(</span>group <span style="color: #44df44;">(</span>zero-or-more <span style="color: #79a8ff;">(</span>not <span style="color: #79a8ff;">"&gt;"</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
+                                       <span style="color: #79a8ff;">"&gt;"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+                              <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">lambda</span> <span style="color: #efef00;">(</span>match<span style="color: #efef00;">)</span>
+                                <span style="color: #efef00;">(</span>format <span style="color: #79a8ff;">"&lt;%s%s%s%s&gt;"</span>
+                                        <span style="color: #b6a0ff;">(</span>match-string 1 match<span style="color: #b6a0ff;">)</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">tag
+</span>                                        <span style="color: #b6a0ff;">(</span>match-string 2 match<span style="color: #b6a0ff;">)</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">keep other attrs
+</span>                                        <span style="color: #79a8ff;">""</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">remove id
+</span>                                        <span style="color: #b6a0ff;">(</span>match-string 4 match<span style="color: #b6a0ff;">)</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">keep other attrs
+</span>                                        <span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+                              text<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">ox</span>
+  <span style="color: #ff66ff;">(</span>add-to-list <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">org-export-filter-final-output-functions</span>
+               <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">spike-leung/remove-unnessary-id-from-html</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+</pre>
+</div>
+</details></li>
+</ul>
 </div>
 </div>
 <div id="outline-container-5c1bdfcb-aae9-4313-8f2b-cbbfbf23f7c8" class="outline-2">
@@ -807,14 +913,9 @@ console.log('Hello world!')
 <ul class="org-ul">
 <li class="on"><code>[X]</code> 复用 <code>:html-head</code> ， <code>:html-preamble</code> 等</li>
 <li class="on"><code>[X]</code> 优化 RSS 的内容 -&gt; <a href="blog-update-2025-04-08.html">博客的一些更新</a></li>
-<li class="on"><code>[X]</code> <del>针对 weekly 单独设置 RSS</del> -&gt; 好像没有什么必要</li>
+<li class="on"><code>[X]</code> <del>针对 zine 单独设置 RSS</del> -&gt; <del>好像没有什么必要</del> -&gt; 已经实现了，见 <a href="https://taxodium.ink/zine.xml">zine.xml</a>。</li>
 <li class="on"><code>[X]</code> 增加搜索功能 -&gt; <a href="https://taxodium.ink/search.html">search</a>，使用 <a href="https://github.com/CloudCannon/pagefind">pagefind</a> 实现，不过对于中文有的分词分的不是很好，可能搜索不到，凑合用着</li>
 <li class="off"><code>[&#xa0;]</code> 实现 CI/CD</li>
-<li class="on"><code>[X]</code> 在不同机器执行 publish 的时候，ID 总是会变化 -&gt; 每个 heading 都设置 <code>CUSTOM_ID</code> ，而不是自动生成，避免不同机器上由于没有缓存，导致变化
-<ul class="org-ul">
-<li>导出是通过 <code>ox-html.el</code> 实现的，其中，heading 是通过 <code>org-html-headline</code> 实现</li>
-<li>ID 通过 <code>org-html--reference</code> 返回，如果存在 <code>CUSTOM_ID</code> 则会使用它，如果不存在则使用 <code>org-export-get-reference</code> 生成 ID，这个方法会搜索 <code>:internal-references</code> 和 <code>:crossrefs</code> 判断是否存在缓存，如果存在则复用。</li>
-</ul></li>
 <li class="off"><code>[&#xa0;]</code> 编写 Elisp，方便创建当前博客文章对应的图片目录，以及插入图片的 snippets</li>
 </ul>
 </div>
@@ -842,6 +943,10 @@ console.log('Hello world!')
 现在换成了 NodeJS 脚本生成，效率更高一些。见 <a href="blog-update-2025-04-08.html">博客的一些更新</a>。
 </p></div></div>
 
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+在 <a href="blog-with-denote-and-org-publish.html">结合 denote 和 org-publish 写博客</a> 中，已经改成了 denote 的 date 格式。
+</p></div></div>
+
 
 </div>
 </div></div>
@@ -849,7 +954,7 @@ console.log('Hello world!')
 
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： 2024-09-27 Fri 21:40</p>
-<p class="date">修改于： 2025-08-30 Sat 23:29</p>
+<p class="date">修改于： 2025-08-31 Sun 15:02</p>
 <p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <script src="/js/sidenote.js" defer></script>

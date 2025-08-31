@@ -62,6 +62,7 @@
 * org-publish 的使用
 :PROPERTIES:
 :CUSTOM_ID: 6c1456b6-fe60-46a6-bcc0-df51a55113ec
+:ID:       AB736B75-0EE8-4A44-9B71-68311AB3CFC6
 :END:
 
 org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义很多个任务，每个任务指定处理什么文件，怎么处理，处理之后放到什么地方。
@@ -70,12 +71,14 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
 过程中碰到的几个问题：
 
-- *构建后代码块的高亮* ::
+- *构建后代码块的高亮*
+
   高亮的颜色是基于 Emacs 当前的主题的，而我的博客整体是亮色的，因此需要 Emacs 中也使用亮色的主题才能得到合适的高亮颜色。
 
-    为此写了 =spike-leung/apply-theme-when-publish= 用于在执行 =org-publish= 的时候切换主题。
+  为此写了 =spike-leung/apply-theme-when-publish= 用于在执行 =org-publish= 的时候切换主题。
 
-- *RSS 的设置[fn:2]* ::
+- *RSS 的设置[fn:2]*
+
   [[https://github.com/emacsmirror/ox-rss][ox-rss]] 可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成 RSS。
 
   但是我需要的是把多个 org 文件生成为一个 RSS 文件。
@@ -95,27 +98,32 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
   + 检查一下是不是 =:exclude= 正则表达式写得有问题
 
-- *index 文件的设置* ::
+- *index 文件的设置*
+
   设置 =:makeindex t= 可以生成 index 文件，需要在 org 文件中设置 =#+INDEX= keyword。
 
   但是生成的文件名固定是 theindex.org, 并且会按照文章标题首个字进行索引，看起来很怪，最后用 sitemap 替代了。
 
   现在看到的 [[https://taxodium.ink/index.html][Home]] 其实就是一个 sitemap。
 
-- =#+date= *的设置* ::
+- =#+date= *的设置*
+
   原来 Hugo 生成的日期 (2023-05-31T13:38:39+08:00) 在转换成 sitemap 的时候似乎不能识别，
 
-  于是改成 org 的日期格式 (<2023-05-31 Wed>)，这样 sitemap 就能正常按照时间排序了。
+  于是改成 org 的日期格式 (<2023-05-31 Wed>)，这样 sitemap 就能正常按照时间排序了。[fn:3]
 
-- *缓存问题* ::
+- *缓存问题*
+
   执行 org-publish 之后，会在 =org-publish-timestamp-directory= 指定的目录下生成缓存，有时调整了页眉页脚，可能需要清除缓存才能看到效果。
 
   不过可以执行 =C-u M-x org-publish= 忽略缓存进行构建。
 
-- :time-stamp-file nil ::
+- *=:time-stamp-file nil=*
+
   设置 =:time-stamp-file nil= 可以避免每次执行 org-publish 的时候都往 HTML 插入最新的时间戳，导致每次变更的文件很多。
 
-- =:html-head= ， =:html-preamble= ， =:html-postamble= 的复用 ::
+- *=:html-head= ， =:html-preamble= ， =:html-postamble= 的复用*
+
   最开始定义 =org-publish-project-alist= ， 我是这么写的，导致一直无法使用变量抽象一些公用的 string：
 
   #+begin_src elisp
@@ -180,6 +188,68 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
   #+end_quote
 
   =`= 和 ='= 的不同是，它会执行 list 里面的内容， 这样 =,spike-leung/html-head= 就会被执行并返回对应的 string，满足 =:html-head= 的需要。
+
+- *id 问题*
+
+  org publish 的时候会给 heading、figure、details、pre 等元素生成 id，如果没有主动设置 id，则会使用 org-export 的默认 id 生成策略，生成一个形如 =org123456= 的 id。
+
+  更大的问题是，如果清除缓存后再执行 org publish，这些 id 都会发生变化，如果有人引用了某个 heading 的 id，就会导致他跳转的时候，无法跳转到他引用的 heading。
+
+  为此，我希望能够固定 heading 的 id，看了文档后，可以通过给 heading 添加 =CUSTOM_ID= ，导出时存在 =CUSTOM_ID= ，就会使用 =CUSTOM_ID= 。
+
+  具体的做法是每次保存 org 文件的时候，我都为 heading 生成 =CUSTOM_ID= 。
+
+  #+begin_details
+  #+html: <summary>相关代码</summary>
+
+  #+begin_src emacs-lisp
+    (defun spike-leung/org-add-custom-id-to-headings-in-files ()
+      "Add a CUSTOM_ID property to all headings in the current buffer, if it does not already exist."
+      (interactive)
+      (org-map-entries
+       (progn
+         (lambda ()
+           (unless (org-entry-get nil "CUSTOM_ID")
+             (let ((custom-id (org-id-new)))
+               (org-set-property "CUSTOM_ID" custom-id))))
+         (org-id-get-create))))
+
+    (add-hook 'org-mode-hook
+              (lambda ()
+                (add-hook 'before-save-hook 'spike-leung/org-add-custom-id-to-headings-in-files nil 'local)))
+
+  #+end_src
+  #+end_details
+
+  而对于 figure、details 这些元素，我其实不关心它们的 id，目前我不知道如何避免这些元素生成 id，我的做法是在导出成 HTML 之后，将它们的 id 属性移除。
+
+  #+begin_details
+  #+html: <summary>相关代码</summary>
+
+  #+begin_src emacs-lisp
+    (defun spike-leung/remove-unnessary-id-from-html (text backend info)
+      "Remove unnecessarily id attibute.
+    These elements's ID will be remove: figure,details,pre ..."
+      (when (org-export-derived-backend-p backend 'html)
+        (replace-regexp-in-string (rx (seq "<"
+                                           (group (or "figure" "details" "pre"))
+                                           (group (zero-or-more (not ">")))
+                                           (group (seq whitespace "id=" (syntax string-quote) "org" (zero-or-more hex) (syntax string-quote)))
+                                           (group (zero-or-more (not ">")))
+                                           ">"))
+                                  (lambda (match)
+                                    (format "<%s%s%s%s>"
+                                            (match-string 1 match) ;; tag
+                                            (match-string 2 match) ;; keep other attrs
+                                            "" ;; remove id
+                                            (match-string 4 match) ;; keep other attrs
+                                            ))
+                                  text)))
+    (with-eval-after-load 'ox
+      (add-to-list 'org-export-filter-final-output-functions
+                   'spike-leung/remove-unnessary-id-from-html))
+  #+end_src
+  #+end_details
 
 * org-publish 的完整代码
 :PROPERTIES:
@@ -470,16 +540,14 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 * TODO Todo
 :PROPERTIES:
 :CUSTOM_ID: 169fa4fb-5d6c-4560-9c66-2a8d89d2c56f
+:ID:       8D0E789E-D94B-47FD-A2FA-41903067E4BC
 :END:
 
 - [X] 复用 =:html-head= ， =:html-preamble= 等
 - [X] 优化 RSS 的内容 -> [[denote:20250408T213924][博客的一些更新]]
-- [X] +针对 weekly 单独设置 RSS+ -> 好像没有什么必要
+- [X] +针对 zine 单独设置 RSS+ -> +好像没有什么必要+ -> 已经实现了，见 [[https://taxodium.ink/zine.xml][zine.xml]]。
 - [X] 增加搜索功能 -> [[https://taxodium.ink/search.html][search]]，使用 [[https://github.com/CloudCannon/pagefind][pagefind]] 实现，不过对于中文有的分词分的不是很好，可能搜索不到，凑合用着
 - [ ] 实现 CI/CD
-- [X] 在不同机器执行 publish 的时候，ID 总是会变化 -> 每个 heading 都设置 =CUSTOM_ID= ，而不是自动生成，避免不同机器上由于没有缓存，导致变化
-  + 导出是通过 =ox-html.el= 实现的，其中，heading 是通过 =org-html-headline= 实现
-  + ID 通过 =org-html--reference= 返回，如果存在 =CUSTOM_ID= 则会使用它，如果不存在则使用 =org-export-get-reference= 生成 ID，这个方法会搜索 =:internal-references= 和 =:crossrefs= 判断是否存在缓存，如果存在则复用。
 - [ ] 编写 Elisp，方便创建当前博客文章对应的图片目录，以及插入图片的 snippets
 
 * Refs
@@ -493,7 +561,12 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 - [[https://ogbe.net/blog/blogging_with_org][Blogging using org-mode (and nothing else)]]
 
 * Footnotes
+:PROPERTIES:
+:ID:       0DD05BFB-D3FF-46B7-AC82-8D51F46CEA3E
+:END:
 
 [fn:1] [[https://orgmode.org/worg/org-blog-wiki.html][Blogs and Wikis with Org]] 上有很多适用于 org-mode 的博客方案，最开始是看到 [[https://eason0210.github.io/][Eason0210 的博客]] 觉得挺简洁，就依葫芦画瓢更新了一下。
 
 [fn:2] 现在换成了 NodeJS 脚本生成，效率更高一些。见 [[denote:20250408T213924][博客的一些更新]]。
+
+[fn:3] 在 [[denote:20250828T184037][结合 denote 和 org-publish 写博客]] 中，已经改成了 denote 的 date 格式。
