@@ -197,7 +197,7 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
   为此，我希望能够固定 heading 的 id，看了文档后，可以通过给 heading 添加 =CUSTOM_ID= ，导出时存在 =CUSTOM_ID= ，就会使用 =CUSTOM_ID= 。
 
-  具体的做法是每次保存 org 文件的时候，我都为 heading 生成 =CUSTOM_ID= 。
+  具体的做法是每次保存 org 文件的时候，我都为 heading 生成 =CUSTOM_ID= 。[fn:4]
 
   #+begin_details
   #+html: <summary>相关代码</summary>
@@ -207,12 +207,10 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
       "Add a CUSTOM_ID property to all headings in the current buffer, if it does not already exist."
       (interactive)
       (org-map-entries
-       (progn
-         (lambda ()
+       (lambda ()
            (unless (org-entry-get nil "CUSTOM_ID")
              (let ((custom-id (org-id-new)))
-               (org-set-property "CUSTOM_ID" custom-id))))
-         (org-id-get-create))))
+               (org-set-property "CUSTOM_ID" custom-id))))))
 
     (add-hook 'org-mode-hook
               (lambda ()
@@ -563,7 +561,9 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 * Footnotes
 :PROPERTIES:
 :ID:       0DD05BFB-D3FF-46B7-AC82-8D51F46CEA3E
+:CUSTOM_ID: F57FF2D6-C732-4624-B3E6-90C4DCAD8D4B
 :END:
+[fn:4] 在 [[https://emacs-china.org/t/rx/30034][用 rx 写正则表达式，太舒服了！]] 中，还提到了其他方法，例如覆盖 =org-export-get-reference= 的实现。
 
 [fn:1] [[https://orgmode.org/worg/org-blog-wiki.html][Blogs and Wikis with Org]] 上有很多适用于 org-mode 的博客方案，最开始是看到 [[https://eason0210.github.io/][Eason0210 的博客]] 觉得挺简洁，就依葫芦画瓢更新了一下。
 
