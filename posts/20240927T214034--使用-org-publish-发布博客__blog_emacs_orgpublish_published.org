@@ -21,6 +21,8 @@
 
 最近将博客又更新了一下，使用 [[https://orgmode.org/manual/Publishing.html][org-publish]] 进行博客的发布，主要是让博客加载相对快一些，维护起来更简单一些。
 
+相关代码见 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el][init-org-publish.el]]。
+
 * 动机
 :PROPERTIES:
 :CUSTOM_ID: 84028fac-1594-46e7-af48-35b2ce7b955f
@@ -29,11 +31,8 @@
 在很早之前看过几篇文章：
 
 - [[http://motherfuckingwebsite.com/][mother fucking website]]
-
 - [[http://bettermotherfuckingwebsite.com/][better mother fucking website]]
-
 - [[https://thebestmotherfucking.website/][the best mother fucking website]]
-
 - [[https://perfectmotherfuckingwebsite.com][perfect mother fucking website]]
 
 设计复杂的网站，在网络较差的情况下有可能要加载很久才能显示。
@@ -48,13 +47,9 @@
 :END:
 
 - 极大的简化了博客内容，没有主题，没有模板，只有博客内容的 org 文件、css 文件、字体、图片，以及最终转换出来的 HTML 文件
-
 - 博客的编写、构建只需要 Emacs 就能完成（以及 [[https://browsersync.io/][Browsersync]] 用于本地查看构建的 HTML）
-
 - 转换后就是标准的 HTML，而且是使用 Emacs 内置的包转换 org 文件，理论上 org 的特性应该都能转换
-
 - 按照  [[http://bettermotherfuckingwebsite.com/][better mother fucking website]] 和 [[https://thebestmotherfucking.website/][the best mother fucking website]] 的建议，设置了字体颜色，字体大小，链接颜色，行间距，行宽等，比默认的浏览器样式好阅读一些
-
 - 使用 [[https://www.brailleinstitute.org/freefont/][Atkinson Hyperlegible]] 字体，让一些容易混淆的字符更容易区分
 
 总而言之，就是清爽了很多，兼容性也应该不错。
@@ -71,15 +66,21 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
 过程中碰到的几个问题：
 
-- *构建后代码块的高亮*
+** 构建后代码块的高亮
+:PROPERTIES:
+:CUSTOM_ID: 99379675-2E6F-43A2-B030-F4D0740A6F16
+:END:
 
   高亮的颜色是基于 Emacs 当前的主题的，而我的博客整体是亮色的，因此需要 Emacs 中也使用亮色的主题才能得到合适的高亮颜色。
 
   为此写了 =spike-leung/apply-theme-when-publish= 用于在执行 =org-publish= 的时候切换主题。
 
-- *RSS 的设置[fn:2]*
+** RSS 的设置
+:PROPERTIES:
+:CUSTOM_ID: 584B050A-A533-4758-9527-1A47C0FDD016
+:END:
 
-  [[https://github.com/emacsmirror/ox-rss][ox-rss]] 可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成 RSS。
+  [[https://github.com/emacsmirror/ox-rss][ox-rss]] [fn:2]可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成 RSS。
 
   但是我需要的是把多个 org 文件生成为一个 RSS 文件。
 
@@ -98,7 +99,10 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
   + 检查一下是不是 =:exclude= 正则表达式写得有问题
 
-- *index 文件的设置*
+** index 文件的设置
+:PROPERTIES:
+:CUSTOM_ID: 113A0707-7DA9-456E-B234-9305DE6A7F63
+:END:
 
   设置 =:makeindex t= 可以生成 index 文件，需要在 org 文件中设置 =#+INDEX= keyword。
 
@@ -106,23 +110,35 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
   现在看到的 [[https://taxodium.ink/index.html][Home]] 其实就是一个 sitemap。
 
-- =#+date= *的设置*
+** =#+date= 的设置
+:PROPERTIES:
+:CUSTOM_ID: A10ADDC9-61C4-42F2-B96E-0AF391ABE4CB
+:END:
 
   原来 Hugo 生成的日期 (2023-05-31T13:38:39+08:00) 在转换成 sitemap 的时候似乎不能识别，
 
   于是改成 org 的日期格式 (<2023-05-31 Wed>)，这样 sitemap 就能正常按照时间排序了。[fn:3]
 
-- *缓存问题*
+** 缓存问题
+:PROPERTIES:
+:CUSTOM_ID: AD8007C1-34D6-44E4-9A02-4140AC784494
+:END:
 
   执行 org-publish 之后，会在 =org-publish-timestamp-directory= 指定的目录下生成缓存，有时调整了页眉页脚，可能需要清除缓存才能看到效果。
 
   不过可以执行 =C-u M-x org-publish= 忽略缓存进行构建。
 
-- *=:time-stamp-file nil=*
+** =:time-stamp-file nil=
+:PROPERTIES:
+:CUSTOM_ID: D6910FB7-C21F-429D-827D-ABE6FA1D58B5
+:END:
 
   设置 =:time-stamp-file nil= 可以避免每次执行 org-publish 的时候都往 HTML 插入最新的时间戳，导致每次变更的文件很多。
 
-- *=:html-head= ， =:html-preamble= ， =:html-postamble= 的复用*
+** =:html-head= ， =:html-preamble= ， =:html-postamble= 的复用
+:PROPERTIES:
+:CUSTOM_ID: BAAE40CD-4F7C-4CC7-B9F6-36EC3B294332
+:END:
 
   最开始定义 =org-publish-project-alist= ， 我是这么写的，导致一直无法使用变量抽象一些公用的 string：
 
@@ -189,7 +205,10 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 
   =`= 和 ='= 的不同是，它会执行 list 里面的内容， 这样 =,spike-leung/html-head= 就会被执行并返回对应的 string，满足 =:html-head= 的需要。
 
-- *id 问题*
+** id 问题
+:PROPERTIES:
+:CUSTOM_ID: 9CC4FAD2-E5CE-4BA7-B60A-A8B1BB2E3CAC
+:END:
 
   org publish 的时候会给 heading、figure、details、pre 等元素生成 id，如果没有主动设置 id，则会使用 org-export 的默认 id 生成策略，生成一个形如 =org123456= 的 id。
 
@@ -203,19 +222,20 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
   #+html: <summary>相关代码</summary>
 
   #+begin_src emacs-lisp
-    (defun spike-leung/org-add-custom-id-to-headings-in-files ()
+    (defun spike-leung/org-add-custom-id-to-headings-in-blog-files ()
       "Add a CUSTOM_ID property to all headings in the current buffer, if it does not already exist."
       (interactive)
       (org-map-entries
        (lambda ()
-           (unless (org-entry-get nil "CUSTOM_ID")
-             (let ((custom-id (org-id-new)))
-               (org-set-property "CUSTOM_ID" custom-id))))))
+         (unless (org-entry-get nil "CUSTOM_ID")
+           (let ((custom-id (org-id-new)))
+             (org-set-property "CUSTOM_ID" custom-id))))))
 
     (add-hook 'org-mode-hook
               (lambda ()
-                (add-hook 'before-save-hook 'spike-leung/org-add-custom-id-to-headings-in-files nil 'local)))
-
+                (when (and buffer-file-name
+                           (string-match "taxodium" buffer-file-name)) ;; only apply to blog files
+                  (add-hook 'before-save-hook 'spike-leung/org-add-custom-id-to-headings-in-blog-files nil 'local))))
   #+end_src
   #+end_details
 
@@ -248,190 +268,6 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
                    'spike-leung/remove-unnessary-id-from-html))
   #+end_src
   #+end_details
-
-* org-publish 的完整代码
-:PROPERTIES:
-:CUSTOM_ID: 5c1bdfcb-aae9-4313-8f2b-cbbfbf23f7c8
-:END:
-
-以下代码可以作为参考，最新的请看 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el][init-org-publish.el]]。
-
-#+name: hello
-#+begin_details
-#+HTML: <summary>init-org-publish.el</summary>
-#+begin_src elisp
-  ;;; init-org-publish.el --- org publish config for my blog -*- lexical-binding: t -*-
-  ;;; Commentary:
-  ;;; Code:
-
-  (maybe-require-package 'ox-rss)
-
-  (defun spike-leung/apply-theme-when-publish (&rest args)
-    "Switch theme when do `org-publish'.
-  ARGS will pass to `org-publish'."
-    (let ((current-theme (car custom-enabled-themes)))
-      (load-theme 'modus-operandi-tinted t)
-      (apply args)
-      (when current-theme
-        (disable-theme 'modus-operandi-tinted)
-        (enable-theme current-theme)
-        (load-theme current-theme :no-confirm))))
-
-  (advice-add 'org-publish :around #'spike-leung/apply-theme-when-publish)
-
-
-  (defun spike-leung/get-org-keyword (keyword)
-    "Get the value of the given KEYWORD in the current Org file."
-    (let ((keywords (org-collect-keywords (list keyword))))
-      (if-let ((value (car (cdr (assoc keyword keywords)))))
-          value
-        (format "No %s found" keyword))))
-
-
-  (defun spike-leung/org-publish-find-date (file project)
-    "Extract `#+date` form org file.
-  FILE is org file name.
-  PROJECT is the current project.
-  "
-    (with-temp-buffer
-      (insert-file-contents file)
-      (org-mode)
-      (spike-leung/get-org-keyword "DATE")))
-
-
-  (defun spike-leung/sitemap-format-entry (entry style project)
-    "自定义网站地图条目格式，添加日期信息。"
-    (let* ((filename (org-publish--expand-file-name entry project))
-           (date (spike-leung/org-publish-find-date filename project)))
-      (format "%s %s"
-              (org-publish-sitemap-default-entry entry style project)
-              (if date
-                  date
-                "long time ago..."))))
-
-
-  ;; @see: https://writepermission.com/org-blogging-rss-feed.html
-  (defun rw/org-rss-publish-to-rss (plist filename pub-dir)
-    "Publish RSS with PLIST, only when FILENAME is 'rss.org'.
-  PUB-DIR is when the output will be placed."
-    (if (equal "rss.org" (file-name-nondirectory filename))
-        (org-rss-publish-to-rss plist filename pub-dir)))
-
-
-  (defun rw/format-rss-feed (title list)
-    "Generate RSS feed as a string.
-  TITLE is the RSS feed title and LIST contains files to include."
-    (concat "#+TITLE: " title "\n\n" (org-list-to-subtree list)))
-
-
-  (defun rw/format-rss-feed-entry (entry style project)
-    "Format ENTRY for the RSS feed.
-  ENTRY is a file name.  STYLE is either 'list' or 'tree'.
-  PROJECT is the current project."
-    (cond ((not (directory-name-p entry))
-           (let* ((title (org-publish-find-title entry project))
-                  (date (format-time-string "%Y-%m-%d" (org-publish-find-date entry project)))
-                  (link (concat (file-name-sans-extension entry) ".html")))
-             (with-temp-buffer
-               (insert (format "%s\n" title))
-               (insert ":PROPERTIES:\n:RSS_PERMALINK: " link "\n:PUBDATE: " date "\n:END:\n")
-               (insert (format "%s" title))
-               (buffer-string))
-             ))
-          ((eq style 'tree)
-           ;; Return only last subdir.
-           (file-name-nondirectory (directory-file-name entry)))
-          (t entry)))
-
-  (defconst spike-leung/html-head "
-  <link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/>
-  <link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\">
-  "
-    "`:html-head' for `org-publish'.")
-
-  (defconst spike-leung/html-preamble "
-   <nav>
-    <ul>
-      <li><a href=\"/index.html\">Home</a></li>
-      <li><a href=\"/about.html\">About</a></li>
-      <li><a href=\"/rss.xml\">RSS</a></li>
-      <li><a href=\"https://github.com/Spike-Leung/taxodium/tree/org-publish\">GitHub</a></li>
-    </ul>
-  </nav>
-  "
-    "`:html-preamble' for `org-publish'." )
-
-  (defconst spike-lenng/html-postamble "
-  <p class=\"author\">Author: <a href=\"mailto:l-yanlei@hotmail.com\">%a</a></p>
-  <p class=\"date\">Date: %d</p>
-  <p class=\"license\">License: <a href=\"https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans\">CC BY-NC 4.0</a></p>
-  <script src=\"https://utteranc.es/client.js\" repo=\"Spike-Leung/taxodium\" issue-term=\"pathname\" theme=\"github-light\" crossorigin=\"anonymous\" async></script>
-  "
-    "`:html-postamble' for `org-publish'.")
-
-
-
-  (setq org-publish-project-alist
-        `(("orgfiles"
-           :base-directory "~/git/taxodium/post"
-           :base-extension "org"
-           :publishing-directory "~/git/taxodium/publish"
-           :publishing-function org-html-publish-to-html
-           :section-numbers nil
-           :with-toc t
-           :with-tags t
-           :time-stamp-file nil
-           :html-head ,spike-leung/html-head
-           :html-preamble ,spike-leung/html-preamble
-           :html-postamble ,spike-lenng/html-postamble
-           :exclude "rss.org"
-           :auto-sitemap t
-           :sitemap-filename "index.org"
-           :sitemap-title "Taxodium"
-           :sitemap-format-entry spike-leung/sitemap-format-entry
-           :sitemap-sort-files anti-chronologically
-           :author "Spike Leung"
-           :email "l-yanlei@hotmail.com")
-
-          ("sitemap"
-           :base-directory "~/git/taxodium/post"
-           :base-extension "org"
-           :publishing-directory "~/git/taxodium/publish"
-           :publishing-function org-html-publish-to-html
-           :time-stamp-file nil
-           :html-head ,spike-leung/html-head
-           :html-preamble ,spike-leung/html-preamble
-           :include ("index.org")
-           :exclude ".*"
-           :html-postamble nil)
-
-          ("rss"
-           :base-directory "~/git/taxodium/post"
-           :base-extension "org"
-           :exclude "about\\|index"
-           :publishing-directory "~/git/taxodium/publish"
-           :publishing-function rw/org-rss-publish-to-rss
-           :html-postamble nil
-           :section-numbers nil
-           :with-toc nil
-           :rss-extension "xml"
-           :html-link-home "https://taxodium.ink"
-           :html-link-use-abs-url t
-           :auto-sitemap t
-           :sitemap-filename "rss.org"
-           :sitemap-title "Taxodium"
-           :sitemap-sort-files anti-chronologically
-           :sitemap-function rw/format-rss-feed
-           :sitemap-format-entry rw/format-rss-feed-entry
-           :author "Spike Leung"
-           :email "l-yanlei@hotmail.com")
-
-          ("website" :components ("orgfiles" "sitemap" "rss"))))
-
-  (provide 'init-org-publish)
-  ;;; init-org-publish.el ends here
-#+end_src
-#+END_details
 
 * 一些缺点
 :PROPERTIES:
