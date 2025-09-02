@@ -15,5 +15,5 @@
 #+author: Spike Leung
 #+email: l-yanlei@hotmail.com
 #+options: ^:{}
-#+startup: content indent
+#+startup: content
 \n"))))
