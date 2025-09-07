@@ -53,10 +53,8 @@ function setModeSelectValue(mode) {
 
 function setBodyClass(mode) {
   if (document.body) {
-    document.body.classList.remove("light", "dark");
-    if (mode === "light" || mode === "dark") {
-      document.body.classList.add(mode);
-    }
+    document.body.classList.remove("light", "dark", "auto");
+    document.body.classList.add(mode);
   }
 }
 
