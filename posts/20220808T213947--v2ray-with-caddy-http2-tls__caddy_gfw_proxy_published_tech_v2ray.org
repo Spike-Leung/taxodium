@@ -66,7 +66,6 @@
 | *<root-path>*  | 静态文件路径，例如 /root/÷site                      |
 | *<email>*      | 邮箱                                                |
 
-
 ** 1. 购买一个 VPS 服务器
 :PROPERTIES:
 :CUSTOM_ID: e76049c7-5046-41f9-aa85-22a284b25134
@@ -104,7 +103,7 @@ Ubuntu 的指令是：
 
 安装好之后，配置 ~/etc/caddy/Caddyfile~ :
 
-   #+begin_src Caddyfile
+   #+begin_src conf
     # 你的域名
     <domain>
     # [可选] 邮箱，用于注册证书，到期时会有通知，
@@ -157,110 +156,114 @@ Ubuntu 的指令是：
 
 配置含义请 [[https://www.v2fly.org/config/overview.html][官网]] 查阅， ~/usr/local/etc/v2ray/config.json~:
 
-    #+begin_src json
+#+begin_details
+#+html: <summary>config.json</summary>
+#+begin_src json
+  {
+    "log": {
+      "loglevel": "warning"
+    },
+    "inbounds": [
       {
-        "log": {
-          "loglevel": "warning"
-        },
-        "inbounds": [
-          {
-          "port": <v2ray-port>,
-          "listen": "127.0.0.1",
-          "tag": "vmess-inbound",
-          "protocol": "vmess",
-          "settings": {
-            "auth": "noauth",
-            "udp": false,
-            "ip": "127.0.0.1",
-            "clients": [
-              {
+        "port": <v2ray-port>,
+        "listen": "127.0.0.1",
+        "tag": "vmess-inbound",
+        "protocol": "vmess",
+        "settings": {
+          "auth": "noauth",
+          "udp": false,
+          "ip": "127.0.0.1",
+          "clients": [
+            {
               "id": "<uuid>",
               "level": 0,
               "alterId": 0,
             },
-            ]
-          },
-          "streamSettings": {
-            "network": "h2",
-            "security": "none",
-            "httpSettings": {
-              "path": "<http2-path>",
-              "host": ["<domain>"]
-            },
-            "tlsSettings": {
-              "serverName": "<domain>"
-            }
-          },
-          "sniffing": {
-            "enabled": true,
-            "destOverride": ["http", "tls"]
-          }
-        }
-        ],
-        "outbounds": [
-          {
-          "protocol": "freedom",
-          "settings": {},
-          "tag": "direct"
-        },
-          {
-          "protocol": "blackhole",
-          "settings": {},
-          "tag": "blocked"
-        }
-        ],
-        "routing": {
-          "domainStrategy": "IPOnDemand",
-          "rules": [
-            {
-            "type": "field",
-            "ip": ["geoip:private"],
-            "outboundTag": "blocked"
-          },
-            {
-            "type": "field",
-            "domain": ["geosite:category-ads"],
-            "outboundTag": "blocked"
-          }
           ]
         },
-        "dns": {
-          "hosts": {
-            "domain:v2ray.com": "www.vicemc.net",
-            "domain:github.io": "pages.github.com",
-            "domain:wikipedia.org": "www.wikimedia.org",
-            "domain:shadowsocks.org": "electronicsrealm.com"
+        "streamSettings": {
+          "network": "h2",
+          "security": "none",
+          "httpSettings": {
+            "path": "<http2-path>",
+            "host": ["<domain>"]
           },
-          "servers": [
-            "1.1.1.1",
-            {
-              "address": "114.114.114.114",
-              "port": 53,
-              "domains": ["geosite:cn"]
-            },
-            "8.8.8.8",
-            "localhost"
-          ]
-        },
-        "policy": {
-          "levels": {
-            "0": {
-              "uplinkOnly": 0,
-              "downlinkOnly": 0,
-              "bufferSize": 204800,
-              "handshake": 10
-            }
-          },
-          "system": {
-            "statsInboundUplink": false,
-            "statsInboundDownlink": false,
-            "statsOutboundUplink": false,
-            "statsOutboundDownlink": false
+          "tlsSettings": {
+            "serverName": "<domain>"
           }
+        },
+        "sniffing": {
+          "enabled": true,
+          "destOverride": ["http", "tls"]
         }
       }
+    ],
+    "outbounds": [
+      {
+        "protocol": "freedom",
+        "settings": {},
+        "tag": "direct"
+      },
+      {
+        "protocol": "blackhole",
+        "settings": {},
+        "tag": "blocked"
+      }
+    ],
+    "routing": {
+      "domainStrategy": "IPOnDemand",
+      "rules": [
+        {
+          "type": "field",
+          "ip": ["geoip:private"],
+          "outboundTag": "blocked"
+        },
+        {
+          "type": "field",
+          "domain": ["geosite:category-ads"],
+          "outboundTag": "blocked"
+        }
+      ]
+    },
+    "dns": {
+      "hosts": {
+        "domain:v2ray.com": "www.vicemc.net",
+        "domain:github.io": "pages.github.com",
+        "domain:wikipedia.org": "www.wikimedia.org",
+        "domain:shadowsocks.org": "electronicsrealm.com"
+      },
+      "servers": [
+        "1.1.1.1",
+        {
+          "address": "114.114.114.114",
+          "port": 53,
+          "domains": ["geosite:cn"]
+        },
+        "8.8.8.8",
+        "localhost"
+      ]
+    },
+    "policy": {
+      "levels": {
+        "0": {
+          "uplinkOnly": 0,
+          "downlinkOnly": 0,
+          "bufferSize": 204800,
+          "handshake": 10
+        }
+      },
+      "system": {
+        "statsInboundUplink": false,
+        "statsInboundDownlink": false,
+        "statsOutboundUplink": false,
+        "statsOutboundDownlink": false
+      }
+    }
+  }
 
-    #+end_src
+#+end_src
+#+end_details
+
 *** v2ray 客户端配置
 :PROPERTIES:
 :CUSTOM_ID: afaba226-a388-4cda-b99d-60aa83141da7
@@ -273,6 +276,9 @@ Ubuntu 的指令是：
 配置 uuid 和服务器的 uuid 保持一致。
 
 配置 http2 的相关 options。
+
+#+begin_details
+#+html: <summary>ClashX 配置</summary>
 
 #+begin_src yaml
     ---
@@ -314,6 +320,7 @@ Ubuntu 的指令是：
       - SRC-PORT,7777,DIRECT
       - MATCH,proxy
   #+end_src
+#+end_details
 
 ** 排障
 :PROPERTIES:
