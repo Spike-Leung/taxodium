@@ -585,6 +585,31 @@ mark.emacs {
   padding: 0px 4px;
 }
 
+blockquote.single {
+  border: none;
+  position: relative;
+
+  &::before,
+  &::after {
+    color: var(--color-border);
+    color: light-dark(var(--color-border), var(--dark-color-border));
+    font-size: 4em;
+    position: absolute;
+  }
+
+  &::before {
+    content: "“";
+    top: .2em;
+    left: -.1em;
+  }
+
+  &::after {
+    content: "”";
+    right: -.1em;
+    bottom: -.6em;
+  }
+}
+
 img[src*=images\/album] {
   box-shadow: 5px 2px 5px var(--color-box-shadow);
   box-shadow: 5px 2px 5px light-dark(var(--color-box-shadow), var(--dark-color-box-shadow));
@@ -617,6 +642,7 @@ img[src*=images\/album] {
 .littlefoot.littlefoot {
   --popover-font-family: var(--font-family);
   --popover-font-size: 1em;
+  --popover-line-height: 3ex;
   --button-background-color: color(from var(--color-selection-background) srgb r g b / 0.6);
   --button-text-color: var(--color-text);
   --button-active-background-color: var(--color-selection-background);
