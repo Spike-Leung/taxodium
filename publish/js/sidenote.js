@@ -199,7 +199,7 @@ function mountSidenotes() {
       }
       sidenote.style.display = '';
 
-      const padding = '3em';
+      const padding = '1em';
       const sidenoteGap = 8;
 
       // 先重置高度，避免内容变化导致高度不准
