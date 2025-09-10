@@ -75,38 +75,36 @@ function unmountLittlefoot() {
 }
 
 function isSidenoteVisible() {
-  // Sidenotes are hidden at max-width: 1600px
   return window.matchMedia('(min-width: 1921px)').matches;
 }
 
 function handleFootnoteMode() {
   if (isSidenoteVisible()) {
-    // Sidenotes visible, unmount littlefoot, mount sidenotes
     unmountLittlefoot();
     mountSidenotes();
   } else {
-    // Sidenotes hidden, unmount sidenotes, mount littlefoot
     unmountSidenotes();
     ensureLittlefootMounted();
   }
 }
 
-// ===== sidenote 生成/移除逻辑提取为函数 =====
 let sidenoteCleanup = null;
 function mountSidenotes() {
-  if (sidenoteCleanup) return; // 已挂载
-  // ===== 创建 sidenote 容器 =====
+  if (sidenoteCleanup) return;
+
   const content = document.querySelector('#content');
   if (!content) return;
-  // 移除已存在的 sidenote
+
+  // remove all sidenotes
   document.querySelectorAll('.' + SIDENOTE_CLASS).forEach(el => el.remove());
   document.querySelectorAll('.' + SIDENOTE_CONTAINER_CLASS).forEach(el => el.remove());
 
+  // setup sidenote container
   const sidenoteContainer = document.createElement('div');
   sidenoteContainer.className = SIDENOTE_CONTAINER_CLASS;
   content.appendChild(sidenoteContainer);
+  content.style.position = 'relative';
 
-  // 高亮/取消高亮正文脚注引用
   function highlightRef(refParent, highlight) {
     if (!refParent) return;
     if (highlight) {
@@ -116,12 +114,10 @@ function mountSidenotes() {
     }
   }
 
-  // 创建 sidenote 元素
   function createSidenote(ref, footnote, idx) {
-    const refParent = ref.parentElement;
+    const refParent = ref.parentElement; // sup element
     const footnoteNumber = ref.textContent;
 
-    // 若 refParent 没有 id，则分配唯一 id
     if (!refParent.id) {
       refParent.id = `sidenote-ref-${idx}`;
     }
@@ -138,6 +134,16 @@ function mountSidenotes() {
     });
     noteLink.addEventListener('mouseleave', function() {
       highlightRef(refParent, false);
+    });
+    refParent.addEventListener('mouseenter', function() {
+      const sidenoteLink = document.querySelector(`a.sidenote-num[href*=${refParent.id}]`)
+      highlightRef(refParent, true);
+      highlightRef(sidenoteLink, true);
+    });
+    refParent.addEventListener('mouseleave', function() {
+      const sidenoteLink = document.querySelector(`a.sidenote-num[href*=${refParent.id}]`)
+      highlightRef(refParent, false);
+      highlightRef(sidenoteLink, false);
     });
 
     // 创建 sidenote
@@ -158,16 +164,17 @@ function mountSidenotes() {
     return sidenote;
   }
 
-  // ===== 收集所有脚注引用并创建 sidenote =====
   const refs = Array.from(document.querySelectorAll('sup > a.footref'));
   refs.forEach(function(ref, idx) {
+    // footref: <a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a>
+    // footnoteLink: <a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a>
     const href = ref.getAttribute('href');
     if (!href || !href.startsWith('#fn.')) return;
     const footnoteId = href.slice(1);
     const footnoteLink = document.getElementById(footnoteId);
     if (!footnoteLink) return;
 
-    // 向上查找最近的 .footpara
+    // find footnote nearby footref
     let footnote = null;
     let parent = footnoteLink.parentElement;
     while (parent && !footnote) {
@@ -176,12 +183,10 @@ function mountSidenotes() {
     }
     if (!footnote) return;
 
-    // 创建 sidenote 并添加到容器
     const sidenote = createSidenote(ref, footnote, idx);
     sidenoteContainer.appendChild(sidenote);
   });
 
-  // ===== 定位 sidenote =====
   function positionSidenotes() {
     let lastBottomRight = 0;
     let lastBottomLeft = 0;
@@ -211,7 +216,7 @@ function mountSidenotes() {
       let top = rect.top - contentRect.top + content.scrollTop;
 
       // 将 sidenote 分布到内容的两边
-      if (idx % 2 === 0) {
+      if (idx % 2 === 1) {
         sidenote.style.left = '100%';
         sidenote.style.paddingInlineStart = padding;
       } else {
@@ -239,16 +244,10 @@ function mountSidenotes() {
     sidenoteContainer.style.pointerEvents = 'none';
   }
 
-  // 使 content 变为 relative，便于绝对定位
-  content.style.position = 'relative';
-
-  // ===== 初始定位 =====
   positionSidenotes();
-  // 监听滚动和窗口变化
   window.addEventListener('resize', positionSidenotes);
   window.addEventListener('scroll', positionSidenotes, true);
 
-  // 提供 cleanup 方法
   sidenoteCleanup = function() {
     window.removeEventListener('resize', positionSidenotes);
     window.removeEventListener('scroll', positionSidenotes, true);
