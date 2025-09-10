@@ -382,7 +382,19 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
 - [X] +针对 zine 单独设置 RSS+ -> +好像没有什么必要+ -> 已经实现了，见 [[https://taxodium.ink/zine.xml][zine.xml]]。
 - [X] 增加搜索功能 -> [[https://taxodium.ink/search.html][search]]，使用 [[https://github.com/CloudCannon/pagefind][pagefind]] 实现，不过对于中文有的分词分的不是很好，可能搜索不到，凑合用着
 - [ ] 实现 CI/CD
-- [ ] 编写 Elisp，方便创建当前博客文章对应的图片目录，以及插入图片的 snippets
+- [X] 编写 Elisp，方便地插入图片
+
+  #+begin_details
+  #+html: <summary>插入图片的方法</summary>
+
+  (defun spike-leung/insert-blog-images ()
+  "Insert images from blog."
+  (interactive)
+  (let* ((image-dir (expand-file-name "~/git/taxodium/publish/images/"))
+         (image-file (read-file-name "Select image: " image-dir))
+         (relative-path (file-relative-name image-file image-dir)))
+    (insert (format "#+CAPTION: \n[[file:images/%s]]" relative-path))))
+  #+end_details
 
 * Refs
 :PROPERTIES:
