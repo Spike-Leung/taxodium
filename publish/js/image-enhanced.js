@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       img.style.cursor = 'pointer';
       img.addEventListener('click', () => {
-        window.open(img.src, '_blank', 'noopener,noreferrer');
+        window.open(img.src, '_self', 'noopener,noreferrer');
       });
     });
   }
