@@ -6,36 +6,36 @@
 }
 
 .org-ul li {
-  margin: 8px 0;
-  display: flex;
-  justify-content: space-between;
   counter-increment: step;
-  position: relative;
+  display: grid;
+  grid-template-columns: auto max-content;
+  grid-template-areas: "chapter page";
+  align-items: end;
+  gap: 0 .5em;
 
-  &::before {
+  &::after {
     content:  counter(step);
     color: var(--color-border);
     color: light-dark(var(--color-border), var(--dark-color-border));
-    position: absolute;
     font-size: 1.2em;
     text-align: end;
-    right: 0;
-    z-index: -1;
+    grid-area: page;
   }
 
   & a {
-    flex-shrink: 0;
-  }
+    overflow: hidden;
+    position: relative;
+    grid-area: chapter;
 
-  & span {
-    text-align: end;
-  }
-
-  @media screen and (max-width: 720px) {
-    flex-direction: column;
-
-    & span {
-      text-align: start;
+    &::after {
+      position: absolute;
+      content: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "
+               ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "
+               ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ";
+      text-align: end;
+      padding-left: .5em;
+      color: var(--color-border);
+      color: light-dark(var(--color-border), var(--dark-color-border));
     }
   }
 }
