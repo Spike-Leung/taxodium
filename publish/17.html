@@ -225,7 +225,7 @@
 </div>
 <div id="content" class="content">
 <header>
-<h1 style="view-transition-name: spike-17" class="title">Zine#17</h1>
+<h1 class="title">Zine#17</h1>
 </header><nav id="table-of-contents" role="doc-toc">
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
@@ -551,12 +551,12 @@ There still are no "repository wide" guidelines, except two:
 这里虽然 import 的是 <code>json</code> 文件，但里面可能是 JS 代码。
 </p>
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #8e908c;">// </span><span style="color: #db7b5f;">This looks safe, but could be dangerous
+<pre class="src src-typescript"><span style="color: #948A8B; font-style: italic;">// </span><span style="color: #db7b5f; font-style: italic;">This looks safe, but could be dangerous
 </span><span style="color: #b6a0ff;">import</span> config <span style="color: #b6a0ff;">from</span> <span style="color: #79a8ff;">'./config.json'</span>;
 
-<span style="color: #8e908c;">// </span><span style="color: #db7b5f;">The server could respond with executable code:
+<span style="color: #948A8B; font-style: italic;">// </span><span style="color: #db7b5f; font-style: italic;">The server could respond with executable code:
 </span><span style="color: #b6a0ff;">export</span> <span style="color: #b6a0ff;">default</span> <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">function</span><span style="color: #ff66ff;">(){</span>
-  <span style="color: #8e908c;">// </span><span style="color: #db7b5f;">Unexpected code execution
+  <span style="color: #948A8B; font-style: italic;">// </span><span style="color: #db7b5f; font-style: italic;">Unexpected code execution
 </span><span style="color: #ff66ff;">}</span><span style="color: #ffffff;">)()</span>;
 </pre>
 </div>
@@ -565,13 +565,13 @@ There still are no "repository wide" guidelines, except two:
 通过 import attributes 确保一定是 <code>json</code> 内容。
 </p>
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #8e908c;">// </span><span style="color: #db7b5f;">Explicitly require JSON
+<pre class="src src-typescript"><span style="color: #948A8B; font-style: italic;">// </span><span style="color: #db7b5f; font-style: italic;">Explicitly require JSON
 </span><span style="color: #b6a0ff;">import</span> config <span style="color: #b6a0ff;">from</span> <span style="color: #79a8ff;">'./config.json'</span> with <span style="color: #ffffff;">{</span> <span style="color: #ffffff; background-color: #000000;">type</span>: <span style="color: #79a8ff;">"json"</span> <span style="color: #ffffff;">}</span>;
 
-<span style="color: #8e908c;">// </span><span style="color: #db7b5f;">Or specify JavaScript
+<span style="color: #948A8B; font-style: italic;">// </span><span style="color: #db7b5f; font-style: italic;">Or specify JavaScript
 </span><span style="color: #b6a0ff;">import</span> <span style="color: #b6a0ff;">module</span> <span style="color: #b6a0ff;">from</span> <span style="color: #79a8ff;">'./module.js'</span> with <span style="color: #ffffff;">{</span> <span style="color: #ffffff; background-color: #000000;">type</span>: <span style="color: #79a8ff;">"javascript"</span> <span style="color: #ffffff;">}</span>;
 
-<span style="color: #8e908c;">// </span><span style="color: #db7b5f;">Works with dynamic imports too
+<span style="color: #948A8B; font-style: italic;">// </span><span style="color: #db7b5f; font-style: italic;">Works with dynamic imports too
 </span><span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">data</span> = <span style="color: #b6a0ff;">await</span> <span style="color: #b6a0ff;">import</span><span style="color: #ffffff;">(</span><span style="color: #79a8ff;">'./config.json'</span>, <span style="color: #ff66ff;">{</span>
   with: <span style="color: #00eff0;">{</span> <span style="color: #ffffff; background-color: #000000;">type</span>: <span style="color: #79a8ff;">"json"</span> <span style="color: #00eff0;">}</span>
 <span style="color: #ff66ff;">}</span><span style="color: #ffffff;">)</span>;
