@@ -488,7 +488,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
          <span style="color: #f78fe7;">:base-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/post"</span>
          <span style="color: #f78fe7;">:base-extension</span> <span style="color: #79a8ff;">"org"</span>
          <span style="color: #f78fe7;">:html-head</span> ,spike-leung/html-head
-         <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
+         <span style="color: #8e908c;">;; </span><span style="color: #db7b5f;">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
 </span>         <span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 </pre>
 </div>
@@ -603,7 +603,7 @@ org publish 的时候会给 heading、figure、details、pre 等元素生成 id�
 <span style="color: #ffffff;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">org-mode-hook</span>
           <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">lambda</span> <span style="color: #00eff0;">()</span>
             <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">and</span> buffer-file-name
-                       <span style="color: #efef00;">(</span>string-match <span style="color: #79a8ff;">"taxodium"</span> buffer-file-name<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">only apply to blog files
+                       <span style="color: #efef00;">(</span>string-match <span style="color: #79a8ff;">"taxodium"</span> buffer-file-name<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span> <span style="color: #8e908c;">;; </span><span style="color: #db7b5f;">only apply to blog files
 </span>              <span style="color: #ff6b55;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">before-save-hook</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">spike-leung/org-add-custom-id-to-headings-in-blog-files</span> nil <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">local</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 </pre>
 </div>
@@ -629,10 +629,10 @@ These elements's ID will be remove: figure,details,pre ..."</span>
                                        <span style="color: #79a8ff;">"&gt;"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
                               <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">lambda</span> <span style="color: #efef00;">(</span>match<span style="color: #efef00;">)</span>
                                 <span style="color: #efef00;">(</span>format <span style="color: #79a8ff;">"&lt;%s%s%s%s&gt;"</span>
-                                        <span style="color: #b6a0ff;">(</span>match-string 1 match<span style="color: #b6a0ff;">)</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">tag
-</span>                                        <span style="color: #b6a0ff;">(</span>match-string 2 match<span style="color: #b6a0ff;">)</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">keep other attrs
-</span>                                        <span style="color: #79a8ff;">""</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">remove id
-</span>                                        <span style="color: #b6a0ff;">(</span>match-string 4 match<span style="color: #b6a0ff;">)</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">keep other attrs
+                                        <span style="color: #b6a0ff;">(</span>match-string 1 match<span style="color: #b6a0ff;">)</span> <span style="color: #8e908c;">;; </span><span style="color: #db7b5f;">tag
+</span>                                        <span style="color: #b6a0ff;">(</span>match-string 2 match<span style="color: #b6a0ff;">)</span> <span style="color: #8e908c;">;; </span><span style="color: #db7b5f;">keep other attrs
+</span>                                        <span style="color: #79a8ff;">""</span> <span style="color: #8e908c;">;; </span><span style="color: #db7b5f;">remove id
+</span>                                        <span style="color: #b6a0ff;">(</span>match-string 4 match<span style="color: #b6a0ff;">)</span> <span style="color: #8e908c;">;; </span><span style="color: #db7b5f;">keep other attrs
 </span>                                        <span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
                               text<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">ox</span>
@@ -775,7 +775,13 @@ console.log('Hello world!')
 <summary>插入图片的方法</summary>
 
 <p>
-(defun spike-leung/insert-blog-images ()"Insert images from blog."(interactive)(let* ((image-dir (expand-file-name "~/git/taxodium/publish/images/"))       (image-file (read-file-name "Select image: " image-dir))       (relative-path (file-relative-name image-file image-dir)))  (insert (format "#+CAPTION: \n<a href="images/%s">images/%s</a>" relative-path))))
+(defun spike-leung/insert-blog-images ()
+"Insert images from blog."
+(interactive)
+(let* ((image-dir (expand-file-name "~/git/taxodium/publish/images/"))
+       (image-file (read-file-name "Select image: " image-dir))
+       (relative-path (file-relative-name image-file image-dir)))
+  (insert (format "#+CAPTION: \n<a href="images/%s">images/%s</a>" relative-path))))
 </p>
 </details></li>
 </ul>
