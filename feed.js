@@ -112,34 +112,6 @@ function parseDateString(dateStr) {
   return date.toISOString();
 }
 
-function parseOrgIndex(orgContent) {
-  const lines = orgContent.split("\n");
-  const entries = [];
-
-  for (const line of lines) {
-    const match = line.match(/\[\[file:([^\]]+)\]\[([^\]]+)\]\]\s+\[([^>]+)\]/);
-    if (match) {
-      const [, file, title, dateStr] = match;
-      const htmlFile = file.replace(/\.org$/, ".html");
-
-      // Parse date
-      const date = parseDateString(dateStr);
-      if (!date) {
-        console.warn(`Skipping invalid date for post: ${title}`);
-        continue;
-      }
-
-      entries.push({
-        title,
-        file: htmlFile,
-        date: date,
-      });
-    }
-  }
-
-  return entries;
-}
-
 async function processPost(entry) {
   try {
     const filePath = path.join(CONFIG.postsDir, entry.file);
@@ -205,7 +177,8 @@ async function processPost(entry) {
           .trim()
           .replace(/\s+/g, " ")
           .slice(0, 2000); // limit prompt size
-    const summary = await generateSummary(plainText)
+    // const summary = await generateSummary(plainText)
+    const summary = ""
 
     return {
       ...entry,
@@ -264,9 +237,10 @@ ${ALL_CATEGORIES.map((cat) => `  <category term="${cat.term}" label="${cat.label
 
     // Ensure URLs are properly encoded
     const entryUrl = `${CONFIG.feedId}${encodeURI(entry.file)}`;
+    const subtitle = entry.subtitle ? `- ${entry.subtitle}` : ''
 
     feed += `  <entry>
-    <title>${entry.title}</title>
+    <title>${entry.title} ${subtitle}</title>
     <link href="${entryUrl}" rel="alternate" type="text/html" />
     <id>${entryUrl}</id>
     <updated>${entry.updated}</updated>
@@ -315,9 +289,55 @@ async function generateFeed() {
   }
 }
 
+function getEntryFromOrgFile(filePath) {
+  if (!fs.existsSync(filePath)) {
+    console.warn(`File not found, skipping: ${filePath}`);
+    return { entry: null, content: null };
+  }
+
+  const content = fs.readFileSync(filePath, "utf8");
+
+  const filetagsMatch = content.match(/#\+filetags:\s*(.*)/);
+  if (filetagsMatch && filetagsMatch[1].includes(":draft:")) {
+    return { entry: null, content: content };
+  }
+
+  const titleMatch = content.match(/#\+title:\s*(.*)/);
+  const subtitleMatch = content.match(/#\+subtitle:\s*(.*)/);
+  const exportFileMatch = content.match(/#\+export_file_name:\s*(.*)/);
+  const dateMatch = content.match(/#\+date:\s*\[([^\]]+)\]/);
+
+  if (titleMatch && exportFileMatch && dateMatch) {
+    const htmlFile = `${exportFileMatch[1].trim()}.html`;
+    const date = parseDateString(dateMatch[1]);
+
+    if (date) {
+      const entry = {
+        title: titleMatch[1].trim(),
+        subtitle: subtitleMatch ? subtitleMatch[1].trim() : "",
+        file: htmlFile,
+        date: date,
+      };
+      return { entry, content };
+    } else {
+      console.warn(`Skipping post with invalid date in ${path.basename(filePath)}`);
+    }
+  }
+
+  return { entry: null, content: content };
+}
+
+function parseOrgIndex(orgContent) {
+  return findOrgFilesByTag('published', CONFIG.orgPostsDir)
+}
+
 function findOrgFilesByTag(tag, postsDir) {
   const entries = [];
-  const files = fs.readdirSync(postsDir);
+  const files = fs.readdirSync(postsDir).sort((a, b) => {
+    if (a === b) return 0
+    if (a < b ) return 1
+    return -1
+  });
 
   for (const file of files) {
     if (path.extname(file) !== ".org" || file === "index.org") {
@@ -325,30 +345,12 @@ function findOrgFilesByTag(tag, postsDir) {
     }
 
     const filePath = path.join(postsDir, file);
-    const content = fs.readFileSync(filePath, "utf8");
+    const { entry, content } = getEntryFromOrgFile(filePath);
 
-    const filetagsMatch = content.match(/#\+filetags:\s*(.*)/);
-    if (filetagsMatch && filetagsMatch[1].includes(`:${tag}:`)) {
-      if (filetagsMatch[1].includes(`:draft:`)) {
-        continue;
-      }
-      const titleMatch = content.match(/#\+title:\s*(.*)/);
-      const exportFileMatch = content.match(/#\+export_file_name:\s*(.*)/);
-      const dateMatch = content.match(/#\+date:\s*\[([^\]]+)\]/);
-
-      if (titleMatch && exportFileMatch && dateMatch) {
-        const htmlFile = `${exportFileMatch[1].trim()}.html`;
-        const date = parseDateString(dateMatch[1]);
-
-        if (date) {
-          entries.push({
-            title: titleMatch[1].trim(),
-            file: htmlFile,
-            date: date,
-          });
-        } else {
-          console.warn(`Skipping post with invalid date in ${file}`);
-        }
+    if (entry && content) {
+      const filetagsMatch = content.match(/#\+filetags:\s*(.*)/);
+      if (filetagsMatch && filetagsMatch[1].includes(`:${tag}:`)) {
+        entries.push(entry);
       }
     }
   }
