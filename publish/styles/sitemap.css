@@ -1,6 +1,4 @@
 .org-ul {
-  list-style: decimal-leading-zero;
-  list-style-position: inside;
   padding-inline-start: 0;
   counter-reset: step;
 }
@@ -12,20 +10,21 @@
   grid-template-areas: "chapter page";
   align-items: end;
   gap: 0 .5em;
+  margin-block: 0.8em;
 
   &::after {
+    grid-area: page;
     content:  counter(step);
     color: var(--color-border);
     color: light-dark(var(--color-border), var(--dark-color-border));
     font-size: 1.2em;
     text-align: end;
-    grid-area: page;
   }
 
   & a {
+    grid-area: chapter;
     overflow: hidden;
     position: relative;
-    grid-area: chapter;
 
     &::after {
       position: absolute;
@@ -43,21 +42,17 @@
 .sitemap-subtitle {
   color: var(--color-text-secondary);
   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
-  font-size: 0.8em;
+  font-size: 0.85em;
 }
 
 .org-ul li .timestamp {
   display: none;
 }
 
-.org-ul li::marker {
-  color: var(--color-text-secondary);
-  color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
-}
-
 header + p {
   text-align: center;
   color: var(--color-text-secondary);
+  color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
 }
 
 p {
