@@ -2,10 +2,42 @@
   list-style: decimal-leading-zero;
   list-style-position: inside;
   padding-inline-start: 0;
+  counter-reset: step;
 }
 
 .org-ul li {
   margin: 8px 0;
+  display: flex;
+  justify-content: space-between;
+  counter-increment: step;
+  position: relative;
+
+  &::before {
+    content:  counter(step);
+    color: var(--color-border);
+    color: light-dark(var(--color-border), var(--dark-color-border));
+    position: absolute;
+    font-size: 1.2em;
+    text-align: end;
+    right: 0;
+    z-index: -1;
+  }
+
+  & a {
+    flex-shrink: 0;
+  }
+
+  & span {
+    text-align: end;
+  }
+
+  @media screen and (max-width: 720px) {
+    flex-direction: column;
+
+    & span {
+      text-align: start;
+    }
+  }
 }
 
 .sitemap-subtitle {
