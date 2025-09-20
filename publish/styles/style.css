@@ -402,6 +402,23 @@ code {
 
 figure {
   margin: 0;
+
+  &:has(.float-left) {
+    float: inline-start;
+    margin-inline-end: 1em;
+  }
+
+  &:has(.float-right) {
+    float: inline-end;
+    margin-inline-start: 1em;
+  }
+
+  @media screen and (max-width: 765px) {
+    &:has(:is(.float-left, .float-right)) {
+      float: none;
+      margin-inline: 0;
+    }
+  }
 }
 
 figcaption {
