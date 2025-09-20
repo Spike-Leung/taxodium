@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>日常#4</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="日常的记录和思考" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li class="js-required"><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content">
+<header>
+<h1 class="title">日常#4</h1>
+<p class="subtitle" role="doc-subtitle">皮肤手术、酸汤牛肉、香菇鸡块、空洞骑士</p>
+</header><p>
+🎶 你知道天空有多蓝 - 椅子乐队 The Chairs
+</p>
+
+
+<figure>
+<a href="images/nichijou/4/cloud.jpeg"><img src="images/nichijou/4/cloud.jpeg" alt="cloud.jpeg"></a>
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>某天出门拍的云，天气真好呀</figcaption>
+</figure>
+
+<p>
+上次说的疥，去医院看了，开了些消炎的药，医生说等成熟后要开口挤掉，要等它软一些。在家涂了鱼石脂，白色的脓点越长越大，睡觉时不知不觉就破了。但是疥还是没好，只是红肿范围小了些，但还是有些硬，过几天再去医院看看怎么处理。
+</p>
+
+<p>
+女朋友某天晚上身上突然出现了很多红斑，腿上也有一些紫癜， 不痛也不痒，怀疑是过敏，大晚上去看了急诊。做了常规检查都没什么异常，开了一些过敏药回家观察，所幸后面慢慢消退了。后面挂了一个皮肤科又看了一下，也没看出什么问题。不知道为什么莫名其妙就出现红斑，怪让人担心的，希望真的没什么事。
+</p>
+
+<p>
+我手上有一个凸起肉块也很久了，之前拍了片像是囊肿，去看疥的时候顺便约了手术，这周也约上了。
+</p>
+
+<p>
+尽管没有恶化，但凸起来看着不舒服，偶尔也会觉得那附近有些不适，担心会恶化，所以还是做个手术切除一下。
+</p>
+
+<p>
+虽然是一个小手术，也还是会紧张。
+</p>
+
+<p>
+手术躺在手术床上进行，医生会在手术部位打麻醉，也就打针的时候痛点，后面手术就感受不到痛觉了，只剩下一点触觉。躺着有个好处，看不到医生操作，看不见就不容易害怕，不过也依然会紧张。医生切好了还把囊肿提起来给我看，一个血红的小肉球，后面会送去活检。手术大概花了 50 分钟，结束之后再观察了 15 分钟，就回家了。手术花费了一千多，医保报销了一半，最贵的费用就是缝合的费用。
+</p>
+
+<p>
+术后有些痛，但也不是很痛，就是手臂不能太用力，还好手臂弯曲，打字等简单的用手没太大影响。需要每天去换药，14 天左右拆线，伤口要保持干燥，不能碰水，洗澡会有点麻烦。手臂不能太用力，有的事情也不方便，例如拧摩卡壶，多用点力伤口就会比较痛，看来后面要改喝手冲了。
+</p>
+
+<p>
+<a href="a-long-long-farewell.html">《纸上染了蓝》</a> 里有一段话：
+</p>
+
+<blockquote>
+<p>
+刚做了母亲的你，对你的孩子大概也有同样的愿望吧，健康，快乐。
+</p>
+
+<p>
+仿佛很简单，不过，我们也知道健康快乐需要很多祝福很多支持。
+</p>
+
+<p>
+<a href="https://taxodium.ink/a-long-long-farewell.html#:~:text=%E4%BB%BF%E4%BD%9B%E5%BE%88%E7%AE%80%E5%8D%95%EF%BC%8C%E4%B8%8D%E8%BF%87%EF%BC%8C%E6%88%91%E4%BB%AC%E4%B9%9F%E7%9F%A5%E9%81%93%E5%81%A5%E5%BA%B7%E5%BF%AB%E4%B9%90%E9%9C%80%E8%A6%81%E5%BE%88%E5%A4%9A%E7%A5%9D%E7%A6%8F%E5%BE%88%E5%A4%9A%E6%94%AF%E6%8C%81%E3%80%82">Source</a>
+</p>
+</blockquote>
+
+<p>
+是啊，都希望身体健康，但健康不是希望就能获得的，是需要很多付出的，要常去锻炼，注意饮食和休息。
+</p>
+
+<p>
+希望身边的人都能健康、快乐。
+</p>
+
+<hr>
+
+<p>
+出门去医院做手术，本来打算坐地铁，但雨有些大，就改成了打车。
+</p>
+
+<p>
+车行驶在雨里，给人一种安全感，雨再大，但在车里是干燥的、安全的，不会被打湿。
+</p>
+
+<p>
+雨水打在车上，声音密密麻麻的，听着很舒服，让人很放松。有人喜欢听白噪音，或许是因为这些声音它们听起来都不刺耳，它们是重复的，容易让人联想到大自然、外面的世界，于是会有一种放松的感觉。
+</p>
+
+<p>
+我还挺喜欢雨天的，尤其是睡觉的时候，最好狂风暴雨、电闪雷鸣，被窝里的我越是感到安全。但如果要出门，我就很讨厌雨天，因为总会弄湿我的鞋子，地铁出口也会很堵。
+</p>
+
+<hr>
+
+<p>
+又折腾了一下博客的样式。
+</p>
+
+<p>
+移除了文章切换的标题效果，因为总是会有些卡顿，干脆移除算了。
+</p>
+
+<p>
+看到别人博客里有子标题，而最近写的「日常」和「Album」其实也可以拆分子标题，就想加加看。
+</p>
+
+<p>
+文章里面拆分很简单，使用 <code>#+subtitle:</code> 关键字就好了。首页是 sitemap，使用 org-publish 生成的<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>，看了半天代码以及问 LLM 才渲染成功。还有订阅流，因为从标题拆分了子标题，我希望子标题也出现在订阅标题中，需要处理一下。为了方便我从文件名大致知道内容，我还把子标题作为关键字写入到文件名中。
+</p>
+
+<p>
+在调整首页子标题时，需要用到 flex 布局，导致 <code>&lt;li&gt;</code> 的 list-style 失效了。又琢磨怎么把原来的序号显示出来，最后弄着弄着，首页就变得像是一个目录页。我还挺满意这个设计的，有种把博客变成了一本书的感觉，读者打开博客首先看到的是一个目录，找自己感兴趣的内容阅读。序号、虚线都不是重要的东西，因此它们的颜色我都设置得比较浅，避免干扰。
+</p>
+
+<p>
+你觉得怎么样呢？
+</p>
+
+<hr>
+
+<p>
+我经常会翻看自己的博客，有时会发现一些错别字或者格式问题；有时会觉得某些句子可以有更好的表达。
+</p>
+
+<p>
+我是不是写完博文之后太急着发布，而没有好好审视和编辑呢？
+</p>
+
+<p>
+博文一旦发出去之后就会有人看，而大多数文章读者也不会反复读，对于读者而言，往往第一次读是什么样就是怎么样，当我后面编辑调整了，可能就只有之后的读者才会看到了。
+</p>
+
+<p>
+所以或许有必要在发布之前多看几遍，直到自己满意后再发布，把这篇博文最好的一面呈现给读者。
+</p>
+
+<hr>
+
+
+<figure>
+<a href="images/nichijou/4/百香果酸汤牛肉.jpeg"><img src="images/nichijou/4/百香果酸汤牛肉.jpeg" alt="百香果酸汤牛肉.jpeg"></a>
+
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>百香果番茄酸汤牛肉</figcaption>
+</figure>
+
+<p>
+<b>百香果番茄酸汤牛肉</b>
+</p>
+
+<p>
+食材：百香果若干个、番茄三四个、牛肉 400+g<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>、蒜头一颗、姜一小块、小米辣或泡椒、青柠一两个、香菜一小把
+</p>
+
+<ol class="org-ol">
+<li>牛肉切好后，用蚝油、生抽、淀粉腌制一阵子，给牛肉本身一个味道</li>
+<li>掏空百香果，得到一碗百香果汁；番茄去皮，一个切块，剩下的都切丁；柠檬切片；香菜切碎；</li>
+<li>切一些蒜末、一些姜片、辣椒段，热油将这些调料炒香</li>
+<li>加入番茄丁，翻炒一阵子，直到番茄出汁，然后加入适量水，大概够烫牛肉的分量就行</li>
+<li>加入百香果汁，搅拌一下然后调味，加入两三勺生抽、一勺盐、几勺糖以及一些鱼露。<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup></li>
+<li>加入牛肉煮熟，再把番茄块、柠檬片、香菜碎丢进去，咕噜一下，搅拌一下即可</li>
+</ol>
+
+
+<figure>
+<a href="images/nichijou/4/香菇鸡块.jpeg"><img src="images/nichijou/4/香菇鸡块.jpeg" alt="香菇鸡块.jpeg"></a>
+
+<figcaption><span class="figure-number">&#22270;3&nbsp; </span>香菇鸡块</figcaption>
+</figure>
+
+<p>
+食材：鸡胸肉或鸡腿肉、香菇、蒜、香葱
+</p>
+
+<ol class="org-ol">
+<li>鸡肉切成小块，然后加入蚝油、生抽、胡椒粉、淀粉腌制 20 分钟以上，入个味</li>
+<li>香菇切成小块、 切蒜末、香葱切碎，靠近葱白比较硬的部分用来炒菜，葱叶部分最后用来点缀</li>
+<li>腌制好鸡肉后，热油翻炒到表面都熟了，然后先盛出来</li>
+<li>热油炒香蒜末，加入香菇炒到变软，再加入鸡肉混合翻炒，如果鸡块比较大，怕不熟，就盖上锅盖焖煮一下</li>
+<li>加入葱叶翻炒均匀即可</li>
+</ol>
+
+<hr>
+
+<p>
+空洞骑士去到了灵魂圣所，这里的音乐使用管风琴演奏的，给人一种庄严又有点阴森的感觉。
+</p>
+
+<p>
+打败了灵魂大师，大师死的时候到处乱飞，有点鬼畜，从它身上获得了下冲的技能，又有不少地方可以去了。
+</p>
+
+<p>
+灵魂圣所这里，很多虫子为了灵魂而变得扭曲，有的变成了错误，像是一滩史莱姆，不禁想起了 <a href="https://zh.wikipedia.org/zh-cn/%E9%8B%BC%E4%B9%8B%E9%8D%8A%E9%87%91%E8%A1%93%E5%B8%AB">钢之炼金术师</a> 中的合成兽，也是一种邪道，最终炼出了不伦不类的东西。
+</p>
+
+<p>
+灵魂大师死了之后好像变成了灵魂暴君，打了不知道多少次，太受苦了，主要是他到处跑很难打到，有的招数也不会躲。好不容易打完了第一阶段，竟然还有二阶段，而且基本没有回血的空间，每次打得都很紧张。终于打死了，也就给了不少的灵魂，没我需要的技能，可恶。
+</p>
+
+<p>
+攒了不少钱，刚好捡到商店钥匙，狠狠消费了一波，钱多到把商店都买空了。多的钱不知道去哪里消费，记得有个存钱的 NPC，本来想看看存满会不会触发什么剧情，结果去到发现它跑路了，可恶啊，要再给我碰到，高低得揍它一顿。
+</p>
+
+<p>
+后面又探索了很多地图，但是可能是缺少某个技能，不少地方都过不去，玩着玩着就有点不知道做什么了，或许要把跑过的地图再跑一遍看看。
+</p>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+相关文章见：
+</p>
+<ul class="org-ul">
+<li><a href="org-publish-blog.html">使用 org-publish 发布博客</a></li>
+<li><a href="blog-with-denote-and-org-publish.html">结合 denote 和 org-publish 写博客</a></li>
+</ul></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+可以买牛肉自己切，自己切可能切不了那么薄，需要煮的时间可能长一些，但不容易煮老；也可以买现成的牛肉片，但要注意煮的时间，很容易老。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+调料的味道可以一边加一边尝，刚开始的时候少一些，不够了再加。糖的作用是中和酸味，让酸味柔和；鱼露大概是增香的，我尝不出来。
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： 2025-09-20 Sat 20:00</p>
+<p class="date">修改于： 2025-09-20 Sat 21:23</p>
+<p class="license">许可证： <a href="https://www.creativecommons.org/licenses/by-nc/4.0/deed.zh-hans">CC BY-NC 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
