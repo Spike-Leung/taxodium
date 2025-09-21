@@ -297,24 +297,24 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #969896;">/* </span><span style="color: #db7b5f;">Initial Stack: array</span><span style="color: #969896;"> */</span>
+<pre class="src src-c"><span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Initial Stack: array</span><span style="color: #db7b5f;"> */</span>
   <span style="color: #feacd0;">lua_getglobal</span><span style="color: #ffffff;">(</span>lua,<span style="color: #79a8ff;">"table"</span><span style="color: #ffffff;">)</span>;
   <span style="color: #feacd0;">lua_pushstring</span><span style="color: #ffffff;">(</span>lua,<span style="color: #79a8ff;">"sort"</span><span style="color: #ffffff;">)</span>;
-  <span style="color: #feacd0;">lua_gettable</span><span style="color: #ffffff;">(</span>lua,-2<span style="color: #ffffff;">)</span>;       <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #969896;"> */</span>
-  <span style="color: #feacd0;">lua_pushvalue</span><span style="color: #ffffff;">(</span>lua,-3<span style="color: #ffffff;">)</span>;      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #969896;"> */</span>
+  <span style="color: #feacd0;">lua_gettable</span><span style="color: #ffffff;">(</span>lua,-2<span style="color: #ffffff;">)</span>;       <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #db7b5f;"> */</span>
+  <span style="color: #feacd0;">lua_pushvalue</span><span style="color: #ffffff;">(</span>lua,-3<span style="color: #ffffff;">)</span>;      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #db7b5f;"> */</span>
   <span style="color: #b6a0ff;">if</span> <span style="color: #ffffff;">(</span>lua_pcall<span style="color: #ff66ff;">(</span>lua,1,0,0<span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span> <span style="color: #ffffff;">{</span>
-      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, error</span><span style="color: #969896;"> */</span>
+      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, error</span><span style="color: #db7b5f;"> */</span>
 
-      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">We are not interested in the error, we assume that the problem is
+      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">We are not interested in the error, we assume that the problem is
        * that there are 'false' elements inside the array, so we try
        * again with a slower function but able to handle this case, that
-       * is: table.sort(table, __redis__compare_helper)</span><span style="color: #969896;"> */</span>
-      lua_pop<span style="color: #ff66ff;">(</span>lua,1<span style="color: #ff66ff;">)</span>;             <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table</span><span style="color: #969896;"> */</span>
-      lua_pushstring<span style="color: #ff66ff;">(</span>lua,<span style="color: #79a8ff;">"sort"</span><span style="color: #ff66ff;">)</span>; <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, sort</span><span style="color: #969896;"> */</span>
-      lua_gettable<span style="color: #ff66ff;">(</span>lua,-2<span style="color: #ff66ff;">)</span>;       <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #969896;"> */</span>
-      lua_pushvalue<span style="color: #ff66ff;">(</span>lua,-3<span style="color: #ff66ff;">)</span>;      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #969896;"> */</span>
+       * is: table.sort(table, __redis__compare_helper)</span><span style="color: #db7b5f;"> */</span>
+      lua_pop<span style="color: #ff66ff;">(</span>lua,1<span style="color: #ff66ff;">)</span>;             <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table</span><span style="color: #db7b5f;"> */</span>
+      lua_pushstring<span style="color: #ff66ff;">(</span>lua,<span style="color: #79a8ff;">"sort"</span><span style="color: #ff66ff;">)</span>; <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, sort</span><span style="color: #db7b5f;"> */</span>
+      lua_gettable<span style="color: #ff66ff;">(</span>lua,-2<span style="color: #ff66ff;">)</span>;       <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #db7b5f;"> */</span>
+      lua_pushvalue<span style="color: #ff66ff;">(</span>lua,-3<span style="color: #ff66ff;">)</span>;      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #db7b5f;"> */</span>
       lua_getglobal<span style="color: #ff66ff;">(</span>lua,<span style="color: #79a8ff;">"__redis__compare_helper"</span><span style="color: #ff66ff;">)</span>;
-      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array, __redis__compare_helper</span><span style="color: #969896;"> */</span>
+      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array, __redis__compare_helper</span><span style="color: #db7b5f;"> */</span>
       lua_call<span style="color: #ff66ff;">(</span>lua,2,0<span style="color: #ff66ff;">)</span>;
   <span style="color: #ffffff;">}</span>
 </pre>
@@ -502,28 +502,28 @@ Writing code is sharing the experience of understanding the requirements/impleme
 揭示你的意图：解释代码 <i>为什么</i> 要做某些事情（而不是做什么）。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #969896;">// </span><span style="color: #db7b5f;">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
+<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
 </pre>
 </div></li>
 <li><p>
 保护未来善意的编辑人员不会错误地“修正”你的代码。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #969896;">// </span><span style="color: #db7b5f;">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
+<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
 </pre>
 </div></li>
 <li><p>
 澄清：代码审查过程中出现的问题，或代码读者可能提出/困惑的问题。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #969896;">// </span><span style="color: #db7b5f;">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
+<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
 </pre>
 </div></li>
 <li><p>
 解释你写不符合规范/要求的代码的理由
 </p>
 <div class="org-src-container">
-<pre class="src src-js">@SuppressWarnings<span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"unchecked"</span><span style="color: #ffffff;">)</span> <span style="color: #969896;">// </span><span style="color: #db7b5f;">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
+<pre class="src src-js">@SuppressWarnings<span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"unchecked"</span><span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
 </pre>
 </div></li>
 </ul>
@@ -738,7 +738,7 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： 2025-02-26 Wed 16:30</p>
 <p class="date">修改于： 2025-09-10 Wed 13:04</p>
-<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a></p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
