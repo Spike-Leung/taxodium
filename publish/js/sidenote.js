@@ -217,12 +217,12 @@ function mountSidenotes() {
 
       // 将 sidenote 分布到内容的两边
       if (idx % 2 === 1) {
-        sidenote.style.left = '100%';
         sidenote.style.paddingInlineStart = padding;
+        sidenote.style.left = '100%';
       } else {
-        sidenote.style.left = `${-1 * sidenote.getBoundingClientRect().width}px`;
         sidenote.style.paddingInlineEnd = padding;
         sidenote.style.justifyContent = 'flex-end';
+        sidenote.style.left = `${-1 * sidenote.getBoundingClientRect().width}px`;
       }
 
       // 避免 sidenote 重叠
