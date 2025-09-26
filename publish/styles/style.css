@@ -1042,34 +1042,34 @@ td,th {
 /* ------------------------------ webmention ------------------------------ */
 
 #postamble .webmention-container {
-  font-size: 1em;
-
   & p {
-    font-size: 1em;
+    font-size: revert;
     margin: revert;
   }
 
   & form {
     display: grid;
-    grid-template-columns: max-content auto;
+    grid-template-columns: max-content auto max-content;
     gap: .8em;
+    align-items: center;
 
     @media screen and (max-width: 400px) {
       display: flex;
       flex-direction: column;
+      align-items: start;
     }
 
     & input {
-      font-size: 1em;
       border: 1px;
       border-style: solid;
       border-color: var(--color-border);
       border-color: light-dark(var(--color-border), var(--dark-color-border));
       border-radius: 2px;
+      align-self: stretch;
+      font-size: 1em;
 
       &.button {
         cursor: pointer;
-        grid-column: span 2;
         padding: .2em;
 
         &:hover {
@@ -1083,6 +1083,12 @@ td,th {
       &[readonly] {
         cursor: not-allowed;
       }
+    }
+  }
+
+  &:not(:has(.webmention-content-list li)) {
+    & hr {
+      display: none;
     }
   }
 }
