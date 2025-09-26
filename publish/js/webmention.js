@@ -70,7 +70,13 @@ function renderWebmentions(feed, container) {
         contentText = entry.content.text || "";
       }
     }
-    pContent.textContent = contentText.slice(0, CONTENT_MAX_LENGTH);
+
+    if (contentText.length > CONTENT_MAX_LENGTH) {
+      contentText = contentText.slice(0, CONTENT_MAX_LENGTH);
+      contentText += "[...]"
+    }
+
+    pContent.textContent = contentText
     blockquote.appendChild(pContent);
 
     li.appendChild(pLink);
