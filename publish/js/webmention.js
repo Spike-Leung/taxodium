@@ -1,7 +1,7 @@
 async function loadWebmentionCount() {
   try {
     const target = location.href
-    const response = await fetch(`https://webmention.io/api/count?target=${target}/page/100`)
+    const response = await fetch(`https://webmention.io/api/count?target=${target}`)
     const { count = 0 } = await response.json()
     document.querySelector('.webmention-count').innerText = `(${count})`
   } catch (err) {
@@ -12,12 +12,65 @@ async function loadWebmentionCount() {
 async function loadWebmentionContent() {
   try {
     const target = location.href
-    const response = await fetch(`https://webmention.io/api/mentions.jf2?target=${target}/page/100`)
+    const response = await fetch(`https://webmention.io/api/mentions.jf2?target=${target}`)
     const responseJson = await response.json()
-    console.log({ responseJson })
+    const container = document.querySelector('.webmention-content-list')
+    renderWebmentions(feed, container)
   } catch (err) {
     console.error(err)
   }
+}
+
+function renderWebmentions(feed, container) {
+  if (!feed || !Array.isArray(feed.children) || !container) return;
+
+  const frag = document.createDocumentFragment();
+
+  for (const entry of feed.children) {
+    if (entry.type !== 'entry') continue;
+    if (entry['wm-private'] === true) continue;
+
+    const li = document.createElement('li');
+
+    // author
+    const pAuthor = document.createElement('p');
+    pAuthor.textContent = entry.author && entry.author.name ? entry.author.name : 'Unknown';
+    li.appendChild(pAuthor);
+
+    // blockquote
+    const blockquote = document.createElement('blockquote');
+
+    // content text
+    const pContent = document.createElement('p');
+    let contentText = '';
+    if (entry.content) {
+      if (typeof entry.content === 'string') {
+        contentText = entry.content;
+      } else {
+        contentText = entry.content.text || '';
+        // if (!contentText && entry.content.html) {
+        //   const tmp = document.createElement('div');
+        //   tmp.innerHTML = entry.content.html;
+        //   contentText = tmp.textContent || '';
+        // }
+      }
+    }
+    pContent.textContent = contentText;
+    blockquote.appendChild(pContent);
+
+    // link: <a href="url">name</a>
+    const pLink = document.createElement('p');
+    const a = document.createElement('a');
+    a.href = entry.url || entry['wm-source'] || '#';
+    a.textContent = entry.name || a.href;
+    pLink.appendChild(a);
+    blockquote.appendChild(pLink);
+
+    li.appendChild(blockquote);
+    frag.appendChild(li);
+  }
+
+  container.appendChild(frag);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
