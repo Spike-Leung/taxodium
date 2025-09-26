@@ -22,6 +22,8 @@ async function loadWebmentionContent() {
 }
 
 function renderWebmentions(feed, container) {
+  const CONTENT_MAX_LENGTH = 500;
+
   if (!feed || !Array.isArray(feed.children) || !container) return;
 
   const frag = document.createDocumentFragment();
@@ -32,10 +34,14 @@ function renderWebmentions(feed, container) {
 
     const li = document.createElement('li');
 
-    // author
-    const pAuthor = document.createElement('p');
-    pAuthor.textContent = entry.author && entry.author.name ? entry.author.name : 'Unknown';
-    li.appendChild(pAuthor);
+    const pLink = document.createElement('p');
+    const a = document.createElement('a');
+    const author = entry.author && entry.author.name ? entry.author.name : 'Unknown';
+    a.href = entry.url || entry['wm-source'] || '#';
+    a.textContent = `${entry.name || a.href} | ${author}`;
+    pLink.appendChild(a);
+
+    li.appendChild(pLink);
 
     // blockquote
     const blockquote = document.createElement('blockquote');
@@ -48,23 +54,10 @@ function renderWebmentions(feed, container) {
         contentText = entry.content;
       } else {
         contentText = entry.content.text || '';
-        // if (!contentText && entry.content.html) {
-        //   const tmp = document.createElement('div');
-        //   tmp.innerHTML = entry.content.html;
-        //   contentText = tmp.textContent || '';
-        // }
       }
     }
-    pContent.textContent = contentText;
+    pContent.textContent = contentText.slice(0, CONTENT_MAX_LENGTH);
     blockquote.appendChild(pContent);
-
-    // link: <a href="url">name</a>
-    const pLink = document.createElement('p');
-    const a = document.createElement('a');
-    a.href = entry.url || entry['wm-source'] || '#';
-    a.textContent = entry.name || a.href;
-    pLink.appendChild(a);
-    blockquote.appendChild(pLink);
 
     li.appendChild(blockquote);
     frag.appendChild(li);
