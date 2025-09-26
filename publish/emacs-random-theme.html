@@ -201,7 +201,7 @@
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
 </head>
-<body>
+<body class="h-entry">
 <div id="preamble" class="status">
 
   <ul class="ally-nav">
@@ -251,7 +251,7 @@ ef-themes 则提供了更多的色彩选择。
 <summary>主题切换相关 Elisp</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defvar</span> <span style="color: #00d3d0; font-style: italic;">spike-leung/candidate-themes</span>
+<pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defvar</span> <span style="color: #00d3d0;">spike-leung/candidate-themes</span>
   <span style="color: #b6a0ff;">'</span><span style="color: #ff66ff;">(</span>modus-operandi
     modus-operandi-tinted
     modus-vivendi
@@ -275,7 +275,7 @@ ef-themes 则提供了更多的色彩选择。
     ef-light
     ef-maris-dark
     ef-maris-light
-    <span style="color: #d6b577;">;; </span><span style="color: #db7b5f;">ef-melissa-dark
+    <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">ef-melissa-dark
 </span>    ef-melissa-light
     ef-night
     ef-owl
@@ -291,8 +291,8 @@ ef-themes 则提供了更多的色彩选择。
     ef-winter<span style="color: #ff66ff;">)</span>
   <span style="color: #9ac8e0;">"A list of themes to randomly cycle through."</span><span style="color: #ffffff;">)</span>
 
-<span style="color: #d6b577;">;;; </span><span style="color: #db7b5f;">theme related
-</span><span style="color: #d6b577;">;; </span><span style="color: #db7b5f;">@see: https://emacsredux.com/blog/2025/02/03/clean-unloading-of-emacs-themes/
+<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">theme related
+</span><span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">@see: https://emacsredux.com/blog/2025/02/03/clean-unloading-of-emacs-themes/
 </span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/disable-all-active-themes</span> <span style="color: #ff66ff;">()</span>
   <span style="color: #9ac8e0;">"Disable all currently active themes."</span>
   <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">interactive</span><span style="color: #ff66ff;">)</span>
@@ -307,9 +307,9 @@ ef-themes 则提供了更多的色彩选择。
     <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">let</span> <span style="color: #ff6b55;">(</span><span style="color: #efef00;">(</span>theme <span style="color: #b6a0ff;">(</span>nth <span style="color: #44df44;">(</span>random <span style="color: #79a8ff;">(</span>length spike-leung/candidate-themes<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span> spike-leung/candidate-themes<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
       <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">condition-case</span> err
           <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">progn</span>
-            <span style="color: #d6b577;">;; </span><span style="color: #db7b5f;">Load theme to ensure its specific settings/customizations are applied
+            <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">Load theme to ensure its specific settings/customizations are applied
 </span>            <span style="color: #b6a0ff;">(</span>load-theme theme <span style="color: #f78fe7;">:no-confirm</span><span style="color: #b6a0ff;">)</span>
-            <span style="color: #d6b577;">;; </span><span style="color: #db7b5f;">Enable the theme (this actually applies it and adds to custom-enabled-themes)
+            <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">Enable the theme (this actually applies it and adds to custom-enabled-themes)
 </span>            <span style="color: #b6a0ff;">(</span>enable-theme theme<span style="color: #b6a0ff;">)</span>
             <span style="color: #b6a0ff;">(</span>message <span style="color: #79a8ff;">"Applied random theme: %s"</span> theme<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
         <span style="color: #efef00;">(</span><span style="color: #fec43f;">error</span> <span style="color: #b6a0ff;">(</span>message <span style="color: #79a8ff;">"Error applying theme %s: %s"</span> theme err<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
