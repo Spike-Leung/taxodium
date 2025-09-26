@@ -256,7 +256,7 @@
   </select>
 </nav>
 </div>
-<div id="content" class="content h-entry">
+<div id="content" class="content e-content">
 <header>
 <h1 class="title">使用 org-publish 发布博客</h1>
 </header><nav id="table-of-contents" role="doc-toc">
@@ -478,7 +478,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defconst</span> <span style="color: #00d3d0;">spike-leung/html-head</span> <span style="color: #79a8ff;">"
+<pre class="src src-elisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defconst</span> <span style="color: #00d3d0; font-style: italic;">spike-leung/html-head</span> <span style="color: #79a8ff;">"
   &lt;link rel=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">stylesheet</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;"> href=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">../styles/style.css</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;"> type=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">text/css</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">/&gt;
   &lt;link rel=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">icon</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;"> href=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">/favicon.ico</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;"> type=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">image/x-icon</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">&gt;
   "</span>
@@ -489,7 +489,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
          <span style="color: #f78fe7;">:base-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/post"</span>
          <span style="color: #f78fe7;">:base-extension</span> <span style="color: #79a8ff;">"org"</span>
          <span style="color: #f78fe7;">:html-head</span> ,spike-leung/html-head
-         <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
+         <span style="color: #d6b577;">;; </span><span style="color: #db7b5f;">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
 </span>         <span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 </pre>
 </div>
@@ -521,20 +521,20 @@ This provides a way to include constant symbols and lists, which are not self-ev
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff">    (defconst spike-leung/html-head "
+<pre class="src src-diff"><span style="color: #afa497;">    (defconst spike-leung/html-head "
       &lt;link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/&gt;
       &lt;link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\"&gt;
       "
       "`:html-head' for `org-publish'.")
 
     (setq org-publish-project-alist
-<span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;">          '(("orgfiles"
-</span><span style="color: #44df44;">+</span><span style="color: #44bc44;">          `(("orgfiles"
-</span>             :base-directory "~/git/taxodium/post"
+</span><span style="color: #ff5f5f; background-color: #4be520861c02;">-</span><span style="color: #ff5f59;">          '(("orgfiles"
+</span><span style="color: #44df44; background-color: #2a7739d31c02;">+</span><span style="color: #44bc44;">          `(("orgfiles"
+</span><span style="color: #afa497;">             :base-directory "~/git/taxodium/post"
              :base-extension "org"
              :html-head ,spike-leung/html-head
              ;; ... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
-             )))
+</span>             )))
 </pre>
 </div>
 
@@ -604,7 +604,7 @@ org publish 的时候会给 heading、figure、details、pre 等元素生成 id�
 <span style="color: #ffffff;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">org-mode-hook</span>
           <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">lambda</span> <span style="color: #00eff0;">()</span>
             <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">and</span> buffer-file-name
-                       <span style="color: #efef00;">(</span>string-match <span style="color: #79a8ff;">"taxodium"</span> buffer-file-name<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">only apply to blog files
+                       <span style="color: #efef00;">(</span>string-match <span style="color: #79a8ff;">"taxodium"</span> buffer-file-name<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span> <span style="color: #d6b577;">;; </span><span style="color: #db7b5f;">only apply to blog files
 </span>              <span style="color: #ff6b55;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">before-save-hook</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">spike-leung/org-add-custom-id-to-headings-in-blog-files</span> nil <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">local</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 </pre>
 </div>
@@ -630,10 +630,10 @@ These elements's ID will be remove: figure,details,pre ..."</span>
                                        <span style="color: #79a8ff;">"&gt;"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
                               <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">lambda</span> <span style="color: #efef00;">(</span>match<span style="color: #efef00;">)</span>
                                 <span style="color: #efef00;">(</span>format <span style="color: #79a8ff;">"&lt;%s%s%s%s&gt;"</span>
-                                        <span style="color: #b6a0ff;">(</span>match-string 1 match<span style="color: #b6a0ff;">)</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">tag
-</span>                                        <span style="color: #b6a0ff;">(</span>match-string 2 match<span style="color: #b6a0ff;">)</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">keep other attrs
-</span>                                        <span style="color: #79a8ff;">""</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">remove id
-</span>                                        <span style="color: #b6a0ff;">(</span>match-string 4 match<span style="color: #b6a0ff;">)</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">keep other attrs
+                                        <span style="color: #b6a0ff;">(</span>match-string 1 match<span style="color: #b6a0ff;">)</span> <span style="color: #d6b577;">;; </span><span style="color: #db7b5f;">tag
+</span>                                        <span style="color: #b6a0ff;">(</span>match-string 2 match<span style="color: #b6a0ff;">)</span> <span style="color: #d6b577;">;; </span><span style="color: #db7b5f;">keep other attrs
+</span>                                        <span style="color: #79a8ff;">""</span> <span style="color: #d6b577;">;; </span><span style="color: #db7b5f;">remove id
+</span>                                        <span style="color: #b6a0ff;">(</span>match-string 4 match<span style="color: #b6a0ff;">)</span> <span style="color: #d6b577;">;; </span><span style="color: #db7b5f;">keep other attrs
 </span>                                        <span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
                               text<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 <span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">ox</span>
@@ -749,10 +749,10 @@ console.log('Hello world!')
 </p>
 
 <div class="org-src-container">
-<pre class="src src-css"><span style="color: #feacd0;">img.inline-image</span> <span style="color: #ffffff;">{</span>
-  <span style="color: #b6a0ff;">width</span>: 1em;
-  <span style="color: #b6a0ff;">height</span>: 1em;
-  <span style="color: #b6a0ff;">vertical-align</span>: -3.5px;
+<pre class="src src-css"><span style="color: #afa497; font-weight: bold; font-style: italic;">img.inline-image</span> <span style="color: #ffffff;">{</span>
+  <span style="color: #f3ac6f; font-weight: bold;">width</span>: 1em;
+  <span style="color: #f3ac6f; font-weight: bold;">height</span>: 1em;
+  <span style="color: #f3ac6f; font-weight: bold;">vertical-align</span>: -3.5px;
 <span style="color: #ffffff;">}</span>
 </pre>
 </div>
@@ -838,11 +838,17 @@ console.log('Hello world!')
 <hr></hr>
 <ul class="webmention-content-list"></ul>
 </details>
-<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com" class="h-entry p-author h-card p-name">Spike Leung</a></p>
-<p class="date">创建于：<span class=" h-entry dt-published">2024-09-27 Fri 21:40</span></p>
-<p class="date">修改于： <span class="h-entry dt-updated">2025-09-12 Fri 15:02</span></p>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于：<span class="dt-published">2024-09-27 Fri 21:40</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-09-12 Fri 15:02</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>

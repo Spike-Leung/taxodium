@@ -224,7 +224,7 @@
   </select>
 </nav>
 </div>
-<div id="content" class="content h-entry">
+<div id="content" class="content e-content">
 <header>
 <h1 class="title">使用 GitHub Actions 部署博客到 GitHub Pages</h1>
 </header><nav id="table-of-contents" role="doc-toc">
@@ -301,39 +301,39 @@ GitHub Actions are event-driven, meaning that you can run a series of commands a
 </p>
 
 <div class="org-src-container">
-<pre class="src src-yaml"><span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">Optional - The name of the workflow as it will appear in the Actions tab of the GitHub repository.
-</span><span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">workflows &#30340;&#21517;&#31216;
-</span><span style="color: #00d3d0;">name</span>: deploy-to-github-page
-<span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">Specify the event that automatically triggers the workflow file.
-</span><span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#30417;&#21548;&#20160;&#20040;&#20107;&#20214;&#26102;&#35302;&#21457;&#36825;&#20010;workflows, &#36825;&#37324;&#30417;&#21548;push
+<pre class="src src-yaml"><span style="color: #d6b577;"># </span><span style="color: #db7b5f;">Optional - The name of the workflow as it will appear in the Actions tab of the GitHub repository.
+</span><span style="color: #d6b577;"># </span><span style="color: #db7b5f;">workflows &#30340;&#21517;&#31216;
+</span><span style="color: #00d3d0; font-style: italic;">name</span>: deploy-to-github-page
+<span style="color: #d6b577;"># </span><span style="color: #db7b5f;">Specify the event that automatically triggers the workflow file.
+</span><span style="color: #d6b577;"># </span><span style="color: #db7b5f;">&#30417;&#21548;&#20160;&#20040;&#20107;&#20214;&#26102;&#35302;&#21457;&#36825;&#20010;workflows, &#36825;&#37324;&#30417;&#21548;push
 </span><span style="color: #00bcff;">on</span>: [push]
-<span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">Groups together all the jobs that run in the workflow file
-</span><span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#36825;&#20010;workflows&#20855;&#20307;&#26159;&#30001;&#21738;&#20123;&#20219;&#21153;&#32452;&#25104;&#30340;
-</span><span style="color: #00d3d0;">jobs</span>:
-  <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">define job name
-</span>  <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#20219;&#21153;1, `deploy`&#26159;&#20219;&#21153;&#30340;&#21517;&#31216;
-</span>  <span style="color: #00d3d0;">deploy</span>:
-    <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">Configures the job to run on an Ubuntu Linux runner
-</span>    <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#22312;&#20160;&#20040;&#29615;&#22659;&#19979;&#25191;&#34892;&#36825;&#20010;&#20219;&#21153;
-</span>    <span style="color: #00d3d0;">runs-on</span>: ubuntu-latest
-    <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">Groups together all the steps that run in the job
-</span>    <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">Each item nested under this section is a separate action or shell command.
-</span>    <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#20219;&#21153;&#20855;&#20307;&#21253;&#21547;&#20160;&#20040;&#27493;&#39588;
-</span>    <span style="color: #00d3d0;">steps</span>:
-      <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">actions The uses keyword tells the job to retrieve v2 of the community action named actions/checkout@v2
-</span>      <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#27599;&#20010;&#27493;&#39588;&#65292;&#21363;&#21487;&#20197;&#20351;&#29992;(`uses`)&#21035;&#20154;&#20889;&#22909;&#30340;`actions`, &#20063;&#21487;&#20197;&#36305;&#33258;&#24049;&#20889;&#30340;&#21629;&#20196;(`run`)
-</span>      - <span style="color: #00d3d0;">uses</span>: actions/checkout@v2 <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#25289;&#21462;&#20195;&#30721;
-</span>        - <span style="color: #00d3d0;">uses</span>: actions/setup-node@v2 <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#35013;node.js&#29615;&#22659;
-</span>          <span style="color: #00d3d0;">with</span>: <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#36755;&#20837;&#36825;&#20010;`actions`&#38656;&#35201;&#30340;&#21442;&#25968;&#65292;&#20363;&#22914;&#29256;&#26412;&#21495;
-</span>          <span style="color: #00d3d0;">node-version</span>: <span style="color: #79a8ff;">'14'</span>
-          <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">shell command, The run keyword tells the job to execute a command on the runner.
-</span>          - <span style="color: #00d3d0;">run</span>: yarn install <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#23433;&#35013;&#21338;&#23458;&#30340;&#20381;&#36182;
-</span>            - <span style="color: #00d3d0;">run</span>: yarn build <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#26500;&#24314;&#21338;&#23458;&#30340;&#38745;&#24577;&#25991;&#20214;
-</span>              - <span style="color: #00d3d0;">name</span>: Deploy
-                <span style="color: #00d3d0;">uses</span>: peaceiris/actions-gh-pages@v3 <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#20351;&#29992;&#21035;&#20154;&#20889;&#22909;&#25226;&#38745;&#24577;&#25991;&#20214;&#21457;&#24067;&#21040;`GitHub Pages`&#30340;`actions`
-</span>                <span style="color: #00d3d0;">with</span>:
-                  <span style="color: #00d3d0;">github_token</span>: ${{ secrets.GITHUB_TOKEN }}
-                  <span style="color: #00d3d0;">publish_dir</span>: docs/.vuepress/dist
+<span style="color: #d6b577;"># </span><span style="color: #db7b5f;">Groups together all the jobs that run in the workflow file
+</span><span style="color: #d6b577;"># </span><span style="color: #db7b5f;">&#36825;&#20010;workflows&#20855;&#20307;&#26159;&#30001;&#21738;&#20123;&#20219;&#21153;&#32452;&#25104;&#30340;
+</span><span style="color: #00d3d0; font-style: italic;">jobs</span>:
+  <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">define job name
+</span>  <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">&#20219;&#21153;1, `deploy`&#26159;&#20219;&#21153;&#30340;&#21517;&#31216;
+</span>  <span style="color: #00d3d0; font-style: italic;">deploy</span>:
+    <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">Configures the job to run on an Ubuntu Linux runner
+</span>    <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">&#22312;&#20160;&#20040;&#29615;&#22659;&#19979;&#25191;&#34892;&#36825;&#20010;&#20219;&#21153;
+</span>    <span style="color: #00d3d0; font-style: italic;">runs-on</span>: ubuntu-latest
+    <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">Groups together all the steps that run in the job
+</span>    <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">Each item nested under this section is a separate action or shell command.
+</span>    <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">&#20219;&#21153;&#20855;&#20307;&#21253;&#21547;&#20160;&#20040;&#27493;&#39588;
+</span>    <span style="color: #00d3d0; font-style: italic;">steps</span>:
+      <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">actions The uses keyword tells the job to retrieve v2 of the community action named actions/checkout@v2
+</span>      <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">&#27599;&#20010;&#27493;&#39588;&#65292;&#21363;&#21487;&#20197;&#20351;&#29992;(`uses`)&#21035;&#20154;&#20889;&#22909;&#30340;`actions`, &#20063;&#21487;&#20197;&#36305;&#33258;&#24049;&#20889;&#30340;&#21629;&#20196;(`run`)
+</span>      - <span style="color: #00d3d0; font-style: italic;">uses</span>: actions/checkout@v2 <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">&#25289;&#21462;&#20195;&#30721;
+</span>        - <span style="color: #00d3d0; font-style: italic;">uses</span>: actions/setup-node@v2 <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">&#35013;node.js&#29615;&#22659;
+</span>          <span style="color: #00d3d0; font-style: italic;">with</span>: <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">&#36755;&#20837;&#36825;&#20010;`actions`&#38656;&#35201;&#30340;&#21442;&#25968;&#65292;&#20363;&#22914;&#29256;&#26412;&#21495;
+</span>          <span style="color: #00d3d0; font-style: italic;">node-version</span>: <span style="color: #79a8ff;">'14'</span>
+          <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">shell command, The run keyword tells the job to execute a command on the runner.
+</span>          - <span style="color: #00d3d0; font-style: italic;">run</span>: yarn install <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">&#23433;&#35013;&#21338;&#23458;&#30340;&#20381;&#36182;
+</span>            - <span style="color: #00d3d0; font-style: italic;">run</span>: yarn build <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">&#26500;&#24314;&#21338;&#23458;&#30340;&#38745;&#24577;&#25991;&#20214;
+</span>              - <span style="color: #00d3d0; font-style: italic;">name</span>: Deploy
+                <span style="color: #00d3d0; font-style: italic;">uses</span>: peaceiris/actions-gh-pages@v3 <span style="color: #d6b577;"># </span><span style="color: #db7b5f;">&#20351;&#29992;&#21035;&#20154;&#20889;&#22909;&#25226;&#38745;&#24577;&#25991;&#20214;&#21457;&#24067;&#21040;`GitHub Pages`&#30340;`actions`
+</span>                <span style="color: #00d3d0; font-style: italic;">with</span>:
+                  <span style="color: #00d3d0; font-style: italic;">github_token</span>: ${{ secrets.GITHUB_TOKEN }}
+                  <span style="color: #00d3d0; font-style: italic;">publish_dir</span>: docs/.vuepress/dist
 
 </pre>
 </div></li>
@@ -392,11 +392,17 @@ GitHub Actions are event-driven, meaning that you can run a series of commands a
 <hr></hr>
 <ul class="webmention-content-list"></ul>
 </details>
-<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com" class="h-entry p-author h-card p-name">Spike Leung</a></p>
-<p class="date">创建于：<span class=" h-entry dt-published">2021-08-10 Tue 21:39</span></p>
-<p class="date">修改于： <span class="h-entry dt-updated">2025-09-10 Wed 13:04</span></p>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于：<span class="dt-published">2021-08-10 Tue 21:39</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-09-10 Wed 13:04</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
