@@ -1,0 +1,155 @@
+#+title:      给博客添加 Webmention
+#+export_file_name: add-webmention-to-blog
+#+date:       [2025-09-25 Thu 21:24]
+#+filetags:   :blog:published:webmention:
+#+identifier: 20250925T212422
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 关于如何给博客添加 Webmention
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content
+
+🎶 The Great Escape Of Our Time - 椅子乐团 The Chairs
+
+(这是一篇编辑中的文章，我拿它来测试 Webmention 的发送，你也可以用它测试 Webmention 的发送，这样我也可以测试 Webmention 的接收。)
+
+* 什么是 Webmention
+:PROPERTIES:
+:CUSTOM_ID: D459C268-A454-4D43-9E49-97D0A90C2F67
+:END:
+
+#+begin_quote
+Webmention 是一种通知，表明一个 URL 链接到另一个 URL。
+
+例如，Alice 在她的博客上写了一篇有趣的帖子。
+随后 Bob 在自己的网站上写了一篇回复她的帖子，并链接回 Alice 的原始帖子。
+Bob 的发布软件向 Alice 发送一个 Webmention，通知她的文章被回复了，
+Alice 的软件可以将该回复显示为原始帖子上的评论。
+
+[[https://www.w3.org/TR/webmention/#introduction-p-1:~:text=A%20Webmention%20is,the%20original%20post.][Source]]
+#+end_quote
+
+Webmention 和评论差不多，只是它的门槛相对高一点，需要你写一篇文章[fn:1]，并链接到你想评论的文章。
+
+如果对方支持了 Webmention，你发送 Webmention 通知后，对方就会将你的内容显示出来。
+
+#+begin_details
+#+html: <summary>Webmention 的大致流程</summary>
+
+# https://mermaid.live/edit#pako:eNp9VF1P01AY_isn53piV6TdGiEZarzQiHEYE9Obsh1G43o6u9aohAQU9qFjDL8AmQaMGgKBES-EKcE_s9PCFX_B03NatpWEm6V7z_P1vu9pp2HGzCKowCJ66iCcQTd1LWdphooLmmXrGb2gYRuk8noGRUppoBX5AfA-z7vNRfJmk6xt9aNGzYlIgdFoOUJS8T3TRsB8hiwuqgTapLTW-VPqHM56rbL7qeztbJwdVbz1PXejDArIMrS8jp-cHVV7Bai8wjwukkn79-n7Y7f-g1T2e9KzMxX7nCsjIzSlAsjSMjl8fW55Uj8gxyvg4YO7UTOO9er71Iq02oEqJ1Jtbke100w6ReG3b41HvTnK9_m3frJZA4_QhIGwrZsYeDst71WbWzBvLW-HxYNfbvWYttInf38sPd4jcH3CujpSNB0rg4bDwTPP7vwYxNasHLKHI8G6IBWnuh6n27WT1hzgHOCutkjjp_-7u0qaWzxieNasuh8r5-TRoH8eiOcORUVBAGN32BA-kPWvAYZucYHstVnrFxMEGJ6A1BZIY8etlUljOfTvWYGfis8rrKQCdz-VfymWVnoG13cn_S1_n_capT4AyhdRROXtO-_vF9pDEKxzuHhpKtYWwtlLtcJRrmzQUUYZ4QTZrSdzTXf3G6W4zW3eKr8pXRKMwZylZ6FiWw6KQcNfr_8XTqsYABXaU8hAKlToYxZNak7eVqGKZyiNvsCPTdMImZbp5KagMqnRFDHoFLKaHX49zqsWtUTWDdPBNlQkIc5EoDINn0NlUBYHErKcSEqCKAyKghSDL6CSTAzIcjIxFBeTieSgfE2eicGXzFUYoFhBiMclKSEKQ6IUn_kPt8MgwA
+#+CAPTION: Webmention 的大致流程，参考 https://www.w3.org/TR/webmention/#protocol-summary
+[[file:../images/add-webmention-to-blog/mermaid.png]]
+#+end_details
+
+* 为什么接入 Webmention
+:PROPERTIES:
+:CUSTOM_ID: E55EE851-CF6C-4FC6-A4F8-94FD38BFA17F
+:END:
+
+#+begin_quote
+*实现跨站点的对话。*
+当你链接到某个网站时，你可以发送一个 Webmention 来通知它。
+如果该网站支持 Webmention，那么该网站可能会将你的帖子显示为评论、赞或其他回应，
+就这样，你就实现了从一个站点到另一个站点的对话！
+
+[[https://indieweb.org/Webmention#:~:text=Enables%20cross%2Dsite%20conversations.%20When%20you%20link%20to%20a%20website%2C%20you%20can%20send%20it%20a%20Webmention%20to%20notify%20it.%20If%20it%20supports%20Webmentions%2C%20then%20that%20website%20may%20display%20your%20post%20as%20a%20comment%2C%20like%2C%20or%20other%20response%2C%20and%20presto%2C%20you%E2%80%99re%20having%20a%20conversation%20from%20one%20site%20to%20another!][Source]]
+#+end_quote
+
+我觉得 Webmention 和集成在博客中的评论系统做的事情都差不多。
+
+如果你要回应一篇文章，通过 Webmention，你需要写一篇文章链接到这篇文章，并发送一个 Webmention 通知。
+通过如 [[https://brid.gy/][Bridgy]] 之类的服务，也可以收集社交网络上（Blusky、Mastodon 等）关于文章的回应，例如点赞、转发等。
+
+但我觉得并没有比集成于博客的评论系统更方便。
+
+从数据层面看，除非自己买服务器搭建 Webmention，否则用第三方提供的服务，数据依然不在自己的手上。
+
+所以我为什么要接入 Webmention？
+
+最开始是在 [[https://www.owenyoung.com/blog/de-roboticization/#2-xie-bo-ke%20:~:text=%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%B2%A1%E6%9C%89%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%EF%BC%8C%E5%9B%A0%E4%B8%BA%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E4%BC%9A%E5%85%B6%E5%AE%9E%E4%BC%9A%E8%AE%A9%E6%88%91%E5%BC%95%E5%85%A5%E7%A4%BE%E4%BA%A4%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8C%85%E8%A2%B1%E6%84%9F%E3%80%82%E6%88%91%E8%A7%89%E5%BE%97%E8%A7%A3%E5%86%B3%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98%E7%9A%84%E5%A5%BD%E5%8A%9E%E6%B3%95%E6%98%AF%E5%BC%95%E5%85%A5webmention%E7%9A%84%E5%8A%9F%E8%83%BD%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%9C%89%E4%BA%BA%E6%83%B3%E8%A6%81%E5%9B%9E%E5%BA%94%EF%BC%8C%E5%BE%97%E6%8F%90%E4%BA%A4%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%9E%E5%BA%94%E7%BD%91%E5%9D%80%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E5%9C%A8%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E8%AF%84%E8%AE%BA%E6%A1%86%E9%87%8C%E7%95%99%E4%B8%8B%E4%B8%89%E8%A8%80%E4%B8%A4%E8%AF%AD%E3%80%82%E8%BF%99%E6%8F%90%E9%AB%98%E4%BA%86%E8%AF%84%E8%AE%BA%E7%9A%84%E6%88%90%E6%9C%AC%EF%BC%8C%E9%BC%93%E5%8A%B1%E6%83%B3%E8%A6%81%E7%95%99%E8%A8%80%E7%9A%84%E4%BA%BA%E6%8B%A5%E6%9C%89%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%86%99%E4%B8%80%E4%BA%9B%E7%BB%8F%E8%BF%87%E6%80%9D%E8%80%83%E7%9A%84%E8%AF%9D%E8%AF%AD%E3%80%82%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B7%B2%E7%BB%8F%E6%94%AF%E6%8C%81%E4%BA%86%20Webmention%EF%BC%8C%E6%88%91%E5%9C%A8Now%2C%20I%E2%80%99m%20in%20IndieWeb%3F%E9%87%8C%E6%9C%89%E8%AE%B0%E5%BD%95%E6%88%91%E7%9A%84%E5%AE%9E%E7%8E%B0%E3%80%82][我想让自己说话不那么“端着” | Owen Young]] 中了解到 Webmention，当时觉得有些麻烦。
+
+最近网上冲浪的时候，看到不少博客都有集成 Webmention，然后了解了一下 webmention.io 的使用，看起来不麻烦，就想着集成看看。
+
+非要找个理由的话，就是折腾一下，好玩吧。
+
+* 如何接入 Webmention
+:PROPERTIES:
+:CUSTOM_ID: D55D3AFA-42A0-4D14-A52F-FB34162E31DD
+:END:
+
+如果是自己搭建的话，可以参照 [[https://www.w3.org/TR/webmention][Webmention 规范]] 实现，或者找现成的工具，[[https://indieweb.org/Webmention][Webmention | IndieWeb]] 里罗列了很多工具和服务。
+
+我目前实现很简单，主要依赖 [[https://webmention.io/][webmention.io]] 提供的服务。
+
+** 作为接收方
+:PROPERTIES:
+:CUSTOM_ID: 9119BFDC-A4D1-4D2D-A736-24A274102F47
+:END:
+
+接收我使用 [[https://webmention.io/][webmention.io]] 提供的服务，按照 [[https://indielogin.com/setup][How to Set Up Your Website for IndieLogin.com]] 的说明进行设置。
+
+我用 GitHub 进行验证，需要在 GitHub Profile 中包含我的网站，同时在网站添加一个链接。
+
+#+CAPTION: 我的 GitHub Profile 页面，我把网站的地址添加到了 Profile 中
+[[file:images/add-webmention-to-blog/github-profile.png]]
+
+#+begin_src html
+  <head>
+    <!-- 省略其他内容 -->
+    <link href="https://github.com/spike-leung" rel="me">
+    <!-- 省略其他内容 -->
+  </head>
+#+end_src
+
+这样就能通过 webmention.io 的验证了。
+
+接下来按照 webmention.io 提供的 API 获取 Webmentions 的数量和内容，
+需要在页面上添加 HTML 元素，写 [[file:js/webmention.js][一些 JS 代码]] 调用 API 渲染数据[fn:2]，再写点 CSS 优化一下样式。
+
+搭建好之后，可以用 [[https://webmention.rocks/#:~:text=Testing%20your%20Receiver][Webmention Rocks!]] 提供的服务进行测试。
+
+** 作为发送方
+:PROPERTIES:
+:CUSTOM_ID: 582BF4C8-77F8-4E6E-B823-8C9941F41233
+:END:
+
+作为发送方，需要通过 [[https://microformats.org/wiki/Main_Page][microformats]] 标记网站信息，如用户名、头像、链接的标题、内容等，从而让 Webmention 解析展示。
+
+最主要的标记是 [[https://microformats.org/wiki/h-card][h-card]] 和 [[https://microformats.org/wiki/h-entry][h-entry]]，前者标记用户信息；后者标记内容信息，标记的部分会作为 Webmention 的内容呈现。
+
+设置好之后就可以向集成了 Webmention 的网站发送通知了，需要构建一个 POST 请求，
+可以用第三方服务，如 [[https://telegraph.p3k.io/][Telegraph]] 手动发送，或者考虑集成 [[https://webmention.app/][webmention.app]] 自动发送。
+
+可以向 [[https://aaronparecki.com/2018/06/30/11/your-first-webmention][Sending your First Webmention from Scratch]] 发送 Webmention 进行测试，这篇文章也是一篇 Webmention 的入门教程。
+
+* 一些问题
+:PROPERTIES:
+:CUSTOM_ID: D2EB3BEC-396F-43D6-BA15-A89E38A671F8
+:END:
+
+大部分疑惑 [[https://indieweb.org/Webmention-faq][Webmention-faq | IndieWeb]] 中都有解答。
+
+一些我还没完全明白的问题：
+- Webmention 有很多类，有的表示评论，有的表示点赞，我目前只支持了评论，点赞怎么做还要看看
+- 如何实现自动发送 Webmention
+- Webmention.io 的数据迁移
+
+* 其他参考文章
+:PROPERTIES:
+:CUSTOM_ID: 806C5BB0-D8CB-4AD8-BC52-2866C9072B41
+:END:
+
+- [[https://jason-memo.dev/posts/webmention/][透過 webmention 來搜集 blog 的社群迴響 | Jason Chen]]
+- [[https://blog.xiang578.com/note/641ea60f-a31e-4979-9327-c50509c146e3.html][Webmention 实现参考 | Runye]]
+- [[https://www.owenyoung.com/en/blog/indieweb/][Now, I'm in IndieWeb? | Owen Young]]
+
+* Footnotes
+:PROPERTIES:
+:CUSTOM_ID: F4D04C4F-4971-454C-ABF4-939434D05E8F
+:END:
+
+[fn:1] 或者在社交媒体如 BlueSky、Mastodon 上发一个帖子，引用文章的链接。
+
+[fn:2] 也可以用别人封装好的 [[https://github.com/PlaidWeb/webmention.js][webmention.js]]。

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>给博客添加 Webmention</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="关于如何给博客添加 Webmention" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+</head>
+<body>
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li class="js-required"><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content h-entry">
+<header>
+<h1 class="title">给博客添加 Webmention</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#D459C268-A454-4D43-9E49-97D0A90C2F67">什么是 Webmention</a></li>
+<li><a href="#E55EE851-CF6C-4FC6-A4F8-94FD38BFA17F">为什么接入 Webmention</a></li>
+<li><a href="#D55D3AFA-42A0-4D14-A52F-FB34162E31DD">如何接入 Webmention</a>
+<ul>
+<li><a href="#9119BFDC-A4D1-4D2D-A736-24A274102F47">作为接收方</a></li>
+<li><a href="#582BF4C8-77F8-4E6E-B823-8C9941F41233">作为发送方</a></li>
+</ul>
+</li>
+<li><a href="#D2EB3BEC-396F-43D6-BA15-A89E38A671F8">一些问题</a></li>
+<li><a href="#806C5BB0-D8CB-4AD8-BC52-2866C9072B41">其他参考文章</a></li>
+</ul>
+</div>
+</nav>
+<p>
+🎶 The Great Escape Of Our Time - 椅子乐团 The Chairs
+</p>
+
+<p>
+(这是一篇编辑中的文章，我拿它来测试 Webmention 的发送，你也可以用它测试 Webmention 的发送，这样我也可以测试 Webmention 的接收。)
+</p>
+<div id="outline-container-D459C268-A454-4D43-9E49-97D0A90C2F67" class="outline-2">
+<h2 id="D459C268-A454-4D43-9E49-97D0A90C2F67">什么是 Webmention</h2>
+<div class="outline-text-2" id="text-D459C268-A454-4D43-9E49-97D0A90C2F67">
+<blockquote>
+<p>
+Webmention 是一种通知，表明一个 URL 链接到另一个 URL。
+</p>
+
+<p>
+例如，Alice 在她的博客上写了一篇有趣的帖子。随后 Bob 在自己的网站上写了一篇回复她的帖子，并链接回 Alice 的原始帖子。
+Bob 的发布软件向 Alice 发送一个 Webmention，通知她的文章被回复了，
+Alice 的软件可以将该回复显示为原始帖子上的评论。
+</p>
+
+<p>
+<a href="https://www.w3.org/TR/webmention/#introduction-p-1:~:text=A%20Webmention%20is,the%20original%20post.">Source</a>
+</p>
+</blockquote>
+
+<p>
+Webmention 和评论差不多，只是它的门槛相对高一点，需要你写一篇文章<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>，并链接到你想评论的文章。
+</p>
+
+<p>
+如果对方支持了 Webmention，你发送 Webmention 通知后，对方就会将你的内容显示出来。
+</p>
+
+<details>
+<summary>Webmention 的大致流程</summary>
+
+
+<figure>
+<a href="../images/add-webmention-to-blog/mermaid.png"><img src="../images/add-webmention-to-blog/mermaid.png" alt="mermaid.png"></a>
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>Webmention 的大致流程，参考 <a href="https://www.w3.org/TR/webmention/#protocol-summary">https://www.w3.org/TR/webmention/#protocol-summary</a></figcaption>
+</figure>
+</details>
+</div>
+</div>
+<div id="outline-container-E55EE851-CF6C-4FC6-A4F8-94FD38BFA17F" class="outline-2">
+<h2 id="E55EE851-CF6C-4FC6-A4F8-94FD38BFA17F">为什么接入 Webmention</h2>
+<div class="outline-text-2" id="text-E55EE851-CF6C-4FC6-A4F8-94FD38BFA17F">
+<blockquote>
+<p>
+<b>实现跨站点的对话。</b>当你链接到某个网站时，你可以发送一个 Webmention 来通知它。如果该网站支持 Webmention，那么该网站可能会将你的帖子显示为评论、赞或其他回应，就这样，你就实现了从一个站点到另一个站点的对话！
+</p>
+
+<p>
+<a href="https://indieweb.org/Webmention#:~:text=Enables%20cross%2Dsite%20conversations.%20When%20you%20link%20to%20a%20website%2C%20you%20can%20send%20it%20a%20Webmention%20to%20notify%20it.%20If%20it%20supports%20Webmentions%2C%20then%20that%20website%20may%20display%20your%20post%20as%20a%20comment%2C%20like%2C%20or%20other%20response%2C%20and%20presto%2C%20you%E2%80%99re%20having%20a%20conversation%20from%20one%20site%20to%20another!">Source</a>
+</p>
+</blockquote>
+
+<p>
+我觉得 Webmention 和集成在博客中的评论系统做的事情都差不多。
+</p>
+
+<p>
+如果你要回应一篇文章，通过 Webmention，你需要写一篇文章链接到这篇文章，并发送一个 Webmention 通知。通过如 <a href="https://brid.gy/">Bridgy</a> 之类的服务，也可以收集社交网络上（Blusky、Mastodon 等）关于文章的回应，例如点赞、转发等。
+</p>
+
+<p>
+但我觉得并没有比集成于博客的评论系统更方便。
+</p>
+
+<p>
+从数据层面看，除非自己买服务器搭建 Webmention，否则用第三方提供的服务，数据依然不在自己的手上。
+</p>
+
+<p>
+所以我为什么要接入 Webmention？
+</p>
+
+<p>
+最开始是在 <a href="https://www.owenyoung.com/blog/de-roboticization/#2-xie-bo-ke%20:~:text=%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%B2%A1%E6%9C%89%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%EF%BC%8C%E5%9B%A0%E4%B8%BA%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E4%BC%9A%E5%85%B6%E5%AE%9E%E4%BC%9A%E8%AE%A9%E6%88%91%E5%BC%95%E5%85%A5%E7%A4%BE%E4%BA%A4%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8C%85%E8%A2%B1%E6%84%9F%E3%80%82%E6%88%91%E8%A7%89%E5%BE%97%E8%A7%A3%E5%86%B3%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98%E7%9A%84%E5%A5%BD%E5%8A%9E%E6%B3%95%E6%98%AF%E5%BC%95%E5%85%A5webmention%E7%9A%84%E5%8A%9F%E8%83%BD%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%9C%89%E4%BA%BA%E6%83%B3%E8%A6%81%E5%9B%9E%E5%BA%94%EF%BC%8C%E5%BE%97%E6%8F%90%E4%BA%A4%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%9E%E5%BA%94%E7%BD%91%E5%9D%80%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E5%9C%A8%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E8%AF%84%E8%AE%BA%E6%A1%86%E9%87%8C%E7%95%99%E4%B8%8B%E4%B8%89%E8%A8%80%E4%B8%A4%E8%AF%AD%E3%80%82%E8%BF%99%E6%8F%90%E9%AB%98%E4%BA%86%E8%AF%84%E8%AE%BA%E7%9A%84%E6%88%90%E6%9C%AC%EF%BC%8C%E9%BC%93%E5%8A%B1%E6%83%B3%E8%A6%81%E7%95%99%E8%A8%80%E7%9A%84%E4%BA%BA%E6%8B%A5%E6%9C%89%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%86%99%E4%B8%80%E4%BA%9B%E7%BB%8F%E8%BF%87%E6%80%9D%E8%80%83%E7%9A%84%E8%AF%9D%E8%AF%AD%E3%80%82%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B7%B2%E7%BB%8F%E6%94%AF%E6%8C%81%E4%BA%86%20Webmention%EF%BC%8C%E6%88%91%E5%9C%A8Now%2C%20I%E2%80%99m%20in%20IndieWeb%3F%E9%87%8C%E6%9C%89%E8%AE%B0%E5%BD%95%E6%88%91%E7%9A%84%E5%AE%9E%E7%8E%B0%E3%80%82">我想让自己说话不那么“端着” | Owen Young</a> 中了解到 Webmention，当时觉得有些麻烦。
+</p>
+
+<p>
+最近网上冲浪的时候，看到不少博客都有集成 Webmention，然后了解了一下 webmention.io 的使用，看起来不麻烦，就想着集成看看。
+</p>
+
+<p>
+非要找个理由的话，就是折腾一下，好玩吧。
+</p>
+</div>
+</div>
+<div id="outline-container-D55D3AFA-42A0-4D14-A52F-FB34162E31DD" class="outline-2">
+<h2 id="D55D3AFA-42A0-4D14-A52F-FB34162E31DD">如何接入 Webmention</h2>
+<div class="outline-text-2" id="text-D55D3AFA-42A0-4D14-A52F-FB34162E31DD">
+<p>
+如果是自己搭建的话，可以参照 <a href="https://www.w3.org/TR/webmention">Webmention 规范</a> 实现，或者找现成的工具，<a href="https://indieweb.org/Webmention">Webmention | IndieWeb</a> 里罗列了很多工具和服务。
+</p>
+
+<p>
+我目前实现很简单，主要依赖 <a href="https://webmention.io/">webmention.io</a> 提供的服务。
+</p>
+</div>
+<div id="outline-container-9119BFDC-A4D1-4D2D-A736-24A274102F47" class="outline-3">
+<h3 id="9119BFDC-A4D1-4D2D-A736-24A274102F47">作为接收方</h3>
+<div class="outline-text-3" id="text-9119BFDC-A4D1-4D2D-A736-24A274102F47">
+<p>
+接收我使用 <a href="https://webmention.io/">webmention.io</a> 提供的服务，按照 <a href="https://indielogin.com/setup">How to Set Up Your Website for IndieLogin.com</a> 的说明进行设置。
+</p>
+
+<p>
+我用 GitHub 进行验证，需要在 GitHub Profile 中包含我的网站，同时在网站添加一个链接。
+</p>
+
+
+<figure>
+<a href="images/add-webmention-to-blog/github-profile.png"><img src="images/add-webmention-to-blog/github-profile.png" alt="github-profile.png"></a>
+
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>我的 GitHub Profile 页面，我把网站的地址添加到了 Profile 中</figcaption>
+</figure>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="color: #feacd0;">head</span>&gt;
+  <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#30465;&#30053;&#20854;&#20182;&#20869;&#23481;</span><span style="color: #db7b5f;"> --&gt;</span>
+  &lt;<span style="color: #feacd0;">link</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"https://github.com/spike-leung"</span> <span style="color: #00d3d0;">rel</span>=<span style="color: #79a8ff;">"me"</span>&gt;
+  <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#30465;&#30053;&#20854;&#20182;&#20869;&#23481;</span><span style="color: #db7b5f;"> --&gt;</span>
+&lt;/<span style="color: #feacd0;">head</span>&gt;
+</pre>
+</div>
+
+<p>
+这样就能通过 webmention.io 的验证了。
+</p>
+
+<p>
+接下来按照 webmention.io 提供的 API 获取 Webmentions 的数量和内容，需要在页面上添加 HTML 元素，写 <a href="js/webmention.js">一些 JS 代码</a> 调用 API 渲染数据<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>，再写点 CSS 优化一下样式。
+</p>
+
+<p>
+搭建好之后，可以用 <a href="https://webmention.rocks/#:~:text=Testing%20your%20Receiver">Webmention Rocks!</a> 提供的服务进行测试。
+</p>
+</div>
+</div>
+<div id="outline-container-582BF4C8-77F8-4E6E-B823-8C9941F41233" class="outline-3">
+<h3 id="582BF4C8-77F8-4E6E-B823-8C9941F41233">作为发送方</h3>
+<div class="outline-text-3" id="text-582BF4C8-77F8-4E6E-B823-8C9941F41233">
+<p>
+作为发送方，需要通过 <a href="https://microformats.org/wiki/Main_Page">microformats</a> 标记网站信息，如用户名、头像、链接的标题、内容等，从而让 Webmention 解析展示。
+</p>
+
+<p>
+最主要的标记是 <a href="https://microformats.org/wiki/h-card">h-card</a> 和 <a href="https://microformats.org/wiki/h-entry">h-entry</a>，前者标记用户信息；后者标记内容信息，标记的部分会作为 Webmention 的内容呈现。
+</p>
+
+<p>
+设置好之后就可以向集成了 Webmention 的网站发送通知了，需要构建一个 POST 请求，可以用第三方服务，如 <a href="https://telegraph.p3k.io/">Telegraph</a> 手动发送，或者考虑集成 <a href="https://webmention.app/">webmention.app</a> 自动发送。
+</p>
+
+<p>
+可以向 <a href="https://aaronparecki.com/2018/06/30/11/your-first-webmention">Sending your First Webmention from Scratch</a> 发送 Webmention 进行测试，这篇文章也是一篇 Webmention 的入门教程。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-D2EB3BEC-396F-43D6-BA15-A89E38A671F8" class="outline-2">
+<h2 id="D2EB3BEC-396F-43D6-BA15-A89E38A671F8">一些问题</h2>
+<div class="outline-text-2" id="text-D2EB3BEC-396F-43D6-BA15-A89E38A671F8">
+<p>
+大部分疑惑 <a href="https://indieweb.org/Webmention-faq">Webmention-faq | IndieWeb</a> 中都有解答。
+</p>
+
+<p>
+一些我还没完全明白的问题：
+</p>
+<ul class="org-ul">
+<li>Webmention 有很多类，有的表示评论，有的表示点赞，我目前只支持了评论，点赞怎么做还要看看</li>
+<li>如何实现自动发送 Webmention</li>
+<li>Webmention.io 的数据迁移</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-806C5BB0-D8CB-4AD8-BC52-2866C9072B41" class="outline-2">
+<h2 id="806C5BB0-D8CB-4AD8-BC52-2866C9072B41">其他参考文章</h2>
+<div class="outline-text-2" id="text-806C5BB0-D8CB-4AD8-BC52-2866C9072B41">
+<ul class="org-ul">
+<li><a href="https://jason-memo.dev/posts/webmention/">透過 webmention 來搜集 blog 的社群迴響 | Jason Chen</a></li>
+<li><a href="https://blog.xiang578.com/note/641ea60f-a31e-4979-9327-c50509c146e3.html">Webmention 实现参考 | Runye</a></li>
+<li><a href="https://www.owenyoung.com/en/blog/indieweb/">Now, I'm in IndieWeb? | Owen Young</a></li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+或者在社交媒体如 BlueSky、Mastodon 上发一个帖子，引用文章的链接。
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+也可以用别人封装好的 <a href="https://github.com/PlaidWeb/webmention.js">webmention.js</a>。
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<details class="webmention-container js-required">
+<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
+<p class="webmention-tip">
+如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://indieweb.org/Webmention">（了解有关 Webmention 的更多信息。）</a>
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention-content-list"></ul>
+</details>
+<p class="author h-entry p-author h-card p-name">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date h-entry dt-published">创建于： 2025-09-25 Thu 21:24</p>
+<p class="date h-entry dt-updated">修改于： 2025-09-26 Fri 20:01</p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
