@@ -400,21 +400,21 @@ pagefind 的一些特点：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #db7b5f;">#</span><span style="color: #db7b5f;">!/bin/bash</span>
+<pre class="src src-diff"><span style="color: #948A8B; font-style: italic;">#</span><span style="color: #db7b5f; font-style: italic;">!/bin/bash</span>
 
-<span style="color: #db7b5f;">#</span><span style="color: #db7b5f;"> Enable command printing (debug mode)</span>
+<span style="color: #948A8B; font-style: italic;">#</span><span style="color: #db7b5f; font-style: italic;"> Enable command printing (debug mode)</span>
 set -x
 
-<span style="color: #db7b5f;">#</span><span style="color: #db7b5f;"> Only build when `publish` change</span>
+<span style="color: #948A8B; font-style: italic;">#</span><span style="color: #db7b5f; font-style: italic;"> Only build when `publish` change</span>
 git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF publish
 
-<span style="color: #db7b5f;">#</span><span style="color: #db7b5f;"> index.xml is for https://www.v2ex.com/xna</span>
+<span style="color: #948A8B; font-style: italic;">#</span><span style="color: #db7b5f; font-style: italic;"> index.xml is for https://www.v2ex.com/xna</span>
 cp -f publish/rss.xml publish/index.xml
 
 <span style="color: #44df44;">+</span><span style="color: #44bc44;"> # see: https://pagefind.app/docs/multilingual/#opting-out-of-multilingual-search
 </span><span style="color: #44df44;">+</span><span style="color: #44bc44;"> npx -y pagefind --site publish --force-language zh-CN
 </span>
-<span style="color: #db7b5f;">#</span><span style="color: #db7b5f;"> Disable debug mode</span>
+<span style="color: #948A8B; font-style: italic;">#</span><span style="color: #db7b5f; font-style: italic;"> Disable debug mode</span>
 set +x
 </pre>
 </div>
@@ -519,13 +519,14 @@ set +x
 
 <details class="webmention-container js-required">
 <summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
-<p class="webmention-tip"><a href="https://webmention.io/taxodium.ink/webmention">Webmention</a> 由 <a href="https://webmention.io">webmention.io</a> 提供服务。</p>
-<form action="https://webmention.io//taxodium.ink/webmention" method="post">
-<label for="source">Source URL:</label>
-<input type="url" name="source" id="source" placeholder="发送 Webmention 的页面 URL（一般来说是你的页面 URL）"/>
-<label for="target">Target URL:</label>
-<input type="url" name="target" id="target" readonly />
-<input type="submit" class="button" value="发送 Webmention"/>
+<p class="webmention-tip">
+如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://indieweb.org/Webmention">（了解有关 Webmention 的更多信息。）</a>
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
 </form>
 <hr></hr>
 <ul class="webmention-content-list"></ul>
