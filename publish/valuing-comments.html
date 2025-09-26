@@ -201,7 +201,7 @@
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
 </head>
-<body class="e-entry">
+<body class="h-entry">
 <div id="preamble" class="status">
 
   <ul class="ally-nav">
@@ -298,24 +298,24 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Initial Stack: array</span><span style="color: #db7b5f;"> */</span>
+<pre class="src src-c"><span style="color: #2f6920;">/* </span><span style="color: #db7b5f;">Initial Stack: array</span><span style="color: #2f6920;"> */</span>
   <span style="color: #feacd0;">lua_getglobal</span><span style="color: #ffffff;">(</span>lua,<span style="color: #79a8ff;">"table"</span><span style="color: #ffffff;">)</span>;
   <span style="color: #feacd0;">lua_pushstring</span><span style="color: #ffffff;">(</span>lua,<span style="color: #79a8ff;">"sort"</span><span style="color: #ffffff;">)</span>;
-  <span style="color: #feacd0;">lua_gettable</span><span style="color: #ffffff;">(</span>lua,-2<span style="color: #ffffff;">)</span>;       <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #db7b5f;"> */</span>
-  <span style="color: #feacd0;">lua_pushvalue</span><span style="color: #ffffff;">(</span>lua,-3<span style="color: #ffffff;">)</span>;      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #db7b5f;"> */</span>
+  <span style="color: #feacd0;">lua_gettable</span><span style="color: #ffffff;">(</span>lua,-2<span style="color: #ffffff;">)</span>;       <span style="color: #2f6920;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #2f6920;"> */</span>
+  <span style="color: #feacd0;">lua_pushvalue</span><span style="color: #ffffff;">(</span>lua,-3<span style="color: #ffffff;">)</span>;      <span style="color: #2f6920;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #2f6920;"> */</span>
   <span style="color: #b6a0ff;">if</span> <span style="color: #ffffff;">(</span>lua_pcall<span style="color: #ff66ff;">(</span>lua,1,0,0<span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span> <span style="color: #ffffff;">{</span>
-      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, error</span><span style="color: #db7b5f;"> */</span>
+      <span style="color: #2f6920;">/* </span><span style="color: #db7b5f;">Stack: array, table, error</span><span style="color: #2f6920;"> */</span>
 
-      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">We are not interested in the error, we assume that the problem is
+      <span style="color: #2f6920;">/* </span><span style="color: #db7b5f;">We are not interested in the error, we assume that the problem is
        * that there are 'false' elements inside the array, so we try
        * again with a slower function but able to handle this case, that
-       * is: table.sort(table, __redis__compare_helper)</span><span style="color: #db7b5f;"> */</span>
-      lua_pop<span style="color: #ff66ff;">(</span>lua,1<span style="color: #ff66ff;">)</span>;             <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table</span><span style="color: #db7b5f;"> */</span>
-      lua_pushstring<span style="color: #ff66ff;">(</span>lua,<span style="color: #79a8ff;">"sort"</span><span style="color: #ff66ff;">)</span>; <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, sort</span><span style="color: #db7b5f;"> */</span>
-      lua_gettable<span style="color: #ff66ff;">(</span>lua,-2<span style="color: #ff66ff;">)</span>;       <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #db7b5f;"> */</span>
-      lua_pushvalue<span style="color: #ff66ff;">(</span>lua,-3<span style="color: #ff66ff;">)</span>;      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #db7b5f;"> */</span>
+       * is: table.sort(table, __redis__compare_helper)</span><span style="color: #2f6920;"> */</span>
+      lua_pop<span style="color: #ff66ff;">(</span>lua,1<span style="color: #ff66ff;">)</span>;             <span style="color: #2f6920;">/* </span><span style="color: #db7b5f;">Stack: array, table</span><span style="color: #2f6920;"> */</span>
+      lua_pushstring<span style="color: #ff66ff;">(</span>lua,<span style="color: #79a8ff;">"sort"</span><span style="color: #ff66ff;">)</span>; <span style="color: #2f6920;">/* </span><span style="color: #db7b5f;">Stack: array, table, sort</span><span style="color: #2f6920;"> */</span>
+      lua_gettable<span style="color: #ff66ff;">(</span>lua,-2<span style="color: #ff66ff;">)</span>;       <span style="color: #2f6920;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #2f6920;"> */</span>
+      lua_pushvalue<span style="color: #ff66ff;">(</span>lua,-3<span style="color: #ff66ff;">)</span>;      <span style="color: #2f6920;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #2f6920;"> */</span>
       lua_getglobal<span style="color: #ff66ff;">(</span>lua,<span style="color: #79a8ff;">"__redis__compare_helper"</span><span style="color: #ff66ff;">)</span>;
-      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array, __redis__compare_helper</span><span style="color: #db7b5f;"> */</span>
+      <span style="color: #2f6920;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array, __redis__compare_helper</span><span style="color: #2f6920;"> */</span>
       lua_call<span style="color: #ff66ff;">(</span>lua,2,0<span style="color: #ff66ff;">)</span>;
   <span style="color: #ffffff;">}</span>
 </pre>
@@ -438,20 +438,20 @@ Writing code is sharing the experience of understanding the requirements/impleme
 使用具体含义的变量
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> // &#24635;&#20215;&#26684;&#20013;&#20943;&#21435;&#25240;&#25187;
-</span><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> finalPrice = (numItems * itemPrice) - min(5, numItems) * itemPrice * 0.1;
+<pre class="src src-diff"><span style="color: #ff5f5f; background-color: #f1e3e01fe2bc;">-</span><span style="color: #ff5f59;"> // &#24635;&#20215;&#26684;&#20013;&#20943;&#21435;&#25240;&#25187;
+</span><span style="color: #ff5f5f; background-color: #f1e3e01fe2bc;">-</span><span style="color: #ff5f59;"> finalPrice = (numItems * itemPrice) - min(5, numItems) * itemPrice * 0.1;
 </span>
-<span style="color: #44df44;">+</span><span style="color: #44bc44;"> price = numItems * itemPrice;
-</span><span style="color: #44df44;">+</span><span style="color: #44bc44;"> discount = min(5, numItems) * itemPrice * 0.1;
-</span><span style="color: #44df44;">+</span><span style="color: #44bc44;"> finalPrice = price - discount;
+<span style="color: #44df44; background-color: #cd86ec31e1f8;">+</span><span style="color: #44bc44;"> price = numItems * itemPrice;
+</span><span style="color: #44df44; background-color: #cd86ec31e1f8;">+</span><span style="color: #44bc44;"> discount = min(5, numItems) * itemPrice * 0.1;
+</span><span style="color: #44df44; background-color: #cd86ec31e1f8;">+</span><span style="color: #44bc44;"> finalPrice = price - discount;
 </span>
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> int width = ...; // Width in pixels.
+<pre class="src src-diff"><span style="color: #ff5f5f; background-color: #f1e3e01fe2bc;">-</span><span style="color: #ff5f59;"> int width = ...; // Width in pixels.
 </span>
-<span style="color: #44df44;">+</span><span style="color: #44bc44;"> int widthInPixels = ...;
+<span style="color: #44df44; background-color: #cd86ec31e1f8;">+</span><span style="color: #44bc44;"> int widthInPixels = ...;
 </span>
 </pre>
 </div>
@@ -460,10 +460,10 @@ Writing code is sharing the experience of understanding the requirements/impleme
 使用函数封装，函数名揭示逻辑
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> // Filter offensive words.
-</span><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> for (String word : words) { ... }
+<pre class="src src-diff"><span style="color: #ff5f5f; background-color: #f1e3e01fe2bc;">-</span><span style="color: #ff5f59;"> // Filter offensive words.
+</span><span style="color: #ff5f5f; background-color: #f1e3e01fe2bc;">-</span><span style="color: #ff5f59;"> for (String word : words) { ... }
 </span>
-<span style="color: #44df44;">+</span><span style="color: #44bc44;"> filterOffensiveWords(words);
+<span style="color: #44df44; background-color: #cd86ec31e1f8;">+</span><span style="color: #44bc44;"> filterOffensiveWords(words);
 </span>
 </pre>
 </div></li>
@@ -473,11 +473,11 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> // height &#24635;&#26159;&#22823;&#20110; 0&#65292;&#25152;&#20197;&#36825;&#37324;&#19981;&#20250;&#20986;&#38169;
-</span><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> return width / height;
+<pre class="src src-diff"><span style="color: #ff5f5f; background-color: #f1e3e01fe2bc;">-</span><span style="color: #ff5f59;"> // height &#24635;&#26159;&#22823;&#20110; 0&#65292;&#25152;&#20197;&#36825;&#37324;&#19981;&#20250;&#20986;&#38169;
+</span><span style="color: #ff5f5f; background-color: #f1e3e01fe2bc;">-</span><span style="color: #ff5f59;"> return width / height;
 </span>
-<span style="color: #44df44;">+</span><span style="color: #44bc44;"> checkArgument(height &gt; 0);
-</span><span style="color: #44df44;">+</span><span style="color: #44bc44;"> return width / height;
+<span style="color: #44df44; background-color: #cd86ec31e1f8;">+</span><span style="color: #44bc44;"> checkArgument(height &gt; 0);
+</span><span style="color: #44df44; background-color: #cd86ec31e1f8;">+</span><span style="color: #44bc44;"> return width / height;
 </span>
 </pre>
 </div></li>
@@ -486,9 +486,9 @@ Writing code is sharing the experience of understanding the requirements/impleme
 代码已经足够清楚，不需要重复描述
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> // Get all users.
-</span>userService.getAllUsers();
-<span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> // Check if the name is empty.
+<pre class="src src-diff"><span style="color: #ff5f5f; background-color: #f1e3e01fe2bc;">-</span><span style="color: #ff5f59;"> // Get all users.
+</span><span style="color: #565962;">userService.getAllUsers();
+</span><span style="color: #ff5f5f; background-color: #f1e3e01fe2bc;">-</span><span style="color: #ff5f59;"> // Check if the name is empty.
 </span>if (name.isEmpty()) { ... }
 </pre>
 </div></li>
@@ -503,28 +503,28 @@ Writing code is sharing the experience of understanding the requirements/impleme
 揭示你的意图：解释代码 <i>为什么</i> 要做某些事情（而不是做什么）。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
+<pre class="src src-js"><span style="color: #2f6920;">// </span><span style="color: #db7b5f;">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
 </pre>
 </div></li>
 <li><p>
 保护未来善意的编辑人员不会错误地“修正”你的代码。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
+<pre class="src src-js"><span style="color: #2f6920;">// </span><span style="color: #db7b5f;">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
 </pre>
 </div></li>
 <li><p>
 澄清：代码审查过程中出现的问题，或代码读者可能提出/困惑的问题。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
+<pre class="src src-js"><span style="color: #2f6920;">// </span><span style="color: #db7b5f;">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
 </pre>
 </div></li>
 <li><p>
 解释你写不符合规范/要求的代码的理由
 </p>
 <div class="org-src-container">
-<pre class="src src-js">@SuppressWarnings<span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"unchecked"</span><span style="color: #ffffff;">)</span> <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
+<pre class="src src-js">@SuppressWarnings<span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"unchecked"</span><span style="color: #ffffff;">)</span> <span style="color: #2f6920;">// </span><span style="color: #db7b5f;">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
 </pre>
 </div></li>
 </ul>
