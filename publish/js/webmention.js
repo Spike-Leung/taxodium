@@ -1,6 +1,6 @@
 async function loadWebmentionCount() {
   try {
-    const target = location.href;
+    const target = getTargetUrl();
     const response = await fetch(
       `https://webmention.io/api/count?target=${target}`,
     );
@@ -13,7 +13,7 @@ async function loadWebmentionCount() {
 
 async function loadWebmentionContent() {
   try {
-    const target = location.href;
+    const target = getTargetUrl();
     const response = await fetch(
       `https://webmention.io/api/mentions.jf2?target=${target}`,
     );
@@ -23,6 +23,16 @@ async function loadWebmentionContent() {
   } catch (err) {
     console.error(err);
   }
+}
+
+function getTargetUrl() {
+  const { href, hostname, pathname } = location;
+
+  if (hostname !== "taxodium.ink") {
+    return `https://taxodium.ink${pathname}`;
+  }
+
+  return href;
 }
 
 function renderWebmentions(feed, container) {
@@ -73,10 +83,10 @@ function renderWebmentions(feed, container) {
 
     if (contentText.length > CONTENT_MAX_LENGTH) {
       contentText = contentText.slice(0, CONTENT_MAX_LENGTH);
-      contentText += "[...]"
+      contentText += "[...]";
     }
 
-    pContent.textContent = contentText
+    pContent.textContent = contentText;
     blockquote.appendChild(pContent);
 
     li.appendChild(pLink);
