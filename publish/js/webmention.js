@@ -98,7 +98,13 @@ function renderWebmentions(feed, container) {
   container.appendChild(frag);
 }
 
+function initFormTargetUrl() {
+  const target = getTargetUrl();
+  document.querySelector(".webmention-container form input[name='target']").value = target;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   loadWebmentionCount();
   loadWebmentionContent();
+  initFormTargetUrl();
 });

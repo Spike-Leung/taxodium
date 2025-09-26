@@ -1048,6 +1048,42 @@ td,th {
     font-size: var(--font-size);
     margin: revert;
   }
+
+  & form {
+    display: grid;
+    grid-template-columns: max-content auto;
+    gap: .8em;
+
+    @media screen and (max-width: 400px) {
+      display: flex;
+      flex-direction: column;
+    }
+
+    & input {
+      font-size: var(--font-size);
+      border: 1px;
+      border-style: solid;
+      border-color: var(--color-border);
+      border-color: light-dark(var(--color-border), var(--dark-color-border));
+      border-radius: 2px;
+
+      &.button {
+        cursor: pointer;
+        grid-column: span 2;
+
+        &:hover {
+          background: var(--color-selection-background);
+          background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
+          color: var(--color-text);
+          color: light-dark(var(--color-text), var(--dark-color-text));
+        }
+      }
+
+      &[readonly] {
+        cursor: not-allowed;
+      }
+    }
+  }
 }
 
 .webmention-content-list {
