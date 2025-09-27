@@ -74,7 +74,7 @@ function renderWebmentions(feed, container) {
     // content
     const divContent = document.createElement("div");
     divContent.className = "webmention-content"
-    divContent.innerHTML = he.escape(entry.content) || ""
+    divContent.innerHTML = he.escape(entry.content?.html) || ""
 
     // meta info
     const divMeta = document.createElement("div");
