@@ -240,6 +240,7 @@
 </ul>
 </li>
 <li><a href="#D2EB3BEC-396F-43D6-BA15-A89E38A671F8">一些问题</a></li>
+<li><a href="#C60020F6-33E8-4CB2-A8DD-968BE0EABC31"><span class="todo TODO">TODO</span> TODO</a></li>
 <li><a href="#806C5BB0-D8CB-4AD8-BC52-2866C9072B41">其他参考文章</a></li>
 </ul>
 </div>
@@ -391,36 +392,154 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 <h3 id="582BF4C8-77F8-4E6E-B823-8C9941F41233">作为发送方</h3>
 <div class="outline-text-3" id="text-582BF4C8-77F8-4E6E-B823-8C9941F41233">
 <p>
-作为发送方，需要通过 <a href="https://microformats.org/wiki/Main_Page">microformats</a> 标记网站信息，如用户名、头像、链接的标题、内容等，从而让 Webmention 解析展示。
+作为发送方，需要通过 <a href="https://microformats.org/wiki/Main_Page">microformats</a> 标记网站信息，如用户名、头像、内容、你要提及的链接等，从而让 Webmention 解析展示。
 </p>
 
 <p>
 最主要的标记是 <a href="https://microformats.org/wiki/h-card">h-card</a> 和 <a href="https://microformats.org/wiki/h-entry">h-entry</a>，前者标记用户信息；后者标记内容信息，标记的部分会作为 Webmention 的内容呈现。
 </p>
 
+<p class="u-in-reply-to e-content">
+关于 h-card 和 h-entry 的作用，推荐看 <a href="https://aaronparecki.com/2018/06/30/11/your-first-webmention" class="u-in-reply-to e-content">Sending your First Webmention from Scratch</a>，文章循序渐进地引导你添加相应的标记，并且有对应的示例，同时文章本身也可以用来测试 Webmention 的发送。
+</p>
+
 <p>
-在回应时，需要用 <a href="https://microformats.org/wiki/h-entry">h-entry</a> 标记一个父元素，用 <a href="https://microformats.org/wiki/h-entry#:~:text=u%2Din%2Dreply%2Dto%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20reply%20to%20(i.e.%20doesn%E2%80%99t%20make%20sense%20without%20context%2C%20could%20show%20up%20in%20comment%20thread)%2C%20optionally%20an%20embedded%20h%2Dcite%20(reply%2Dcontext)%20(example)">u-in-reply-to</a> 标记回应的链接，用 <a href="https://microformats.org/wiki/h-entry#:~:text=e%2Dcontent%20%2D%20full%20content%20of%20the%20entry">e-content</a> 标记内容，形如：
+不过我在往自己博客添加的过程中也是折腾了很久才弄明白这些标记的作用，分享一些我踩的坑。
+</p>
+
+<p>
+microformats 这些标记，可以和 HTML 做类比，它也是有层级关系的，最终会解析成一个 JSON 的树形结构。在你测试的时候，可以从 <a href="https://microformats.org/wiki/parsers">Microformats Parsers</a> 找一个 parser 检查你的文章解析出来的内容。
+</p>
+
+<p>
+作为发送方，最基本的是包含对目标文章的引用链接，这样对方就能收到你的 Webmention 了。但仅仅包含链接，发送过去后，对方无法知道你发送的文字内容、你的名字、头像等信息，这个时候就需要用 microformats 标记后告诉对方。
+</p>
+
+<p>
+<b>关于 h-entry</b>
+</p>
+
+<p>
+<a href="https://microformats.org/wiki/h-entry#:~:text=the%20%22datetime%22%20property.-,what%20is%20the%20bare%20minimum%20list%20of%20required%20properties%20on%20an,a%20nested%20h%2Dcard%20with%20author%20details%20like%20name%2C%20photo%2C%20url.,-Examples%20in%20the">what is the bare minimum list of required properties on an h-entry</a> 中回答道：没有任何 h-entry 的属性是强制要求的，但推荐至少包含：
+</p>
+<ul class="org-ul">
+<li><a href="https://microformats.org/wiki/h-entry#:~:text=e%2Dcontent%20%2D%20full%20content%20of%20the%20entry">e-content</a> 标记文章内容，被标记的内容会作为 Webmention 的内容被发送</li>
+<li><a href="https://microformats.org/wiki/h-entry#:~:text=p%2Dname%20%2D%20entry%20name/title">p-name</a> 标记文章标题</li>
+<li><a href="https://microformats.org/wiki/h-entry#:~:text=p%2Dauthor%20%2D%20who%20wrote%20the%20entry%2C%20optionally%20embedded%20h%2Dcard(s)">p-author</a> 标记作者信息，一般会和 h-card 结合使用</li>
+</ul>
+
+<p>
+其他我觉得还可以加上的：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://microformats.org/wiki/h-entry#:~:text=u%2Din%2Dreply%2Dto%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20reply%20to%20(i.e.%20doesn%E2%80%99t%20make%20sense%20without%20context%2C%20could%20show%20up%20in%20comment%20thread)%2C%20optionally%20an%20embedded%20h%2Dcite%20(reply%2Dcontext)%20(example)">u-in-reply-to</a> 标记你回应的链接，还有如 <a href="https://microformats.org/wiki/h-entry#:~:text=u%2Dlike%2Dof%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20a%20%E2%80%9Clike%E2%80%9D%20(favorite%2C%20star)%20of.%20Optionally%20an%20embedded%20h%2Dcite">u-like-of</a>、<a href="https://microformats.org/wiki/h-entry#:~:text=u%2Drepost%2Dof%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20a%20%E2%80%9Crepost%E2%80%9D%20of.%20Optionally%20an%20embedded%20h%2Dcite">u-report-of</a> 等用于标记不同的引用目的</li>
+<li><a href="https://microformats.org/wiki/h-entry#:~:text=dt%2Dpublished%20%2D%20when%20the%20entry%20was%20published">dt-published</a> 标记文章的发布日期</li>
+<li><a href="https://microformats.org/wiki/h-entry#:~:text=dt%2Dupdated%20%2D%20when%20the%20entry%20was%20updated">dt-updated</a> 标记文章的更新日期</li>
+</ul>
+
+<p>
+<b>关于 h-card</b>
+</p>
+
+<p>
+h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
+</p>
+<ul class="org-ul">
+<li><a href="https://microformats.org/wiki/h-card#:~:text=p%2Dname%20%2D%20The%20full/formatted%20name%20of%20the%20person%20or%20organization">p-name</a> 标记个人或组织的全称</li>
+<li><a href="https://microformats.org/wiki/h-card#:~:text=u%2Demail%20%2D%20email%20address">u-email</a> 标记邮箱，一般标记在 mailto 链接上</li>
+<li><a href="https://microformats.org/wiki/h-card#:~:text=u%2Dlogo%20%2D%20a%20logo%20representing%20the%20person%20or%20organization%20(e.g.%20a%20face%20icon)">u-logo</a> 标记你的 logo，一般标记在 <code>&lt;img&gt;</code> 标签上</li>
+<li><a href="https://microformats.org/wiki/h-card#:~:text=u%2Dphoto%20%2D%20a%20photo%20of%20the%20person%20or%20organization">u-photo</a> 标记你的头像，一般标记在 <code>&lt;img&gt;</code> 标签上</li>
+<li><a href="https://microformats.org/wiki/h-card#:~:text=u%2Durl%20%2D%20home%20page%20or%20other%20URL%20representing%20the%20person%20or%20organization">u-url</a> 标记你的主页，一般标记在一个链接上</li>
+<li><a href="https://microformats.org/wiki/h-card#:~:text=p%2Dnote%20%2D%20additional%20notes">p-note</a> 标记额外信息，有人会用来写自我介绍</li>
+</ul>
+
+<p>
+除了这些，还有标记地址、性别、国籍、出生日期、工作等，感兴趣可以自行探索。
+</p>
+
+<p>
+h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，<b>在这种场景下，h-entry 需要是 h-card 的父元素。</b>
+</p>
+
+<p>
+综上，一个相对完整的 microformats 标记是这样的：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-html">&lt;<span style="color: #feacd0;">div</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"h-entry"</span>&gt;
-  &lt;<span style="color: #feacd0;">p</span>&gt;in reply to: &lt;<span style="color: #feacd0;">a</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"u-in-reply-to"</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"https://aaronparecki.com/2018/06/30/11/your-first-webmention"</span>&gt;@aaronpk&lt;/<span style="color: #feacd0;">a</span>&gt;&lt;/<span style="color: #feacd0;">p</span>&gt;
-  &lt;<span style="color: #feacd0;">p</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"e-content"</span>&gt;Trying out this guide to sending webmentions&lt;/<span style="color: #feacd0;">p</span>&gt;
-&lt;/<span style="color: #feacd0;">div</span>&gt;
+<pre class="src src-html">&lt;<span style="color: #b6a0ff;">!doctype</span> html&gt;
+&lt;<span style="color: #feacd0;">meta</span> <span style="color: #00d3d0;">charset</span>=<span style="color: #79a8ff;">"utf-8"</span>&gt;
+&lt;<span style="color: #feacd0;">title</span>&gt;<span style="font-weight: bold; text-decoration: underline;">Hello World</span>&lt;/<span style="color: #feacd0;">title</span>&gt;
+&lt;<span style="color: #feacd0;">body</span>&gt;
+  &lt;<span style="color: #feacd0;">div</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"h-entry"</span>&gt; <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#27880;&#24847; h-entry &#26159;&#20854;&#20182;&#23646;&#24615;&#30340;&#29238;&#20803;&#32032;&#65292;&#21253;&#21547;&#20102; h-card</span><span style="color: #db7b5f;"> --&gt;</span>
+    &lt;<span style="color: #feacd0;">div</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"p-author h-card"</span>&gt; <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#20351;&#29992; h-card &#32467;&#21512; p-author &#26631;&#35760;&#20316;&#32773;&#20449;&#24687;</span><span style="color: #db7b5f;"> --&gt;</span>
+      &lt;<span style="color: #feacd0;">img</span> <span style="color: #00d3d0;">src</span>=<span style="color: #79a8ff;">"https://aaronpk.com/images/aaronpk.jpg"</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"u-photo"</span> <span style="color: #00d3d0;">width</span>=<span style="color: #79a8ff;">"40"</span>&gt;
+      &lt;<span style="color: #feacd0;">a</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"https://aaronpk.com/"</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"u-url p-name"</span>&gt;Aaron Parecki&lt;/<span style="color: #feacd0;">a</span>&gt;
+    &lt;/<span style="color: #feacd0;">div</span>&gt;
+    <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#26631;&#35760;&#24341;&#29992;&#30340;&#38142;&#25509;&#65292;&#34920;&#31034;&#22238;&#22797;</span><span style="color: #db7b5f;"> --&gt;</span>
+    &lt;<span style="color: #feacd0;">p</span>&gt;in reply to: &lt;<span style="color: #feacd0;">a</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"u-in-reply-to"</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"https://aaronparecki.com/2018/06/30/11/your-first-webmention"</span>&gt;@aaronpk&lt;/<span style="color: #feacd0;">a</span>&gt;&lt;/<span style="color: #feacd0;">p</span>&gt;
+    <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#26631;&#35760;&#22238;&#22797;&#30340;&#20869;&#23481;</span><span style="color: #db7b5f;"> --&gt;</span>
+    &lt;<span style="color: #feacd0;">p</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"e-content"</span>&gt;Trying out this guide to sending webmentions&lt;/<span style="color: #feacd0;">p</span>&gt;
+    &lt;<span style="color: #feacd0;">p</span>&gt;
+      <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#26631;&#35760;&#24403;&#21069;&#25991;&#31456;&#30340; URL</span><span style="color: #db7b5f;"> --&gt;</span>
+      &lt;<span style="color: #feacd0;">a</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"https://aaronpk.com/reply.html"</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"u-url"</span>&gt;
+        <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#26631;&#35760;&#24403;&#21069;&#25991;&#31456;&#30340;&#21457;&#24067;&#26085;&#26399;</span><span style="color: #db7b5f;"> --&gt;</span>
+        &lt;<span style="color: #feacd0;">time</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"dt-published"</span> <span style="color: #00d3d0;">datetime</span>=<span style="color: #79a8ff;">"2018-06-30T17:15:00-0700"</span>&gt;July 30, 2018&lt;/<span style="color: #feacd0;">time</span>&gt;
+      &lt;/<span style="color: #feacd0;">a</span>&gt;
+    &lt;/<span style="color: #feacd0;">p</span>&gt;
+  &lt;/<span style="color: #feacd0;">div</span>&gt;
+&lt;/<span style="color: #feacd0;">body</span>&gt;
 </pre>
 </div>
 
 <p>
-在我测试的时候，我发现在 org-mode 中不太好标记这些内容。我引用的链接是我文章内容的一部分，当我需要发送 Webmention 时，我还需要额外的将 Webmention 部分的内容进行标记，目前还没找到什么好的标记方法。
+具体如何标记，要看你博客中的 HTML 标记是如何排布的，在标记时注意层级关系就好。测试阶段可以多利用 <a href="https://microformats.org/wiki/parsers">Microformats Parsers</a> 解析你的文章，检查解析出来的内容是否符合需要。
+</p>
+
+<details>
+<summary>org-mode 中的标记问题</summary>
+
+<p>
+在 org-mode 中可以用 <code>#+attr_html</code> 给内容添加 microformats 标记，但是它不太精确，例如我要标记下面这段话：
+</p>
+
+<pre class="example">
+#+attr_html: :class u-in-reply-to e-content
+关于 h-card 和 h-entry 的作用，推荐看 [[https://aaronparecki.com/2018/06/30/11/your-first-webmention][Sending your First Webmention from Scratch]]，
+文章循序渐进地引导你添加相应的标记，并且有对应的示例，
+同时文章本身也可以用来测试 Webmention 的发送。
+</pre>
+
+<p>
+我会得到：
+</p>
+
+<pre class="example">
+&lt;p class="u-in-reply-to e-content"&gt;
+关于 h-card 和 h-entry 的作用，推荐看 &lt;a href="https://aaronparecki.com/2018/06/30/11/your-first-webmention" class="u-in-reply-to e-content"&gt;Sending your First Webmention from Scratch&lt;/a&gt;，文章循序渐进地引导你添加相应的标记，并且有对应的示例，同时文章本身也可以用来测试 Webmention 的发送。
+&lt;/p&gt;
+</pre>
+
+<p>
+我希望仅给 <code>&lt;p&gt;</code> 标记 e-content，表示回应内容；仅给 <code>&lt;a&gt;</code> 标记 u-in-reply-to，表示要回应的链接。但目前 org-mode 会给 <code>&lt;p&gt;</code> 和 <code>&lt;a&gt;</code> 都加上 e-content 和 u-in-reply-to，目前还不知道如何解决。
 </p>
 
 <p>
-设置好之后就可以向集成了 Webmention 的网站发送通知了，需要构建一个 POST 请求，可以用第三方服务，如 <a href="https://telegraph.p3k.io/">Telegraph</a> 手动发送，或者考虑集成 <a href="https://webmention.app/">webmention.app</a> 自动发送。
+所幸，不太影响 Webmention 的解析。
+</p>
+</details>
+<p>
+在我测试的时候，我发现在 org-mode 中不太好标记这些内容。我引用的链接是我文章内容的一部分，当我需要发送qWebmention 时，我还需要额外的将 Webmention 部分的内容进行标记，目前还没找到什么好的标记方法。
 </p>
 
-<p class="u-in-reply-to e-content">
-可以向 <a href="https://aaronparecki.com/2018/06/30/11/your-first-webmention" class="u-in-reply-to e-content">Sending your First Webmention from Scratch</a> 发送 Webmention 进行测试，这篇文章也是一篇 Webmention 的入门教程。
+<p>
+都设置好之后就可以向集成了 Webmention 的网站发送通知了，你可以：
 </p>
+<ul class="org-ul">
+<li>找到引用文章的 Webmention 入口，填写你的文章 URL 并提交</li>
+<li>自己构建 POST 请求，或用第三方服务，如 <a href="https://telegraph.p3k.io/">Telegraph</a> 手动发送</li>
+<li>考虑集成 <a href="https://webmention.app/">webmention.app</a> 等实现自动发送</li>
+</ul>
 </div>
 </div>
 </div>
@@ -430,15 +549,15 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 <p>
 大部分疑惑 <a href="https://indieweb.org/Webmention-faq">Webmention-faq | IndieWeb</a> 中都有解答。
 </p>
-
-<p>
-一些我还没完全明白的问题：
-</p>
+</div>
+</div>
+<div id="outline-container-C60020F6-33E8-4CB2-A8DD-968BE0EABC31" class="outline-2">
+<h2 id="C60020F6-33E8-4CB2-A8DD-968BE0EABC31"><span class="todo TODO">TODO</span> TODO</h2>
+<div class="outline-text-2" id="text-C60020F6-33E8-4CB2-A8DD-968BE0EABC31">
 <ul class="org-ul">
-<li>Webmention 有很多类，有的表示评论，有的表示点赞，我目前只支持了评论，点赞怎么做还要看看</li>
-<li>如何实现自动发送 Webmention</li>
-<li>Webmention.io 的数据迁移</li>
-<li>避免 XSS 攻击的同时，支持 HTML 内容的渲染</li>
+<li class="off"><code>[&#xa0;]</code> 支持不同类型的 Webmention 展示和发送，如回应、点赞、<a href="https://indieweb.org/rsvp">RSVP</a> 等</li>
+<li class="off"><code>[&#xa0;]</code> 实现自动发送 Webmention</li>
+<li class="off"><code>[&#xa0;]</code> 支持 HTML 内容的渲染，但要避免 XSS 攻击</li>
 </ul>
 </div>
 </div>
@@ -485,7 +604,7 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于：<span class="dt-published">2025-09-25 Thu 21:24</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-09-26 Fri 23:53</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-09-27 Sat 12:38</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author">

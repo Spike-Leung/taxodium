@@ -115,28 +115,118 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 :CUSTOM_ID: 582BF4C8-77F8-4E6E-B823-8C9941F41233
 :END:
 
-作为发送方，需要通过 [[https://microformats.org/wiki/Main_Page][microformats]] 标记网站信息，如用户名、头像、链接的标题、内容等，从而让 Webmention 解析展示。
+作为发送方，需要通过 [[https://microformats.org/wiki/Main_Page][microformats]] 标记网站信息，如用户名、头像、内容、你要提及的链接等，从而让 Webmention 解析展示。
 
 最主要的标记是 [[https://microformats.org/wiki/h-card][h-card]] 和 [[https://microformats.org/wiki/h-entry][h-entry]]，前者标记用户信息；后者标记内容信息，标记的部分会作为 Webmention 的内容呈现。
 
-在回应时，需要用 [[https://microformats.org/wiki/h-entry][h-entry]] 标记一个父元素，用 [[https://microformats.org/wiki/h-entry#:~:text=u%2Din%2Dreply%2Dto%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20reply%20to%20(i.e.%20doesn%E2%80%99t%20make%20sense%20without%20context%2C%20could%20show%20up%20in%20comment%20thread)%2C%20optionally%20an%20embedded%20h%2Dcite%20(reply%2Dcontext)%20(example)][u-in-reply-to]] 标记回应的链接，用 [[https://microformats.org/wiki/h-entry#:~:text=e%2Dcontent%20%2D%20full%20content%20of%20the%20entry][e-content]] 标记内容，形如：
+#+attr_html: :class u-in-reply-to e-content
+关于 h-card 和 h-entry 的作用，推荐看 [[https://aaronparecki.com/2018/06/30/11/your-first-webmention][Sending your First Webmention from Scratch]]，
+文章循序渐进地引导你添加相应的标记，并且有对应的示例，
+同时文章本身也可以用来测试 Webmention 的发送。
+
+不过我在往自己博客添加的过程中也是折腾了很久才弄明白这些标记的作用，分享一些我踩的坑。
+
+microformats 这些标记，可以和 HTML 做类比，它也是有层级关系的，最终会解析成一个 JSON 的树形结构。
+在你测试的时候，可以从 [[https://microformats.org/wiki/parsers][Microformats Parsers]] 找一个 parser 检查你的文章解析出来的内容。
+
+作为发送方，最基本的是包含对目标文章的引用链接，这样对方就能收到你的 Webmention 了。
+但仅仅包含链接，发送过去后，对方无法知道你发送的文字内容、你的名字、头像等信息，
+这个时候就需要用 microformats 标记后告诉对方。
+
+*关于 h-entry*
+
+[[https://microformats.org/wiki/h-entry#:~:text=the%20%22datetime%22%20property.-,what%20is%20the%20bare%20minimum%20list%20of%20required%20properties%20on%20an,a%20nested%20h%2Dcard%20with%20author%20details%20like%20name%2C%20photo%2C%20url.,-Examples%20in%20the][what is the bare minimum list of required properties on an h-entry]] 中回答道：
+没有任何 h-entry 的属性是强制要求的，但推荐至少包含：
+- [[https://microformats.org/wiki/h-entry#:~:text=e%2Dcontent%20%2D%20full%20content%20of%20the%20entry][e-content]] 标记文章内容，被标记的内容会作为 Webmention 的内容被发送
+- [[https://microformats.org/wiki/h-entry#:~:text=p%2Dname%20%2D%20entry%20name/title][p-name]] 标记文章标题
+- [[https://microformats.org/wiki/h-entry#:~:text=p%2Dauthor%20%2D%20who%20wrote%20the%20entry%2C%20optionally%20embedded%20h%2Dcard(s)][p-author]] 标记作者信息，一般会和 h-card 结合使用
+
+其他我觉得还可以加上的：
+
+- [[https://microformats.org/wiki/h-entry#:~:text=u%2Din%2Dreply%2Dto%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20reply%20to%20(i.e.%20doesn%E2%80%99t%20make%20sense%20without%20context%2C%20could%20show%20up%20in%20comment%20thread)%2C%20optionally%20an%20embedded%20h%2Dcite%20(reply%2Dcontext)%20(example)][u-in-reply-to]] 标记你回应的链接，还有如 [[https://microformats.org/wiki/h-entry#:~:text=u%2Dlike%2Dof%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20a%20%E2%80%9Clike%E2%80%9D%20(favorite%2C%20star)%20of.%20Optionally%20an%20embedded%20h%2Dcite][u-like-of]]、[[https://microformats.org/wiki/h-entry#:~:text=u%2Drepost%2Dof%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20a%20%E2%80%9Crepost%E2%80%9D%20of.%20Optionally%20an%20embedded%20h%2Dcite][u-report-of]] 等用于标记不同的引用目的
+- [[https://microformats.org/wiki/h-entry#:~:text=dt%2Dpublished%20%2D%20when%20the%20entry%20was%20published][dt-published]] 标记文章的发布日期
+- [[https://microformats.org/wiki/h-entry#:~:text=dt%2Dupdated%20%2D%20when%20the%20entry%20was%20updated][dt-updated]] 标记文章的更新日期
+
+*关于 h-card*
+
+h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
+- [[https://microformats.org/wiki/h-card#:~:text=p%2Dname%20%2D%20The%20full/formatted%20name%20of%20the%20person%20or%20organization][p-name]] 标记个人或组织的全称
+- [[https://microformats.org/wiki/h-card#:~:text=u%2Demail%20%2D%20email%20address][u-email]] 标记邮箱，一般标记在 mailto 链接上
+- [[https://microformats.org/wiki/h-card#:~:text=u%2Dlogo%20%2D%20a%20logo%20representing%20the%20person%20or%20organization%20(e.g.%20a%20face%20icon)][u-logo]] 标记你的 logo，一般标记在 =<img>= 标签上
+- [[https://microformats.org/wiki/h-card#:~:text=u%2Dphoto%20%2D%20a%20photo%20of%20the%20person%20or%20organization][u-photo]] 标记你的头像，一般标记在 =<img>= 标签上
+- [[https://microformats.org/wiki/h-card#:~:text=u%2Durl%20%2D%20home%20page%20or%20other%20URL%20representing%20the%20person%20or%20organization][u-url]] 标记你的主页，一般标记在一个链接上
+- [[https://microformats.org/wiki/h-card#:~:text=p%2Dnote%20%2D%20additional%20notes][p-note]] 标记额外信息，有人会用来写自我介绍
+
+除了这些，还有标记地址、性别、国籍、出生日期、工作等，感兴趣可以自行探索。
+
+h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
+*在这种场景下，h-entry 需要是 h-card 的父元素。*
+
+综上，一个相对完整的 microformats 标记是这样的：
 
 #+begin_src html
-  <div class="h-entry">
-    <p>in reply to: <a class="u-in-reply-to" href="https://aaronparecki.com/2018/06/30/11/your-first-webmention">@aaronpk</a></p>
-    <p class="e-content">Trying out this guide to sending webmentions</p>
-  </div>
+  <!doctype html>
+  <meta charset="utf-8">
+  <title>Hello World</title>
+  <body>
+    <div class="h-entry"> <!-- 注意 h-entry 是其他属性的父元素，包含了 h-card -->
+      <div class="p-author h-card"> <!-- 使用 h-card 结合 p-author 标记作者信息 -->
+        <img src="https://aaronpk.com/images/aaronpk.jpg" class="u-photo" width="40">
+        <a href="https://aaronpk.com/" class="u-url p-name">Aaron Parecki</a>
+      </div>
+      <!-- 标记引用的链接，表示回复 -->
+      <p>in reply to: <a class="u-in-reply-to" href="https://aaronparecki.com/2018/06/30/11/your-first-webmention">@aaronpk</a></p>
+      <!-- 标记回复的内容 -->
+      <p class="e-content">Trying out this guide to sending webmentions</p>
+      <p>
+        <!-- 标记当前文章的 URL -->
+        <a href="https://aaronpk.com/reply.html" class="u-url">
+          <!-- 标记当前文章的发布日期 -->
+          <time class="dt-published" datetime="2018-06-30T17:15:00-0700">July 30, 2018</time>
+        </a>
+      </p>
+    </div>
+  </body>
 #+end_src
 
+具体如何标记，要看你博客中的 HTML 标记是如何排布的，在标记时注意层级关系就好。
+测试阶段可以多利用 [[https://microformats.org/wiki/parsers][Microformats Parsers]] 解析你的文章，检查解析出来的内容是否符合需要。
+
+#+begin_details
+#+html: <summary>org-mode 中的标记问题</summary>
+
+在 org-mode 中可以用 =#+attr_html= 给内容添加 microformats 标记，
+但是它不太精确，例如我要标记下面这段话：
+
+#+begin_example
+#+attr_html: :class u-in-reply-to e-content
+关于 h-card 和 h-entry 的作用，推荐看 [[https://aaronparecki.com/2018/06/30/11/your-first-webmention][Sending your First Webmention from Scratch]]，
+文章循序渐进地引导你添加相应的标记，并且有对应的示例，
+同时文章本身也可以用来测试 Webmention 的发送。
+#+end_example
+
+我会得到：
+
+#+begin_example
+<p class="u-in-reply-to e-content">
+关于 h-card 和 h-entry 的作用，推荐看 <a href="https://aaronparecki.com/2018/06/30/11/your-first-webmention" class="u-in-reply-to e-content">Sending your First Webmention from Scratch</a>，文章循序渐进地引导你添加相应的标记，并且有对应的示例，同时文章本身也可以用来测试 Webmention 的发送。
+</p>
+#+end_example
+
+我希望仅给 =<p>= 标记 e-content，表示回应内容；仅给 =<a>= 标记 u-in-reply-to，表示要回应的链接。
+但目前 org-mode 会给 =<p>= 和 =<a>= 都加上 e-content 和 u-in-reply-to，目前还不知道如何解决。
+
+所幸，不太影响 Webmention 的解析。
+
+#+end_details
 在我测试的时候，我发现在 org-mode 中不太好标记这些内容。
-我引用的链接是我文章内容的一部分，当我需要发送 Webmention 时，
+我引用的链接是我文章内容的一部分，当我需要发送qWebmention 时，
 我还需要额外的将 Webmention 部分的内容进行标记，目前还没找到什么好的标记方法。
 
-设置好之后就可以向集成了 Webmention 的网站发送通知了，需要构建一个 POST 请求，
-可以用第三方服务，如 [[https://telegraph.p3k.io/][Telegraph]] 手动发送，或者考虑集成 [[https://webmention.app/][webmention.app]] 自动发送。
-
-#+attr_html: :class u-in-reply-to e-content
-可以向 [[https://aaronparecki.com/2018/06/30/11/your-first-webmention][Sending your First Webmention from Scratch]] 发送 Webmention 进行测试，这篇文章也是一篇 Webmention 的入门教程。
+都设置好之后就可以向集成了 Webmention 的网站发送通知了，你可以：
+- 找到引用文章的 Webmention 入口，填写你的文章 URL 并提交
+- 自己构建 POST 请求，或用第三方服务，如 [[https://telegraph.p3k.io/][Telegraph]] 手动发送
+- 考虑集成 [[https://webmention.app/][webmention.app]] 等实现自动发送
 
 * 一些问题
 :PROPERTIES:
@@ -145,11 +235,14 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 
 大部分疑惑 [[https://indieweb.org/Webmention-faq][Webmention-faq | IndieWeb]] 中都有解答。
 
-一些我还没完全明白的问题：
-- Webmention 有很多类，有的表示评论，有的表示点赞，我目前只支持了评论，点赞怎么做还要看看
-- 如何实现自动发送 Webmention
-- Webmention.io 的数据迁移
-- 避免 XSS 攻击的同时，支持 HTML 内容的渲染
+* TODO TODO
+:PROPERTIES:
+:CUSTOM_ID: C60020F6-33E8-4CB2-A8DD-968BE0EABC31
+:END:
+
+- [ ] 支持不同类型的 Webmention 展示和发送，如回应、点赞、[[https://indieweb.org/rsvp][RSVP]] 等
+- [ ] 实现自动发送 Webmention
+- [ ] 支持 HTML 内容的渲染，但要避免 XSS 攻击
 
 * 其他参考文章
 :PROPERTIES:
