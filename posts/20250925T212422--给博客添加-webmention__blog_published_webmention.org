@@ -297,7 +297,7 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
   会参考 [[https://aaronparecki.com/2018/06/30/11/your-first-webmention][Sending your First Webmention from Scratch]] 的实现
 - [ ] 支持不同类型的 Webmention 展示和发送，如回应、点赞、[[https://indieweb.org/rsvp][RSVP]] [fn:5]等
 - [ ] 实现自动发送 Webmention
-- [ ] 支持 HTML 内容的渲染，但要避免 [[https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS][Cross-site scripting (XSS)]] [fn:6]
+- [X] 支持 HTML 内容的渲染，但要避免 [[https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS][Cross-site scripting (XSS)]] [fn:6]
 
 * 其他参考文章
 :PROPERTIES:
@@ -327,5 +327,5 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
 
 [fn:6] 防止 XSS 攻击，[[https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API#using_a_csp_to_enforce_trusted_types][Trusted Types API]] 看起来不错，可惜浏览器支持度不够。
 防御 XSS 主要从两方面入手：
-- 转义用户输入的内容
+- 净化 (sanitize) 用户输入的内容。可以使用 [[https://github.com/cure53/DOMPurify][DOMPurify]] 处理。
 - 使用 [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP][Content Security Policy (CSP)]] 限制执行。[[https://www.netlify.com/blog/general-availability-content-security-policy-csp-nonce-integration/][Netlify 有插件支持]]，倒是方便了许多。
