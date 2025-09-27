@@ -295,9 +295,9 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
 
 - [X] 优化博客中 Webmention 的展示，支持头像、主页等内容的展示，
   会参考 [[https://aaronparecki.com/2018/06/30/11/your-first-webmention][Sending your First Webmention from Scratch]] 的实现
-- [ ] 支持不同类型的 Webmention 展示和发送，如回应、点赞、[[https://indieweb.org/rsvp][RSVP]] 等
+- [ ] 支持不同类型的 Webmention 展示和发送，如回应、点赞、[[https://indieweb.org/rsvp][RSVP]] [fn:5]等
 - [ ] 实现自动发送 Webmention
-- [ ] 支持 HTML 内容的渲染，但要避免 [[https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS][XSS 攻击]] [fn:5]
+- [ ] 支持 HTML 内容的渲染，但要避免 [[https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS][Cross-site scripting (XSS)]] [fn:6]
 
 * 其他参考文章
 :PROPERTIES:
@@ -310,9 +310,8 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
 
 * Footnotes
 :PROPERTIES:
-:CUSTOM_ID: D0D95974-79DA-43DF-AB34-201FA38D0190
+:CUSTOM_ID: CD2F5549-1C8B-44EE-BB94-FC7192A371EB
 :END:
-[fn:5] 防止 XSS 攻击，[[https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API#using_a_csp_to_enforce_trusted_types][Trusted Types API]] 看起来不错，可惜浏览器支持度不够。
 
 [fn:1] 或者在社交媒体如 BlueSky、Mastodon 上发一个帖子，引用文章的链接。
 
@@ -323,3 +322,10 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
 [fn:4] 我的文章中，有的链接没有任何标记，按理说只要包含了链接，对方就能收到我的 Webmention。
 但我发送后却收到了「The Microformats at the source URL do not contain a link to the target URL.」的错误提示。
 可能是因为我使用 microformats 标记了内容，此时需要确保 microformats 解析后的内容中，包含对方的 URL。
+
+[fn:5] 源自法语 [[https://en.wikipedia.org/wiki/RSVP][répondez s'il vous plaît]]，请回复的意思。
+
+[fn:6] 防止 XSS 攻击，[[https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API#using_a_csp_to_enforce_trusted_types][Trusted Types API]] 看起来不错，可惜浏览器支持度不够。
+防御 XSS 主要从两方面入手：
+- 转义用户输入的内容
+- 使用 [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP][Content Security Policy (CSP)]] 限制执行。[[https://www.netlify.com/blog/general-availability-content-security-policy-csp-nonce-integration/][Netlify 有插件支持]]，倒是方便了许多。

@@ -641,9 +641,9 @@ e-content 标记在整篇文章内容上
 <div class="outline-text-2" id="text-C60020F6-33E8-4CB2-A8DD-968BE0EABC31">
 <ul class="org-ul">
 <li class="on"><code>[X]</code> 优化博客中 Webmention 的展示，支持头像、主页等内容的展示，会参考 <a href="https://aaronparecki.com/2018/06/30/11/your-first-webmention">Sending your First Webmention from Scratch</a> 的实现</li>
-<li class="off"><code>[&#xa0;]</code> 支持不同类型的 Webmention 展示和发送，如回应、点赞、<a href="https://indieweb.org/rsvp">RSVP</a> 等</li>
+<li class="off"><code>[&#xa0;]</code> 支持不同类型的 Webmention 展示和发送，如回应、点赞、<a href="https://indieweb.org/rsvp">RSVP</a> <sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>等</li>
 <li class="off"><code>[&#xa0;]</code> 实现自动发送 Webmention</li>
-<li class="off"><code>[&#xa0;]</code> 支持 HTML 内容的渲染，但要避免 <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS">XSS 攻击</a> <sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup></li>
+<li class="off"><code>[&#xa0;]</code> 支持 HTML 内容的渲染，但要避免 <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS">Cross-site scripting (XSS)</a> <sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup></li>
 </ul>
 </div>
 </div>
@@ -678,8 +678,16 @@ e-content 标记在整篇文章内容上
 </p></div></div>
 
 <div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-防止 XSS 攻击，<a href="https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API#using_a_csp_to_enforce_trusted_types">Trusted Types API</a> 看起来不错，可惜浏览器支持度不够。
+源自法语 <a href="https://en.wikipedia.org/wiki/RSVP">répondez s'il vous plaît</a>，请回复的意思。
 </p></div></div>
+
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+防止 XSS 攻击，<a href="https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API#using_a_csp_to_enforce_trusted_types">Trusted Types API</a> 看起来不错，可惜浏览器支持度不够。防御 XSS 主要从两方面入手：
+</p>
+<ul class="org-ul">
+<li>转义用户输入的内容</li>
+<li>使用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP">Content Security Policy (CSP)</a> 限制执行。<a href="https://www.netlify.com/blog/general-availability-content-security-policy-csp-nonce-integration/">Netlify 有插件支持</a>，倒是方便了许多。</li>
+</ul></div></div>
 
 
 </div>
@@ -702,7 +710,7 @@ e-content 标记在整篇文章内容上
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于：<span class="dt-published">2025-09-25 Thu 21:24</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-09-27 Sat 20:37</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-09-27 Sat 20:55</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author">
