@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>听歌排行</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="我的听歌排行" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+
+  <ul class="ally-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+    <li><a href="/rss.xml">订阅</a></li>
+    <li class="js-required"><a href="/search.html">搜索</a></li>
+  </ul>
+  <select onchange="switchMode(this.value)" id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 style="view-transition-name: spike-music-rank" class="title">听歌排行</h1>
+</header><p>
+记录我的网易云每周听歌排行，记得的话就每周更新。
+</p>
+<div id="outline-container-51235375-775A-4BD4-867B-91D1788A262A" class="outline-2">
+<h2 id="51235375-775A-4BD4-867B-91D1788A262A">2025-09-28 W38 Sunday</h2>
+<div class="outline-text-2" id="text-51235375-775A-4BD4-867B-91D1788A262A">
+<details>
+<summary>排行榜</summary>
+<div class="table-wrapper"> <table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">歌曲</th>
+<th scope="col" class="org-left">歌手</th>
+<th scope="col" class="org-left">播放次数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2717465888">阿May</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">31次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2717465887">Sorry Folks! The Host Is Gone</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">25次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2717465889">人去楼空</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">23次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2717465890">生份的你</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">22次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2092311483">The Great Escape Of Our Time</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">22次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2717464943">不想和你分开</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">21次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2717465892">做一半的梦</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">20次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2092310536">Hey Aries</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">20次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2717465891">你知道天空有多蓝</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">19次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2092311484">MEIGUANXIDEYO</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">19次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2717465893">湾里</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">18次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2717464944">幸存者</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">18次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2092311485">She's Moving Out Of Town</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">18次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2092310535">Humble Pie Tattoo</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">18次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2092310537">Hey Sugar</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">17次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960396678">另一个我 Another Me</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">16次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960396677">来不及 Out Of Clock</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">16次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2717464945">想和你说说话</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">15次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960395765">自爱 Love Yourself First</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">14次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960395764">流尘 Only Man</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">14次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2092311486">Waiting Room Fling</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">13次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1304541905">Cold in You</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">13次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2092311487">Sparklers In The Rain</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">12次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2092310539">DA35</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">12次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2092310538">I've Been Waiting For My Waves To Come</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">12次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960396679">金石为开 Alchemist</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">12次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960395767">足够 I'm Enough</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">12次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960395766">距离 Distance</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">12次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960396680">梦之哀恋 Dream On</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">9次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960396682">零度空间 QFT</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">8次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960396681">离开你 Stay Away</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">8次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1958705036">唯美 Art For Art's Sake (ft. JoZ)</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">8次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960396683">另一个我 (无伴奏) Another Me Acapella</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">7次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2694773525">我出生的夏天</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=58932300">普阿山</a></td>
+<td class="org-left">6次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1899275078">Out Of Clock</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=46695746">Fifi Rong</a></td>
+<td class="org-left">6次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2747881936">情丝铸慧剑</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=58932300">普阿山</a></td>
+<td class="org-left">5次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1899275080">Another Me</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=46695746">Fifi Rong</a></td>
+<td class="org-left">5次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1899274201">Alchemist</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=46695746">Fifi Rong</a></td>
+<td class="org-left">5次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1899274197">Love Yourself First</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=46695746">Fifi Rong</a></td>
+<td class="org-left">5次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1899274196">Only Man</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=46695746">Fifi Rong</a></td>
+<td class="org-left">5次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1304541897">That Night</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">5次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2747883549">登陆</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=58932300">普阿山</a></td>
+<td class="org-left">4次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2747880845">要去寻找春天！</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=58932300">普阿山</a></td>
+<td class="org-left">4次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2742536801">鞋底子 + 十八岁 (Outro)</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12206205">夏之禹</a></td>
+<td class="org-left">4次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2716498746">从梦里跳伞</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=58932300">普阿山</a></td>
+<td class="org-left">4次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2694791153">我出生的夏天（Inst.）</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=58932300">普阿山</a></td>
+<td class="org-left">4次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1304541907">Forget</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">4次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1304541906">Equality</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">4次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=92501">嘟嘟歌</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=3060">黄建为</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2742536793">后山 (Intro)</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12206205">夏之禹</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960129463">Shangri-La Is Calling</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1899275082">Dream On</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=46695746">Fifi Rong</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1899274203">Another Me (Acapella)</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=46695746">Fifi Rong</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1899274200">I Refuse to Break Down</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=46695746">Fifi Rong</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001033">Goldberg Variations, BWV 988:Variation 24 a 1 Clav. Canone all'Ottava</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001032">Goldberg Variations, BWV 988:Variation 23 a 2 Clav.</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001031">Goldberg Variations, BWV 988:Variation 22 a 1 Clav. Alla breve</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001030">Goldberg Variations, BWV 988:Variation 21. Canone alla Settima</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001029">Goldberg Variations, BWV 988:Variation 20 a 2 Clav.</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001028">Goldberg Variations, BWV 988:Variation 19 a 1 Clav.</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001027">Goldberg Variations, BWV 988:Variation 18 a 1 Clav. Canone alla Sesta</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001026">Goldberg Variations, BWV 988:Variation 17 a 2 Clav.</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001025">Goldberg Variations, BWV 988:Variation 16 a 1 Clav. Ouverture</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001024">Goldberg Variations, BWV 988:Variation 15 a 1 Clav. Canone alla Quinta. Andante</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001023">Goldberg Variations, BWV 988:Variation 14 a 2 Clav.</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001022">Goldberg Variations, BWV 988:Variation 13 a 2 Clav.</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001021">Goldberg Variations, BWV 988:Variation 12 Canone alla Quarta</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001020">Goldberg Variations, BWV 988:Variation 11 a 2 Clav.</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001019">Goldberg Variations, BWV 988:Variation 10 a 1 Clav. Fughetta</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001018">Goldberg Variations, BWV 988:Variation 9 a 1 Clav. Canone alla Terza</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001017">Goldberg Variations, BWV 988:Variation 8 a 2 Clav.</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001016">Goldberg Variations, BWV 988:Variation 7 a 1 ovvero 2 Clav. Al tempo di Giga</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001015">Goldberg Variations, BWV 988:Variation 6 a 1 Clav. Canone alla Seconda</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001014">Goldberg Variations, BWV 988:Variation 5 a 1 ovvero 2 Clav.</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001013">Goldberg Variations, BWV 988:Variation 4 a 1 Clav.</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001012">Goldberg Variations, BWV 988:Variation 3 a 1 Clav. Canone all'Unisono</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001011">Goldberg Variations, BWV 988:Variation 2 a 1 Clav.</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001010">Goldberg Variations, BWV 988:Variation 1 a Clav.</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=18001009">Goldberg Variations, BWV 988:Aria</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=33850">Glenn Gould</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1304541899">Time</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=1021341">FiFi Rong</a></td>
+<td class="org-left">3次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=425298594">Diddy Bop</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=49471676">Noname</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=343217">给亲爱的你</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=10875">郑宜农</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2864625">Silent Night</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=62604">Jingle Cats</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=28406201">殭尸</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=2738">方大同</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=28406199">枫叶做的风铃</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=2738">方大同</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=28406198">巴黎</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=2738">方大同</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=28406197">爱不来 (feat. Miss Ko葛仲珊)</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=2738">方大同</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=28406196">Welcome</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=2738">方大同</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=28406193">Boarding</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=2738">方大同</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=28387868">天气先生</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=2738">方大同</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=28254913">危险世界</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=2738">方大同</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2749727179">Mantie</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=5767">谢天笑</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2746893225">耐寒体质</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=13701382">FEEEleven</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2742537237">长途 (feat. 金跳造)</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12206205">夏之禹</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2742537236">说唱歌手</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12206205">夏之禹</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2742536796">街头女孩 (feat. 李丁丁MIA AIM)</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12206205">夏之禹</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2742536794">街头智慧</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12206205">夏之禹</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=2695646027">- happy birthday everyone -</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=28389530">Adrianne Lenker</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960130294">自说自话</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">2次</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://music.163.com/song?id=1960129462">也许是你拯救了我</a></td>
+<td class="org-left"><a href="https://music.163.com/artist?id=12029112">椅子乐团 The Chairs</a></td>
+<td class="org-left">2次</td>
+</tr>
+</tbody>
+</table>
+ </div>
+</details>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention-container js-required">
+<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
+<p class="webmention-tip">
+如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://indieweb.org/Webmention">（了解有关 Webmention 的更多信息。）</a>
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention-content-list"></ul>
+</details>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于：<span class="dt-published">2025-09-28 Sun 17:07</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-09-28 Sun 19:31</span></p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
