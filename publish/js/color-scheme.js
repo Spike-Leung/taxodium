@@ -114,4 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setModeSelectValue(savedMode);
   setBodyClass(savedMode);
   requestAnimationFrame(() => switchIframeColorScheme(savedMode));
+
+  document.querySelector("#lightdark").addEventListener('change', (event) => switchMode(event.target.value));
 });
