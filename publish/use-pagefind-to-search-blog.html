@@ -275,7 +275,11 @@
 </div>
 </nav>
 <p>
-这周用 <a href="https://pagefind.app/">pagefind</a> 给博客添加一个 <a href="https://taxodium.ink/search">搜索页面</a>，如果你感兴趣可以搜索看看 (ﾉ&gt;ω&lt;)ﾉ
+(ﾉ&gt;ω&lt;)ﾉ
+</p>
+
+<p>
+这周用 <a href="https://pagefind.app/">pagefind</a> 给博客添加一个 <a href="https://taxodium.ink/search">搜索页面</a>，如果你感兴趣可以搜索看看。
 </p>
 
 <p>
@@ -306,7 +310,7 @@ Pagefind 的搜索索引被分割成若干块，因此在浏览器中进行搜�
 </p>
 
 <p>
-Pagefind 可以在一个 10,000 页的网站上运行全文搜索，包括 Pagefind 库本身在内的总网络有效载荷不到 300kB。 对于大多数网站来说，这将接近 100kB。
+Pagefind 可以在一个 10,000 页的网站上运行全文搜索，包括 Pagefind 库本身在内的总网络有效载荷不到 300kB。对于大多数网站来说，这将接近 100kB。
 </p>
 
 <p>
@@ -329,7 +333,7 @@ pagefind 的一些特点：
 </p>
 
 <p>
-在 <a href="https://taxodium.ink/11.html">Zine#11</a> 中分享过一篇文章，里面的观点我觉得说的很对：
+<a href="11.html#7bee7a6a-ef75-480b-b599-824d597ff576">Zine#11::It's hard to write code for computers, but it's even harder to write code for humans</a> 里面的观点我觉得说的很对：
 </p>
 
 <blockquote>
@@ -342,11 +346,11 @@ pagefind 的一些特点：
 </p>
 
 <p>
-<b>我认为这值得重构你的整个产品，以便实现快速入门。去掉强制配置。让设置 API 令牌变得极其简单。消除所有障碍。让用户能够在几分钟内在他们的笔记本电脑上使用你的产品。</b>
+<b>我认为这值得重构你的整个产品，以便实现快速入门。去掉强制配置。</b><b>让设置 API 令牌变得极其简单。消除所有障碍。</b><b>让用户能够在几分钟内在他们的笔记本电脑上使用你的产品。</b>
 </p>
 
 <p>
-你可能会说，我不知道，"谁在乎懒惰的用户"。那就让我靠在豆袋椅上，打开一袋多力多滋，解释一下吧：
+你可能会说，我不知道，「谁在乎懒惰的用户」。那就让我靠在豆袋椅上，打开一袋多力多滋，解释一下吧：
 </p>
 
 <p>
@@ -354,7 +358,7 @@ pagefind 的一些特点：
 </p>
 
 <p>
-<a href="https://erikbern.com/2024/09/27/its-hard-to-write-code-for-humans.html#:~:text=Getting%20started%20shouldn%27t,or%20whatever.%20Sorry">It's hard to write code for computers, but it's even harder to write code for humans</a>!
+<a href="https://erikbern.com/2024/09/27/its-hard-to-write-code-for-humans.html#:~:text=Getting%20started%20shouldn%27t,or%20whatever.%20Sorry">Source</a>
 </p>
 </blockquote>
 </div>
@@ -368,7 +372,6 @@ pagefind 的一些特点：
 
 <ol class="org-ol">
 <li>执行 <code>npx -y pagefind --site publish</code> 生成索引，其中 <code>publish</code> 是你的静态页面存放的目录。</li>
-
 <li>引用对应的 CSS，JS，并且添加一个 DOM 元素让 pagefind 挂载</li>
 </ol>
 
@@ -462,7 +465,13 @@ set +x
     &lt;<span style="color: #feacd0;">div</span> <span style="color: #00d3d0;">id</span>=<span style="color: #79a8ff;">"search"</span>&gt;&lt;/<span style="color: #feacd0;">div</span>&gt;
     &lt;<span style="color: #feacd0;">script</span>&gt;
       window.addEventListener('DOMContentLoaded', (event) =&gt; {
-      new PagefindUI({ element: "#search", showSubResults: true, showImages: false });
+        new PagefindUI({
+          element: "#search",
+          showSubResults: true,
+          showImages: false,
+          autofocus: true,
+          excerptLength: 50,
+        });
       });
     &lt;/<span style="color: #feacd0;">script</span>&gt;
   &lt;/<span style="color: #feacd0;">body</span>&gt;
@@ -471,19 +480,19 @@ set +x
 </div>
 
 <p>
-页面上我设置了 <code>lang="zh-CN"</code> ，pagefind 会基于 lang 去匹配索引和组件的多语言文字。
+页面上我设置了 <code>lang="zh-CN"</code> ，pagefind 会基于 lang 去匹配索引和组件的多语言文字。之前我的页面都是 <code>lang="en"</code> ，pagefind 将页面按照 en 索引，导致我搜索不到任何内容。因此我也更新了博客页面的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang">lang</a> 属性，从 en 改为了 zh-CN，这样 <a href="https://www.youtube.com/watch?v=NP94u7y_KkQ">对于使用屏幕阅读器的人也会友好一点</a>。
 </p>
 
 <p>
-之前我的页面都是 <code>lang="en"</code> ，pagefind 将页面按照 en 索引，导致我搜索不到任何内容。
+<code>showIamges</code> 我设置成了 false，因为我的博客文章基本没有封面图，图片还会增加搜索时的带宽消耗。
 </p>
 
 <p>
-因此我也更新了博客页面的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang">lang</a> 属性，从 en 改为了 zh-CN，这样<a href="https://www.youtube.com/watch?v=NP94u7y_KkQ">对于使用屏幕阅读器的人也会友好一点</a>。
+<code>excerptLength</code> 可以考虑设置一个大一点值，这样关键字附近的上下文会多一些。
 </p>
 
 <p>
-另外我将 <code>showIamges</code> 设置成了 false，因为我的博客文章基本没有封面图，图片还会增加搜索时的带宽消耗。
+页面完整代码你可以查看 <a href="search.html">搜索页面</a> 的源码。
 </p>
 </div>
 </div>
@@ -496,7 +505,11 @@ set +x
 </p>
 
 <p>
-感谢 pagefind 提供这样简单好用的搜索服务！\m/ &gt;_&lt; \m/
+感谢 pagefind 提供这样简单好用的搜索服务！
+</p>
+
+<p>
+\m/ &gt;_&lt; \m/
 </p>
 
 <p>
@@ -509,8 +522,12 @@ set +x
 <div id="text-footnotes">
 
 <div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-如果你对我的博客是如何搭建感兴趣，可以看 <a href="https://taxodium.ink/org-publish-blog">使用 org-publish 发布博客</a> (≖ᴗ≖๑)
-</p></div></div>
+如果你对我的博客是如何搭建感兴趣，可以看:
+</p>
+<ul class="org-ul">
+<li><a href="org-publish-blog.html">使用 org-publish 发布博客</a></li>
+<li><a href="blog-with-denote-and-org-publish.html">结合 denote 和 org-publish 写博客</a></li>
+</ul></div></div>
 
 
 </div>
@@ -533,7 +550,7 @@ set +x
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于：<span class="dt-published">2024-11-16 Sat 16:26</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-09-12 Fri 15:03</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-09-29 Mon 10:08</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
