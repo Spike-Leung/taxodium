@@ -298,40 +298,40 @@ iframe 实例是：
   <span style="color: #9ac8e0;">"Process the next HTML block from the current position, escape it, compress it, and generate a #+begin_export html block with an iframe, replacing any existing export block."</span>
   <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">interactive</span><span style="color: #ff66ff;">)</span>
   <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">let</span> <span style="color: #00eff0;">(</span>html-content escaped-html srcdoc start end export-start export-end<span style="color: #00eff0;">)</span>
-    <span style="color: #989898;">;; </span><span style="color: #989898;">Search for the next #+begin_src html block from the current position
+    <span style="color: #969896;">;; </span><span style="color: #989898;">Search for the next #+begin_src html block from the current position
 </span>    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">save-excursion</span>
       <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #efef00;">(</span>re-search-forward <span style="color: #79a8ff;">"^#</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">+begin_src html"</span> nil t<span style="color: #efef00;">)</span>
         <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">setq</span> start <span style="color: #b6a0ff;">(</span>match-end 0<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
         <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #b6a0ff;">(</span>re-search-forward <span style="color: #79a8ff;">"^#</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">+end_src"</span> nil t<span style="color: #b6a0ff;">)</span>
           <span style="color: #b6a0ff;">(</span><span style="color: #b6a0ff;">setq</span> end <span style="color: #44df44;">(</span>match-beginning 0<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
           <span style="color: #b6a0ff;">(</span><span style="color: #b6a0ff;">setq</span> html-content <span style="color: #44df44;">(</span>buffer-substring-no-properties start end<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
-          <span style="color: #989898;">;; </span><span style="color: #989898;">Process the HTML content
+          <span style="color: #969896;">;; </span><span style="color: #989898;">Process the HTML content
 </span>          <span style="color: #b6a0ff;">(</span><span style="color: #b6a0ff;">when</span> html-content
-            <span style="color: #989898;">;; </span><span style="color: #989898;">Escape HTML characters using sgml-quote in a temporary buffer
+            <span style="color: #969896;">;; </span><span style="color: #989898;">Escape HTML characters using sgml-quote in a temporary buffer
 </span>            <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">setq</span> escaped-html
                   <span style="color: #79a8ff;">(</span><span style="color: #b6a0ff;">with-temp-buffer</span>
                     <span style="color: #f78fe7;">(</span>insert html-content<span style="color: #f78fe7;">)</span>
-                    <span style="color: #f78fe7;">(</span>sgml-mode<span style="color: #f78fe7;">)</span> <span style="color: #989898;">;; </span><span style="color: #989898;">Switch to sgml-mode to enable sgml-quote
+                    <span style="color: #f78fe7;">(</span>sgml-mode<span style="color: #f78fe7;">)</span> <span style="color: #969896;">;; </span><span style="color: #989898;">Switch to sgml-mode to enable sgml-quote
 </span>                    <span style="color: #f78fe7;">(</span>sgml-quote <span style="color: #ffffff;">(</span>point-min<span style="color: #ffffff;">)</span> <span style="color: #ffffff;">(</span>point-max<span style="color: #ffffff;">)</span><span style="color: #f78fe7;">)</span>
                     <span style="color: #f78fe7;">(</span>buffer-string<span style="color: #f78fe7;">)</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span>
 
-            <span style="color: #989898;">;; </span><span style="color: #989898;">Compress into a single line and remove extra spaces
+            <span style="color: #969896;">;; </span><span style="color: #989898;">Compress into a single line and remove extra spaces
 </span>            <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">setq</span> srcdoc <span style="color: #79a8ff;">(</span>replace-regexp-in-string <span style="color: #79a8ff;">"[</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">n</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">r</span><span style="color: #79a8ff;">]+"</span> <span style="color: #79a8ff;">" "</span> escaped-html<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span>
             <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">setq</span> srcdoc <span style="color: #79a8ff;">(</span>replace-regexp-in-string <span style="color: #79a8ff;">"[ </span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">t</span><span style="color: #79a8ff;">]+"</span> <span style="color: #79a8ff;">" "</span> srcdoc<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span>
 
-            <span style="color: #989898;">;; </span><span style="color: #989898;">Move to the end of the block and check for existing export block
+            <span style="color: #969896;">;; </span><span style="color: #989898;">Move to the end of the block and check for existing export block
 </span>            <span style="color: #44df44;">(</span>goto-char end<span style="color: #44df44;">)</span>
-            <span style="color: #44df44;">(</span>forward-line 1<span style="color: #44df44;">)</span> <span style="color: #989898;">;; </span><span style="color: #989898;">Move to the line after #+end_src
+            <span style="color: #44df44;">(</span>forward-line 1<span style="color: #44df44;">)</span> <span style="color: #969896;">;; </span><span style="color: #989898;">Move to the line after #+end_src
 </span>
-            <span style="color: #989898;">;; </span><span style="color: #989898;">Check if there's an existing #+begin_export html block
+            <span style="color: #969896;">;; </span><span style="color: #989898;">Check if there's an existing #+begin_export html block
 </span>            <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #79a8ff;">(</span>looking-at <span style="color: #79a8ff;">"^#</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">+begin_export html"</span><span style="color: #79a8ff;">)</span>
               <span style="color: #79a8ff;">(</span><span style="color: #b6a0ff;">setq</span> export-start <span style="color: #f78fe7;">(</span>point<span style="color: #f78fe7;">)</span><span style="color: #79a8ff;">)</span>
               <span style="color: #79a8ff;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #f78fe7;">(</span>re-search-forward <span style="color: #79a8ff;">"^#</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">+end_export"</span> nil t<span style="color: #f78fe7;">)</span>
                 <span style="color: #f78fe7;">(</span><span style="color: #b6a0ff;">setq</span> export-end <span style="color: #ffffff;">(</span>point<span style="color: #ffffff;">)</span><span style="color: #f78fe7;">)</span>
-                <span style="color: #989898;">;; </span><span style="color: #989898;">Delete the existing export block
+                <span style="color: #969896;">;; </span><span style="color: #989898;">Delete the existing export block
 </span>                <span style="color: #f78fe7;">(</span>delete-region export-start export-end<span style="color: #f78fe7;">)</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span>
 
-            <span style="color: #989898;">;; </span><span style="color: #989898;">Insert the new #+begin_export html block
+            <span style="color: #969896;">;; </span><span style="color: #989898;">Insert the new #+begin_export html block
 </span>            <span style="color: #44df44;">(</span>insert <span style="color: #79a8ff;">(</span>format <span style="color: #79a8ff;">"#+begin_export html</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">n</span><span style="color: #79a8ff;">&lt;iframe style=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">width:100%%</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;"> srcdoc=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">%s</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">&gt;&lt;/iframe&gt;</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">n</span><span style="color: #79a8ff;">#+end_export</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">n</span><span style="color: #79a8ff;">"</span> srcdoc<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
 </pre>
 </div>
@@ -361,7 +361,7 @@ iframe 实例是：
 <ul class="webmention-content-list"></ul>
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
-<p class="date">创建于：<span class="dt-published">2024-08-05 Mon 16:25</span></p>
+<p class="date">创建于： <span class="dt-published">2024-08-05 Mon 16:25</span></p>
 <p class="date">修改于： <span class="dt-updated">2025-09-10 Wed 13:04</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
