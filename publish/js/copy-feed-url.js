@@ -33,7 +33,7 @@ function copyFeedUrl() {
         btn.textContent = '已复制！';
         setTimeout(() => {
           btn.textContent = originalText;
-        }, 500);
+        }, 1500);
       }
     } catch (err) {
       alert('复制失败，请手动复制地址栏链接');
