@@ -6,6 +6,7 @@
          (denote-org-front-matter .
                                   "#+title:      %s
 #+export_file_name: 输入一个尽可能唯一的 URL
+#+subtitle:
 #+date:       %s
 #+filetags:   %s
 #+identifier: %s
