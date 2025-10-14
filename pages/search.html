@@ -20,6 +20,29 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <script src="/js/color-scheme.js"></script>
     <script src="/pagefind/pagefind-ui.js"></script>
+    <style>
+      .search-container {
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
+      }
+      #search {
+        margin-block-start: 1em;
+      }
+      #help {
+        margin-inline: 1em;
+        color: var(--color-text);
+        color: light-dark(var(--color-text), var(--dark-color-text));
+        background-color: var(--color-bg-src-block);
+        background-color: light-dark(var(--color-bg-src-block), var(--dark-color-bg-src-block));
+        border-color: var(--color-border);
+        border-color: light-dark(var(--color-border), var(--dark-color-border));
+        border-radius: .25em;
+      }
+      .help-trigger {
+        align-self: end;
+      }
+    </style>
   </head>
   <body>
     <div id="preamble" class="status">
@@ -37,7 +60,19 @@
         </select>
       </nav>
     </div>
-    <div id="search" autofocus style="margin-block-start: 1em;"></div>
+    <div class="search-container">
+      <div id="search" autofocus></div>
+      <button popovertarget="help" class="help-trigger">搜索技巧</button>
+      <div id="help" popover>
+        <p>
+          受限于 pagefind 中文的分词的处理，当你搜索 <code>订阅流</code> 的时候可能无法完全匹配 <code>订阅流</code>，
+        </p>
+        <p>
+          你可以使用通过使用<mark>空格分隔</mark>，拆分成 <code>订阅 流</code> 搜索，这样就会同时匹配 <code>订阅</code> 和 <code>流</code>。
+        </p>
+        <p>更多见: <a href="https://pagefind.app/docs/multilingual/#specialized-languages">Specialized languages</a></p>
+      </div>
+    </div>
     <script>
       window.addEventListener('DOMContentLoaded', (event) => {
         new PagefindUI({
