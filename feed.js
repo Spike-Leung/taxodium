@@ -73,8 +73,7 @@ async function generateSummary(text) {
 \n\n${text}`,
             },
           ],
-          max_tokens: 800,
-          temperature: 0.8,
+          temperature: 1,
         }),
       },
     );
