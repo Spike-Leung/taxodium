@@ -7,190 +7,6 @@
 <meta name="author" content="Spike Leung" />
 <meta name="description" content="使用 husky，lint-staged 等工具校验 git 提交，从而提高 git 提交的质量。还分享了一些 git message 如何写得更好的内容。" />
 <meta name="generator" content="Org Mode" />
-<style type="text/css">
-  #content { max-width: 60em; margin: auto; }
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    background-color: #f2f2f2;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: auto;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    padding: 3px;
-    color: #555;
-    background-color: #f2f2f299;
-  }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-authinfo::before { content: 'Authinfo'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { }
-</style>
 
 <meta name="color-scheme" content="light dark" />
 <script src="/js/color-scheme.js"></script>
@@ -297,10 +113,10 @@
 配置 Git 编辑器：
 </p>
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">vim &#21487;&#20197;&#25442;&#25104;&#20320;&#20064;&#24815;&#30340;&#32534;&#36753;&#22120;
+<pre class="src src-bash"><span style="color: #969896;"># </span><span style="color: #db7b5f;">vim &#21487;&#20197;&#25442;&#25104;&#20320;&#20064;&#24815;&#30340;&#32534;&#36753;&#22120;
 </span>git config --global core.editor <span style="color: #79a8ff;">"vim"</span>
 
-<span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#25110;&#32773;&#35774;&#32622; GIT_EDITOR &#21464;&#37327;&#65292;&#22312;&#20320;&#30340; .bashrc / .zshrc &#25991;&#20214;&#20013;&#28155;&#21152;&#21363;&#21487;
+<span style="color: #969896;"># </span><span style="color: #db7b5f;">&#25110;&#32773;&#35774;&#32622; GIT_EDITOR &#21464;&#37327;&#65292;&#22312;&#20320;&#30340; .bashrc / .zshrc &#25991;&#20214;&#20013;&#28155;&#21152;&#21363;&#21487;
 </span><span style="color: #f78fe7;">export</span> <span style="color: #00d3d0;">GIT_EDITOR</span>=vim
 </pre>
 </div>
@@ -425,14 +241,14 @@ Multi-line description of commit,
 feel free to be detailed.
 
 <span style="color: #ffffff;">[</span>Ticket: X<span style="color: #ffffff;">]</span>
-<span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">Please enter the commit message for your changes. Lines starting
-</span><span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">with '#' will be ignored, and an empty message aborts the commit.
-</span><span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">On branch master
-</span><span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">Changes to be committed:
-</span><span style="color: #db7b5f;">#   </span><span style="color: #db7b5f;">(use "git reset HEAD &lt;file&gt;..." to unstage)
-</span><span style="color: #db7b5f;">#</span><span style="color: #db7b5f;">
-</span><span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">modified:   lib/test.rb
-</span><span style="color: #db7b5f;">#</span><span style="color: #db7b5f;">
+<span style="color: #969896;"># </span><span style="color: #db7b5f;">Please enter the commit message for your changes. Lines starting
+</span><span style="color: #969896;"># </span><span style="color: #db7b5f;">with '#' will be ignored, and an empty message aborts the commit.
+</span><span style="color: #969896;"># </span><span style="color: #db7b5f;">On branch master
+</span><span style="color: #969896;"># </span><span style="color: #db7b5f;">Changes to be committed:
+</span><span style="color: #969896;">#   </span><span style="color: #db7b5f;">(use "git reset HEAD &lt;file&gt;..." to unstage)
+</span><span style="color: #969896;">#</span><span style="color: #db7b5f;">
+</span><span style="color: #969896;"># </span><span style="color: #db7b5f;">modified:   lib/test.rb
+</span><span style="color: #969896;">#</span><span style="color: #db7b5f;">
 </span>~
 ~
 <span style="color: #79a8ff;">".git/COMMIT_EDITMSG"</span> 14L, 297C
@@ -512,7 +328,7 @@ githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本
 如果你想用 shell:
 </p>
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #db7b5f;">#</span><span style="color: #db7b5f;">!/usr/bin/</span><span style="color: #b6a0ff;">env</span><span style="color: #db7b5f;"> sh</span>
+<pre class="src src-bash"><span style="color: #969896;">#</span><span style="color: #db7b5f;">!/usr/bin/</span><span style="color: #b6a0ff;">env</span><span style="color: #db7b5f;"> sh</span>
 </pre>
 </div>
 
@@ -520,7 +336,7 @@ githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本
 或者用 python:
 </p>
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #db7b5f;">#</span><span style="color: #db7b5f;">!/usr/</span><span style="color: #b6a0ff;">bin</span><span style="color: #db7b5f;"> python</span>
+<pre class="src src-bash"><span style="color: #969896;">#</span><span style="color: #db7b5f;">!/usr/</span><span style="color: #b6a0ff;">bin</span><span style="color: #db7b5f;"> python</span>
 </pre>
 </div>
 
@@ -529,7 +345,7 @@ githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本
 设置好语言后，就编写脚本，例如 <code>pre-push</code>:
 </p>
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #db7b5f;">#</span><span style="color: #db7b5f;">!/bin/</span><span style="color: #b6a0ff;">sh</span><span style="color: #db7b5f;">
+<pre class="src src-shell"><span style="color: #969896;">#</span><span style="color: #db7b5f;">!/bin/</span><span style="color: #b6a0ff;">sh</span><span style="color: #db7b5f;">
 </span><span style="color: #00d3d0;">COMMIT_ID</span>=$<span style="color: #ffffff;">(</span>git log -n 1 --pretty=format:<span style="color: #79a8ff;">"%H"</span> main<span style="color: #ffffff;">)</span>
 
 <span style="color: #b6a0ff;">if</span> git merge-base --is-ancestor $<span style="color: #00d3d0;">COMMIT_ID</span> HEAD
@@ -604,7 +420,7 @@ drwxrwxr-x 2 spike spike 4096 Oct 25 09:14 _
 安装  <a href="https://github.com/conventional-changelog/commitlint">commitlint</a> 以来，然后创建 <code>commit-msg</code> 钩子，在提交后，校验提交信息是否符合规范：
 </p>
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #db7b5f;">#</span><span style="color: #db7b5f;">!/usr/bin/</span><span style="color: #b6a0ff;">env</span><span style="color: #db7b5f;"> sh
+<pre class="src src-shell"><span style="color: #969896;">#</span><span style="color: #db7b5f;">!/usr/bin/</span><span style="color: #b6a0ff;">env</span><span style="color: #db7b5f;"> sh
 </span>. <span style="color: #79a8ff;">"$(dirname -- "$0")/_/husky.sh"</span>
 
 npx --no -- commitlint --edit $<span style="color: #ffffff;">{</span><span style="color: #00d3d0;">1</span><span style="color: #ffffff;">}</span>
@@ -616,7 +432,7 @@ npx --no -- commitlint --edit $<span style="color: #ffffff;">{</span><span style
 <h4 id="b568a982-3ed4-4d97-af63-abe11f373d79">提交前校验&amp;格式化代码(pre-commit)</h4>
 <div class="outline-text-4" id="text-b568a982-3ed4-4d97-af63-abe11f373d79">
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #db7b5f;">#</span><span style="color: #db7b5f;">!/usr/bin/</span><span style="color: #b6a0ff;">env</span><span style="color: #db7b5f;"> sh
+<pre class="src src-shell"><span style="color: #969896;">#</span><span style="color: #db7b5f;">!/usr/bin/</span><span style="color: #b6a0ff;">env</span><span style="color: #db7b5f;"> sh
 </span>. <span style="color: #79a8ff;">"$(dirname -- "$0")/_/husky.sh"</span>
 npx lint-staged
 </pre>
@@ -645,17 +461,17 @@ npx lint-staged
 <h4 id="35c1589b-671f-4259-854e-377d7680471f">推送时判断是否合包含主分支提交(pre-push)</h4>
 <div class="outline-text-4" id="text-35c1589b-671f-4259-854e-377d7680471f">
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #db7b5f;">#</span><span style="color: #db7b5f;">!/bin/</span><span style="color: #b6a0ff;">sh</span><span style="color: #db7b5f;">
-</span><span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#33719;&#21462; main &#20998;&#25903;&#26368;&#26032;&#30340;&#25552;&#20132;
+<pre class="src src-shell"><span style="color: #969896;">#</span><span style="color: #db7b5f;">!/bin/</span><span style="color: #b6a0ff;">sh</span><span style="color: #db7b5f;">
+</span><span style="color: #969896;"># </span><span style="color: #db7b5f;">&#33719;&#21462; main &#20998;&#25903;&#26368;&#26032;&#30340;&#25552;&#20132;
 </span>git fetch
 <span style="color: #00d3d0;">COMMIT_ID</span>=$<span style="color: #ffffff;">(</span>git log -n 1 --pretty=format:<span style="color: #79a8ff;">"%H"</span> origin/main<span style="color: #ffffff;">)</span>
 
-<span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#21028;&#26029; main &#30340;&#26368;&#26032;&#25552;&#20132; &#26159;&#19981;&#26159; &#24403;&#21069;&#30340;&#26368;&#26032;&#25552;&#20132; (HEAD) &#30340;&#19978;&#28216;
+<span style="color: #969896;"># </span><span style="color: #db7b5f;">&#21028;&#26029; main &#30340;&#26368;&#26032;&#25552;&#20132; &#26159;&#19981;&#26159; &#24403;&#21069;&#30340;&#26368;&#26032;&#25552;&#20132; (HEAD) &#30340;&#19978;&#28216;
 </span><span style="color: #b6a0ff;">if</span> git merge-base --is-ancestor $<span style="color: #00d3d0;">COMMIT_ID</span> HEAD
 <span style="color: #b6a0ff;">then</span>
     <span style="color: #b6a0ff;">exit</span> 0
 <span style="color: #b6a0ff;">else</span>
-    <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#22914;&#26524;&#19981;&#26159;&#21017;&#25552;&#31034; exit code &#19981;&#20026; 0&#65292;&#20250;&#38459;&#26029; push&#65292;&#26080;&#27861;&#25512;&#36865;&#21040;&#36828;&#31243;
+    <span style="color: #969896;"># </span><span style="color: #db7b5f;">&#22914;&#26524;&#19981;&#26159;&#21017;&#25552;&#31034; exit code &#19981;&#20026; 0&#65292;&#20250;&#38459;&#26029; push&#65292;&#26080;&#27861;&#25512;&#36865;&#21040;&#36828;&#31243;
 </span>    <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"&#20027;&#20998;&#25903;&#26377;&#20320;&#27809;&#26377;&#21512;&#24182;&#30340;&#25552;&#20132;&#65292;&#22312;&#25552;&#27979;&#21069;&#35831;&#21512;&#24182;"</span>
     <span style="color: #b6a0ff;">exit</span> 1
 <span style="color: #b6a0ff;">fi</span>
