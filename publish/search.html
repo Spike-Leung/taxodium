@@ -55,6 +55,7 @@
         &::backdrop {
           backdrop-filter: none;
           transition: all 0.3s allow-discrete;
+          pointer-events: none;
         }
 
         &:popover-open::backdrop {
@@ -81,6 +82,17 @@
         position: absolute;
         top: calc(64px * var(--pagefind-ui-scale) + .5em);
         font-size: 0.9em;
+      }
+
+      /* https://stackoverflow.com/questions/78995412/how-to-stop-mouse-events-through-css-backdrop */
+      /* filter element not supposed to catch mouse events */
+      body:has(:popover-open) * {
+        pointer-events: none;
+      }
+
+      /* then allow click from #mypopover */
+      div[popover] * {
+        pointer-events: auto;
       }
     </style>
   </head>
