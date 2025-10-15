@@ -1,5 +1,6 @@
 :root {
-  --font-family: "LXGW WenKai", Open Sans, Arial;
+  --font-family-fallback: serif, Open Sans, Arial;
+  --font-family: "LXGW WenKai", var(--font-family-fallback);
   --font-size: clamp(22px, calc(1.1em + 0.6vw), 24px);
 
   --color-bg: #eee;
@@ -107,6 +108,16 @@
 }
 
 /** ---------------------------------- 'Atkinson Hyperlegible' ----- */
+
+/** ---------------------------------- 'Schoolbell' ----- */
+@font-face {
+  font-family: 'Schoolbell';
+  src: local('Schoolbell'),
+       url('/fonts/Schoolbell/Schoolbell-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+/** ---------------------------------- 'Schoolbell' ----- */
 
 /* ------------------------------ common tag ------------------------------ */
 
@@ -221,12 +232,6 @@ html {
   }
 }
 
-p {
-  &.verse {
-    margin-left: 0;
-  }
-}
-
 mark {
   padding: .15rem;
   background: var(--color-selection-background);
@@ -291,7 +296,7 @@ details {
     font-size: 0.95em;
   }
 
-  &.lirics {
+  &.lyrics {
     & .verse i {
       color: var(--color-text);
       color: light-dark(var(--color-text), var(--dark-color-text));
@@ -365,8 +370,8 @@ blockquote {
   padding: 0px 15px;
   color: var(--color-text-secondary);
   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
-  border-left: 4px solid var(--color-border);
-  border-left: 4px solid light-dark(var(--color-border), var(--dark-color-border));
+  border-inline-start: 4px solid var(--color-border);
+  border-inline-start: 4px solid light-dark(var(--color-border), var(--dark-color-border));
 
   & b {
     color: var(--color-highlight-secondary);
@@ -374,8 +379,18 @@ blockquote {
   }
 }
 
+p.verse.vertical-rl {
+  writing-mode: vertical-rl;
+  padding: 0;
+  border: none;
+  padding-block-start: .5em;
+  font-family: 'I.Ming', var(--font-family-fallback);
+  font-size: 0.9em;
+  width: 100%;
+}
+
 blockquote + blockquote {
-  margin-top: 2em;
+  margin-block-strat: 2em;
 }
 
 .underline {
@@ -445,8 +460,7 @@ pre {
   border-color: light-dark(var(--color-border), var(--dark-color-border));
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, "Courier New", Courier, monospace;
   font-size: .8em;
-  margin-left: 0;
-  margin-right: 0;
+  margin-inline: 0;
 }
 
 pre.src {
@@ -525,12 +539,16 @@ sup {
 .title {
   max-width: fit-content;
   margin-inline: auto;
+  margin-block: .5em;
 }
 
 .subtitle {
   color: var(--color-text-secondary);
   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
   font-size: 1em;
+  text-align: center;
+  margin-block-start: 0;
+  margin-block-end: 1.5em;
 }
 
 .todo {
@@ -541,6 +559,11 @@ sup {
 .text-emphasis {
   text-emphasis: dot;
   text-emphasis-position: under;
+}
+
+#postamble p,
+#preamble p {
+  margin: .2em;
 }
 
 #postamble::before {
@@ -685,7 +708,7 @@ img.inline-image {
 
 .org-src-container {
   position: relative;
-  padding-top: 2em;
+  padding-block-start: 2em;
   border-color: var(--color-border);
   border-color: light-dark(var(--color-border), var(--dark-color-border));
   border-width: 1px;
@@ -697,6 +720,10 @@ img.inline-image {
 .table-wrapper {
   margin-block: 1em;
 }
+
+.footpara { display: inline; }
+.footdef  { margin-block-end: 1em; }
+
 /* ------------------------------ org-mode related ------------------------------ */
 
 /* ------------------------------ special use ------------------------------ */
@@ -987,7 +1014,6 @@ td,th {
   padding: 0.3em 0.6em;
   vertical-align: baseline;
 }
-
 /* ------------------------------ table ------------------------------ */
 
 /* ------------------------------ sidenote ------------------------------ */
@@ -1185,7 +1211,7 @@ td,th {
   }
 
   & li + li {
-    margin-top: 2em;
+    margin-block-start: 2em;
   }
 
   @media screen and (max-width: 400px) {
