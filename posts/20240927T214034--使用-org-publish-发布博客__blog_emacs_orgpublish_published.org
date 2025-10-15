@@ -387,13 +387,16 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，你可以定义�
   #+begin_details
   #+html: <summary>插入图片的方法</summary>
 
-  (defun spike-leung/insert-blog-images ()
-  "Insert images from blog."
-  (interactive)
-  (let* ((image-dir (expand-file-name "~/git/taxodium/publish/images/"))
-         (image-file (read-file-name "Select image: " image-dir))
-         (relative-path (file-relative-name image-file image-dir)))
-    (insert (format "#+CAPTION: \n[[file:images/%s]]" relative-path))))
+  #+begin_src emacs-lisp
+    (defun spike-leung/insert-blog-images ()
+      "Insert images from blog."
+      (interactive)
+      (let* ((image-dir (expand-file-name "~/git/taxodium/publish/images/"))
+             (image-file (read-file-name "Select image: " image-dir))
+             (relative-path (file-relative-name image-file image-dir)))
+
+        (insert (format "#+CAPTION: \n[[file:images/%s]]" relative-path))))
+  #+end_src
   #+end_details
 
 * Refs
