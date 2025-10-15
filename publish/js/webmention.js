@@ -61,15 +61,9 @@ function renderWebmentions(feed, container) {
     const aAuthor = document.createElement("a");
     aAuthor.href = url || wmSourceUrl.origin
     aAuthor.className = "webmention-author"
-    aAuthor.textContent = name || "Unknown"
+    aAuthor.textContent = name || wmSourceUrl.host || "Unknown"
 
-    const aHomeUrl = document.createElement("a");
-    aHomeUrl.href = url || wmSourceUrl.origin
-    aHomeUrl.className = "webmention-home-url"
-    aHomeUrl.textContent = wmSourceUrl.host
-
-
-    Array.from([imgAvatar, aAuthor, aHomeUrl]).forEach((child) => divAuthor.appendChild(child))
+    Array.from([imgAvatar, aAuthor]).forEach((child) => divAuthor.appendChild(child))
 
     // content
     const divContent = document.createElement("div");
@@ -83,7 +77,7 @@ function renderWebmentions(feed, container) {
     const pReceived = document.createElement("p");
 
     aSource.href = wmSourceUrl.href
-    aSource.textContent = "Source"
+    aSource.textContent = wmSourceUrl.href
 
     pReceived.textContent = new Intl.DateTimeFormat("zh-CN", {
       dateStyle: "full",
