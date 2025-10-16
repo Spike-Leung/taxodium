@@ -247,6 +247,11 @@ function mountSidenotes() {
   positionSidenotes();
   window.addEventListener('resize', positionSidenotes);
   window.addEventListener('scroll', positionSidenotes, true);
+  window.addEventListener('click', (e) => {
+    if (e.target.nodeName === 'SUMMARY') {
+      setTimeout(() => positionSidenotes(), 0)
+    }
+  });
 
   sidenoteCleanup = function() {
     window.removeEventListener('resize', positionSidenotes);
