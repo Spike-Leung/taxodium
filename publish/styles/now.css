@@ -1,0 +1,128 @@
+:root {
+  --color-name: var(--dark-color-text);
+  --color-back: var(--dark-color-text);
+}
+
+body {
+  /* override style.css */
+  margin-block: 0;
+  padding: 0;
+  font-family: "I.Ming", var(--font-family-fallback);
+
+  & a {
+    color: var(--color-text);
+    color: light-dark(var(--color-text), var(--dark-color-text));
+  }
+}
+
+
+.container {
+  background: #fff;
+  background: light-dark(#fff, var(--dark-color-bg));
+}
+
+header {
+  position: relative;
+
+  /* override style.css */
+  & a {
+    text-decoration: none;
+  }
+
+  & .back {
+    position: absolute;
+    top: 1em;
+    left: 1em;
+
+    & a {
+      color: var(--color-back);
+    }
+  }
+
+  & .profile {
+    position: absolute;
+    right: 1em;
+    bottom: 0;
+    transform: translateY(.5em);
+    display: flex;
+    gap: .5em;
+    align-items: center;
+
+    &::after {
+      content: attr(data-bio);
+      position: absolute;
+      top: 100%;
+      right: 0;
+      color: var(--color-text-secondary);
+      color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+      font-size: 0.8em;
+    }
+
+    &:hover {
+      &::before {
+        content: "想打个招呼？☞";
+        margin-inline-end: 1em;
+        font-size: 0.8em;
+        position: absolute;
+        right: 100%;
+        width: max-content;
+        animation-name: bounce;
+        animation-duration: .8s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate-reverse;
+        animation-timing-function: ease-in;
+      }
+    }
+  }
+
+  & .avatar {
+    width: 3em;
+    height: 3em;
+    border-radius: .5em;
+  }
+
+  & .name {
+    color: var(--color-name);
+  }
+
+  & .bio {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+@keyframes bounce {
+  from {
+    right: 105%;
+  }
+
+  to {
+    right: 100%;
+  }
+}
+
+main {
+  margin-block-start: 4em;
+
+  & article {
+    display: grid;
+    grid-template-columns: max-content auto;
+    gap: .5em;
+    padding-inline: 1em;
+
+    & section p:first-child {
+      margin-block-start: 0;
+    }
+  }
+}
+
+
+h1,h2,h3,h4,h5,h6 {
+  margin-block: 0;
+
+  /* override style.css */
+  &::before {
+    content: '';
+  }
+}
