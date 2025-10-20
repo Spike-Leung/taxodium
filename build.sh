@@ -6,7 +6,9 @@ set -x
 pnpm install
 
 # build feed
-node feed.js
+if git log -1 --pretty=%B | grep -q "\[feed\]"; then
+  node feed.js
+fi
 
 # copy rss.xml to index.xml, use for https://www.v2ex.com/xna
 cp -f publish/rss.xml publish/index.xml
