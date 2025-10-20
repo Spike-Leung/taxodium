@@ -142,17 +142,17 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <h3 id="82e839e4-7bda-4599-a7b9-3d9eeceef12b">对于长时间的同步任务</h3>
 <div class="outline-text-3" id="text-82e839e4-7bda-4599-a7b9-3d9eeceef12b">
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">fakeTimeIntensiveOperation</span> = <span style="color: #b6a0ff;">function</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
-  <span style="color: #b6a0ff;">for</span> <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">i</span> = 0; i&lt; Math.pow<span style="color: #00eff0;">(</span>10, 10<span style="color: #00eff0;">)</span>; i++<span style="color: #ff66ff;">)</span> <span style="color: #ff66ff;">{}</span>
-  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">insideTimeTakingFunction</span>  = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span><span style="color: #ff66ff;">()</span>.toLocaleTimeString<span style="color: #ff66ff;">()</span>;
-  console.log<span style="color: #ff66ff;">(</span><span style="color: #79a8ff;">'insideTimeTakingFunction'</span>, insideTimeTakingFunction<span style="color: #ff66ff;">)</span>;
-<span style="color: #ffffff;">}</span>;
+<pre class="src src-js"><span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">fakeTimeIntensiveOperation</span> = <span style="color: #b6a0ff;">function</span>() {
+  <span style="color: #b6a0ff;">for</span> (<span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">i</span> = 0; i&lt; Math.pow(10, 10); i++) {}
+  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">insideTimeTakingFunction</span>  = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>().toLocaleTimeString();
+  console.log(<span style="color: #79a8ff;">'insideTimeTakingFunction'</span>, insideTimeTakingFunction);
+};
 
-<span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">timer</span> = setInterval<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">function</span><span style="color: #ff66ff;">(){</span>
-  fakeTimeIntensiveOperation<span style="color: #00eff0;">()</span>;
-  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">insideSetInterval</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span><span style="color: #00eff0;">()</span>.toLocaleTimeString<span style="color: #00eff0;">()</span>;
-  console.log<span style="color: #00eff0;">(</span><span style="color: #79a8ff;">'insideSetInterval'</span>, insideSetInterval<span style="color: #00eff0;">)</span>;
-<span style="color: #ff66ff;">}</span>, 1000<span style="color: #ffffff;">)</span>;
+<span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">timer</span> = setInterval(<span style="color: #b6a0ff;">function</span>(){
+  fakeTimeIntensiveOperation();
+  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">insideSetInterval</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>().toLocaleTimeString();
+  console.log(<span style="color: #79a8ff;">'insideSetInterval'</span>, insideSetInterval);
+}, 1000);
 </pre>
 </div>
 
@@ -166,19 +166,19 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <div class="outline-text-3" id="text-6de052fe-4204-4e10-8196-fcbfbdb40a37">
 <div class="org-src-container">
 <pre class="src src-js"><span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">counter</span> = 0;
-<span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">fakeTimeIntensiveOperation</span> = <span style="color: #b6a0ff;">function</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
-  setTimeout<span style="color: #ff66ff;">(</span><span style="color: #00eff0;">()</span> =&gt; <span style="color: #00eff0;">{</span>
+<span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">fakeTimeIntensiveOperation</span> = <span style="color: #b6a0ff;">function</span>() {
+  setTimeout(() =&gt; {
     counter--;
-  <span style="color: #00eff0;">}</span>, 60000<span style="color: #ff66ff;">)</span>;
-<span style="color: #ffffff;">}</span>;
+  }, 60000);
+};
 
-<span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">timer</span> = setInterval<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">function</span><span style="color: #ff66ff;">()</span> <span style="color: #ff66ff;">{</span>
+<span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">timer</span> = setInterval(<span style="color: #b6a0ff;">function</span>() {
   counter++;
-  fakeTimeIntensiveOperation<span style="color: #00eff0;">()</span>;
-  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">insideSetInterval</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span><span style="color: #00eff0;">()</span>.toLocaleTimeString<span style="color: #00eff0;">()</span>;
-  console.log<span style="color: #00eff0;">(</span><span style="color: #79a8ff;">'insideSetInterval'</span>, insideSetInterval<span style="color: #00eff0;">)</span>;
-  console.log<span style="color: #00eff0;">(</span><span style="color: #79a8ff;">'counter'</span>, counter<span style="color: #00eff0;">)</span>;
-<span style="color: #ff66ff;">}</span>, 200<span style="color: #ffffff;">)</span>;
+  fakeTimeIntensiveOperation();
+  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">insideSetInterval</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>().toLocaleTimeString();
+  console.log(<span style="color: #79a8ff;">'insideSetInterval'</span>, insideSetInterval);
+  console.log(<span style="color: #79a8ff;">'counter'</span>, counter);
+}, 200);
 </pre>
 </div>
 <p>
@@ -195,12 +195,12 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <h2 id="46d047df-e0c6-47dd-821d-ca4b193e2771">嵌套的 setTimeout</h2>
 <div class="outline-text-2" id="text-46d047df-e0c6-47dd-821d-ca4b193e2771">
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">function</span> loop<span style="color: #ff66ff;">()</span> <span style="color: #ff66ff;">{</span>
-  setTimeout<span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">function</span><span style="color: #ff6b55;">()</span> <span style="color: #ff6b55;">{</span>
+<pre class="src src-js">(<span style="color: #b6a0ff;">function</span> loop() {
+  setTimeout(<span style="color: #b6a0ff;">function</span>() {
     <span style="color: #969896;">// </span><span style="color: #db7b5f;">your logic here
-</span>    loop<span style="color: #efef00;">()</span>;
-  <span style="color: #ff6b55;">}</span>, delay<span style="color: #00eff0;">)</span>;
-<span style="color: #ff66ff;">}</span><span style="color: #ffffff;">)()</span>
+</span>    loop();
+  }, delay);
+})()
 </pre>
 </div>
 
@@ -219,17 +219,17 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <div class="org-src-container">
 <pre class="src src-js"><span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">delay</span> = 5000;
 
-<span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">timerId</span> = setTimeout<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">function</span> request<span style="color: #ff66ff;">()</span> <span style="color: #ff66ff;">{</span>
+<span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">timerId</span> = setTimeout(<span style="color: #b6a0ff;">function</span> request() {
   <span style="color: #969896;">// </span><span style="color: #db7b5f;">...&#21457;&#36865;&#35831;&#27714;...
 </span>
-  <span style="color: #b6a0ff;">if</span> <span style="color: #00eff0;">(</span>request failed due to server overload<span style="color: #00eff0;">)</span> <span style="color: #00eff0;">{</span>
+  <span style="color: #b6a0ff;">if</span> (request failed due to server overload) {
     <span style="color: #969896;">// </span><span style="color: #db7b5f;">&#19979;&#19968;&#27425;&#25191;&#34892;&#30340;&#38388;&#38548;&#26159;&#24403;&#21069;&#30340; 2 &#20493;
 </span>    delay *= 2;
-  <span style="color: #00eff0;">}</span>
+  }
 
-  timerId = setTimeout<span style="color: #00eff0;">(</span>request, delay<span style="color: #00eff0;">)</span>;
+  timerId = setTimeout(request, delay);
 
-<span style="color: #ff66ff;">}</span>, delay<span style="color: #ffffff;">)</span>;
+}, delay);
 </pre>
 </div>
 </div>
@@ -368,6 +368,7 @@ smooth animations </a>- javascriptkit
 </div>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>

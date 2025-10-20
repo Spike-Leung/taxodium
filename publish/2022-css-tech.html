@@ -339,20 +339,20 @@ selector name collisions.
 
 <div class="org-src-container">
 <pre class="src src-css"><span style="color: #969896;">/* </span><span style="color: #db7b5f;">container.module.css</span><span style="color: #969896;"> */</span>
-<span style="color: #feacd0;">.container</span> <span style="color: #ffffff;">{</span>
+<span style="color: #feacd0;">.container</span> {
   <span style="color: #b6a0ff;">margin</span>: 3rem auto;
   <span style="color: #b6a0ff;">max-width</span>: 600px;
-<span style="color: #ffffff;">}</span>
+}
 </pre>
 </div>
 <div class="org-src-container">
 <pre class="src src-js"><span style="color: #b6a0ff;">import</span> React from <span style="color: #79a8ff;">"react"</span>
 <span style="color: #b6a0ff;">import</span> * as containerStyles from <span style="color: #79a8ff;">"./container.module.css"</span>
-<span style="color: #b6a0ff;">export</span> <span style="color: #b6a0ff;">default</span> <span style="color: #b6a0ff;">function</span> Container<span style="color: #ffffff;">(</span><span style="color: #ff66ff;">{</span> children <span style="color: #ff66ff;">}</span><span style="color: #ffffff;">)</span> <span style="color: #ffffff;">{</span>
-  <span style="color: #b6a0ff;">return</span> <span style="color: #ff66ff;">(</span>
-    <span style="color: #00eff0;">&lt;</span><span style="color: #feacd0;">section</span> <span style="color: #00d3d0;">className</span>=<span style="color: #ff6b55;">{</span>containerStyles.container<span style="color: #ff6b55;">}</span><span style="color: #00eff0;">&gt;{</span>children<span style="color: #00eff0;">}&lt;</span>/<span style="color: #feacd0;">section</span><span style="color: #00eff0;">&gt;</span>
-  <span style="color: #ff66ff;">)</span>
-<span style="color: #ffffff;">}</span>
+<span style="color: #b6a0ff;">export</span> <span style="color: #b6a0ff;">default</span> <span style="color: #b6a0ff;">function</span> Container({ children }) {
+  <span style="color: #b6a0ff;">return</span> (
+    &lt;<span style="color: #feacd0;">section</span> <span style="color: #00d3d0;">className</span>={containerStyles.container}&gt;{children}&lt;/<span style="color: #feacd0;">section</span>&gt;
+  )
+}
 </pre>
 </div>
 </div>
@@ -388,7 +388,7 @@ style="&#x2026;" className="&#x2026;"&gt;, 语义化更好。
     color: black;
   <span style="color: #79a8ff;">`}
 `</span>
-render<span style="color: #ffffff;">(</span>
+render(
   &lt;div&gt;
     &lt;Button
       href=<span style="color: #79a8ff;">"https://github.com/styled-components/styled-components"</span>
@@ -399,11 +399,11 @@ render<span style="color: #ffffff;">(</span>
       GitHub
     &lt;/Button&gt;
 
-    &lt;Button as=<span style="color: #ff66ff;">{</span>Link<span style="color: #ff66ff;">}</span> href=<span style="color: #79a8ff;">"/docs"</span>&gt;
+    &lt;Button as={Link} href=<span style="color: #79a8ff;">"/docs"</span>&gt;
       Documentation
     &lt;/Button&gt;
   &lt;/div&gt;
-<span style="color: #ffffff;">)</span>
+)
 </pre>
 </div>
 </div>
@@ -434,13 +434,13 @@ Emotion 语法看起来更灵活一些。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #b6a0ff;">import</span> <span style="color: #ffffff;">{</span> css, cx <span style="color: #ffffff;">}</span> from <span style="color: #79a8ff;">'@emotion/css'</span>
+<pre class="src src-js"><span style="color: #b6a0ff;">import</span> { css, cx } from <span style="color: #79a8ff;">'@emotion/css'</span>
 
 <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">color</span> = <span style="color: #79a8ff;">'white'</span>
 
-render<span style="color: #ffffff;">(</span>
+render(
   &lt;div
-    className=<span style="color: #ff66ff;">{</span>css<span style="color: #79a8ff;">`
+    className={css<span style="color: #79a8ff;">`
       padding: 32px;
       background-color: hotpink;
       font-size: 24px;
@@ -448,11 +448,11 @@ render<span style="color: #ffffff;">(</span>
       &amp;:hover {
         color: ${color};
       }
-    `</span><span style="color: #ff66ff;">}</span>
+    `</span>}
   &gt;
     Hover to change color.
   &lt;/div&gt;
-<span style="color: #ffffff;">)</span>
+)
 </pre>
 </div>
 </div>
@@ -485,13 +485,13 @@ CSS 框架或者引擎，都算是原子化 CSS。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-css"><span style="color: #feacd0;">.mt-5</span> <span style="color: #ffffff;">{</span>
+<pre class="src src-css"><span style="color: #feacd0;">.mt-5</span> {
     <span style="color: #b6a0ff;">margin-top</span>: 5px;
-<span style="color: #ffffff;">}</span>
+}
 
-<span style="color: #feacd0;">.pt-10</span> <span style="color: #ffffff;">{</span>
+<span style="color: #feacd0;">.pt-10</span> {
     <span style="color: #b6a0ff;">padding-top</span>: 10px;
-<span style="color: #ffffff;">}</span>
+}
 </pre>
 </div>
 
@@ -518,10 +518,10 @@ CSS 以满足使用的需求，到后面当定义的 CSS 满足了大部分的�
 定义原子化 CSS 多少有些麻烦，但目前存在很多工具，可以根据一些规则自动生成对应的 CSS，例如  <a href="https://github.com/unocss/unocss">UnoCSS</a> ：
 </p>
 <div class="org-src-container">
-<pre class="src src-js">rules: <span style="color: #ffffff;">[</span>
-  <span style="color: #ff66ff;">[</span><span style="color: #79a8ff;">/^m-(</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">d</span><span style="color: #79a8ff;">+)$/</span>, <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">[</span>, d<span style="color: #ff6b55;">]</span><span style="color: #00eff0;">)</span> =&gt; <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">{</span> margin: <span style="color: #79a8ff;">`${d / 4}rem`</span> <span style="color: #ff6b55;">}</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">]</span>,
-  <span style="color: #ff66ff;">[</span><span style="color: #79a8ff;">/^p-(</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">d</span><span style="color: #79a8ff;">+)$/</span>, match =&gt; <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">{</span> padding: <span style="color: #79a8ff;">`${match[1] / 4}rem`</span> <span style="color: #ff6b55;">}</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">]</span>,
-<span style="color: #ffffff;">]</span>
+<pre class="src src-js">rules: [
+  [<span style="color: #79a8ff;">/^m-(</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">d</span><span style="color: #79a8ff;">+)$/</span>, ([, d]) =&gt; ({ margin: <span style="color: #79a8ff;">`${d / 4}rem`</span> })],
+  [<span style="color: #79a8ff;">/^p-(</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">d</span><span style="color: #79a8ff;">+)$/</span>, match =&gt; ({ padding: <span style="color: #79a8ff;">`${match[1] / 4}rem`</span> })],
+]
 </pre>
 </div>
 
@@ -602,6 +602,7 @@ CSS 定义。当需要添加样式时，也可以很容易地想到对应的类�
 </div>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>

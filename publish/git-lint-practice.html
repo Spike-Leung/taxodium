@@ -165,12 +165,12 @@
 More detailed explanatory text, if necessary. Wrap it to about 72
 characters or so. In some contexts, the first line is treated as the
 subject of the commit and the rest of the text as the body. The
-blank line separating the summary from the body is critical <span style="color: #ffffff;">(</span>unless
-you omit the body entirely<span style="color: #ffffff;">)</span>; various tools like <span style="color: #f78fe7;">`log`</span>, <span style="color: #f78fe7;">`shortlog`</span>
+blank line separating the summary from the body is critical (unless
+you omit the body entirely); various tools like <span style="color: #f78fe7;">`log`</span>, <span style="color: #f78fe7;">`shortlog`</span>
 and <span style="color: #f78fe7;">`rebase`</span> can get confused if you run the two together.
 
 Explain the problem that this commit is solving. Focus on why you
-are making this change as opposed to how <span style="color: #ffffff;">(</span>the code explains that<span style="color: #ffffff;">)</span>.
+are making this change as opposed to how (the code explains that).
 Are there side effects or other unintuitive consequences of this
 change? Here<span style="color: #79a8ff;">'s the place to explain them.
 
@@ -214,12 +214,12 @@ See also: #456, #789</span>
 可以在项目中根目录创建一份 <code>.gittemplate.txt</code> , 然后写入模板内容：
 </p>
 <div class="org-src-container">
-<pre class="src src-bash">Subject line <span style="color: #ffffff;">(</span>try to keep under 50 characters<span style="color: #ffffff;">)</span>
+<pre class="src src-bash">Subject line (try to keep under 50 characters)
 
 Multi-line description of commit,
 feel free to be detailed.
 
-<span style="color: #ffffff;">[</span>Ticket: X<span style="color: #ffffff;">]</span>
+[Ticket: X]
 </pre>
 </div>
 
@@ -235,12 +235,12 @@ feel free to be detailed.
 然后下次提交时，提交信息就会变成：
 </p>
 <div class="org-src-container">
-<pre class="src src-bash">Subject line <span style="color: #ffffff;">(</span>try to keep under 50 characters<span style="color: #ffffff;">)</span>
+<pre class="src src-bash">Subject line (try to keep under 50 characters)
 
 Multi-line description of commit,
 feel free to be detailed.
 
-<span style="color: #ffffff;">[</span>Ticket: X<span style="color: #ffffff;">]</span>
+[Ticket: X]
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Please enter the commit message for your changes. Lines starting
 </span><span style="color: #969896;"># </span><span style="color: #db7b5f;">with '#' will be ignored, and an empty message aborts the commit.
 </span><span style="color: #969896;"># </span><span style="color: #db7b5f;">On branch master
@@ -346,7 +346,7 @@ githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本
 </p>
 <div class="org-src-container">
 <pre class="src src-shell"><span style="color: #969896;">#</span><span style="color: #db7b5f;">!/bin/</span><span style="color: #b6a0ff;">sh</span><span style="color: #db7b5f;">
-</span><span style="color: #00d3d0;">COMMIT_ID</span>=$<span style="color: #ffffff;">(</span>git log -n 1 --pretty=format:<span style="color: #79a8ff;">"%H"</span> main<span style="color: #ffffff;">)</span>
+</span><span style="color: #00d3d0;">COMMIT_ID</span>=$(git log -n 1 --pretty=format:<span style="color: #79a8ff;">"%H"</span> main)
 
 <span style="color: #b6a0ff;">if</span> git merge-base --is-ancestor $<span style="color: #00d3d0;">COMMIT_ID</span> HEAD
 <span style="color: #b6a0ff;">then</span>
@@ -386,7 +386,7 @@ githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #ffffff;">[</span>core<span style="color: #ffffff;">]</span>
+<pre class="src src-bash">[core]
         <span style="color: #00d3d0;">hooksPath</span> = .husky
 </pre>
 </div>
@@ -423,7 +423,7 @@ drwxrwxr-x 2 spike spike 4096 Oct 25 09:14 _
 <pre class="src src-shell"><span style="color: #969896;">#</span><span style="color: #db7b5f;">!/usr/bin/</span><span style="color: #b6a0ff;">env</span><span style="color: #db7b5f;"> sh
 </span>. <span style="color: #79a8ff;">"$(dirname -- "$0")/_/husky.sh"</span>
 
-npx --no -- commitlint --edit $<span style="color: #ffffff;">{</span><span style="color: #00d3d0;">1</span><span style="color: #ffffff;">}</span>
+npx --no -- commitlint --edit ${<span style="color: #00d3d0;">1</span>}
 </pre>
 </div>
 </div>
@@ -446,9 +446,9 @@ npx lint-staged
 <code>.lintstagedrc.json</code>:
 </p>
 <div class="org-src-container">
-<pre class="src src-json"><span style="color: #ffffff;">{</span>
-  <span style="color: #b6a0ff;">"src/*.{js,vue}"</span>: <span style="color: #ff66ff;">[</span><span style="color: #79a8ff;">"prettier --write"</span>, <span style="color: #79a8ff;">"eslint"</span><span style="color: #ff66ff;">]</span>
-<span style="color: #ffffff;">}</span>
+<pre class="src src-json">{
+  <span style="color: #b6a0ff;">"src/*.{js,vue}"</span>: [<span style="color: #79a8ff;">"prettier --write"</span>, <span style="color: #79a8ff;">"eslint"</span>]
+}
 </pre>
 </div>
 
@@ -464,7 +464,7 @@ npx lint-staged
 <pre class="src src-shell"><span style="color: #969896;">#</span><span style="color: #db7b5f;">!/bin/</span><span style="color: #b6a0ff;">sh</span><span style="color: #db7b5f;">
 </span><span style="color: #969896;"># </span><span style="color: #db7b5f;">&#33719;&#21462; main &#20998;&#25903;&#26368;&#26032;&#30340;&#25552;&#20132;
 </span>git fetch
-<span style="color: #00d3d0;">COMMIT_ID</span>=$<span style="color: #ffffff;">(</span>git log -n 1 --pretty=format:<span style="color: #79a8ff;">"%H"</span> origin/main<span style="color: #ffffff;">)</span>
+<span style="color: #00d3d0;">COMMIT_ID</span>=$(git log -n 1 --pretty=format:<span style="color: #79a8ff;">"%H"</span> origin/main)
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">&#21028;&#26029; main &#30340;&#26368;&#26032;&#25552;&#20132; &#26159;&#19981;&#26159; &#24403;&#21069;&#30340;&#26368;&#26032;&#25552;&#20132; (HEAD) &#30340;&#19978;&#28216;
 </span><span style="color: #b6a0ff;">if</span> git merge-base --is-ancestor $<span style="color: #00d3d0;">COMMIT_ID</span> HEAD
@@ -570,6 +570,7 @@ changeset 就会帮你把所有的 changeset 合并到 <code>CHANGELOG.md</code>
 </div>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>

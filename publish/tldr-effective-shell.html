@@ -412,7 +412,7 @@ Functions are powerful ways to write logic but will normally be shell-specific.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">wsl_proxy_on</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
+<pre class="src src-bash"><span style="color: #feacd0;">wsl_proxy_on</span>() {
     <span style="color: #f78fe7;">local</span> <span style="color: #00d3d0;">port</span>=10810
     <span style="color: #f78fe7;">export</span> <span style="color: #00d3d0;">windows_host</span>=<span style="color: #f78fe7;">`cat /etc/resolv.conf | grep nameserver | cut -d' ' -f 2`</span>
     <span style="color: #f78fe7;">export</span> <span style="color: #00d3d0;">ALL_PROXY</span>=socks5://$<span style="color: #00d3d0;">windows_host</span>:$<span style="color: #00d3d0;">port</span>
@@ -421,12 +421,12 @@ Functions are powerful ways to write logic but will normally be shell-specific.
     <span style="color: #f78fe7;">export</span> <span style="color: #00d3d0;">HTTPS_PROXY</span>=$<span style="color: #00d3d0;">ALL_PROXY</span>
     <span style="color: #f78fe7;">export</span> <span style="color: #00d3d0;">https_proxy</span>=$<span style="color: #00d3d0;">ALL_PROXY</span>
     <span style="color: #f78fe7;">echo</span> -e <span style="color: #79a8ff;">"proxy on"</span>
-<span style="color: #ffffff;">}</span>
+}
 
-<span style="color: #feacd0;">wsl_proxy_off</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
+<span style="color: #feacd0;">wsl_proxy_off</span>() {
     <span style="color: #f78fe7;">unset</span> ALL_PROXY HTTPS_PROXY https_proxy HTTP_PROXY http_proxy
     <span style="color: #f78fe7;">echo</span> -e <span style="color: #79a8ff;">"proxy off"</span>
-<span style="color: #ffffff;">}</span>
+}
 </pre>
 </div>
 </div>
@@ -725,13 +725,13 @@ space and then passes it to the <code>echo</code> command.
 
 <div class="org-src-container">
 <pre class="src src-shell"><span style="color: #969896;"># </span><span style="color: #db7b5f;">&#23558;&#25214;&#21040;&#30340;&#25991;&#20214;&#36890;&#36807; xargs &#25340;&#25509;&#21518;&#65292;&#20256;&#32473; rm &#25191;&#34892;
-</span>touch file<span style="color: #ffffff;">{</span>1..100<span style="color: #ffffff;">}</span>.txt
+</span>touch file{1..100}.txt
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">fail
 </span>find . -empty | rm
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">success
 </span>find . -empty | xargs rm
 
-touch <span style="color: #79a8ff;">"chapter "</span><span style="color: #ffffff;">{</span>1,2,3<span style="color: #ffffff;">}</span>.md
+touch <span style="color: #79a8ff;">"chapter "</span>{1,2,3}.md
 find . -type f
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">./chapter 1.md
 </span><span style="color: #969896;"># </span><span style="color: #db7b5f;">./chapter 2.md
@@ -743,7 +743,7 @@ find . -type f
 </span><span style="color: #969896;"># </span><span style="color: #db7b5f;">&#36825;&#20040;&#20570;&#65292;&#21487;&#20197;&#36991;&#20813;&#19968;&#20123;&#31354;&#26684;&#65292;tab&#65292;&#24341;&#21495;&#36896;&#25104;&#30340;&#38382;&#39064;&#65292;&#24314;&#35758;&#24635;&#26159;&#24102;&#19978;&#36825;&#20004;&#20010;&#36873;&#39033;
 </span>find . -type f -print0 | xargs -0 -t rm
 
-touch file<span style="color: #ffffff;">{</span>1..5<span style="color: #ffffff;">}</span>
+touch file{1..5}
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">&#21578;&#35785; xargs &#26368;&#22810;&#29992;&#22810;&#23569;&#34892;&#21435;&#25191;&#34892;&#21629;&#20196;
 </span>find . -type f | xargs -L 3 echo
 ./file1 ./file2 ./file3
@@ -752,7 +752,7 @@ touch file<span style="color: #ffffff;">{</span>1..5<span style="color: #ffffff;
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">&#40664;&#35748; xargs &#23558;&#21442;&#25968;&#25918;&#21040;&#26368;&#21518;
 </span><span style="color: #969896;"># </span><span style="color: #db7b5f;">&#26377;&#26102;&#24819;&#25226;&#21442;&#25968;&#25918;&#22312;&#21035;&#30340;&#22320;&#26041;&#65292;&#21487;&#20197;&#20351;&#29992; -I &#36873;&#39033;
 </span><span style="color: #969896;"># </span><span style="color: #db7b5f;">-I {} &#34920;&#31034;&#23558;&#21442;&#25968;&#25226; {} &#24403;&#20316; placeholder&#65292;&#28982;&#21518;&#21487;&#20197;&#22312;&#21518;&#38754;&#20219;&#20309;&#22320;&#26041;&#22810;&#27425;&#21435;&#29992;
-</span>find . -name <span style="color: #79a8ff;">"*.txt"</span> -print0 | xargs -0 -t -I <span style="color: #ffffff;">{}</span> cp <span style="color: #ffffff;">{}</span> ~/backups
+</span>find . -name <span style="color: #79a8ff;">"*.txt"</span> -print0 | xargs -0 -t -I {} cp {} ~/backups
 cp ./file2.txt /home/dwmkerr/backups
 cp ./file3.txt /home/dwmkerr/backups
 cp ./file1.txt /home/dwmkerr/backups
@@ -1265,7 +1265,7 @@ together, we get 'sharp bang', which is shortened to 'shebang'.
 <div class="org-src-container">
 <pre class="src src-bash"><span style="color: #969896;">#</span><span style="color: #db7b5f;">!/usr/bin/</span><span style="color: #b6a0ff;">python3</span><span style="color: #db7b5f;">
 </span>
-<span style="color: #f78fe7;">print</span><span style="color: #ffffff;">(</span><span style="color: #79a8ff;">'Hello from Python'</span><span style="color: #ffffff;">)</span>
+<span style="color: #f78fe7;">print</span>(<span style="color: #79a8ff;">'Hello from Python'</span>)
 </pre>
 </div>
 
@@ -1279,7 +1279,7 @@ together, we get 'sharp bang', which is shortened to 'shebang'.
 <div class="org-src-container">
 <pre class="src src-bash"><span style="color: #969896;">#</span><span style="color: #db7b5f;">!/usr/bin/</span><span style="color: #b6a0ff;">node</span><span style="color: #db7b5f;">
 </span>
-<span style="color: #feacd0;">console.log</span><span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"Hello from Node.js"</span><span style="color: #ffffff;">)</span>;
+<span style="color: #feacd0;">console.log</span>(<span style="color: #79a8ff;">"Hello from Node.js"</span>);
 </pre>
 </div>
 </div>
@@ -1460,7 +1460,7 @@ process, you will likely want to export your variable.
 </span><span style="color: #00d3d0;">password</span>=<span style="color: #79a8ff;">"somethingsecret"</span>
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">$(...) execute a set of commands in a 'sub shell'
-</span><span style="color: #00d3d0;">masked_password</span>=$<span style="color: #ffffff;">(</span><span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"$password"</span> | sed <span style="color: #79a8ff;">'s/./*/g'</span><span style="color: #ffffff;">)</span>
+</span><span style="color: #00d3d0;">masked_password</span>=$(<span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"$password"</span> | sed <span style="color: #79a8ff;">'s/./*/g'</span>)
 
 <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"Setting password '${masked_password}'..."</span>
 
@@ -1494,7 +1494,7 @@ can be used by either shell.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #00d3d0;">days</span>=<span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"Monday"</span> <span style="color: #79a8ff;">"Tuesday"</span> <span style="color: #79a8ff;">"Wednesday"</span> <span style="color: #79a8ff;">"Thursday"</span> <span style="color: #79a8ff;">"Friday"</span> <span style="color: #79a8ff;">"Saturday"</span> <span style="color: #79a8ff;">"Sunday"</span><span style="color: #ffffff;">)</span>
+<pre class="src src-bash"><span style="color: #00d3d0;">days</span>=(<span style="color: #79a8ff;">"Monday"</span> <span style="color: #79a8ff;">"Tuesday"</span> <span style="color: #79a8ff;">"Wednesday"</span> <span style="color: #79a8ff;">"Thursday"</span> <span style="color: #79a8ff;">"Friday"</span> <span style="color: #79a8ff;">"Saturday"</span> <span style="color: #79a8ff;">"Sunday"</span>)
 
 <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"The first day is: ${days[0]}"</span>
 <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"The last day is: ${days[6]}"</span>
@@ -1580,8 +1580,8 @@ can be used by either shell.
 </span><span style="color: #f78fe7;">declare</span> -A book
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Set some values on the array.
-</span><span style="color: #00d3d0;">book</span><span style="color: #ffffff;">[</span>title<span style="color: #ffffff;">]</span>=<span style="color: #79a8ff;">"Effective Shell"</span>
-<span style="color: #00d3d0;">book</span><span style="color: #ffffff;">[</span>author<span style="color: #ffffff;">]</span>=<span style="color: #79a8ff;">"Dave Kerr"</span>
+</span><span style="color: #00d3d0;">book</span>[title]=<span style="color: #79a8ff;">"Effective Shell"</span>
+<span style="color: #00d3d0;">book</span>[author]=<span style="color: #79a8ff;">"Dave Kerr"</span>
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Show one of the values.
 </span><span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"Book details: ${book[title]} - ${book[author]}"</span>
@@ -1786,7 +1786,7 @@ variable name explicitly we make our script easier to follow.
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">The -s (silent) flag can be used to hide the input as it is being written.
 </span><span style="color: #f78fe7;">read</span> -s -p <span style="color: #79a8ff;">"Enter a new password: "</span> password
-<span style="color: #00d3d0;">masked_password</span>=$<span style="color: #ffffff;">(</span><span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"$password"</span> | sed <span style="color: #79a8ff;">'s/./*/g'</span><span style="color: #ffffff;">)</span>
+<span style="color: #00d3d0;">masked_password</span>=$(<span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"$password"</span> | sed <span style="color: #79a8ff;">'s/./*/g'</span>)
 <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">""</span>
 <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"Your password is: $masked_password"</span>
 
@@ -1934,14 +1934,14 @@ the <code>fi</code> keyword, which is <code>if</code> written backwards.
 <h4 id="7786dcb8-b470-48b5-98fe-d6f33a105b56"><a href="https://effective-shell.com/part-4-shell-scripting/mastering-conditional-logic#the-test-command">The Test Command</a></h4>
 <div class="outline-text-4" id="text-7786dcb8-b470-48b5-98fe-d6f33a105b56">
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff;">if</span> <span style="color: #e78c45; font-weight: bold;">!</span> test -d ~/backups
+<pre class="src src-bash"><span style="color: #b6a0ff;">if</span> <span style="color: #de935f; font-weight: bold;">!</span> test -d ~/backups
 <span style="color: #b6a0ff;">then</span>
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"Creating backups folder"</span>
     mkdir ~/backups
 <span style="color: #b6a0ff;">fi</span>
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">&#31616;&#20889;
-</span><span style="color: #b6a0ff;">if</span> <span style="color: #e78c45; font-weight: bold;">!</span> <span style="color: #ffffff;">[</span> -d ~/backups <span style="color: #ffffff;">]</span>
+</span><span style="color: #b6a0ff;">if</span> <span style="color: #de935f; font-weight: bold;">!</span> [ -d ~/backups ]
 <span style="color: #b6a0ff;">then</span>
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"Creating backups folder"</span>
     mkdir ~/backups
@@ -1950,9 +1950,9 @@ the <code>fi</code> keyword, which is <code>if</code> written backwards.
 </div>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff;">if</span> <span style="color: #ffffff;">[</span> -x /usr/local/bin/common <span style="color: #ffffff;">]</span>; <span style="color: #b6a0ff;">then</span>
+<pre class="src src-bash"><span style="color: #b6a0ff;">if</span> [ -x /usr/local/bin/common ]; <span style="color: #b6a0ff;">then</span>
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"The 'common' command has been installed and is executable."</span>
-<span style="color: #b6a0ff;">elif</span> <span style="color: #ffffff;">[</span> -e /usr/local/bin/common <span style="color: #ffffff;">]</span>; <span style="color: #b6a0ff;">then</span>
+<span style="color: #b6a0ff;">elif</span> [ -e /usr/local/bin/common ]; <span style="color: #b6a0ff;">then</span>
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"The 'common' command has been installed and is not executable."</span>
 <span style="color: #b6a0ff;">else</span>
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"The 'common' command has not been installed."</span>
@@ -1962,12 +1962,12 @@ the <code>fi</code> keyword, which is <code>if</code> written backwards.
 
 <div class="org-src-container">
 <pre class="src src-bash"><span style="color: #969896;"># </span><span style="color: #db7b5f;">&amp;&amp; 'and' || 'or'
-</span><span style="color: #b6a0ff;">if</span> <span style="color: #ffffff;">[</span> $<span style="color: #00d3d0;">year</span> -ge 1980 <span style="color: #ffffff;">]</span> &amp;&amp; <span style="color: #ffffff;">[</span> $<span style="color: #00d3d0;">year</span> -lt 1990 <span style="color: #ffffff;">]</span>; <span style="color: #b6a0ff;">then</span>
+</span><span style="color: #b6a0ff;">if</span> [ $<span style="color: #00d3d0;">year</span> -ge 1980 ] &amp;&amp; [ $<span style="color: #00d3d0;">year</span> -lt 1990 ]; <span style="color: #b6a0ff;">then</span>
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"$year is in the 1980s"</span>
 <span style="color: #b6a0ff;">fi</span>
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">-a 'and' -o 'or'
-</span><span style="color: #b6a0ff;">if</span> <span style="color: #ffffff;">[</span> $<span style="color: #00d3d0;">year</span> -ge 1980 <span style="color: #ffffff;">]</span> &amp;&amp; <span style="color: #ffffff;">[</span> $<span style="color: #00d3d0;">year</span> -lt 1990 <span style="color: #ffffff;">]</span>; <span style="color: #b6a0ff;">then</span>
+</span><span style="color: #b6a0ff;">if</span> [ $<span style="color: #00d3d0;">year</span> -ge 1980 ] &amp;&amp; [ $<span style="color: #00d3d0;">year</span> -lt 1990 ]; <span style="color: #b6a0ff;">then</span>
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"$year is in the 1980s"</span>
 <span style="color: #b6a0ff;">fi</span>
 
@@ -2148,10 +2148,10 @@ the <code>fi</code> keyword, which is <code>if</code> written backwards.
 
 <span style="color: #f78fe7;">read</span> -p <span style="color: #79a8ff;">"Yes or no: "</span> response
 <span style="color: #b6a0ff;">case</span> <span style="color: #79a8ff;">"${response}"</span><span style="color: #b6a0ff;"> in</span>
-    <span style="color: #ffffff;">[</span>yY<span style="color: #ffffff;">]</span>*)
+    [yY]*)
         <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"You have (probably) confirmed"</span>
         ;;
-    <span style="color: #ffffff;">[</span>nN<span style="color: #ffffff;">]</span>*)
+    [nN]*)
         <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"You have (probably) denied"</span>
         ;;
     *)
@@ -2192,8 +2192,8 @@ the <code>fi</code> keyword, which is <code>if</code> written backwards.
 <li><a id="b4c13ae7-7708-4bc2-824e-40df89f49087"></a><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---arrays">For Loops - Arrays</a><br>
 <div class="outline-text-5" id="text-b4c13ae7-7708-4bc2-824e-40df89f49087">
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #00d3d0;">days</span>=<span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"Monday"</span> <span style="color: #79a8ff;">"Tuesday"</span> <span style="color: #79a8ff;">"Wednesday"</span> <span style="color: #79a8ff;">"Thursday"</span> <span style="color: #79a8ff;">"Friday"</span> <span style="color: #79a8ff;">"Saturday"</span> <span style="color: #79a8ff;">"Sunday"</span><span style="color: #ffffff;">)</span>
-<span style="color: #b6a0ff;">for</span> day<span style="color: #b6a0ff;"> in</span> $<span style="color: #ffffff;">{</span><span style="color: #00d3d0;">days</span><span style="color: #ff66ff;">[</span>@<span style="color: #ff66ff;">]</span><span style="color: #ffffff;">}</span>
+<pre class="src src-bash"><span style="color: #00d3d0;">days</span>=(<span style="color: #79a8ff;">"Monday"</span> <span style="color: #79a8ff;">"Tuesday"</span> <span style="color: #79a8ff;">"Wednesday"</span> <span style="color: #79a8ff;">"Thursday"</span> <span style="color: #79a8ff;">"Friday"</span> <span style="color: #79a8ff;">"Saturday"</span> <span style="color: #79a8ff;">"Sunday"</span>)
+<span style="color: #b6a0ff;">for</span> day<span style="color: #b6a0ff;"> in</span> ${<span style="color: #00d3d0;">days</span>[@]}
 <span style="color: #b6a0ff;">do</span>
     <span style="color: #f78fe7;">echo</span> -n <span style="color: #79a8ff;">"$day, "</span>
 <span style="color: #b6a0ff;">done</span>
@@ -2266,7 +2266,7 @@ does not match any files, the shell simply leaves the pattern as-is.
 <pre class="src src-bash"><span style="color: #b6a0ff;">for</span> script<span style="color: #b6a0ff;"> in</span> ~/bad-shell/scripts/*.sh
 <span style="color: #b6a0ff;">do</span>
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">If the file / folder doesn't exist, skip it.
-</span>    <span style="color: #b6a0ff;">if</span> <span style="color: #e78c45; font-weight: bold;">!</span> <span style="color: #ffffff;">[</span> -e <span style="color: #79a8ff;">"$script"</span> <span style="color: #ffffff;">]</span>; <span style="color: #b6a0ff;">then continue</span>; <span style="color: #b6a0ff;">fi</span>
+</span>    <span style="color: #b6a0ff;">if</span> <span style="color: #de935f; font-weight: bold;">!</span> [ -e <span style="color: #79a8ff;">"$script"</span> ]; <span style="color: #b6a0ff;">then continue</span>; <span style="color: #b6a0ff;">fi</span>
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"Found: $script"</span>
 <span style="color: #b6a0ff;">done</span>
 </pre>
@@ -2290,7 +2290,7 @@ files, then loop through the results.
 </span>ln -s ~/effective shell ~/effective<span style="color: #79a8ff;">\ </span>shell
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Find all symlinks and print each one.
-</span><span style="color: #00d3d0;">links</span>=$<span style="color: #ffffff;">(</span>find ~ -type l<span style="color: #ffffff;">)</span>
+</span><span style="color: #00d3d0;">links</span>=$(find ~ -type l)
 <span style="color: #b6a0ff;">for</span> link<span style="color: #b6a0ff;"> in</span> $<span style="color: #00d3d0;">links</span>
 <span style="color: #b6a0ff;">do</span>
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"Found Link: $link"</span>
@@ -2313,7 +2313,7 @@ files, then loop through the results.
 </span><span style="color: #00d3d0;">IFS</span>=$<span style="color: #79a8ff;">'\n'</span>
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Find all symlinks and print each one.
-</span><span style="color: #00d3d0;">links</span>=$<span style="color: #ffffff;">(</span>find ~ -type l<span style="color: #ffffff;">)</span>
+</span><span style="color: #00d3d0;">links</span>=$(find ~ -type l)
 <span style="color: #b6a0ff;">for</span> link<span style="color: #b6a0ff;"> in</span> $<span style="color: #00d3d0;">links</span>
 <span style="color: #b6a0ff;">do</span>
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"Found Link: $link"</span>
@@ -2354,10 +2354,10 @@ it to generate a sequence of values.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash">touch <span style="color: #ffffff;">{</span>coffee,tea,milkshake<span style="color: #ffffff;">}</span>-menu.txt
+<pre class="src src-bash">touch {coffee,tea,milkshake}-menu.txt
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">loop through a sequence of values or a range of numbers with 'increment'
-</span><span style="color: #b6a0ff;">for</span> i<span style="color: #b6a0ff;"> in</span> <span style="color: #ffffff;">{</span>0..25..5<span style="color: #ffffff;">}</span>
+</span><span style="color: #b6a0ff;">for</span> i<span style="color: #b6a0ff;"> in</span> {0..25..5}
 <span style="color: #b6a0ff;">do</span>
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"Loop ${i}"</span>
 <span style="color: #b6a0ff;">done</span>
@@ -2397,17 +2397,17 @@ condition is met.
 
 <div class="org-src-container">
 <pre class="src src-bash"><span style="color: #969896;"># </span><span style="color: #db7b5f;">Create an empty array of random numbers.
-</span><span style="color: #00d3d0;">random_numbers</span>=<span style="color: #ffffff;">()</span>
+</span><span style="color: #00d3d0;">random_numbers</span>=()
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">As long as the length of the array is less than five, continue to loop.
-</span><span style="color: #b6a0ff;">while</span> <span style="color: #ffffff;">[</span> $<span style="color: #ff66ff;">{</span>#<span style="color: #00d3d0;">random_numbers</span><span style="color: #00eff0;">[</span>@<span style="color: #00eff0;">]</span><span style="color: #ff66ff;">}</span> -lt 5 <span style="color: #ffffff;">]</span>
+</span><span style="color: #b6a0ff;">while</span> [ ${#<span style="color: #00d3d0;">random_numbers</span>[@]} -lt 5 ]
 <span style="color: #b6a0ff;">do</span>
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">Get a random number, ask the user if they want to add it to the array.
 </span>    <span style="color: #00d3d0;">random_number</span>=$<span style="color: #00d3d0;">RANDOM</span>
     <span style="color: #f78fe7;">read</span> -p <span style="color: #79a8ff;">"Add $random_number to the list? (y/n): "</span> choice
 
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">If the user chose 'y' add the random number to the array.
-</span>    <span style="color: #b6a0ff;">if</span> <span style="color: #ffffff;">[</span> <span style="color: #79a8ff;">"$choice"</span> = <span style="color: #79a8ff;">"y"</span> <span style="color: #ffffff;">]</span>; <span style="color: #b6a0ff;">then</span> <span style="color: #00d3d0;">random_numbers</span>+=<span style="color: #ffffff;">(</span>$<span style="color: #00d3d0;">random_number</span><span style="color: #ffffff;">)</span>; <span style="color: #b6a0ff;">fi</span>
+</span>    <span style="color: #b6a0ff;">if</span> [ <span style="color: #79a8ff;">"$choice"</span> = <span style="color: #79a8ff;">"y"</span> ]; <span style="color: #b6a0ff;">then</span> <span style="color: #00d3d0;">random_numbers</span>+=($<span style="color: #00d3d0;">random_number</span>); <span style="color: #b6a0ff;">fi</span>
 <span style="color: #b6a0ff;">done</span>
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Show the contents of the array.
@@ -2451,7 +2451,7 @@ processes it, and then starts again.
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"0) Quit"</span>
 
     <span style="color: #f78fe7;">read</span> -p <span style="color: #79a8ff;">"What will you do: "</span> choice
-    <span style="color: #b6a0ff;">if</span> <span style="color: #ffffff;">[</span> $<span style="color: #00d3d0;">choice</span> -eq 0 <span style="color: #ffffff;">]</span>; <span style="color: #b6a0ff;">then</span>
+    <span style="color: #b6a0ff;">if</span> [ $<span style="color: #00d3d0;">choice</span> -eq 0 ]; <span style="color: #b6a0ff;">then</span>
         <span style="color: #b6a0ff;">exit</span>
     <span style="color: #b6a0ff;">fi</span>
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">The rest of the game logic would go here!
@@ -2504,7 +2504,7 @@ simply inverting the test commands you are running.
 </span><span style="color: #00d3d0;">random_number</span>=<span style="color: #79a8ff;">""</span>
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Keep on looping until the random number is at least 15 characters long.
-</span><span style="color: #b6a0ff;">until</span> <span style="color: #ffffff;">[</span> <span style="color: #79a8ff;">"${#random_number}"</span> -ge 15 <span style="color: #ffffff;">]</span>
+</span><span style="color: #b6a0ff;">until</span> [ <span style="color: #79a8ff;">"${#random_number}"</span> -ge 15 ]
 <span style="color: #b6a0ff;">do</span>
     <span style="color: #00d3d0;">random_number</span>+=$<span style="color: #00d3d0;">RANDOM</span>
 <span style="color: #b6a0ff;">done</span>
@@ -2512,7 +2512,7 @@ simply inverting the test commands you are running.
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">while loop
 </span><span style="color: #00d3d0;">random_number</span>=<span style="color: #79a8ff;">""</span>
-<span style="color: #b6a0ff;">while</span> <span style="color: #ffffff;">[</span> <span style="color: #79a8ff;">"${#random_number}"</span> -lt 15 <span style="color: #ffffff;">]</span>
+<span style="color: #b6a0ff;">while</span> [ <span style="color: #79a8ff;">"${#random_number}"</span> -lt 15 ]
 <span style="color: #b6a0ff;">do</span>
     <span style="color: #00d3d0;">random_number</span>+=$<span style="color: #00d3d0;">RANDOM</span>
 <span style="color: #b6a0ff;">done</span>
@@ -2529,16 +2529,16 @@ simply inverting the test commands you are running.
 <span style="color: #b6a0ff;">for</span> file<span style="color: #b6a0ff;"> in</span> ~/*
 <span style="color: #b6a0ff;">do</span>
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">If the file is not a directory, or it cannot be searched, skip it.
-</span>    <span style="color: #b6a0ff;">if</span> <span style="color: #e78c45; font-weight: bold;">!</span> <span style="color: #ffffff;">[</span> -d <span style="color: #79a8ff;">"$file"</span> <span style="color: #ffffff;">]</span> || <span style="color: #e78c45; font-weight: bold;">!</span> <span style="color: #ffffff;">[</span> -x <span style="color: #79a8ff;">"$file"</span> <span style="color: #ffffff;">]</span>; <span style="color: #b6a0ff;">then continue</span>; <span style="color: #b6a0ff;">fi</span>
+</span>    <span style="color: #b6a0ff;">if</span> <span style="color: #de935f; font-weight: bold;">!</span> [ -d <span style="color: #79a8ff;">"$file"</span> ] || <span style="color: #de935f; font-weight: bold;">!</span> [ -x <span style="color: #79a8ff;">"$file"</span> ]; <span style="color: #b6a0ff;">then continue</span>; <span style="color: #b6a0ff;">fi</span>
 
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">Ask the user if they want to see the contents.
 </span>    <span style="color: #f78fe7;">read</span> -p <span style="color: #79a8ff;">"Show: $file? [y/n/c]: "</span> choice
 
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">If the user chose 'c' for cancel, break.
-</span>    <span style="color: #b6a0ff;">if</span> <span style="color: #ffffff;">[</span> <span style="color: #79a8ff;">"$choice"</span> = <span style="color: #79a8ff;">"c"</span> <span style="color: #ffffff;">]</span>; <span style="color: #b6a0ff;">then break</span>; <span style="color: #b6a0ff;">fi</span>
+</span>    <span style="color: #b6a0ff;">if</span> [ <span style="color: #79a8ff;">"$choice"</span> = <span style="color: #79a8ff;">"c"</span> ]; <span style="color: #b6a0ff;">then break</span>; <span style="color: #b6a0ff;">fi</span>
 
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">If the user choice 'y' to show contents, list them.
-</span>    <span style="color: #b6a0ff;">if</span> <span style="color: #ffffff;">[</span> <span style="color: #79a8ff;">"$choice"</span> = <span style="color: #79a8ff;">"y"</span> <span style="color: #ffffff;">]</span>; <span style="color: #b6a0ff;">then</span> ls <span style="color: #79a8ff;">"$file"</span>; <span style="color: #b6a0ff;">fi</span>
+</span>    <span style="color: #b6a0ff;">if</span> [ <span style="color: #79a8ff;">"$choice"</span> = <span style="color: #79a8ff;">"y"</span> ]; <span style="color: #b6a0ff;">then</span> ls <span style="color: #79a8ff;">"$file"</span>; <span style="color: #b6a0ff;">fi</span>
 <span style="color: #b6a0ff;">done</span>
 </pre>
 </div>
@@ -2560,18 +2560,18 @@ can call at any time.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash">&lt;function-name&gt; <span style="color: #ffffff;">{</span>
+<pre class="src src-bash">&lt;function-name&gt; {
     &lt;function-command 1&gt;
     &lt;function-command 2&gt;
     &lt;function-command n&gt;
-<span style="color: #ffffff;">}</span>
+}
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">title</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
+<pre class="src src-bash"><span style="color: #feacd0;">title</span>() {
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"My Script version 1.0"</span>
-<span style="color: #ffffff;">}</span>
+}
 </pre>
 </div>
 
@@ -2589,14 +2589,14 @@ can call at any time.
 <span style="color: #00d3d0;">succeeded</span>=0
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Create a function that writes a message and changes a variable.
-</span><span style="color: #feacd0;">title</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
+</span><span style="color: #feacd0;">title</span>() {
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">Note that we can read variables...
 </span>    <span style="color: #00d3d0;">title_message</span>=<span style="color: #79a8ff;">"${title} - version ${version}"</span>
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"${title_message}"</span>
 
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">...and set them as well.
 </span>    <span style="color: #00d3d0;">succeeded</span>=1
-<span style="color: #ffffff;">}</span>
+}
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Show the value of 'succeeded' before and after the function call.
 </span><span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"Succeeded: ${succeeded}"</span>
@@ -2635,14 +2635,14 @@ errors.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">run_loop</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
+<pre class="src src-bash"><span style="color: #feacd0;">run_loop</span>() {
     <span style="color: #f78fe7;">local</span> <span style="color: #00d3d0;">count</span>=0
-    <span style="color: #b6a0ff;">for</span> i<span style="color: #b6a0ff;"> in</span> <span style="color: #ff66ff;">{</span>1..10<span style="color: #ff66ff;">}</span>; <span style="color: #b6a0ff;">do</span>
+    <span style="color: #b6a0ff;">for</span> i<span style="color: #b6a0ff;"> in</span> {1..10}; <span style="color: #b6a0ff;">do</span>
         <span style="color: #969896;"># </span><span style="color: #db7b5f;">Update our counter.
-</span>        <span style="color: #00d3d0;">count</span>=$<span style="color: #ff66ff;">(</span><span style="color: #00eff0;">(</span>count + 1<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span>
+</span>        <span style="color: #00d3d0;">count</span>=$((count + 1))
     <span style="color: #b6a0ff;">done</span>
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"Count is: ${count}"</span>
-<span style="color: #ffffff;">}</span>
+}
 </pre>
 </div>
 
@@ -2674,17 +2674,17 @@ unintended side effects:
 <h4 id="84039f93-7505-429e-a4af-d6700069295e"><a href="https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#passing-parameters-to-functions">传参</a></h4>
 <div class="outline-text-4" id="text-84039f93-7505-429e-a4af-d6700069295e">
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">sum</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
+<pre class="src src-bash"><span style="color: #feacd0;">sum</span>() {
     <span style="color: #f78fe7;">local</span> <span style="color: #00d3d0;">value1</span>=$<span style="color: #00d3d0;">1</span>
     <span style="color: #f78fe7;">local</span> <span style="color: #00d3d0;">value2</span>=$<span style="color: #00d3d0;">2</span>
-    <span style="color: #f78fe7;">local</span> <span style="color: #00d3d0;">result</span>=$<span style="color: #ff66ff;">(</span><span style="color: #00eff0;">(</span>value1 + value2<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span>
+    <span style="color: #f78fe7;">local</span> <span style="color: #00d3d0;">result</span>=$((value1 + value2))
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"The sum of ${value1} and ${value2} is ${result}"</span>
-<span style="color: #ffffff;">}</span>
+}
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Create a function that calculates the sum of two numbers.
-</span><span style="color: #feacd0;">sum</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
+</span><span style="color: #feacd0;">sum</span>() {
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"The sum of $1 and $2 is $(($1 + $2))"</span>
-<span style="color: #ffffff;">}</span>
+}
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">usage
 </span><span style="color: #969896;"># </span><span style="color: #db7b5f;">sum 3 6
@@ -2756,15 +2756,15 @@ unintended side effects:
 <div class="outline-text-5" id="text-333f96d2-eda5-4014-bfdc-548ccd188a57">
 <div class="org-src-container">
 <pre class="src src-bash"><span style="color: #969896;"># </span><span style="color: #db7b5f;">Show the top 'n' values of a set.
-</span><span style="color: #feacd0;">show_top</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
+</span><span style="color: #feacd0;">show_top</span>() {
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">Grab the number of values to show, then shift.
 </span>    <span style="color: #f78fe7;">local</span> <span style="color: #00d3d0;">n</span>=$<span style="color: #00d3d0;">1</span>
     <span style="color: #f78fe7;">shift</span>
 
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">Get the set of values to show. Notice that we start in position 1 now.
-</span>    <span style="color: #f78fe7;">local</span> <span style="color: #00d3d0;">values</span>=$<span style="color: #ff66ff;">{</span><span style="color: #00d3d0;">@</span>:1:n<span style="color: #ff66ff;">}</span>
+</span>    <span style="color: #f78fe7;">local</span> <span style="color: #00d3d0;">values</span>=${<span style="color: #00d3d0;">@</span>:1:n}
     <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"Top ${n} values: ${values}"</span>
-<span style="color: #ffffff;">}</span>
+}
 </pre>
 </div>
 </div>
@@ -2779,17 +2779,17 @@ unintended side effects:
 <li><a id="d9368b21-9ec7-48a3-820a-aa07f5a5491a"></a>通过设置变量值<br>
 <div class="outline-text-5" id="text-d9368b21-9ec7-48a3-820a-aa07f5a5491a">
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">is_even</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
+<pre class="src src-bash"><span style="color: #feacd0;">is_even</span>() {
     <span style="color: #f78fe7;">local</span> <span style="color: #00d3d0;">number</span>=$<span style="color: #00d3d0;">1</span>
 
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">A number is even if when we divide it by 2 there is no remainder.
 </span>    <span style="color: #969896;"># </span><span style="color: #db7b5f;">Set 'result' to 1 if the parameter is even and 0 otherwise.
-</span>    <span style="color: #b6a0ff;">if</span> <span style="color: #ff66ff;">[</span> $<span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>number % 2<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span> -eq 0 <span style="color: #ff66ff;">]</span>; <span style="color: #b6a0ff;">then</span>
+</span>    <span style="color: #b6a0ff;">if</span> [ $((number % 2)) -eq 0 ]; <span style="color: #b6a0ff;">then</span>
         <span style="color: #00d3d0;">result</span>=1
     <span style="color: #b6a0ff;">else</span>
         <span style="color: #00d3d0;">result</span>=0
     <span style="color: #b6a0ff;">fi</span>
-<span style="color: #ffffff;">}</span>
+}
 </pre>
 </div>
 
@@ -2818,16 +2818,16 @@ result to <b>stdout</b>
 <li><a id="d62f95b8-93f0-4e62-afac-be77525f3171"></a>输出到 stdout<br>
 <div class="outline-text-5" id="text-d62f95b8-93f0-4e62-afac-be77525f3171">
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">lowercase</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
+<pre class="src src-bash"><span style="color: #feacd0;">lowercase</span>() {
     <span style="color: #f78fe7;">local</span> <span style="color: #00d3d0;">params</span>=<span style="color: #79a8ff;">"$@"</span>
     <span style="color: #969896;"># </span><span style="color: #db7b5f;">Translate all uppercase characters to lowercase characters.
 </span>    <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"$params"</span> | tr <span style="color: #79a8ff;">'[:upper:]'</span> <span style="color: #79a8ff;">'[:lower:]'</span>
-<span style="color: #ffffff;">}</span>
+}
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-bash">$ <span style="color: #00d3d0;">result</span>=$<span style="color: #ffffff;">(</span>lowercase <span style="color: #79a8ff;">"Don't SHOUT!"</span><span style="color: #ffffff;">)</span>
+<pre class="src src-bash">$ <span style="color: #00d3d0;">result</span>=$(lowercase <span style="color: #79a8ff;">"Don't SHOUT!"</span>)
 $ echo <span style="color: #79a8ff;">"$result"</span>
 don<span style="color: #79a8ff;">'t shout!</span>
 </pre>
@@ -2861,13 +2861,13 @@ to stdout is a tried and tested method of returning results.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">command_exists</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
+<pre class="src src-bash"><span style="color: #feacd0;">command_exists</span>() {
     <span style="color: #b6a0ff;">if </span><span style="color: #f78fe7;">type</span> <span style="color: #79a8ff;">"$1"</span>; <span style="color: #b6a0ff;">then</span>
         <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"1"</span>
     <span style="color: #b6a0ff;">else</span>
         <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"0"</span>
     <span style="color: #b6a0ff;">fi</span>
-<span style="color: #ffffff;">}</span>
+}
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">result=$(command_exists "touch")
 </span><span style="color: #969896;"># </span><span style="color: #db7b5f;">echo "Result is: ${result}"</span>
@@ -2879,13 +2879,13 @@ to stdout is a tried and tested method of returning results.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">command_exists</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
+<pre class="src src-bash"><span style="color: #feacd0;">command_exists</span>() {
     <span style="color: #b6a0ff;">if </span><span style="color: #f78fe7;">type</span> <span style="color: #79a8ff;">"$1"</span> &gt;&gt; /dev/null; <span style="color: #b6a0ff;">then</span>
         <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"1"</span>
     <span style="color: #b6a0ff;">else</span>
         <span style="color: #f78fe7;">echo</span> <span style="color: #79a8ff;">"0"</span>
     <span style="color: #b6a0ff;">fi</span>
-<span style="color: #ffffff;">}</span>
+}
 </pre>
 </div>
 </div>
@@ -2922,13 +2922,13 @@ or if you must, set the value of a global variable.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">command_exists</span><span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
+<pre class="src src-bash"><span style="color: #feacd0;">command_exists</span>() {
     <span style="color: #b6a0ff;">if </span><span style="color: #f78fe7;">type</span> <span style="color: #79a8ff;">"$1"</span> &gt;&gt; /dev/null; <span style="color: #b6a0ff;">then</span>
         <span style="color: #b6a0ff;">return</span> 0
     <span style="color: #b6a0ff;">else</span>
         <span style="color: #b6a0ff;">return</span> 1
     <span style="color: #b6a0ff;">fi</span>
-<span style="color: #ffffff;">}</span>
+}
 </pre>
 </div>
 
@@ -2979,7 +2979,7 @@ touch "/tmp/$(date +"%Y-%m-%d")"
 <pre class="src src-sh"><span style="color: #969896;">#</span><span style="color: #db7b5f;">!/usr/bin/</span><span style="color: #b6a0ff;">env</span><span style="color: #db7b5f;"> sh
 </span>
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Get today's date in the format YYYY-MM-DD.
-</span><span style="color: #00d3d0;">today</span>=$<span style="color: #ffffff;">(</span>date +<span style="color: #79a8ff;">"%Y-%m-%d"</span><span style="color: #ffffff;">)</span>
+</span><span style="color: #00d3d0;">today</span>=$(date +<span style="color: #79a8ff;">"%Y-%m-%d"</span>)
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Create the path to today's temp folder and then make sure the folder exists.
 </span><span style="color: #00d3d0;">temp_path</span>=<span style="color: #79a8ff;">"/tmp/${today}"</span>
@@ -3059,7 +3059,7 @@ is evaluated.
 </span><span style="color: #f78fe7;">set</span> -x
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Get today's date in the format YYYY-MM-DD.
-</span><span style="color: #00d3d0;">today</span>=$<span style="color: #ffffff;">(</span>date +<span style="color: #79a8ff;">"%Y-%m-%d"</span><span style="color: #ffffff;">)</span>
+</span><span style="color: #00d3d0;">today</span>=$(date +<span style="color: #79a8ff;">"%Y-%m-%d"</span>)
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Create the path to today's temp folder and then make sure the folder exists.
 </span><span style="color: #00d3d0;">temp_path</span>=<span style="color: #79a8ff;">"/tmp/${today}"</span>
@@ -3150,15 +3150,15 @@ points such as when the script exits or a function returns.
 <div class="org-src-container">
 <pre class="src src-bash"><span style="color: #969896;"># </span><span style="color: #db7b5f;">Create a temporary folder for the effective shell download.
 </span><span style="color: #00d3d0;">source</span>=<span style="color: #79a8ff;">"https://effective-shell.com/downloads/effective-shell-samples.tar.gz"</span>
-<span style="color: #00d3d0;">tmp_dir</span>=$<span style="color: #ffffff;">(</span>mktemp -d 2&gt;/dev/null || mktemp -d -t <span style="color: #79a8ff;">'effective-shell'</span><span style="color: #ffffff;">)</span>
+<span style="color: #00d3d0;">tmp_dir</span>=$(mktemp -d 2&gt;/dev/null || mktemp -d -t <span style="color: #79a8ff;">'effective-shell'</span>)
 <span style="color: #00d3d0;">tmp_tar</span>=<span style="color: #79a8ff;">"${tmp_dir}/effective-shell.tar.gz"</span>
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Define a cleanup function that we will call when the script exits or if
 </span><span style="color: #969896;"># </span><span style="color: #db7b5f;">it is aborted.
-</span><span style="color: #feacd0;">cleanup</span> <span style="color: #ffffff;">()</span> <span style="color: #ffffff;">{</span>
-    <span style="color: #b6a0ff;">if</span> <span style="color: #ff66ff;">[</span> -e <span style="color: #79a8ff;">"${tmp_tar}"</span> <span style="color: #ff66ff;">]</span>; <span style="color: #b6a0ff;">then</span> rm <span style="color: #79a8ff;">"$tmp_tar}"</span>; <span style="color: #b6a0ff;">fi</span>
-    <span style="color: #b6a0ff;">if</span> <span style="color: #ff66ff;">[</span> -d <span style="color: #79a8ff;">"${tmp_dir}"</span> <span style="color: #ff66ff;">]</span>; <span style="color: #b6a0ff;">then</span> rm -rf <span style="color: #79a8ff;">"${tmp_dir}"</span>; <span style="color: #b6a0ff;">fi</span>
-<span style="color: #ffffff;">}</span>
+</span><span style="color: #feacd0;">cleanup</span> () {
+    <span style="color: #b6a0ff;">if</span> [ -e <span style="color: #79a8ff;">"${tmp_tar}"</span> ]; <span style="color: #b6a0ff;">then</span> rm <span style="color: #79a8ff;">"$tmp_tar}"</span>; <span style="color: #b6a0ff;">fi</span>
+    <span style="color: #b6a0ff;">if</span> [ -d <span style="color: #79a8ff;">"${tmp_dir}"</span> ]; <span style="color: #b6a0ff;">then</span> rm -rf <span style="color: #79a8ff;">"${tmp_dir}"</span>; <span style="color: #b6a0ff;">fi</span>
+}
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Cleanup on interrupt or terminate signals and on exit.
 </span><span style="color: #b6a0ff;">trap</span> <span style="color: #79a8ff;">"cleanup"</span> INT TERM EXIT
@@ -3228,7 +3228,7 @@ have completed.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #ffffff;">(</span>mkdir -p ~/new-project; <span style="color: #f78fe7;">cd</span> ~/new-project; touch README.md<span style="color: #ffffff;">)</span>
+<pre class="src src-bash">(mkdir -p ~/new-project; <span style="color: #f78fe7;">cd</span> ~/new-project; touch README.md)
 </pre>
 </div>
 </div>
@@ -3282,7 +3282,7 @@ also a powerful scripting language.</dd>
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Path to your oh-my-zsh installation.
 </span><span style="color: #f78fe7;">export</span> <span style="color: #00d3d0;">ZSH</span>=<span style="color: #79a8ff;">"$HOME/.oh-my-zsh"</span>
 
-<span style="color: #00d3d0;">plugins</span>=<span style="color: #ffffff;">(</span>
+<span style="color: #00d3d0;">plugins</span>=(
     aliases <span style="color: #969896;"># </span><span style="color: #db7b5f;">&#25512;&#33616;
 </span>    common-aliases <span style="color: #969896;"># </span><span style="color: #db7b5f;">&#25512;&#33616;
 </span>    deno
@@ -3305,7 +3305,7 @@ also a powerful scripting language.</dd>
 </span>    zbell
     zsh-autosuggestions <span style="color: #969896;"># </span><span style="color: #db7b5f;">&#26497;&#21147;&#25512;&#33616;
 </span>    zsh-syntax-highlighting
-<span style="color: #ffffff;">)</span>
+)
 
 <span style="color: #f78fe7;">source</span> $<span style="color: #00d3d0;">ZSH</span>/oh-my-zsh.sh
 </pre>
@@ -3373,6 +3373,7 @@ also a powerful scripting language.</dd>
 </div>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>

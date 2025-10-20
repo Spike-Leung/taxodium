@@ -87,13 +87,13 @@ HTML 中加载 <a href="https://github.com/markedjs/marked">Marked</a>，将 mar
 </span><span style="color: #969896;">;;; </span><span style="color: #db7b5f;">@see:  https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type
 </span><span style="color: #969896;">;;; </span><span style="color: #db7b5f;">Code:
 </span>
-<span style="color: #ffffff;">(</span>maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">impatient-mode</span><span style="color: #ffffff;">)</span>
+(maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">impatient-mode</span>)
 
-<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/imp-markdown-filter</span> <span style="color: #ff66ff;">(</span>buffer<span style="color: #ff66ff;">)</span>
+(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/imp-markdown-filter</span> (buffer)
   <span style="color: #9ac8e0;">"Define imp markdown filter.
 Wrap BUFFER with HTML, render with https://github.com/markedjs/marked and style with https://github.com/sindresorhus/github-markdown-css"</span>
-  <span style="color: #ff66ff;">(</span>princ <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">with-current-buffer</span> buffer
-           <span style="color: #ff6b55;">(</span>format <span style="color: #79a8ff;">"&lt;!DOCTYPE html&gt;
+  (princ (<span style="color: #b6a0ff;">with-current-buffer</span> buffer
+           (format <span style="color: #79a8ff;">"&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;title&gt;Markdown Preview&lt;/title&gt;
   &lt;head&gt;
@@ -128,24 +128,24 @@ Wrap BUFFER with HTML, render with https://github.com/markedjs/marked and style 
     &lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;"</span>
-                   <span style="color: #efef00;">(</span>json-encode <span style="color: #b6a0ff;">(</span>buffer-substring-no-properties <span style="color: #44df44;">(</span>point-min<span style="color: #44df44;">)</span> <span style="color: #44df44;">(</span>point-max<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
-         <span style="color: #00eff0;">(</span>current-buffer<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+                   (json-encode (buffer-substring-no-properties (point-min) (point-max)))))
+         (current-buffer)))
 
-<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/preview-markdown</span> <span style="color: #ff66ff;">()</span>
+(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/preview-markdown</span> ()
   <span style="color: #9ac8e0;">"Live Preview markdown."</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">interactive</span><span style="color: #ff66ff;">)</span>
-  <span style="color: #ff66ff;">(</span>imp-visit-buffer<span style="color: #ff66ff;">)</span>
-  <span style="color: #ff66ff;">(</span>imp-set-user-filter <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">spike-leung/imp-markdown-filter</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+  (<span style="color: #b6a0ff;">interactive</span>)
+  (imp-visit-buffer)
+  (imp-set-user-filter <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">spike-leung/imp-markdown-filter</span>))
 
-<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/disable-preview-markdown</span> <span style="color: #ff66ff;">()</span>
+(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/disable-preview-markdown</span> ()
   <span style="color: #9ac8e0;">"Disable preview markdown."</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">interactive</span><span style="color: #ff66ff;">)</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">progn</span>
-    <span style="color: #00eff0;">(</span>httpd-stop<span style="color: #00eff0;">)</span>
-    <span style="color: #00eff0;">(</span>impatient-mode -1<span style="color: #00eff0;">)</span>
-    <span style="color: #00eff0;">(</span>imp-remove-user-filter<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+  (<span style="color: #b6a0ff;">interactive</span>)
+  (<span style="color: #b6a0ff;">progn</span>
+    (httpd-stop)
+    (impatient-mode -1)
+    (imp-remove-user-filter)))
 
-<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">provide</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-my-markdown</span><span style="color: #ffffff;">)</span>
+(<span style="color: #b6a0ff;">provide</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-my-markdown</span>)
 <span style="color: #969896;">;;; </span><span style="color: #db7b5f;">init-my-markdown.el ends here</span>
 </pre>
 </div>
@@ -212,6 +212,7 @@ Wrap BUFFER with HTML, render with https://github.com/markedjs/marked and style 
 </div>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>

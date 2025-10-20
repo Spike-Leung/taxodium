@@ -237,13 +237,13 @@ Windows 上 Ctrl-C 复制，然后可以在 WSL Ctrl-V 粘贴，但是因为我�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/wsl-copy</span> <span style="color: #ff66ff;">()</span>
+<pre class="src src-elisp">(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/wsl-copy</span> ()
   <span style="color: #9ac8e0;">"Copy region to windows clipboard."</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">interactive</span><span style="color: #ff66ff;">)</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">progn</span>
-    <span style="color: #00eff0;">(</span>write-region <span style="color: #ff6b55;">(</span>mark<span style="color: #ff6b55;">)</span> <span style="color: #ff6b55;">(</span>point<span style="color: #ff6b55;">)</span> <span style="color: #79a8ff;">"~/copy.txt"</span> nil nil nil nil<span style="color: #00eff0;">)</span>
-    <span style="color: #00eff0;">(</span>shell-command <span style="color: #79a8ff;">"cat ~/copy.txt | clip.exe"</span><span style="color: #00eff0;">)</span>
-    <span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+  (<span style="color: #b6a0ff;">interactive</span>)
+  (<span style="color: #b6a0ff;">progn</span>
+    (write-region (mark) (point) <span style="color: #79a8ff;">"~/copy.txt"</span> nil nil nil nil)
+    (shell-command <span style="color: #79a8ff;">"cat ~/copy.txt | clip.exe"</span>)
+    ))
 </pre>
 </div>
 
@@ -302,7 +302,7 @@ bash ubuntu-wsl2-systemd-script.sh
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Set zsh as default shell
 </span><span style="color: #969896;"># </span><span style="color: #db7b5f;">chsh -s $(which "SHELL NAME")
-</span>chsh -s $<span style="color: #ffffff;">(</span><span style="color: #f78fe7;">which</span> zsh<span style="color: #ffffff;">)</span>
+</span>chsh -s $(<span style="color: #f78fe7;">which</span> zsh)
 
 <span style="color: #969896;"># </span><span style="color: #db7b5f;">Uninstall
 </span>sudo apt --purge remove zsh
@@ -394,14 +394,14 @@ sudo apt remove emacs-snapshot
 </span><span style="color: #969896;">;;; </span><span style="color: #db7b5f;">Code:
 </span><span style="color: #969896;">;;; </span><span style="color: #db7b5f;">https://adam.kruszewski.name/2017-09-16-emacs-in-wsl-and-opening-links.html
 </span>
-<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">let</span> <span style="color: #ff66ff;">(</span><span style="color: #00eff0;">(</span>cmd-exe <span style="color: #79a8ff;">"/mnt/c/Windows/System32/cmd.exe"</span><span style="color: #00eff0;">)</span>
-      <span style="color: #00eff0;">(</span>cmd-args <span style="color: #b6a0ff;">'</span><span style="color: #ff6b55;">(</span><span style="color: #79a8ff;">"/c"</span> <span style="color: #79a8ff;">"start"</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #00eff0;">(</span>file-exists-p cmd-exe<span style="color: #00eff0;">)</span>
-    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">setq</span> browse-url-generic-program  cmd-exe
+(<span style="color: #b6a0ff;">let</span> ((cmd-exe <span style="color: #79a8ff;">"/mnt/c/Windows/System32/cmd.exe"</span>)
+      (cmd-args <span style="color: #b6a0ff;">'</span>(<span style="color: #79a8ff;">"/c"</span> <span style="color: #79a8ff;">"start"</span>)))
+  (<span style="color: #b6a0ff;">when</span> (file-exists-p cmd-exe)
+    (<span style="color: #b6a0ff;">setq</span> browse-url-generic-program  cmd-exe
           browse-url-generic-args     cmd-args
-          browse-url-browser-function <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">browse-url-generic</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+          browse-url-browser-function <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">browse-url-generic</span>)))
 
-<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">provide</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-wsl</span><span style="color: #ffffff;">)</span>
+(<span style="color: #b6a0ff;">provide</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-wsl</span>)
 <span style="color: #969896;">;;; </span><span style="color: #db7b5f;">init-wsl.el ends here</span>
 </pre>
 </div>
@@ -476,6 +476,7 @@ sudo apt remove emacs-snapshot
 </div>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>

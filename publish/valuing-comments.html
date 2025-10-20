@@ -115,25 +115,25 @@ Writing code is sharing the experience of understanding the requirements/impleme
 
 <div class="org-src-container">
 <pre class="src src-c"><span style="color: #969896;">/* </span><span style="color: #db7b5f;">Initial Stack: array</span><span style="color: #969896;"> */</span>
-  <span style="color: #feacd0;">lua_getglobal</span><span style="color: #ffffff;">(</span>lua,<span style="color: #79a8ff;">"table"</span><span style="color: #ffffff;">)</span>;
-  <span style="color: #feacd0;">lua_pushstring</span><span style="color: #ffffff;">(</span>lua,<span style="color: #79a8ff;">"sort"</span><span style="color: #ffffff;">)</span>;
-  <span style="color: #feacd0;">lua_gettable</span><span style="color: #ffffff;">(</span>lua,-2<span style="color: #ffffff;">)</span>;       <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #969896;"> */</span>
-  <span style="color: #feacd0;">lua_pushvalue</span><span style="color: #ffffff;">(</span>lua,-3<span style="color: #ffffff;">)</span>;      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #969896;"> */</span>
-  <span style="color: #b6a0ff;">if</span> <span style="color: #ffffff;">(</span>lua_pcall<span style="color: #ff66ff;">(</span>lua,1,0,0<span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span> <span style="color: #ffffff;">{</span>
+  <span style="color: #feacd0;">lua_getglobal</span>(lua,<span style="color: #79a8ff;">"table"</span>);
+  <span style="color: #feacd0;">lua_pushstring</span>(lua,<span style="color: #79a8ff;">"sort"</span>);
+  <span style="color: #feacd0;">lua_gettable</span>(lua,-2);       <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #969896;"> */</span>
+  <span style="color: #feacd0;">lua_pushvalue</span>(lua,-3);      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #969896;"> */</span>
+  <span style="color: #b6a0ff;">if</span> (lua_pcall(lua,1,0,0)) {
       <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, error</span><span style="color: #969896;"> */</span>
 
       <span style="color: #969896;">/* </span><span style="color: #db7b5f;">We are not interested in the error, we assume that the problem is
        * that there are 'false' elements inside the array, so we try
        * again with a slower function but able to handle this case, that
        * is: table.sort(table, __redis__compare_helper)</span><span style="color: #969896;"> */</span>
-      lua_pop<span style="color: #ff66ff;">(</span>lua,1<span style="color: #ff66ff;">)</span>;             <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table</span><span style="color: #969896;"> */</span>
-      lua_pushstring<span style="color: #ff66ff;">(</span>lua,<span style="color: #79a8ff;">"sort"</span><span style="color: #ff66ff;">)</span>; <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, sort</span><span style="color: #969896;"> */</span>
-      lua_gettable<span style="color: #ff66ff;">(</span>lua,-2<span style="color: #ff66ff;">)</span>;       <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #969896;"> */</span>
-      lua_pushvalue<span style="color: #ff66ff;">(</span>lua,-3<span style="color: #ff66ff;">)</span>;      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #969896;"> */</span>
-      lua_getglobal<span style="color: #ff66ff;">(</span>lua,<span style="color: #79a8ff;">"__redis__compare_helper"</span><span style="color: #ff66ff;">)</span>;
+      lua_pop(lua,1);             <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table</span><span style="color: #969896;"> */</span>
+      lua_pushstring(lua,<span style="color: #79a8ff;">"sort"</span>); <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, sort</span><span style="color: #969896;"> */</span>
+      lua_gettable(lua,-2);       <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #969896;"> */</span>
+      lua_pushvalue(lua,-3);      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #969896;"> */</span>
+      lua_getglobal(lua,<span style="color: #79a8ff;">"__redis__compare_helper"</span>);
       <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array, __redis__compare_helper</span><span style="color: #969896;"> */</span>
-      lua_call<span style="color: #ff66ff;">(</span>lua,2,0<span style="color: #ff66ff;">)</span>;
-  <span style="color: #ffffff;">}</span>
+      lua_call(lua,2,0);
+  }
 </pre>
 </div>
 
@@ -340,7 +340,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 解释你写不符合规范/要求的代码的理由
 </p>
 <div class="org-src-container">
-<pre class="src src-js">@SuppressWarnings<span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"unchecked"</span><span style="color: #ffffff;">)</span> <span style="color: #969896;">// </span><span style="color: #db7b5f;">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
+<pre class="src src-js">@SuppressWarnings(<span style="color: #79a8ff;">"unchecked"</span>) <span style="color: #969896;">// </span><span style="color: #db7b5f;">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
 </pre>
 </div></li>
 </ul>
@@ -579,6 +579,7 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 </div>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>

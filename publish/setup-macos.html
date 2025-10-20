@@ -233,10 +233,10 @@ Makefile 中做的主要的事情：
 <span style="color: #feacd0;">dependence</span>:
         <span style="color: #969896;"># </span><span style="color: #db7b5f;">&#30830;&#20445; /usr/local/bin &#23384;&#22312;&#19988;&#26377;&#26435;&#38480;
 </span>        sudo mkdir -p /usr/local/bin
-        <span style="color: #feacd0;">sudo chown -R $</span><span style="color: #ffffff;">(</span><span style="color: #feacd0;">shell</span><span style="color: #feacd0;"> whoami</span><span style="color: #ffffff;">)</span>:admin /usr/local/bin
+        <span style="color: #feacd0;">sudo chown -R $(</span><span style="color: #feacd0;">shell</span><span style="color: #feacd0;"> whoami)</span>:admin /usr/local/bin
 
         <span style="color: #969896;"># </span><span style="color: #db7b5f;">&#26816;&#26597;&#24182;&#23433;&#35013; ohmyzsh
-</span>        if <span style="color: #ffffff;">[</span> ! -d <span style="color: #79a8ff;">"$$HOME/.oh-my-zsh"</span> <span style="color: #ffffff;">]</span>; then \
+</span>        if [ ! -d <span style="color: #79a8ff;">"$$HOME/.oh-my-zsh"</span> ]; then \
                 echo <span style="color: #79a8ff;">"Installing ohmyzsh..."</span>; \
                 sh -c <span style="color: #79a8ff;">"$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</span>; \
         else \
@@ -253,10 +253,10 @@ Makefile 中做的主要的事情：
 
         <span style="color: #969896;"># </span><span style="color: #db7b5f;">&#23433;&#35013; zsh &#25554;&#20214;&#21644;&#24037;&#20855;
 </span>        brew install zsh-syntax-highlighting
-        <span style="color: #feacd0;">echo </span><span style="color: #feacd0;">"source $$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"</span><span style="color: #feacd0;"> &gt;&gt; $$</span><span style="color: #ffffff;">{</span><span style="color: #feacd0;">ZDOTDIR</span>:-$$HOME<span style="color: #ffffff;">}</span>/.zshrc
+        <span style="color: #feacd0;">echo </span><span style="color: #feacd0;">"source $$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"</span><span style="color: #feacd0;"> &gt;&gt; $${ZDOTDIR</span>:-$$HOME}/.zshrc
 
-        if <span style="color: #ffffff;">[</span> ! -d <span style="color: #79a8ff;">"$${ZSH_CUSTOM:-$$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"</span> <span style="color: #ffffff;">]</span>; then \
-                git clone git@github.com:zsh-users/zsh-autosuggestions $$<span style="color: #ffffff;">{</span>ZSH_CUSTOM:-$$HOME/.oh-my-zsh/custom<span style="color: #ffffff;">}</span>/plugins/zsh-autosuggestions; \
+        if [ ! -d <span style="color: #79a8ff;">"$${ZSH_CUSTOM:-$$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"</span> ]; then \
+                git clone git@github.com:zsh-users/zsh-autosuggestions $${ZSH_CUSTOM:-$$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions; \
         fi
 
         <span style="color: #969896;"># </span><span style="color: #db7b5f;">GNU related
@@ -494,6 +494,7 @@ macOS 下如何方便地切换中英文？总是切换输入法感觉有点麻�
 </div>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>

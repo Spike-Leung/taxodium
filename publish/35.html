@@ -2254,15 +2254,15 @@ Jules 是一个实验性的编码代理，帮助你修复错误、添加文档�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">loop</span><span style="color: #ffffff;">(</span>llm<span style="color: #ffffff;">)</span>:
-    <span style="color: #00d3d0;">msg</span> <span style="color: #ffffff;">=</span> user_input<span style="color: #ffffff;">()</span>
+<pre class="src src-python"><span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">loop</span>(llm):
+    <span style="color: #00d3d0;">msg</span> <span style="color: #ffffff;">=</span> user_input()
     <span style="color: #b6a0ff;">while</span> <span style="color: #00bcff;">True</span>:
-        <span style="color: #00d3d0;">output</span>, <span style="color: #00d3d0;">tool_calls</span> <span style="color: #ffffff;">=</span> llm<span style="color: #ffffff;">(</span>msg<span style="color: #ffffff;">)</span>
-        <span style="color: #f78fe7;">print</span><span style="color: #ffffff;">(</span><span style="color: #79a8ff;">"Agent: "</span>, output<span style="color: #ffffff;">)</span>
+        <span style="color: #00d3d0;">output</span>, <span style="color: #00d3d0;">tool_calls</span> <span style="color: #ffffff;">=</span> llm(msg)
+        <span style="color: #f78fe7;">print</span>(<span style="color: #79a8ff;">"Agent: "</span>, output)
         <span style="color: #b6a0ff;">if</span> tool_calls:
-            <span style="color: #00d3d0;">msg</span> <span style="color: #ffffff;">=</span> <span style="color: #ffffff;">[</span> handle_tool_call<span style="color: #ff66ff;">(</span>tc<span style="color: #ff66ff;">)</span> <span style="color: #b6a0ff;">for</span> tc <span style="color: #b6a0ff;">in</span> tool_calls <span style="color: #ffffff;">]</span>
+            <span style="color: #00d3d0;">msg</span> <span style="color: #ffffff;">=</span> [ handle_tool_call(tc) <span style="color: #b6a0ff;">for</span> tc <span style="color: #b6a0ff;">in</span> tool_calls ]
         <span style="color: #b6a0ff;">else</span>:
-            <span style="color: #00d3d0;">msg</span> <span style="color: #ffffff;">=</span> user_input<span style="color: #ffffff;">()</span>
+            <span style="color: #00d3d0;">msg</span> <span style="color: #ffffff;">=</span> user_input()
 </pre>
 </div>
 </blockquote>
@@ -2672,6 +2672,7 @@ live 听歌和录音版本不一样，录音版本很高的音可能会被调整
 </div>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>

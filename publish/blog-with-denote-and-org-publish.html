@@ -233,50 +233,50 @@ denote 中的改动有两个地方：
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #969896;">;;; </span><span style="color: #db7b5f;">https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8
-</span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">setq</span> org-export-allow-bind-keywords t<span style="color: #ffffff;">)</span>
+</span>(<span style="color: #b6a0ff;">setq</span> org-export-allow-bind-keywords t)
 
 <span style="color: #969896;">;;; </span><span style="color: #db7b5f;">make denote-link-ol-export support #+export_file_name
 </span><span style="color: #969896;">;; </span><span style="color: #db7b5f;">see also: https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/
-</span><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/my-denote--get-export-file-name</span> <span style="color: #ff66ff;">(</span>file<span style="color: #ff66ff;">)</span>
+</span>(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/my-denote--get-export-file-name</span> (file)
   <span style="color: #9ac8e0;">"Find #+export_file_name in FILE and return its value.
 Return nil if not found or FILE does not exist."</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">and</span> file <span style="color: #ff6b55;">(</span>file-exists-p file<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
-    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">with-temp-buffer</span>
-      <span style="color: #ff6b55;">(</span>insert-file-contents file<span style="color: #ff6b55;">)</span>
-      <span style="color: #ff6b55;">(</span>goto-char <span style="color: #efef00;">(</span>point-min<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
-      <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #efef00;">(</span>re-search-forward <span style="color: #79a8ff;">"^#</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">+export_file_name: </span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #00c06f;">(</span><span style="color: #79a8ff;">.*</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #00c06f;">)</span><span style="color: #79a8ff;">$"</span> nil t<span style="color: #efef00;">)</span>
-        <span style="color: #efef00;">(</span>string-trim <span style="color: #b6a0ff;">(</span>match-string-no-properties 1<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+  (<span style="color: #b6a0ff;">when</span> (<span style="color: #b6a0ff;">and</span> file (file-exists-p file))
+    (<span style="color: #b6a0ff;">with-temp-buffer</span>
+      (insert-file-contents file)
+      (goto-char (point-min))
+      (<span style="color: #b6a0ff;">when</span> (re-search-forward <span style="color: #79a8ff;">"^#</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">+export_file_name: </span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #00c06f;">(</span><span style="color: #79a8ff;">.*</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #00c06f;">)</span><span style="color: #79a8ff;">$"</span> nil t)
+        (string-trim (match-string-no-properties 1))))))
 
-<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/denote-link-ol-export</span> <span style="color: #ff66ff;">(</span>link description format<span style="color: #ff66ff;">)</span>
+(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/denote-link-ol-export</span> (link description format)
   <span style="color: #9ac8e0;">"Export a `</span><span style="color: #00bcff;">denote:</span><span style="color: #9ac8e0;">' link from Org files.
 The LINK, DESCRIPTION, and FORMAT are handled by the export
 backend."</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">pcase-let*</span> <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">`</span><span style="color: #efef00;">(</span>,path ,query ,file-search<span style="color: #efef00;">)</span> <span style="color: #efef00;">(</span>denote-link--ol-resolve-link-to-target link <span style="color: #f78fe7;">:full-data</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
-               <span style="color: #ff6b55;">(</span>export-file-name <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">when</span> path <span style="color: #b6a0ff;">(</span>spike-leung/my-denote--get-export-file-name path<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
-               <span style="color: #ff6b55;">(</span>anchor <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">if</span> export-file-name
+  (<span style="color: #b6a0ff;">pcase-let*</span> ((<span style="color: #b6a0ff;">`</span>(,path ,query ,file-search) (denote-link--ol-resolve-link-to-target link <span style="color: #f78fe7;">:full-data</span>))
+               (export-file-name (<span style="color: #b6a0ff;">when</span> path (spike-leung/my-denote--get-export-file-name path)))
+               (anchor (<span style="color: #b6a0ff;">if</span> export-file-name
                            export-file-name
-                         <span style="color: #b6a0ff;">(</span><span style="color: #b6a0ff;">when</span> path <span style="color: #44df44;">(</span>file-relative-name <span style="color: #79a8ff;">(</span>file-name-sans-extension path<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
-               <span style="color: #ff6b55;">(</span>desc <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">cond</span>
-                      <span style="color: #b6a0ff;">(</span>description<span style="color: #b6a0ff;">)</span>
-                      <span style="color: #b6a0ff;">(</span>file-search <span style="color: #44df44;">(</span>format <span style="color: #79a8ff;">"denote:%s::%s"</span> query file-search<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
-                      <span style="color: #b6a0ff;">(</span>t <span style="color: #44df44;">(</span>concat <span style="color: #79a8ff;">"denote:"</span> query<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
-    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">if</span> path
-        <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">pcase</span> format
-          <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">html</span> <span style="color: #b6a0ff;">(</span><span style="color: #b6a0ff;">if</span> file-search
-                     <span style="color: #44df44;">(</span>format <span style="color: #79a8ff;">"&lt;a href=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">%s.html%s</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">&gt;%s&lt;/a&gt;"</span> anchor file-search desc<span style="color: #44df44;">)</span>
-                   <span style="color: #44df44;">(</span>format <span style="color: #79a8ff;">"&lt;a href=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">%s.html</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">&gt;%s&lt;/a&gt;"</span> anchor desc<span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
-          <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">latex</span> <span style="color: #b6a0ff;">(</span>format <span style="color: #79a8ff;">"</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">href{%s}{%s}"</span> <span style="color: #44df44;">(</span>replace-regexp-in-string <span style="color: #79a8ff;">"[</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">{}$%&amp;_#~^]"</span> <span style="color: #79a8ff;">"</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">&amp;"</span> path<span style="color: #44df44;">)</span> desc<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
-          <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">texinfo</span> <span style="color: #b6a0ff;">(</span>format <span style="color: #79a8ff;">"@uref{%s,%s}"</span> path desc<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
-          <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">ascii</span> <span style="color: #b6a0ff;">(</span>format <span style="color: #79a8ff;">"[%s] &lt;denote:%s&gt;"</span> desc path<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
-          <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">md</span> <span style="color: #b6a0ff;">(</span>format <span style="color: #79a8ff;">"[%s](%s)"</span> desc path<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
-          <span style="color: #efef00;">(</span>_ path<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
-      <span style="color: #ff6b55;">(</span>format-message <span style="color: #79a8ff;">"[[Denote query for `</span><span style="color: #00bcff;">%s</span><span style="color: #79a8ff;">']]"</span> query<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+                         (<span style="color: #b6a0ff;">when</span> path (file-relative-name (file-name-sans-extension path)))))
+               (desc (<span style="color: #b6a0ff;">cond</span>
+                      (description)
+                      (file-search (format <span style="color: #79a8ff;">"denote:%s::%s"</span> query file-search))
+                      (t (concat <span style="color: #79a8ff;">"denote:"</span> query)))))
+    (<span style="color: #b6a0ff;">if</span> path
+        (<span style="color: #b6a0ff;">pcase</span> format
+          (<span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">html</span> (<span style="color: #b6a0ff;">if</span> file-search
+                     (format <span style="color: #79a8ff;">"&lt;a href=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">%s.html%s</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">&gt;%s&lt;/a&gt;"</span> anchor file-search desc)
+                   (format <span style="color: #79a8ff;">"&lt;a href=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">%s.html</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">&gt;%s&lt;/a&gt;"</span> anchor desc)))
+          (<span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">latex</span> (format <span style="color: #79a8ff;">"</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">href{%s}{%s}"</span> (replace-regexp-in-string <span style="color: #79a8ff;">"[</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">{}$%&amp;_#~^]"</span> <span style="color: #79a8ff;">"</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">\</span><span style="color: #79a8ff;">&amp;"</span> path) desc))
+          (<span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">texinfo</span> (format <span style="color: #79a8ff;">"@uref{%s,%s}"</span> path desc))
+          (<span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">ascii</span> (format <span style="color: #79a8ff;">"[%s] &lt;denote:%s&gt;"</span> desc path))
+          (<span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">md</span> (format <span style="color: #79a8ff;">"[%s](%s)"</span> desc path))
+          (_ path))
+      (format-message <span style="color: #79a8ff;">"[[Denote query for `</span><span style="color: #00bcff;">%s</span><span style="color: #79a8ff;">']]"</span> query))))
 
-<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">denote</span>
-  <span style="color: #ff66ff;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">find-file-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">denote-fontify-links-mode-maybe</span><span style="color: #ff66ff;">)</span>
-  <span style="color: #ff66ff;">(</span>add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">dired-mode-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">denote-dired-mode-in-directories</span><span style="color: #ff66ff;">)</span>
+(<span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">denote</span>
+  (add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">find-file-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">denote-fontify-links-mode-maybe</span>)
+  (add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">dired-mode-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">denote-dired-mode-in-directories</span>)
   <span style="color: #969896;">;; </span><span style="color: #db7b5f;">&#35206;&#30422; denote &#40664;&#35748;&#30340; export &#26041;&#27861;
-</span>  <span style="color: #ff66ff;">(</span>org-link-set-parameters <span style="color: #79a8ff;">"denote"</span> <span style="color: #f78fe7;">:export</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">spike-leung/denote-link-ol-export</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+</span>  (org-link-set-parameters <span style="color: #79a8ff;">"denote"</span> <span style="color: #f78fe7;">:export</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">spike-leung/denote-link-ol-export</span>))
 
 </pre>
 </div>
@@ -350,22 +350,22 @@ backend."</span>
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/get-file-list-from-denote-silo</span> <span style="color: #ff66ff;">(</span>silos tag<span style="color: #ff66ff;">)</span>
+<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/get-file-list-from-denote-silo</span> (silos tag)
   <span style="color: #9ac8e0;">"Return files in SILOS match TAG.
 SILO is a file path from `</span><span style="color: #00bcff;">denote-silo-directories</span><span style="color: #9ac8e0;">'.
 TAG is string."</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">cl-letf</span> <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>denote-directory <span style="color: #efef00;">(</span>expand-file-name silos<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
-    <span style="color: #00eff0;">(</span>denote-directory-files tag<span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+  (<span style="color: #b6a0ff;">cl-letf</span> ((denote-directory (expand-file-name silos)))
+    (denote-directory-files tag)))
 
-<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/setup-org-publish-project-alist</span> <span style="color: #ff66ff;">(</span><span style="color: #6ae4b9;">&amp;rest</span> _args<span style="color: #ff66ff;">)</span>
+(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/setup-org-publish-project-alist</span> (<span style="color: #6ae4b9;">&amp;rest</span> _args)
   <span style="color: #9ac8e0;">"Setup `</span><span style="color: #00bcff;">org-publish-project-alist</span><span style="color: #9ac8e0;">'."</span>
-  <span style="color: #ff66ff;">(</span>message <span style="color: #79a8ff;">"setup org-publish-project-alist"</span><span style="color: #ff66ff;">)</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">setq</span> org-publish-project-alist
-        <span style="color: #b6a0ff;">`</span><span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span><span style="color: #79a8ff;">"orgfiles"</span>
+  (message <span style="color: #79a8ff;">"setup org-publish-project-alist"</span>)
+  (<span style="color: #b6a0ff;">setq</span> org-publish-project-alist
+        <span style="color: #b6a0ff;">`</span>((<span style="color: #79a8ff;">"orgfiles"</span>
            <span style="color: #f78fe7;">:base-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/posts"</span>
            <span style="color: #f78fe7;">:base-extension</span> <span style="color: #79a8ff;">"org"</span>
            <span style="color: #f78fe7;">:exclude</span> <span style="color: #79a8ff;">".*"</span> <span style="color: #969896;">;; </span><span style="color: #db7b5f;">&#25490;&#38500;&#25152;&#26377;&#25991;&#20214;
-</span>           <span style="color: #f78fe7;">:include</span>  ,<span style="color: #efef00;">(</span>spike-leung/get-file-list-from-denote-silo <span style="color: #79a8ff;">"~/git/taxodium/posts"</span> <span style="color: #79a8ff;">"_published"</span><span style="color: #efef00;">)</span> <span style="color: #969896;">;; </span><span style="color: #db7b5f;">&#36807;&#28388;&#33719;&#21462;&#23545;&#24212; keyword &#30340;&#25991;&#20214;
+</span>           <span style="color: #f78fe7;">:include</span>  ,(spike-leung/get-file-list-from-denote-silo <span style="color: #79a8ff;">"~/git/taxodium/posts"</span> <span style="color: #79a8ff;">"_published"</span>) <span style="color: #969896;">;; </span><span style="color: #db7b5f;">&#36807;&#28388;&#33719;&#21462;&#23545;&#24212; keyword &#30340;&#25991;&#20214;
 </span>           <span style="color: #f78fe7;">:publishing-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/publish"</span>
            <span style="color: #f78fe7;">:publishing-function</span> spike-leung/org-html-publish-to-html-orgfiles
            <span style="color: #f78fe7;">:section-numbers</span> nil
@@ -382,13 +382,13 @@ TAG is string."</span>
            <span style="color: #f78fe7;">:sitemap-sort-files</span> anti-chronologically
            <span style="color: #f78fe7;">:sitemap-function</span> spike-leung/sitemap-function
            <span style="color: #f78fe7;">:author</span> <span style="color: #79a8ff;">"Spike Leung"</span>
-           <span style="color: #f78fe7;">:email</span> <span style="color: #79a8ff;">"l-yanlei@hotmail.com"</span><span style="color: #ff6b55;">)</span>
+           <span style="color: #f78fe7;">:email</span> <span style="color: #79a8ff;">"l-yanlei@hotmail.com"</span>)
 
           <span style="color: #969896;">;; </span><span style="color: #db7b5f;">&#30465;&#30053;&#20854;&#20182;&#20195;&#30721;&#65292;&#20855;&#20307;&#21487;&#20197;&#30475;&#28304;&#30721;
-</span>          <span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+</span>          )))
 
-<span style="color: #ffffff;">(</span>spike-leung/setup-org-publish-project-alist<span style="color: #ffffff;">)</span> <span style="color: #969896;">;; </span><span style="color: #db7b5f;">&#21021;&#22987;&#21270; org-publish-project-alist
-</span><span style="color: #ffffff;">(</span>advice-add <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">org-publish</span> <span style="color: #f78fe7;">:before</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">spike-leung/setup-org-publish-project-alist</span><span style="color: #ffffff;">)</span> <span style="color: #969896;">;; </span><span style="color: #db7b5f;">&#22312;&#25191;&#34892; org-publish &#20043;&#21069;&#26356;&#26032; org-publish-project-alist</span>
+(spike-leung/setup-org-publish-project-alist) <span style="color: #969896;">;; </span><span style="color: #db7b5f;">&#21021;&#22987;&#21270; org-publish-project-alist
+</span>(advice-add <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">org-publish</span> <span style="color: #f78fe7;">:before</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">spike-leung/setup-org-publish-project-alist</span>) <span style="color: #969896;">;; </span><span style="color: #db7b5f;">&#22312;&#25191;&#34892; org-publish &#20043;&#21069;&#26356;&#26032; org-publish-project-alist</span>
 </pre>
 </div>
 </details>
@@ -401,11 +401,11 @@ TAG is string."</span>
 <summary>相关代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">setq</span> org-publish-project-alist
-      <span style="color: #b6a0ff;">`</span><span style="color: #ff66ff;">(</span><span style="color: #00eff0;">(</span><span style="color: #79a8ff;">"orgfiles"</span>
+<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> org-publish-project-alist
+      <span style="color: #b6a0ff;">`</span>((<span style="color: #79a8ff;">"orgfiles"</span>
          <span style="color: #f78fe7;">:base-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/posts"</span>
          <span style="color: #f78fe7;">:base-extension</span> <span style="color: #79a8ff;">"org"</span>
-         <span style="color: #f78fe7;">:exclude</span> ,<span style="color: #ff6b55;">(</span>spike-leung/org-publish-build-exclude-regexp <span style="color: #b6a0ff;">'</span><span style="color: #efef00;">(</span><span style="color: #79a8ff;">"draft"</span> <span style="color: #79a8ff;">"blackhole"</span><span style="color: #efef00;">)</span> <span style="color: #b6a0ff;">'</span><span style="color: #efef00;">(</span><span style="color: #79a8ff;">"rss.org"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
+         <span style="color: #f78fe7;">:exclude</span> ,(spike-leung/org-publish-build-exclude-regexp <span style="color: #b6a0ff;">'</span>(<span style="color: #79a8ff;">"draft"</span> <span style="color: #79a8ff;">"blackhole"</span>) <span style="color: #b6a0ff;">'</span>(<span style="color: #79a8ff;">"rss.org"</span>))
          <span style="color: #f78fe7;">:publishing-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/publish"</span>
          <span style="color: #f78fe7;">:publishing-function</span> spike-leung/org-html-publish-to-html-orgfiles
          <span style="color: #f78fe7;">:section-numbers</span> nil
@@ -422,38 +422,38 @@ TAG is string."</span>
 </span>         <span style="color: #f78fe7;">:sitemap-sort-files</span> anti-chronologically
          <span style="color: #f78fe7;">:sitemap-function</span> spike-leung/sitemap-function
          <span style="color: #f78fe7;">:author</span> <span style="color: #79a8ff;">"Spike Leung"</span>
-         <span style="color: #f78fe7;">:email</span> <span style="color: #79a8ff;">"l-yanlei@hotmail.com"</span><span style="color: #00eff0;">)</span>
+         <span style="color: #f78fe7;">:email</span> <span style="color: #79a8ff;">"l-yanlei@hotmail.com"</span>)
 
         <span style="color: #969896;">;; </span><span style="color: #db7b5f;">&#30465;&#30053;&#37096;&#20998;&#20195;&#30721;
-</span>        <span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+</span>        ))
 
-<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/sitemap-format-entry</span> <span style="color: #ff66ff;">(</span>entry style project<span style="color: #ff66ff;">)</span>
+(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/sitemap-format-entry</span> (entry style project)
   <span style="color: #9ac8e0;">"Custom format for site map ENTRY, as a string.
 ENTRY is a file name.  STYLE is the style of the sitemap.
 PROJECT is the current project."</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">let*</span> <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>export-file-name <span style="color: #efef00;">(</span>spike-leung/org-publish-get-org-keyword entry project <span style="color: #79a8ff;">"export_file_name"</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
-    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">cond</span> <span style="color: #ff6b55;">(</span><span style="color: #efef00;">(</span>not <span style="color: #b6a0ff;">(</span>directory-name-p entry<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span>
-           <span style="color: #efef00;">(</span>format <span style="color: #79a8ff;">"[[file:%s][%s]]"</span>
-                   <span style="color: #b6a0ff;">(</span><span style="color: #b6a0ff;">or</span>
-                    <span style="color: #44df44;">(</span><span style="color: #b6a0ff;">if</span> export-file-name
-                        <span style="color: #79a8ff;">(</span>format <span style="color: #79a8ff;">"%s.org"</span> export-file-name<span style="color: #79a8ff;">)</span>
-                      nil<span style="color: #44df44;">)</span>
-                    entry<span style="color: #b6a0ff;">)</span>
-                   <span style="color: #b6a0ff;">(</span>org-publish-find-title entry project<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
-          <span style="color: #ff6b55;">(</span><span style="color: #efef00;">(</span>eq style <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">tree</span><span style="color: #efef00;">)</span>
+  (<span style="color: #b6a0ff;">let*</span> ((export-file-name (spike-leung/org-publish-get-org-keyword entry project <span style="color: #79a8ff;">"export_file_name"</span>)))
+    (<span style="color: #b6a0ff;">cond</span> ((not (directory-name-p entry))
+           (format <span style="color: #79a8ff;">"[[file:%s][%s]]"</span>
+                   (<span style="color: #b6a0ff;">or</span>
+                    (<span style="color: #b6a0ff;">if</span> export-file-name
+                        (format <span style="color: #79a8ff;">"%s.org"</span> export-file-name)
+                      nil)
+                    entry)
+                   (org-publish-find-title entry project)))
+          ((eq style <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">tree</span>)
            <span style="color: #969896;">;; </span><span style="color: #db7b5f;">Return only last subdir.
-</span>           <span style="color: #efef00;">(</span>file-name-nondirectory <span style="color: #b6a0ff;">(</span>directory-file-name entry<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
-          <span style="color: #ff6b55;">(</span>t entry<span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+</span>           (file-name-nondirectory (directory-file-name entry)))
+          (t entry))))
 
-<span style="color: #ffffff;">(</span><span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/org-publish-get-org-keyword</span> <span style="color: #ff66ff;">(</span>entry project keyword<span style="color: #ff66ff;">)</span>
+(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/org-publish-get-org-keyword</span> (entry project keyword)
   <span style="color: #9ac8e0;">"Get the value of the given KEYWORD in the current Org file.
 KEYWORD is case-insensitive."</span>
-  <span style="color: #ff66ff;">(</span><span style="color: #b6a0ff;">let</span> <span style="color: #00eff0;">(</span><span style="color: #ff6b55;">(</span>file <span style="color: #efef00;">(</span>org-publish--expand-file-name entry project<span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span>
-    <span style="color: #00eff0;">(</span><span style="color: #b6a0ff;">when</span> <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">and</span> <span style="color: #efef00;">(</span>file-readable-p file<span style="color: #efef00;">)</span> <span style="color: #efef00;">(</span>not <span style="color: #b6a0ff;">(</span>directory-name-p file<span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span>
-      <span style="color: #ff6b55;">(</span><span style="color: #b6a0ff;">org-with-file-buffer</span> file
-        <span style="color: #efef00;">(</span><span style="color: #b6a0ff;">let*</span> <span style="color: #b6a0ff;">(</span><span style="color: #44df44;">(</span>normalized-keyword <span style="color: #79a8ff;">(</span>s-upcase keyword<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span>
-               <span style="color: #44df44;">(</span>keywords <span style="color: #79a8ff;">(</span>org-collect-keywords <span style="color: #f78fe7;">(</span>list normalized-keyword<span style="color: #f78fe7;">)</span><span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span>
-          <span style="color: #b6a0ff;">(</span>car <span style="color: #44df44;">(</span>cdr <span style="color: #79a8ff;">(</span>assoc normalized-keyword keywords<span style="color: #79a8ff;">)</span><span style="color: #44df44;">)</span><span style="color: #b6a0ff;">)</span><span style="color: #efef00;">)</span><span style="color: #ff6b55;">)</span><span style="color: #00eff0;">)</span><span style="color: #ff66ff;">)</span><span style="color: #ffffff;">)</span>
+  (<span style="color: #b6a0ff;">let</span> ((file (org-publish--expand-file-name entry project)))
+    (<span style="color: #b6a0ff;">when</span> (<span style="color: #b6a0ff;">and</span> (file-readable-p file) (not (directory-name-p file)))
+      (<span style="color: #b6a0ff;">org-with-file-buffer</span> file
+        (<span style="color: #b6a0ff;">let*</span> ((normalized-keyword (s-upcase keyword))
+               (keywords (org-collect-keywords (list normalized-keyword))))
+          (car (cdr (assoc normalized-keyword keywords))))))))
 </pre>
 </div>
 </details>
@@ -553,6 +553,7 @@ Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如
 </div>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>
