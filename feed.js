@@ -254,23 +254,14 @@ ${ALL_CATEGORIES.map((cat) => `  <category term="${cat.term}" label="${cat.label
 
 async function generateFeed() {
   try {
-    // 1. Read and parse the index file
-    const indexContent = fs.readFileSync(CONFIG.postsSource, "utf8");
-
-    // 2. Extract post links
-    const entries = parseOrgIndex(indexContent);
-
-    // 3. Get content for each post
+    const entries = parseOrgIndex();
     const limit = pLimit(8);
-
     const limitedEntries = entries.slice(0, CONFIG.postsToInclude);
-
     const processingPromises = limitedEntries.map((entry) =>
       limit(() => processPost(entry)),
     );
 
     const processedResults = await Promise.all(processingPromises);
-
     const processedEntries = processedResults.filter(Boolean);
 
     // 4. Generate Atom XML
@@ -325,7 +316,7 @@ function getEntryFromOrgFile(filePath) {
   return { entry: null, content: content };
 }
 
-function parseOrgIndex(orgContent) {
+function parseOrgIndex() {
   return findOrgFilesByTag('published', CONFIG.orgPostsDir)
 }
 
