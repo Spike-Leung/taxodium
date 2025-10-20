@@ -127,7 +127,7 @@
 body {
   color: var(--color-text);
   color: light-dark(var(--color-text), var(--dark-color-text));
-  line-height: 3ex;
+  line-height: 1.5;
   /* background: var(--color-bg); */
   /* background: light-dark(var(--color-bg), var(--dark-color-bg)); */
   /* background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZReReadymcllPAAAACFJREFUeNpiZGBg4GegAsBlCD8TqSYNQg2Mo6FEBAAIMACdPABtrSW/IQAAAABJRU5ErkJggg==); */
@@ -318,8 +318,11 @@ code {
   font-family: var(--font-family);
 }
 
+p {
+  margin-block: 1em;
+}
+
 h1, h2, h3, h4, h5, h6 {
-  line-height: 1.2;
   position: relative;
   width: fit-content;
   --color-heading-presodu: color(from var(--color-border) srgb r g b / 0.6);
@@ -327,6 +330,7 @@ h1, h2, h3, h4, h5, h6 {
   --color-heading-presodu--hover: var(--color-border);
   --dark-color-heading-presodu--hover: var(--dark-color-border);
   /* --color-heading-background: color(from currentColor srgb r g b / 0.2); */
+  margin-block: 2em .2em;
 
   /* & a { */
   /*   background-image: linear-gradient(to bottom, */
@@ -336,6 +340,16 @@ h1, h2, h3, h4, h5, h6 {
   /*   background-position: 0 100%; */
   /*   background-size: 100% 20%; */
   /* } */
+
+  & + div p:nth-child(1) {
+    margin-block-start: 0;
+  }
+
+  & + div:empty + div {
+    & h1,h2,h3,h4,h5,h6 {
+      margin-block-start: 0;
+    }
+  }
 
   &:hover {
     &::before {
