@@ -478,6 +478,72 @@ a[href*=http] {
   text-decoration-style: solid;
 }
 
+h1,h2,h3,h4,h5,h6 a::before {
+  display: none;
+}
+
+.vertical-rl.vertical-rl a::before {
+  inset-inline-start: 0;
+  inset-block-start: 120%;
+}
+
+a[href*="xiaoyuzhoufm.com"],
+a[href*="bilibili.com"],
+a[href*="youtube.com"],
+a[href*="twitter.com"],
+a[href*="www.wikipedia.org"],
+a[href*="douban.com"],
+a[href*="developer.mozilla.org"],
+a[href*="music.163.com"]
+{
+  position: relative;
+
+  &::before {
+    content: '';
+    background-size: contain;
+    display: inline-block;
+    width: .9em;
+    height: .9em;
+    margin-inline-end: .1em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    transition: all .25s ease allow-discrete;
+    position: absolute;
+    inset-inline-end: 100%;
+    inset-block-start: 10%;
+    opacity: 0
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
+a[href*="music.163.com"]::before {
+  background-image: url("/images/common/favicon/music.163.com.ico");
+}
+a[href*="developer.mozilla.org"]::before {
+  background-image: url("/images/common/favicon/developer.mozilla.org.ico");
+}
+a[href*="douban.com"]::before {
+  background-image: url("/images/common/favicon/douban.com.ico");
+}
+a[href*="www.wikipedia.org"]::before {
+  background-image: url("/images/common/favicon/www.wikipedia.org.ico");
+}
+a[href*="twitter.com"]::before {
+  background-image: url("/images/common/favicon/twitter.com.ico");
+}
+a[href*="youtube.com"]::before {
+  background-image: url("/images/common/favicon/youtube.com.ico");
+}
+a[href*="bilibili.com"]::before {
+  background-image: url("/images/common/favicon/bilibili.com.ico");
+}
+a[href*="xiaoyuzhoufm.com"]::before {
+  background-image: url("/images/common/favicon/xiaoyuzhoufm.com.ico");
+}
+
 :is(#content, #postamble) a:visited {
   color: var(--color-link-visited);
   color: light-dark(var(--color-link-visited), var(--dark-color-link-visited));
@@ -666,6 +732,7 @@ sup {
       opacity: 0.05;
       outline-color: var(--color-link);
       outline-color: light-dark(var(--color-link), var(--dark-color-link));
+      transition: all .25s ease;
     }
   }
 }
