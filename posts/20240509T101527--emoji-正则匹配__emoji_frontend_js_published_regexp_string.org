@@ -42,7 +42,7 @@
 
 如果你想匹配 Emoji，可以考虑使用 [[https://github.com/mathiasbynens/emoji-regex][emoji-regex]] 这个库。
 
-如果你只需要兼容高版本的浏览器（如 Chrome 112+），你也可以使用 =\p{RGI_Emoji}\gv= (参考 [[https://v8.dev/features/regexp-v-flag][RegExp v flag with set notation and properties of strings]])。
+如果你只需要兼容高版本的浏览器（如 Chrome 112+），你也可以使用 =\p{RGI_Emoji}\gv=[fn:2]。
 
 * 解决过程
 :PROPERTIES:
@@ -51,7 +51,9 @@
 :ID:       2FB86304-D1A3-4636-AA30-C66A2AB08598
 :END:
 
-对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道 Emoji 和 Unicode 相关，但怎么用正则描述它呢？
+对于 Emoji 这种正则，一开始想不到如何构建，
+理论上它也是属于 String，大致知道 Emoji 和 Unicode 相关，
+但怎么用正则描述它呢？
 
 所以我的第一步是 Google，得到一个这样的正则：
 
@@ -63,24 +65,31 @@
 
 [[file:./images/emoji-regexp/regexp101-emoji-wrong.png]]
 
-上面的正则表达式应该是表示的是一个 Unicode 范围，部分 Emoji (🉐)没匹配上，说明这个范围小了，没有囊括所有的 Emoji。
+上面的正则表达式应该是表示的是一个 Unicode 范围，
+部分 Emoji (🉐)没匹配上，说明这个范围小了，没有囊括所有的 Emoji。
 
 那么 Emoji 的 Unicode 范围是多少？是不是穷举就行了？
 
-其实没办法用一个固定的范围去表达，因为 Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicode ，没办法用一个固定的范围去表达所有的 Emoji。
+其实没办法用一个固定的范围去表达，
+因为 Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicode，
+没办法用一个固定的范围去表达所有的 Emoji。
 
-于是又搜索了一下，StackOverflow 有一个 [[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][回答]]，里面提到了用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape]] 进行匹配，也就是 ~/\p{Emoji}/u~ 和 ~/\p{Extended_Pictographic}/u~ 。
+于是又搜索了一下，StackOverflow 有一个 [[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][回答]]，
+里面提到了用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape]] 进行匹配，
+也就是 ~/\p{Emoji}/u~ 和 ~/\p{Extended_Pictographic}/u~ 。
 
 #+begin_details
 #+html: <summary>什么是 Unicode character class escpae</summary>
 
 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape: \p{...}, \P{...}]] 是 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_class_escape][Character class escape]] 中的一种。
 
-平时正则中常用的 ~\d~ 、 ~\D~ 、 ~\w~ 、 ~\W~ 就是 Character class escape，它们是用来表达一组字符的转义序列 (escape sequence)。
+平时正则中常用的 ~\d~ 、 ~\D~ 、 ~\w~ 、 ~\W~ 就是 Character class escape，
+它们是用来表达一组字符的转义序列 (escape sequence)。
 
 例如 =\d= 这个转义序列表达的就是 =[0-9]= 的一组字符 。
 
-而 =\p{...}= , =\P{...}= 也是类似的，只是他们用来表达一组 Unicdoe 字符，通过指定 [[https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties][Unicode property]] 决定匹配什么 Unicode。
+而 =\p{...}= , =\P{...}= 也是类似的，只是他们用来表达一组 Unicdoe 字符，
+通过指定 [[https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties][Unicode property]] 决定匹配什么 Unicode。
 
 例如可以用 =/\p{Hex_Digit}/u= 去匹配 16 进制的字符：
 
@@ -114,7 +123,8 @@
 :ID:       FEE4F9A3-99A9-44C0-AA15-99CEE5CBF40A
 :END:
 
-现在，使用 Unicode character class escpae 可以匹配 Emoji 了，但是为什么一开始 Google 搜到的正则 ~/(\ud83c[\udf00-\udfff].../u~ 无法匹配 🉐 呢？
+现在，使用 Unicode character class escpae 可以匹配 Emoji 了，
+但是为什么一开始 Google 搜到的正则 ~/(\ud83c[\udf00-\udfff].../u~ 无法匹配 🉐 呢？
 
 为此，首先需要知道 🉐 在 JS 中到底是什么。
 
@@ -154,25 +164,20 @@ represents 1–6 hex digits.
 #+end_quote
 #+end_details
 
-在 JavaScript 中，String 实际是 UTF-16  (16-bit Unicode Transformation Format) 编码的，它以 16 位去表示一个字符（code unit），最多可以表示 65536 (0x0000 - 0xFFFF) 个字符。
+在 JavaScript 中，String 实际是 UTF-16 (16-bit Unicode Transformation Format) 编码的，
+它以 16 位去表示一个字符（code unit），最多可以表示 65536 (0x0000 - 0xFFFF) 个字符。
 
-这 65535 个字符中包含了大部分常用字符，例如字母，数字，拉丁字符，以及一些东亚文字字符。
-
-但是后来发现 65535 并不足以表达所有字符，16 位不够，那就需要增加 Unicode 去表达更多字符。
+这 65536 个字符中包含了大部分常用字符，例如字母，数字，拉丁字符，以及一些东亚文字字符。
+但是后来发现 65536 并不足以表达所有字符，16 位不够，那就需要增加 Unicode 去表达更多字符。
 
 实现的方法就是定义了 *代理对 (Surrogates pairs)*  , 代理对由 20 位组成。
-
 规定前 10 位作为 *高代理位 (high-surrogate)* ，取值范围是 0xD800 - 0xDBFF。
-
-后 10 位为 *低代理位 (low-surrogate)* ，取值范围是 0xDC00 - 0xDFFF。[fn:2] [fn:3]
-
+后 10 位为 *低代理位 (low-surrogate)* ，取值范围是 0xDC00 - 0xDFFF。[fn:3]
 高代理位和低代理位组成代理对 (surrogate pairs) 。
-
 由于有 20 位的长度，因此可以表达 1048576 个字符，可以在原来 65536 个字符之上，再增加 1048576 个字符。
 
 概括来说，在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。
-
-而超出 65535 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
+而超出 65536 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
 
 ** 为什么匹配不到
 :PROPERTIES:
@@ -192,7 +197,8 @@ represents 1–6 hex digits.
 
 所以 🉐 的高代理是 ~\uD83C~ ，低代理是 ~\uDE50~ 。
 
-和 =(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]= 对比可以发现，正则的范围不包括 ~\uD83C\uDE50~ ，所以匹配不到 🉐。
+和 =(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]=
+对比可以发现，正则的范围不包括 ~\uD83C\uDE50~ ，所以匹配不到 🉐。
 
 #+begin_details
 #+html: <summary>String 中的相关方法</summary>
@@ -266,7 +272,7 @@ represents 1–6 hex digits.
   Note that the index is still based on UTF-16 code units, not Unicode code points.
   #+end_quote
 
-  codePointAt() 返回的是一个数字，是字符串对应下标的对应的 Unicode code point(不局限在 0-65535, 而是 0-1114111 (0x10FFFF))。
+  codePointAt() 返回的是一个数字，是字符串对应下标的对应的 Unicode code point (不局限在 0-65535, 而是 0-1114111 (0x10FFFF))。
 
   #+begin_src typescript
     '🉐'.charCodeAt(0) // 55356
@@ -319,7 +325,6 @@ represents 1–6 hex digits.
 :END:
 
 有的字符是由代理对组成的，是两个 UTF-16 编码单元，例如 Emoji。
-
 当需要计算他们长度的时候，需要意识到他们是代理对，取决于具体需求去统计长度。
 
 #+begin_src typescript
@@ -338,7 +343,8 @@ represents 1–6 hex digits.
 :ID:       C7010B10-B0DE-4ECD-9FD3-F50BD425AD85
 :END:
 
-代理对是由高代理和低代理组成的，如果单独把高代理拎出来，或者高代理和高代理组成代理对，是无法表达有含意的 Unicode 字符的。
+代理对是由高代理和低代理组成的，如果单独把高代理拎出来，
+或者高代理和高代理组成代理对，是无法表达有含意的 Unicode 字符的。
 
 具体可以参考 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters][UTF-16 characters, Unicode code points, and grapheme clusters]]。
 
@@ -350,21 +356,20 @@ represents 1–6 hex digits.
 :END:
 
 - [[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][How to detect emoji using javascript]]
-
 - [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape: \p{...}, \P{...}]]
-
 - [[https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties][Binary Unicode property aliases and their canonical property names]]
-
 - [[https://v8.dev/features/regexp-v-flag][RegExp v flag with set notation and properties of strings]]
 
 * Footnotes
 :PROPERTIES:
-:CUSTOM_ID:       7E48FE13-3D13-44A4-8CC2-FF9603DA2E01
-:ID:       3C34D4CD-7420-4EEF-B444-F92588BE9300
+:CUSTOM_ID: 88F6EDA2-46A5-4303-85E5-42A98034F795
 :END:
 
 [fn:1] 感谢 [[https://github.com/JunQu][JunQu]] 指出 [[https://github.com/Spike-Leung/taxodium/discussions/9][问题]]。
 
-[fn:2] 为什么 Unicode 要这么设计，可以参考 [[https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm][Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?]]
+[fn:2] 参考 [[https://v8.dev/features/regexp-v-flag][RegExp v flag with set notation and properties of strings]]
 
-[fn:3] 为什么高代理和低代理这么取值，可以参考 [[https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen][How was the position of the Surrogates Area (UTF-16) chosen?]]）
+[fn:3]
+为什么 Unicode 要这么设计，参考 [[https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm][Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?]]
+
+为什么高代理和低代理这么取值，参考 [[https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen][How was the position of the Surrogates Area (UTF-16) chosen?]]
