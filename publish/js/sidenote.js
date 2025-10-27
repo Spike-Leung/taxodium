@@ -75,7 +75,7 @@ function unmountLittlefoot() {
 }
 
 function isSidenoteVisible() {
-  return window.matchMedia('(min-width: 1921px)').matches;
+  return window.matchMedia('(min-width: 1500px)').matches;
 }
 
 function handleFootnoteMode() {
@@ -204,7 +204,7 @@ function mountSidenotes() {
       }
       sidenote.style.display = '';
 
-      const padding = '1.5em';
+      const padding = '.5em';
       const sidenoteGap = 8;
 
       // 先重置高度，避免内容变化导致高度不准
@@ -220,9 +220,9 @@ function mountSidenotes() {
         sidenote.style.paddingInlineStart = padding;
         sidenote.style.left = '100%';
       } else {
-        sidenote.style.paddingInlineEnd = padding;
         sidenote.style.justifyContent = 'flex-end';
         sidenote.style.left = `${-1 * sidenote.getBoundingClientRect().width}px`;
+        sidenote.style.paddingInlineEnd = padding;
       }
 
       // 避免 sidenote 重叠
