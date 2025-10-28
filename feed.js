@@ -264,10 +264,8 @@ async function generateFeed() {
     const processedResults = await Promise.all(processingPromises);
     const processedEntries = processedResults.filter(Boolean);
 
-    // 4. Generate Atom XML
     const feed = generateAtomFeed(processedEntries);
 
-    // 5. Save output
     fs.writeFileSync(CONFIG.outputFile, feed);
     console.log(
       `Feed generated with ${processedEntries.length} entries at ${CONFIG.outputFile}`,
@@ -302,8 +300,8 @@ function getEntryFromOrgFile(filePath) {
 
     if (date) {
       const entry = {
-        title: titleMatch[1].trim(),
-        subtitle: subtitleMatch ? subtitleMatch[1].trim() : "",
+        title: escapeUnsafeChar(titleMatch[1].trim()),
+        subtitle: escapeUnsafeChar(subtitleMatch ? subtitleMatch[1].trim() : ""),
         file: htmlFile,
         date: date,
       };
@@ -314,6 +312,18 @@ function getEntryFromOrgFile(filePath) {
   }
 
   return { entry: null, content: content };
+}
+
+function escapeUnsafeChar(unsafeChar) {
+  return unsafeChar.replace(/[<>&'"]/g, function (c) {
+    switch (c) {
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '&': return '&amp;';
+      case '\'': return '&apos;';
+      case '"': return '&quot;';
+    }
+  });
 }
 
 function parseOrgIndex() {
@@ -358,7 +368,6 @@ async function generateTagFeeds() {
     const count = tagConfig.count;
 
     try {
-      // 1. Find org files with the tag
       let entries = findOrgFilesByTag(tag, CONFIG.orgPostsDir);
       if (entries.length === 0) {
         console.log(
@@ -367,24 +376,20 @@ async function generateTagFeeds() {
         continue;
       }
 
-      // Sort by date to get the latest posts
       entries.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-      // Limit the number of posts for the tag feed
       if (count > 0) {
         entries = entries.slice(0, count);
       }
 
       console.log(`Found ${entries.length} posts for tag: ${tag}`);
 
-      // 2. Process each post
       const processingPromises = entries.map((entry) =>
         limit(() => processPost(entry)),
       );
       const processedResults = await Promise.all(processingPromises);
       const processedEntries = processedResults.filter(Boolean);
 
-      // 3. Generate Atom XML for the tag
       const tagFeedConfig = {
         ...CONFIG,
         feedTitle: `${CONFIG.feedTitle} - Tag: ${tag}`,
@@ -394,7 +399,6 @@ async function generateTagFeeds() {
       };
       const feed = generateAtomFeed(processedEntries, tagFeedConfig);
 
-      // 4. Save output
       const outputFile = path.join(CONFIG.postsDir, `${tag}.xml`);
       fs.writeFileSync(outputFile, feed);
       console.log(
