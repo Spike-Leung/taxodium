@@ -51,7 +51,7 @@
 <li><a href="#F0C6CAC8-45B4-4716-97E4-045ECFDAE27F">插件配置</a>
 <ul>
 <li><a href="#C011324B-80BA-4CA2-8F8B-474BC2448BBD">emacs-immersive-translate</a></li>
-<li><a href="#BE4581E7-1D8C-44A7-8F87-224AFFDA8278">go-translate</a></li>
+<li><a href="#BE4581E7-1D8C-44A7-8F87-224AFFDA8278">gt.el</a></li>
 <li><a href="#049C7544-172F-4A42-B006-13303F6D3314">fanyi</a></li>
 <li><a href="#EFE3FF83-B693-4094-834E-BCB33096A1AA">gptel</a></li>
 <li><a href="#10EBCE0C-3A78-486F-B1F6-EF7BE2F577A5">快捷键</a></li>
@@ -65,15 +65,11 @@
 <figure>
 <a href="./images/translate-in-emacs/screenshot.png"><img src="./images/translate-in-emacs/screenshot.png" alt="screenshot.png"></a>
 
-<figcaption><span class="figure-number">&#22270;1&nbsp; </span>Emacs 中翻译插件的使用截图，包括 emacs-immersive-translate, go-translate, fanyi</figcaption>
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>Emacs 中翻译插件的使用截图，包括 emacs-immersive-translate, gt, fanyi</figcaption>
 </figure>
 
 <p>
-逛 <a href="https://emacs-china.org/">Emacs China</a> 的时候看到了一些在 Emacs 中翻译的插件<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup><sup>, </sup><sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup><sup>, </sup><sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>，我也跟着配置了一些，最近也在使用 <a href="https://platform.deepseek.com/">deepseek</a>，它的 API 是和 <a href="https://platform.openai.com/docs/overview">OpenAI</a> 兼容的，和翻译插件结合，翻译的效果还不错。
-</p>
-
-<p>
-我想记录一下我都使用了什么插件，怎么配置的以及是如何使用的。
+逛 <a href="https://emacs-china.org/">Emacs China</a> 的时候看到了一些在 Emacs 中翻译的插件<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>，我也跟着配置了一些。得益于 LLM(Large Language Model)，翻译的质量也好了很多。这篇文章记录一下我都使用了什么插件，怎么配置的以及是如何使用的。
 </p>
 <div id="outline-container-D467719F-6657-47BD-B3A5-DCB6F7A89480" class="outline-2">
 <h2 id="D467719F-6657-47BD-B3A5-DCB6F7A89480">插件使用</h2>
@@ -83,25 +79,14 @@
 
 <dl class="org-dl">
 <dt><a href="https://github.com/Elilif/emacs-immersive-translate">Elilif/emacs-immersive-translate</a></dt><dd>Immersive-translate provides bilingual simultaneous display and translation of any text in Emacs.</dd>
-<dt><a href="https://github.com/lorniu/go-translate">lorniu/go-translate</a></dt><dd>Translator on Emacs. Supports multiple engines such as Google, Bing, deepL, ChatGPT, StarDict, Youdao and so on.</dd>
+<dt><a href="https://github.com/lorniu/gt.el">lorniu/gt.el</a></dt><dd>Translator on Emacs. Supports multiple engines such as Google, Bing, deepL, ChatGPT, StarDict, Youdao and so on.</dd>
 <dt><a href="https://github.com/condy0919/fanyi.el">condy0919/fanyi.el</a></dt><dd>Not only English-Chinese translator for Emacs.</dd>
 <dt><a href="https://github.com/karthink/gptel">karthink/gptel</a></dt><dd>A simple LLM client for Emacs.</dd>
 </dl>
 
 <p>
 我使用最多的是 emacs-immersive-translate，它的灵感是 <a href="https://immersivetranslate.com/en/">Immersive Translate</a>，是我使用频率极高的一个浏览器翻译插件。
-</p>
-
-<p>
-emacs-immersive-translate 给我的体验和 Immersive Translate 很接近，我主要是用来查看 Emacs 中的 Info，它还有 immersive-translate-auto-mode，可以在  <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html">buffer</a> 变化的时候自动翻译，很方便。
-</p>
-
-<p>
-最开始时我没有 OpenAI 的 API Key，我用的是 <a href="https://github.com/soimort/translate-shell">translate-shell</a>，实际上就是 <a href="https://translate.google.com/">Goolge Translate</a>。
-</p>
-
-<p>
-Google Translate 的翻译速度很快，缺点是有的时候翻译不是那么准确，但也基本够用了。
+emacs-immersive-translate 给我的体验和 Immersive Translate 很接近，我主要是用来查看 Emacs 中的 Info，它还有 <code>immersive-translate-auto-mode</code> ，可以在  <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html">buffer</a> 变化的时候自动翻译，很方便。
 </p>
 
 <p>
@@ -109,15 +94,11 @@ emacs-immersive-translate 针对 Emacs 中的 Info，<a href="https://github.com
 </p>
 
 <p>
-go-translate 的灵活度会更高一些，我主要用来选中文本之后进行翻译。
+gt.el 的灵活度会更高一些，我主要用来选中文本之后进行翻译。
 </p>
 
 <p>
-fanyi 则是当作字典使用，碰到一两个单词不熟悉，就使用 fanyi 进行查询。
-</p>
-
-<p>
-我很喜欢 fanyi 里面的 <a href="https://dict.cn/">海词</a>，它可以生成图表，呈现单词含义的使用频率，让我了解这个单词最常见的含义。
+fanyi 则是当作字典使用，碰到一两个单词不熟悉，就使用 fanyi 进行查询。我很喜欢 fanyi 里面的 <a href="https://dict.cn/">海词</a>，它可以生成图表，呈现单词含义的使用频率，让我了解这个单词最常见的含义。
 </p>
 
 <p>
@@ -142,74 +123,89 @@ fanyi 则是当作字典使用，碰到一两个单词不熟悉，就使用 fany
 </p>
 
 <p>
-然后我配置了使用 deepseek 作为翻译服务：
+然后我配置了使用 <a href="https://openrouter.ai/">OpenRouter</a> 作为翻译服务：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp">(<span style="color: #b6a0ff;">push</span> (expand-file-name <span style="color: #79a8ff;">"lisp/my-lisp/emacs-immersive-translate"</span> user-emacs-directory) load-path)
-(<span style="color: #b6a0ff;">require</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">immersive-translate</span>)
-<span style="color: #969896;">;; </span><span style="color: #db7b5f;">need to add deepseek api-key with user `apikey` in `.authinfo`
+<pre class="src src-elisp"><span style="color: #999999;">;;; </span><span style="color: #db7b5f;">immersive-translate
+</span>(<span style="color: #b6a0ff;">require</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">immersive-translate</span>)
+(add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">elfeed-show-mode-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">immersive-translate-setup</span>)
+<span style="color: #999999;">;; </span><span style="color: #db7b5f;">need to api key with user `apikey` in `.authinfo`
 </span>(<span style="color: #b6a0ff;">setq</span> immersive-translate-backend <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">chatgpt</span>
-      immersive-translate-chatgpt-host <span style="color: #79a8ff;">"api.deepseek.com"</span>
-      immersive-translate-chatgpt-model <span style="color: #79a8ff;">"deepseek-chat"</span>
+      immersive-translate-chatgpt-host <span style="color: #79a8ff;">"openrouter.ai/api"</span>
+      immersive-translate-chatgpt-model <span style="color: #79a8ff;">"google/gemini-2.5-flash"</span>
       immersive-translate-pending-message <span style="color: #79a8ff;">"(&#8790;&#7447;&#8790;&#3665;)"</span>
       immersive-translate-failed-message <span style="color: #79a8ff;">"(&#12388;&#1076;&#8834;) "</span>)
 </pre>
 </div>
 
 <p>
-API Key 在 <code>~/.authinfo</code> <sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup><sup>, </sup><sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>中配置，由于 emacs-immersive-translate 是查找 user 为 <code>apikey</code> 的配置，因此 user 这里需要设置为 <code>apikey</code> 。
+API Key 在 <code>~/.authinfo</code> <sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>中配置，由于 emacs-immersive-translate 是查找 user 为 <code>apikey</code> 的配置，因此 user 这里需要设置为 <code>apikey</code> 。
 </p>
+
 <div class="org-src-container">
-<pre class="src src-authinfo"><span style="color: #00d3d0;">machine</span> <span style="color: #f78fe7;">api.deepseek.com</span> <span style="color: #969896;">login</span> <span style="color: #b6a0ff;">apikey</span> <span style="color: #969896;">password</span> <span style="color: #9ac8e0;">********************************</span>
+<pre class="src src-authinfo"><span style="color: #00d3d0;">machine</span> <span style="color: #f78fe7;">openrouter.ai/api</span> <span style="color: #999999;">login</span> <span style="color: #b6a0ff;">apikey</span> <span style="color: #999999;">password</span> <span style="color: #9ac8e0;">********************************</span>
 </pre>
 </div>
 </div>
 </div>
 <div id="outline-container-BE4581E7-1D8C-44A7-8F87-224AFFDA8278" class="outline-3">
-<h3 id="BE4581E7-1D8C-44A7-8F87-224AFFDA8278"><a href="https://github.com/lorniu/go-translate">go-translate</a></h3>
+<h3 id="BE4581E7-1D8C-44A7-8F87-224AFFDA8278"><a href="https://github.com/lorniu/gt.el">gt.el</a></h3>
 <div class="outline-text-3" id="text-BE4581E7-1D8C-44A7-8F87-224AFFDA8278"><p>
-go-translate 也是可以在 MELPA 上直接安装。
+gt.el 也是可以在 MELPA 上直接安装。
 </p>
 
 <p>
-我将它配置成使用 deepseek 作为翻译服务，翻译显示在一个新的 <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html">buffer</a> 中。
+我将它配置成使用 <a href="https://openrouter.ai/">OpenRouter</a> 作为翻译服务，翻译显示在一个新的 <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html">buffer</a> 中。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #969896;">;; </span><span style="color: #db7b5f;">@see: https://github.com/lorniu/go-translate
-</span>(maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">go-translate</span>)
+<pre class="src src-elisp"><span style="color: #999999;">;; </span><span style="color: #db7b5f;">@see: https://github.com/lorniu/gt.el
+</span>(maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gt</span>)
 (maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">plz</span>)
-(<span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">go-translate</span>
-  (<span style="color: #b6a0ff;">setq</span> gt-langs <span style="color: #b6a0ff;">'</span>(en zh)
-        gt-chatgpt-key (spike-leung/get-deepseek-api-key)
-        gt-chatgpt-host <span style="color: #79a8ff;">"https://api.deepseek.com"</span>
-        gt-chatgpt-model <span style="color: #79a8ff;">"deepseek-chat"</span>
-        gt-default-translator (gt-translator
-                               <span style="color: #f78fe7;">:engines</span> (list
-                                         (gt-chatgpt-engine))
-                               <span style="color: #f78fe7;">:render</span> (gt-buffer-render
-                                        <span style="color: #f78fe7;">:buffer-name</span> <span style="color: #79a8ff;">"gt-translator"</span>
-                                        <span style="color: #f78fe7;">:window-config</span> <span style="color: #b6a0ff;">'</span>((display-buffer-at-bottom))
-                                        <span style="color: #f78fe7;">:then</span> (<span style="color: #b6a0ff;">lambda</span> (_) (pop-to-buffer <span style="color: #79a8ff;">"gt-translator"</span>))))))
-
+(<span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-auth</span>
+  (<span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gt</span>
+    (<span style="color: #b6a0ff;">setq</span> gt-langs <span style="color: #b6a0ff;">'</span>(en zh)
+          gt-chatgpt-key (spike-leung/get-openrouter-api-key)
+          gt-chatgpt-host <span style="color: #79a8ff;">"https://openrouter.ai/api"</span>
+          gt-chatgpt-model <span style="color: #79a8ff;">"google/gemini-2.5-flash"</span>
+          gt-default-translator (gt-translator
+                                 <span style="color: #f78fe7;">:taker</span> (gt-taker <span style="color: #f78fe7;">:pick</span> nil <span style="color: #f78fe7;">:prompt</span> t)
+                                 <span style="color: #f78fe7;">:engines</span> (gt-chatgpt-engine <span style="color: #f78fe7;">:stream</span> t)
+                                 <span style="color: #f78fe7;">:render</span> (gt-buffer-render
+                                          <span style="color: #f78fe7;">:name</span> <span style="color: #79a8ff;">"gt-translator"</span>
+                                          <span style="color: #f78fe7;">:window-config</span> <span style="color: #b6a0ff;">'</span>((display-buffer-at-bottom))
+                                          <span style="color: #f78fe7;">:then</span> (<span style="color: #b6a0ff;">lambda</span> (_) (pop-to-buffer <span style="color: #79a8ff;">"gt-translator"</span>)))))))
 </pre>
 </div>
 
 <p>
-API Key 也是配置在 <code>~/.authinfo</code> ，使用 <code>spike-leung/get-deepseek-api-key</code> 这个方法从文件中查找对应的密钥。
+API Key 也是配置在 <code>~/.authinfo</code> ，使用 <code>spike-leung/get-openrouter-api-key</code> 这个方法从文件中查找对应的密钥。
 </p>
 
 <details>
-<summary>spike-leung/get-deepseek-api-key</summary>
+<summary>spike-leung/get-openrouter-api-key</summary>
+
+<p>
+Source: <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-auth.el">init-auth.el</a>
+</p>
+
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #969896;">;;; </span><span style="color: #db7b5f;">function to get api-key from authinfo
-</span>(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/get-api-key</span> (service)
-  <span style="color: #9ac8e0;">"Retrieve the API key for SERVICE from authinfo."</span>
-  (<span style="color: #b6a0ff;">let*</span> ((host (format <span style="color: #79a8ff;">"api.%s.com"</span> service))
+<pre class="src src-elisp"><span style="color: #999999;">;;; </span><span style="color: #db7b5f;">init-auth --- config for auth related -*- lexical-binding: t -*-
+</span><span style="color: #999999;">;;; </span><span style="color: #db7b5f;">Commentary:
+</span><span style="color: #999999;">;;; </span><span style="color: #db7b5f;">Code:
+</span>(<span style="color: #b6a0ff;">setq</span> epa-pinentry-mode <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">loopback</span>) <span style="color: #999999;">;; </span><span style="color: #db7b5f;">input pass in minibuffer
+</span>
+<span style="color: #999999;">;; </span><span style="color: #db7b5f;">(auth-source-pass-enable) ;;; use pass to manage auth-source
+</span>
+<span style="color: #999999;">;;; </span><span style="color: #db7b5f;">function to get api-key from authinfo
+</span>(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/get-api-key</span> (service <span style="color: #6ae4b9;">&amp;optional</span> host)
+  <span style="color: #9ac8e0;">"Retrieve the API key for SERVICE from authinfo.  if HOST exist, retrieve by HOST."</span>
+  (<span style="color: #b6a0ff;">let*</span> ((host (<span style="color: #b6a0ff;">or</span> host (format <span style="color: #79a8ff;">"api.%s.com"</span> service)))
          (creds (car (auth-source-search <span style="color: #f78fe7;">:host</span> host <span style="color: #f78fe7;">:port</span> 443))))
     (<span style="color: #b6a0ff;">if</span> creds
-        (<span style="color: #b6a0ff;">let</span> ((api-key (plist-get creds <span style="color: #f78fe7;">:secret</span>)))
+        (<span style="color: #b6a0ff;">let</span> ((api-key (plist-get creds <span style="color: #f78fe7;">:secret</span>
+                                  )))
           (<span style="color: #b6a0ff;">if</span> (functionp api-key)
               (funcall api-key)
             api-key
@@ -220,9 +216,12 @@ API Key 也是配置在 <code>~/.authinfo</code> ，使用 <code>spike-leung/get
   <span style="color: #9ac8e0;">"Retrieve the DeepSeek API key from authinfo."</span>
   (spike-leung/get-api-key <span style="color: #79a8ff;">"deepseek"</span>))
 
-(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/get-gemini-api-key</span> ()
-  <span style="color: #9ac8e0;">"Retrieve the Gemini API key from authinfo."</span>
-  (spike-leung/get-api-key <span style="color: #79a8ff;">"gemini"</span>))
+(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/get-openrouter-api-key</span> ()
+  <span style="color: #9ac8e0;">"Retrieve the OpenRouter API key from authinfo."</span>
+  (spike-leung/get-api-key <span style="color: #79a8ff;">"openrouter"</span> <span style="color: #79a8ff;">"openrouter.ai"</span>))
+
+(<span style="color: #b6a0ff;">provide</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-auth</span>)
+<span style="color: #999999;">;;; </span><span style="color: #db7b5f;">init-auth.el ends here.</span>
 </pre>
 </div>
 
@@ -242,57 +241,11 @@ fanyi 从 MELPA 上直接安装使用即可。
 <div id="outline-container-EFE3FF83-B693-4094-834E-BCB33096A1AA" class="outline-3">
 <h3 id="EFE3FF83-B693-4094-834E-BCB33096A1AA"><a href="https://github.com/karthink/gptel">gptel</a></h3>
 <div class="outline-text-3" id="text-EFE3FF83-B693-4094-834E-BCB33096A1AA"><p>
-gptel 也是从 MELPA 上直接安装，然后配置 deepseek。
+gptel 也是从 MELPA 上直接安装，然后配置 OpenRouter，具体配置见 <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-gptel.el">init-gptel.el</a>。
 </p>
 
 <p>
-API Key 也是放在 <code>~/.authinfo</code> ，和 go-translate 共用。
-</p>
-
-<p>
-获取 API Key 也是通过 <code>spike-leung/get-deepseek-api-key</code> 方法。
-</p>
-
-<div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #969896;">;; </span><span style="color: #db7b5f;">init-gptel.el --- gptel
-</span><span style="color: #969896;">;;; </span><span style="color: #db7b5f;">Commentary:
-</span>
-(maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gptel</span>)
-
-(<span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gptel</span>
-  (gptel-make-openai <span style="color: #79a8ff;">"DeepSeek"</span>
-    <span style="color: #f78fe7;">:host</span> <span style="color: #79a8ff;">"api.deepseek.com"</span>
-    <span style="color: #f78fe7;">:endpoint</span> <span style="color: #79a8ff;">"/chat/completions"</span>
-    <span style="color: #f78fe7;">:stream</span> t
-    <span style="color: #f78fe7;">:key</span> (spike-leung/get-deepseek-api-key)
-    <span style="color: #f78fe7;">:models</span> <span style="color: #b6a0ff;">'</span>(deepseek-chat deepseek-coder))
-  (gptel-make-gemini <span style="color: #79a8ff;">"Gemini"</span> <span style="color: #f78fe7;">:key</span> (spike-leung/get-gemini-api-key) <span style="color: #f78fe7;">:stream</span> t)
-  (<span style="color: #b6a0ff;">setq</span>
-   gptel-model <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">deepseek-chat</span>
-   gptel-backend (gptel-make-openai <span style="color: #79a8ff;">"DeepSeek"</span>
-                   <span style="color: #f78fe7;">:host</span> <span style="color: #79a8ff;">"api.deepseek.com"</span>
-                   <span style="color: #f78fe7;">:endpoint</span> <span style="color: #79a8ff;">"/chat/completions"</span>
-                   <span style="color: #f78fe7;">:stream</span> t
-                   <span style="color: #f78fe7;">:key</span> (spike-leung/get-deepseek-api-key)
-                   <span style="color: #f78fe7;">:models</span> <span style="color: #b6a0ff;">'</span>(deepseek-chat deepseek-coder))))
-
-(global-set-key (kbd <span style="color: #79a8ff;">"M-o g"</span>) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gptel-menu</span>)
-
-(<span style="color: #b6a0ff;">provide</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-gptel</span>)
-<span style="color: #969896;">;;; </span><span style="color: #db7b5f;">init-gptel.el ends here</span>
-</pre>
-</div>
-
-<p>
-gptel 就是当 LLM 用，需要翻译的时候就复制文字和它对话。
-</p>
-
-<p>
-此外，在日常开发中，gptel 还能用来重构代码，完成一些重复任务，给我一些初始代码逻辑等，也是我用的很频繁的插件。
-</p>
-
-<p>
-deepseek V3 的价格足够便宜，也足够智能，目前我已经退了 ChatGPT Plus 的订阅，需要的时候使用 gptel 和 deepseek 对话。
+gptel 就是当 LLM 用，需要翻译的时候就复制文字和它对话。此外，在日常开发中，gptel 还能用来重构代码，完成一些重复任务，给我一些初始代码逻辑等，也是我用的很频繁的插件。
 </p>
 </div>
 </div>
@@ -303,49 +256,27 @@ deepseek V3 的价格足够便宜，也足够智能，目前我已经退了 Chat
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #969896;">;; </span><span style="color: #db7b5f;">gptel
-</span>(global-set-key (kbd <span style="color: #79a8ff;">"M-o g"</span>) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gptel-menu</span>)
-
-<span style="color: #969896;">;; </span><span style="color: #db7b5f;">translate stuff
+<pre class="src src-elisp"><span style="color: #999999;">;;; </span><span style="color: #db7b5f;">keybindings
 </span>(<span style="color: #b6a0ff;">defvar</span> <span style="color: #00d3d0;">spike-leung/my-translate-keymap</span> (make-sparse-keymap)
   <span style="color: #9ac8e0;">"Keymap for translation commands."</span>)
 
 (define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"i"</span>) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">immersive-translate-buffer</span>)
+(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"p"</span>) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">immersive-translate-paragraph</span>)
+(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"c"</span>) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">immersive-translate-clear</span>)
 (define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"f"</span>) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">fanyi-dwim2</span>)
-(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"g"</span>) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gt-do-translate</span>)
+(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"g"</span>) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gt-translate</span>)
 
-(global-set-key (kbd <span style="color: #79a8ff;">"M-o t"</span>) spike-leung/my-translate-keymap)
+(<span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-my-keybindings</span>
+  (define-key spike-leung/meta-o-keymap (kbd <span style="color: #79a8ff;">"t"</span>) spike-leung/my-translate-keymap))
 </pre>
 </div>
-
-
-<figure>
-<a href="./images/translate-in-emacs/M-o.png"><img src="./images/translate-in-emacs/M-o.png" alt="M-o.png"></a>
-
-<figcaption><span class="figure-number">&#22270;2&nbsp; </span>M-o 绑定的函数，包括 gptel，avy 以及翻译的前缀键</figcaption>
-</figure>
-
-
-<figure>
-<a href="./images/translate-in-emacs/M-o-t.png"><img src="./images/translate-in-emacs/M-o-t.png" alt="M-o-t.png"></a>
-
-<figcaption><span class="figure-number">&#22270;3&nbsp; </span>M-o t 绑定的函数，主要是翻译相关的</figcaption>
-</figure>
 </div>
 </div>
 </div>
 <div id="outline-container-A748F2BB-E210-48A0-8DF4-4022AC91C716" class="outline-2">
 <h2 id="A748F2BB-E210-48A0-8DF4-4022AC91C716">写在最后</h2>
 <div class="outline-text-2" id="text-A748F2BB-E210-48A0-8DF4-4022AC91C716"><p>
-有了翻译插件，在阅读 info 等文档上真的帮助很大，极大地提高阅读效率。
-</p>
-
-<p>
-集成了 LLM 后，翻译的质量也好了很多。
-</p>
-
-<p>
-但依赖翻译插件也有个问题，就是原文会看的比较少，不利于增进英语学习。
+有了翻译插件，在阅读 info 等文档上真的帮助很大，极大地提高阅读效率。集成了 LLM 后，翻译的质量也好了很多。但依赖翻译插件也有个问题，就是原文会看的比较少，不利于增进英语学习。
 </p>
 
 <p>
@@ -358,24 +289,22 @@ deepseek V3 的价格足够便宜，也足够智能，目前我已经退了 Chat
 <div id="text-footnotes">
 
 <div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-<a href="https://emacs-china.org/t/emacs-immersive-translate-emacs/24990">emacs-immersive-translate: Emacs 版本的沉浸式翻译（支持多个翻译后端）</a>
-</p></div></div>
+See:
+</p>
+<ul class="org-ul">
+<li><a href="https://emacs-china.org/t/emacs-immersive-translate-emacs/24990">emacs-immersive-translate: Emacs 版本的沉浸式翻译（支持多个翻译后端）</a></li>
+<li><a href="https://emacs-china.org/t/google/14407">新写的 Google 翻译插件</a></li>
+<li><a href="https://emacs-china.org/t/topic/18006">一个支持多词典的翻译插件(目前仅支持单词)</a></li>
+</ul></div></div>
 
 <div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-<a href="https://emacs-china.org/t/google/14407">新写的 Google 翻译插件</a>
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-<a href="https://emacs-china.org/t/topic/18006">一个支持多词典的翻译插件(目前仅支持单词)</a>
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-<a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Authentication.html">50.5 Keeping Persistent Authentication Information ¶</a>
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-<a href="https://www.emacswiki.org/emacs/GnusAuthinfo">Gnus Authinfo</a>
-</p></div></div>
+See:
+</p>
+<ul class="org-ul">
+<li><a href="config-authinfo-with-emacs.html">Emacs 中配置 .authinfo.gpg</a></li>
+<li><a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Authentication.html">50.5 Keeping Persistent Authentication Information ¶</a></li>
+<li><a href="https://www.emacswiki.org/emacs/GnusAuthinfo">Gnus Authinfo</a></li>
+</ul></div></div>
 
 
 </div>
@@ -398,7 +327,7 @@ deepseek V3 的价格足够便宜，也足够智能，目前我已经退了 Chat
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-01-16 Thu 21:39</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-09-10 Wed 13:04</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-10-31 Fri 10:49</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
