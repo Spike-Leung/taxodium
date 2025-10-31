@@ -176,7 +176,7 @@ This file is in BETA. Please test and contribute to the discussion:
               <li><a href="https://taxodium.ink/rss.xml">全部文章</a> 包含最新的 15 篇文章。</li>
               <li><a href="https://taxodium.ink/emacs.xml">Emacs</a> 包含所有的 Emacs 相关的内容。</li>
               <li><a href="https://taxodium.ink/zine.xml">Zine</a> 包含最新 3 篇的 Zine 期刊内容，主要是一些收集的信息分享。</li>
-              <li><a href="https://taxodium.ink/album.xml">Album</a> 包含最新 10 篇的 Album，分享一些我喜欢的专辑。</li>
+              <li><a href="https://taxodium.ink/album.xml">Album</a> 包含最新 10 篇的 Album，分享一些<a href="/album-wall.html">我喜欢的专辑</a>。</li>
               <li><a href="https://taxodium.ink/nichijou.xml">日常</a> 包含最新 10 篇的日常，内容是一些日常记录和随想。</li>
             </ul>
           </details>
