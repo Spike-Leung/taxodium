@@ -1016,11 +1016,16 @@ img[src*=images\/album] {
 }
 
 .album-wall {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   flex-wrap: wrap;
-  gap: 1em;
+  gap: calc(1em - 10px) 1em;
   justify-content: center;
   max-width: max-content;
+
+  @media screen and (width <= 400px) {
+    gap: min(calc(.5em - 10px), .5em) .5em;
+  }
 
   &:hover > figure:not(:hover) {
     filter: grayscale(1);
@@ -1042,8 +1047,8 @@ img[src*=images\/album] {
 
   & img {
     object-fit: cover;
-    height: 10em;
-    width: 10em;
+    aspect-ratio: 1;
+    width: 100%;
   }
 }
 /* ------------------------------ special use ------------------------------ */
