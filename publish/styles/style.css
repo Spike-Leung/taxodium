@@ -463,12 +463,14 @@ a {
     text-decoration-style: dotted;
     text-decoration-thickness: 1px;
 
-    &:hover {
-      text-decoration-thickness: 2px;
-      background: var(--color-link);
-      background: light-dark(var(--color-link), var(--dark-color-link));
-      text-decoration: none;
-      color: #fff;
+    @media (pointer: fine) and (hover: hover) {
+      &:hover {
+        text-decoration-thickness: 2px;
+        background: var(--color-link);
+        background: light-dark(var(--color-link), var(--dark-color-link));
+        text-decoration: none;
+        color: #fff;
+      }
     }
   }
 
@@ -477,12 +479,14 @@ a {
     display: inline-block;
   }
 
-  &:hover {
-    text-decoration-thickness: 2px;
-    background: var(--color-link);
-    background: light-dark(var(--color-link), var(--dark-color-link));
-    text-decoration: none;
-    color: #fff;
+  @media (pointer: fine) and (hover: hover) {
+    &:hover {
+      text-decoration-thickness: 2px;
+      background: var(--color-link);
+      background: light-dark(var(--color-link), var(--dark-color-link));
+      text-decoration: none;
+      color: #fff;
+    }
   }
 }
 
@@ -595,21 +599,26 @@ a[href*="genius.com"]::before {
   color: var(--color-link-visited);
   color: light-dark(var(--color-link-visited), var(--dark-color-link-visited));
 
-  &:hover {
+  @media (pointer: fine) and (hover: hover) {
+    &:hover {
+      background: var(--color-link-visited);
+      background: light-dark(var(--color-link-visited), var(--dark-color-link-visited));
+      text-decoration: none;
+      color: #fff;
+    }
+  }
+}
+
+/* make safari visited hover works */
+
+@media (pointer: fine) and (hover: hover) {
+  #postamble a:visited:hover,
+  #content a:visited:hover {
     background: var(--color-link-visited);
     background: light-dark(var(--color-link-visited), var(--dark-color-link-visited));
     text-decoration: none;
     color: #fff;
   }
-}
-
-/* make safari visited hover works */
-#postamble a:visited:hover,
-#content a:visited:hover {
-  background: var(--color-link-visited);
-  background: light-dark(var(--color-link-visited), var(--dark-color-link-visited));
-  text-decoration: none;
-  color: #fff;
 }
 
 select {
@@ -1027,8 +1036,17 @@ img[src*=images\/album] {
     gap: min(calc(.5em - 10px), .5em) .5em;
   }
 
-  &:hover > figure:not(:hover) {
-    filter: grayscale(1);
+  @media (pointer: fine) and (hover: hover) {
+    &:hover > figure:not(:hover) {
+      filter: grayscale(1);
+    }
+
+    & figure {
+      &:hover {
+        transform: scale(1.1);
+        z-index: 1;
+      }
+    }
   }
 
   p {
@@ -1038,11 +1056,6 @@ img[src*=images\/album] {
   & figure {
     margin: 0;
     transition: all .25s ease-in-out;
-
-    &:hover {
-      transform: scale(1.1);
-      z-index: 1;
-    }
   }
 
   & img {
