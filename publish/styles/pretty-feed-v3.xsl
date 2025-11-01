@@ -165,19 +165,18 @@ This file is in BETA. Please test and contribute to the discussion:
           </nav>
         </div>
         <section class="info">
-          <p>这是一个 Atom 订阅流 (Atom feed) 你可以<button type="button" onclick="copyFeedUrl()" class="copyFeedBtn">复制当前 URL</button>进行订阅 ლ(´ڡ`ლ)</p>
-          <p>如果你是 Emacs 用户，可以使用 <a href="https://github.com/skeeto/elfeed">elfeed</a> 订阅，或者你可以用 <a href="https://follow.is">Folo</a> 这样的应用进行订阅 :)</p>
-          <p>如果你对订阅流不了解, 你可以阅读一下 <a href="https://taxodium.ink/about-feeds.html">About Feeds</a>。</p>
+          <p>这是一个 Atom 订阅流 (Atom feed) 你可以<button type="button" onclick="copyFeedUrl()" class="copyFeedBtn">复制当前 URL</button>进行订阅。</p>
+          <p>如果你对订阅流不了解, 你可以阅读一下 <a href="/about-feeds.html">About Feeds</a>。</p>
           <p>有任何问题，欢迎 <a href="mailto:l-yanlei@hotmail.com">邮件</a> 或者留言给我。</p>
           <details>
             <summary>Taxodium 提供的订阅流</summary>
             <p>你可以基于感兴趣的内容，订阅对应的订阅流:</p>
             <ul>
-              <li><a href="https://taxodium.ink/rss.xml">全部文章</a> 包含最新的 15 篇文章。</li>
-              <li><a href="https://taxodium.ink/emacs.xml">Emacs</a> 包含所有的 Emacs 相关的内容。</li>
-              <li><a href="https://taxodium.ink/zine.xml">Zine</a> 包含最新 3 篇的 Zine 期刊内容，主要是一些收集的信息分享。</li>
-              <li><a href="https://taxodium.ink/album.xml">Album</a> 包含最新 10 篇的 Album，分享一些<a href="/album-wall.html">我喜欢的专辑</a>。</li>
-              <li><a href="https://taxodium.ink/nichijou.xml">日常</a> 包含最新 10 篇的日常，内容是一些日常记录和随想。</li>
+              <li><a href="/rss.xml">全部文章</a> 包含最新的 15 篇文章。</li>
+              <li><a href="/emacs.xml">Emacs</a> 包含所有的 Emacs 相关的内容。</li>
+              <li><a href="/zine.xml">Zine</a> 包含最新 3 篇的 Zine 期刊内容，主要是一些收集的信息分享。</li>
+              <li><a href="/album.xml">Album</a> 包含最新 10 篇的 Album，分享一些<a href="/album-wall.html">我喜欢的专辑</a>。</li>
+              <li><a href="/nichijou.xml">日常</a> 包含最新 10 篇的日常，内容是一些日常记录和随想。</li>
             </ul>
           </details>
 
