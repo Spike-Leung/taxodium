@@ -1,0 +1,119 @@
+/* @see: https://robertbirming.com/bear-halloween-theme/ */
+:root {
+  --color-link: #c25400;
+  --dark-color-link: #ffa24a;
+  /* glow */
+  --color-glow: #ff7a18;
+  --color-glow-soft: #ffa24a;
+}
+
+/* cursor */
+body {
+  cursor: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'>\
+<text y='24' font-size='24'>🎃</text></svg>") 8 8, auto;
+}
+
+a:hover {
+  cursor: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'>\
+<text y='24' font-size='24'>👻</text></svg>") 8 8, auto;
+}
+
+#preamble nav {
+  & li a[href*=black-hole] {
+    cursor: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'>\
+<text y='24' font-size='24'>🍬</text></svg>") 8 8, auto;
+  }
+}
+
+/* heading */
+h1::before { content: "🕸️ "; }
+h2::before { content: "🦇 "; }
+h3::before { content: "🕯️ "; }
+
+:is(h1,h2,h3,h4,h5,h6)::before {
+  position: static;
+}
+
+h1.title::after {
+  content: "👻";
+  margin-inline-start: .5em;
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  h1 { animation: flicker 6s infinite steps(60, end); }
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    5% { opacity: 0.85; }
+    7% { opacity: 0.6; }
+    8% { opacity: 1; }
+  }
+}
+
+#postamble p.author::after {
+  content: "☜ Trick or Email :P";
+  margin-inline-start: .5em;
+  font-size: 0.8em;
+  color: var(--color-text-secondary);
+  color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+
+  @media screen and (width <= 510px) {
+    content: "Trick or Email :P ☝";
+    margin-inline-start: 0;
+    display: block;
+  }
+}
+
+/* image */
+
+img:not(:hover) {
+  filter: brightness(1);
+}
+
+@keyframes haunted-flicker {
+  0%, 100% { filter: brightness(1); }
+  10% { filter: brightness(0.85); }
+  12% { filter: brightness(1.1); }
+  14% { filter: brightness(0.7); }
+  20% { filter: brightness(1); }
+}
+
+img:hover {
+  transform: translateY(-2px) rotate(-0.5deg);
+  animation: haunted-flicker 1.2s steps(6, end);
+  box-shadow:
+    0 0 6px var(--color-glow),
+    0 0 14px var(--color-glow-soft),
+    0 6px 20px rgba(255, 122, 24, 0.25);
+  filter: brightness(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  img:hover {
+    animation: none !important;
+  }
+}
+
+figure figcaption {
+  text-shadow: 0 0 4px rgba(255, 0, 0, 0.2);
+  opacity: 0.9;
+  transition: opacity 0.3s ease, text-shadow 0.4s ease;
+}
+
+figure:hover figcaption {
+  opacity: 1;
+  text-shadow: 0 0 8px rgba(255, 0, 0, 0.4);
+}
+
+/* split line */
+
+hr:nth-of-type(odd):before {
+  content: '🍬 🍬 🍬 🍬 🍬 🍬 🍬' ;
+}
+
+hr:nth-of-type(even):before {
+  content: '👻 👻 👻 👻 👻 👻 👻' ;
+}
