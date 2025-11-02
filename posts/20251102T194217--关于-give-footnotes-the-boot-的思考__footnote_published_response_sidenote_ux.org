@@ -1,0 +1,173 @@
+#+title:      关于 "Give footnotes the boot" 的思考
+#+export_file_name: on-give-footnotes-the-boot
+#+date:       [2025-11-02 Sun 19:42]
+#+filetags:   :footnote:published:response:sidenote:ux:
+#+identifier: 20251102T194217
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 一些对脚注的想法
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content
+
+在看 Cytrogen 的 [[https://cytrogen.icu/posts/ea48][想法在乙巳开冬迭代]] 时（文章推荐一看），
+看到了 Jake Archibald 的 [[https://jakearchibald.com/2025/give-footnotes-the-boot/][Give footnotes the boot]]。
+
+-----
+
+Jake 的看法是别用脚注，原因是：
+
+1. 它干扰读者的阅读，当碰到脚注的时候，就需要做选择，是分心看看脚注？还是继续阅读？
+2. 脚注的默认交互不好，一般脚注都在页面底部，阅读脚注会导致页面来回滚动
+3. 脚注的数字没什么意义
+4. 脚注的数字往往都很小，不容易点击
+
+Jake 对此的 [[https://jakearchibald.com/2025/give-footnotes-the-boot/#alternatives-to-footnotes-on-the-web][建议]] 是（以下建议的例子文章中都有，你可以去原文看看）：
+
+1. 如果只是一个简短的旁注，可以考虑用括号包裹，直接写在旁边
+   （这种情况用脚注确实不合适，点击一看就几个字，不写或者用括号内联会更好）
+
+   #+attr_html: :role note
+   #+begin_section
+   他也对比了括号和弹出式（使用 [[https://developer.mozilla.org/en-US/docs/Web/API/Popover_API][Popover API]]）两种方式。
+
+   括号的旁注读者一眼就能看到，不感兴趣可以快速扫过；
+
+   弹出式，则要求读者做决策，是好奇地点开看看，还是略过。
+   #+end_section
+
+2. 如果内容稍微比较长，可以用一个 [[https://jakearchibald.com/2025/give-footnotes-the-boot/#a-note-section][注释块 ('note' section)]]
+3. 如果内容很多，可以考虑用 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/details][<details>]] 折叠内容
+
+#+begin_details
+#+html: <summary>Lea Verou 的评论补充了如何选择合适的呈现方式</summary>
+
+评论中 [[https://lea.verou.me/][Lea Verou]] 认为上面的方法对于脚注[fn:1]而言还是太「显眼」了：
+
+#+begin_quote
+脚注的目的是为更感兴趣的读者提供额外内容。
+你列出的所有替代方案 ⸺ 括号、内联注释，甚至折叠的内联注释 ⸺
+对于目前脚注所用的大多数情况来说，都显得过于「显眼」。
+#+end_quote
+
+她也给出了一个更具体的使用依据：
+
+#+begin_quote
+我认为这完全取决于 (a) 你认为读者对补充内容感兴趣的可能性有多大，以及 (b) 补充内容的长度。
+
+例如：
+- 50% 以上的可能性且内容简短？→ 括号
+- 50% 以上的可能性且内容中等或较长？→ 注释块 (note block)
+- 20-50% 的可能性且内容中等或较长？→ 折叠注释块 (collapsed note block)
+- 可能性 < 20% 且内容为短或中等长度？→ 脚注 (footnote)
+
+这些阈值可能需要进一步完善，但希望大体思路是清晰的。
+#+end_quote
+#+end_details
+
+Jake 也不太喜欢旁注，因为：
+1. 旁注只有在屏幕比较宽的时候才生效
+2. 读者可能不容易找到对应的旁注
+3. 旁注可能左右分布，读者的实现需要左右看，再回到正文，让他感到恼火
+
+#+begin_quote
+*你为什么要为那些对你的内容不感兴趣的人优化阅读体验？*
+_如果内容真的那么无关紧要，就不要把它放在文章里 ⸺ 那样甚至更不具干扰性！_
+_但是，如果你有有趣的内容要说，就在上下文中说出来。_
+_如果它确实是可选的，那就让读者在意识到它不适合他们时，能够轻松跳过。_
+跳过不那么相关的内容是阅读的正常部分。
+我们不需要过度设计它。
+
+[[https://jakearchibald.com/2025/give-footnotes-the-boot/#update-are-my-alternatives-too-disruptive:~:text=Why%20are%20you,over%2Dengineer%20it.][Source]]
+#+end_quote
+
+Jake 的这段话我还是蛮认同的，在使用脚注时，要思考是否真的需要，以及如何呈现更好。
+
+-----
+
+最开始我不知道脚注的存在，所以基本不会使用它，也可能当时不太会用。
+
+后来我发现在 org-mode 里使用脚注挺方便的，就开始使用脚注，
+这个时候就是 [[https://en.wikipedia.org/wiki/Law_of_the_instrument][手里拿着锤子，看什么都是钉子]]，我开始大量使用脚注。
+
+我倒不觉得脚注很干扰（可能作为作者，我希望读者点开看），
+它就一个小小的数字，看的快可能都没留意到有脚注。
+更大的问题是，查看脚注会导致在页面中来回滚动，交互非常不好。
+
+我看到有的博客会使用旁注，它直接就在正文附近显示补充信息，我觉得阅读体验还不错。
+最终我参考 [[https://sachachua.com/blog/2025/04/a-typical-weekday/][Sacha Chua]] 的实现，让 LLM 帮我实现了 [[file:js/sidenote.js][旁注]]。
+但旁注的问题是，它只能在屏幕足够宽的时候才能看，在手机上查看依然是个问题。
+
+再后来从 [[https://www.geedea.pro/posts/weekly/52/#--%E5%BD%93%E4%B8%8B:~:text=%E5%BC%83%E7%94%A8%E4%BA%86%E7%94%A8%20littlefoot.js%20%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%82%AC%E6%B5%AE%E5%BC%8F%E8%84%9A%E6%B3%A8%EF%BC%8C%E7%8E%B0%E5%9C%A8%E8%84%9A%E6%B3%A8%E4%BC%9A%E8%A2%AB%E6%8F%92%E5%85%A5%E5%88%B0%E5%AF%B9%E5%BA%94%E7%9A%84%E6%AE%B5%E8%90%BD%E5%90%8E%E9%9D%A2%E3%80%82][極客死亡計劃]] 发现了 [[https://github.com/goblindegook/littlefoot][littlefoot.js]]，它很好地解决了查看脚注的问题
+（尽管需要新增一个第三方 JS 依赖），
+它可以让你点击脚注，在脚注附近直接弹出内容显示，解决了手机上查看脚注的问题。
+
+后面我也继续在优化 littlefoot 和旁注的样式，你可以在 [[denote:20250408T151102][CHANGELOG]] 里查看相关变更。
+
+#+begin_details
+#+html: <summary>其他网站上的脚注/旁注实现</summary>
+
+你可以观察一下这些博客在大屏和小屏上的表现是如何的。
+
+- [[https://takeonrules.com/2025/08/23/re-re-do-blogs-need-to-be-so-lonely/][Take On Rules]]
+- [[https://gwern.net/about][Gwern.net]]
+- [[https://sachachua.com/blog/2025/04/a-typical-weekday/][Sacha Chua]]
+- [[https://www.geedea.pro/posts/weekly/52/#--%E5%BD%93%E4%B8%8B:~:text=%E5%BC%83%E7%94%A8%E4%BA%86%E7%94%A8%20littlefoot.js%20%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%82%AC%E6%B5%AE%E5%BC%8F%E8%84%9A%E6%B3%A8%EF%BC%8C%E7%8E%B0%E5%9C%A8%E8%84%9A%E6%B3%A8%E4%BC%9A%E8%A2%AB%E6%8F%92%E5%85%A5%E5%88%B0%E5%AF%B9%E5%BA%94%E7%9A%84%E6%AE%B5%E8%90%BD%E5%90%8E%E9%9D%A2%E3%80%82][極客死亡計劃]]
+
+#+end_details
+
+-----
+
+Jake 的文章让我意识到了一些问题：
+1. 脚注/旁注应该不要太抢眼，干扰读者阅读正文
+2. 不是什么都适合放在脚注里，有的简短的内容或许可以直接写在边上的括号里，或者干脆别写
+
+反观我的设计，我让 littlefoot 的脚注变得很明显，我其实是更希望读者对它感兴趣，然后点开看看的，
+但可能它太显眼了，或许会给读者造成困扰。
+但我打算继续保留我的设计，只是我可能会减少它的使用，考虑更合适的呈现，例如注释块。
+
+至于旁注，我也中了 Jake 说的问题，左右排布，
+需要读者来回移动眼睛，可能确实会抢读者注意力，造成一些困扰。
+左右排布主要是我想利用两侧的空间，都放在一边可能会显得拥挤。
+旁注我也尝试降低了透明度，尽可能降低它对正文的干扰。(不过看着还是很明显，对吧。)
+
+#+attr_html: :role note
+#+begin_section
+有的旁注实现也是单边的，作者会将正文往左靠，压缩左边的空间，右边留出更多的空间呈现旁注。
+
+关于旁注，Gwern Branwen 写了一篇非常详尽的文章：[[https://gwern.net/sidenote][Sidenotes In Web Design]]，推荐一看。
+#+end_section
+
+旁注的另一个问题是，容易迷失，找不到它关联正文的位置，
+我目前的做法是当读者悬浮在旁注的数字时，我会同时高亮正文和旁注的数字；
+如果你悬浮在正文的数字上，则会高亮旁注的数字，从而方便读者对应。
+但这可能还是不够明显，在这点上我觉得 [[https://gwern.net/sidenote][Gwern 的实现]] 很不错，
+他通过很明显的边框来提示读者， +或许后面我也会借鉴一下+ 我也抄过来了。
+
+总的来说，我对于博客目前的脚注和旁注设计还是挺满意的。
+脚注和旁注对我而言，没有 Jake 说的干扰性那么强，我甚至觉得它们会让文章多一些趣味。
+但确实也要考虑和正文的相关性、呈现方式，最终的都是为了提供一个更好的阅读体验。
+
+在这篇文章里我也尝试了 Jake 文章中的建议，如果你有什么想法，我也很想知道，欢迎发邮件和我交流 :)
+
+* Footnotes
+:PROPERTIES:
+:CUSTOM_ID: 13EA1169-DB3E-4E9B-A635-CB75F9202D3E
+:END:
+
+[fn:1] 脚注，重点在于「注」而不是「脚」。
+「注」作为补充内容，不宜喧宾夺主，导致读者分散阅读的注意力。
+
+#+begin_quote
+网上对脚注的讨论通常归结为两点：它们是「脚」，也是「注」。
+所有人都认同，「脚」是个问题。
+在文中放置毫无意义的小符号，迫使读者滚动到文档末尾才能理解内容，这种做法确实愚蠢。
+但关键在于，现实中没人真这么做。
+除非网页文档是直接从印刷品转换而来，否则其中的任何「脚注」都会经过设计，
+力求在概念上将注释内容与原文位置保持关联。
+可能是跳转到底部的链接，可能是侧边栏展示，可能是点击后内联显示，也可能以弹出框呈现 ⸺
+但无论如何，读者获取「脚注」内容时，都不需要中断原有的阅读注意力流。
+
+[[https://www.kryogenix.org/days/2025/07/03/a-limited-defence-of-footnotes/#:~:text=Commentary%20about%20footnotes,previously2.][A (limited) defence of footnotes]] by Stuart Langridge
+#+end_quote
