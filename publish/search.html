@@ -70,19 +70,6 @@
           }
         }
       }
-      .help-trigger {
-        position: absolute;
-        top: calc(64px * var(--pagefind-ui-scale) + .5em);
-        right: 0;
-      }
-
-      .credit {
-        color: var(--color-text-secondary);
-        color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
-        position: absolute;
-        top: calc(64px * var(--pagefind-ui-scale) + .5em);
-        font-size: 0.9em;
-      }
 
       /* https://stackoverflow.com/questions/78995412/how-to-stop-mouse-events-through-css-backdrop */
       /* filter element not supposed to catch mouse events */
@@ -93,6 +80,11 @@
       /* then allow click from #mypopover */
       div[popover] * {
         pointer-events: auto;
+      }
+
+      .help-tip {
+        color: var(--color-text-secondary);
+        color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
       }
     </style>
   </head>
@@ -113,9 +105,13 @@
       </nav>
     </div>
     <div class="search-container">
+      <p class="help-tip">
+        搜索通过 <a href="https://pagefind.app/">pagefind</a> 实现。
+        如果你未启用 JavaScript，也可以使用你喜欢的搜索引擎进行搜索。
+        例如：<a href="https://kagi.com/search?q=site%3Ataxodium.ink">Kagi</a>、<a href="https://www.google.com/search?q=site%3Ataxodium.ink">Google</a>。
+        <button popovertarget="help-content" class="help-trigger js-required">pagefind 搜索技巧</button>
+      </p>
       <div id="search" autofocus></div>
-      <span class="credit">Power by <a href="https://pagefind.app/">pagefind</a>.</span>
-      <button popovertarget="help-content" class="help-trigger">搜索技巧</button>
       <div id="help-content" popover>
         <p>
           受限于 pagefind 对中文的分词处理，当你搜索 <code>订阅流</code> 的时候可能无法完全匹配 <code>订阅流</code>，
