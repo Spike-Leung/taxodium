@@ -1249,18 +1249,36 @@ td,th {
 
 [role="doc-backlink"],
 .sidenote-num {
+  position: relative;
+  --extra-active-area-size: -.5em;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: var(--extra-active-area-size);
+    left: var(--extra-active-area-size);
+    right: var(--extra-active-area-size);
+    bottom: var(--extra-active-area-size);
+  }
+
   &:hover {
     color: var(--color-link);
     color: light-dark(var(--color-link), var(--dark-color-link));
     background: var(--color-selection-background);
     background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
+    transition: background 0.2s ease-in-out;
   }
 }
 
+.sidenote-num:hover,
 .sidenote-ref-highlight {
   background: var(--color-selection-background);
   background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
-  transition: background 0.2s;
+  transition: background 0.2s ease-in-out;
+  padding: .5em;
+  border: 2px solid;
+  border-color: var(--color-border);
+  border-color: light-dark(var(--color-border), var(--dark-color-border));
 }
 
 .sidenote-content *:nth-child(1) {
