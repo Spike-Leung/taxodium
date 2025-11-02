@@ -56,7 +56,7 @@
 </nav>
 <blockquote class="single" style="text-align: center;">
 <p>
-Good design is as little design as possible.<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
+Good design is as little design as possible.
 </p>
 </blockquote>
 
@@ -97,8 +97,14 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 </p>
 
 <p>
-如果不考虑样式，这样一份 HTML <sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup> 就可以作为静态文件，丢到 GitHub Page 或者 Netlify 之类的平台托管，让别人访问了。
+如果不考虑样式，这样一份 HTML 就可以作为静态文件，丢到 GitHub Page 或者 Netlify 之类的平台托管，让别人访问了。
 </p>
+
+<section role="note" id="org52f6425">
+<p>
+最简单的 HTML 可以只写文字，什么标签都没有，也能渲染成网页。<a href="https://htmlforpeople.com/">HTML is for people</a> 是一个很不错的教程，就算你完全不懂 HTML，也可以搭建自己的博客。
+</p>
+</section>
 
 <p>
 当然，仅仅是 HTML，阅读体验上还不够好，会存在几个问题：
@@ -132,8 +138,14 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 </p>
 
 <p>
-文本太宽的问题，可以固定内容的宽度，让内容居中<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>。
+文本太宽的问题，可以固定内容的宽度，让内容居中。
 </p>
+
+<section role="note" id="org6561338">
+<p>
+最简单的居中方法是固定宽度，然后设置 <code>margin-inline: auto;</code> ，更多方法可以看 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Center_an_element">Center an element</a>。
+</p>
+</section>
 
 <p>
 这样在阅读时，基本 <a href="https://www.smashingmagazine.com/2022/09/realities-myths-contrast-color/#:~:text=Column%20width%3A,typically%20too%20short">不用左右移动眼睛</a>，读起来会比较舒适。
@@ -148,41 +160,64 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 </p>
 
 <p>
-文字我更倾向与偏大一些，这样看起来没有那么费劲，默认的字号尽管能看清，但更大的字号可以看得更舒服。 <sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>
+文字我更倾向与偏大一些，这样看起来没有那么费劲，默认的字号尽管能看清，但更大的字号可以看得更舒服。
 </p>
 
+<details>
+<summary>动态设置字体大小</summary>
+
 <p>
-字体可以选一个自己喜欢的，不过有一些地方是需要考虑的<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>：
+也可以考虑基于屏幕的宽度，动态控制文字的大小，设置一个最小和最大值。可以利用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clamp">clamp()</a>，例如 <code>clamp(22px, calc(1.1em + 0.6vw), 24px);</code>
+</p>
+</details>
+
+<p>
+字体可以选一个自己喜欢的，不过有一些地方是需要考虑的（可以借鉴 <a href="https://imperavi.com/books/ui-typography/basis/choosing-typeface/">Choosing typeface</a>）：
 </p>
 
 <ul class="org-ul">
 <li>字体文件的大小</li>
 <li>字体好看固然很好，但不能好看到让人过于注意字体，而忽视内容，否则就喧宾夺主了</li>
 <li>考虑字体粗细的对比度是否足够，不然可能加粗后看不出来区别</li>
-<li>考虑一些字符是否容易区分，例如 0,O,o,i,I,l,1 这些字符是否都能区分开<sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup></li>
+<li>考虑一些字符是否容易区分，例如 0,O,o,i,I,l,1 这些字符是否都能区分开</li>
 <li>英文字体和中文字体是否和谐</li>
 <li>考虑字体加载失败的情况，在 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-family#:~:text=You%20should%20always%20include%20at%20least%20one%20generic%20family%20name%20in%20a%20font%2Dfamily%20list%2C%20since%20there%27s%20no%20guarantee%20that%20any%20given%20font%20is%20available.%20This%20lets%20the%20browser%20select%20an%20acceptable%20fallback%20font%20when%20necessary.">设置 font-family 的时候应该始终包含一些通用的系统字体</a></li>
 <li>字体版权问题</li>
 </ul>
 
 <p>
-目前我都是用的 <a href="https://chinese-font.netlify.app/zh-cn/fonts/lxgwwenkai/LXGWWenKai-Regular">霞鹜文楷</a>。<sup><a id="fnr.7" class="footref" href="#fn.7" role="doc-backlink">7</a></sup>
+目前我都是用的 <a href="https://chinese-font.netlify.app/zh-cn/fonts/lxgwwenkai/LXGWWenKai-Regular">霞鹜文楷</a>。
 </p>
+
+<details>
+<summary>字体获取</summary>
+
+<p>
+英文字体可以在 <a href="https://fonts.google.com/">Google Fonts</a> 中找，中文字体可以在 <a href="https://chinese-font.netlify.app/zh-cn/">中文网字计划</a> 里找，中文网字计划还提供 <a href="https://chinese-font.netlify.app/zh-cn/online-split/">字体分包</a> 服务，可以一定程度优化字体资源大小。
+</p>
+</details>
 
 <p>
 <b>对比度</b>
 </p>
 
 <p>
-我目前遵循的是 <a href="https://git.apcacontrast.com/documentation/APCAeasyIntro">APCA</a> (Accessible Perceptual Contrast Algorithm)<sup><a id="fnr.8" class="footref" href="#fn.8" role="doc-backlink">8</a></sup>，要保证对比度足够高，使得阅读起来能看清且不费劲，也要确保对比度不要太高，尤其是暗色主题下，对比度过高会看着刺眼。
+我目前遵循的是 <a href="https://git.apcacontrast.com/documentation/APCAeasyIntro">APCA</a> (Accessible Perceptual Contrast Algorithm)
+要保证对比度足够高，使得阅读起来能看清且不费劲，也要确保对比度不要太高，尤其是暗色主题下，对比度过高会看着刺眼。
 </p>
+
+<section role="note" id="org1f317a1">
+<p>
+关于 APCA，我在 <a href="31.html#C2A253A1-C12E-4ED0-A9DD-1D8BFED8A8AD">Zine#31::The Easy Intro to the APCA Contrast Method</a> 中有分享过，可以看看。
+</p>
+</section>
 
 <p>
 <b>颜色</b>
 </p>
 
 <p>
-一般来说，应该有一个主色，搭配一些和主色相辅相成的辅助色，以及一些中性色。<sup><a id="fnr.9" class="footref" href="#fn.9" role="doc-backlink">9</a></sup>
+一般来说，应该有一个主色，搭配一些和主色相辅相成的辅助色，以及一些中性色。（感兴趣可以看看 <a href="https://m2.material.io/design/color/the-color-system.html">The color system</a>）
 </p>
 
 <p>
@@ -206,7 +241,7 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 </p>
 
 <p>
-选中和高亮我用了比较突出的颜色，毕竟需要明显一些。<sup><a id="fnr.10" class="footref" href="#fn.10" role="doc-backlink">10</a></sup>
+选中和高亮我用了比较突出的颜色，毕竟需要明显一些。<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
 </p>
 
 <p>
@@ -214,8 +249,14 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 </p>
 
 <p>
-由于颜色会在很多地方重复使用，一般来说会定义成 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/--*">CSS variables</a> <sup><a id="fnr.11" class="footref" href="#fn.11" role="doc-backlink">11</a></sup>，便于复用。
+由于颜色会在很多地方重复使用，一般来说会定义成 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/--*">CSS variables</a>，便于复用。
 </p>
+
+<section role="note" id="org2876215">
+<p>
+在写 CSS 的时候，可以在 <a href="https://developer.mozilla.org/en-US/">MDN</a> 上查一下对应特性的 <a href="https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility">Baseline</a>，看看特性当前的支持程度。如果是广泛可用 (Widely available)，那基本可以随便用。如果是可用性有限 (limited availability)，那么使用时可能需要斟酌一下，可能部分浏览器会不支持。
+</p>
+</section>
 
 <hr>
 
@@ -232,23 +273,33 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 </p>
 
 <p>
-在手机上屏幕比较小，为了能够阅读更多的内容，可以考虑移除一些不必要的缩进，充分利用手机的屏幕。<sup><a id="fnr.12" class="footref" href="#fn.12" role="doc-backlink">12</a></sup>
+在手机上屏幕比较小，为了能够阅读更多的内容，可以考虑移除一些不必要的缩进，充分利用手机的屏幕（借助 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/width">媒体查询</a>）。
 </p>
 
 <p>
-同时应该 <a href="34.html#3005E13F-FBEA-4224-81FF-D5C5076C0A06">避免出现横向滚动条</a> <sup><a id="fnr.13" class="footref" href="#fn.13" role="doc-backlink">13</a></sup>，因为手机上主要是触摸滑动页面，往下滑动的时候很容易触发横向的滑动，需要来来回回地调整位置，体验很不好。
+同时应该 <a href="34.html#3005E13F-FBEA-4224-81FF-D5C5076C0A06">避免出现横向滚动条</a>，因为手机上主要是触摸滑动页面，往下滑动的时候很容易触发横向的滑动，需要来来回回地调整位置，体验很不好。
 </p>
+
+<section role="note" id="org5fd7214">
+<p>
+出现横向滚动条，往往是因为一些无法换行的内容导致了 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow">溢出</a>，可以考虑使用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/word-break">word-break</a> 让其换行。
+</p>
+</section>
 
 <p>
 <b>支持亮色主题和暗黑主题</b>
 </p>
 
 <p>
-我个人是比较喜欢亮色主题的，但有的读者可能会更喜欢暗色主题，也可能是因为生理原因，暗色主题会看着更舒适，所以最好可以提供一个选项。<sup><a id="fnr.14" class="footref" href="#fn.14" role="doc-backlink">14</a></sup>
+我个人是比较喜欢亮色主题的，但有的读者可能会更喜欢暗色主题，也可能是因为生理原因，暗色主题会看着更舒适，所以最好可以提供一个选项。
 </p>
 
 <p>
 如果手机或电脑设置的是自动调节系统的明暗主题，一般在夜晚的时候，网站也会自动切换成浏览器默认的暗色主题，只是可能没有自己适配的好看。
+</p>
+
+<p>
+另见 <a href="setup-blog-color-scheme.html">给博客添加 dark mode</a>。
 </p>
 
 <p>
@@ -261,6 +312,10 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 
 <p>
 可以考虑使用 <a href="https://github.com/goblindegook/littlefoot">littlefoot</a>，使得可以直接查看脚注，不用来回跳转。如果屏幕比较大，也可以考虑使用旁注，将脚注展示在文章的旁边，点击都省了。
+</p>
+
+<p>
+另见 <a href="on-give-footnotes-the-boot.html">关于 "Give footnotes the boot" 的思考</a>。
 </p>
 
 <p>
@@ -300,7 +355,7 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 </p>
 
 <p>
-有的读者可能主要使用键盘浏览网页，会用 tab 去移动，可以考虑添加 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/main#skip_navigation">Skip Navigation</a>，让读者可以快速跳过导航<sup><a id="fnr.15" class="footref" href="#fn.15" role="doc-backlink">15</a></sup>，直接跳转到内容部分。
+有的读者可能主要使用键盘浏览网页，会用 tab 去移动，可以考虑添加 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/main#skip_navigation">Skip Navigation</a>，让读者可以快速跳过导航，直接跳转到内容部分。
 </p>
 
 <p>
@@ -308,7 +363,7 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 </p>
 
 <p>
-设置页面的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/lang">lang</a> 属性，这样如果有读者用屏幕阅读器来阅读文章时，阅读器可以 <a href="https://www.youtube.com/watch?v=NP94u7y_KkQ">识别正确的语言</a>。<sup><a id="fnr.16" class="footref" href="#fn.16" role="doc-backlink">16</a></sup>
+设置页面的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/lang">lang</a> 属性，这样如果有读者用屏幕阅读器来阅读文章时，阅读器可以 <a href="https://www.youtube.com/watch?v=NP94u7y_KkQ">识别正确的语言</a>。（你甚至可以考虑 <a href="41.html#99EE3F4F-0457-44AA-ABFC-E5BFFD3FEB78">给页面添加语音播报功能</a>。）
 </p>
 
 <p>
@@ -316,7 +371,7 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 </p>
 
 <p>
-搜索功能可以让读者快速搜索博客的内容，例如我写了不少 <a href="0.html">Zine</a>，里面分享不少文章和资源，或许某天有读者<sup><a id="fnr.17" class="footref" href="#fn.17" role="doc-backlink">17</a></sup>会想起在我的博客上看到的什么，有搜索就很方便。
+<a href="search.html">搜索</a> 功能可以让读者快速搜索博客的内容，例如我写了不少 <a href="0.html">Zine</a>，里面分享不少文章和资源，或许某天有读者（例如我）会想起在我的博客上看到的什么，有搜索就很方便。
 </p>
 
 <p>
@@ -352,12 +407,24 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 </p>
 
 <p>
-例如鼠标 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover">hover</a> 的效果，页面之间切换的效果<sup><a id="fnr.18" class="footref" href="#fn.18" role="doc-backlink">18</a></sup>，<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior#smooth">页面滚动效果</a> 等。
+例如鼠标 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover">hover</a> 的效果，页面之间切换的效果，<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior#smooth">页面滚动效果</a> 等。
 </p>
 
 <p>
 不过要注意加上 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion">prefers-reduced-motion</a> 检测，当读者希望关闭这些过渡效果时，尊重他的选择。
 </p>
+
+<section role="note" id="org8045579">
+<p>
+主要利用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API">View Transition API</a> 实现，你可以看看:
+</p>
+
+<ul class="org-ul">
+<li><a href="28.html#F9C7C58A-A626-4F96-AB1F-4463C8C67010">Zine#28::Toe Dipping Into View Transitions</a></li>
+<li><a href="42.html#200857B0-5CFE-4AA3-9309-C42F6956330D">Zine#42::View Transitions: What Could Possibly Go Wrong? | Martin Trapp</a></li>
+<li><a href="44.html#9816BB31-D0A3-459A-A12F-E4C8B305D394">Zine#44::Start implementing view transitions on your websites today by Cyd Stumpel</a></li>
+</ul>
+</section>
 
 <p>
 <b>首页设计</b>
@@ -380,7 +447,7 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 </p>
 
 <p>
-我觉得博客最重要的就是博客文章，所以我把最重要的部分作为首页<sup><a id="fnr.19" class="footref" href="#fn.19" role="doc-backlink">19</a></sup>。
+我觉得博客最重要的就是博客文章，所以我把最重要的部分作为首页<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>。
 </p>
 
 <p>
@@ -444,7 +511,7 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 </ul>
 
 <p>
-列举一些我平时会比较注意的<sup><a id="fnr.20" class="footref" href="#fn.20" role="doc-backlink">20</a></sup>：
+列举一些我平时会比较注意的（整理并写下来，可以避免自己纠结，保持统一）：
 </p>
 
 <ul class="org-ul">
@@ -465,21 +532,33 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 
 <li>注意区分「的」、「地」、「得」。</li>
 
-<li>图片尽可能使用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/figure">figure</a> 对内容进行描述；如果不使用 figure，应该使用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/alt">alt</a> 描述<sup><a id="fnr.21" class="footref" href="#fn.21" role="doc-backlink">21</a></sup>。原因是： 1.图片可能加载失败；2.方便使用屏幕阅读器的读者，他们可能看不到图片。</li>
+<li><p>
+图片尽可能使用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/figure">figure</a> 对内容进行描述；如果不使用 figure，应该使用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/alt">alt</a> 描述，原因是： 1.图片可能加载失败；2.方便使用屏幕阅读器的读者，他们可能看不到图片。
+</p>
+
+<section role="note" id="orgeb3ba36">
+<p>
+关于 Alt Text，可以看看：
+</p>
+<ul class="org-ul">
+<li><a href="18.html#d4ff1100-acc4-4215-8d9d-3a2c3fa7271b">Zine#18::Alt Text: Not Always Needed</a></li>
+<li><a href="35.html#DBA5A1E3-6998-41A9-9564-9770AB66ADC8">Zine#35::Finding the Joy in Alt Text</a></li>
+</ul>
+</section></li>
 
 <li>考虑在 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/figcaption">figcaption</a> 中给图片标注序号，如图 1、图 2 等，然后在涉及图片时，用这个序号代指图片。</li>
 
-<li>引用应该标注来源，我一般会使用 <a href="14.html#95f53c7f-af5f-49cf-abad-92edebf9f623">Copy Link To Highlight</a>，这样读者跳转过去的时，可以通过高亮，快速看到我引用的部分。由于我不少内容是翻译过来的，可能无法转译作者原意，所以我认为指向原文是很重要的。<sup><a id="fnr.22" class="footref" href="#fn.22" role="doc-backlink">22</a></sup></li>
+<li>引用应该标注来源，我一般会使用 <a href="14.html#95f53c7f-af5f-49cf-abad-92edebf9f623">Copy Link To Highlight</a>，这样读者跳转过去的时，可以通过高亮，快速看到我引用的部分。由于我不少内容是翻译过来的，可能无法转译作者原意，所以我认为指向原文是很重要的。<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup></li>
 
-<li>引用的时候应该尽可能保留原格式，因为可能是作者刻意组织的。<sup><a id="fnr.23" class="footref" href="#fn.23" role="doc-backlink">23</a></sup></li>
+<li>引用的时候应该尽可能保留原格式，因为可能是作者刻意组织的。<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup></li>
 
-<li>对于一些较长的，不是很重要的内容，可以考虑用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/details">details</a> 进行折叠<sup><a id="fnr.24" class="footref" href="#fn.24" role="doc-backlink">24</a></sup>，用户感兴趣可以自行点开；或者考虑用脚注。</li>
+<li>对于一些较长的，不是很重要的内容，可以考虑用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/details">details</a> 进行折叠<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>，用户感兴趣可以自行点开；或者考虑用脚注。</li>
 
 <li>一些希望突出的内容，可以考虑用粗体，但有时粗体和其他字体对比不够强烈的时候，可以考虑使用下划线或者增加颜色。</li>
 
-<li>链接应该有下划线<sup><a id="fnr.25" class="footref" href="#fn.25" role="doc-backlink">25</a></sup>，而不只是通过颜色和正文区分，考虑一些颜色不敏感的用户，有可能在他们的眼中是区分不出来的。下划线能更好地区分链接和正文，也很符合直觉。</li>
+<li>链接应该有下划线（参考 <a href="https://adactio.com/journal/22084">Style your underlines</a>），而不只是通过颜色和正文区分，考虑一些颜色不敏感的用户，有可能在他们的眼中是区分不出来的。下划线能更好地区分链接和正文，也很符合直觉。</li>
 
-<li>我不太喜欢很长的段落，一大段的读起来有些费劲，我会一定程度控制段落的长度。<sup><a id="fnr.26" class="footref" href="#fn.26" role="doc-backlink">26</a></sup></li>
+<li>我不太喜欢很长的段落，一大段的读起来有些费劲，我会一定程度控制段落的长度。<sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup></li>
 
 <li>分享音视频的时候，考虑添加时长信息。</li>
 
@@ -487,7 +566,7 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 </ul>
 
 <p>
-除此之外，应该持续优化和编辑<sup><a id="fnr.27" class="footref" href="#fn.27" role="doc-backlink">27</a></sup>已发布的文章，修复一些看到的错别字，坏掉的图片或链接；如果有更好的表达也可以改进一下。
+除此之外，应该持续优化和编辑<sup><a id="fnr.7" class="footref" href="#fn.7" role="doc-backlink">7</a></sup>已发布的文章，修复一些看到的错别字，坏掉的图片或链接；如果有更好的表达也可以改进一下。
 </p>
 </div>
 </div>
@@ -496,7 +575,7 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 <div class="outline-text-2" id="text-6868010F-A0F1-41BB-8FB0-742BE6A612A5"><ul class="org-ul">
 <li>一打开网页就弹窗，除非我对内容很感兴趣，或者内容比较有价值，否则这样的网站我多半会直接关闭</li>
 <li>有的博客内容很丰富，像是一个数字花园，固然很棒，但我会觉得有些迷失方向，甚至有些信息焦虑感</li>
-<li>明显是 LLM 生成的内容<sup><a id="fnr.28" class="footref" href="#fn.28" role="doc-backlink">28</a></sup>、简单复制的内容、看不出来作者思考、打磨的内容</li>
+<li>明显是 LLM 生成的内容<sup><a id="fnr.8" class="footref" href="#fn.8" role="doc-backlink">8</a></sup>、简单复制的内容、看不出来作者思考、打磨的内容</li>
 <li>到处都是广告的博客</li>
 <li>资源太多，加载很慢的博客</li>
 <li>排版很差、排版像 <a href="https://www.csdn.net">CSDN</a> 的博客</li>
@@ -504,12 +583,67 @@ HTML 默认是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_dis
 <li>太多花里胡哨的元素</li>
 <li>对比度太高或者不足，要么看得刺眼，要么看不清，都难受</li>
 <li>响应式支持很差的，在手机上阅读体验很差的</li>
-<li>隐藏滚动条的博客<sup><a id="fnr.29" class="footref" href="#fn.29" role="doc-backlink">29</a></sup></li>
+<li><p>
+隐藏滚动条的博客
+</p>
+
+<details>
+<summary>关于滚动条</summary>
+
+<p>
+手机上有滚动条的话，可以长按滚动条拖动到底部，没有滚动条只能一直往下翻，体验很差。
+</p>
+
+<p>
+滚动条本身也可以作为当前位置的一个提示，而不需要额外显示一个进度百分比。
+</p>
+
+<p>
+如果是在电脑上阅读，除了滚动条，还可以使用 <kbd>HOME</kbd> 回到页面顶部，<kbd>END</kbd> 去到页面底部。
+</p>
+</details></li>
 </ul>
 
 <p>
-如果设计得不好，阅读体验或许都不如一个只有文字的 HTML。<sup><a id="fnr.30" class="footref" href="#fn.30" role="doc-backlink">30</a></sup>
+如果设计得不好，阅读体验或许都不如一个只有文字的 HTML。
 </p>
+
+<details>
+<summary>你还是可以简单加几行样式</summary>
+
+<p>
+参考 Kevin Powell 的 <a href="https://thecascade.dev/article/least-amount-of-css/">The least amount of CSS for a decent looking site</a>：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">&#33258;&#36866;&#24212;&#29992;&#25143;&#24403;&#21069;&#30340;&#20027;&#39064;</span><span style="color: #db7b5f;"> */</span>
+<span style="color: #feacd0;">html</span> {
+  <span style="color: #b6a0ff;">color-scheme</span>: light dark;
+}
+
+<span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">&#35774;&#32622;&#19968;&#20010;&#36890;&#29992;&#30340;&#23383;&#20307;&#12289;&#36866;&#24403;&#30340;&#23383;&#20307;&#22823;&#23567;&#21644;&#34892;&#39640;&#65292;&#36991;&#20813;&#23383;&#20307;&#22826;&#23567;&#21644;&#25317;&#25380;</span><span style="color: #db7b5f;"> */</span>
+<span style="color: #feacd0;">body</span> {
+  <span style="color: #b6a0ff;">font-family</span>: system-ui;
+  <span style="color: #b6a0ff;">font-size</span>: 1.25rem;
+  <span style="color: #b6a0ff;">line-height</span>: 1.5;
+}
+
+<span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">&#36991;&#20813;&#22270;&#29255;&#35270;&#39057;&#28322;&#20986;&#23631;&#24149;</span><span style="color: #db7b5f;"> */</span>
+<span style="color: #feacd0;">img,
+svg,
+video</span> {
+  <span style="color: #b6a0ff;">max-width</span>: 100%;
+  <span style="color: #b6a0ff;">display</span>: block;
+}
+
+<span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">&#35774;&#32622;&#20869;&#23481;&#26368;&#22823;&#23485;&#24230;&#24182;&#23621;&#20013;&#65292;&#36991;&#20813;&#19968;&#34892;&#25991;&#23383;&#36807;&#38271;&#65292;&#20855;&#20307;&#30340;&#20540;&#21487;&#33021;&#35201;&#26681;&#25454;&#33258;&#24049;&#21916;&#27426;&#35843;&#25972;&#19968;&#19979;</span><span style="color: #db7b5f;"> */</span>
+<span style="color: #feacd0;">main</span> {
+  <span style="color: #b6a0ff;">max-width</span>: min(70ch, 100% - 4rem);
+  <span style="color: #b6a0ff;">margin-inline</span>: auto;
+}
+</pre>
+</div>
+</details>
 </div>
 </div>
 <div id="outline-container-807068A6-EEBF-42DF-B1B5-E32EED36FFDE" class="outline-2">
@@ -540,152 +674,45 @@ _​(:3 」∠)_
 <div id="text-footnotes">
 
 <div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-我这长长的一篇，看来是 Bad design 了 (つд⊂)
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-最简单的 HTML 可以只写文字，什么标签都没有，也能渲染成网页。<a href="https://htmlforpeople.com/">HTML is for people</a> 是一个很不错的教程，就算你完全不懂 HTML，也可以搭建自己的博客。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-最简单的居中方法是固定宽度，然后设置 <code>margin-inline: auto;</code> ，更多方法可以看 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Center_an_element">Center an element</a>。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-也可以考虑基于屏幕的宽度，动态控制文字的大小，设置一个最小和最大值。可以利用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clamp">clamp()</a>，例如 <code>clamp(22px, calc(1.1em + 0.6vw), 24px);</code>
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-see also: <a href="https://imperavi.com/books/ui-typography/basis/choosing-typeface/">Choosing typeface | Imperavi</a>
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-最开始，我为了能更好的区分 0 和 O，用的是 <a href="https://www.brailleinstitute.org/freefont/">Atkinson Hyperlegible</a>，但后来觉得 Atkinson Hyperlegible 和 <a href="https://chinese-font.netlify.app/zh-cn/fonts/lxgwwenkai/LXGWWenKai-Regular">霞鹜文楷</a> 搭配起来不太和谐，就统一都有霞鹜文楷，不过 0 和 O 可能会有点区分不开，算是一种妥协。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-英文字体可以在 <a href="https://fonts.google.com/">Google Fonts</a> 中找，中文字体可以在 <a href="https://chinese-font.netlify.app/zh-cn/">中文网字计划</a> 里找，中文网字计划还提供 <a href="https://chinese-font.netlify.app/zh-cn/online-split/">字体分包</a> 服务，可以一定程度优化字体资源大小。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.8" class="footnum" href="#fnr.8" role="doc-backlink">8</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-关于 APCA，我在 <a href="31.html#C2A253A1-C12E-4ED0-A9DD-1D8BFED8A8AD">Zine#31::The Easy Intro to the APCA Contrast Method</a> 中有分享过，可以看看。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.9" class="footnum" href="#fnr.9" role="doc-backlink">9</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-感兴趣可以看看 <a href="https://m2.material.io/design/color/the-color-system.html">The color system | Material Design</a>。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.10" class="footnum" href="#fnr.10" role="doc-backlink">10</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 在 dark-mode 下，我用的是 <a href="17.html#7f0b16a2-3af6-4193-b2d9-48489194ade4">rebeccapurple</a>，这是 CSS Logo 的颜色，也是一个六岁女孩的名字。
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.11" class="footnum" href="#fnr.11" role="doc-backlink">11</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-在写 CSS 的时候，可以在 <a href="https://developer.mozilla.org/en-US/">MDN</a> 上查一下对应特性的 <a href="https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Compatibility">Baseline</a>，看看特性当前的支持程度，如果是广泛可用 (Widely available)，那基本可以随便用。如果是可用性有限 (limited availability)，那么使用时可能需要斟酌一下，可能部分浏览器会不支持。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.12" class="footnum" href="#fnr.12" role="doc-backlink">12</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-可以利用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/width">媒体查询</a> 来判断小屏设备，单独设置样式。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.13" class="footnum" href="#fnr.13" role="doc-backlink">13</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-出现横向滚动条，往往是因为一些无法换行的内容导致了 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow">溢出</a>，可以考虑使用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/word-break">word-break</a> 让其换行。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.14" class="footnum" href="#fnr.14" role="doc-backlink">14</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-关于暗色主题的适配，见 <a href="setup-blog-color-scheme.html">给博客添加 dark mode</a>。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.15" class="footnum" href="#fnr.15" role="doc-backlink">15</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-导航部分，我也算比较克制，没有放太多的导航出来。主要原因是导航多了，手机屏幕下会放不下，虽然也可以适配，但我还是想能一行放下，这也促使我只保留关键的导航。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.16" class="footnum" href="#fnr.16" role="doc-backlink">16</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-你甚至可以考虑 <a href="41.html#99EE3F4F-0457-44AA-ABFC-E5BFFD3FEB78">给页面添加语音播报功能</a>。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.17" class="footnum" href="#fnr.17" role="doc-backlink">17</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-我就是这其中的一个 ( ˘•ω•˘ )
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.18" class="footnum" href="#fnr.18" role="doc-backlink">18</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-主要是利用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API">View Transition API</a>，你可以看看 <a href="28.html#F9C7C58A-A626-4F96-AB1F-4463C8C67010">Zine#28::Toe Dipping Into View Transitions</a>。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.19" class="footnum" href="#fnr.19" role="doc-backlink">19</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 一般来说，博客都会有个 archive 页，按照年份罗列所有文章，我是偷懒，直接二合一了。
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.20" class="footnum" href="#fnr.20" role="doc-backlink">20</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-罗列出来有个好处：有的写法我比较犹豫，整理并写下来，可以避免自己纠结，保持统一。
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+「请记住，头条新闻、博客文章或推文可能会为了吸引更多关注或点击而夸大事实。转述可能会遗漏、误解或选择某些事实来支持有偏见的主张。
+[&#x2026;]请务必在原始语境中阅读这些主张。」 <a href="https://guides.lib.uchicago.edu/c.php?g=1241077&amp;p=9082322#:~:text=Remember%2C%20headlines%2C%20blog,they%20were%20presented.">Source</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.21" class="footnum" href="#fnr.21" role="doc-backlink">21</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-可以看看：<a href="18.html#d4ff1100-acc4-4215-8d9d-3a2c3fa7271b">Zine#18::Alt Text: Not Always Needed</a> 和 <a href="35.html#DBA5A1E3-6998-41A9-9564-9770AB66ADC8">Zine#35::Finding the Joy in Alt Text</a>。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.22" class="footnum" href="#fnr.22" role="doc-backlink">22</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-「请记住，头条新闻、博客文章或推文可能会为了吸引更多关注或点击而夸大事实。转述可能会遗漏、误解或选择某些事实来支持有偏见的主张。[&#x2026;]请务必在原始语境中阅读这些主张。」 <a href="https://guides.lib.uchicago.edu/c.php?g=1241077&amp;p=9082322#:~:text=Remember%2C%20headlines%2C%20blog,they%20were%20presented.">Source</a>
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.23" class="footnum" href="#fnr.23" role="doc-backlink">23</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 我以往因为误解了 <a href="https://sive.rs/1s">一个句子写一行</a>，以为应该发布的时候也一行句子写一行，所以我往往会将内容按照句子为单位换行。或许某种程度会导致语义没有那么连续。以后我会注意一些。
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.24" class="footnum" href="#fnr.24" role="doc-backlink">24</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://gwern.net/index">Gwern Branwen 的博客</a> 在你悬浮在 details 上一段时间，会自动展开，也是很不错的优化。
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.25" class="footnum" href="#fnr.25" role="doc-backlink">25</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-see also: <a href="https://adactio.com/journal/22084">Style your underlines</a>
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.26" class="footnum" href="#fnr.26" role="doc-backlink">26</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 在写段落的时候，可以参考 <a href="https://sive.rs/1s">一个句子写一行</a> 和 <a href="https://sembr.org/">Semantic Line Breaks</a>，会给写作带来一定好处。
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.27" class="footnum" href="#fnr.27" role="doc-backlink">27</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-see also：<a href="37.html#3050c884-bc4b-48b5-a0d5-925800808cbe">Zine#37::Fool yourself into writing</a>，<a href="https://evaparish.com/blog/how-i-edit">What I think about when I edit</a>。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.28" class="footnum" href="#fnr.28" role="doc-backlink">28</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-see also： <a href="41.html#18077F99-B804-45FD-A5EB-70759638A3ED">Zine#41::It's rude to show AI output to people | Alex Martsinovich</a>，<a href="34.html#464FDBD9-F402-4E5D-AAD7-186599F09BA3">Zine#34::I'd rather read the prompt</a>。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.29" class="footnum" href="#fnr.29" role="doc-backlink">29</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-手机上有滚动条的话，可以长按滚动条拖动到底部，没有滚动条只能一直往下翻，体验很差。滚动条本身也可以作为当前位置的一个提示，而不需要额外显示一个进度百分比。如果是在电脑上阅读，除了滚动条，还可以使用 <kbd>HOME</kbd> 回到页面顶部，<kbd>END</kbd> 去到页面底部。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.30" class="footnum" href="#fnr.30" role="doc-backlink">30</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-你还是可以稍微加一点样式，参考 Kevin Powell 的 <a href="https://thecascade.dev/article/least-amount-of-css/">The least amount of CSS for a decent looking site</a>：
+<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7" role="doc-backlink">7</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+see also：
 </p>
-<div class="org-src-container">
-<pre class="src src-css"><span style="color: #969896;">/* </span><span style="color: #db7b5f;">&#33258;&#36866;&#24212;&#29992;&#25143;&#24403;&#21069;&#30340;&#20027;&#39064;</span><span style="color: #969896;"> */</span>
-<span style="color: #feacd0;">html</span> {
-  <span style="color: #b6a0ff;">color-scheme</span>: light dark;
-}
+<ul class="org-ul">
+<li><a href="37.html#3050c884-bc4b-48b5-a0d5-925800808cbe">Zine#37::Fool yourself into writing</a></li>
+<li><a href="https://evaparish.com/blog/how-i-edit">What I think about when I edit</a></li>
+</ul></div></div>
 
-<span style="color: #969896;">/* </span><span style="color: #db7b5f;">&#35774;&#32622;&#19968;&#20010;&#36890;&#29992;&#30340;&#23383;&#20307;&#12289;&#36866;&#24403;&#30340;&#23383;&#20307;&#22823;&#23567;&#21644;&#34892;&#39640;&#65292;&#36991;&#20813;&#23383;&#20307;&#22826;&#23567;&#21644;&#25317;&#25380;</span><span style="color: #969896;"> */</span>
-<span style="color: #feacd0;">body</span> {
-  <span style="color: #b6a0ff;">font-family</span>: system-ui;
-  <span style="color: #b6a0ff;">font-size</span>: 1.25rem;
-  <span style="color: #b6a0ff;">line-height</span>: 1.5;
-}
-
-<span style="color: #969896;">/* </span><span style="color: #db7b5f;">&#36991;&#20813;&#22270;&#29255;&#35270;&#39057;&#28322;&#20986;&#23631;&#24149;</span><span style="color: #969896;"> */</span>
-<span style="color: #feacd0;">img,
-svg,
-video</span> {
-  <span style="color: #b6a0ff;">max-width</span>: 100%;
-  <span style="color: #b6a0ff;">display</span>: block;
-}
-
-<span style="color: #969896;">/* </span><span style="color: #db7b5f;">&#35774;&#32622;&#20869;&#23481;&#26368;&#22823;&#23485;&#24230;&#24182;&#23621;&#20013;&#65292;&#36991;&#20813;&#19968;&#34892;&#25991;&#23383;&#36807;&#38271;&#65292;&#20855;&#20307;&#30340;&#20540;&#21487;&#33021;&#35201;&#26681;&#25454;&#33258;&#24049;&#21916;&#27426;&#35843;&#25972;&#19968;&#19979;</span><span style="color: #969896;"> */</span>
-<span style="color: #feacd0;">main</span> {
-  <span style="color: #b6a0ff;">max-width</span>: min(70ch, 100% - 4rem);
-  <span style="color: #b6a0ff;">margin-inline</span>: auto;
-}
-</pre>
-</div></div></div>
+<div class="footdef"><sup><a id="fn.8" class="footnum" href="#fnr.8" role="doc-backlink">8</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+see also：
+</p>
+<ul class="org-ul">
+<li><a href="34.html#464FDBD9-F402-4E5D-AAD7-186599F09BA3">Zine#34::I'd rather read the prompt</a>。</li>
+<li><a href="41.html#18077F99-B804-45FD-A5EB-70759638A3ED">Zine#41::It's rude to show AI output to people | Alex Martsinovich</a></li>
+</ul></div></div>
 
 
 </div>
@@ -708,7 +735,7 @@ video</span> {
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-09-10 Wed 14:06</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-10-13 Mon 22:32</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-11-03 Mon 02:07</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
