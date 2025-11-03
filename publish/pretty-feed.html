@@ -54,46 +54,44 @@
 </div>
 </nav>
 <p>
-在往下看之前，你可以先看看我现在的 <a href="https://taxodium.ink/rss.xml">Atom feed</a><sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>，或许说不上很好看，但应该比枯燥的 XML 标签看起来要友好一点吧 (つд⊂)
+在往下看之前，你可以先看看我现在的 <a href="https://taxodium.ink/rss.xml">Atom feed</a>，或许说不上很好看，但应该比枯燥的 XML 标签看起来要友好一点吧 (つд⊂)
 </p>
+
+<details>
+<summary>其他例子</summary>
+
+<ul class="org-ul">
+<li><a href="https://blog.ursb.me/feed.xml">Airing 的博客</a></li>
+<li><a href="https://jakelazaroff.com/rss.xml">jakelazaroff.com</a></li>
+<li><a href="https://interconnected.org/home/feed">Matt Webb's blog feed</a></li>
+</ul>
+</details>
 <div id="outline-container-D8B64803-B008-4238-A2F6-E44FCEA38BCE" class="outline-2">
 <h2 id="D8B64803-B008-4238-A2F6-E44FCEA38BCE">缘由</h2>
 <div class="outline-text-2" id="text-D8B64803-B008-4238-A2F6-E44FCEA38BCE"><p>
-最近在整理自己的订阅流<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>， 在整理的过程中看到了 <a href="https://jakelazaroff.com/rss.xml">jakelazaroff.com</a>，点开发现虽然 URL 是 <a href="https://jakelazaroff.com/rss.xml">https://jakelazaroff.com/rss.xml</a> ，但是看起来和我平时看到的一堆 XML 标签不同，是个还挺好看的页面。
+最近在整理自己的订阅流， 在整理的过程中看到了 <a href="https://jakelazaroff.com/rss.xml">jakelazaroff.com</a>，点开发现虽然 URL 是 <a href="https://jakelazaroff.com/rss.xml">https://jakelazaroff.com/rss.xml</a> ，但是看起来和我平时看到的一堆 XML 标签不同，是个还挺好看的页面。
 </p>
 
 <p>
-于是我打开浏览器 Developer Tools 看看他是怎么做的，发现看到的是一个 HTML。
+于是我打开浏览器 Developer Tools 看看他是怎么做的，发现看到的是一个 HTML。嗯？既然 URL 上是 rss.xml，它的内容为什么不是一堆 XML 标签？再切换到 Sources 找到 rss.xml，这次看到的就是 XML 标签了。
 </p>
 
 <p>
-嗯？既然 URL 上是 rss.xml，它的内容为什么不是一堆 XML 标签？
-</p>
-
-<p>
-再切换到 Sources 找到 rss.xml，这次看到的就是 XML 标签了。
-</p>
-
-<p>
-那他是怎么把 XML 转换成有样式的 HTML 的？
-</p>
-
-<p>
-在他页面中的 <a href="https://aboutfeeds.com/">About Feeds</a> 中我找到了答案 ⸺ <a href="https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl">pretty-feed-v3.xsl</a>。
+那他是怎么把 XML 转换成有样式的 HTML 的？在他页面中的 <a href="https://aboutfeeds.com/">About Feeds</a> 中我找到了答案 ⸺ <a href="https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl">pretty-feed-v3.xsl</a>。
 </p>
 </div>
 </div>
 <div id="outline-container-A9223BE7-CCDB-4D73-8433-1D73D3FE3B58" class="outline-2">
 <h2 id="A9223BE7-CCDB-4D73-8433-1D73D3FE3B58">实现</h2>
 <div class="outline-text-2" id="text-A9223BE7-CCDB-4D73-8433-1D73D3FE3B58"><p>
-如果你是 RSS feed，只要在你的 XML 文件开头引入 <a href="https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl">pretty-feed-v3.xsl</a>，你就可以得到一个好看的 HTML feed 页面了。<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>
+如果你是 RSS feed，只要在你的 XML 文件开头引入 <a href="https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl">pretty-feed-v3.xsl</a>，你就可以得到一个好看的 HTML feed 页面了。
 </p>
 
 <div class="org-src-container">
 <pre class="src src-xml"><span style="color: #989898;">&lt;?</span><span style="color: #b6a0ff;">xml</span> <span style="color: #989898;">version="1.0" encoding="UTF-8"</span><span style="color: #989898;">?&gt;</span>
-<span style="color: #969896;">&lt;!-- </span><span style="color: #db7b5f;">&#28155;&#21152;&#36825;&#34892; XML &#26679;&#24335;&#34920;&#65292;&#24341;&#29992; pretty-feed-v3.xsl</span><span style="color: #969896;"> --&gt;</span>
+<span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#28155;&#21152;&#36825;&#34892; XML &#26679;&#24335;&#34920;&#65292;&#24341;&#29992; pretty-feed-v3.xsl</span><span style="color: #db7b5f;"> --&gt;</span>
 <span style="color: #989898;">&lt;?</span><span style="color: #b6a0ff;">xml-stylesheet</span> <span style="color: #989898;">href="/home/static/styles/pretty-feed-v3.xsl" type="text/xsl"</span><span style="color: #989898;">?&gt;</span>
-<span style="color: #969896;">&lt;!-- </span><span style="color: #db7b5f;">&#20320;&#21407;&#26469;&#30340; RSS &#20869;&#23481;</span><span style="color: #969896;"> --&gt;</span>
+<span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#20320;&#21407;&#26469;&#30340; RSS &#20869;&#23481;</span><span style="color: #db7b5f;"> --&gt;</span>
 <span style="color: #989898;">&lt;</span><span style="color: #feacd0;">rss</span> <span style="color: #6ae4b9;">xmlns</span><span style="color: #ffffff;">:</span><span style="color: #00d3d0;">atom</span>=<span style="color: #79a8ff;">"http://www.w3.org/2005/Atom"</span> <span style="color: #6ae4b9;">xmlns</span><span style="color: #ffffff;">:</span><span style="color: #00d3d0;">content</span>=<span style="color: #79a8ff;">"http://purl.org/rss/1.0/modules/content/"</span> <span style="color: #00d3d0;">version</span>=<span style="color: #79a8ff;">"2.0"</span><span style="color: #989898;">&gt;&lt;</span><span style="color: #989898;">/</span><span style="color: #feacd0;">rss</span><span style="color: #989898;">&gt;</span>
 </pre>
 </div>
@@ -123,7 +121,7 @@
 </p>
 
 <p>
-如果你只是想美化一下，你基于现有的文件修改就好了：<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>
+如果你只是想美化一下，你基于现有的文件修改就好了：
 </p>
 
 <ul class="org-ul">
@@ -134,6 +132,12 @@
 <p>
 如果你嫌麻烦，也可以用 <a href="https://github.com/ccbikai/RSS.Beauty">RSS.Beauty</a>，但自己写的话，定制化会更高，如果你还有更好的方法欢迎分享。
 </p>
+
+<section role="note" id="orgefc8bcc">
+<p>
+如果你不熟悉 XSLT 也不用担心，问问 LLM (Large Language Model) 就好啦！可以适当进行 Vibe Coding ~
+</p>
+</section>
 </div>
 </div>
 <div id="outline-container-173A2CF7-9FC8-4AB1-9E5E-44C7927BB520" class="outline-2">
@@ -163,29 +167,7 @@ Happy hacking ｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡
 </p>
 </div>
 </div>
-<div id="footnotes">
-<h2 class="footnotes">&#33050;&#27880;: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-补充几个例子： 1. <a href="https://blog.ursb.me/feed.xml">Airing 的博客</a> 2. <a href="https://jakelazaroff.com/rss.xml">jakelazaroff.com</a> 3. <a href="https://interconnected.org/home/feed">Matt Webb's blog feed</a>
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-整理完之后我会导出 <a href="https://opml.org/">OPML</a> 文件，导入到 <a href="https://follow.is/">Folo</a> 里，如果你对我关注的内容感兴趣，欢迎你去订阅。(已经整理完啦 &gt;w&lt; )
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-我发现在 Folo 上，代码块的高亮很刺眼，如果你碰到这个问题，可以尝试在外观设置中，关闭行内样式渲染，这样代码会失去高亮，但至少不会刺眼。后续我看看如何调整。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-如果你不熟悉 XSLT 也不用担心，问问 LLM 就好啦！可以适当进行 Vibe Coding ~
-</p></div></div>
-
-
 </div>
-</div></div>
 <div id="postamble" class="status">
 
 <details class="webmention-container js-required">
@@ -204,7 +186,7 @@ Happy hacking ｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-04-11 Fri 16:05</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-09-10 Wed 13:04</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-11-03 Mon 09:18</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
