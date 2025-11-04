@@ -75,16 +75,16 @@
 </div>
 </nav>
 <p>
-博客经历过几次更新，最开始的时候是用 markdown 写博客，然后用 <a href="https://hexo.io/">Hexo</a> 发布。
+博客经历过几次更新，最开始的时候是用 markdown 写博客，然后用 <a href="https://hexo.io/">Hexo</a> 发布。然后学习了 Vue，又尝试用 <a href="https://vuepress.vuejs.org/">VuePress</a> 发布，它们都是托管在 <a href="https://pages.github.com/">Github Pages</a> 上。后来接触了 <a href="https://www.gnu.org/software/emacs/">Emacs</a>，就从 markdown 迁移到了 <a href="https://orgmode.org/">org-mode</a>，然后使用 <a href="https://gohugo.io/">Hugo</a> 发布。
 </p>
 
-<p>
-然后学习了 Vue，又尝试用 <a href="https://vuepress.vuejs.org/">VuePress</a> 发布，它们都是托管在 <a href="https://pages.github.com/">Github Pages</a> 上。
-</p>
+<details>
+<summary>关于使用 org-mode 写博客</summary>
 
 <p>
-后来接触了 <a href="https://www.gnu.org/software/emacs/">Emacs</a>，就从 markdown 迁移到了 <a href="https://orgmode.org/">org-mode</a>，然后使用 <a href="https://gohugo.io/">Hugo</a> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>发布。
+<a href="https://orgmode.org/worg/org-blog-wiki.html">Blogs and Wikis with Org</a> 上有很多适用于 org-mode 的博客方案，最开始是看到 <a href="https://eason0210.github.io/">Eason0210 的博客</a> 觉得挺简洁，就依葫芦画瓢更新了一下。
 </p>
+</details>
 
 <p>
 因为 GitHub 直连变慢了，所以将内容托管到了 <a href="https://vercel.com/">Vercel</a> 和 <a href="https://www.netlify.com/">Netlify</a>。
@@ -111,15 +111,7 @@
 </ul>
 
 <p>
-设计复杂的网站，在网络较差的情况下有可能要加载很久才能显示。
-</p>
-
-<p>
-如果样式比较复杂， 在一些小屏幕下的显示可能不好。
-</p>
-
-<p>
-所以作者提出网站要保持简洁，这次也主要是基于作者提出的建议修改了网站。
+设计复杂的网站，在网络较差的情况下有可能要加载很久才能显示。如果样式比较复杂， 在一些小屏幕下的显示可能不好。所以作者提出网站要保持简洁，这次也主要是基于作者提出的建议修改了网站。
 </p>
 </div>
 </div>
@@ -141,15 +133,11 @@
 <div id="outline-container-6c1456b6-fe60-46a6-bcc0-df51a55113ec" class="outline-2">
 <h2 id="6c1456b6-fe60-46a6-bcc0-df51a55113ec">org-publish 的使用</h2>
 <div class="outline-text-2" id="text-6c1456b6-fe60-46a6-bcc0-df51a55113ec"><p>
-org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可以定义很多个任务，每个任务指定处理什么文件，怎么处理，处理之后放到什么地方。
+org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可以定义很多个任务，每个任务指定处理什么文件，怎么处理，处理之后放到什么地方。你可以单独地执行某个任务，也可以将任务串联起来执行。
 </p>
 
 <p>
-你可以单独地执行某个任务，也可以将任务串联起来执行。
-</p>
-
-<p>
-过程中碰到的几个问题：
+过程中也碰到了一些问题，分享一下。
 </p>
 </div>
 <div id="outline-container-99379675-2E6F-43A2-B030-F4D0740A6F16" class="outline-3">
@@ -166,27 +154,11 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 <div id="outline-container-584B050A-A533-4758-9527-1A47C0FDD016" class="outline-3">
 <h3 id="584B050A-A533-4758-9527-1A47C0FDD016">RSS 的设置</h3>
 <div class="outline-text-3" id="text-584B050A-A533-4758-9527-1A47C0FDD016"><p>
-<a href="https://github.com/emacsmirror/ox-rss">ox-rss</a> <sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成 RSS。
+<a href="https://github.com/emacsmirror/ox-rss">ox-rss</a> 可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成 RSS。但是我需要的是把多个 org 文件生成为一个 RSS 文件。
 </p>
 
 <p>
-但是我需要的是把多个 org 文件生成为一个 RSS 文件。
-</p>
-
-<p>
-不过别人已经踩过坑，按照 <a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a> 中的方法实现了。
-</p>
-
-<p>
-具体来说就是遍历所有的 org 文件，将他们的内容插入到一个 rss.org 文件中，再基于 rss.org 使用 ox-rss 去生成 RSS 文件。
-</p>
-
-<p>
-<a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a> 的实现会把整个 org 文件的内容插入到 rss.org 中。
-</p>
-
-<p>
-但是如果内容很多时，Emacs 会崩溃，我目前是改成只插入标题，后面再研究一下如何优化。
+不过别人已经踩过坑，按照 <a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a> 中的方法实现了。具体来说就是遍历所有的 org 文件，将他们的内容插入到一个 rss.org 文件中，再基于 rss.org 使用 ox-rss 去生成 RSS 文件。<a href="https://writepermission.com/org-blogging-rss-feed.html">Org mode blogging: RSS feed</a> 的实现会把整个 org 文件的内容插入到 rss.org 中。但是如果内容很多时，Emacs 会崩溃，我目前是改成只插入标题，后面再研究一下如何优化。
 </p>
 
 <p>
@@ -194,11 +166,19 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 </p>
 <ul class="org-ul">
 <li>删除 <code>org-publish-timestamp-directory</code> 中 RSS 的 cache</li>
-
 <li>删除博客相关的 buffer 试试（或者删除全部 buffer）</li>
-
 <li>检查一下是不是 <code>:exclude</code> 正则表达式写得有问题</li>
 </ul>
+
+<section role="note" id="orge3adad7">
+<p>
+RSS 的生成已经换成了 NodeJS 脚本生成，效率更高一些，见 <a href="blog-update-2025-04-08.html">博客的一些更新</a>。
+</p>
+
+<p>
+在我切换到 <a href="blog-with-denote-and-org-publish.html">使用 denote 写博客</a> 后，我还可以基于 denote 的 tag 生成对应的订阅流。
+</p>
+</section>
 </div>
 </div>
 <div id="outline-container-113A0707-7DA9-456E-B234-9305DE6A7F63" class="outline-3">
@@ -219,18 +199,24 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 <div id="outline-container-A10ADDC9-61C4-42F2-B96E-0AF391ABE4CB" class="outline-3">
 <h3 id="A10ADDC9-61C4-42F2-B96E-0AF391ABE4CB"><code>#+date</code> 的设置</h3>
 <div class="outline-text-3" id="text-A10ADDC9-61C4-42F2-B96E-0AF391ABE4CB"><p>
-原来 Hugo 生成的日期 (2023-05-31T13:38:39+08:00) 在转换成 sitemap 的时候似乎不能识别，
+原来 Hugo 生成的日期 (<code>2023-05-31T13:38:39+08:00</code>) 在转换成 sitemap 的时候似乎不能识别，
 </p>
 
 <p>
-于是改成 org 的日期格式 (<span class="timestamp-wrapper"><span class="timestamp">&lt;2023-05-31 Wed&gt;</span></span>)，这样 sitemap 就能正常按照时间排序了。<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>
+于是改成 org 的日期格式 (<span class="timestamp-wrapper"><span class="timestamp">&lt;2023-05-31 Wed&gt;</span></span>)，这样 sitemap 就能正常按照时间排序了。
 </p>
+
+<section role="note" id="orgf7ac5fa">
+<p>
+在 <a href="blog-with-denote-and-org-publish.html">结合 denote 和 org-publish 写博客</a> 中，已经改成了 denote 的 date 格式。
+</p>
+</section>
 </div>
 </div>
 <div id="outline-container-AD8007C1-34D6-44E4-9A02-4140AC784494" class="outline-3">
 <h3 id="AD8007C1-34D6-44E4-9A02-4140AC784494">缓存问题</h3>
 <div class="outline-text-3" id="text-AD8007C1-34D6-44E4-9A02-4140AC784494"><p>
-执行 org-publish 之后，会在 <code>org-publish-timestamp-directory</code> 指定的目录下生成缓存，有时调整了页眉页脚，可能需要清除缓存才能看到效果。
+执行 org-publish 之后，会在 <code>org-publish-timestamp-directory</code>指定的目录下生成缓存，有时调整了页眉页脚，可能需要清除缓存才能看到效果。
 </p>
 
 <p>
@@ -263,7 +249,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
          <span style="color: #f78fe7;">:base-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/post"</span>
          <span style="color: #f78fe7;">:base-extension</span> <span style="color: #79a8ff;">"org"</span>
          <span style="color: #f78fe7;">:html-head</span> ,spike-leung/html-head
-         <span style="color: #969896;">;; </span><span style="color: #db7b5f;">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
+         <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
 </span>         )))
 </pre>
 </div>
@@ -278,7 +264,8 @@ The special form quote returns its single argument, as written, without evaluati
 </p>
 
 <p>
-This provides a way to include constant symbols and lists, which are not self-evaluating objects, in a program.
+This provides a way to include constant symbols and lists,
+which are not self-evaluating objects, in a program.
 </p>
 
 <p>
@@ -287,7 +274,7 @@ This provides a way to include constant symbols and lists, which are not self-ev
 </blockquote>
 
 <p>
-因此 <code>,spike-leung/html-head</code> 会被当作一个常量，而不会被执行， 而 <code>,spike-leung/html-head</code> 这个字符串 <code>:html-head</code> 并不认识。
+因此 <code>,spike-leung/html-head</code> 会被当作一个常量，而不会被执行，而 <code>,spike-leung/html-head</code> 这个字符串 <code>:html-head</code> 并不认识。
 </p>
 
 <p>
@@ -295,20 +282,20 @@ This provides a way to include constant symbols and lists, which are not self-ev
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff">    (defconst spike-leung/html-head "
-      &lt;link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/&gt;
-      &lt;link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\"&gt;
-      "
-      "`:html-head' for `org-publish'.")
+<pre class="src src-diff">  (defconst spike-leung/html-head "
+    &lt;link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/&gt;
+    &lt;link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\"&gt;
+    "
+    "`:html-head' for `org-publish'.")
 
-    (setq org-publish-project-alist
+  (setq org-publish-project-alist
 <span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;">          '(("orgfiles"
 </span><span style="color: #44df44;">+</span><span style="color: #44bc44;">          `(("orgfiles"
-</span>             :base-directory "~/git/taxodium/post"
-             :base-extension "org"
-             :html-head ,spike-leung/html-head
-             ;; ... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
-             )))
+</span>           :base-directory "~/git/taxodium/post"
+           :base-extension "org"
+           :html-head ,spike-leung/html-head
+           ;; ... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
+           )))
 </pre>
 </div>
 
@@ -318,7 +305,8 @@ Backquote constructs allow you to quote a list, but selectively evaluate element
 </p>
 
 <p>
-In the simplest case, it is identical to the special form quote (described in the previous section; see <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Quoting.html">Quoting</a>).
+In the simplest case, it is identical to the special form quote
+(described in the previous section; see <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Quoting.html">Quoting</a>).
 </p>
 
 <p>
@@ -339,7 +327,7 @@ The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value i
 </blockquote>
 
 <p>
-<code>`</code> 和 <code>'</code> 的不同是，它会执行 list 里面的内容， 这样 <code>,spike-leung/html-head</code> 就会被执行并返回对应的 string，满足 <code>:html-head</code> 的需要。
+<code>`</code> 和 <code>'</code> 的不同是，它会执行 list 里面的内容，这样 <code>,spike-leung/html-head</code> 就会被执行并返回对应的 string，满足 <code>:html-head</code> 的需要。
 </p>
 </div>
 </div>
@@ -358,8 +346,14 @@ org publish 的时候会给 heading、figure、details、pre 等元素生成 id�
 </p>
 
 <p>
-具体的做法是每次保存 org 文件的时候，我都为 heading 生成 <code>CUSTOM_ID</code> 。<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>
+具体的做法是每次保存 org 文件的时候，我都为 heading 生成 <code>CUSTOM_ID</code> 。
 </p>
+
+<section role="note" id="orgc4bdb0f">
+<p>
+在 <a href="https://emacs-china.org/t/rx/30034">用 rx 写正则表达式，太舒服了！</a> 中，有人提到了其他方法，例如覆盖 <code>org-export-get-reference</code> 的实现。
+</p>
+</section>
 
 <details>
 <summary>相关代码</summary>
@@ -377,7 +371,7 @@ org publish 的时候会给 heading、figure、details、pre 等元素生成 id�
 (add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">org-mode-hook</span>
           (<span style="color: #b6a0ff;">lambda</span> ()
             (<span style="color: #b6a0ff;">when</span> (<span style="color: #b6a0ff;">and</span> buffer-file-name
-                       (string-match <span style="color: #79a8ff;">"taxodium"</span> buffer-file-name)) <span style="color: #969896;">;; </span><span style="color: #db7b5f;">only apply to blog files
+                       (string-match <span style="color: #79a8ff;">"taxodium"</span> buffer-file-name)) <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">only apply to blog files
 </span>              (add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">before-save-hook</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">spike-leung/org-add-custom-id-to-headings-in-blog-files</span> nil <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">local</span>))))
 </pre>
 </div>
@@ -403,10 +397,10 @@ These elements's ID will be remove: figure,details,pre ..."</span>
                                        <span style="color: #79a8ff;">"&gt;"</span>))
                               (<span style="color: #b6a0ff;">lambda</span> (match)
                                 (format <span style="color: #79a8ff;">"&lt;%s%s%s%s&gt;"</span>
-                                        (match-string 1 match) <span style="color: #969896;">;; </span><span style="color: #db7b5f;">tag
-</span>                                        (match-string 2 match) <span style="color: #969896;">;; </span><span style="color: #db7b5f;">keep other attrs
-</span>                                        <span style="color: #79a8ff;">""</span> <span style="color: #969896;">;; </span><span style="color: #db7b5f;">remove id
-</span>                                        (match-string 4 match) <span style="color: #969896;">;; </span><span style="color: #db7b5f;">keep other attrs
+                                        (match-string 1 match) <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">tag
+</span>                                        (match-string 2 match) <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">keep other attrs
+</span>                                        <span style="color: #79a8ff;">""</span> <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">remove id
+</span>                                        (match-string 4 match) <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">keep other attrs
 </span>                                        ))
                               text)))
 (<span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">ox</span>
@@ -437,7 +431,7 @@ These elements's ID will be remove: figure,details,pre ..."</span>
 </p>
 
 <p>
-例如这是我用于<a href="https://github.com/Spike-Leung/emacs.d/blob/windows/snippets/org-mode/weekly">写周刊的 snippet</a>:
+例如这是我用于 <a href="https://github.com/Spike-Leung/emacs.d/blob/windows/snippets/org-mode/weekly">写周刊的 snippet</a>:
 </p>
 
 <details>
@@ -504,12 +498,13 @@ console.log('Hello world!')
 <div id="outline-container-aff9d448-171b-4528-bd68-86124edf11ce" class="outline-3">
 <h3 id="aff9d448-171b-4528-bd68-86124edf11ce">行内图片的插入</h3>
 <div class="outline-text-3" id="text-aff9d448-171b-4528-bd68-86124edf11ce"><p class="inline-image">
-如果你想在文字中间插入一张图片<a href="./images/org-publish-blog/avatar.jpg"><img src="./images/org-publish-blog/avatar.jpg" alt="avatar.jpg" class="inline-image"></a>，同时你希望控制图片的大小，可以这样：
+如果你想在文字中间插入一张图片 <a href="./images/org-publish-blog/avatar.jpg"><img src="./images/org-publish-blog/avatar.jpg" alt="avatar.jpg" class="inline-image"></a>，同时你希望控制图片的大小，可以这样：
 </p>
 
 <pre class="example">
 #+ATTR_HTML: :class inline-image
-如果你想在文字中间插入一张图片[[file:./images/org-publish-blog/avatar.jpg]]，同时你希望控制图片的大小，可以这样：
+如果你想在文字中间插入一张图片 [[file:./images/org-publish-blog/avatar.jpg]]，
+同时你希望控制图片的大小，可以这样：
 </pre>
 
 <p>
@@ -567,29 +562,7 @@ console.log('Hello world!')
 </ul>
 </div>
 </div>
-<div id="footnotes">
-<h2 class="footnotes">&#33050;&#27880;: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-<a href="https://orgmode.org/worg/org-blog-wiki.html">Blogs and Wikis with Org</a> 上有很多适用于 org-mode 的博客方案，最开始是看到 <a href="https://eason0210.github.io/">Eason0210 的博客</a> 觉得挺简洁，就依葫芦画瓢更新了一下。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-现在换成了 NodeJS 脚本生成，效率更高一些。见 <a href="blog-update-2025-04-08.html">博客的一些更新</a>。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-在 <a href="blog-with-denote-and-org-publish.html">结合 denote 和 org-publish 写博客</a> 中，已经改成了 denote 的 date 格式。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-在 <a href="https://emacs-china.org/t/rx/30034">用 rx 写正则表达式，太舒服了！</a> 中，还提到了其他方法，例如覆盖 <code>org-export-get-reference</code> 的实现。
-</p></div></div>
-
-
 </div>
-</div></div>
 <div id="postamble" class="status">
 
 <details class="webmention-container js-required">
@@ -608,7 +581,7 @@ console.log('Hello world!')
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2024-09-27 Fri 21:40</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-10-16 Thu 00:06</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-11-04 Tue 23:45</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
