@@ -44,8 +44,18 @@
 <header>
 <h1 class="title p-name">在 Emacs 随机切换主题</h1>
 </header><p>
-Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/modus-themes">modus-themes</a> 和 <a href="https://github.com/protesilaos/ef-themes">ef-themes</a><sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>，它们都是出自 <a href="https://github.com/protesilaos">protesilaos</a><sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>。
+Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/modus-themes">modus-themes</a> 和 <a href="https://github.com/protesilaos/ef-themes">ef-themes</a>，它们都是出自 <a href="https://github.com/protesilaos">protesilaos</a>。
 </p>
+
+<section role="note" id="orgc2c00be">
+<p>
+后续可能还会加入 <a href="https://github.com/protesilaos/doric-themes">doric-themes</a>，也是 Prot 的写的主题，这个主题的颜色比较单一，写作的时候用感觉不错。
+</p>
+
+<p>
+对于 Prot，我也很佩服，他写的文章、手册、教程都很不错，从他那学到了不少。他的 <a href="https://github.com/protesilaos/denote">denote</a> 也是我用的最多的一个笔记记录工具。
+</p>
+</section>
 
 <p>
 modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景。
@@ -60,7 +70,7 @@ ef-themes 则提供了更多的色彩选择。
 </p>
 
 <p>
-平时主要用 <code>consult-theme</code><sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> 去切换主题，前阵子看了 <a href="https://tomoemami.github.io/20250520T155435--emacs-%E6%9B%B4%E6%94%B9%E9%85%8D%E8%89%B2%E6%96%B9%E6%A1%88__blog.html">emacs-更改配色方案</a>，受到文章的启发，我找 LLM 帮我写了一些用于定时切换主题的方法<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>。
+平时主要用 <code>consult-theme</code> （<a href="https://github.com/minad/consult">consult</a> 提供的一个方法）去切换主题，前阵子看了 <a href="https://tomoemami.github.io/20250520T155435--emacs-%E6%9B%B4%E6%94%B9%E9%85%8D%E8%89%B2%E6%96%B9%E6%A1%88__blog.html">emacs-更改配色方案</a>，受到文章的启发，我找 LLM 帮我写了一些用于定时切换主题的方法（源码: <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-my-theme.el">init-my-theme.el</a>）。
 </p>
 
 <details>
@@ -91,7 +101,7 @@ ef-themes 则提供了更多的色彩选择。
     ef-light
     ef-maris-dark
     ef-maris-light
-    <span style="color: #969896;">;; </span><span style="color: #db7b5f;">ef-melissa-dark
+    <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">ef-melissa-dark
 </span>    ef-melissa-light
     ef-night
     ef-owl
@@ -107,8 +117,8 @@ ef-themes 则提供了更多的色彩选择。
     ef-winter)
   <span style="color: #9ac8e0;">"A list of themes to randomly cycle through."</span>)
 
-<span style="color: #969896;">;;; </span><span style="color: #db7b5f;">theme related
-</span><span style="color: #969896;">;; </span><span style="color: #db7b5f;">@see: https://emacsredux.com/blog/2025/02/03/clean-unloading-of-emacs-themes/
+<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">theme related
+</span><span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">@see: https://emacsredux.com/blog/2025/02/03/clean-unloading-of-emacs-themes/
 </span>(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/disable-all-active-themes</span> ()
   <span style="color: #9ac8e0;">"Disable all currently active themes."</span>
   (<span style="color: #b6a0ff;">interactive</span>)
@@ -123,9 +133,9 @@ ef-themes 则提供了更多的色彩选择。
     (<span style="color: #b6a0ff;">let</span> ((theme (nth (random (length spike-leung/candidate-themes)) spike-leung/candidate-themes)))
       (<span style="color: #b6a0ff;">condition-case</span> err
           (<span style="color: #b6a0ff;">progn</span>
-            <span style="color: #969896;">;; </span><span style="color: #db7b5f;">Load theme to ensure its specific settings/customizations are applied
+            <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">Load theme to ensure its specific settings/customizations are applied
 </span>            (load-theme theme <span style="color: #f78fe7;">:no-confirm</span>)
-            <span style="color: #969896;">;; </span><span style="color: #db7b5f;">Enable the theme (this actually applies it and adds to custom-enabled-themes)
+            <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">Enable the theme (this actually applies it and adds to custom-enabled-themes)
 </span>            (enable-theme theme)
             (message <span style="color: #79a8ff;">"Applied random theme: %s"</span> theme))
         (<span style="color: #fec43f; font-weight: bold;">error</span> (message <span style="color: #79a8ff;">"Error applying theme %s: %s"</span> theme err))))))
@@ -151,39 +161,23 @@ ef-themes 则提供了更多的色彩选择。
 </ul>
 
 <p>
-用了一阵子，它很好地满足了我的新鲜感<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>，如果你感兴趣，不妨试试～
+用了一阵子，它很好地满足了我的新鲜感，如果你感兴趣，不妨试试～
 </p>
 
 <p>
 へ(゜∇、°)へ へ(゜∇、°)へ
 </p>
-<div id="footnotes">
-<h2 class="footnotes">&#33050;&#27880;: </h2>
-<div id="text-footnotes">
 
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-后续可能还会加入 <a href="https://github.com/protesilaos/doric-themes">doric-themes</a>，这个主题的颜色比较单一，写作的时候用感觉不错。
-</p></div></div>
+<section role="note" id="org1437a1c">
+<p>
+说起来奇怪，如果是我自己主动切换的主题，可能切换后我马上就想换了。
+</p>
 
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-我很佩服 Prot，他写的文章、手册、教程都很不错，从他那学到了不少。他的 <a href="https://github.com/protesilaos/denote">denote</a> 也是我用的最多的一个笔记记录工具。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-<a href="https://github.com/minad/consult">consult</a> 提供的一个方法。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-源码看这里: <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-my-theme.el">init-my-theme.el</a>。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-说起来奇怪，如果是我自己主动切换的主题，可能切换后我马上就想换了。但是随机切换的主题，我反而有种顺其自然的心境，更愿意先用用看。
-</p></div></div>
-
-
+<p>
+但是随机切换的主题，我反而有种顺其自然的心境，更愿意先用用看。
+</p>
+</section>
 </div>
-</div></div>
 <div id="postamble" class="status">
 
 <details class="webmention-container js-required">
@@ -202,7 +196,7 @@ ef-themes 则提供了更多的色彩选择。
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-05-21 Wed 21:40</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-09-10 Wed 13:04</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-11-05 Wed 20:47</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
