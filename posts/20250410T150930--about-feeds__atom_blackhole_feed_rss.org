@@ -16,9 +16,16 @@
 :CUSTOM_ID: 00fdbf68-1aba-4387-a568-759538cc84a3
 :END:
 
-订阅源 (feed) 是一种规范，其中以 [[https://zh.wikipedia.org/zh-tw/RSS][RSS(Really Simple Syndication)]] 最广为人知，此外还有 [[https://zh.wikipedia.org/wiki/Atom_(%E6%A8%99%E6%BA%96)][Atom]] 规范。[fn:1]
+订阅源 (feed) 是一种规范，其中以 [[https://zh.wikipedia.org/zh-tw/RSS][RSS(Really Simple Syndication)]] 最广为人知，此外还有 [[https://zh.wikipedia.org/wiki/Atom_(%E6%A8%99%E6%BA%96)][Atom]] 规范。
 
 按照这个规范，人们可以发布订阅源，然后感兴趣的读者可以订阅他们发布的订阅源。
+
+#+begin_details
+#+html: <summary>如果你要创建一个订阅源</summary>
+
+elfeed 的作者写了篇文章 [[https://nullprogram.com/blog/2013/09/23/][Atom vs. RSS]]，
+如果你要创建一个订阅源，建议使用 Atom，因为它更严格，能够避免一些错误。
+#+end_details
 
 你可以想象成订杂志/报纸，在你订阅之后，每当有更新，你就会收到新的内容，
 想看什么你就订阅什么，你也可以自己发布让别人订阅。
@@ -60,7 +67,7 @@
 
   得益于 [[https://docs.rsshub.app/][RSSHub]]，除了能订阅文章，它还能订阅视频，图片等，可玩性比较高。
   几乎支持全平台，web, iOS, android, windows, linux, macOS 都能用。
-  我推荐用 web，随时随地都能用。[fn:2]
+  我推荐用 web，随时随地都能用。(但是现在手机上使用会被重定向到应用下载了)
 
 - [[https://github.com/FreshRSS/FreshRSS][FreshRSS]] - 一个可以自己部署的服务，简单够用。只支持 web。
 - [[https://feedly.com][Feedly]] - 免费提供最多 100 个订阅。支持 web, android, iOS。
@@ -78,7 +85,16 @@
 
 你需要找到订阅源 URL。
 
-要获得此 URL，打开你要订阅的网站并找到该 RSS 链接或订阅源图标。[fn:3]
+要获得此 URL，打开你要订阅的网站并找到该 RSS 链接或订阅源图标。
+
+#+attr_html: :role note
+#+begin_section
+例如当前页面的导航上的 「订阅」 就是订阅链接，你可以右键点击复制链接；
+或者点击进去后，复制浏览器的 URL。
+
+有的网站不提供订阅流，需要你输入邮箱订阅，你可以使用 [[https://github.com/leafac/kill-the-newsletter][kill-the-newsletter]] 进行转换。
+kill-the-newsletter 会给你生成一个订阅的邮箱，然后为你生成订阅流。
+#+end_section
 
 然后...
 
@@ -134,15 +150,24 @@
 :END:
 
 [[https://aboutfeeds.com][About Feeds]] 是 [[https://interconnected.org][Matt Webb]] 制作的一个免费网站。
-作者创建这个网站是因为他觉得第一次使用网络订阅源很难，他想解决这个问题。[fn:5]
+作者创建这个网站是因为他觉得第一次使用网络订阅源很难，他想解决这个问题 ([[https://aboutfeeds.com/why][了解作者为什么要做这个网站]])。
 而我看到后觉得很棒，然后翻译了一下加入到自己的博客，也稍微添加了一些适合中文读者的修改。
 
 你是网站所有者吗？
-请考虑在你的订阅源链接或 RSS 图标旁边添加一个 [[https://aboutfeeds.com][帮助！什么是订阅源？]] 的链接。[fn:6]
 
-如果你有权访问代码，可以考虑 [[https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl][pretty-feed.xsl]][fn:7] 设置你的订阅源样式，使其对新用户友好。
+请考虑在你的订阅源链接或 RSS 图标旁边添加一个 [[https://aboutfeeds.com][帮助！什么是订阅源？]] 的链接。
+(或者你也可以指向 [[file:about-feeds.org][我写的这篇文章]])
 
-要贡献或提供反馈，请 [[https://github.com/genmon/aboutfeeds/issues/8][在 GitHub 上的 About Feeds 存储库上发起讨论]]。[fn:8]
+如果你有权访问代码，可以考虑 [[https://github.com/genmon/aboutfeeds/blob/main/tools/pretty-feed-v3.xsl][pretty-feed.xsl]] 设置你的订阅源样式，使其对新用户友好。
+
+#+attr_html: :role note
+#+begin_section
+作者使用的是 RSS，如果你是用 Atom，你可以参考我的 [[https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/pretty-feed-v3.xsl][pretty-feed-v3.xsl]]，或者看看这个 [[https://github.com/genmon/aboutfeeds/issues/26][issue]]。
+你也可以考虑用 [[https://github.com/ccbikai/RSS.Beauty][RSS.Beauty]]。
+#+end_section
+
+要贡献或提供反馈，请 [[https://github.com/genmon/aboutfeeds/issues/8][在 GitHub 上的 About Feeds 存储库上发起讨论]]。
+如果有能力，也可以给这个仓库做贡献，使其支持 Atom 和多语言。
 
 * 附录 1 - 为什么你应该写博客
 :PROPERTIES:
@@ -183,27 +208,3 @@
 :END:
 
 文中的订阅图标来自 [[https://commons.wikimedia.org/wiki/File:Feed-icon.svg][Wikimedia Commons]] 并且遵循 [[https://www.mozilla.org/en-US/MPL/1.1/][Mozilla Public License Version 1.1]] 协议下使用。
-
-* Footnotes
-:PROPERTIES:
-:CUSTOM_ID: BBD9455E-4A1E-4CB1-B156-6BD372859EF3
-:END:
-
-[fn:1] elfeed 的作者写了篇文章 [[https://nullprogram.com/blog/2013/09/23/][Atom vs. RSS]]，如果你要创建一个订阅源，
-他建议使用 Atom，因为它更严格，能够避免一些错误。
-
-[fn:2] 但是最近手机上使用会被重定向到应用下载了。
-
-[fn:3] 例如当前页面的导航上的 “订阅” 就是订阅链接，你可以右键点击复制链接；
-或者点击进去后，复制浏览器的 URL。
-有的网站不提供订阅流，需要你输入邮箱订阅，你可以使用 [[https://github.com/leafac/kill-the-newsletter][kill-the-newsletter]] 进行转换。
-kill-the-newsletter 会给你生成一个订阅的邮箱，然后为你生成订阅流。
-
-[fn:5] [[https://aboutfeeds.com/why][阅读关于为什么这个网站存在的原因。]]
-
-[fn:6] 或者你也可以指向我写的这篇文章。
-
-[fn:7] 作者使用的是 RSS，如果你是用 Atom，你可以参考我的 [[https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/pretty-feed-v3.xsl][pretty-feed-v3.xsl]]，或者看看这个 [[https://github.com/genmon/aboutfeeds/issues/26][issue]]。
-你也可以考虑用 [[https://github.com/ccbikai/RSS.Beauty][RSS.Beauty]]。
-
-[fn:8] 如果有能力，让我们一起去把作者这个仓库弄好吧，使其支持 Atom 和多语言。
