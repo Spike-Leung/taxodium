@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>pacakge.json 中依赖版本的记忆技巧</title>
+<title>package.json 中依赖版本的记忆技巧</title>
 <meta name="author" content="Spike Leung" />
 <meta name="description" content="关于如何区分 package.json 中 ^ 和 ~ 的作用，以及个人的记忆技巧" />
 <meta name="generator" content="Org Mode" />
@@ -42,7 +42,7 @@
 </div>
 <div id="content" class="content e-content">
 <header>
-<h1 class="title p-name">pacakge.json 中依赖版本的记忆技巧</h1>
+<h1 class="title p-name">package.json 中依赖版本的记忆技巧</h1>
 </header><nav id="table-of-contents" role="doc-toc">
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
@@ -86,26 +86,32 @@
 <summary>答案</summary/>
 
 <p>
-<code>^2.6.14</code> :=<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> <code>&gt;=2.6.14 &lt;3.0.0-0</code>
+<code>^2.6.14</code> := <code>&gt;=2.6.14 &lt;3.0.0-0</code>
 </p>
 
 <p>
 <code>~2.6.14</code> := <code>&gt;=2.6.14 &lt;2.(6+1).0-0</code> := <code>&gt;=2.6.14 &lt;2.7.0-0</code>
 </p>
+
+<section role="note" id="orgfa202ea">
+<p>
+<code>:=</code> 的意思是 <code>可定义/表示为</code> ，a := b 即 a 可以定义为 b 的表示。
+</p>
+</section>
 </details>
 
 <p>
-如果你答对了，我想你肯定有你的记忆方法，欢迎留言分享。
-</p>
-
-<p>
-如果你也容易忘记，那么接下来我想分享一个我的记忆方法，或许对你有帮助。
+如果你答对了，我想你肯定有你的记忆方法，欢迎留言分享。如果你也容易忘记，那么接下来我想分享一个我的记忆方法，或许对你有帮助。
 </p>
 <div id="outline-container-8A1BCD01-EC4A-42FA-BF12-B13BC85B750E" class="outline-2">
 <h2 id="8A1BCD01-EC4A-42FA-BF12-B13BC85B750E">TL;DR</h2>
-<div class="outline-text-2" id="text-8A1BCD01-EC4A-42FA-BF12-B13BC85B750E"><ul class="org-ul">
+<div class="outline-text-2" id="text-8A1BCD01-EC4A-42FA-BF12-B13BC85B750E"><p>
+<code>^</code> 和 <code>~</code> 都是用来判断 <b>固定</b> 哪一位版本号的。
+</p>
+
+<ul class="org-ul">
 <li><code>^</code> 可以用正则表达式的 <code>^</code> 记忆，表示开头，对应的含义就是从头(左边)找到第一位非 0 的版本号，固定非 0 的那一位版本号不变，后面(右)的版本号可以变。</li>
-<li><code>~</code> 可以用范围符号记忆，1 <code>~</code> 3 往往表示一个范围， <code>~</code> 是放在中间的，第二位版本号也是在中间，因此 <code>~</code> 主要是和第二位版本号(minor)有关。
+<li><code>~</code> 可以用范围符号记忆，1 <code>~</code> 3 往往表示一个范围，<code>~</code> 是放在中间的，第二位版本号也是在中间，因此 <code>~</code> 主要是和第二位版本号(minor)有关。
 <ul class="org-ul">
 <li>第二位(minor)存在，则固定第二位，可以改第三位(patch)。</li>
 <li>第二位(minor)不存在，则固定第一位(major)，可以改第二位(minor)，第三位(patch)。</li>
@@ -116,7 +122,7 @@
 <div id="outline-container-69FC14E5-4E6D-4605-AF0A-ADCE9FBA7084" class="outline-2">
 <h2 id="69FC14E5-4E6D-4605-AF0A-ADCE9FBA7084">关于版本号</h2>
 <div class="outline-text-2" id="text-69FC14E5-4E6D-4605-AF0A-ADCE9FBA7084"><p>
-package.json 的版本号遵循<a href="https://semver.org/lang/zh-CN/">语义化版本 2.0.0</a>：
+package.json 的版本号遵循 <a href="https://semver.org/lang/zh-CN/">语义化版本 2.0.0</a>：
 </p>
 
 <blockquote>
@@ -131,12 +137,13 @@ package.json 的版本号遵循<a href="https://semver.org/lang/zh-CN/">语义�
 </dl>
 
 <p>
-先行版本号 (pre-release) 及版本编译信息 (build metadata) 可以加到 “ <code>主版本号.次版本号.修订号</code> ”的后面，作为延伸。
+先行版本号 (pre-release) 及版本编译信息 (build metadata)
+可以加到 <code>主版本号.次版本号.修订号</code> 的后面，作为延伸。
 </p>
 </blockquote>
 
 <p>
-package.json 中<a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-json#git-urls-as-dependencies">关于版本号范围的定义</a>是这样的:
+package.json 中 <a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-json#git-urls-as-dependencies">关于版本号范围的定义</a> 是这样的:
 </p>
 
 <blockquote>
@@ -157,7 +164,7 @@ package.json 中<a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-
 <li>git&#x2026; : 参见 <a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-json#git-urls-as-dependencies">Git URLs as Dependencies</a></li>
 <li>user/repo : 参见 <a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-json#github-urls">GitHub URLs</a></li>
 <li>tag : 一个特定的版本，被标记并发布为 <code>tag</code> (参见 <a href="https://docs.npmjs.com/cli/v11/commands/npm-dist-tag">npm dist-tag</a>)</li>
-<li>path/path/path : 参见<a href="https://docs.npmjs.com/cli/v11/using-npm/package-spec#aliases">本地路径</a></li>
+<li>path/path/path : 参见 <a href="https://docs.npmjs.com/cli/v11/using-npm/package-spec#aliases">本地路径</a></li>
 <li>npm:@scope/pkg@version : 包的自定义别名 (参见 <a href="https://docs.npmjs.com/cli/v11/using-npm/package-spec#aliases">package-spec</a>)</li>
 </ul>
 </blockquote>
@@ -170,10 +177,12 @@ package.json 中<a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-
 <div id="outline-container-8D5AC283-1EEC-4007-A14C-650F0EF43518" class="outline-2">
 <h2 id="8D5AC283-1EEC-4007-A14C-650F0EF43518">^ (Caret Ranges) 和 ~ (Tilde Ranges)</h2>
 <div class="outline-text-2" id="text-8D5AC283-1EEC-4007-A14C-650F0EF43518"><dl class="org-dl">
-<dt><a href="https://github.com/npm/node-semver?tab=readme-ov-file#caret-ranges-123-025-004">^ (Caret Ranges)</a> </dt><dd>允许不修改 <code>[major, minor, patch]</code> 元组中最左边非零元素的更改。(Allows changes that do not modify the left-most non-zero element in the <code>[major, minor, patch]</code> tuple.)
+<dt><a href="https://github.com/npm/node-semver?tab=readme-ov-file#caret-ranges-123-025-004">^ (Caret Ranges)</a></dt><dd>允许不修改 <code>[major, minor, patch]</code> 元组中最左边非零元素的更改。
+(Allows changes that do not modify the left-most non-zero element
+in the <code>[major, minor, patch]</code> tuple.)
 
 <ul class="org-ul">
-<li><code>^1.2.3</code> :=<sup><a id="fnr.1.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> <code>&gt;=1.2.3 &lt;2.0.0-0</code></li>
+<li><code>^1.2.3</code> := <code>&gt;=1.2.3 &lt;2.0.0-0</code></li>
 <li><code>^0.2.3</code> := <code>&gt;=0.2.3 &lt;0.3.0-0</code></li>
 <li><code>^0.0.3</code> := <code>&gt;=0.0.3 &lt;0.0.4-0</code></li>
 <li><code>^1.2.3-beta.2</code> := <code>&gt;=1.2.3-beta.2 &lt;2.0.0-0</code></li>
@@ -186,8 +195,14 @@ package.json 中<a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-
 </ul></dd>
 </dl>
 
+<section role="note" id="org48ba232">
 <p>
-在正则表达式中， <code>^</code> 表示匹配匹配字符串的开头，利用这个联想， <code>^</code> 表示的就是从头(最左边)开始，找第一个非 0 的版本号，固定这一位版本号。
+<code>:=</code> 的意思是 <code>可定义/表示为</code> ，a := b 即 a 可以定义为 b 的表示。
+</p>
+</section>
+
+<p>
+在正则表达式中， <code>^</code> 表示匹配匹配字符串的开头，利用这个联想，<code>^</code> 表示的就是从头(最左边)开始，找第一个非 0 的版本号，固定这一位版本号。
 </p>
 
 <p>
@@ -217,7 +232,8 @@ package.json 中<a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-
 </dl>
 
 <p>
-<code>~</code> 常见于表示的一个范围，例如 1 <code>~</code> 3, 它往往是夹在中间的，也就是中间第二位，而它的作用就是针对第二位的 <code>次版本号(minor)</code> 。
+<code>~</code> 常见于表示的一个范围，例如 1 <code>~</code> 3,
+它往往是夹在中间的，也就是中间第二位，而它的作用就是针对第二位的 <code>次版本号(minor)</code> 。
 </p>
 
 <p>
@@ -268,17 +284,7 @@ package.json 中<a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-
 </ul>
 </div>
 </div>
-<div id="footnotes">
-<h2 class="footnotes">&#33050;&#27880;: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-<code>:=</code> 表示定义/表示为，a := b 的意思是，a 可以定义为 b 的表示。
-</p></div></div>
-
-
 </div>
-</div></div>
 <div id="postamble" class="status">
 
 <details class="webmention-container js-required">
@@ -297,7 +303,7 @@ package.json 中<a href="https://docs.npmjs.com/cli/v11/configuring-npm/package-
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-02-21 Fri 21:39</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-09-10 Wed 13:04</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-11-05 Wed 11:45</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
