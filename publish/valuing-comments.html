@@ -70,7 +70,7 @@
 <div id="outline-container-DF7D524D-DC44-45F0-A9B0-950AC3EDD8C0" class="outline-2">
 <h2 id="DF7D524D-DC44-45F0-A9B0-950AC3EDD8C0">为什么需要写注释</h2>
 <div class="outline-text-2" id="text-DF7D524D-DC44-45F0-A9B0-950AC3EDD8C0"><p>
-写代码是什么，不同的人有不同的答案，但有<a href="https://zverok.space/blog/2024-10-06-poetry.html#:~:text=Taking%20the%20definition%20of%20writing%20from%20earlier%2C%20we%20can%20say%20that%20writing%20code%20is%20sharing%20the%20experience%20of%20understanding%20the%20requirements/implementation.">一个答案</a>我很喜欢：
+写代码是什么，不同的人有不同的答案，但有 <a href="https://zverok.space/blog/2024-10-06-poetry.html#:~:text=Taking%20the%20definition%20of%20writing%20from%20earlier%2C%20we%20can%20say%20that%20writing%20code%20is%20sharing%20the%20experience%20of%20understanding%20the%20requirements/implementation.">一个答案</a> 我很喜欢：
 </p>
 
 <blockquote>
@@ -84,11 +84,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </blockquote>
 
 <p>
-编码始于需求，我们写下的代码，是对需求的实现和描述，体现了我们对需求的理解。
-</p>
-
-<p>
-而当别人阅读代码的时候，我们希望对方能通过代码理解当时的需求，理解我们的设计，这就要求代码具有很高的可读性。
+编码始于需求，我们写下的代码，是对需求的实现和描述，体现了我们对需求的理解。而当别人阅读代码的时候，我们希望对方能通过代码理解当时的需求，理解我们的设计，这就要求代码具有很高的可读性。
 </p>
 
 <p>
@@ -97,40 +93,28 @@ Writing code is sharing the experience of understanding the requirements/impleme
 
 <blockquote>
 <p>
-虽然逐行记录代码的功能通常没有太大用处，因为通过阅读代码就能理解其含义，
-</p>
-
-<p>
-但编写可读代码的一个关键目标是降低读者在阅读代码时需要记住的努力和细节数量。
-</p>
-
-<p>
-因此，对我来说，注释可以是降低读者认知负担的工具。
-</p>
-
-<p>
-以下代码片段就是一个好例子:
+虽然逐行记录代码的功能通常没有太大用处，因为通过阅读代码就能理解其含义，但编写可读代码的一个关键目标是降低读者在阅读代码时需要记住的努力和细节数量。因此，对我来说，注释可以是降低读者认知负担的工具。以下代码片段就是一个好例子:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #969896;">/* </span><span style="color: #db7b5f;">Initial Stack: array</span><span style="color: #969896;"> */</span>
+<pre class="src src-c"><span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Initial Stack: array</span><span style="color: #db7b5f;"> */</span>
   <span style="color: #feacd0;">lua_getglobal</span>(lua,<span style="color: #79a8ff;">"table"</span>);
   <span style="color: #feacd0;">lua_pushstring</span>(lua,<span style="color: #79a8ff;">"sort"</span>);
-  <span style="color: #feacd0;">lua_gettable</span>(lua,-2);       <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #969896;"> */</span>
-  <span style="color: #feacd0;">lua_pushvalue</span>(lua,-3);      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #969896;"> */</span>
+  <span style="color: #feacd0;">lua_gettable</span>(lua,-2);       <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #db7b5f;"> */</span>
+  <span style="color: #feacd0;">lua_pushvalue</span>(lua,-3);      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #db7b5f;"> */</span>
   <span style="color: #b6a0ff;">if</span> (lua_pcall(lua,1,0,0)) {
-      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, error</span><span style="color: #969896;"> */</span>
+      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, error</span><span style="color: #db7b5f;"> */</span>
 
-      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">We are not interested in the error, we assume that the problem is
+      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">We are not interested in the error, we assume that the problem is
        * that there are 'false' elements inside the array, so we try
        * again with a slower function but able to handle this case, that
-       * is: table.sort(table, __redis__compare_helper)</span><span style="color: #969896;"> */</span>
-      lua_pop(lua,1);             <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table</span><span style="color: #969896;"> */</span>
-      lua_pushstring(lua,<span style="color: #79a8ff;">"sort"</span>); <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, sort</span><span style="color: #969896;"> */</span>
-      lua_gettable(lua,-2);       <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #969896;"> */</span>
-      lua_pushvalue(lua,-3);      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #969896;"> */</span>
+       * is: table.sort(table, __redis__compare_helper)</span><span style="color: #db7b5f;"> */</span>
+      lua_pop(lua,1);             <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table</span><span style="color: #db7b5f;"> */</span>
+      lua_pushstring(lua,<span style="color: #79a8ff;">"sort"</span>); <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, sort</span><span style="color: #db7b5f;"> */</span>
+      lua_gettable(lua,-2);       <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #db7b5f;"> */</span>
+      lua_pushvalue(lua,-3);      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #db7b5f;"> */</span>
       lua_getglobal(lua,<span style="color: #79a8ff;">"__redis__compare_helper"</span>);
-      <span style="color: #969896;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array, __redis__compare_helper</span><span style="color: #969896;"> */</span>
+      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array, __redis__compare_helper</span><span style="color: #db7b5f;"> */</span>
       lua_call(lua,2,0);
   }
 </pre>
@@ -142,48 +126,20 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </blockquote>
 
 <p>
-(<a href="https://vadimkravcenko.com/shorts/proper-documentation/">文档</a>，<a href="https://testing.googleblog.com/2017/09/code-health-providing-context-with.html">提交信息和错误报告</a>也很有用！)
+(<a href="https://vadimkravcenko.com/shorts/proper-documentation/">文档</a>，<a href="https://testing.googleblog.com/2017/09/code-health-providing-context-with.html">提交信息和错误报告</a> 也很有用！)
 </p>
 
 <p>
-或许你会认为，只要我把代码写得足够清晰，代码本身就是自解释的，我不需要注释。
-</p>
-
-<p>
-但我觉得下面这段话说得很对，大多时候这都是 “自欺欺人”：
+或许你会认为，只要我把代码写得足够清晰，代码本身就是自解释的，我不需要注释。但我觉得下面这段话说得很对，大多时候这都是 「自欺欺人」：
 </p>
 
 <blockquote>
 <p>
-许多开发者抱有一种不切实际的信念，认为如果代码足够清晰，就不需要使用注释。
+许多开发者抱有一种不切实际的信念，认为如果代码足够清晰，就不需要使用注释。这是一个美好的前提，但根本不成立。第一个问题是，大多数开发者面临巨大的时间压力，没有时间将代码写得如此清晰，以至于不需要进一步的注释。事实上，程序员更常见的经历是，看到自己六个月前写的代码时，会想 「我真不敢相信这是我写的！」<span class="underline">不要自欺欺人，以为你可以写出如此清晰的代码，以至于不需要注释就能理解。</span>
 </p>
 
 <p>
-这是一个美好的前提，但根本不成立。
-</p>
-
-<p>
-第一个问题是，大多数开发者面临巨大的时间压力，没有时间将代码写得如此清晰，以至于不需要进一步的注释。
-</p>
-
-<p>
-事实上，程序员更常见的经历是，看到自己六个月前写的代码时，会想 “我真不敢相信这是我写的！”
-</p>
-
-<p>
-<i>不要自欺欺人，以为你可以写出如此清晰的代码，以至于不需要注释就能理解。</i>
-</p>
-
-<p>
-另一个问题是， <i>代码仅解释了事情是如何完成的，而不是为什么以那种方式完成，</i> 特别是当有明显的替代方案时；<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
-</p>
-
-<p>
-如果 “为什么” 不是显而易见的，技术债务就会在缺乏解释的情况下累积。
-</p>
-
-<p>
-请注意，如果没有这样的解释性注释，代码可能会变得极其难以维护， <i>因为没有人敢去触碰它，这正是技术债务的定义</i> 。
+另一个问题是，<span class="underline">代码仅解释了事情是如何完成的，而不是为什么以那种方式完成，</span>特别是当有明显的替代方案时；如果「为什么」不是显而易见的，技术债务就会在缺乏解释的情况下累积。请注意，如果没有这样的解释性注释，代码可能会变得极其难以维护，⸺ <span class="underline">因为没有人敢去触碰它，这正是技术债务的定义。</span>
 </p>
 
 <p>
@@ -196,20 +152,16 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <p>
-理解代码，最终还是依靠“读者”自己，或许我们写的注释还不足以将一切描述清楚，但至少通过注释，我们补充一些信息，辅助别人阅读我们的代码。
+理解代码，最终还是依靠「读者」自己，或许我们写的注释还不足以将一切描述清楚，但至少通过注释，我们补充一些信息，辅助别人阅读我们的代码。
 </p>
 
 <blockquote>
 <p>
-这里的关键是你我都陷入了同一个陷阱。
+这里的关键是你我都陷入了同一个陷阱。我在 18 年前重构了那个旧算法，我认为所有那些方法和变量名称会使我的意图清晰 ⸺ 因为我理解那个算法。
 </p>
 
 <p>
-我在 18 年前重构了那个旧算法，我认为所有那些方法和变量名称会使我的意图清晰——因为我理解那个算法。
-</p>
-
-<p>
-你在一段时间前写了那段代码，并用你认为能解释你意图的注释进行了装饰——因为你理解那个算法。
+你在一段时间前写了那段代码，并用你认为能解释你意图的注释进行了装饰 ⸺ 因为你理解那个算法。
 </p>
 
 <p>
@@ -221,11 +173,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <p>
-说到底，向一个对你试图解释的细节不熟悉的人解释某件事是非常困难的。
-</p>
-
-<p>
-我们的解释往往只有在读者自己理清了细节之后才有意义。
+<span class="underline">说到底，向一个对你试图解释的细节不熟悉的人解释某件事是非常困难的。</span><span class="underline">我们的解释往往只有在读者自己理清了细节之后才有意义。</span>
 </p>
 
 <p>
@@ -315,28 +263,31 @@ Writing code is sharing the experience of understanding the requirements/impleme
 揭示你的意图：解释代码 <i>为什么</i> 要做某些事情（而不是做什么）。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #969896;">// </span><span style="color: #db7b5f;">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
+<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
 </pre>
 </div></li>
+
 <li><p>
-保护未来善意的编辑人员不会错误地“修正”你的代码。
+保护未来善意的编辑人员不会错误地「修正」你的代码。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #969896;">// </span><span style="color: #db7b5f;">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
+<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
 </pre>
 </div></li>
+
 <li><p>
 澄清：代码审查过程中出现的问题，或代码读者可能提出/困惑的问题。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #969896;">// </span><span style="color: #db7b5f;">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
+<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
 </pre>
 </div></li>
+
 <li><p>
 解释你写不符合规范/要求的代码的理由
 </p>
 <div class="org-src-container">
-<pre class="src src-js">@SuppressWarnings(<span style="color: #79a8ff;">"unchecked"</span>) <span style="color: #969896;">// </span><span style="color: #db7b5f;">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
+<pre class="src src-js">@SuppressWarnings(<span style="color: #79a8ff;">"unchecked"</span>) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
 </pre>
 </div></li>
 </ul>
@@ -350,57 +301,35 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <dl class="org-dl">
-<dt>FUNCTION COMMENTS</dt><dd><p>
-函数注释的目的首先是防止读者阅读代码。
-</p>
+<dt>FUNCTION COMMENTS</dt><dd>函数注释的目的在于让读者无需直接阅读代码本身。理想情况下，通过阅读注释就能将某段代码视为遵循特定规则的黑盒。</dd>
 
-<p>
-相反，在阅读注释后，应该可以将某些代码视为一个黑盒子。
-</p></dd>
-<dt>DESIGN COMMENTS</dt><dd><p>
-函数注释通常位于函数的开头，而设计注释通常位于文件的开头。
-</p>
+<dt>DESIGN COMMENTS</dt><dd>函数注释通常位于函数的开头，而设计注释通常位于文件的开头。设计注释基本上说明了某段代码如何以及为何使用某些算法、技术、技巧和实现方式。它是对代码中实现内容的高层次概述。</dd>
 
-<p>
-设计注释基本上说明了某段代码如何以及为何使用某些算法、技术、技巧和实现方式。
-</p>
-
-<p>
-它是对代码中实现内容的高层次概述。
-</p></dd>
 <dt>WHY COMMENTS</dt><dd><p>
-为什么注释用于解释代码做某些事情的原因，即使代码正在做的事情非常清楚。
+为什么注释用于解释代码做某些事情的原因，即使代码正在做的事情非常清楚。看代码虽然知道在做什么，但可能不知道为什么要这么做，而为什么注释可以补充这些背景。
 </p>
 
+<section role="note" id="org459d472">
 <p>
-看代码虽然知道在做什么，但可能不知道为什么要这么做，而为什么注释可以补充这些背景。<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>
-</p></dd>
-
-<dt>TEACHER COMMENTS</dt><dd><p>
-教师评论并不试图解释代码本身或我们应该注意的某些副作用。
+例如有的代码可能需要放在前面先执行，虽然那行代码确实写在前面，但对于其他人可能不知道为什么要放在前面先执行，而为什么注释就可以告诉他。
 </p>
+</section></dd>
 
-<p>
-相反，他们教授的是代码运行的领域（例如数学、计算机图形学、网络、统计学、复杂数据结构），
-</p>
+<dt>TEACHER COMMENTS</dt><dd>教师评论并不试图解释代码本身或我们应该注意的某些副作用。相反，他们教授的是代码运行的领域（例如数学、计算机图形学、网络、统计学、复杂数据结构），这可能是读者技能范围之外的领域，或者只是因为细节太多而无法从记忆中回忆起所有细节。</dd>
 
-<p>
-这可能是读者技能范围之外的领域，或者只是因为细节太多而无法从记忆中回忆起所有细节。
-</p></dd>
 <dt>CHECKLIST COMMENTS</dt><dd><p>
-有时由于语言限制、设计问题，或者仅仅是由于系统中自然产生的复杂性，不可能将某个概念或界面集中在一块，
+有时由于语言限制、设计问题，或者仅仅是由于系统中自然产生的复杂性，不可能将某个概念或界面集中在一块，因此代码中有些地方会告诉你要记住在代码的其他地方做事情。
 </p>
 
+<section role="note" id="org411687d">
 <p>
-因此代码中有些地方会告诉你要记住在代码的其他地方做事情。<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>
-</p></dd>
+例如有的逻辑分散在很多个文件，修改了一个地方，其他好几个地方也需要修改，
+checklist 可以提醒开发者需要留意修改的地方。
+</p>
+</section></dd>
 
 <dt>GUIDE COMMENTS</dt><dd><p>
-引导注释的作用只有一个：照看读者，帮助读者处理源代码中的内容，提供明确的分工、节奏，并介绍您将要阅读的内容。
-</p>
-
-<p>
-引导注释存在的唯一理由就是降低程序员阅读代码时的认知负荷。
+引导注释的作用只有一个：照看读者，帮助读者处理源代码中的内容，提供明确的分工、节奏，并介绍您将要阅读的内容。引导注释存在的唯一理由就是降低程序员阅读代码时的认知负荷。
 </p>
 
 <p>
@@ -410,18 +339,21 @@ Writing code is sharing the experience of understanding the requirements/impleme
 <p>
 将相关语句放在附近也是可读性的一大优势。
 </p></dd>
-<dt>TRIVIAL COMMENTS </dt><dd>琐碎注释是指 <i>阅读注释的认知负荷</i> 与 <i>阅读相关代码的认知负荷</i> 相同或更高的指导性注释。</dd>
+
+<dt>TRIVIAL COMMENTS</dt><dd>琐碎注释是指<em>阅读注释</em>的认知负荷与<em>阅读代码</em>的认知负荷相同或更高的指导性注释。</dd>
+
 <dt>DEBT COMMENTS</dt><dd><p>
 债务注释是硬编码在源代码本身中的技术债务声明。
 </p>
 
 <p>
-FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/blog/stop-using-todo">TODO</a>、"This is a hack" 等都是债务注释。
+FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/blog/stop-using-todo">TODO</a>、「This is a hack」等都是债务注释。
 </p>
 
 <p>
 一般来说，这些注释并不是很好，我尽量避免使用它们，但这并不总是可能的，有时与其永远忘记某个问题，我更愿意在源代码中加入一个节点。
 </p></dd>
+
 <dt>BACKUP COMMENTS</dt><dd><p>
 备份注释是指开发人员对某些代码块甚至整个函数的旧版本进行注释，因为她或他对新版本中操作的变更缺乏安全感。
 </p>
@@ -431,36 +363,26 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 </p>
 
 <p>
-如果你想保存一个函数或代码部分的旧版本，你的工作还没有完成，不能提交。
+如果你想保存一个函数或代码部分的旧版本，你的工作还没有完成，不能提交。要么确保新函数比过去的函数更好，要么就在本地开发环境中保留它，直到确定为止。
 </p>
 
+<section role="note" id="org57e80f1">
 <p>
-要么确保新函数比过去的函数更好，要么就在本地开发环境中保留它，直到确定为止。<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>
-</p></dd>
+看代码有时会看到一些已经注释不用的代码，既没写为什么要注释掉，也没有删掉，会影响阅读正常代码逻辑，也不确定能不能删除，最后可能就变成一种债务了。
+</p>
+</section></dd>
 </dl>
 </div>
 </div>
 <div id="outline-container-17D70924-12D3-4953-B63D-888E4678BEE9" class="outline-2">
 <h2 id="17D70924-12D3-4953-B63D-888E4678BEE9">注释和代码同等重要</h2>
 <div class="outline-text-2" id="text-17D70924-12D3-4953-B63D-888E4678BEE9"><p>
-常听到的说法是，注释会过时，如果不及时维护，注释反而成为了一种误导。
-</p>
-
-<p>
-解决的办法就是把注释和代码同等看待，同等重视。
+常听到的说法是，注释会过时，如果不及时维护，注释反而成为了一种误导。解决的办法就是把注释和代码同等看待，同等重视。
 </p>
 
 <blockquote>
 <p>
-维护不善的注释是技术债务的明显来源。
-</p>
-
-<p>
-<i>为了避免这个问题，要像重视代码一样重视注释。</i>
-</p>
-
-<p>
-例如，在进行代码审查时，不仅要特别注意新代码周围的注释，还要注意文件中更高层次的注释在新功能下是否仍然正确。
+维护不善的注释是技术债务的明显来源。<span class="underline">为了避免这个问题，要像重视代码一样重视注释。</span>例如，在进行代码审查时，不仅要特别注意新代码周围的注释，还要注意文件中更高层次的注释在新功能下是否仍然正确。
 </p>
 
 <p>
@@ -470,27 +392,11 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 
 <blockquote>
 <p>
-传统的计算机程序由包含程序代码的文本文件组成。
+传统的计算机程序由包含程序代码的文本文件组成。程序代码中散布着对代码各部分进行描述的注释。
 </p>
 
 <p>
-程序代码中散布着对代码各部分进行描述的注释。
-</p>
-
-<p>
-在文学编程中，重点正好相反。
-</p>
-
-<p>
-有文化的程序员不再编写包含文档的代码，而是编写包含代码的文档。
-</p>
-
-<p>
-注入程序的英文注释不再需要隐藏在文件顶部的注释分隔符中、程序标题下或行尾。
-</p>
-
-<p>
-取而代之的是，它被置于阳光下，成为主要焦点。
+在文学编程中，重点正好相反。有文化的程序员(literate programmer)不再编写包含文档的代码，而是编写包含代码的文档。注入程序的英文注释不再需要隐藏在文件顶部的注释分隔符中、程序标题下或行尾。<span class="underline">取而代之的是，它被置于阳光下，成为主要焦点。</span>
 </p>
 
 <p>
@@ -499,8 +405,16 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 </blockquote>
 
 <p>
-还有一个小技巧，注释在 IDE 中往往颜色比较浅，容易让人忽视，或许可以换一种主题，凸显注释，提高对注释的重视。<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>
+还有一个小技巧，注释在 IDE 中往往颜色比较浅，容易让人忽视，或许可以换一种主题，凸显注释，提高对注释的重视。
 </p>
+
+<details>
+<summary>我在 Emacs 里修改了注释的颜色</summary>
+
+<p>
+在 Emacs 里，我使用的主题是 <a href="https://protesilaos.com/emacs/modus-themes">modus-theme</a>，可以自定义颜色，<a href="https://github.com/Spike-Leung/emacs.d/blob/5c48743feee2654a20dd28b83c1ed060f533a285/lisp/my-lisp/init-modus-theme.el#L33">我将注释的颜色改成了 (comment rust)</a>, 是一种偏橙色的颜色，相比灰色更能突显注释的颜色。希望我的注释不会生锈 (rust) 吧，哈哈。
+</p>
+</details>
 </div>
 </div>
 <div id="outline-container-F3D95581-C754-4624-B72B-440D3870CA73" class="outline-2">
@@ -516,33 +430,7 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 </ul>
 </div>
 </div>
-<div id="footnotes">
-<h2 class="footnotes">&#33050;&#27880;: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-明明有更简单的实现，这里为什么要这么写呢？
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-例如有的代码可能需要放在前面先执行，虽然那行代码确实写在前面，但对于其他人可能不知道为什么要放在前面先执行，而为什么注释就可以告诉他。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-例如有的逻辑分散在很多个文件，修改了一个地方，其他好几个地方也需要修改，checklist 可以提醒开发者需要留意修改的地方。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-看代码有时会看到一些已经注释不用的代码，既没写为什么要注释掉，也没有删掉，会影响阅读正常代码逻辑，也不确定能不能删除，最后可能就变成一种债务了。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-在 Emacs 里，我使用的主题是 <a href="https://protesilaos.com/emacs/modus-themes">modus-theme</a>，可以自定义颜色，<a href="https://github.com/Spike-Leung/emacs.d/blob/5c48743feee2654a20dd28b83c1ed060f533a285/lisp/my-lisp/init-modus-theme.el#L33">我将注释的颜色改成了 (comment rust)</a>, 是一种偏橙色的颜色，相比灰色更能突显注释的颜色。希望我的注释不会生锈 (rust) 吧，哈哈。
-</p></div></div>
-
-
 </div>
-</div></div>
 <div id="postamble" class="status">
 
 <details class="webmention-container js-required">
@@ -561,7 +449,7 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-02-26 Wed 16:30</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-09-10 Wed 13:04</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-11-05 Wed 14:21</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
