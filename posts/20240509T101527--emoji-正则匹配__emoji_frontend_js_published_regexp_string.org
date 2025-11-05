@@ -172,12 +172,21 @@ represents 1–6 hex digits.
 
 实现的方法就是定义了 *代理对 (Surrogates pairs)*  , 代理对由 20 位组成。
 规定前 10 位作为 *高代理位 (high-surrogate)* ，取值范围是 0xD800 - 0xDBFF。
-后 10 位为 *低代理位 (low-surrogate)* ，取值范围是 0xDC00 - 0xDFFF。[fn:3]
-高代理位和低代理位组成代理对 (surrogate pairs) 。
+后 10 位为 *低代理位 (low-surrogate)* ，取值范围是 0xDC00 - 0xDFFF。
+高代理位和低代理位组成代理对 。
 由于有 20 位的长度，因此可以表达 1048576 个字符，可以在原来 65536 个字符之上，再增加 1048576 个字符。
 
 概括来说，在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。
-而超出 65536 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
+而超出 65536 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），
+则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
+
+#+attr_html: :role note
+#+begin_section
+为什么 Unicode 要这么设计，
+参考 [[https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm][Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?]]
+
+为什么高代理和低代理这么取值，参考 [[https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen][How was the position of the Surrogates Area (UTF-16) chosen?]]
+#+end_section
 
 ** 为什么匹配不到
 :PROPERTIES:
@@ -368,8 +377,3 @@ represents 1–6 hex digits.
 [fn:1] 感谢 [[https://github.com/JunQu][JunQu]] 指出 [[https://github.com/Spike-Leung/taxodium/discussions/9][问题]]。
 
 [fn:2] 参考 [[https://v8.dev/features/regexp-v-flag][RegExp v flag with set notation and properties of strings]]
-
-[fn:3]
-为什么 Unicode 要这么设计，参考 [[https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm][Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?]]
-
-为什么高代理和低代理这么取值，参考 [[https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen][How was the position of the Surrogates Area (UTF-16) chosen?]]
