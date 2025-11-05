@@ -106,11 +106,17 @@ mac mini 是没有键盘鼠标的，首次开机的时候没法直接连接蓝�
 以前配置 macOS 都是想到什么就配置什么，碰到问题就查文档，
 这样可能遗漏一些配置，直到碰到问题才发现，而且也比较耗费时间。
 
-我不想每次都这么费劲，之前了解过一点 Makefile [fn:3]，这次就决定通过 Makefile 将相关环境配置好。
+我不想每次都这么费劲，之前了解过一点 Makefile，这次就决定通过 Makefile 将相关环境配置好。
+
+#+attr_html: :role note
+#+begin_section
+[[https://github.com/chaselambda/makefiletutorial][Makefile Tutorial]] 是一个不错的 Makefile 入门教程。
+#+end_section
 
 前阵子在 [[https://taxodium.ink/31.html#:~:text=Ship%20Software%20That%20Does%20Nothing][zine#31]] 分享过 [[https://kerrick.blog/articles/2025/ship-software-that-does-nothing/][Ship Software That Does Nothing]]，里面作者建议先发布一个空的项目，将其部署起来，然后再慢慢构建功能。
 
-这次我构建 Makefile 也是类似的，一开始只有几行我能想到的配置，然后就执行 ~make init~ 安装验证，发现缺失的再补充，最终就得到了一个相对完整的 Makefile 文件。
+这次我构建 Makefile 也是类似的，一开始只有几行我能想到的配置，
+然后就执行 ~make init~ 安装验证，发现缺失的再补充，最终就得到了一个相对完整的 Makefile 文件。
 
 这样比我先安装好了，再整理成 Makefile 或者笔记要好，能够更早发现问题，验证 Makefile。
 
@@ -126,7 +132,14 @@ mac mini 是没有键盘鼠标的，首次开机的时候没法直接连接蓝�
 Makefile 中做的主要的事情：
 
 - 通过 symbolic link ，将 dropbox 中的一些文件链接到本地目录，便于操作
-- 配置 [[https://github.com/ohmyzsh/ohmyzsh][ohmyzsh]]，[[https://github.com/starship/starship][starship]]，[[https://github.com/tmux/tmux][tmux]]，[[https://github.com/volta-cli/volta][volta]] (NodeJS 相关配置) 以及我积攒了一阵子的 dotfiles[fn:4]。
+- 配置 [[https://github.com/ohmyzsh/ohmyzsh][ohmyzsh]]，[[https://github.com/starship/starship][starship]]，[[https://github.com/tmux/tmux][tmux]]，[[https://github.com/volta-cli/volta][volta]] (NodeJS 相关配置) 以及我积攒了一阵子的 dotfiles。
+
+#+attr_html: :role note
+#+begin_section
+关于 dotfiles 建议看看 [[https://effective-shell.com/part-5-building-your-toolkit/managing-your-dotfiles/][Managing your Dotfiles]]。
+
+维护一份你的 dotfiles，便于在不同环境保持一致的体验。
+#+end_section
 
 #+begin_details
 #+html: <summary>Makefile</summary>
@@ -289,9 +302,19 @@ gpg --import my-private-key.asc
 :ID:       F0A5A7D9-5D20-45A4-B16C-525159FE5A37
 :END:
 
-安装 [[https://www.python.org/][python]][fn:5][fn:6]，很多工具依赖 python，例如 [[https://aider.chat/#][aider]]，[[https://github.com/beancount/beancount][beancount]] 等。
+安装 [[https://www.python.org/][python]]，很多工具依赖 python，例如 [[https://aider.chat/#][aider]]，[[https://github.com/beancount/beancount][beancount]] 等。
 
 我对 python 不是很熟，不太确定怎么安装比较好，目前是从官网下载安装。
+
+#+begin_details
+#+html: <summary>安装 python 碰到的一些问题</summary>
+
+安装后执行 pip 遇到 [[https://github.com/pypa/pip/issues/10939][ssl certificate errors]]。关闭代理，
+进入到 ~/Applications/Python 3.13~ 目录执行 ~Install Certificates.command~ 后就好了，之后开代理也没关系。
+
+在安装 aider 时发现 aider-install 的执行文件路径不在 ~$PATH~ 中，
+还需要设置一下 ~$PATH~ ，这个路径和 python 版本号耦合，可能之后安装还会变化。
+#+end_details
 
 *** org-protocol
 :PROPERTIES:
@@ -313,7 +336,7 @@ gpg --import my-private-key.asc
 :END:
 
 Emacs 中有一些 unicode 符号需要字体支持才能显示，例如 =⸺= ，
-可以下载 [[https://fonts.google.com/noto/specimen/Noto+Sans?family=Noto+Sans][Noto Sans]] 和 [[https://github.com/subframe7536/maple-font][maple-font]] 使得在 Emacs 中能正常显示。[fn:7]
+可以下载 [[https://fonts.google.com/noto/specimen/Noto+Sans?family=Noto+Sans][Noto Sans]]、[[https://github.com/subframe7536/maple-font][maple-font]] 使得在 Emacs 中能正常显示。
 
 * 写在最后
 :PROPERTIES:
@@ -337,22 +360,13 @@ Emacs 中有一些 unicode 符号需要字体支持才能显示，例如 =⸺= �
 
 * Footnotes
 :PROPERTIES:
-:CUSTOM_ID:       CE1A4795-16ED-488F-BD5E-D40F6C8D5FDB
-:ID:       70D8C05C-00C9-4A9D-85FB-908FB9002E50
+:CUSTOM_ID: D450E802-174D-4A3A-A694-946AB3EAB117
 :END:
 
 [fn:1] macOS 下如何方便地切换中英文？总是切换输入法感觉有点麻烦。
-不知道有没有更好的办法，像是 Windows，按一下 shift 就能切换就比较方便。原来用过 [[https://rime.im/][Rime]]，但是现在懒得配置了，能用系统自带的就用自带的。
+不知道有没有更好的办法，像是 Windows，按一下 shift 就能切换就比较方便。
+原来用过 [[https://rime.im/][Rime]]，但是现在懒得配置了，能用系统自带的就用自带的。
 
-[fn:2] 原来用的是 [[https://iterm2.com/][iTerm2]]，不过 iTerm2 也需要配置一阵子，就想着试试自带的终端用着如何，不行再换。
+[fn:2] 原来用的是 [[https://iterm2.com/][iTerm2]]，不过 iTerm2 也需要配置一阵子，
+就想着试试自带的终端用着如何，不行再换。
 现在更倾向于用一些系统自带的东西，减少一些软件的依赖。
-
-[fn:3] [[https://github.com/chaselambda/makefiletutorial][Makefile Tutorial]] 是一个不错的 Makefile 入门教程。
-
-[fn:4] 关于 dotfiles 建议看看 [[https://effective-shell.com/part-5-building-your-toolkit/managing-your-dotfiles/][Managing your Dotfiles]]，维护一份你的 dotfiles，便于在不同环境保持一致的体验。
-
-[fn:5] 安装后执行 pip 遇到 [[https://github.com/pypa/pip/issues/10939][ssl certificate errors]]，关闭代理，进入到 ~/Applications/Python 3.13~ 目录执行 ~Install Certificates.command~ 后就好了，之后开代理也没关系。
-
-[fn:6] 在安装 aider 时发现 aider-install 的执行文件路径不在 ~$PATH~ 中，还需要设置一下 ~$PATH~ ，这个路径和 python 版本号耦合，可能之后安装还会变化。
-
-[fn:7] [[https://github.com/be5invis/Iosevka][Iosevka]] 也不错。
