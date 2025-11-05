@@ -79,14 +79,15 @@
 
 <dl class="org-dl">
 <dt><a href="https://github.com/Elilif/emacs-immersive-translate">Elilif/emacs-immersive-translate</a></dt><dd>Immersive-translate provides bilingual simultaneous display and translation of any text in Emacs.</dd>
-<dt><a href="https://github.com/lorniu/gt.el">lorniu/gt.el</a></dt><dd>Translator on Emacs. Supports multiple engines such as Google, Bing, deepL, ChatGPT, StarDict, Youdao and so on.</dd>
+<dt><a href="https://github.com/lorniu/gt.el">lorniu/gt.el</a></dt><dd>Translator on Emacs.
+Supports multiple engines such as Google, Bing, deepL, ChatGPT, StarDict, Youdao and so on.</dd>
 <dt><a href="https://github.com/condy0919/fanyi.el">condy0919/fanyi.el</a></dt><dd>Not only English-Chinese translator for Emacs.</dd>
 <dt><a href="https://github.com/karthink/gptel">karthink/gptel</a></dt><dd>A simple LLM client for Emacs.</dd>
 </dl>
 
 <p>
 我使用最多的是 emacs-immersive-translate，它的灵感是 <a href="https://immersivetranslate.com/en/">Immersive Translate</a>，是我使用频率极高的一个浏览器翻译插件。
-emacs-immersive-translate 给我的体验和 Immersive Translate 很接近，我主要是用来查看 Emacs 中的 Info，它还有 <code>immersive-translate-auto-mode</code> ，可以在  <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html">buffer</a> 变化的时候自动翻译，很方便。
+emacs-immersive-translate 给我的体验和 Immersive Translate 很接近，我主要是用来查看 Emacs 中的 Info，它还有 <code>immersive-translate-auto-mode</code> ，可以在 <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html">buffer</a> 变化的时候自动翻译，很方便。
 </p>
 
 <p>
@@ -127,10 +128,10 @@ fanyi 则是当作字典使用，碰到一两个单词不熟悉，就使用 fany
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #999999;">;;; </span><span style="color: #db7b5f;">immersive-translate
+<pre class="src src-elisp"><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">immersive-translate
 </span>(<span style="color: #b6a0ff;">require</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">immersive-translate</span>)
 (add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">elfeed-show-mode-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">immersive-translate-setup</span>)
-<span style="color: #999999;">;; </span><span style="color: #db7b5f;">need to api key with user `apikey` in `.authinfo`
+<span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">need to api key with user `apikey` in `.authinfo`
 </span>(<span style="color: #b6a0ff;">setq</span> immersive-translate-backend <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">chatgpt</span>
       immersive-translate-chatgpt-host <span style="color: #79a8ff;">"openrouter.ai/api"</span>
       immersive-translate-chatgpt-model <span style="color: #79a8ff;">"google/gemini-2.5-flash"</span>
@@ -140,13 +141,25 @@ fanyi 则是当作字典使用，碰到一两个单词不熟悉，就使用 fany
 </div>
 
 <p>
-API Key 在 <code>~/.authinfo</code> <sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>中配置，由于 emacs-immersive-translate 是查找 user 为 <code>apikey</code> 的配置，因此 user 这里需要设置为 <code>apikey</code> 。
+API Key 在 <code>~/.authinfo</code> 中配置，由于 emacs-immersive-translate 是查找 user 为 <code>apikey</code> 的配置，因此 user 这里需要设置为 <code>apikey</code> 。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-authinfo"><span style="color: #00d3d0;">machine</span> <span style="color: #f78fe7;">openrouter.ai/api</span> <span style="color: #999999;">login</span> <span style="color: #b6a0ff;">apikey</span> <span style="color: #999999;">password</span> <span style="color: #9ac8e0;">********************************</span>
+<pre class="src src-authinfo"><span style="color: #00d3d0;">machine</span> <span style="color: #f78fe7;">openrouter.ai/api</span> <span style="color: #db7b5f;">login</span> <span style="color: #b6a0ff;">apikey</span> <span style="color: #db7b5f;">password</span> <span style="color: #9ac8e0;">********************************</span>
 </pre>
 </div>
+
+<section role="note" id="org45434cf">
+<p>
+关于 .authinfo 你可以参考：
+</p>
+
+<ul class="org-ul">
+<li><a href="config-authinfo-with-emacs.html">Emacs 中配置 .authinfo.gpg</a></li>
+<li><a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Authentication.html">50.5 Keeping Persistent Authentication Information ¶</a></li>
+<li><a href="https://www.emacswiki.org/emacs/GnusAuthinfo">Gnus Authinfo</a></li>
+</ul>
+</section>
 </div>
 </div>
 <div id="outline-container-BE4581E7-1D8C-44A7-8F87-224AFFDA8278" class="outline-3">
@@ -160,7 +173,7 @@ gt.el 也是可以在 MELPA 上直接安装。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #999999;">;; </span><span style="color: #db7b5f;">@see: https://github.com/lorniu/gt.el
+<pre class="src src-elisp"><span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">@see: https://github.com/lorniu/gt.el
 </span>(maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gt</span>)
 (maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">plz</span>)
 (<span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-auth</span>
@@ -191,14 +204,14 @@ Source: <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/i
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #999999;">;;; </span><span style="color: #db7b5f;">init-auth --- config for auth related -*- lexical-binding: t -*-
-</span><span style="color: #999999;">;;; </span><span style="color: #db7b5f;">Commentary:
-</span><span style="color: #999999;">;;; </span><span style="color: #db7b5f;">Code:
-</span>(<span style="color: #b6a0ff;">setq</span> epa-pinentry-mode <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">loopback</span>) <span style="color: #999999;">;; </span><span style="color: #db7b5f;">input pass in minibuffer
+<pre class="src src-elisp"><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">init-auth --- config for auth related -*- lexical-binding: t -*-
+</span><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">Commentary:
+</span><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">Code:
+</span>(<span style="color: #b6a0ff;">setq</span> epa-pinentry-mode <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">loopback</span>) <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">input pass in minibuffer
 </span>
-<span style="color: #999999;">;; </span><span style="color: #db7b5f;">(auth-source-pass-enable) ;;; use pass to manage auth-source
+<span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">(auth-source-pass-enable) ;;; use pass to manage auth-source
 </span>
-<span style="color: #999999;">;;; </span><span style="color: #db7b5f;">function to get api-key from authinfo
+<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">function to get api-key from authinfo
 </span>(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/get-api-key</span> (service <span style="color: #6ae4b9;">&amp;optional</span> host)
   <span style="color: #9ac8e0;">"Retrieve the API key for SERVICE from authinfo.  if HOST exist, retrieve by HOST."</span>
   (<span style="color: #b6a0ff;">let*</span> ((host (<span style="color: #b6a0ff;">or</span> host (format <span style="color: #79a8ff;">"api.%s.com"</span> service)))
@@ -221,7 +234,7 @@ Source: <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/i
   (spike-leung/get-api-key <span style="color: #79a8ff;">"openrouter"</span> <span style="color: #79a8ff;">"openrouter.ai"</span>))
 
 (<span style="color: #b6a0ff;">provide</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-auth</span>)
-<span style="color: #999999;">;;; </span><span style="color: #db7b5f;">init-auth.el ends here.</span>
+<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">init-auth.el ends here.</span>
 </pre>
 </div>
 
@@ -256,7 +269,7 @@ gptel 就是当 LLM 用，需要翻译的时候就复制文字和它对话。此
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #999999;">;;; </span><span style="color: #db7b5f;">keybindings
+<pre class="src src-elisp"><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">keybindings
 </span>(<span style="color: #b6a0ff;">defvar</span> <span style="color: #00d3d0;">spike-leung/my-translate-keymap</span> (make-sparse-keymap)
   <span style="color: #9ac8e0;">"Keymap for translation commands."</span>)
 
@@ -297,15 +310,6 @@ See:
 <li><a href="https://emacs-china.org/t/topic/18006">一个支持多词典的翻译插件(目前仅支持单词)</a></li>
 </ul></div></div>
 
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-See:
-</p>
-<ul class="org-ul">
-<li><a href="config-authinfo-with-emacs.html">Emacs 中配置 .authinfo.gpg</a></li>
-<li><a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Authentication.html">50.5 Keeping Persistent Authentication Information ¶</a></li>
-<li><a href="https://www.emacswiki.org/emacs/GnusAuthinfo">Gnus Authinfo</a></li>
-</ul></div></div>
-
 
 </div>
 </div></div>
@@ -327,7 +331,7 @@ See:
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-01-16 Thu 21:39</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-10-31 Fri 10:49</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-11-05 Wed 11:17</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
