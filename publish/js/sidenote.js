@@ -147,8 +147,9 @@ function mountSidenotes() {
     });
 
     // 创建 sidenote
-    const sidenote = document.createElement('div');
+    const sidenote = document.createElement('aside');
     sidenote.className = SIDENOTE_CLASS;
+    sidenote.role = "note";
     sidenote.dataset.refIndex = idx;
 
     // 插入编号链接和内容
