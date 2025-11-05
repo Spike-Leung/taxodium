@@ -56,15 +56,16 @@
 </div>
 </nav>
 <p>
-之前我写过一篇 <a href="https://taxodium.ink/translation-in-emacs.html">在 Emacs 中集成翻译插件</a> 的文章，插件依赖一些 LLM 服务，LLM 服务需要配置对应的 API key，它们是定义在 <code>~/.authinfo</code> 中的。
+之前我写过一篇 <a href="https://taxodium.ink/translation-in-emacs.html">在 Emacs 中集成翻译插件</a> 的文章，插件依赖一些 LLM 服务，
+LLM 服务需要配置对应的 API key，它们是定义在 <code>~/.authinfo</code> 中的。
 </p>
 
 <p>
-但是 ~/.authinfo 是未加密的，如果泄露了，那么我的 API key 可能被滥用，所以我觉得还需要对它做一层加密。
+但是 <code>~/.authinfo</code> 是未加密的，如果泄露了，那么我的 API key 可能被滥用，所以我觉得还需要对它做一层加密。
 </p>
 
 <p>
-这篇文章我会分享如何在 ~/.authinfo 中定义 API key、如何使用 <a href="https://www.gnupg.org/documentation/manuals/gnupg/index.html">GnuPG</a> 对 ~/.authinfo 加密，以及如何配置 Emacs 从加密后的 <code>~/.authinfo.gpg</code> 中读取 API key。
+这篇文章我会分享如何在 <code>~/.authinfo</code> 中定义 API key、如何使用 <a href="https://www.gnupg.org/documentation/manuals/gnupg/index.html">GnuPG</a> 对 <code>~/.authinfo</code> 加密，以及如何配置 Emacs 从加密后的 <code>~/.authinfo.gpg</code> 中读取 API key。
 </p>
 <div id="outline-container-9a14762b-a452-41a5-b65b-30df073e89af" class="outline-2">
 <h2 id="9a14762b-a452-41a5-b65b-30df073e89af">authinfo</h2>
@@ -113,7 +114,16 @@ Emacs 是通过 auth-source 去实现身份验证的，一般将验证信息 (�
 </p>
 
 <ul class="org-ul">
-<li><b>machine</b> 服务器，DNS 名称或 IP 地址，在 auth-source-search<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> 查询中称为 <code>:host</code> 。</li>
+<li><p>
+<b>machine</b> 服务器，DNS 名称或 IP 地址，在 <code>auth-source-search</code> 查询中称为 <code>:host</code> 。
+</p>
+
+<section role="note" id="org2dbbc70">
+<p>
+auth-source-search 是 Emacs 中的一个函数，可以基于条件查询返回用 auth-source 定义的密钥。
+</p>
+</section></li>
+
 <li><b>login</b> 是用户名，在 auth-source-search 查询中称为 <code>:user</code> 。也可以使用 login 和 account 。</li>
 <li><b>port</b> 是连接端口或协议，在 auth-source-search 查询中称为 <code>:port</code> 。</li>
 <li><b>password</b> 就是对应的密钥，或者 API key 之类的</li>
@@ -168,11 +178,11 @@ and </span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #969896;">;; </span><span style="color: #db7b5f;">...&#20854;&#20182;&#20195;&#30721;
+<pre class="src src-lisp"><span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">...&#20854;&#20182;&#20195;&#30721;
 </span>(<span style="color: #79a8ff;">"Authorization"</span> . ,(concat <span style="color: #79a8ff;">"Bearer "</span> (immersive-translate-api-key
                                        immersive-translate-chatgpt-host
                                        <span style="color: #79a8ff;">"apikey"</span>))))))
-<span style="color: #969896;">;; </span><span style="color: #db7b5f;">...&#20854;&#20182;&#20195;&#30721;</span>
+<span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">...&#20854;&#20182;&#20195;&#30721;</span>
 </pre>
 </div>
 
@@ -235,10 +245,16 @@ sub   rsa4096 2025-02-27 [E]
 </p>
 
 <ul class="org-ul">
-<li><code>1BAF5568B6...4B1CF</code> 是指纹(fingerprint)<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup></li>
+<li><code>1BAF5568B6...4B1CF</code> 是指纹 (fingerprint)</li>
 <li><code>[ultimate] SpikeLeung &lt;l-yanlei@hotmail.com&gt;</code> 是 uid</li>
 <li><code>l-yanlei@hotmail.com</code> 是和这个 gpg 密钥关联的邮箱</li>
-</ul></li>
+</ul>
+
+<section role="note" id="org92b1892">
+<p>
+关于 GPG 密钥的更详细的解释，你可以看 <a href="https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/">Anatomy of a GPG Key</a>。
+</p>
+</section></li>
 
 <li><p>
 加密文件
@@ -269,8 +285,14 @@ sub   rsa4096 2025-02-27 [E]
 </p>
 
 <p>
-Emacs 内置的 EasyPG Assistant<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup> 可以帮你自动完成加密解密，当需要访问 gpg 加密文件的时候它就会启用，你不需要额外做什么。
+Emacs 内置的 EasyPG Assistant 可以帮你自动完成加密解密，当需要访问 gpg 加密文件的时候它就会启用，你不需要额外做什么。
 </p>
+
+<section role="note" id="org7d48cab">
+<p>
+在 Emacs 中你可以通过 <code>C-h R epa</code> 查看 EasyPG Assistant 的文档。
+</p>
+</section>
 
 <p>
 因为 gpg 密钥我也设置了密码，打开 Emacs 还需要先输入密码，让 gpg 密钥能被访问。
@@ -281,7 +303,7 @@ Emacs 内置的 EasyPG Assistant<sup><a id="fnr.3" class="footref" href="#fn.3" 
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> epa-pinentry-mode <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">loopback</span>) <span style="color: #969896;">;; </span><span style="color: #db7b5f;">&#22312; minibuffer &#36755;&#20837;&#23494;&#30721;</span>
+<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> epa-pinentry-mode <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">loopback</span>) <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">&#22312; minibuffer &#36755;&#20837;&#23494;&#30721;</span>
 </pre>
 </div>
 
@@ -297,11 +319,7 @@ Emacs 内置的 EasyPG Assistant<sup><a id="fnr.3" class="footref" href="#fn.3" 
 </p>
 
 <p>
-如果你有在多个设备管理密码，或者有多个 gpg 密钥需要管理，或许你可以考虑用 pass。
-</p>
-
-<p>
-pass 更侧重于密码管理，可以方便地在多个设备管理密钥，Emacs 也可以和 pass 集成。
+如果你有在多个设备管理密码，或者有多个 gpg 密钥需要管理，你也可以考虑用 pass。它更侧重于密码管理，可以方便地在多个设备管理密钥，Emacs 也可以和 pass 集成。
 </p>
 
 <p>
@@ -338,25 +356,7 @@ pass 更侧重于密码管理，可以方便地在多个设备管理密钥，Ema
 </p>
 </div>
 </div>
-<div id="footnotes">
-<h2 class="footnotes">&#33050;&#27880;: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-auth-source-search 是 Emacs 中的一个函数，可以基于条件查询返回基于 auth-source 定义的密钥。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-更详细的解释可以看 <a href="https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/">Anatomy of a GPG Key</a>。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-在 Emacs 中你可以通过 <code>C-h R epa</code> 查看相关文档。
-</p></div></div>
-
-
 </div>
-</div></div>
 <div id="postamble" class="status">
 
 <details class="webmention-container js-required">
@@ -375,7 +375,7 @@ auth-source-search 是 Emacs 中的一个函数，可以基于条件查询返回
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-02-27 Thu 14:29</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-09-10 Wed 13:04</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-11-05 Wed 14:31</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
