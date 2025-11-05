@@ -52,20 +52,16 @@
 </p>
 
 <p>
-如果是有效的，你会看到 “This is a valid Atom 1.0 feed.” 或者 “This is a valid RSS feed.” 等类似的提示。
+如果是有效的，你会看到「This is a valid Atom 1.0 feed.」或者「This is a valid RSS feed.」等类似的提示。
 </p>
 
 <p>
-如果是不符合规范的，你会看到 “This feed does not validate.”
-</p>
-
-<p>
-我去校验了一下我的订阅流，确实存在一些不符合规范的地方：
+如果是不符合规范的，你会看到 「This feed does not validate.」我去校验了一下我的订阅流，确实存在一些不符合规范的地方：
 </p>
 
 <ul class="org-ul">
 <li><p>
-id 不符合 <a href="https://validator.w3.org/feed/docs/warning/NonCanonicalURI.html">canonical form</a> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
+id 不符合 <a href="https://validator.w3.org/feed/docs/warning/NonCanonicalURI.html">canonical form</a>
 </p>
 
 <div class="org-src-container">
@@ -73,10 +69,16 @@ id 不符合 <a href="https://validator.w3.org/feed/docs/warning/NonCanonicalURI
 </span><span style="color: #44df44;">+</span><span style="color: #44bc44;"> feedId: 'https://taxodium.ink/',
 </span>
 </pre>
-</div></li>
+</div>
+
+<section role="note" id="org27aabf6">
+<p>
+id 是一个订阅流的唯一标识，更新之后可能会认为这是一个新的 feed，会导致出现重复的 feed entry（文章）。
+</p>
+</section></li>
 
 <li><p>
-&lt;follow_challenge&gt; 不是合法的 feed 元素。<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>我将它移除了，移动到了 &lt;subtitle&gt; 中声明。
+&lt;follow_challenge&gt; 不是合法的 feed 元素。<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>我将它移除了，移动到了 &lt;subtitle&gt; 中声明。
 </p>
 
 <p>
@@ -108,7 +110,7 @@ Folo 声明自己的订阅流有三种办法：
 </p></li>
 
 <li><p>
-订阅流中不允许包含 &lt;iframe&gt; 标签 <sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>，部分 CSS 属性也不允许写在 style 中<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>。
+订阅流中不允许包含 &lt;iframe&gt; 标签 <sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>，部分 CSS 属性也不允许写在 style 中<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>。
 </p>
 
 <p>
@@ -121,7 +123,7 @@ Folo 声明自己的订阅流有三种办法：
 </ul>
 
 <p>
-目前我已经都调整好了<sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>，如果你是自己生成的订阅流，生成完之后，可以用 <a href="https://validator.w3.org/feed/">Feed Validation Service</a> 验证一下～
+目前我已经都调整好了(<a href="https://github.com/Spike-Leung/taxodium/compare/27f7d47...06cf1ae">相关的代码改动</a>)，如果你是自己生成的订阅流，生成完之后，可以用 <a href="https://validator.w3.org/feed/">Feed Validation Service</a> 验证一下～
 </p>
 
 <p>
@@ -132,23 +134,15 @@ Happy hacking (ﾉ&gt;ω&lt;)ﾉ
 <div id="text-footnotes">
 
 <div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-id 是一个订阅流的唯一标识，更新之后可能会认为这是一个新的 feed，会导致出现重复的 feed entry（文章），目前我不太清楚如何修复。Folo 上，我尝试了 reset feed，rebuild database，以及 clean cache，好像都没有用。不过受影响的主要是历史的文章，新写的看起来不会重复。如果你碰到了，目前我只能说声抱歉了。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://validator.w3.org/feed/docs/error/UndefinedElement.html">Undefined parent element: child</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://validator.w3.org/feed/docs/warning/SecurityRisk.html">element should not contain script tag</a>
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://validator.w3.org/feed/docs/warning/DangerousStyleAttr.html">style attribute contains potentially dangerous content</a>
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-如果你感兴趣，这是 <a href="https://github.com/Spike-Leung/taxodium/compare/27f7d47...06cf1ae">相关的代码改动</a>。
 </p></div></div>
 
 
@@ -172,7 +166,7 @@ id 是一个订阅流的唯一标识，更新之后可能会认为这是一个�
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-04-15 Tue 21:39</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-09-10 Wed 13:04</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-11-05 Wed 15:50</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
