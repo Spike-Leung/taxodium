@@ -30,7 +30,7 @@
   <ul>
     <li><a href="/index.html">主页</a></li>
     <li><a href="/rss.xml">订阅</a></li>
-    <li class="js-required"><a href="/search.html">搜索</a></li>
+    <li><a href="/search.html">搜索</a></li>
     <li><a href="/inside-black-hole.html">黑洞里</a></li>
   </ul>
   <select id="lightdark" class="js-required">
@@ -69,11 +69,11 @@ img 的 src。
 <div class="org-src-container">
 <pre class="src src-typescript"><span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">imageURL</span> = <span style="color: #79a8ff;">"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"</span>
 
-<span style="color: #de935f;">fetch</span>(imageURL).<span style="color: #de935f;">then</span>((<span style="color: #00d3d0;">res</span>) <span style="color: #b6a0ff;">=&gt;</span> {
-  <span style="color: #b6a0ff;">return</span> res.<span style="color: #de935f;">blob</span>()
-}).<span style="color: #de935f;">then</span>((<span style="color: #00d3d0;">blob</span>) <span style="color: #b6a0ff;">=&gt;</span> {
-  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">imageObjectURL</span> = URL.<span style="color: #de935f;">createObjectURL</span>(blob);
-  document.<span style="color: #de935f;">querySelector</span>(<span style="color: #79a8ff;">"#img"</span>).src = imageObjectURL
+<span style="color: #d09dc0;">fetch</span>(imageURL).<span style="color: #d09dc0;">then</span>((<span style="color: #00d3d0;">res</span>) <span style="color: #b6a0ff;">=&gt;</span> {
+  <span style="color: #b6a0ff;">return</span> res.<span style="color: #d09dc0;">blob</span>()
+}).<span style="color: #d09dc0;">then</span>((<span style="color: #00d3d0;">blob</span>) <span style="color: #b6a0ff;">=&gt;</span> {
+  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">imageObjectURL</span> = URL.<span style="color: #d09dc0;">createObjectURL</span>(blob);
+  document.<span style="color: #d09dc0;">querySelector</span>(<span style="color: #79a8ff;">"#img"</span>).src = imageObjectURL
 })
 </pre>
 </div>
@@ -114,19 +114,19 @@ result 属性将包含一个data:URL 格式的字符串（base64 编码）以表
 
 <span style="color: #b6a0ff;">function</span> <span style="color: #feacd0;">blob2Base64</span>(<span style="color: #00d3d0;">blob</span>) {
   <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">reader</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">FileReader</span>();
-  reader.<span style="color: #de935f;">readAsDataURL</span>(blob);
+  reader.<span style="color: #d09dc0;">readAsDataURL</span>(blob);
 
   <span style="color: #b6a0ff;">return</span> <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Promise</span>((<span style="color: #00d3d0;">resolve</span>) <span style="color: #b6a0ff;">=&gt;</span> {
     reader.onloadend = () <span style="color: #b6a0ff;">=&gt;</span> {
-      <span style="color: #de935f;">resolve</span>(reader.result)
+      <span style="color: #d09dc0;">resolve</span>(reader.result)
     };
   })
 }
 
-<span style="color: #de935f;">fetch</span>(imageURL).<span style="color: #de935f;">then</span>((<span style="color: #00d3d0;">res</span>) <span style="color: #b6a0ff;">=&gt;</span> {
-  <span style="color: #b6a0ff;">return</span> res.<span style="color: #de935f;">blob</span>()
-}).<span style="color: #de935f;">then</span>(<span style="color: #b6a0ff;">async</span> (<span style="color: #00d3d0;">blob</span>) <span style="color: #b6a0ff;">=&gt;</span> {
-  document.<span style="color: #de935f;">querySelector</span>(<span style="color: #79a8ff;">"#img"</span>).src = <span style="color: #b6a0ff;">await</span> <span style="color: #de935f;">blob2Base64</span>(blob)
+<span style="color: #d09dc0;">fetch</span>(imageURL).<span style="color: #d09dc0;">then</span>((<span style="color: #00d3d0;">res</span>) <span style="color: #b6a0ff;">=&gt;</span> {
+  <span style="color: #b6a0ff;">return</span> res.<span style="color: #d09dc0;">blob</span>()
+}).<span style="color: #d09dc0;">then</span>(<span style="color: #b6a0ff;">async</span> (<span style="color: #00d3d0;">blob</span>) <span style="color: #b6a0ff;">=&gt;</span> {
+  document.<span style="color: #d09dc0;">querySelector</span>(<span style="color: #79a8ff;">"#img"</span>).src = <span style="color: #b6a0ff;">await</span> <span style="color: #d09dc0;">blob2Base64</span>(blob)
 })
 </pre>
 </div>
