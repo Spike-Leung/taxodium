@@ -193,7 +193,7 @@ function mountSidenotes() {
     let lastBottomLeft = 0;
     refs.forEach(function(ref, idx) {
       const sidenote = sidenoteContainer.querySelector(`.${SIDENOTE_CLASS}[data-ref-index="${idx}"]`);
-      const prevSidenote = sidenoteContainer.querySelector(`.${SIDENOTE_CLASS}[data-ref-index="${idx - 2}"]`);
+      const prevSidenote = sidenoteContainer.querySelector(`.${SIDENOTE_CLASS}[data-ref-index="${idx - 1}"]`);
 
       if (!sidenote) return;
 
@@ -216,15 +216,19 @@ function mountSidenotes() {
       const contentRect = content.getBoundingClientRect();
       let top = rect.top - contentRect.top + content.scrollTop;
 
+      sidenote.style.paddingInlineStart = padding;
+      sidenote.style.left = '100%';
+
       // 将 sidenote 分布到内容的两边
-      if (idx % 2 === 1) {
-        sidenote.style.paddingInlineStart = padding;
-        sidenote.style.left = '100%';
-      } else {
-        sidenote.style.justifyContent = 'flex-end';
-        sidenote.style.left = `${-1 * sidenote.getBoundingClientRect().width}px`;
-        sidenote.style.paddingInlineEnd = padding;
-      }
+      // 右边
+      // if (idx % 2 === 1) {
+      //   sidenote.style.paddingInlineStart = padding;
+      //   sidenote.style.left = '100%';
+      // } else { // 左边
+      //   sidenote.style.justifyContent = 'flex-end';
+      //   sidenote.style.left = `${-1 * sidenote.getBoundingClientRect().width}px`;
+      //   sidenote.style.paddingInlineEnd = padding;
+      // }
 
       // 避免 sidenote 重叠
       if (prevSidenote && prevSidenote.style.display !== 'none') {
