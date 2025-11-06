@@ -90,7 +90,8 @@ Alice 的软件可以将该回复显示为原始帖子上的评论。
 </blockquote>
 
 <p>
-Webmention 和评论差不多，只是它的门槛相对高一点，需要你写一篇文章<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>，并链接到你想评论的文章。
+Webmention 和评论差不多，只是它的门槛相对高一点，需要你写一篇文章，并链接到你想评论的文章。
+(或者在社交媒体如 BlueSky、Mastodon 上发一个帖子，引用文章的链接)
 </p>
 
 <p>
@@ -157,7 +158,17 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 <div id="outline-container-D55D3AFA-42A0-4D14-A52F-FB34162E31DD" class="outline-2">
 <h2 id="D55D3AFA-42A0-4D14-A52F-FB34162E31DD">如何接入 Webmention</h2>
 <div class="outline-text-2" id="text-D55D3AFA-42A0-4D14-A52F-FB34162E31DD"><p>
-如果自己搭建的话，可以参照 <a href="https://www.w3.org/TR/webmention">Webmention 规范</a> 实现。你也可以找现成的工具。<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>我目前实现很简单，接收依赖 webmention.io 提供的服务，以及一些自己编写的脚本；发送目前还是手动触发，麻烦一些的地方是给博客添加 <a href="https://microformats.org/wiki/Main_Page">microformats</a> 。
+如果自己搭建的话，可以参照 <a href="https://www.w3.org/TR/webmention">Webmention 规范</a> 实现。你也可以找现成的工具。
+</p>
+
+<section role="note" id="org2ff5621">
+<p>
+你可以在 <a href="https://indieweb.org/Webmention">Webmention | IndieWeb</a> 找到很多工具和服务。
+</p>
+</section>
+
+<p>
+我目前实现很简单，接收依赖 webmention.io 提供的服务，以及一些自己编写的脚本；发送目前还是手动触发，麻烦一些的地方是给博客添加 <a href="https://microformats.org/wiki/Main_Page">microformats</a> 。
 </p>
 </div>
 <div id="outline-container-9119BFDC-A4D1-4D2D-A736-24A274102F47" class="outline-3">
@@ -179,9 +190,9 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 
 <div class="org-src-container">
 <pre class="src src-html">&lt;<span style="color: #feacd0;">head</span>&gt;
-  <span style="color: #999999;">&lt;!-- </span><span style="color: #db7b5f;">&#30465;&#30053;&#20854;&#20182;&#20869;&#23481;</span><span style="color: #999999;"> --&gt;</span>
+  <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#30465;&#30053;&#20854;&#20182;&#20869;&#23481;</span><span style="color: #db7b5f;"> --&gt;</span>
   &lt;<span style="color: #feacd0;">link</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"https://github.com/spike-leung"</span> <span style="color: #00d3d0;">rel</span>=<span style="color: #79a8ff;">"me"</span>&gt;
-  <span style="color: #999999;">&lt;!-- </span><span style="color: #db7b5f;">&#30465;&#30053;&#20854;&#20182;&#20869;&#23481;</span><span style="color: #999999;"> --&gt;</span>
+  <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#30465;&#30053;&#20854;&#20182;&#20869;&#23481;</span><span style="color: #db7b5f;"> --&gt;</span>
 &lt;/<span style="color: #feacd0;">head</span>&gt;
 </pre>
 </div>
@@ -191,7 +202,7 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 </p>
 
 <p>
-接下来按照 webmention.io 提供的 API 获取 Webmentions 的数量和内容，需要在页面上添加 HTML 元素，写 <a href="js/webmention.js">一些 JS 代码</a> 调用 API 渲染数据<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>，再写点 CSS 优化一下样式。
+接下来按照 webmention.io 提供的 API 获取 Webmentions 的数量和内容，需要在页面上添加 HTML 元素，写 <a href="js/webmention.js">一些 JS 代码</a> 调用 API 渲染数据（也可以用 <a href="https://github.com/PlaidWeb/webmention.js">webmention.js</a>），再写点 CSS 优化一下样式。
 </p>
 
 <p>
@@ -216,7 +227,7 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 <div id="outline-container-582BF4C8-77F8-4E6E-B823-8C9941F41233" class="outline-3">
 <h3 id="582BF4C8-77F8-4E6E-B823-8C9941F41233">作为发送方</h3>
 <div class="outline-text-3" id="text-582BF4C8-77F8-4E6E-B823-8C9941F41233"><p>
-作为发送方，你只需要在你的文章中包含对方的链接，就可以向对方发送 Webmention 了。<sup><a id="fnr.4" class="footref" href="#fn.4" role="doc-backlink">4</a></sup>
+作为发送方，你只需要在你的文章中包含对方的链接，就可以向对方发送 Webmention 了。<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
 </p>
 
 <p>
@@ -298,19 +309,19 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，<b>
 &lt;<span style="color: #feacd0;">meta</span> <span style="color: #00d3d0;">charset</span>=<span style="color: #79a8ff;">"utf-8"</span>&gt;
 &lt;<span style="color: #feacd0;">title</span>&gt;<span style="font-weight: bold; text-decoration: underline;">Hello World</span>&lt;/<span style="color: #feacd0;">title</span>&gt;
 &lt;<span style="color: #feacd0;">body</span>&gt;
-  &lt;<span style="color: #feacd0;">div</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"h-entry"</span>&gt; <span style="color: #999999;">&lt;!-- </span><span style="color: #db7b5f;">&#27880;&#24847; h-entry &#26159;&#20854;&#20182;&#23646;&#24615;&#30340;&#29238;&#20803;&#32032;&#65292;&#21253;&#21547;&#20102; h-card</span><span style="color: #999999;"> --&gt;</span>
-    &lt;<span style="color: #feacd0;">div</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"p-author h-card"</span>&gt; <span style="color: #999999;">&lt;!-- </span><span style="color: #db7b5f;">&#20351;&#29992; h-card &#32467;&#21512; p-author &#26631;&#35760;&#20316;&#32773;&#20449;&#24687;</span><span style="color: #999999;"> --&gt;</span>
+  &lt;<span style="color: #feacd0;">div</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"h-entry"</span>&gt; <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#27880;&#24847; h-entry &#26159;&#20854;&#20182;&#23646;&#24615;&#30340;&#29238;&#20803;&#32032;&#65292;&#21253;&#21547;&#20102; h-card</span><span style="color: #db7b5f;"> --&gt;</span>
+    &lt;<span style="color: #feacd0;">div</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"p-author h-card"</span>&gt; <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#20351;&#29992; h-card &#32467;&#21512; p-author &#26631;&#35760;&#20316;&#32773;&#20449;&#24687;</span><span style="color: #db7b5f;"> --&gt;</span>
       &lt;<span style="color: #feacd0;">img</span> <span style="color: #00d3d0;">src</span>=<span style="color: #79a8ff;">"https://aaronpk.com/images/aaronpk.jpg"</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"u-photo"</span> <span style="color: #00d3d0;">width</span>=<span style="color: #79a8ff;">"40"</span>&gt;
       &lt;<span style="color: #feacd0;">a</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"https://aaronpk.com/"</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"u-url p-name"</span>&gt;Aaron Parecki&lt;/<span style="color: #feacd0;">a</span>&gt;
     &lt;/<span style="color: #feacd0;">div</span>&gt;
-    <span style="color: #999999;">&lt;!-- </span><span style="color: #db7b5f;">&#26631;&#35760;&#24341;&#29992;&#30340;&#38142;&#25509;&#65292;&#34920;&#31034;&#22238;&#22797;</span><span style="color: #999999;"> --&gt;</span>
+    <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#26631;&#35760;&#24341;&#29992;&#30340;&#38142;&#25509;&#65292;&#34920;&#31034;&#22238;&#22797;</span><span style="color: #db7b5f;"> --&gt;</span>
     &lt;<span style="color: #feacd0;">p</span>&gt;in reply to: &lt;<span style="color: #feacd0;">a</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"u-in-reply-to"</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"https://aaronparecki.com/2018/06/30/11/your-first-webmention"</span>&gt;@aaronpk&lt;/<span style="color: #feacd0;">a</span>&gt;&lt;/<span style="color: #feacd0;">p</span>&gt;
-    <span style="color: #999999;">&lt;!-- </span><span style="color: #db7b5f;">&#26631;&#35760;&#22238;&#22797;&#30340;&#20869;&#23481;</span><span style="color: #999999;"> --&gt;</span>
+    <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#26631;&#35760;&#22238;&#22797;&#30340;&#20869;&#23481;</span><span style="color: #db7b5f;"> --&gt;</span>
     &lt;<span style="color: #feacd0;">p</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"e-content"</span>&gt;Trying out this guide to sending webmentions&lt;/<span style="color: #feacd0;">p</span>&gt;
     &lt;<span style="color: #feacd0;">p</span>&gt;
-      <span style="color: #999999;">&lt;!-- </span><span style="color: #db7b5f;">&#26631;&#35760;&#24403;&#21069;&#25991;&#31456;&#30340; URL</span><span style="color: #999999;"> --&gt;</span>
+      <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#26631;&#35760;&#24403;&#21069;&#25991;&#31456;&#30340; URL</span><span style="color: #db7b5f;"> --&gt;</span>
       &lt;<span style="color: #feacd0;">a</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"https://aaronpk.com/reply.html"</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"u-url"</span>&gt;
-        <span style="color: #999999;">&lt;!-- </span><span style="color: #db7b5f;">&#26631;&#35760;&#24403;&#21069;&#25991;&#31456;&#30340;&#21457;&#24067;&#26085;&#26399;</span><span style="color: #999999;"> --&gt;</span>
+        <span style="color: #db7b5f;">&lt;!-- </span><span style="color: #db7b5f;">&#26631;&#35760;&#24403;&#21069;&#25991;&#31456;&#30340;&#21457;&#24067;&#26085;&#26399;</span><span style="color: #db7b5f;"> --&gt;</span>
         &lt;<span style="color: #feacd0;">time</span> <span style="color: #00d3d0;">class</span>=<span style="color: #79a8ff;">"dt-published"</span> <span style="color: #00d3d0;">datetime</span>=<span style="color: #79a8ff;">"2018-06-30T17:15:00-0700"</span>&gt;July 30, 2018&lt;/<span style="color: #feacd0;">time</span>&gt;
       &lt;/<span style="color: #feacd0;">a</span>&gt;
     &lt;/<span style="color: #feacd0;">p</span>&gt;
@@ -458,10 +469,29 @@ e-content 标记在整篇文章内容上
 <h2 id="C60020F6-33E8-4CB2-A8DD-968BE0EABC31"><span class="todo TODO">TODO</span> TODO</h2>
 <div class="outline-text-2" id="text-C60020F6-33E8-4CB2-A8DD-968BE0EABC31"><ul class="org-ul">
 <li class="on"><code>[X]</code> 优化博客中 Webmention 的展示，支持头像、主页等内容的展示，会参考 <a href="https://aaronparecki.com/2018/06/30/11/your-first-webmention">Sending your First Webmention from Scratch</a> 的实现</li>
-<li class="off"><code>[&#xa0;]</code> 支持不同类型的 Webmention 展示和发送，如回应、点赞、<a href="https://indieweb.org/rsvp">RSVP</a> <sup><a id="fnr.5" class="footref" href="#fn.5" role="doc-backlink">5</a></sup>等</li>
+<li class="off"><code>[&#xa0;]</code> 支持不同类型的 Webmention 展示和发送，如回应、点赞、<a href="https://indieweb.org/rsvp">RSVP</a> (源自法语 <a href="https://en.wikipedia.org/wiki/RSVP">répondez s'il vous plaît</a>，请回复的意思) 等</li>
 <li class="off"><code>[&#xa0;]</code> 实现自动发送 Webmention</li>
-<li class="on"><code>[X]</code> 支持 HTML 内容的渲染，但要避免 <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS">Cross-site scripting (XSS)</a> <sup><a id="fnr.6" class="footref" href="#fn.6" role="doc-backlink">6</a></sup></li>
+<li class="on"><code>[X]</code> 支持 HTML 内容的渲染，但要避免 <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS">Cross-site scripting (XSS)</a></li>
 </ul>
+
+<details>
+<summary>防止 XSS 攻击</summary>
+<p>
+防止 XSS 攻击，<a href="https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API#using_a_csp_to_enforce_trusted_types">Trusted Types API</a> 看起来不错，可惜浏览器支持度不够。
+</p>
+
+<p>
+防御 XSS 主要从两方面入手：
+</p>
+<ul class="org-ul">
+<li>净化 (sanitize) 用户输入的内容。可以使用 <a href="https://github.com/cure53/DOMPurify">DOMPurify</a> 处理。</li>
+<li>使用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP">Content Security Policy (CSP)</a> 限制执行。<a href="https://www.netlify.com/blog/general-availability-content-security-policy-csp-nonce-integration/">Netlify 有插件支持</a>，倒是方便了许多。要注意的是，当开启了 CSP，一些行内的脚本，如写在元素上的 onclick、 onchange 等会被阻止执行，需要将他们挪动到 JS 文件里。</li>
+</ul>
+
+<p>
+也可以期待一下 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML">Element: setHTML() method</a> 被广泛支持，它提供了一种 XSS 安全的方法用于插入 HTML 内容到页面中。
+</p>
+</details>
 </div>
 </div>
 <div id="outline-container-967313DB-C374-4182-8F81-AE96666BF2CD" class="outline-2">
@@ -498,35 +528,7 @@ e-content 标记在整篇文章内容上
 <div id="text-footnotes">
 
 <div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-或者在社交媒体如 BlueSky、Mastodon 上发一个帖子，引用文章的链接。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-你可以从 <a href="https://indieweb.org/Webmention">Webmention | IndieWeb</a> 里找到很多工具和服务。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3" role="doc-backlink">3</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-也可以用别人封装好的 <a href="https://github.com/PlaidWeb/webmention.js">webmention.js</a>。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4" role="doc-backlink">4</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 我的文章中，有的链接没有任何标记，按理说只要包含了链接，对方就能收到我的 Webmention。但我发送后却收到了「The Microformats at the source URL do not contain a link to the target URL.」的错误提示。可能是因为我使用 microformats 标记了内容，此时需要确保 microformats 解析后的内容中，包含对方的 URL。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5" role="doc-backlink">5</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-源自法语 <a href="https://en.wikipedia.org/wiki/RSVP">répondez s'il vous plaît</a>，请回复的意思。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6" role="doc-backlink">6</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-防止 XSS 攻击，<a href="https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API#using_a_csp_to_enforce_trusted_types">Trusted Types API</a> 看起来不错，可惜浏览器支持度不够。防御 XSS 主要从两方面入手：
-</p>
-<ul class="org-ul">
-<li>净化 (sanitize) 用户输入的内容。可以使用 <a href="https://github.com/cure53/DOMPurify">DOMPurify</a> 处理。</li>
-<li>使用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP">Content Security Policy (CSP)</a> 限制执行。<a href="https://www.netlify.com/blog/general-availability-content-security-policy-csp-nonce-integration/">Netlify 有插件支持</a>，倒是方便了许多。要注意的是，当开启了 CSP，一些行内的脚本，如写在元素上的 onclick、 onchange 等会被阻止执行，需要将他们挪动到 JS 文件里。</li>
-</ul>
-
-<p class="footpara">
-也可以期待一下 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML">Element: setHTML() method</a> 被广泛支持，它提供了一种 XSS 安全的方法用于插入 HTML 内容到页面中。
 </p></div></div>
 
 
@@ -550,7 +552,7 @@ e-content 标记在整篇文章内容上
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-09-25 Thu 21:24</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-10-23 Thu 10:07</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-11-06 Thu 18:32</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
