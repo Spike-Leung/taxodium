@@ -212,7 +212,7 @@ This file is in BETA. Please test and contribute to the discussion:
             </a>
           </header>
           <h2>最近更新</h2>
-          <mark class="tip">摘要使用 LLM 生成，仅供参考。</mark>
+          <!-- <mark class="tip">摘要使用 LLM 生成，仅供参考。</mark> -->
           <xsl:apply-templates select="atom:feed/atom:entry" />
         </div>
       </body>
@@ -234,10 +234,10 @@ This file is in BETA. Please test and contribute to the discussion:
           <xsl:with-param name="date" select="atom:updated"/>
         </xsl:call-template>
       </small>
-      <details style="margin-top: 0.5em;">
-        <summary>摘要</summary>
-        <p><xsl:value-of select="atom:summary"/></p>
-      </details>
+      <!-- <details style="margin-top: 0.5em;"> -->
+      <!--   <summary>摘要</summary> -->
+      <!--   <p><xsl:value-of select="atom:summary"/></p> -->
+      <!-- </details> -->
     </div>
   </xsl:template>
 </xsl:stylesheet>

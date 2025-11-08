@@ -177,13 +177,13 @@ async function processPost(entry) {
           .trim()
           .replace(/\s+/g, " ")
           .slice(0, 2000); // limit prompt size
-    const summary = await generateSummary(plainText)
+    // const summary = await generateSummary(plainText)
 
     return {
       ...entry,
       content: contentHtml,
       updated: updatedDate,
-      summary,
+      // summary,
     };
   } catch (error) {
     console.error(`Error processing ${entry.file}:`, error);
