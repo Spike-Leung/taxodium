@@ -22,8 +22,7 @@ const CONFIG = {
     { name: "zine", count: 10 },
     { name: "emacs", count: 10 },
     { name: "nichijou", count: 10 },
-    { name: "album", count: 10 },
-    { name: "snippet", count: 10 },
+    { name: "album", count: 10 }
   ],
   postsSource: path.join(__dirname, "posts/index.org"),
   orgPostsDir: path.join(__dirname, "posts"),
