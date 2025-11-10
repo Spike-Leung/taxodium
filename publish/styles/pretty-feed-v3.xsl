@@ -153,7 +153,7 @@ This file is in BETA. Please test and contribute to the discussion:
           <nav>
             <ul>
               <li><a href="/index.html">主页</a></li>
-              <li><a href="/rss.xml">订阅</a></li>
+              <li><a href="/subscribe.html">订阅</a></li>
               <li><a href="/search.html">搜索</a></li>
               <li><a href="/inside-black-hole.html">黑洞里</a></li>
             </ul>
