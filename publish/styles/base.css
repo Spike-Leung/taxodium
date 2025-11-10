@@ -48,6 +48,8 @@
 
   --content-width: 900px;
   --pagefind-ui-scale: 1.2;
+  /* footnote 数字的点击范围 */
+  --extra-active-area-size: -.8em;
 }
 
 /** ---------------------------------- 'Atkinson Hyperlegible' ----- */
@@ -1280,7 +1282,6 @@ td,th {
 #content a[role="doc-backlink"],
 .sidenote-num {
   position: relative;
-  --extra-active-area-size: -.8em;
 
   &::before {
     content: '';
@@ -1571,10 +1572,10 @@ body {
   --popover-font-family: var(--font-family);
   --popover-font-size: 1em;
   --popover-line-height: 3ex;
-  --button-background-color: color(from var(--color-selection-background) srgb r g b / 0.6);
-  --button-text-color: var(--color-text);
-  --button-active-background-color: var(--color-selection-background);
-  --button-active-text-color: var(--color-selection-text);
+  --button-background-color: transparent;
+  --button-text-color: var(--color-link);
+  --button-active-background-color: transparent;
+  --button-active-text-color: var(--color-link);
   --popover-vertical-padding: 1.2rem;
   --popover-width: 32em;
   --popover-max-height: 55vh;
@@ -1597,8 +1598,27 @@ body {
 
 .littlefoot__button.littlefoot__button {
   vertical-align: super;
-  padding: 0 .5em;
+  padding: 0;
   line-height: 1;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: var(--extra-active-area-size);
+    left: var(--extra-active-area-size);
+    right: var(--extra-active-area-size);
+    bottom: var(--extra-active-area-size);
+    cursor: pointer;
+  }
+
+  &.is-active::before,
+  &:hover&::before {
+    border: 3px solid;
+    border-color: var(--color-box-shadow);
+    border-color: light-dark(var(--color-box-shadow), var(--dark-color-box-shadow));
+    border-radius: 5px;
+  }
 }
 
 #footnotes:has(.littlefoot--print) {
