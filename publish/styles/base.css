@@ -464,24 +464,9 @@ a {
   color: var(--color-link);
   color: light-dark(var(--color-link), var(--dark-color-link));
   text-underline-offset: 5px;
-  text-decoration-style: dotted;
+  text-decoration-style: solid;
   text-decoration-thickness: 1px;
-  transition: color .25s ease, background .25s ease;
-
-  &[href*=https\:\/\/taxodium\.ink][href*=https\:\/\/taxodium\.ink] {
-    text-decoration-style: dotted;
-    text-decoration-thickness: 1px;
-
-    @media (pointer: fine) and (hover: hover) {
-      &:hover {
-        text-decoration-thickness: 2px;
-        background: var(--color-link);
-        background: light-dark(var(--color-link), var(--dark-color-link));
-        text-decoration: none;
-        color: #fff;
-      }
-    }
-  }
+  transition: color .25s ease, background .25s ease, text-decoration-thickness .25s ease;
 
   &:has(> img) {
     height: 0;
@@ -493,17 +478,17 @@ a {
       text-decoration-thickness: 2px;
       background: var(--color-link);
       background: light-dark(var(--color-link), var(--dark-color-link));
-      text-decoration: none;
       color: #fff;
     }
   }
 }
 
-a[href*=mailto],
-a[href*=https],
-a[href*=http] {
-  text-decoration-style: solid;
+#content a[href*=http]:not([href^='http://taxodium.ink']):not([href^='#']):not([href^='/']):not([href*='mailto']):not([href*='tel']):after,
+#content a[href*=https]:not([href^='https://taxodium.ink']):not([href^='#']):not([href^='/']):not([href*='mailto']):not([href*='tel']):after {
+  content: '↗';
+  font-size: .65em;
 }
+
 
 /* do not show link icon on heading */
 h1,h2,h3,h4,h5,h6 {
@@ -604,6 +589,7 @@ a[href*="genius.com"]::before {
   background-image: url("/images/common/favicon/genius.com.ico");
 }
 
+/* :visited style */
 :is(#content, #postamble) a:visited {
   color: var(--color-link-visited);
   color: light-dark(var(--color-link-visited), var(--dark-color-link-visited));
@@ -622,7 +608,7 @@ a[href*="genius.com"]::before {
   }
 }
 
-/* make safari visited hover works */
+/* make safari :visited hover works */
 @media (pointer: fine) and (hover: hover) {
   #postamble a:visited:hover,
   #content a:visited:hover {
