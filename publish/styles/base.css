@@ -804,19 +804,22 @@ sup {
 }
 
 #preamble nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
+  display: grid;
+  grid-template-columns: auto max-content;
   gap: 2px;
 
+  @media screen and (width <= 350px) {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
   & ul {
-    display: flex;
+    display: grid;
     gap: 8px;
+    grid-template-columns: repeat(4, max-content);
     list-style: none;
     padding: 0;
     margin: 0;
-    white-space: nowrap;
-    flex-wrap: wrap;
 
     & li a[href*=black-hole] {
       opacity: 0.05;
@@ -1080,7 +1083,6 @@ img[src*=images\/album] {
 .album-wall {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  flex-wrap: wrap;
   gap: calc(1em - 10px) 1em;
   justify-content: center;
   max-width: max-content;
@@ -1264,9 +1266,9 @@ td,th {
   max-width: 500px;
   font-size: 0.8em;
   pointer-events: auto;
-  display: flex;
+  display: grid;
+  grid-template-columns: min-content 1fr;
   gap: 0.2em;
-  align-items: flex-start;
   transition: opacity .25s ease-in-out;
   opacity: 0.65;
 
@@ -1415,10 +1417,8 @@ td,th {
     gap: .8em;
     align-items: center;
 
-    @media screen and (width <= 400px) {
-      display: flex;
-      flex-direction: column;
-      align-items: start;
+    @media screen and (width <= 500px) {
+      grid-template-columns: 1fr;
     }
 
     & input {
@@ -1427,7 +1427,7 @@ td,th {
       border-color: var(--color-border);
       border-color: light-dark(var(--color-border), var(--dark-color-border));
       border-radius: .2em;
-      align-self: stretch;
+      padding: .3em;
       font-size: 1em;
 
       &::placeholder {
