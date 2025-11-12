@@ -1,6 +1,6 @@
 /**
  * color scheme mode
- * @typedef { 'auto' | 'dark' | 'light' } ColorSchemeMode
+ * @typedef { 'auto' | 'dark' | 'light' | 'light-retro' | 'dark-retro' } ColorSchemeMode
  */
 
 const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
@@ -16,7 +16,7 @@ function getSavedColorScheme() {
  */
 function switchMode(mode, isInit = false) {
   try {
-    const scheme = mode === "auto" ? "light dark" : mode;
+    const scheme = convertColorScheme(mode)
 
     if (!document.startViewTransition) {
       setColorScheme();
@@ -27,10 +27,6 @@ function switchMode(mode, isInit = false) {
       colorSchemeMeta.setAttribute("content", scheme);
       localStorage.setItem("color-scheme", mode);
       setBodyClass(mode);
-      // from giscus.js
-      if (typeof switchGiscusTheme === 'function') {
-        switchGiscusTheme(mode);
-      }
       switchIframeColorScheme(mode);
     }
 
@@ -53,8 +49,17 @@ function setModeSelectValue(mode) {
 
 function setBodyClass(mode) {
   if (document.body) {
-    document.body.classList.remove("light", "dark", "auto");
+    document.body.classList.remove("light", "dark", "light-retro", "dark-retro", "auto");
     document.body.classList.add(mode);
+
+    switch(mode) {
+    case 'light-retro':
+      document.body.classList.add('light');
+      break;
+    case 'dark-retro':
+      document.body.classList.add('dark');
+      break;
+    }
   }
 }
 
@@ -66,16 +71,12 @@ function switchIframeColorScheme(mode) {
   const iframes = document.querySelectorAll("iframe");
 
   iframes.forEach((iframe) => {
-    if (iframe.classList.contains("giscus-frame")) {
-      return;
-    }
-
     const setColorScheme = () => {
       try {
         const iframeDocument = iframe.contentWindow.document;
         if (iframeDocument) {
-          iframeDocument.documentElement.style.colorScheme =
-            mode === "auto" ? "light dark" : mode;
+          iframeDocument.documentElement.style.colorScheme = convertColorScheme(mode)
+
         }
       } catch (error) {
         console.warn(`Unable to set color-scheme for iframe:`, iframe, error);
@@ -90,6 +91,22 @@ function switchIframeColorScheme(mode) {
       iframe.addEventListener("load", setColorScheme, { once: true });
     }
   });
+}
+
+function convertColorScheme(mode) {
+  if (mode === 'dark-retro') {
+    return 'dark'
+  }
+
+  if (mode === 'light-retro') {
+    return 'light'
+  }
+
+  if (mode === 'auto') {
+    return 'light dark'
+  }
+
+  return mode
 }
 
 
