@@ -132,6 +132,56 @@ Jake 讨厌脚注的使用，觉得它很干扰阅读，也分享了一些替代
 这个项目旨在改变无意义刷手机的行为，通过将文学作品分解成易于消化的小片段来鼓励阅读。
 #+end_quote
 
+** [[https://scope-creep.xyz/][The Scope Creep]]
+:PROPERTIES:
+:CUSTOM_ID: 84BC39C1-FF1D-477F-B668-53BA162D88CD
+:END:
+一个游戏。
+
+#+begin_quote
+你将扮演一位谦逊的项目经理，负责为代理机构的客户交付网站方案。
+殊不知这个项目已被黑暗力量诅咒，注定无限延期，将你拖入癫狂的深渊。
+
+在试图交付工作的过程中，穿越项目阶段与必然出现的问题。
+考量工作、客户、团队与自身，纵使坠入敏捷深渊也要做出你的抉择。
+#+end_quote
+** [[https://xslt.rip/][XSLT.RIP]]
+:PROPERTIES:
+:CUSTOM_ID: F811AF11-90EE-451F-9EDC-9B197937C7C7
+:END:
+一个人写了个网站，控诉 [[https://developer.chrome.com/docs/web-platform/deprecating-xslt][Google 要废弃 XSLT]]。挺酷的页面。
+
+前阵子看到这个消息后，我也写了篇感想：[[denote:20251109T155233][XSLT 将要被废弃、更新订阅页面]]。
+
+** [[https://github.com/dnlzro/horizon][Horizon]]
+:PROPERTIES:
+:CUSTOM_ID: DF47B49D-4A5B-486D-BF5F-F92BB3E58B19
+:END:
+
+#+begin_quote
+根据你所在位置的实时天空景象，以 CSS 渐变形式呈现。每分钟自动更新。
+
+为 [[https://html.energy/html-day/2025/index.html][HTML Day 2025]] 创作的作品，
+用于展示 CSS 渐变效果及鲜为人知的 ~meta http-equiv="Refresh"~ HTML 标签（[[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/http-equiv][MDN 文档]]）。
+#+end_quote
+
+#+attr_html: :role note
+#+begin_section
+服务器的响应可以通过向 HTTP Headers 设置一些字段，告诉浏览器执行一些动作，例如设置 Cookie、缓存。
+
+而 ~meta http-equiv="Refresh"~ 也是类似的，不同的是它是写在 HTML 里的，通过 HTML 告诉浏览器做一些事情。
+
+例如：
+
+#+begin_src html
+  <!-- 让浏览器 5 分钟后 (300秒) 刷新页面 -->
+  <meta http-equiv="Refresh" content="300" />
+
+  <!-- 让浏览器 3 秒后刷新页面，且重定向到 www.mozilla.org -->
+  <meta http-equiv="refresh" content="3;url=https://www.mozilla.org" />
+#+end_src
+#+end_section
+
 * Tutorial | Resource
 :PROPERTIES:
 :CUSTOM_ID: B976ABE2-2C64-42D1-97C3-EE4F169150D7
@@ -200,6 +250,119 @@ See also：[[https://dbushell.com/2025/11/10/pikaday/][Reimagine the Date Picker
 
 浏览器越来越强大，内置了很多功能，渐渐地或许可以减少对前端框架、组件库等的依赖。
 See also：[[https://blog.jim-nielsen.com/2025/browser-apis-as-sass/][Browser APIs: The Web’s Free SaaS]] by Jim Nielsen
+
+** [[https://ishadeed.com/article/field-sizing/][Use Cases for Field Sizing]] by Ahmad Shadeed
+:PROPERTIES:
+:CUSTOM_ID: 62333F9E-B021-4A69-9A3C-2AAFF42780BB
+:END:
+[[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/field-sizing][field-sizing]] 通常用于设置文本 =<input>= 和 =<textarea>= 元素的样式，
+使其能够根据内容自动调整尺寸，并在表单控件中输入更多文本时随之扩展。
+
+我正好碰到了这个问题，我在页面右上角的下拉框里增加了两个选项，其中有两个比较长，剩下的比较短。
+=<select>= 默认的行为是，取选项里最长的一个作为 =<select>= 的宽度，这会导致我选择较短的选项时，
+下拉框会有一些多余的空间。
+
+设置 =field-sizing: content;= 则可以让 =<select>= 基于内容宽度设置自身宽度，
+选项短， =<select>= 就短；选项长， =<select>= 就长。
+非常好用的一个属性！可惜 Safari 还不支持。
+
+文章还给出了很多用例，感兴趣可以看看。
+
+** [[https://frontendmasters.com/blog/the-weird-parts-of-position-sticky/][The Weird Parts of position: sticky;]] by Adam Rackis
+:PROPERTIES:
+:CUSTOM_ID: 4C5631FC-CEF4-401D-B601-2A6ACB1C160E
+:END:
+
+不错的文章，讲了很多 sticky 定位失效的场景，对理解 sticky 蛮有帮助的。
+
+解决同一个问题，或许可以不用 sticky，
+与其纠结 stikcy 的各种「诡异」表现，不如用更容易理解和维护的实现。
+
+** [[https://www.bram.us/2025/11/06/combining-scroll-driven-animations-with-starting-style/][Combining Scroll-Driven Animations with @starting-style]] by Bramus
+:PROPERTIES:
+:CUSTOM_ID: 52DA2069-5A1F-4AAB-A07B-FCCAD0695C0C
+:END:
+
+[[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@starting-style][@starting-style]] 用于定义元素在已加载页面上初次显示时，需要过渡的初始属性值。
+
+Bramus 将它应用在滚动动画里，使得页面刚加载也有一个过渡动画，效果看起来很不错。
+他还用到了 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@property][@property]]，通过控制 =@property= 定义的值设置初始的状态。
+
+** [[https://frontendmasters.com/blog/staggered-animation-with-css-sibling-functions/][Staggered Animation with CSS sibling-* Functions]] by PREETHI SAM
+:PROPERTIES:
+:CUSTOM_ID: DEEF7921-81DB-448A-97C5-798D316D7EF8
+:END:
+[[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/sibling-count][sibling-count()]] 和 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/sibling-index][sibling-index()]] 的一个用例。
+
+See also: [[denote:20250924T172605::#BEA3C23E-0831-4ABF-9D95-3B10CFDA7B15][Zine#43::Styling siblings with CSS has never been easier. Experimenting with sibling-count and sibling-index by Brecht]]
+
+** [[https://css-tip.com/is-before-after/][Why :is(::before,::after) doesn't work?]] by Temani Afif
+:PROPERTIES:
+:CUSTOM_ID: 0D2AAEA3-BDF8-4268-AD89-2380EB4DA23D
+:END:
+*=:is()= 这个伪类是在给选择器添加条件，而非选取其内部内容。*
+
+对于 =:is(::before,::after)= ：
+不能理解为「选择属于某个元素的 =::before= 、 =::after= 」，
+而应该是「选择匹配 =::before= 或者 =::after= 的某个元素」。
+
+=button:is(::before)= 意思是「匹配 =::before= 的 button」，
+不存在既是 button，又是 =::before= 的元素，所以这个选择器是无效的。
+
+=button:is(:focus)= 是有效的，表示匹配 =:focus= 的 button，存在这样的 button。
+
+写博客样式时偶尔也会碰到这个问题，现在明白了。
+** [[https://olliewilliams.xyz/blog/sanitizer/][setHTML(), Trusted Types and the Sanitizer API]] by Ollie Williams
+:PROPERTIES:
+:CUSTOM_ID: 99B8CBDA-3BFF-4785-BD27-A6FA74C1D907
+:END:
+几个防御 [[https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS][Cross-site scripting (XSS)]] 攻击的 API 介绍，期待浏览器的全面支持。
+** [[https://pavi2410.com/blog/high-performance-syntax-highlighting-with-css-highlights-api/][High-Performance Syntax Highlighting with CSS Highlights API]] by Pavitra Golchha
+:PROPERTIES:
+:CUSTOM_ID: C31E8E27-2467-4EDE-A3D8-B248D8899EA3
+:END:
+
+常见的高亮做法是将需要高亮部分用 =<span>= 包裹，然后设置对应的颜色。
+这样就会导致大量的 =<span>= 插入到 DOM 里，会加重浏览器的渲染负担。
+
+利用 [[https://developer.mozilla.org/en-US/docs/Web/API/Highlight/Highlight][Highlight API]] 可以选中内容高亮，[[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::highlight][::highlight()]] 伪类可以给对应的高亮部分设置样式，
+可以完成高亮，且避免大量插入 =<span>= ，渲染性能上会好很多。
+但也存在局限：
+只能作用于单一的文本节点、内容变化后不会动态更新，需要重新设置高亮范围、较旧的浏览器不支持。
+
+** [[https://www.polarsignals.com/blog/posts/2025/11/04/javascript-source-maps-internals][The Inner Workings of JavaScript Source Maps]] by Manoj Vivek
+:PROPERTIES:
+:CUSTOM_ID: DB258329-0A19-44BB-B3A7-366C99619D55
+:END:
+
+JavaScript 源码映射的工作原理，不错的文章。
+
+一个 sourcemap 文件大致如下：
+#+begin_src json
+  {
+    "version": 3,
+    "file": "add.js",
+    "sourceRoot": "",
+    "sources": ["add.ts"],
+    "names": ["add", "a", "b"],
+    "mappings": "AAAA,OAAO,SAAS,IAAI,CAAC,EAAE;EACrB,OAAO,IAAI;AACb"
+  }
+#+end_src
+其中：
+- *file* ：是最终生成的文件名
+- *sources* ：是原始文件
+- *names* ：是这个文件记录的符号，可能是变量、函数等
+- *mappings* ：记录了 names 中的每个符号在哪个文件的哪一行哪一列。
+  使用 =;= 分隔， =;= 也充当了换行符。
+  使用 [[https://en.wikipedia.org/wiki/Variable-length_quantity][Variable-length quantity (VLQ)]] 编码，文章中关于这个编码解释得蛮清晰的。
+
+** [[https://www.stefanjudis.com/today-i-learned/pathlength-makes-makes-svg-path-animations-easier-to-manage/#main][pathLength makes makes SVG path animations easier to manage]] by Stefan Judis
+:PROPERTIES:
+:CUSTOM_ID: 9C9C7D81-DC44-4614-A53F-C3741B0FD66E
+:END:
+
+关于 SVG 路径动画的介绍，看着蛮简单的。
+更关键的是生成一个好看的 SVG 路径。
 
 * AI Related
 :PROPERTIES:
@@ -301,6 +464,12 @@ Robert Glaser 则尝试让模型迭代多次去生成鹈鹕骑自行车的图片
 :END:
 - [[https://neodb.social/discover/][NeoDB]] 一个书籍影视音乐游戏播客收藏与讨论的平台，使用 [[https://en.wikipedia.org/wiki/Fediverse][Fediverse]]（如 [[https://mastodon.social/explore）或][mastodon]]）或 [[https://bsky.app/][Bluesky]] 账号登录。
 - [[https://github.com/cloudfour/image-compare][image-compare]] A web component for comparing images with a slider.
+- [[https://github.com/ekalinin/sitemap.js][sitemap.js]] Sitemap-generating framework for node.js
+- [[https://github.com/sindresorhus/image-dimensions][image-dimensions]] Get the dimensions of an image
+- [[https://spoilerjs.sh4jid.me/][spoilerjs]] 一个制作酷炫剧透效果的库。
+- [[https://github.com/privatenumber/tasuku][tasuku]] タスク — The minimal task visualizer for Node.js
+- [[https://github.com/perspective-dev/perspective][Perspective]] A data visualization and analytics component,
+  especially well-suited for large and/or streaming datasets.
 
 * Emacs
 :PROPERTIES:
@@ -369,6 +538,19 @@ _而应视其为从你身边流过的溪流，你只需从中偶尔撷取几本�
 [[https://johnrakestraw.com/reading/tracking-my-reading/#:~:text=On%20that%20note,by%20(p.%2029).][Source]]
 #+end_quote
 
+** [[https://johnrakestraw.com/post/thinking-out-loud-about-thinking-out-loud/][Thinking Out Loud About Thinking Out Loud]] by John Rakestraw
+:PROPERTIES:
+:CUSTOM_ID: 9FDFD675-BE4B-4F26-B680-AB832FB0A00F
+:END:
+#+begin_quote
+引导学生进入学习状态的方法之一，就是向他们展示你初步的思考过程。
+
+让他们看到你是如何通过多次修改 ⸺ 其中有些相当粗糙 ⸺ 才最终完成打磨后的成果。
+
+[[https://johnrakestraw.com/post/thinking-out-loud-about-thinking-out-loud/#:~:text=One%20way%20to%20ease%20students%20into%20learning%20is%20to%20show%20them%20some%20of%20your%20own%20preliminary%20thinking.%20Help%20them%20to%20see%20that%20you%E2%80%99ve%20worked%20very%20hard%2C%20through%20multiple%20drafts%2C%20some%20of%20them%20very%20rough%2C%20to%20get%20to%20the%20polished%20product.][Source]]
+#+end_quote
+
+See also: [[denote:20250611T213910::#4f5e04b7-2a24-42aa-893a-aff06f1c4676][Zine#37::Experts have it easy]]
 ** [[https://spf13.com/p/the-hidden-conversation/][Why Engineers Can't Be Rational About Programming Languages]] by Steve Francia
 :PROPERTIES:
 :CUSTOM_ID: DCC07160-55D8-44DF-860E-55992A183B0F
