@@ -682,7 +682,7 @@ pre.src {
   border: unset;
   background: unset;
   color: var(--dark-color-text);
-  padding-inline-start: 1em;
+  padding: 1em;
 }
 
 /* 不太重要，且和复制按钮重叠，所以隐藏 */
@@ -949,9 +949,13 @@ img.inline-image {
   background-color: var(--dark-color-bg-src-block);
   margin: 0.5em 0;
   display: grid;
-  grid-template-areas: "copy-btn"
-                       "code";
-  gap: .5em;
+  grid-template-areas: "code copy-btn";
+
+  @media screen and (width <= 400px) {
+    grid-template-areas: "copy-btn"
+                         "code";
+    gap: .5em;
+  }
 }
 
 .table-wrapper {
@@ -1171,14 +1175,20 @@ body.dark-retro::after {
 /* ------------------------------ code copy ------------------------------ */
 .code-copy-btn {
   grid-area: copy-btn;
-  padding: .5em 0;
+  padding-block: .5em;
+  padding-inline: 0;
   cursor: pointer;
   border: none;
   transition: color 0.25s ease-in-out;
   color: var(--dark-color-text);
   background: unset;
-  border-bottom: 1px dashed var(--color-border);
+  border-block-end: 1px dashed var(--color-border);
   border-radius: 0;
+  writing-mode: vertical-rl;
+
+  @media screen and (width <= 400px) {
+    writing-mode: horizontal-tb;
+  }
 
   &:hover {
     color: var(--color-link);
