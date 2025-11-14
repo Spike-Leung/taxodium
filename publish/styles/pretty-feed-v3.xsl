@@ -142,12 +142,9 @@ This file is in BETA. Please test and contribute to the discussion:
       </head>
       <body>
         <div id="preamble" class="status">
-          <ul class="ally-nav">
+          <ul class="a11y-nav">
             <li>
               <a id="skip-content" href="#content">Skip to main content</a>
-            </li>
-            <li>
-              <a id="skip-postamble" href="#postamble">Skip to comments</a>
             </li>
           </ul>
           <nav>
@@ -161,6 +158,8 @@ This file is in BETA. Please test and contribute to the discussion:
               <option value="auto">Auto</option>
               <option value="light">Light</option>
               <option value="dark">Dark</option>
+              <option value="light-retro" aria-label="复古 Light">Light 👾</option>
+              <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
             </select>
           </nav>
         </div>
