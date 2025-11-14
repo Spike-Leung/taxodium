@@ -1,0 +1,41 @@
+#+title:      一些美化链接的样式
+#+export_file_name: style-to-pretty-link
+#+date:       [2025-11-14 Fri 23:01]
+#+filetags:   :draft:link:pretty:
+#+identifier: 20251114T230136
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 一些用于美化链接的样式
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content
+
+最近对博客的链接样式做了一些优化，分享一下。
+
+浏览器默认的样式本身还可以，只是颜色上可能不太好看。
+
+#+begin_src html :exports none
+  <html>
+    <a href="/">hello world</a>
+  </html>
+#+end_src
+#+begin_export html
+<iframe style="width:100%" srcdoc=" &lt;html&gt; &lt;a href=&#34;/&#34;&gt;hello world&lt;/a&gt; &lt;/html&gt; "></iframe>
+#+end_export
+
+就保留链接的下划线，移除下划线会导致链接和正文区分不开；
+也不能仅靠颜色区分链接，因为有的读者可能对色彩不敏感，区分不开颜色。
+
+关于链接下划线的样式，可以参考 [[https://adactio.com/journal/22084][Style your underlines]]，主要利用：
+
+- [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-decoration-color][text-decoration-color]]：设置下划线颜色
+- [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-decoration-thickness][text-decoration-thickness]]：设置下划线粗细
+- [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-decoration-style][text-decoration-style]]：设置下划线的样式，可以是实线（solid）、虚线（dashed）、波浪线（wavy）等
+- [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-underline-offset][text-underline-offset]]：设置下划线的偏移量，有的时候下划线和文字距离太近，
+  可以增加偏移量，保留一些呼吸感。
+
+在这个基础上，可以增加 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:hover][:hover]] 时的样式，可以是改变下划线的粗细、设置背景色、改变字体颜色等。
+还可以设置 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/transition][transition]]，给变化增加过渡，让变化不那么突兀，更缓和一些。
+
+接着，可以通过 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:visited][:visited]] 设置点击过（访问过）的链接的样式，让读者区分什么链接访问过，什么还没有访问。
