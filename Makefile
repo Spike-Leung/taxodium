@@ -14,7 +14,7 @@ post-preview:
 
 convert-album:
 	@mkdir -p ./publish/images/album-wall
-	@for file in ./publish/images/album/*.{jpg,jpeg,png}; do \
+	@for file in ./publish/images/album/*.{jpg,jpeg,png,webp}; do \
 		if [ -f "$$file" ]; then \
 			filename=$$(basename "$$file"); \
 			echo "Converting $$filename..."; \
