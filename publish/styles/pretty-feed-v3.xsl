@@ -137,34 +137,10 @@ This file is in BETA. Please test and contribute to the discussion:
           }
 
         </style>
-        <script src="/js/color-scheme.js"></script>
-        <script src="/js/copy-feed-url.js"></script>
       </head>
       <body>
-        <div id="preamble" class="status">
-          <ul class="a11y-nav">
-            <li>
-              <a id="skip-content" href="#content">Skip to main content</a>
-            </li>
-          </ul>
-          <nav>
-            <ul>
-              <li><a href="/index.html">主页</a></li>
-              <li><a href="/subscribe.html">订阅</a></li>
-              <li><a href="/search.html">搜索</a></li>
-              <li><a href="/inside-black-hole.html">黑洞里</a></li>
-            </ul>
-            <select onchange="switchMode(this.value)" id="lightdark">
-              <option value="auto">Auto</option>
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-              <option value="light-retro" aria-label="复古 Light">Light 👾</option>
-              <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
-            </select>
-          </nav>
-        </div>
         <section class="info">
-          <p>这是一个 Atom 订阅流 (Atom feed) 你可以<button type="button" onclick="copyFeedUrl()" class="copyFeedBtn">复制当前 URL</button>进行订阅。</p>
+          <p>这是一个 Atom 订阅流 (Atom feed) 你可以复制当前 URL 进行订阅。</p>
           <p>如果你对订阅流不了解, 你可以阅读一下 <a href="/about-feeds.html">About Feeds</a>。</p>
           <p>有任何问题，欢迎 <a href="mailto:l-yanlei@hotmail.com">邮件</a> 或者留言给我。</p>
           <details>

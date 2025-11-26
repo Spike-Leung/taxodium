@@ -100,15 +100,7 @@ function parseDateString(dateStr) {
     timePart = `${parts[2]}:00`;
   }
 
-  const date = new Date(`${datePart}T${timePart}+08:00`);
-
-  // Validate date
-  if (isNaN(date.getTime())) {
-    console.warn(`Invalid date string: ${dateStr}`);
-    return null;
-  }
-
-  return date.toISOString();
+  return `${datePart}T${timePart}+08:00`;
 }
 
 async function processPost(entry) {
