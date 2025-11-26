@@ -100,7 +100,7 @@ function parseDateString(dateStr) {
     timePart = `${parts[2]}:00`;
   }
 
-  const date = new Date(`${datePart}T${timePart}Z`);
+  const date = new Date(`${datePart}T${timePart}+08:00`);
 
   // Validate date
   if (isNaN(date.getTime())) {
