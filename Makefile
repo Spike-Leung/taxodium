@@ -1,4 +1,4 @@
-.PHONY: post-preview optimize-images
+.PHONY: post-preview optimize-images convert-album
 
 DRAFT_DIR = draft-preview
 PUBLISH_DIR = publish
@@ -14,11 +14,29 @@ post-preview:
 
 convert-album:
 	@mkdir -p ./publish/images/album-wall
-	@for file in ./publish/images/album/*.{jpg,jpeg,png,webp}; do \
+	@for file in ./publish/images/album/*_albumwall*.{jpg,jpeg,png,webp}; do \
 		if [ -f "$$file" ]; then \
 			filename=$$(basename "$$file"); \
-			echo "Converting $$filename..."; \
-			ffmpeg -i "$$file" -qscale 5 "./publish/images/album-wall/$${filename%.*}.avif" -y; \
+			baseName=$${filename%.*}; \
+			temp_avif="./publish/images/album-wall/$${baseName}.temp.avif"; \
+			final_out="./publish/images/album-wall/$${baseName}.avif"; \
+			\
+			echo "Processing: $$filename"; \
+			\
+			ffmpeg -v error -i "$$file" -qscale 5 "$$temp_avif" -y; \
+			\
+			magick "$$temp_avif" \
+				-dither FloydSteinberg \
+				-monochrome \
+				-define avif:lossless=true \
+				-alpha set \
+				-channel A \
+				-evaluate set 75% \
+				"$$final_out"; \
+			\
+			rm "$$temp_avif"; \
+			\
+			echo "  -> Output: $$final_out"; \
 		fi; \
 	done
-	@echo "Conversion completed!"
+	@echo "All conversions completed!"
