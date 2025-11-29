@@ -31,7 +31,7 @@ convert-album:
 				-define avif:lossless=true \
 				-alpha set \
 				-channel A \
-				-evaluate set 75% \
+				-evaluate set 80% \
 				"$$final_out"; \
 			\
 			rm "$$temp_avif"; \
