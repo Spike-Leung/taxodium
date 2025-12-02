@@ -15,11 +15,13 @@ async function loadWebmentionContent() {
   try {
     const target = getTargetUrl();
     const response = await fetch(
-      `https://webmention.io/api/mentions.jf2?target=${target}`,
+      `https://webmention.io/api/mentions.jf2?domain=taxodium.ink&token=qcwPCX61g9khbvZWp3U0qg`,
     );
     const feed = await response.json();
+    const feedList = feed?.children?.filter((c) => c["wm-target"].indexOf(target) !== -1)
+    document.querySelector(".webmention-count").innerText = `(${feedList.length})`;
     const container = document.querySelector(".webmention-content-list");
-    renderWebmentions(feed, container);
+    renderWebmentions(feedList, container);
   } catch (err) {
     console.error(err);
   }
@@ -35,12 +37,12 @@ function getTargetUrl() {
   return href;
 }
 
-function renderWebmentions(feed, container) {
-  if (!feed || !Array.isArray(feed.children) || !container) return;
+function renderWebmentions(feedList = [], container) {
+  if (feedList.length === 0 || !container) return;
 
   const frag = document.createDocumentFragment();
 
-  for (const entry of feed.children) {
+  for (const entry of feedList) {
     if (entry.type !== "entry") continue;
     if (entry["wm-private"] === true) continue;
 
@@ -100,7 +102,7 @@ function initFormTargetUrl() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  loadWebmentionCount();
+  // loadWebmentionCount();
   loadWebmentionContent();
   initFormTargetUrl();
 });
