@@ -67,6 +67,7 @@
 <li><a href="#CBA7F3BB-8611-485A-8D54-6FF423A95CB0">常见问题</a></li>
 <li><a href="#1A041E70-EA18-4ED8-9055-099F9CC42152">关于 u-in-reply-to 的使用</a></li>
 <li><a href="#0EA3F8F1-CA64-48D1-BBF2-99216CC827A6">关于 h-entry 的使用</a></li>
+<li><a href="#061A4259-3D8B-4AB6-B8DC-B9C76BC6EEE5">webmention.io 的 target 需要完全匹配</a></li>
 </ul>
 </li>
 <li><a href="#C60020F6-33E8-4CB2-A8DD-968BE0EABC31"><span class="todo TODO">TODO</span> TODO</a></li>
@@ -168,7 +169,7 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 如果自己搭建的话，可以参照 <a href="https://www.w3.org/TR/webmention">Webmention 规范</a> 实现。你也可以找现成的工具。
 </p>
 
-<section role="note" id="org100b5aa">
+<section role="note" id="orgd5ace9b">
 <p>
 你可以在 <a href="https://indieweb.org/Webmention">Webmention | IndieWeb</a> 找到很多工具和服务。
 </p>
@@ -471,6 +472,27 @@ e-content 标记在整篇文章内容上
 </ul>
 </div>
 </div>
+<div id="outline-container-061A4259-3D8B-4AB6-B8DC-B9C76BC6EEE5" class="outline-3">
+<h3 id="061A4259-3D8B-4AB6-B8DC-B9C76BC6EEE5">webmention.io 的 target 需要完全匹配</h3>
+<div class="outline-text-3" id="text-061A4259-3D8B-4AB6-B8DC-B9C76BC6EEE5"><p>
+问题见 <a href="https://github.com/aaronpk/webmention.io/issues/229#issuecomment-3602563563">When URL has hash，webmention.io'a API not reponse data #229</a>。
+</p>
+
+<p>
+有的 webmention 的发送时的 URL 是 <code>https://domain/page.html#abc</code> ，通过 webmention.io 的 API，target 参数设置为 <code>https://domain/page.html</code> 是无法获取到数据的，需要将 target 设置为 <code>https://domain/page.html#abc</code> ，完全匹配才行，因为目前存储的就是完整的 URL。
+</p>
+
+<section role="note" id="orgb6261ff">
+<p>
+如果 target 是 <code>https://domain/page.html#abc</code> ，注意需要将 <code>#</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">转义</a> 成 <code>%23</code> 。
+</p>
+</section>
+
+<p>
+我目前的处理方法是用 <a href="https://github.com/aaronpk/webmention.io?tab=readme-ov-file#find-all-links-to-your-domain">基于域名获取所有数据的 API</a> 先获取所有的数据，然后基于页面的 URL 进行过滤。
+</p>
+</div>
+</div>
 </div>
 <div id="outline-container-C60020F6-33E8-4CB2-A8DD-968BE0EABC31" class="outline-2">
 <h2 id="C60020F6-33E8-4CB2-A8DD-968BE0EABC31"><span class="todo TODO">TODO</span> TODO</h2>
@@ -567,7 +589,7 @@ e-content 标记在整篇文章内容上
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-09-25 Thu 21:24</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-11-06 Thu 22:04</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-12-03 Wed 02:01</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">

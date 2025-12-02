@@ -310,6 +310,24 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
 
   权衡之下，目前我觉得把 e-content 标记在整篇文章里是最方便的。
 
+** webmention.io 的 target 需要完全匹配
+:PROPERTIES:
+:CUSTOM_ID: 061A4259-3D8B-4AB6-B8DC-B9C76BC6EEE5
+:END:
+
+问题见 [[https://github.com/aaronpk/webmention.io/issues/229#issuecomment-3602563563][When URL has hash，webmention.io'a API not reponse data #229]]。
+
+有的 webmention 的发送时的 URL 是 =https://domain/page.html#abc= ，
+通过 webmention.io 的 API，target 参数设置为 =https://domain/page.html= 是无法获取到数据的，
+需要将 target 设置为 =https://domain/page.html#abc= ，完全匹配才行，因为目前存储的就是完整的 URL。
+
+#+attr_html: :role note
+#+begin_section
+如果 target 是 =https://domain/page.html#abc= ，注意需要将 =#= [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent][转义]] 成 =%23= 。
+#+end_section
+
+我目前的处理方法是用 [[https://github.com/aaronpk/webmention.io?tab=readme-ov-file#find-all-links-to-your-domain][基于域名获取所有数据的 API]] 先获取所有的数据，然后基于页面的 URL 进行过滤。
+
 * TODO TODO
 :PROPERTIES:
 :CUSTOM_ID: C60020F6-33E8-4CB2-A8DD-968BE0EABC31
