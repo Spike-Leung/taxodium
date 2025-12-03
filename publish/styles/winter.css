@@ -11,11 +11,39 @@
 body {
   &.dark {
     --snow-fall-color: var(--dark-snow-fall-color);
+
+    .snow-icon::before {
+      content: "️☽";
+    }
+
+    #snow-toggle:not(:checked) + .snow-icon {
+      color: #FFD75F;
+    }
+  }
+
+  &.auto {
+    @media (prefers-color-scheme: dark) {
+      .snow-icon::before {
+        content: "️☽";
+      }
+
+      #snow-toggle:not(:checked) + .snow-icon {
+        color: #FFD75F;
+      }
+    }
   }
 }
 
 @media (prefers-color-scheme: dark) {
   --snow-fall-color: var(--dark-snow-fall-color);
+
+  .snow-icon::before {
+    content: "️☽";
+  }
+
+  #snow-toggle:not(:checked) + .snow-icon {
+    color: #FFD75F;
+  }
 }
 
 /* cursor */
@@ -67,12 +95,10 @@ hr:nth-of-type(even):before {
   display: none;
 }
 
-/* 未选中时：雪花为冷色，可选旋转 */
 #snow-toggle:not(:checked) + .snow-icon {
   color: #ffaa33;
 }
 
-/* 选中时：雪花变为暖色/停止，或更换图标 */
 #snow-toggle:checked + .snow-icon {
   color: #a0d2ff;
   transform: rotateY(180deg);
@@ -80,6 +106,7 @@ hr:nth-of-type(even):before {
 
 .snow-icon::before {
   content: "️☀";
+  font-size: 1.5em;
 }
 
 #snow-toggle:checked + .snow-icon::before {
