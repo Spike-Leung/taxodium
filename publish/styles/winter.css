@@ -1,0 +1,95 @@
+/* @see: https://robertbirming.com/bear-halloween-theme/ */
+:root {
+  --color-link: #0A7E3A;
+  --color-link-visited: #C41E3A;
+  --dark-color-link: #32CD57;
+  --dark-color-link-visited: #FF6B84;
+  --snow-fall-color: #fff;
+  --dark-snow-fall-color: rgb(255,255,255,.25);
+}
+
+body {
+  &.dark {
+    --snow-fall-color: var(--dark-snow-fall-color);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  --snow-fall-color: var(--dark-snow-fall-color);
+}
+
+/* cursor */
+body {
+  cursor: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'>\
+<text y='24' font-size='24'>🎄</text></svg>") 8 8, auto;
+}
+
+a:hover {
+  cursor: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'>\
+<text y='24' font-size='24'>🎅</text></svg>") 8 8, auto;
+}
+
+/* split line */
+hr:nth-of-type(odd):before {
+  content: '❅ ❅ ❅' ;
+}
+
+hr:nth-of-type(even):before {
+  content: '☃ ☃ ☃ ' ;
+}
+
+#postamble::before {
+  content: 'Have Yourself A Merry Little Christmas';
+
+  @media screen and (width <= 400px) {
+    font-size: 0.8em;
+  }
+}
+
+/* -------------------- snow fall related  -------------------- */
+#preamble nav {
+  grid-template-columns: auto max-content max-content;
+}
+
+.snow-icon {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
+}
+
+#snow-toggle {
+  display: none;
+}
+
+/* 未选中时：雪花为冷色，可选旋转 */
+#snow-toggle:not(:checked) + .snow-icon {
+  color: #ffaa33;
+}
+
+/* 选中时：雪花变为暖色/停止，或更换图标 */
+#snow-toggle:checked + .snow-icon {
+  color: #a0d2ff;
+  transform: rotateY(180deg);
+}
+
+.snow-icon::before {
+  content: "️☀";
+}
+
+#snow-toggle:checked + .snow-icon::before {
+  content: "❆️";
+}
+
+snow-fall {
+  display: none;
+}
+
+body:has(#snow-toggle:checked) snow-fall {
+  display: block;
+}
