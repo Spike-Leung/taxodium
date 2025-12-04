@@ -1101,7 +1101,7 @@ img[src*=images\/album] {
 
 .album-wall {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: calc(1em - 10px) 1em;
   justify-content: center;
   max-width: max-content;
@@ -1112,9 +1112,9 @@ img[src*=images\/album] {
   }
 
   @media (pointer: fine) and (hover: hover) {
-    & figure {
+    & figure img {
       &:hover {
-        transform: scale(1.1);
+        transform: rotate(0);
         z-index: 1;
       }
     }
@@ -1126,15 +1126,21 @@ img[src*=images\/album] {
 
   & figure {
     margin: 0;
-    transition: transform .25s ease-in-out;
   }
 
   & img {
     object-fit: cover;
     aspect-ratio: 1;
     width: 100%;
-    box-shadow: unset!important;
+    box-shadow: -5px 5px 5px var(--color-box-shadow)!important;
     border-radius: 0;
+    transform: perspective(500px) rotateX(5deg) rotateY(-5deg) rotateZ(1deg);
+    transition: transform .25s ease-in-out;
+    transform-origin: center bottom;
+
+    @media screen and (width <= 400px) {
+      transform: unset;
+    }
   }
 }
 
