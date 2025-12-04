@@ -26,12 +26,11 @@ convert-album:
 			ffmpeg -v error -i "$$file" -qscale 5 "$$temp_avif" -y; \
 			\
 			magick "$$temp_avif" \
-				-dither FloydSteinberg \
 				-monochrome \
 				-define avif:lossless=true \
 				-alpha set \
 				-channel A \
-				-evaluate set 80% \
+				-evaluate set 65% \
 				"$$final_out"; \
 			\
 			rm "$$temp_avif"; \
