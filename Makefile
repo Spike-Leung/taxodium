@@ -26,11 +26,12 @@ convert-album:
 			ffmpeg -v error -i "$$file" -qscale 5 "$$temp_avif" -y; \
 			\
 			magick "$$temp_avif" \
+				-colors 6 \
 				-monochrome \
 				-define avif:lossless=true \
 				-alpha set \
 				-channel A \
-				-evaluate set 65% \
+				-evaluate set 75% \
 				"$$final_out"; \
 			\
 			rm "$$temp_avif"; \
