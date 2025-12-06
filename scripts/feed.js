@@ -24,10 +24,10 @@ const CONFIG = {
     { name: "nichijou", count: 10 },
     { name: "album", count: 10 }
   ],
-  postsSource: path.join(__dirname, "posts/index.org"),
-  orgPostsDir: path.join(__dirname, "posts"),
-  postsDir: path.join(__dirname, "publish"),
-  outputFile: path.join(__dirname, "publish/rss.xml"),
+  postsSource: path.join(__dirname, "..", "posts/index.org"),
+  orgPostsDir: path.join(__dirname, "..", "posts"),
+  postsDir: path.join(__dirname, "..", "publish"),
+  outputFile: path.join(__dirname, "..", "publish/rss.xml"),
   // follows: [
   //   { feedId: '58021783497765889', userId: '72185894417953792' },
   //   { feedId: '63132271001948160', userId: '72185894417953792' }
