@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Advent of Code 2025 day7</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="Advent of Code 2025 day7 Python 题解" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<style>
+.aoc-2025-day-7-example-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1em; & pre { margin: 0; padding: .2em; }  @media screen and (width <= 800px) { grid-template-columns: repeat(2, 1fr); } @media screen and (width <= 450px) { grid-template-columns: repeat(1, 1fr); }}
+</style>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+
+  <ul class="a11y-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+  </ul>
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">Advent of Code 2025 day7</h1>
+</header><p>
+<a href="https://adventofcode.com/2025/day/7">day7</a> 的输入是：
+</p>
+
+<pre class="example">
+.......S.......
+...............
+.......^.......
+...............
+......^.^......
+...............
+.....^.^.^.....
+...............
+....^.^...^....
+...............
+...^.^...^.^...
+...............
+..^...^.....^..
+...............
+.^.^.^.^.^...^.
+...............
+</pre>
+
+<p>
+这是一个超光速粒子歧管的图表（a diagram of the tachyon manifold）， <code>S</code> 是发射超光速粒子束的地方。超光速粒子束总是向下移动。超光速粒子束可以自由穿过空白区域 (<code>.</code>)。但是，如果超光速粒子束遇到分束器 (<code>^</code>)，光束就会停止；取而代之的是，新的超光速粒子束会被分束，从分束器的正左侧和正右侧继续向下移动。
+</p>
+
+<p>
+于是，从 <code>S</code> 发射的超光速离子束最后会被分束成这样：
+</p>
+
+<pre class="example">
+.......S.......
+.......|.......
+......|^|......
+......|.|......
+.....|^|^|.....
+.....|.|.|.....
+....|^|^|^|....
+....|.|.|.|....
+...|^|^|||^|...
+...|.|.|||.|...
+..|^|^|||^|^|..
+..|.|.|||.|.|..
+.|^|||^||.||^|.
+.|.|||.||.||.|.
+|^|^|^|^|^|||^|
+|.|.|.|.|.|||.|
+</pre>
+
+<p>
+part1 的问题是，超光速离子束被分束了几次？
+</p>
+
+<p>
+当光束 (<code>|</code>) 往下碰到分束器 (<code>^</code>) 的时候，就会被分束，所以问题可以变成：
+</p>
+
+<p>
+图中存在多少个这样的分束器：
+</p>
+
+<pre class="example">
+|
+^
+</pre>
+
+<p>
+统计这种结构的分束器的数量，对应的就是超光速离子束被分束的次数。
+</p>
+
+<p>
+只要遍历每一行，对其中的每个分束器 (<code>^</code>) 判断它上面是否存在离子束 (<code>|</code>)，如果存在，就累计数量。
+</p>
+
+<p>
+在遍历时，用一个变量维护上一行的离子束 (<code>|</code>) 状态，就可以方便地进行比较了。
+</p>
+
+<hr>
+
+<p>
+part2 的问题是，实际只有一个超光速粒子，当它碰到分束器的时候，可能往左，也可能往右，统计最终有多少条路径可以走到底部。
+</p>
+
+<p>
+例如粒子可以有一下几种走法：
+</p>
+
+<ul class="org-ul">
+<li><p>
+一直沿着分束器的左边走
+</p>
+<pre class="example">
+.......S.......
+.......|.......
+......|^.......
+......|........
+.....|^.^......
+.....|.........
+....|^.^.^.....
+....|..........
+...|^.^...^....
+...|...........
+..|^.^...^.^...
+..|............
+.|^...^.....^..
+.|.............
+|^.^.^.^.^...^.
+|..............
+</pre></li>
+<li><p>
+碰到分束器，交替地向左向右走
+</p>
+<pre class="example">
+.......S.......
+.......|.......
+......|^.......
+......|........
+......^|^......
+.......|.......
+.....^|^.^.....
+......|........
+....^.^|..^....
+.......|.......
+...^.^.|.^.^...
+.......|.......
+..^...^|....^..
+.......|.......
+.^.^.^|^.^...^.
+......|........
+</pre></li>
+</ul>
+
+<p>
+总之路径很多，最终能走到底部都算。
+</p>
+
+<p>
+粒子时而往左，时而往右，看起来有非常多的组合。
+</p>
+
+<p>
+但仔细一想，对于粒子而言，它只有 3 种选择：
+</p>
+<ul class="org-ul">
+<li>要么穿过 <code>.</code> 向下走 (↓)</li>
+<li>要么碰到 <code>^</code> ，从左边往下走 (⮦)</li>
+<li>要么碰到 <code>^</code> ，从右边往下走（⮧）</li>
+</ul>
+
+<p>
+每往下走一次，粒子都要再做一次选择，直到走到底部。
+</p>
+
+<p>
+为了更好的观察规律，可以从数据量较小的情况观察，例如只看前 5 行：
+</p>
+
+<div class="aoc-2025-day-7-example-container div" id="org1be06ba">
+<pre class="example">
+.......S.......
+...............
+.......^.......
+...............
+......^.^......
+</pre>
+
+</div>
+
+<p>
+上面的图中，总共有 4 种路径可以走到底，分别是：
+</p>
+
+<div class="aoc-2025-day-7-example-container div" id="org6351b66">
+<pre class="example">
+.......S.......
+.......|.......
+......|^.......
+......|........
+.....|^.^......
+</pre>
+
+<pre class="example">
+.......S.......
+.......|.......
+......|^.......
+......|........
+......^|^......
+</pre>
+
+<pre class="example">
+.......S.......
+.......|.......
+.......^|......
+........|......
+......^|^......
+</pre>
+
+<pre class="example">
+.......S.......
+.......|.......
+.......^|......
+........|......
+......^.^|.....
+</pre>
+
+</div>
+
+<p>
+如何统计路径呢？可以一步步看看。
+</p>
+
+<section role="note" id="org872c4d8">
+<p>
+为了方便描述，用 diagram 表示这个图，diagram[0] 表示第一行，diagram[0][0] 表示第一行的第一列的位置。
+</p>
+
+<p>
+用 timelines[x][y] 来表示在 x 行 y 列时，有多少的路径。
+</p>
+</section>
+
+<p>
+粒子从 <code>S</code> (diagram[0][7]) 出发，只能往下走，走到了 diagram[1][7]。
+</p>
+
+<div class="aoc-2025-day-7-example-container div" id="org48554a1">
+<pre class="example">
+.......S.......
+.......|.......
+.......^.......
+...............
+......^.^......
+</pre>
+
+</div>
+
+<p>
+此时 timelines[0][7] = timelines[1][7] 。
+</p>
+
+<p>
+然后粒子碰到了一个分束器，可以向左，走到 diagram[2][6] ；也可以向右，走到 diagram[2][8] 。
+</p>
+
+<div class="aoc-2025-day-7-example-container div" id="org68a7c7f">
+<pre class="example">
+.......S.......
+.......|.......
+......|^.......
+...............
+......^.^......
+</pre>
+
+<pre class="example">
+.......S.......
+.......|.......
+.......^|......
+...............
+......^.^......
+</pre>
+
+</div>
+
+<p>
+此时 timelines[0][7] = timelines[1][7] = timelines[2][6] + timelines[2][8] 。
+</p>
+
+<p>
+也就是说：
+</p>
+<ul class="org-ul">
+<li><p>
+当没有碰到分束器时：
+</p>
+
+<p>
+<b>timelines[x][y] = timelines[x + 1][y]</b>
+</p>
+
+<p>
+即往下走一步的路径数量。
+</p></li>
+<li><p>
+当碰到分束器时：
+</p>
+
+<p>
+<b>timelines[x][y] = timelines[x + 1][y - 1] + timelines[x + 1][y + 1]</b>
+</p>
+
+<p>
+即向左走和向右走的路径数量之和。
+</p></li>
+</ul>
+
+<p>
+粒子继续往下走，式子可以一直写下去：
+</p>
+
+<pre class="example">
+timelines[0][7] =
+timelines[1][7] =
+timelines[2][6] + timelines[2][8] =
+timelines[3][6] + timelines[3][8] =
+timelines[4][5] + timelines[4][7] + timelines[4][7] + timelines[4][9] =
+1 + 1 + 1 + 1 =
+4
+</pre>
+
+<p>
+当走到最后一行的时候，粒子已经走到走到底了，就只有一条路径，所以 timelines[4][y] = 1。
+</p>
+
+<p>
+可以发现这是把一个大的问题，拆成一个更小的问题，直到这个问题知道确切的答案。可以利用递归实现，递归结束条件就是粒子走到了最后一行。
+</p>
+
+<p>
+但是当我用这样的方法实现的时候，我发现代码执行了很久都没有结果。分析一下时间复杂度发现，当粒子到一个分束器，就会一分为二， 假设粒子在每一行都碰到分束器，相当于每往下走一行，计算量就会翻倍。假设有 N 行的话，时间复杂度就是 2 的 N 次方，是一个指数，所以随着 N 增加，时间复杂度会急剧上升。
+</p>
+
+<p>
+观察式子，会发现 <code>timelines[4][7]</code> 被重复计算了，可以利用一个哈希表记录被计算过的位置的值，这样，每个位置只会被计算一次，假设有 N 个位置，时间复杂度就是 N，就会快很多了。
+</p>
+
+<p>
+具体代码见：<a href="https://github.com/Spike-Leung/aoc-2025/blob/07a22a4644bf041aef6cff678573e3932214c534/day7/solution.py">day7/solution.py</a>
+</p>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention-container js-required">
+<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
+<p class="webmention-tip">
+如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention-content-list"></ul>
+</details>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： <span class="dt-published">2025-12-08 Mon 11:22</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-12-08 Mon 11:23</span></p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
