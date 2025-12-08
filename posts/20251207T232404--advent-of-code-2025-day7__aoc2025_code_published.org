@@ -11,7 +11,7 @@
 #+options: ^:{}
 #+startup: content
 #+html_head_extra: <style>
-#+html_head_extra: .aoc-2025-day-7-example-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1em; & pre { margin: 0; padding: .2em; }  @media screen and (width <= 800px) { grid-template-columns: repeat(2, 1fr); } @media screen and (width <= 450px) { grid-template-columns: repeat(1, 1fr); }}
+#+html_head_extra: .aoc-2025-day-7-example-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1em; & pre { margin: 0; padding: .2em; }  @media screen and (width <= 800px) { grid-template-columns: repeat(2, 1fr); } @media screen and (width <= 450px) { grid-template-columns: repeat(2, 1fr); gap: .1em; } @media screen and (width <= 370px) { grid-template-columns: repeat(1, 1fr); } }
 #+html_head_extra: </style>
 
 [[https://adventofcode.com/2025/day/7][day7]] 的输入是：
@@ -130,9 +130,9 @@ part2 的问题是，实际只有一个超光速粒子，当它碰到分束器�
 粒子时而往左，时而往右，看起来有非常多的组合。
 
 但仔细一想，对于粒子而言，它只有 3 种选择：
-- 要么穿过 =.= 向下走 (↓)
-- 要么碰到 =^= ，从左边往下走 (⮦)
-- 要么碰到 =^= ，从右边往下走（⮧）
+- 要么穿过 =.= 向下走
+- 要么碰到 =^= ，从左边往下走
+- 要么碰到 =^= ，从右边往下走
 
 每往下走一次，粒子都要再做一次选择，直到走到底部。
 
@@ -259,7 +259,7 @@ part2 的问题是，实际只有一个超光速粒子，当它碰到分束器�
 
 当走到最后一行的时候，粒子已经走到走到底了，就只有一条路径，所以 timelines[4][y] = 1。
 
-可以发现这是把一个大的问题，拆成一个更小的问题，直到这个问题知道确切的答案。
+这是把大的问题，拆成更小的问题，直到这个问题知道确切的答案的过程。
 可以利用递归实现，递归结束条件就是粒子走到了最后一行。
 
 但是当我用这样的方法实现的时候，我发现代码执行了很久都没有结果。
