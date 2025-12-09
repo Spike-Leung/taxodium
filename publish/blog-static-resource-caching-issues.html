@@ -59,7 +59,7 @@ TL;DR
 </p>
 
 <p>
-博客的图片由于设置了 <code>cache-control public,max-age=31536000,immutable</code> ，导致一直使用缓存的资源而不会变化。
+博客的图片由于设置了 <code>cache-control public,max-age=31536000,immutable</code> ，导致一直使用缓存的图片，而不会更新。
 </p>
 
 <p>
@@ -72,7 +72,7 @@ TL;DR
 前些天在折腾 <a href="https://imagemagick.org/">ImageMagick</a>，看看能不能把 <a href="album-wall.html">Album Wall</a> 的图片再优化一下。尝试了很多参数，可能还是对参数理解不够，也没能折腾出什么有趣的风格，不过也做了一点点小的优化，例如现在专辑上的一些字可以显示出来了。
 </p>
 
-<section role="note" id="orgf082194">
+<section role="note" id="org137afd1">
 <p>
 目前用来转换图片的命令：
 </p>
@@ -172,7 +172,7 @@ bundle.js?v=YsAIAAAA-QG4G6kCMAMBAAAAAAAoK
 针对我现在的问题，首先我会修改 URL，在 URL 最后添加 <code>?timestamp=xxxx</code> ，从而让读者能马上看到更新；然后我也会将 max-age 改成一个更短的时间，一年实在是太长了。
 </p>
 
-<section role="note" id="org864661f">
+<section role="note" id="org296ae1f">
 <p>
 使用 <code>?timestamp=xxxx</code> 是因为时间戳一般来说都会不一样，每次获取一个新的时间戳就好，获取时间戳也相对简单。
 </p>
@@ -186,6 +186,12 @@ bundle.js?v=YsAIAAAA-QG4G6kCMAMBAAAAAAAoK
 如果是一些确定极少变化的静态资源，可以考虑设置 <code>cache-control public,max-age=31536000,immutable</code> ，可以很大程度改善这些资源的加载速度。例如我看到有的网站，每次访问或者切换页面，字体都需要等一阵子然后切换，或许就是因为字体文件没有被缓存，总是需要重新加载，设置缓存就能改善读者的访问体验。
 </p>
 
+<section role="note" id="org2cdac28">
+<p>
+除了改善用户的体验，缓存也减少了发给服务器的请求，减少了服务器的压力；因为不需要重复传输缓存过的资源，也减少了带宽的使用。
+</p>
+</section>
+
 <p>
 如果是一些偶尔会改变的静态资源，可以设置一个较短的 <code>max-age</code> ，或者依赖服务器默认的缓存配置。
 </p>
@@ -194,7 +200,7 @@ bundle.js?v=YsAIAAAA-QG4G6kCMAMBAAAAAAAoK
 就算什么都不做，浏览器本身也有 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching#heuristic_caching">默认的缓存机制</a>，不确定怎么弄，依赖浏览器默认行为就好。
 </p>
 
-<section role="note" id="org9f9ea60">
+<section role="note" id="org58205b8">
 <p>
 如果你想了解 HTTP Cache，MDN 的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching">HTTP caching</a> 是份不错的文档。
 </p>
@@ -218,7 +224,7 @@ bundle.js?v=YsAIAAAA-QG4G6kCMAMBAAAAAAAoK
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-12-09 Tue 13:45</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-12-09 Tue 13:45</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-12-09 Tue 14:48</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
