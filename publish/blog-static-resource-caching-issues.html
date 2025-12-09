@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>博客静态资源缓存问题</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="整理一些博客静态资源缓存发现的问题，以及对应的策略；以及整理一些 HTTP Cache 相关问题。" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+
+  <ul class="a11y-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+  </ul>
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">博客静态资源缓存问题</h1>
+</header><p>
+TL;DR
+</p>
+
+<p>
+博客的图片由于设置了 <code>cache-control public,max-age=31536000,immutable</code> ，导致一直使用缓存的资源而不会变化。
+</p>
+
+<p>
+我的解决办法是给图片资源添加 <code>?timestamp=xxxx</code> 的后缀，让浏览器识别到是一个新的资源，从而触发更新。
+</p>
+
+<hr>
+
+<p>
+前些天在折腾 <a href="https://imagemagick.org/">ImageMagick</a>，看看能不能把 <a href="album-wall.html">Album Wall</a> 的图片再优化一下。尝试了很多参数，可能还是对参数理解不够，也没能折腾出什么有趣的风格，不过也做了一点点小的优化，例如现在专辑上的一些字可以显示出来了。
+</p>
+
+<section role="note" id="orgf082194">
+<p>
+目前用来转换图片的命令：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">magick input.avif <span style="color: #79a8ff;">\</span>
+       -colors 6 <span style="color: #79a8ff;">\</span>
+       -monochrome <span style="color: #79a8ff;">\</span>
+       -define avif:<span style="color: #00d3d0;">lossless</span>=true <span style="color: #79a8ff;">\</span>
+       -alpha set -channel A -evaluate set 75% <span style="color: #79a8ff;">\</span>
+       output.avif
+</pre>
+</div>
+</section>
+
+<p>
+更新图片并部署后，在电脑上看图片已经更新了，但在手机上看，无论刷新多少次，还是原来的。
+</p>
+
+
+<figure>
+<a href="images/blog-static-resource-caching-issues/album-wall-on-desktop.webp"><img src="images/blog-static-resource-caching-issues/album-wall-on-desktop.webp" alt="album-wall-on-desktop.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>在电脑上访问 Album Wall 的截图</figcaption>
+</figure>
+
+
+<figure>
+<a href="images/blog-static-resource-caching-issues/album-wall-on-phone.webp"><img src="images/blog-static-resource-caching-issues/album-wall-on-phone.webp" alt="album-wall-on-phone.webp" style="max-height: 550px"></a>
+
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>在手机上访问 Album Wall 的截图，对比电脑上的截图，会发现图片存在一些差异</figcaption>
+</figure>
+
+<p>
+因为我更新了图片，但没有修改文件名，应该是手机上的图片被缓存了，没有拉取更新后的图片。
+</p>
+
+<p>
+我记得以前特意给图片和字体设置了缓存配置，检查了一下 netlify.toml，看到了图片的缓存配置：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-toml">[[<span style="color: #6ae4b9;">headers</span>]]
+  <span style="color: #00d3d0;">for</span> = <span style="color: #79a8ff;">"/images/*"</span>
+
+  [<span style="color: #6ae4b9;">headers.values</span>]
+    <span style="color: #00d3d0;">Cache-Control</span> = <span style="color: #79a8ff;">"public, max-age=86400, immutable"</span>
+</pre>
+</div>
+
+<p>
+这个配置的意思是，对于所有路径匹配 <code>/images/*</code> 的资源，设置 31536000 秒（即一年）的缓存时间，并且当页面重新加载的时候，不验证资源是否变化，认为在一年内是永不改变的（immutable）。
+</p>
+
+<p>
+当浏览器去加载图片的时候，发现已经缓存过了，而且自上次缓存到现在还没过去一年，于是直接就用缓存了，也不会去重新请求资源，图片就一直保持着第一次缓存时的样子。
+</p>
+
+<p>
+对于一些很长时间不会变化的静态资源，例如字体，这么设置是很有好处的，浏览器只要发现缓存的资源没有过期，就会直接使用缓存。
+immutable 避免了发送验证请求，在网络比较差的情况下，验证请求的响应可能也需要不少时间，而避免发送验证请求，就可以让缓存资源马上被使用。
+</p>
+
+<p>
+对于一些频繁更改的静态资源是不合适的，如果资源的 URL 不变，浏览器就会一直使用缓存，而不去拉取最新的内容，这就会导致用户看不到更新后的内容。
+</p>
+
+<p>
+有几种解决办法：
+</p>
+<ul class="org-ul">
+<li>让用户强制刷新页面（清除页面缓存），但是很多用户可能都不知道如何强制刷新页面，而且我控制不了。</li>
+<li>让用户在浏览器设置中清空缓存，但这会导致同时清除了其他网站的缓存，我也控制不了。</li>
+<li>对于频繁变化的资源，设置很短的缓存时间，并总是要求验证资源是否过期。这个方法对于新的请求有效，但对已经被缓存的资源无效（因为设置了很长的缓存时间和 immutable）。</li>
+<li><p>
+更改资源的 URL，例如原来是 bundle.js，可以通过改成：
+</p>
+<pre class="example">
+# version in filename
+bundle.v123.js
+
+# version in query
+bundle.js?v=123
+
+# hash in filename
+bundle.YsAIAAAA-QG4G6kCMAMBAAAAAAAoK.js
+
+# hash in query
+bundle.js?v=YsAIAAAA-QG4G6kCMAMBAAAAAAAoK
+</pre>
+<p>
+通过 URL 变化，告诉浏览器拉取新的资源。
+</p></li>
+</ul>
+
+<p>
+针对我现在的问题，首先我会修改 URL，在 URL 最后添加 <code>?timestamp=xxxx</code> ，从而让读者能马上看到更新；然后我也会将 max-age 改成一个更短的时间，一年实在是太长了。
+</p>
+
+<section role="note" id="org864661f">
+<p>
+使用 <code>?timestamp=xxxx</code> 是因为时间戳一般来说都会不一样，每次获取一个新的时间戳就好，获取时间戳也相对简单。
+</p>
+</section>
+
+<p>
+我的博客托管在 <a href="https://www.netlify.com/">Netlify</a>，就算我不设置缓存，它默认也是有缓存机制的。默认是 <code>cache-control public,max-age=0,must-revalidate</code> ，即资源会立即过期，并且每次都需要重新验证资源。每次请求资源都会返回 Etag，每次刷新页面，都会重新请求资源，如果资源的 Etag 没有变化，Netlify 会返回 <code>304 Not Modified</code> 告诉浏览器资源未变化，浏览器就会使用这个资源的缓存；如果 Etag 变化了，就会返回更新后的资源。这样，如果资源没有更新，就会一直使用缓存；如果资源更新了，就会使用最新的。唯一的缺点就是每次都需要发送请求判断资源是否过期，而请求就可能受到网络影响，有可能需要等待一阵子。
+</p>
+
+<p>
+如果是一些确定极少变化的静态资源，可以考虑设置 <code>cache-control public,max-age=31536000,immutable</code> ，可以很大程度改善这些资源的加载速度。例如我看到有的网站，每次访问或者切换页面，字体都需要等一阵子然后切换，或许就是因为字体文件没有被缓存，总是需要重新加载，设置缓存就能改善读者的访问体验。
+</p>
+
+<p>
+如果是一些偶尔会改变的静态资源，可以设置一个较短的 <code>max-age</code> ，或者依赖服务器默认的缓存配置。
+</p>
+
+<p>
+就算什么都不做，浏览器本身也有 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching#heuristic_caching">默认的缓存机制</a>，不确定怎么弄，依赖浏览器默认行为就好。
+</p>
+
+<section role="note" id="org9f9ea60">
+<p>
+如果你想了解 HTTP Cache，MDN 的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching">HTTP caching</a> 是份不错的文档。
+</p>
+</section>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention-container js-required">
+<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
+<p class="webmention-tip">
+如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention-content-list"></ul>
+</details>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： <span class="dt-published">2025-12-09 Tue 13:45</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-12-09 Tue 13:45</span></p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
