@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Advent of Code 2025 day9</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="Advent of Code 2025 day9 题解" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+
+  <ul class="a11y-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+  </ul>
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">Advent of Code 2025 day9</h1>
+</header><p>
+<a href="https://adventofcode.com/2025/day/9">day9</a> 的输入是：
+</p>
+
+<pre class="example">
+7,1
+11,1
+11,7
+9,7
+9,5
+2,5
+2,3
+7,3
+</pre>
+
+<p>
+这是一系列的坐标点，例如 <code>7,1</code> 表示的是 x=7,y=1 的一个位置，用 <code>#</code> 标记这些位置，可以得到下面的图：
+</p>
+
+<pre class="example">
+..............
+.......#...#..
+..............
+..#....#......
+..............
+..#......#....
+..............
+.........#.#..
+..............
+</pre>
+
+<p>
+part1 的问题是，用任意两个点作为对角，形成一个矩形，当前的输入中，可以形成的矩形面积最大是多少。
+</p>
+
+<p>
+例如 <code>2,5</code> 和 <code>9,7</code> 可以形成这样的矩形：
+</p>
+
+<pre class="example">
+..............
+.......#...#..
+..............
+..#....#......
+..............
+..OOOOOOOO....
+..OOOOOOOO....
+..OOOOOOOO.#..
+..............
+</pre>
+
+<p>
+面积是 24。
+</p>
+
+<p>
+part1 的思路挺简单的，遍历所有的坐标，任意两个坐标组合到一起，计算形成的矩形面积，返回最大的面积即可。
+</p>
+
+<hr>
+
+<p>
+part2 的问题是，现在的坐标会形成一个封闭的区域，变成这样：
+</p>
+
+<pre class="example">
+..............
+.......#XXX#..
+.......XXXXX..
+..#XXXX#XXXX..
+..XXXXXXXXXX..
+..#XXXXXX#XX..
+.........XXX..
+.........#X#..
+..............
+</pre>
+
+<p>
+还是同样的输入，还是任意选择两个对角的点，求可以形成的最大矩形面积。但是新增了一个约束条件，形成的矩形，只能由 <code>#</code> 或者 <code>X</code> 组成，不能包含 <code>.</code> ，也就是说对角形成的矩形，必须在这个封闭区域的内部。
+</p>
+
+<p>
+思考了一下，如果要求形成的矩形在封闭区域内部，意味着矩形的四个顶点也应该在封闭区域内，不能超出封闭区域。<code>#</code> 对应的坐标点肯定在轮廓的边上，我只要判断矩形的另外两个对角点在不在封闭区域内不就好了？
+</p>
+
+<p>
+但是怎么判断一个点是否在一个封闭轮廓内呢？对此我也没什么头绪，求助了 LLM，了解到可以用 <a href="https://zh.wikipedia.org/wiki/%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%86%85%E7%9A%84%E7%82%B9">点射法</a>。
+</p>
+
+<section role="note" id="org676df74">
+<p>
+点射法，也叫射线投射算法（Ray casting algorithm），它基于一个观察：如果一个点沿着一条射线从无穷远移动到探测点，并且它穿过了多边形的边界（可能多次），那么它会交替地从外部进入内部，然后从内部进入外部，依此类推。因此，每两次「越界(border crossing)」后，移动点就会回到外部。
+</p>
+
+
+<figure>
+<a href="images/aoc-2025-day-9/点射法示意图.webp"><img src="images/aoc-2025-day-9/点射法示意图.webp" alt="点射法示意图.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>点射法示意图，蓝色的点位于多边形内部，向右射出一根线，和多边形边界相交 3 次，奇数次； 红色的点位于多边形外部，向右射出一根线，和多边形边界相交 6 次，偶数次；</figcaption>
+</figure>
+</section>
+
+<p>
+于是尝试了点射法（顺便复习了一下怎么构造直线方程），遍历每一个组成矩形的顶点，看看它们是否在封闭区域中，过滤出符合条件的矩形、计算面积、找到最大的矩形面积，兴高采烈地输入答案，结果是错的。_​(:3 」∠)_
+</p>
+
+<p>
+估计是漏了什么条件没有考虑到，想了好久也没想出来，就去翻了 <a href="https://www.reddit.com/r/adventofcode/comments/1phywvn/2025_day_9_solutions/">reddit</a>，从评论里我意识到了一种可能 ⸺ 封闭区域可能是<em>凹进去</em>的！
+</p>
+
+<p>
+示例让我以为实际输入也是类似的图案，但 <a href="https://www.reddit.com/r/adventofcode/comments/1pipi0p/2025_day9_part_2_i_am_proud_that_i_solved_this_at/">实际图案</a> 可能是凹的，例如：
+</p>
+
+
+<figure>
+<a href="images/aoc-2025-day-9/凹陷的封闭区域.webp"><img src="images/aoc-2025-day-9/凹陷的封闭区域.webp" alt="凹陷的封闭区域.webp" id="凹陷的封闭区域"></a>
+
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>一个形如 H 形状的封闭区域，面积用蓝色表示； 在区域的边缘上取对角形成一个矩形，矩形有部分区域（红色部分），是在封闭区域之外的。</figcaption>
+</figure>
+
+<p>
+如 <a href="#凹陷的封闭区域">图 2</a> 所示，尽管选取的矩形四个顶点都在封闭区域内，但是由于封闭区域是凹的，封闭区域会穿透矩形，导致矩形有一部分区域（红色部分）不在封闭区域中，这样的矩形是不符合 part2 的要求的。
+</p>
+
+<p>
+怎么判断这种情况呢？可以通过判断矩形的每一条边是否和封闭区域的边相交，如果没有相交，说明封闭区域没有穿透矩形，这样的矩形就是满足条件的；如果相交了（如 <a href="#凹陷的封闭区域">图 2</a>），说明封闭区域穿透了矩形，这样的矩形是不满足条件的。
+</p>
+
+<p>
+因此，解决 part2，需要：
+</p>
+
+<ul class="org-ul">
+<li>遍历所有可能的矩形的四个顶点，使用点射法，判断顶点是否都在封闭区域内</li>
+<li>遍历所有可能的矩形的四条边，判断是否和封闭区域的边相交</li>
+</ul>
+
+<p>
+代码写起来边界条件比较多，判断也很多，最后找 LLM 帮忙写了一个版本（偷懒了）。这个版本运行了将近一分钟才得到结果 _​(:3 」∠)_​。我自己写的话，估计要写很久，调试很久才行。
+</p>
+
+<p>
+这次是练习 python，python 中有很多有用的库，其中 <a href="https://github.com/shapely/shapely">shapely</a> 就很擅长处理平面几何的问题。利用其中的 <code>Polygon</code> ，传入一组顺序的坐标点，就可以构造得到一个多边形；<code>Polygon</code> 生成的对象上有一个 <code>within</code> 方法，可以判断包含关系，利用它就可以轻易判断矩形是否在封闭区域内了。
+</p>
+
+<p>
+相关的代码可以看看 Yordi Verkroost 的 <a href="https://yordi.me/advent-of-code-2025-day-9/">Advent of Code 2025 - Day 9</a>，比用点射法来得要方便很多，也不容易出错。
+</p>
+
+<hr>
+<p>
+day9 的 part2 对我来说还挺难的，没什么头绪，挣扎了很久。不过也因此了解了点射法，了解了 <a href="https://github.com/shapely/shapely">shapely</a>，也算有所收获。
+</p>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention-container js-required">
+<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
+<p class="webmention-tip">
+如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention-content-list"></ul>
+</details>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： <span class="dt-published">2025-12-14 Sun 20:46</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-12-14 Sun 21:01</span></p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
