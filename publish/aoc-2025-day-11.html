@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Advent of Code 2025 day11</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="Advent of Code 2025 day11 题解" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+
+  <ul class="a11y-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+  </ul>
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">Advent of Code 2025 day11</h1>
+</header>
+<figure>
+<a href="images/aoc-2025-day-11/aoc-day11-meme.webp"><img src="images/aoc-2025-day-11/aoc-day11-meme.webp" alt="aoc-day11-meme.webp" class="center" id="aoc-day11-meme"></a>
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>一张梗图，从左到右分成 3 个部分； 第一部分，day1 到 day8 是一只开心的金毛； 第二部分：day9 和 day10 是一只黑色的抓狂的怪物； 第三部分：day11 又变回了开心的金毛，底下写着「我是一个图论专家」。 (图片来源：<a href="https://www.reddit.com/r/adventofcode/comments/1pjq48p/2025_day_11_throwback_to_the_2023_aoc_memes/">[2025 Day 11] Throwback to the 2023 AoC Memes</a>)</figcaption>
+</figure>
+
+<p>
+逛 <a href="https://www.reddit.com/r/adventofcode/comments/1pjp1rm/2025_day_11_solutions/">reddit</a> 的时候看到了 <a href="#aoc-day11-meme">图 1</a>，真是让人会心一笑呀！太真实了，哈哈哈。
+</p>
+
+<hr>
+
+<p>
+<a href="https://adventofcode.com/2025/day/11">day11</a> 的输入是：
+</p>
+
+<pre class="example">
+aaa: you hhh
+you: bbb ccc
+bbb: ddd eee
+ccc: ddd eee fff
+ddd: ggg
+eee: out
+fff: out
+ggg: out
+hhh: ccc fff iii
+iii: out
+</pre>
+
+<p>
+这是一张图， <code>aaa: you hhh</code> 表示的是，可以从 aaa 去往 you 或 hhh。每一行表示的都是单向的，即可以从 aaa 去到 you，但不能从 you 去到 aaa。
+</p>
+
+<p>
+part1 的问题是，从 you 出发，渠道 out，总共有几条路径？
+</p>
+
+<p>
+可以将输入绘制成一张图，就更容易找路径了：
+</p>
+
+
+<figure>
+<a href="images/aoc-2025-day-11/graph.webp"><img src="images/aoc-2025-day-11/graph.webp" alt="graph.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>按照输入连接起来的一张图</figcaption>
+</figure>
+
+<p>
+从 you 出发，可以去 bbb 或者 ccc，问从 you 到 out 有几条路，相当于问 bbb 到 out 有几条路、ccc 到 out 有几条路。
+</p>
+
+<p>
+设 <code>path(a-&gt;b)</code> 表示 a 到 b 的路径数量，you 到 out 的路径数量可以表示成：
+</p>
+
+<pre class="example">
+path(you-&gt;out)
+= path(bbb-&gt;out) + path(ccc-&gt;out)
+= path(ddd-&gt;out) + path(eee-&gt;out) + path(ddd-&gt;out) + path(eee-&gt;out) + path(fff-&gt;out)
+= path(ggg-&gt;out) + 1 + path(ggg-&gt;out) + 1 + 1
+= 1 + 1 + 1 + 1 + 1
+= 5
+</pre>
+
+<p>
+和 <a href="aoc-2025-day-7.html">Advent of Code 2025 day7</a> 的 part2 类似，可以把大的问题拆成更小的问题，直到知道确切的答案，可以写个递归解决。
+</p>
+
+<p>
+观察上面的式子，发现有很多重复的部分，例如 <code>path(ddd-&gt;out)</code> 和 <code>path(eee-&gt;out)</code> 都被计算了两次，实现的时候增加记忆化，用一个哈希表记录已经被计算过的节点，避免重复计算，提高效率。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">count_path_to_out</span>(graph, node, memo <span style="color: #ffffff;">=</span> <span style="color: #00bcff;">None</span>):
+  <span style="color: #b6a0ff;">if</span> memo <span style="color: #b6a0ff;">is</span> <span style="color: #00bcff;">None</span>:
+    <span style="color: #00d3d0;">memo</span> <span style="color: #ffffff;">=</span> {}
+  <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#22914;&#26524;&#33410;&#28857;&#35745;&#31639;&#36807;&#20102;&#65292;&#30452;&#25509;&#36820;&#22238;&#35745;&#31639;&#32467;&#26524;
+</span>  <span style="color: #b6a0ff;">if</span> node <span style="color: #b6a0ff;">in</span> memo:
+    <span style="color: #b6a0ff;">return</span> memo[node]
+
+  <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#25269;&#36798; out&#65292;&#25214;&#21040;&#19968;&#26465;&#36335;&#24452;&#65292;&#36820;&#22238; 1
+</span>  <span style="color: #b6a0ff;">if</span> node <span style="color: #ffffff;">==</span> <span style="color: #79a8ff;">'out'</span>:
+    <span style="color: #00d3d0;">memo</span>[node] <span style="color: #ffffff;">=</span> 1
+    <span style="color: #b6a0ff;">return</span> memo[node]
+
+  <span style="color: #00d3d0;">count</span> <span style="color: #ffffff;">=</span> 0
+  <span style="color: #00d3d0;">next_paths</span> <span style="color: #ffffff;">=</span> graph[node]
+
+  <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#36941;&#21382;&#30456;&#37051;&#30340;&#33410;&#28857;&#65292;&#32047;&#35745;&#21040;&#36798; out &#30340;&#36335;&#24452;&#25968;&#37327;
+</span>  <span style="color: #b6a0ff;">for</span> path <span style="color: #b6a0ff;">in</span> next_paths:
+    <span style="color: #00d3d0;">count</span> <span style="color: #ffffff;">+=</span> count_path_to_out(graph, path, memo)
+  <span style="color: #00d3d0;">memo</span>[node] <span style="color: #ffffff;">=</span> count
+  <span style="color: #b6a0ff;">return</span> memo[node]
+
+count_path_to_out(graph, <span style="color: #79a8ff;">'start'</span>)
+</pre>
+</div>
+
+<p>
+增加记忆后，每个节点只需要计算一次，同时还需要遍历节点的所有相邻边，设 V 是节点数量，E 是边的数量，时间复杂度是 O(V + E)，是一个线性的时间复杂度。
+</p>
+
+<p>
+如果没有记忆化，从起点到终点，设中间会经过 N 个点，每个点可能经过，也可能不经过（2 种选择），遍历所有的情况，时间复杂度可以达到 2 的 N 次方，是一个指数，有可能需要执行非常久才能得到结果。
+</p>
+
+<hr>
+
+<p>
+part2 的输入是：
+</p>
+
+<pre class="example">
+svr: aaa bbb
+aaa: fft
+fft: ccc
+bbb: tty
+tty: ccc
+ccc: ddd eee
+ddd: hub
+hub: fff
+eee: dac
+dac: fff
+fff: ggg hhh
+ggg: out
+hhh: out
+</pre>
+
+<p>
+这次是找从 svr 到 out 的路径，同时必须经过 fft 和 dac，先经过谁都可以。
+</p>
+
+<p>
+例如 svr 到 out 的路径有：
+</p>
+
+<p class="verse">
+svr,aaa, <b>fft</b>,ccc,ddd,hub,fff,ggg,out<br>
+svr,aaa, <b>fft</b>,ccc,ddd,hub,fff,hhh,out<br>
+svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,ggg,out &lt;&#x2013;<br>
+svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,hhh,out &lt;&#x2013;<br>
+svr,bbb,tty,ccc,ddd,hub,fff,ggg,out<br>
+svr,bbb,tty,ccc,ddd,hub,fff,hhh,out<br>
+svr,bbb,tty,ccc,eee, <b>dac</b>,fff,ggg,out<br>
+svr,bbb,tty,ccc,eee, <b>dac</b>,fff,hhh,out<br>
+</p>
+
+<p>
+其中只有 2 条路径是经过 fft 和 dac 的。
+</p>
+
+<p>
+在 part1 中已经解决了找路径的问题了，只要在 part1 的基础上，判断路径上是否经过了 fft 和 dac 就好了。
+</p>
+
+<p>
+说起来容易，但要怎么做呢？观察前 4 条路径：
+</p>
+
+<p class="verse">
+svr,aaa, <b>fft</b>,ccc,ddd,hub,fff,ggg,out<br>
+svr,aaa, <b>fft</b>,ccc,ddd,hub,fff,hhh,out<br>
+svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,ggg,out &lt;&#x2013;<br>
+svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,hhh,out &lt;&#x2013;<br>
+</p>
+
+<p>
+从 <code>svr</code> 出发，它们都经过了 <code>aaa</code> ，但有效的只有后面两条经过了 <code>fft</code> 和 <code>dac</code> 的路径。
+</p>
+
+<p>
+对于经过 <code>aaa</code> 的路径，可以分成 4 种：
+</p>
+<ul class="org-ul">
+<li>经过 fft  且经过 dac (符合要求的路径)</li>
+<li>经过 fft ，但不经过 dac</li>
+<li>不经过 fft ，但经过 dac</li>
+<li>不经过 fft  也不经过 dac</li>
+</ul>
+
+<p>
+对于其他节点也是如此，需要在 part1 的基础上，区分这 4 种情况，并且为了避免重复计算，还需要对 4 种状况都增加记忆化处理。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">count_path_to_out_with_ftt_dac</span>(graph, node, memo <span style="color: #ffffff;">=</span> <span style="color: #00bcff;">None</span>, fft_seen <span style="color: #ffffff;">=</span> <span style="color: #00bcff;">False</span>, dac_seen <span style="color: #ffffff;">=</span> <span style="color: #00bcff;">False</span>):
+  <span style="color: #b6a0ff;">if</span> memo <span style="color: #b6a0ff;">is</span> <span style="color: #00bcff;">None</span>:
+    <span style="color: #00d3d0;">memo</span> <span style="color: #ffffff;">=</span> {}
+  <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#23558; fft_seen &#21644; dac_seen &#28155;&#21152;&#21040; key &#20013;&#65292;&#21306;&#20998;&#19981;&#21516;&#29366;&#24577;&#30340; node
+</span>  <span style="color: #00d3d0;">key</span> <span style="color: #ffffff;">=</span> (node, fft_seen, dac_seen)
+
+  <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#22914;&#26524;&#33410;&#28857;&#35745;&#31639;&#36807;&#20102;&#65292;&#30452;&#25509;&#36820;&#22238;&#35745;&#31639;&#32467;&#26524;
+</span>  <span style="color: #b6a0ff;">if</span> key <span style="color: #b6a0ff;">in</span> memo:
+    <span style="color: #b6a0ff;">return</span> memo[key]
+
+  <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#21028;&#26029;&#26159;&#21542;&#32463;&#36807;&#20102; fft &#21644; dac
+</span>  <span style="color: #00d3d0;">fft_seen</span> <span style="color: #ffffff;">=</span> node <span style="color: #ffffff;">==</span> <span style="color: #79a8ff;">'fft'</span> <span style="color: #b6a0ff;">or</span> fft_seen
+  <span style="color: #00d3d0;">dac_seen</span> <span style="color: #ffffff;">=</span> node <span style="color: #ffffff;">==</span> <span style="color: #79a8ff;">'dac'</span> <span style="color: #b6a0ff;">or</span> dac_seen
+
+  <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#25269;&#36798; out
+</span>  <span style="color: #b6a0ff;">if</span> node <span style="color: #ffffff;">==</span> <span style="color: #79a8ff;">'out'</span>:
+    <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#24403;&#36335;&#24452;&#21253;&#21547; fft &#21644; dac&#65292;&#25214;&#21040;&#19968;&#26465;&#31526;&#21512;&#30340;&#36335;&#24452;&#65292;&#36820;&#22238; 1
+</span>    <span style="color: #b6a0ff;">if</span> fft_seen <span style="color: #b6a0ff;">and</span> dac_seen:
+      <span style="color: #00d3d0;">memo</span>[key] <span style="color: #ffffff;">=</span> 1
+    <span style="color: #b6a0ff;">else</span>:
+      <span style="color: #00d3d0;">memo</span>[key] <span style="color: #ffffff;">=</span> 0
+    <span style="color: #b6a0ff;">return</span> memo[key]
+
+  <span style="color: #00d3d0;">count</span> <span style="color: #ffffff;">=</span> 0
+  <span style="color: #00d3d0;">next_paths</span> <span style="color: #ffffff;">=</span> graph[node]
+
+  <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#36941;&#21382;&#30456;&#37051;&#30340;&#33410;&#28857;&#65292;&#32047;&#35745;&#21040;&#36798; out &#30340;&#36335;&#24452;&#25968;&#37327;
+</span>  <span style="color: #b6a0ff;">for</span> path <span style="color: #b6a0ff;">in</span> next_paths:
+    <span style="color: #00d3d0;">count</span> <span style="color: #ffffff;">+=</span> count_path_to_out_with_ftt_dac(graph, path, memo, fft_seen, dac_seen)
+  <span style="color: #00d3d0;">memo</span>[key] <span style="color: #ffffff;">=</span> count
+  <span style="color: #b6a0ff;">return</span> memo[key]
+
+count_path_to_out_with_ftt_dac(graph, <span style="color: #79a8ff;">'svr'</span>)
+</pre>
+</div>
+
+<hr>
+
+<p>
+day11 的 part1 是很简单的，因为 <code>you</code> 到 <code>out</code> 的路径很少，甚至不需要记忆化都能通过（一开始我就没加记忆化）。
+</p>
+
+<p>
+当从 <code>svr</code> 出发，路径一下就多了，不加记忆化，代码都停不下来，要执行很久。
+</p>
+
+<p>
+reddit 上有人做了<a href="https://www.reddit.com/r/adventofcode/search/?q=day11+&amp;cId=90ed8e33-3154-484c-8206-d9a5e1a184fa&amp;iId=87c28d15-516a-447a-9bec-6ff75cff7a25">路径的可视化</a>， <code>svr</code> 到 <code>out</code> 的路径比 <code>you</code> 到 <code>out</code> 的路径多了很多。
+</p>
+
+
+<figure>
+<a href="images/aoc-2025-day-11/graph-svr.webp"><img src="images/aoc-2025-day-11/graph-svr.webp" alt="graph-svr.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;3&nbsp; </span>day11 的图的可视化</figcaption>
+</figure>
+
+<p>
+part2 最开始我不是那么做的，而是尝试拼接路径，然后判断 fft 和 dac 是否在路径上，但时间复杂度很高，后来也是问了 LLM 才知道问题。就算 LLM 告诉我可以如何实现，我也还是花了些时间去理解为什么要这样做记忆化。
+</p>
+
+<p>
+最后总算弄明白了，希望下次碰到就能想起来吧～
+</p>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention-container js-required">
+<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
+<p class="webmention-tip">
+如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention-content-list"></ul>
+</details>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： <span class="dt-published">2025-12-15 Mon 18:15</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-12-15 Mon 18:17</span></p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
