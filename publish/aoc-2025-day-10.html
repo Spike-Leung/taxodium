@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Advent of Code 2025 day10</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="Advent of Code 2025 day10 题解" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+
+  <ul class="a11y-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+  </ul>
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">Advent of Code 2025 day10</h1>
+</header><p>
+<a href="https://adventofcode.com/2025/day/10">day10</a> 的输入是：
+</p>
+
+<pre class="example">
+[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
+[...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}
+[.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}
+</pre>
+
+<p>
+看第一行， <code>[.##.]</code> 表示是一排灯，其中 <code>.</code> 表示对应下标（从 0 开始）的灯是熄灭的； <code>#</code> 表示灯是亮起的。默认灯全部都是熄灭的。
+</p>
+
+<p>
+<code>(1,3)</code> 表示一个按钮，连接了下标 1 和下标 3 的灯，按一次，下标 1 和 3 的灯就会亮起，变成 <code>#</code> ；再按一次，下标 1 和 3 的灯就会熄灭，变回 <code>.</code> 。
+</p>
+
+<p>
+part1 的问题是，你可以按任意的按钮任意次，使得灯的状态变成每一行开头 <code>[]</code> 里的状态，找到每一行需要的最少次数，累计求和。
+</p>
+
+<hr>
+
+<p>
+针对一个按钮，按 1 次，对应下标的灯会亮起；按 2 次，对应下标的灯会熄灭，相当于没按过；按 3 次和按 1 次的效果是一样的。
+</p>
+
+<p>
+也就是说，对一个按钮，按奇数次，会把对应下标的灯亮起，偶数次相当于这个灯没被按过。所以对任何一个灯，最多按 1 次就够了。
+</p>
+
+<p>
+那么问题就变成了，对任意的灯按 1 次，它们的组合使得灯的状态变成 <code>[]</code> 中的状态。
+</p>
+
+<p>
+假设有 A、B、C 三个按钮，我可以有很多组合：
+</p>
+<ul class="org-ul">
+<li>只按 1 次 A / 只按 1 次 B / 只按 1 次 C （总操作数 1 次）</li>
+<li>只按 1 次 A 和 B / 只按 1 次 A 和 C / 只按 1 次 B 和 C （总操作数 2 次）</li>
+<li>只按 1 次 A、B、C （总操作数 3 次）</li>
+</ul>
+
+<p>
+对每一行，我只要枚举所有的按钮组合，都按 1 次，从组合数量少的开始遍历（这样次数就是最少的），找到一个组合，使得灯的状态和 <code>[]</code> 中的状态一致就好了。
+</p>
+
+<p>
+得到按钮的所有组合，需要用到 <a href="https://labuladong.online/algo/essential-technique/backtrack-framework/#%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98%E8%A7%A3%E6%9E%90">回溯算法</a>，在 python 中也可以利用 <a href="https://docs.python.org/3/library/itertools.html#itertools.combinations">itertools.combinations</a>。
+</p>
+
+<p>
+判断状态的时候，我是按照按钮的下标拼接成 <code>.#</code> 组合的字符串，和 <code>[]</code> 中的字符串做比较，效率可能比较低。
+</p>
+
+<p>
+Yordi Verkroost 在 <a href="https://yordi.me/advent-of-code-2025-day-10/">Advent of Code 2025 - Day 10</a> 中使用二进制表示按钮，用 <a href="https://en.wikipedia.org/wiki/Exclusive_or">XOR（异或）</a> 运算得到最终的状态，效率应该会更好。
+</p>
+
+<hr>
+<p>
+part2 的输入不变，不过此时需要关注的是 <code>{}</code> 里的部分。
+</p>
+
+<pre class="example">
+[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
+[...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}
+[.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}
+</pre>
+
+<p>
+还是看第一行， <code>[]</code> 可以忽略， <code>{3,5,4,7}</code> 表示的是电压，下标 0 的电压是 3；下标 1 的电压是 5；依次类推。<code>{}</code> 中的电压默认都是 0。按钮 <code>(1,3)</code> 可以使得下标 1、3 的电压增加 1。
+</p>
+
+<p>
+part2 的问题是，你可以按任意按钮任意次，最终使得电压达到 <code>{}</code> 里面的要求，找到需要的最少次数，累计每一行的最小次数求和。
+</p>
+
+<hr>
+
+<p>
+一开始没什么头绪，我尝试随便按一个按钮看看会如何，例如我先尝试按 <code>(0,2)</code> ，先满足把下标 0 的电压：
+</p>
+
+<ul class="org-ul">
+<li>按 1 次，电压变成 <code>{1,0,1,0}</code></li>
+<li>再按 1 次，电压变成 <code>{2,0,2,0}</code></li>
+<li>再按 1 次，电压变成 <code>{3,0,3,0}</code></li>
+</ul>
+
+<p>
+此时我就不能继续按 <code>(0,2)</code> 了，因为下标 0 的电压已经达到了 <code>{3,5,4,7}</code> 中的要求，再按就会超了。也就是说，现在我不能操作下标包含 0 的按钮了。
+</p>
+
+<p>
+继续尝试操作其他按钮，再满足一个下标的电压，直到达到 <code>{}</code> 中的电压要求。
+</p>
+
+<p>
+为什么我先开始满足下标 0 的电压？
+</p>
+
+<p>
+因为在 <code>{3,5,4,7}</code> 中，下标 0 的电压是最小的，无论我操作哪个按钮，当下标 0 的电压达到要求的时候，其他下标的电压也不会超出。
+</p>
+
+<p>
+按钮 <code>(0,2)</code> 、 <code>(0,1)</code> 都能使得下标 0 的电压增加 1，我怎么判断用哪个呢？我不知道，干脆穷举算了。
+</p>
+
+<p>
+我先尝试都用 <code>(0,2)</code> 满足下标 0 的电压，下标 0 电压满足了，我就排除所有包含下标 0 的按钮，从剩下的按钮里，继续满足当前电压较小的，不断循环这个过程。
+</p>
+
+<p>
+最后如果找到一个组合，能够满足 <code>{}</code> 中的电压要求，就记录按钮的操作次数，再找到操作次数的最小值。
+</p>
+
+<p>
+尝试完 <code>(0,2)</code> ，就继续尝试 <code>(0,1)</code> ，看看哪个的操作次数是最少的。
+</p>
+
+<p>
+折腾了好久写出一段代码，通过了示例输入，但死活过不了实际输入，看来思路是不对了。
+</p>
+
+<hr>
+
+<p>
+没什么思路，于是去 <a href="https://www.reddit.com/r/adventofcode/comments/1pity70/2025_day_10_solutions/">reddit</a> 找找思路，发现很多人提到了 <a href="https://github.com/Z3Prover/z3">Z3</a> 和 <a href="https://en.wikipedia.org/wiki/Integer_programming">ILP (Integer Linear Programming)</a>，都是我不了解的东西。
+</p>
+
+<p>
+和 LLM 进行了一些对话，把 part2 的问题丢给了它，让它分析问题，我大概明白了应该如何做。
+</p>
+
+<p>
+对于 <code>[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}</code> ：
+</p>
+
+<p>
+有这么几个按钮：
+</p>
+
+<ul class="org-ul">
+<li>(3)       → 下标 3 加 1</li>
+<li>(1,3)     → 下标 1 和 3 加 1</li>
+<li>(2)       → 下标 2 加 1</li>
+<li>(2,3)     → 下标 2 和 3 加 1</li>
+<li>(0,2)     → 下标 0 和 2 加 1</li>
+<li>(0,1)     → 下标 0 和 1 加 1</li>
+</ul>
+
+<p>
+假设：
+</p>
+
+<ul class="org-ul">
+<li>a: (3) 的次数</li>
+<li>b: (1,3) 的次数</li>
+<li>c: (2) 的次数</li>
+<li>d: (2,3) 的次数</li>
+<li>e: (0,2) 的次数</li>
+<li>f: (0,1) 的次数</li>
+</ul>
+
+<p>
+设最终需要的操作总次数是 T，那么 T = a + b + c + d + e + f。
+</p>
+
+<p>
+其中：
+</p>
+
+<p>
+下标 0 的电压要求是 3，(0,2) 和 (0,1) 会影响下标 0，操作 e 次 (0,2) 和 f 次 (0,1) 最终应该达到电压 3，所以有 e + f = 3。
+</p>
+
+<p>
+类似的：
+</p>
+<ul class="org-ul">
+<li>下标 1 的电压要求是 5: b + f = 5</li>
+<li>下标 2 的电压要求是 4: c + d + e = 4</li>
+<li>下标 3 的电压要求是 7: a + b + d = 7</li>
+</ul>
+
+<p>
+于是得到了几个线性方程：
+</p>
+
+<ul class="org-ul">
+<li>T = a + b + c + d + e + f</li>
+<li>e + f = 3</li>
+<li>b + f = 5</li>
+<li>c + d + e = 4</li>
+<li>a + b + d = 7</li>
+<li>a、b、c、d、e、f 都是整数，且大于或等于 0 （每个按钮可以不操作或操作任意次）</li>
+</ul>
+
+<p>
+目标是使得 T 最小。
+</p>
+
+<hr>
+
+<p>
+此时再看看 <a href="https://en.wikipedia.org/wiki/Linear_programming">线性规划 (Linear programming, LP)</a> 的定义：
+</p>
+
+<blockquote>
+<p>
+线性规划（LP），也称为线性优化，是一种在数学模型中实现最佳结果的方法，该模型的各项要求和目标均由线性关系表示。
+</p>
+
+<p>
+[&#x2026;]
+</p>
+
+<p>
+更正式地说，线性规划是一种优化线性目标函数的技术， <span class="underline">该函数受线性等式和线性不等式约束。</span>其可行域是一个凸多面体，该多面体定义为有限多个半空间的交集，每个半空间都由一个线性不等式定义。其目标函数是定义在该多面体上的实值仿射（线性）函数。<span class="underline">如果存在这样的点，线性规划算法会在多面体中找到该函数具有最大（或最小）值的点。</span>
+</p>
+</blockquote>
+
+<p>
+说实话我没太看懂，但大体的意思是，有一种数学模型，可以用一些线性等式和线性不等式来表示，同时存在一些约束条件。通过这样的模型，最终可以找到最值。
+</p>
+
+<p>
+而当线性规划中，变量被约束为整数，问题就会变成了 <a href="https://en.wikipedia.org/wiki/Integer_programming">整数线性规划 (Integer Linear Programming, ILP)</a>。
+</p>
+
+<p>
+此时回过头来看看上面得到的结论：
+</p>
+
+<blockquote>
+<ul class="org-ul">
+<li>T = a + b + c + d + e + f</li>
+<li>e + f = 3</li>
+<li>b + f = 5</li>
+<li>c + d + e = 4</li>
+<li>a + b + d = 7</li>
+<li>a、b、c、d、e、f 都是整数，且大于或等于 0 （每个按钮可以不操作或操作任意次）</li>
+</ul>
+
+<p>
+目标是使得 T 最小。
+</p>
+</blockquote>
+
+<p>
+可以发现这个模型是符合整数线性规划的：
+</p>
+<ul class="org-ul">
+<li>可以用线性等式表达问题</li>
+<li>存在约束条件，例如 e + f 需要等于 3</li>
+<li>变量 a,b,c,d,e,f 要求是整数</li>
+</ul>
+
+<p>
+所以，这就是一个整数线性规划问题，而在 python 中，可以利用 <a href="https://github.com/Z3Prover/z3">Z3</a> 或 <a href="https://github.com/coin-or/pulp">PuLP</a> 来处理整数线性规划问题。
+</p>
+
+<p>
+不过就算知道可以用 Z3，我也不会用 _​(:3 」∠)_​。
+</p>
+
+<p>
+还是求助了 LLM，得到这样的一个函数，并问它每一行代码的含义：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #b6a0ff;">from</span> z3 <span style="color: #b6a0ff;">import</span> Int, Optimize, sat
+
+<span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">min_operations_z3</span>(ops, target):
+    <span style="color: #9ac8e0;">"""&#20351;&#29992; Z3 &#27714;&#35299;&#26368;&#23567;&#25805;&#20316;&#27425;&#25968;&#65292;&#36820;&#22238;&#25972;&#25968;&#26368;&#20248;&#20540;&#65288;&#33509;&#26080;&#35299;&#36820;&#22238; None&#65289;"""</span>
+    <span style="color: #00d3d0;">n</span> <span style="color: #ffffff;">=</span> <span style="color: #f78fe7;">len</span>(ops)           <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#25805;&#20316;&#25968;&#37327;
+</span>    <span style="color: #00d3d0;">m</span> <span style="color: #ffffff;">=</span> <span style="color: #f78fe7;">len</span>(target)        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#32034;&#24341;&#25968;&#37327;
+</span>
+    <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#21019;&#24314;&#21464;&#37327;&#65292;&#34920;&#31034;&#30340;&#26159;&#27599;&#20010;&#25353;&#38062;&#30340;&#25805;&#20316;&#27425;&#25968;&#65292;x0 &#34920;&#31034;&#31532;&#19968;&#20010;&#25353;&#38062;&#30340;&#25805;&#20316;&#27425;&#25968;
+</span>    <span style="color: #f78fe7;">vars</span> <span style="color: #ffffff;">=</span> [Int(f<span style="color: #79a8ff;">'x</span>{i}<span style="color: #79a8ff;">'</span>) <span style="color: #b6a0ff;">for</span> i <span style="color: #b6a0ff;">in</span> <span style="color: #f78fe7;">range</span>(n)]
+
+    <span style="color: #00d3d0;">opt</span> <span style="color: #ffffff;">=</span> Optimize()
+    <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#28155;&#21152;&#32422;&#26463;&#65292;&#25805;&#20316;&#27425;&#25968;&#21482;&#33021;&#22823;&#20110;&#25110;&#31561;&#20110; 0
+</span>    <span style="color: #b6a0ff;">for</span> v <span style="color: #b6a0ff;">in</span> <span style="color: #f78fe7;">vars</span>:
+        opt.add(v <span style="color: #ffffff;">&gt;=</span> 0)
+
+    <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#36941;&#21382;&#25152;&#26377;&#30340;&#30446;&#26631;&#30005;&#21387;
+</span>    <span style="color: #b6a0ff;">for</span> i <span style="color: #b6a0ff;">in</span> <span style="color: #f78fe7;">range</span>(m):
+        <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#36941;&#21382;&#25152;&#26377;&#30340;&#25353;&#38062;&#65292;&#24403;&#25353;&#38062;&#20250;&#24433;&#21709;&#30446;&#26631;&#30005;&#21387;&#65292;&#21017;&#32047;&#35745;&#25805;&#20316;&#27425;&#25968;&#65292;&#30456;&#24403;&#20110;&#26500;&#36896; e + f = 3
+</span>        <span style="color: #00d3d0;">coeff_sum</span> <span style="color: #ffffff;">=</span> <span style="color: #f78fe7;">sum</span>(<span style="color: #f78fe7;">vars</span>[j] <span style="color: #b6a0ff;">for</span> j <span style="color: #b6a0ff;">in</span> <span style="color: #f78fe7;">range</span>(n) <span style="color: #b6a0ff;">if</span> i <span style="color: #b6a0ff;">in</span> ops[j])
+        opt.add(coeff_sum <span style="color: #ffffff;">==</span> target[i])
+
+    <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#26368;&#23567;&#21270;&#24635;&#25805;&#20316;&#27425;&#25968;&#65292;&#20351;&#29992; minimize &#27714;&#26368;&#23567;&#20540;
+</span>    <span style="color: #00d3d0;">total</span> <span style="color: #ffffff;">=</span> <span style="color: #f78fe7;">sum</span>(<span style="color: #f78fe7;">vars</span>)
+    opt.minimize(total)
+
+    <span style="color: #db7b5f;"># </span><span style="color: #db7b5f;">&#24403;&#25152;&#26377;&#32422;&#26463;&#37117;&#33021;&#28385;&#36275;&#30340;&#26102;&#20505;&#65292;&#24471;&#21040;&#36825;&#20010;&#27169;&#22411;&#23545;&#35937;&#65292;&#33719;&#21462;&#25805;&#20316;&#24635;&#27425;&#25968;&#30340;&#26368;&#23567;&#20540;
+</span>    <span style="color: #b6a0ff;">if</span> opt.check() <span style="color: #ffffff;">==</span> sat:
+        <span style="color: #00d3d0;">model</span> <span style="color: #ffffff;">=</span> opt.model()
+        <span style="color: #b6a0ff;">return</span> model.evaluate(total).as_long()
+    <span style="color: #b6a0ff;">else</span>:
+        <span style="color: #b6a0ff;">return</span> <span style="color: #00bcff;">None</span>
+</pre>
+</div>
+
+<p>
+使用 Z3 问题就很轻松就解决了。
+</p>
+
+<p>
+如果你对 PuLP 的方法感兴趣，可以看看 Yordi Verkroost 的 <a href="https://yordi.me/advent-of-code-2025-day-10/">Advent of Code 2025 - Day 10</a>。
+</p>
+
+<hr>
+
+<p>
+day10 依然是让人折磨的一天 _​(:3 」∠)_​，希望以后我碰到类似问题能想起来可以用线性规划解决。
+</p>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention-container js-required">
+<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
+<p class="webmention-tip">
+如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention-content-list"></ul>
+</details>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： <span class="dt-published">2025-12-15 Mon 11:03</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-12-15 Mon 11:03</span></p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
