@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Advent of Code 2025 day12 and Review</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="Advent of Code 2025 day12 题解以及回顾" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+
+  <ul class="a11y-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+  </ul>
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">Advent of Code 2025 day12 and Review</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#B41118A9-1AB8-43FC-A3E8-3614028DC7F5">Day12</a></li>
+<li><a href="#ADE4C90D-F8FC-4DED-A8E8-DF44CA1F9BF3">Review</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-B41118A9-1AB8-43FC-A3E8-3614028DC7F5" class="outline-2">
+<h2 id="B41118A9-1AB8-43FC-A3E8-3614028DC7F5">Day12</h2>
+<div class="outline-text-2" id="text-B41118A9-1AB8-43FC-A3E8-3614028DC7F5"><p>
+<a href="https://adventofcode.com/2025/day/12">day12</a> 的输入是：
+</p>
+<pre class="example">
+0:
+###
+##.
+##.
+
+1:
+###
+##.
+.##
+
+2:
+.##
+###
+##.
+
+3:
+##.
+###
+##.
+
+4:
+###
+#..
+###
+
+5:
+###
+.#.
+###
+
+4x4: 0 0 0 0 2 0
+12x5: 1 0 1 0 2 2
+12x5: 1 0 1 0 3 2
+</pre>
+
+<p>
+其中：
+</p>
+
+<pre class="example">
+0:
+###
+##.
+##.
+</pre>
+
+<p>
+表示下标 0 的一个形状，形状由 <code>#</code> 组成， <code>.</code> 的部分是空的，不占据空间。
+</p>
+
+<p>
+每个图形可以根据需要旋转和翻转， <code>#</code> 组成的图形部分不能重叠，不过像是图形中的 <code>.</code> 因为是空的，其他图形可以插进去，将不同的图形组合到一起。
+</p>
+
+<p>
+有点像是俄罗斯方块的感觉。
+</p>
+
+<p>
+<code>4x4: 0 0 0 0 2 0</code> 表示存在一个 4x4 的空间，要求在里面放置：
+</p>
+<ul class="org-ul">
+<li>0 个下标 0 图形</li>
+<li>0 个下标 1 图形</li>
+<li>0 个下标 2 图形</li>
+<li>0 个下标 3 图形</li>
+<li>2 个下标 4 图形</li>
+<li>0 个下标 5 图形</li>
+</ul>
+
+<p>
+下标 4 的图形长这样：
+</p>
+<pre class="example">
+4:
+###
+#..
+###
+</pre>
+
+<p>
+在 4x4 的空间里，一种摆放方法是：
+</p>
+
+<pre class="example">
+AAA.
+ABAB
+ABAB
+.BBB
+</pre>
+
+<p>
+A 和 B 分别是 2 个下标 4 的图形。
+</p>
+
+<p>
+part1 的问题是，对于每一行输入：
+</p>
+
+<pre class="example">
+4x4: 0 0 0 0 2 0
+12x5: 1 0 1 0 2 2
+12x5: 1 0 1 0 3 2
+</pre>
+
+<p>
+要求的图形是否能够全部摆放进去。
+</p>
+
+<hr>
+
+<p>
+每个图形都可以旋转、翻转，还要考虑图形中的空白部分，思考如何最大程度地利用空间，想想都觉得头大，看起来是个很复杂的问题。
+</p>
+
+<p>
+不过每个图形都有面积，要求所有图形都能放在一个区域里，那么区域面积应该大于或等于所有图形面积之和。有没有可能只要这么判断一下就好了？
+</p>
+
+<p>
+于是用示例进行验证，发现行不通，对于 <code>12x5: 1 0 1 0 3 2</code> ，区域面积是 12x5 即 60；而所有图形的面积是 1x7 + 0x7 + 1x7 + 0x7 + 3x7 + 2x7 = 49；区域面积足以放下所有的图形，但示例中已经明确表示 <code>12x5: 1 0 1 0 3 2</code> 是放不下所有图形的，因为有图形会出现重叠。
+</p>
+
+<p>
+对这样的问题也是没思路，不想死磕了，就去 <a href="https://www.reddit.com/r/adventofcode/comments/1pkje0o/2025_day_12_solutions/">reddit</a> 看看大伙儿有啥思路，然后发现很多人都说直接比较区域面积和所有图形面积就可以了，尽管示例过不去，但对于实际的输入是可以通过的。
+</p>
+
+<p>
+(╯°□°）╯︵ ┻━┻
+</p>
+
+<p>
+啊？真的假的？半信半疑地写了函数试了试，还真的通过了。
+</p>
+
+
+<figure>
+<a href="images/aoc-2025-day-12/day12-meme.webp"><img src="images/aoc-2025-day-12/day12-meme.webp" alt="day12-meme.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>一张梗图，左边站着一个上级，右边是一个下级，两个人握着手。 上级很欣赏下级，对他进行表扬，下级则一脸懵。 上级身上写着 Day 12 Gold Star， 下级身上则写着 area &gt;= 9 * sum(shapes)。</figcaption>
+</figure>
+
+<p>
+通过之后 part2 就没有题目了，「一棵特别大的圣诞树突然闪烁着耀眼的光芒，一颗巨大的星星奇迹般地出现在它上方！当你的眼睛重新适应时，你似乎看到一个留着白胡子的胖男人消失在人群中。」只要拿满 23 颗星星，就可以爬上楼梯，去树顶摘取最后一颗星星，装点圣诞。
+</p>
+
+<p>
+然后看到了作者 <a href="https://was.tl/">Eric Wastl</a> 留下的彩蛋：
+</p>
+
+<blockquote>
+<p>
+I need to throw in a puzzle like this occasionally to keep everyone on their toes, right?
+</p>
+</blockquote>
+
+<p>
+哈哈哈，原来 day12 这么做是故意的。
+</p>
+
+<p>
+不过肯定也有办法去解决问题的，但我不想折磨自己了。这实际上是一个 <a href="https://en.wikipedia.org/wiki/Packing_problems">装箱问题 (Packing problems)</a>，如果你感兴趣可以在 <a href="https://www.reddit.com/r/adventofcode/comments/1pkje0o/2025_day_12_solutions/">-❄️- 2025 Day 12 Solutions -❄️-</a> 找找解法。
+</p>
+</div>
+</div>
+<div id="outline-container-ADE4C90D-F8FC-4DED-A8E8-DF44CA1F9BF3" class="outline-2">
+<h2 id="ADE4C90D-F8FC-4DED-A8E8-DF44CA1F9BF3">Review</h2>
+<div class="outline-text-2" id="text-ADE4C90D-F8FC-4DED-A8E8-DF44CA1F9BF3">
+<figure>
+<a href="images/aoc-2025-day-12/aoc-calendar-2025.webp"><img src="images/aoc-2025-day-12/aoc-calendar-2025.webp" alt="aoc-calendar-2025.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>Advent of Code 2025 日历</figcaption>
+</figure>
+
+<p>
+12 天的 Advent of Code 终于结束了，这是我第一次做完所有的谜题，也是第一次知道原来每天的谜题里都有一个小彩蛋。
+</p>
+
+<p>
+获得 24 颗星之后，回到日历页，精灵们还会带着圣诞老人从屏幕上面飘过。日历的图案是这 12 天里走过的地方，有一些是会动的，一些特征会让人想起曾经解决过的谜题，
+2025 年的日历还挺精美的。
+</p>
+
+<p>
+以往的 AoC 都是持续 24 天的，但制作谜题并不容易，很花费时间，所以今年开始缩减到 12 天了。我觉得 12 天挺好的，轻松一些，如果是 24 天，经常碰到没有思路的情况，我可能会很容易放弃。
+</p>
+
+<p>
+24 天也有好处，坚持做 24 天题，每天可以在 reddit 上和大家一起讨论、发点梗图，最后在圣诞节大家互道祝福，每个人都像是一个为圣诞节准备的精灵，有种很热闹的感觉，增添了节日的氛围。
+</p>
+
+<p>
+不过如果谜题解不开，大概也会有点郁闷。当跟不上谜题的发布，甚至 24 天过去了，谜题还有不少没做完，可能圣诞节会没那么开心 :P
+</p>
+
+
+<figure>
+<a href="images/aoc-2025-day-12/a-man-thinking.webp"><img src="images/aoc-2025-day-12/a-man-thinking.webp" alt="a-man-thinking.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;3&nbsp; </span>一个在思考中的中年男人，表情凝重。总共有三个画面，一个画面是坐在秋千上； 一个画面是在餐桌前低着头；一个画面是在空地上，背着手，看着远处。</figcaption>
+</figure>
+
+<p>
+我觉得逛 reddit 也是参与 AoC 的一部分，reddit 增添了 AoC 的趣味。有时题目很难，心情不好，去 reddit 看看大家的吐槽、梗图，心情就好点了；也可以从评论里找找思路，继续挑战谜题。
+</p>
+
+<p>
+看到很多人都解决了，自己却没有思路，不知道怎么写，我是会有一种挫败感的。但想想原因，可能是自己对某些算法和数据结构不熟悉，可能某些知识压根就不知道，不管哪种情况都说明存在不足，弄明白了都是一种收获，其实是一件让人开心的事情。
+</p>
+
+<p>
+这一次参加因为空闲时间比较多，我也尝试记录自己的思路，这逼迫我将不理解的地方尽可能弄明白，否则就写不出来了。另一方面也是为了在今年完成 100 篇博客文章，所以记录下来凑凑数。
+</p>
+
+<p>
+我也看到其他人通过博客文章的形式分享他们的思路，例如：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://aoc.winslowjosiah.com/">Josiah Winslow solves Advent of Code</a> by Josiah Winslow</li>
+<li><a href="https://yordi.me/advent-of-code-2025-waking-up-with-puzzles/">Advent of Code 2025: Waking Up With Puzzles</a> by Yordi Verkroost</li>
+</ul>
+
+<hr>
+
+<p>
+这次参与尝试了用 python，了解了一些基本语法，但还没完整看过一遍教程；一些操作我写起来感觉很麻烦，大概也有更好地写法。
+</p>
+
+<p>
+也有不少人用 python 解题，去看别人的题解也能学到很多。对比之下，也暴露了一些自己编码上的问题：
+</p>
+<ul class="org-ul">
+<li>我写的函数往往都比较长，逻辑比较多。更好的做法是拆分出职责单一的函数，组合在一起，可读性也会更好。</li>
+<li>变量取名还是很难，总是想不到合适的变量名。</li>
+<li>谜题需要读取文件，将文件内容转换成合适的数据结构。写的时候我总是容易搞不清楚参数的数据结构，有时是字符串，有时是数字，比较乱。更好的做法可能是在最开始先将数据处理好，而不是在后续的函数中各自处理。
+python 似乎可以像 Typescript 一样显式地标记参数和返回的类型，或许也会有所帮助。</li>
+</ul>
+
+<hr>
+
+<p>
+除了 python，这次也尝试了 <a href="https://github.com/jj-vcs/jj">Jujutsu(jj)</a>，一个兼容 git 的版本控制系统，声称「比 git 更简单、更容易，但同时又更强大」。我通读了一遍 <a href="https://steveklabnik.github.io/jujutsu-tutorial/introduction/introduction.html">Steve's Jujutsu Tutorial</a>，然后就开始用了。
+</p>
+
+<p>
+jj 的大致流程是这样的（比较常用的命令）：
+</p>
+<dl class="org-dl">
+<dt><code>jj git init</code></dt><dd>初始化仓库</dd>
+<dt><code>jj config set --user user.name "Your Name"</code></dt><dd>配置提交者用户名</dd>
+<dt><code>jj config set --user user.email "your@email.com"</code></dt><dd>配置提交者邮箱</dd>
+<dt><code>jj new</code></dt><dd>创建一个新的改动，像是准备一张新的、干净的草稿纸。</dd>
+<dt><code>jj describe</code></dt><dd><p>
+每次修改，jj 都会自动记录变化，每次变化都会自动做一次 <code>git commit</code> 。不需要 <code>git add</code> 之类的操作存到暂存区。
+</p>
+
+<p>
+jj 有 ChangeID 和 CommitID，CommitID 对应的是 git 中的提交，经常会变化，大多时候也不需要关心。
+ChangeID 是可以理解为 jj 自己的提交 ID，会跟踪 CommitID。
+</p>
+
+<p>
+<code>jj describe</code> 可以描述当前的改动，任何时候都可以使用 <code>jj describe</code> ，不一定是提交的时候才用。
+</p></dd>
+<dt><code>jj st</code></dt><dd>查看当前的改动</dd>
+<dt><code>jj log</code></dt><dd>查看日志，jj 有一个 <a href="https://steveklabnik.github.io/jujutsu-tutorial/branching-merging-and-conflicts/revsets.html">revision set</a> 的概念，提供了一些函数配合 <code>jj log</code> 使用。例如查询所有的日志，命令是 <code>jj log -r 'all()'</code> ，查询条件非常丰富。</dd>
+<dt><code>jj bookmark create trunk</code></dt><dd><p>
+在当前提交创建一个 <code>trunk</code> 分支。
+</p>
+
+<p>
+jj 也有分支的概念，但分支名在 jj 中不重要，分支名只有在提交时才需要关注。
+</p>
+
+<p>
+jj 中从某个提交创建分支，可以用 <code>jj new ChangeID</code>
+</p></dd>
+<dt><code>jj bookmark set trunk</code></dt><dd>将 trunk 标记在当前的 ChangeID 上。</dd>
+<dt><code>jj git remote add origin git@github.com:steveklabnik/jj-hello-world.git</code></dt><dd>添加 git remote</dd>
+<dt><code>jj git push</code></dt><dd>推送本地改动到远端</dd>
+</dl>
+
+<p>
+jj 的流程和 git 不太一样，在 git 里，一般是修改后，选择要提交的改动(<code>git add</code>)，然后提交(<code>git commit</code>)。在 jj 里，修改后描述这次修改的内容(<code>jj describe</code>)，就结束了，然后就可以开始做新的改动 (<code>jj new</code>)，如果要选择提交，似乎还得 <a href="https://www.jj-vcs.dev/latest/FAQ/#can-i-interactively-create-a-new-commit-from-only-some-of-the-changes-in-the-working-copy-like-git-add-p-git-commit-or-hg-commit-i">主动拆分</a>。
+</p>
+
+<p>
+jj 的一个问题是，它总是在修改 git 的记录，默认情况下，只要做了修改，就会形成新的 commit ID，感觉容易弄乱 git 的提交记录。自己一个人维护倒是问题不大，如果多人协作，可能会经常发生本地改了 git 提交记录，覆盖了远端仓库的情况。不过我没有用 jj 多人协作过，大概是有解决办法的？还是有很多需要去弄明白的地方。
+</p>
+
+<p>
+jj 也有一些我觉得不错的功能，例如可以用 ID 的前几个字符指定 ID，而不用写全，在命令行上用就会容易一些。
+</p>
+
+
+<figure>
+<a href="images/aoc-2025-day-12/jj-log.webp"><img src="images/aoc-2025-day-12/jj-log.webp" alt="jj-log.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;4&nbsp; </span>jj log 输出</figcaption>
+</figure>
+
+<p>
+jj 合并分支比 git 容易很多，例如分支情况是这样的：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-text">&gt; jj log
+@  ymvptyyq steve@steveklabnik.com 2024-03-17 14:25:31.000 -05:00 push-ymvptyyqmyul 728dbb1e
+&#9474;  (empty) fixing all the breakage from updating dependencies
+&#9673;  xulymzyp steve@steveklabnik.com 2024-03-17 14:25:14.000 -05:00 1f7c69a5
+&#9474;  (empty) updating dependencies
+&#9474; &#9673;  zxyukunn steve@steveklabnik.com 2024-03-17 14:24:56.000 -05:00 push-zxyukunnwolo 30081a6b
+&#9474; &#9474;  (empty) first 80% done
+&#9474; &#9673;  tzsloruo steve@steveklabnik.com 2024-03-17 14:24:21.000 -05:00 7c02f6ce
+&#9500;&#9472;&#9583;  (empty) another feature
+&#9474; &#9673;  rxpztwms steve@steveklabnik.com 2024-03-17 14:23:00.000 -05:00 push-rxpztwmsszvk 902a6cd2
+&#9474; &#9474;  (empty) various fixes
+&#9474; &#9673;  tmnmvxyy steve@steveklabnik.com 2024-03-17 14:22:15.000 -05:00 105cf6b5
+&#9500;&#9472;&#9583;  (empty) prepare to deploy to the cloud
+&#9474; &#9673;  yxxppztp steve@steveklabnik.com 2024-03-17 14:18:00.000 -05:00 push-yxxppztpoyqq 3d123151
+&#9474; &#9474;  (empty) have galactus query eks with time range
+&#9474; &#9673;  opwqpunl steve@steveklabnik.com 2024-03-17 14:15:58.000 -05:00 1a66beb1
+&#9500;&#9472;&#9583;  (empty) display the birthday date on the settings page
+&#9474; &#9673;  msmntwvo steve@steveklabnik.com 2024-03-02 11:47:08.000 -06:00 push-vmunwxsksqvk 752534be
+&#9474; &#9474;  add a new function
+&#9474; &#9673;  vmunwxsk steve@steveklabnik.com 2024-03-02 11:47:08.000 -06:00 f6f7dce9
+&#9500;&#9472;&#9583;  add a comment to main
+&#9673;  ksrmwuon steve@steveklabnik.com 2024-03-01 23:10:35.000 -06:00 trunk e202b67c
+&#9474;  Update Cargo.toml
+</pre>
+</div>
+
+<p>
+如果要合并多条分支，在 git 里可能需要多次操作，但在 jj 里， 执行 <code>jj new ym z r yx m -m "merge: steve's branch"</code> 就可以将所有分支合并在一起了。
+</p>
+
+<p>
+在 Emacs 里有 <a href="https://magit.vc/">magit</a>，是我目前觉得最好用的 gitUI 了，没有之一，它很好地减少了 git 的使用难度。有了 magit，我觉得 git 还是挺好用的，所以 jj 并没有给我带来太多的吸引。不过我还是会继续深入了解一下 jj，熟悉它的使用流程，达到熟练使用的程度。
+</p>
+
+<hr>
+
+<p>
+Anyway，庆祝做完了 12 天的谜题，也写完了记录！
+</p>
+
+<p>
+｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡
+</p>
+
+<p>
+明年有空继续～
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention-container js-required">
+<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
+<p class="webmention-tip">
+如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention-content-list"></ul>
+</details>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： <span class="dt-published">2025-12-16 Tue 12:23</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-12-16 Tue 12:23</span></p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
