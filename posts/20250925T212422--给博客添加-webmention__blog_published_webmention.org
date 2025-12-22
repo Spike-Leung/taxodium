@@ -328,6 +328,18 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
 
 我目前的处理方法是用 [[https://github.com/aaronpk/webmention.io?tab=readme-ov-file#find-all-links-to-your-domain][基于域名获取所有数据的 API]] 先获取所有的数据，然后基于页面的 URL 进行过滤。
 
+** 发送了 webmention 但是没有显示出来
+:PROPERTIES:
+:CUSTOM_ID: D0EECE7A-2BD9-44C0-BA90-668373F5746E
+:END:
+
+一种可能是，webmention 要求源页面中包含目标页面的链接，而有的源页面是由 JS 动态渲染的，
+不是静态的，导致 webmention 无法从源页面找到目标页面的链接，而认为源页面没有发送 webmention。
+
+排查的方法是，在浏览器中查看网络请求，找到源页面返回的内容，搜索一下内容中是否包含目标页面的链接。
+
+也可能是网站显示的问题，可以尝试联系作者。
+
 * TODO TODO
 :PROPERTIES:
 :CUSTOM_ID: C60020F6-33E8-4CB2-A8DD-968BE0EABC31

@@ -72,6 +72,7 @@
 <li><a href="#1A041E70-EA18-4ED8-9055-099F9CC42152">关于 u-in-reply-to 的使用</a></li>
 <li><a href="#0EA3F8F1-CA64-48D1-BBF2-99216CC827A6">关于 h-entry 的使用</a></li>
 <li><a href="#061A4259-3D8B-4AB6-B8DC-B9C76BC6EEE5">webmention.io 的 target 需要完全匹配</a></li>
+<li><a href="#D0EECE7A-2BD9-44C0-BA90-668373F5746E">发送了 webmention 但是没有显示出来</a></li>
 </ul>
 </li>
 <li><a href="#C60020F6-33E8-4CB2-A8DD-968BE0EABC31"><span class="todo TODO">TODO</span> TODO</a></li>
@@ -173,7 +174,7 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 如果自己搭建的话，可以参照 <a href="https://www.w3.org/TR/webmention">Webmention 规范</a> 实现。你也可以找现成的工具。
 </p>
 
-<section role="note" id="org4049e6b">
+<section role="note" id="org2bb3053">
 <p>
 你可以在 <a href="https://indieweb.org/Webmention">Webmention | IndieWeb</a> 找到很多工具和服务。
 </p>
@@ -486,7 +487,7 @@ e-content 标记在整篇文章内容上
 有的 webmention 的发送时的 URL 是 <code>https://domain/page.html#abc</code> ，通过 webmention.io 的 API，target 参数设置为 <code>https://domain/page.html</code> 是无法获取到数据的，需要将 target 设置为 <code>https://domain/page.html#abc</code> ，完全匹配才行，因为目前存储的就是完整的 URL。
 </p>
 
-<section role="note" id="orge375024">
+<section role="note" id="org3b614d5">
 <p>
 如果 target 是 <code>https://domain/page.html#abc</code> ，注意需要将 <code>#</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">转义</a> 成 <code>%23</code> 。
 </p>
@@ -494,6 +495,21 @@ e-content 标记在整篇文章内容上
 
 <p>
 我目前的处理方法是用 <a href="https://github.com/aaronpk/webmention.io?tab=readme-ov-file#find-all-links-to-your-domain">基于域名获取所有数据的 API</a> 先获取所有的数据，然后基于页面的 URL 进行过滤。
+</p>
+</div>
+</div>
+<div id="outline-container-D0EECE7A-2BD9-44C0-BA90-668373F5746E" class="outline-3">
+<h3 id="D0EECE7A-2BD9-44C0-BA90-668373F5746E">发送了 webmention 但是没有显示出来</h3>
+<div class="outline-text-3" id="text-D0EECE7A-2BD9-44C0-BA90-668373F5746E"><p>
+一种可能是，webmention 要求源页面中包含目标页面的链接，而有的源页面是由 JS 动态渲染的，不是静态的，导致 webmention 无法从源页面找到目标页面的链接，而认为源页面没有发送 webmention。
+</p>
+
+<p>
+排查的方法是，在浏览器中查看网络请求，找到源页面返回的内容，搜索一下内容中是否包含目标页面的链接。
+</p>
+
+<p>
+也可能是网站显示的问题，可以尝试联系作者。
 </p>
 </div>
 </div>
@@ -593,7 +609,7 @@ e-content 标记在整篇文章内容上
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-09-25 Thu 21:24</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-12-03 Wed 02:01</span></p>
+<p class="date">修改于： <span class="dt-updated">2025-12-22 Mon 10:08</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
