@@ -24,17 +24,10 @@ a::after {
       &:hover {
         transform: rotate(0);
         z-index: 1;
+        filter: grayscale(0) blur(0);
 
         &::after {
           opacity: 0;
-        }
-
-        &:has(a[href*="music.163.com"]) {
-          opacity: 1;
-
-          &::after {
-            opacity: 0.15;
-          }
         }
       }
     }
@@ -48,8 +41,9 @@ a::after {
     margin: 0;
     position: relative;
     transform: perspective(500px) rotateX(5deg) rotateY(-5deg) rotateZ(1deg);
-    transition: transform .25s ease-in-out, opacity .25s ease-in-out;
+    transition: transform .25s ease-in-out, opacity .25s ease-in-out, filter 0.9s ease-in-out;
     transform-origin: center bottom;
+    filter: grayscale(0.95) blur(.55px);
 
     &::after {
       content: '';
@@ -62,15 +56,12 @@ a::after {
       background-size: contain;
       pointer-events: none;
       transition: opacity .25s ease-in-out;
-      opacity: 0.15;
-    }
-
-    &:has(a[href*="music.163.com"]) {
-      opacity: 0.8;
+      opacity: 0.25;
     }
 
     @media screen and (width <= 400px) {
       transform: unset;
+      filter: grayscale(0) blur(0);
 
       &::after {
         opacity: 0;
