@@ -9,12 +9,27 @@ a::after {
 
 .album-wall {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: calc(1em - 10px) 1em;
+  grid-template-columns: repeat(auto-fill, calc(var(--font-size) * 15));
+  gap: calc(1.2em - 10px) 1.2em;
   justify-content: center;
-  max-width: max-content;
+  /* max-width: max-content; */
+  width: 99vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -49.5vw;
+  margin-right: -49.5vw;
 
-  @media screen and (width <= 400px) {
+  @media screen and (width <= 1920px) {
+    grid-template-columns: repeat(auto-fill, calc(var(--font-size) * 12));
+    gap: calc(1em - 10px) 1em;
+  }
+
+  @media screen and (width <= 800px) {
+    grid-template-columns: repeat(auto-fill, calc(var(--font-size) * 10));
+  }
+
+  @media screen and (width <= 650px) {
     gap: min(calc(.5em - 10px), .5em) .5em;
     grid-template-columns: repeat(2, 1fr);
   }
@@ -74,6 +89,6 @@ a::after {
     aspect-ratio: 1;
     width: 100%;
     box-shadow: -5px 5px 5px var(--color-box-shadow)!important;
-    border-radius: 0;
+    border-radius: 3px;
   }
 }
