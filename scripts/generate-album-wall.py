@@ -16,10 +16,12 @@ def process_single_file(file_info):
         subprocess.run([
             "magick", str(file),
             "-resize", "50%",
-            "-paint", "5",
-            "+noise", "Laplacian",
+            # "-paint", "2.5",
+            "-kuwahara", "4",
+            "-paint", "0.5",
+            "+noise", "Gaussian",
             "-resize", "300%",
-            "-define", "avif:lossless=true",
+            "-quality", "25",
             str(final_out)
         ], check=True, capture_output=True)
 
