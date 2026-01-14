@@ -8,7 +8,7 @@
 #+language: zh-CN
 #+author: Spike Leung
 #+email: l-yanlei@hotmail.com
-#+options: ^:{}
+#+options: ^:{} toc:1
 #+startup: content
 
 * 前言
@@ -16,7 +16,8 @@
 :CUSTOM_ID: 5d1eef06-1c1c-499a-b222-a8956eabe68f
 :END:
 
-这是之前做的一个关于 shell 的分享，内容基本来自 [[https://effective-shell.com/][effective-shell]]，这是一个非常好的 shell 入门教程， 你可以把这篇文章当作是它的 [[https://en.wikipedia.org/wiki/TL;DR][TL;DR]]。
+这是之前做的一个关于 shell 的分享，内容基本来自 [[https://effective-shell.com/][effective-shell]]，
+这是一个非常好的 shell 入门教程， 你可以把这篇文章当作是它的 [[https://en.wikipedia.org/wiki/TL;DR][TL;DR]]。
 
 * 为什么学
 :PROPERTIES:
@@ -24,7 +25,8 @@
 :END:
 
 #+begin_quote
-熟练使用命令行是一种常常被忽视，或被认为难以掌握的技能，但实际上，它会提高你作为工程师的灵活性以及生产力。
+熟练使用命令行是一种常常被忽视，或被认为难以掌握的技能，
+但实际上，它会提高你作为工程师的灵活性以及生产力。
 
 -- [[https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md][命令行的艺术]]
 #+end_quote
@@ -346,16 +348,15 @@ https://effective-shell.com/assets/images/pushd-popd-stack-ccd34132d513841c5b1d9
 - [[https://effective-shell.com/part-2-core-skills/finding-files][find]]
 
   #+begin_quote
-  您当然可以使用 alias 设置别名来简化上述操作，但 *shell 的哲学之一便是
-  寻找（更好用的）替代方案。*
+  您当然可以使用 alias 设置别名来简化上述操作，但 *shell 的哲学之一便是寻找（更好用的）替代方案。*
 
-  记住，shell 最好的特性就是您只是在调用程序，因此您只要找到合适的替
-  代程序即可（甚至自己编写）。
+  记住，shell 最好的特性就是您只是在调用程序，因此您只要找到合适的替代程序即可（甚至自己编写）。
 
-  例如，[[https://github.com/sharkdp/fd][fd]] 就是一个更简单、更快速、更友好的程序，它可以用来作为 =find= 的
-  替代品。它有很多不错的默认设置，例如输出着色、默认支持正则匹配、支持
-  unicode 并且我认为它的语法更符合直觉。以模式 PATTERN 搜索的语法是 =fd
-  PATTERN= 。 -- [[https://missing-semester-cn.github.io/2020/shell-tools/][Shell 工具和脚本]]
+  例如，[[https://github.com/sharkdp/fd][fd]] 就是一个更简单、更快速、更友好的程序，它可以用来作为 =find= 的替代品。
+  它有很多不错的默认设置，例如输出着色、默认支持正则匹配、支持 unicode 并且我认为它的语法更符合直觉。
+  以模式 PATTERN 搜索的语法是 =fd PATTERN= 。
+
+  -- [[https://missing-semester-cn.github.io/2020/shell-tools/][Shell 工具和脚本]]
   #+end_quote
 *** 剪贴板体操运动员 (Clipboard Gymnast)
 :PROPERTIES:
@@ -655,8 +656,8 @@ The =tee= command is like a T-pipe in plumbing - it lets the stream of data go i
 :CUSTOM_ID: 7b1be0af-e108-4f38-a077-82ce1696ca53
 :END:
 
-当命令在前台执行，此时又需要在命令行做别的事情，就得先关掉前台运行的程
-序，完成要做的事情，再重新运行，比较麻烦。
+当命令在前台执行，此时又需要在命令行做别的事情，
+就得先关掉前台运行的程序，完成要做的事情，再重新运行，比较麻烦。
 
 当然也可以直接另起一个终端，或者用 tmux。
 
@@ -675,13 +676,9 @@ The =tee= command is like a T-pipe in plumbing - it lets the stream of data go i
 :END:
 
 - =browser-sync start -s . -f . --directory --no-notify --no-ui=
-
 - =Ctrl + Z=  挂起任务, 页面无法访问了
-
 - =bg %1= 丢到后台执行
-
 - =jobs= 查看当前 shell 运行的任务
-
 - =%n &= 将数字为 ~n~ 的任务放到后台执行
 
 ** Moving Background Jobs to the Foreground
@@ -732,9 +729,7 @@ A shell script is just a text file which contains a set of commands.
 当你发现总是重复敲一系列命令的时候，就可以考虑将这些重复的序列写脚本，这样有几个好处：
 
 - 节省时间，不用每次敲一些重复的命令
-
 - 可以使用你喜欢的编辑器编辑脚本，添加注释描述你想实现的事情，可以利用 git 管理版本
-
 - 作为脚本文件，便于机器之间的分享，与人之间的分享
 
 ** 实现一个 'common' 命令
@@ -743,11 +738,8 @@ A shell script is just a text file which contains a set of commands.
 :END:
 
 - Read a large number of commands from the history
-
 - Sort the commands, then count the number of duplicates
-
 - Sort this list showing the most commonly run commands first
-
 - Print the results to the screen.
 
 #+begin_src zsh
@@ -806,8 +798,8 @@ as a comment) then the command will fail.
   ~/scripts/common.v1.sh
 #+end_src
 
-但这种方式由于没有指定执行脚本的 shell 程序，如果你用的是 Bash，那就是
-用 Bash 执行，如果用的是 zsh，那就是 zsh 执行。
+但这种方式由于没有指定执行脚本的 shell 程序，
+如果你用的是 Bash，那就是用 Bash 执行，如果用的是 zsh，那就是 zsh 执行。
 
 ** [[https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#using-shebangs][shebangs]]
 :PROPERTIES:
@@ -873,7 +865,8 @@ print('Hello from Python')
 
 你可以 =type= 命令找到某个程序的路径，但会有些麻烦。
 
-此时就可以利用 =env= (/set environment and execute command/) ，它会去执行命令，并从 =$PATH= 上找到命令所在的路径。
+此时就可以利用 =env= (/set environment and execute command/) ，
+它会去执行命令，并从 =$PATH= 上找到命令所在的路径。
 
 #+begin_src bash
   #!/usr/bin/env bash
@@ -1556,8 +1549,8 @@ files, then loop through the results.
 在 [[id:587028cc-311e-46ef-a936-eaf0200b5662][For Loops - Files with Wildcards]] 中看到，shell 会按照空格分割文本，
 此时 find 找到的文件如果带有空格，也会被分割，导致文件名不对。
 
-一种解决办法时临时改变 shell 使用的分割符，由于 find 找回来的文件都是
-以换行符分割的，因此，可以将分割符临时从空格设置为换行符。
+一种解决办法时临时改变 shell 使用的分割符，由于 find 找回来的文件都是以换行符分割的，
+因此，可以将分割符临时从空格设置为换行符。
 
 #+begin_src bash
   # Save the current value of IFS - so we can restore it later. Split on newlines.
@@ -2412,17 +2405,10 @@ have completed.
 :PROPERTIES:
 :CUSTOM_ID: bdbaa9ff-8d0f-4d17-a5e9-120a1ba04960
 :END:
-
 - [[https://effective-shell.com/][effective-shell]]
-
 - [[https://missing-semester-cn.github.io/][计算机教育中缺失的一课]]
-
 - [[https://github.com/jlevy/the-art-of-command-line][The Art of Command Line]]
-
 - [[https://wangdoc.com/bash/][Bash 脚本教程]]
-
 - [[https://learnxinyminutes.com/docs/bash/][Learn X in Y minutes [bash]​]]
-
 - [[https://prithu.dev/posts/unix-pipeline/][The beauty of Unix pipelines]]
-
 - [[https://www.brianstorti.com/understanding-shell-script-idiom-redirect/][Understanding Shell Script's idiom: 2>&1]]
