@@ -18,3 +18,5 @@
 #+options: ^:{}
 #+startup: content
 \n"))))
+
+((dired-mode . ((eval . (diredfl-mode -1)))))
