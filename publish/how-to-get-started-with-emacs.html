@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>如何上手 @@html:&lt;mark class="emacs"&gt;Emacs&lt;/mark&gt;@@</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="分享我上手 Emacs 的历程以及一些经验" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+
+  <ul class="a11y-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+  </ul>
+  <!--
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  -->
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">如何上手 <mark class="emacs">Emacs</mark></h1>
+</header><p>
+TL;DR
+</p>
+
+<p>
+上手 Emacs 的建议：
+</p>
+
+<ul class="org-ul">
+<li>要对 Emacs 感兴趣，愿意花些时间折腾和调试</li>
+<li>从成熟的配置起步，熟悉 Emacs 的使用</li>
+<li>从零开始重新配置 Emacs，了解每一行的配置的作用</li>
+</ul>
+
+<hr>
+
+<p>
+我是看 <a href="https://github.com/redguardtoo">Chen Bin</a> 的教程 <a href="https://github.com/redguardtoo/mastering-emacs-in-one-year-guide">一年成为 Emacs 高手</a> 入门的，这篇教程最大的帮助是让我从 <a href="https://github.com/purcell/emacs.d">purcell 的 Emacs 配置</a> 开始上手 Emacs，这个配置很成熟，让我感受到了 Emacs 的乐趣。
+</p>
+
+<p>
+我很快把 Emacs 用在了平时工作中，一开始可能比较多摩擦，效率会下降一点，但硬着头皮去熟练使用后就很顺手了。
+</p>
+
+<p>
+Purcell 的配置我用了很久，后面断断续续阅读 purcell 的配置，每次都有新发现，也开始添加一些自己的配置；直到最近，我才重新整理了配置文件，了解每一行配置的作用，形成了 <a href="https://github.com/Spike-Leung/Spikemacs">我的配置</a>。
+</p>
+
+<p>
+我用 Emacs 来写博客、阅读 RSS、记录笔记、写代码、记账、记录待办事项……应该还会继续用很久。
+</p>
+
+<section role="note" id="org1f7aabf">
+<p>
+关于 Emacs 的好处，我之前写了篇 <a href="20250831T162749--emacs-elevator-pitch__202508_emacs_emacscarnival_published.html">Emacs Elevator Pitch - Only Emacs can save your soul</a>（英文），有兴趣可以看看。
+</p>
+</section>
+
+<hr>
+
+<p>
+Emacs 上手是存在一些难度的，它不是开箱即用的，需要去写一些配置，使得它用起来更趁手。
+</p>
+
+<p>
+首先需要对 Emacs 感兴趣，愿意花些时间折腾和调试配置。
+</p>
+
+<p>
+接着，阅读一遍 Emacs 内置的 Emacs Tutorial，了解常用的操作，知道一个编辑器的常用功能怎么用，例如打开文件、编辑内容、移动指针、保存文件，退出编辑器等。
+</p>
+
+<p>
+然后，了解 Emacs 中如何查看 Info，看一遍 Info Help 了解如何在 Info 中移动和搜索；了解 <code>describe-function</code>, <code>describe-key</code>, <code>describe-mode</code> 等，这些方法可以查阅函数、key、mode 的文档。
+</p>
+
+<p>
+之后，找一个比较成熟的（Star 多的）配置， 例如 <a href="https://github.com/purcell/emacs.d">purcell 的配置</a>，先用一段时间，可能几天或几个月，甚至一年。阅读别人的配置，看看包含什么，怎么用的，都去尝试一下。通过别人成熟的配置，了解在 Emacs 中可以做什么事情、有什么好用的功能，去熟悉 Emacs 的使用。
+</p>
+
+<details>
+<summary>可以尝试的配置</summary>
+
+<ul class="org-ul">
+<li><a href="https://github.com/purcell/emacs.d">purcell/emacs.d</a></li>
+<li><a href="https://www.spacemacs.org/">spacemacs</a></li>
+<li><a href="https://github.com/doomemacs/doomemacs">Doom Emacs</a></li>
+<li><a href="https://github.com/bbatsov/prelude">Emacs Prelude</a></li>
+<li><a href="https://github.com/jamescherti/minimal-emacs.d">minimal-emacs.d</a></li>
+<li><a href="https://github.com/seagle0128/.emacs.d">Centaur Emacs</a></li>
+<li><a href="https://github.com/protesilaos/dotfiles/blob/master/emacs/.emacs.d/prot-emacs.org">prot-emacs</a></li>
+<li><a href="https://github.com/condy0919/.emacs.d">condy0919/.emacs.d</a></li>
+<li><a href="https://github.com/redguardtoo/emacs.d">redguardtoo/emacs.d</a></li>
+</ul>
+</details>
+
+<p>
+这个阶段，要「逼迫」自己去用 Emacs，平时用编辑器做什么，现在就用 Emacs 尝试完成一样的事情，或许过程中会有一些摩擦和困难，想办法去克服它，LLM 会是你的好帮手。
+</p>
+
+<section role="note" id="org66bd223">
+<p>
+如果不知道用 Emacs 做什么，可以试试：
+</p>
+<ul class="org-ul">
+<li>用 <a href="https://magit.vc/">magit</a> 完成 git 相关操作</li>
+<li>用 <a href="https://github.com/protesilaos/denote">denote</a> 或者 <a href="https://www.orgroam.com/">Org-roam</a> 记笔记</li>
+<li>用内置的 org-mode 做代办事项、<a href="https://www.youtube.com/watch?v=gCswMsONkwY">Getting Thing Done(GTD)</a>，这方面可以看看 <a href="https://www.youtube.com/playlist?list=PLVtKhBrRV_ZkPnBtt_TD1Cs9PJlU0IIdE">OrgMode tutorial | Rainer König</a></li>
+<li>用 Emacs 来写 Markdown，用来写博客</li>
+<li>&#x2026;</li>
+</ul>
+</section>
+
+<p>
+一段时间之后，你大概已经能够熟练地使用 Emacs 了，也对自己喜欢用的功能、常用的功能有了解。这个时候就可以看看 Emacs Info 里的 <a href="https://www.gnu.org/software/emacs/manual/html_node/eintr/index.html">Emacs Lisp Intro</a>，了解一下 Elisp。
+</p>
+
+<section role="note" id="org2f39284">
+<p>
+其他教程：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/protesilaos/emacs-lisp-elements">Emacs Lisp Elements</a></li>
+<li><a href="https://learnxinyminutes.com/elisp/">Learn Emacs Lisp in Y minutes</a></li>
+<li><a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/index.html">Emacs Lisp Manual</a> (这个要看很久)</li>
+</ul>
+</section>
+
+<p>
+对 Elisp 有一些大致了解后，可以开始写自己的配置了，我的建议是从一个空白的 <code>init.el</code> 开始，一行一行地添加。
+</p>
+
+<p>
+哪怕是将现在用的配置重新写一遍，也要从零开始写，过程中了解每一行配置的作用和目的，你可能需要查阅很多包的文档了解它们的功能，可能需要经常询问 LLM 了解一些配置的含义。
+</p>
+
+<p>
+如果你是从成熟配置开始用 Emacs 的，你可能不知道什么配置都没有的时候 Emacs 是怎样的，一些你习以为常的功能又是通过什么配置控制的，从零开始可以让你对此有所了解，也可以从中找到一些自己用不到的配置，从而精简配置。
+</p>
+
+<p>
+虽然比较费劲费时，但这么做可以加深你对配置的理解，并且让这些配置真正属于你。
+</p>
+
+<section role="note" id="org9142202">
+<p>
+从头开始写，也有一些小建议：
+</p>
+
+<ul class="org-ul">
+<li>使用 <code>use-package</code> 去管理包的安装，会更简洁方便</li>
+<li>考虑先配置好 minibuffer、补全、一些编辑工具包，方便编写</li>
+</ul>
+</section>
+
+<p>
+到此为止，我想 Emacs 入门已经完成了，接下来可以去继续探索：
+</p>
+
+<ul class="org-ul">
+<li>找找别人的配置，看看有没有好用的功能或着包，抄过来用</li>
+<li><p>
+用 Elisp 写一些方便的函数，例如:
+</p>
+<ul class="org-ul">
+<li><a href="20260126T115449--emacs-封装-webjump-搜索-symbol-at-point__emacs_published_search_webjump.html">Emacs: 封装 webjump 搜索 symbol-at-point</a></li>
+<li><a href="20250620T213937--emacs-实时预览-markdown__emacs_markdown_preview_published.html">Emacs 实时预览 markdown</a></li>
+</ul>
+
+<p>
+如果 Elisp 不熟练，也可以借助 LLM，搞明白 LLM 是如何实现的，从中学习 Elisp 的编写。
+</p></li>
+<li>逛逛论坛、博客，了解 Emacs 的动态：
+<ul class="org-ul">
+<li><a href="https://emacs-china.org/">Emacs China</a></li>
+<li><a href="https://www.reddit.com/r/emacs/">r/emacs</a></li>
+<li><a href="https://sachachua.com/blog/category/emacs-news/">Emacs news</a></li>
+<li><a href="https://planet.emacslife.com/">Plannet Emacslife</a></li>
+<li><a href="https://emacsconf.org/">EmacsConf</a></li>
+<li><a href="https://www.emacswiki.org/emacs/Carnival">Emacs Carnival</a></li>
+</ul></li>
+</ul>
+
+<hr>
+
+<p>
+说到底，只要你真的想掌握 Emacs，总是有办法的，掌握 Emacs 并没有多难，祝你顺利。
+</p>
+
+<p>
+其他可以看看的：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://emacs-china.org/t/topic/4999">谁是你的 emacs 领路人？- Emacs China</a></li>
+<li><a href="https://github.com/redguardtoo/mastering-emacs-in-one-year-guide/blob/master/guide-zh.org">一年成为Emacs高手 (像神一样使用编辑器)</a></li>
+<li><a href="https://book.emacs-china.org/">21 天学会 Emacs（2022 Edition）</a></li>
+<li><a href="https://nyk.moe/categories/tutorial/">Emacs 自力求生指南</a></li>
+<li><a href="https://www.masteringemacs.org/">Mastering Emacs</a></li>
+</ul>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention-container js-required">
+<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
+<p class="webmention-tip">
+如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention-content-list"></ul>
+</details>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： <span class="dt-published">2026-01-26 Mon 18:20</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-01-27 Tue 00:07</span></p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<!--
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+-->
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

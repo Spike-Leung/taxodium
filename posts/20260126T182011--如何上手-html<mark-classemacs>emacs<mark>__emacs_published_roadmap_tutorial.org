@@ -1,0 +1,148 @@
+#+title:      如何上手 @@html:<mark class="emacs">Emacs</mark>@@
+#+export_file_name: how-to-get-started-with-emacs
+#+date:       [2026-01-26 Mon 18:20]
+#+filetags:   :emacs:published:roadmap:tutorial:
+#+identifier: 20260126T182011
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 分享我上手 Emacs 的历程以及一些经验
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content
+
+TL;DR
+
+上手 Emacs 的建议：
+
+- 要对 Emacs 感兴趣，愿意花些时间折腾和调试
+- 从成熟的配置起步，熟悉 Emacs 的使用
+- 从零开始重新配置 Emacs，了解每一行的配置的作用
+
+-----
+
+我是看 [[https://github.com/redguardtoo][Chen Bin]] 的教程 [[https://github.com/redguardtoo/mastering-emacs-in-one-year-guide][一年成为 Emacs 高手]] 入门的，
+这篇教程最大的帮助是让我从 [[https://github.com/purcell/emacs.d][purcell 的 Emacs 配置]] 开始上手 Emacs，
+这个配置很成熟，让我感受到了 Emacs 的乐趣。
+
+我很快把 Emacs 用在了平时工作中，一开始可能比较多摩擦，
+效率会下降一点，但硬着头皮去熟练使用后就很顺手了。
+
+Purcell 的配置我用了很久，
+后面断断续续阅读 purcell 的配置，每次都有新发现，也开始添加一些自己的配置；
+直到最近，我才重新整理了配置文件，了解每一行配置的作用，形成了 [[https://github.com/Spike-Leung/Spikemacs][我的配置]]。
+
+我用 Emacs 来写博客、阅读 RSS、记录笔记、写代码、记账、记录待办事项……应该还会继续用很久。
+
+#+attr_html: :role note
+#+begin_section
+关于 Emacs 的好处，
+我之前写了篇 [[denote:20250831T162749][Emacs Elevator Pitch - Only Emacs can save your soul]]（英文），有兴趣可以看看。
+#+end_section
+
+-----
+
+Emacs 上手是存在一些难度的，它不是开箱即用的，需要去写一些配置，使得它用起来更趁手。
+
+首先需要对 Emacs 感兴趣，愿意花些时间折腾和调试配置。
+
+接着，阅读一遍 Emacs 内置的 Emacs Tutorial，了解常用的操作，
+知道一个编辑器的常用功能怎么用，
+例如打开文件、编辑内容、移动指针、保存文件，退出编辑器等。
+
+然后，了解 Emacs 中如何查看 Info，看一遍 Info Help 了解如何在 Info 中移动和搜索；
+了解 ~describe-function~, ~describe-key~, ~describe-mode~ 等，
+这些方法可以查阅函数、key、mode 的文档。
+
+之后，找一个比较成熟的（Star 多的）配置， 例如 [[https://github.com/purcell/emacs.d][purcell 的配置]]，
+先用一段时间，可能几天或几个月，甚至一年。
+阅读别人的配置，看看包含什么，怎么用的，都去尝试一下。
+通过别人成熟的配置，了解在 Emacs 中可以做什么事情、有什么好用的功能，去熟悉 Emacs 的使用。
+
+#+begin_details
+#+html: <summary>可以尝试的配置</summary>
+
+- [[https://github.com/purcell/emacs.d][purcell/emacs.d]]
+- [[https://www.spacemacs.org/][spacemacs]]
+- [[https://github.com/doomemacs/doomemacs][Doom Emacs]]
+- [[https://github.com/bbatsov/prelude][Emacs Prelude]]
+- [[https://github.com/jamescherti/minimal-emacs.d][minimal-emacs.d]]
+- [[https://github.com/seagle0128/.emacs.d][Centaur Emacs]]
+- [[https://github.com/protesilaos/dotfiles/blob/master/emacs/.emacs.d/prot-emacs.org][prot-emacs]]
+- [[https://github.com/condy0919/.emacs.d][condy0919/.emacs.d]]
+- [[https://github.com/redguardtoo/emacs.d][redguardtoo/emacs.d]]
+#+end_details
+
+这个阶段，要「逼迫」自己去用 Emacs，平时用编辑器做什么，现在就用 Emacs 尝试完成一样的事情，
+或许过程中会有一些摩擦和困难，想办法去克服它，LLM 会是你的好帮手。
+
+#+attr_html: :role note
+#+begin_section
+如果不知道用 Emacs 做什么，可以试试：
+- 用 [[https://magit.vc/][magit]] 完成 git 相关操作
+- 用 [[https://github.com/protesilaos/denote][denote]] 或者 [[https://www.orgroam.com/][Org-roam]] 记笔记
+- 用内置的 org-mode 做代办事项、[[https://www.youtube.com/watch?v=gCswMsONkwY][Getting Thing Done(GTD)]]，
+  这方面可以看看 [[https://www.youtube.com/playlist?list=PLVtKhBrRV_ZkPnBtt_TD1Cs9PJlU0IIdE][OrgMode tutorial | Rainer König]]
+- 用 Emacs 来写 Markdown，用来写博客
+- ...
+#+end_section
+
+一段时间之后，你大概已经能够熟练地使用 Emacs 了，也对自己喜欢用的功能、常用的功能有了解。
+这个时候就可以看看 Emacs Info 里的 [[https://www.gnu.org/software/emacs/manual/html_node/eintr/index.html][Emacs Lisp Intro]]，了解一下 Elisp。
+
+#+attr_html: :role note
+#+begin_section
+其他教程：
+
+- [[https://github.com/protesilaos/emacs-lisp-elements][Emacs Lisp Elements]]
+- [[https://learnxinyminutes.com/elisp/][Learn Emacs Lisp in Y minutes]]
+- [[https://www.gnu.org/software/emacs/manual/html_node/elisp/index.html][Emacs Lisp Manual]] (这个要看很久)
+#+end_section
+
+对 Elisp 有一些大致了解后，可以开始写自己的配置了，
+我的建议是从一个空白的 ~init.el~ 开始，一行一行地添加。
+
+哪怕是将现在用的配置重新写一遍，也要从零开始写，过程中了解每一行配置的作用和目的，
+你可能需要查阅很多包的文档了解它们的功能，可能需要经常询问 LLM 了解一些配置的含义。
+
+如果你是从成熟配置开始用 Emacs 的，你可能不知道什么配置都没有的时候 Emacs 是怎样的，
+一些你习以为常的功能又是通过什么配置控制的，从零开始可以让你对此有所了解，
+也可以从中找到一些自己用不到的配置，从而精简配置。
+
+虽然比较费劲费时，但这么做可以加深你对配置的理解，并且让这些配置真正属于你。
+
+#+attr_html: :role note
+#+begin_section
+从头开始写，也有一些小建议：
+
+- 使用 ~use-package~ 去管理包的安装，会更简洁方便
+- 考虑先配置好 minibuffer、补全、一些编辑工具包，方便编写
+#+end_section
+
+到此为止，我想 Emacs 入门已经完成了，接下来可以去继续探索：
+
+- 找找别人的配置，看看有没有好用的功能或着包，抄过来用
+- 用 Elisp 写一些方便的函数，例如:
+  + [[denote:20260126T115449][Emacs: 封装 webjump 搜索 symbol-at-point]]
+  + [[denote:20250620T213937][Emacs 实时预览 markdown]]
+
+  如果 Elisp 不熟练，也可以借助 LLM，搞明白 LLM 是如何实现的，从中学习 Elisp 的编写。
+- 逛逛论坛、博客，了解 Emacs 的动态：
+  + [[https://emacs-china.org/][Emacs China]]
+  + [[https://www.reddit.com/r/emacs/][r/emacs]]
+  + [[https://sachachua.com/blog/category/emacs-news/][Emacs news]]
+  + [[https://planet.emacslife.com/][Plannet Emacslife]]
+  + [[https://emacsconf.org/][EmacsConf]]
+  + [[https://www.emacswiki.org/emacs/Carnival][Emacs Carnival]]
+
+-----
+
+说到底，只要你真的想掌握 Emacs，总是有办法的，掌握 Emacs 并没有多难，祝你顺利。
+
+其他可以看看的：
+
+- [[https://emacs-china.org/t/topic/4999][谁是你的 emacs 领路人？- Emacs China]]
+- [[https://github.com/redguardtoo/mastering-emacs-in-one-year-guide/blob/master/guide-zh.org][一年成为Emacs高手 (像神一样使用编辑器)]]
+- [[https://book.emacs-china.org/][21 天学会 Emacs（2022 Edition）]]
+- [[https://nyk.moe/categories/tutorial/][Emacs 自力求生指南]]
+- [[https://www.masteringemacs.org/][Mastering Emacs]]
