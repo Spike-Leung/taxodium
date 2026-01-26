@@ -11,6 +11,11 @@
 #+options: ^:{}
 #+startup: content
 
+#+attr_html: :role note
+#+begin_section
+另见：[[denote:20250828T184037][结合 denote 和 org-publish 写博客]]
+#+end_section
+
 博客经历过几次更新，最开始的时候是用 markdown 写博客，然后用 [[https://hexo.io/][Hexo]] 发布。
 然后学习了 Vue，又尝试用 [[https://vuepress.vuejs.org/][VuePress]] 发布，它们都是托管在 [[https://pages.github.com/][Github Pages]] 上。
 后来接触了 [[https://www.gnu.org/software/emacs/][Emacs]]，就从 markdown 迁移到了 [[https://orgmode.org/][org-mode]]，然后使用 [[https://gohugo.io/][Hugo]] 发布。
@@ -27,7 +32,7 @@
 最近将博客又更新了一下，使用 [[https://orgmode.org/manual/Publishing.html][org-publish]] 进行博客的发布，
 主要是让博客加载相对快一些，维护起来更简单一些。
 
-相关代码见 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-org-publish.el][init-org-publish.el]]。
+相关代码见 [[https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-org-publish.el][init-org-publish.el]]。
 
 * 动机
 :PROPERTIES:
@@ -402,34 +407,6 @@ org publish 的时候会给 heading、figure、details、pre 等元素生成 id�
       vertical-align: -3.5px;
     }
 #+end_src
-
-* TODO Todo
-:PROPERTIES:
-:CUSTOM_ID: 169fa4fb-5d6c-4560-9c66-2a8d89d2c56f
-:ID:       8D0E789E-D94B-47FD-A2FA-41903067E4BC
-:END:
-
-- [X] 复用 =:html-head= ， =:html-preamble= 等
-- [X] 优化 RSS 的内容 -> [[denote:20250408T213924][博客的一些更新]]
-- [X] +针对 zine 单独设置 RSS+ -> +好像没有什么必要+ -> 已经实现了，见 [[https://taxodium.ink/zine.xml][zine.xml]]。
-- [X] 增加搜索功能 -> [[https://taxodium.ink/search.html][search]]，使用 [[https://github.com/CloudCannon/pagefind][pagefind]] 实现，不过对于中文有的分词分的不是很好，可能搜索不到，凑合用着
-- [ ] 实现 CI/CD
-- [X] 编写 Elisp，方便地插入图片
-
-  #+begin_details
-  #+html: <summary>插入图片的方法</summary>
-
-  #+begin_src emacs-lisp
-    (defun spike-leung/insert-blog-images ()
-      "Insert images from blog."
-      (interactive)
-      (let* ((image-dir (expand-file-name "~/git/taxodium/publish/images/"))
-             (image-file (read-file-name "Select image: " image-dir))
-             (relative-path (file-relative-name image-file image-dir)))
-
-        (insert (format "#+CAPTION: \n[[file:images/%s]]" relative-path))))
-  #+end_src
-  #+end_details
 
 * Refs
 :PROPERTIES:
