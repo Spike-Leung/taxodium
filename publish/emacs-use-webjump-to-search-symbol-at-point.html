@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Emacs: 封装 webjump 搜索 symbol-at-point</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="Emacs: 封装 webjump 搜索 symbol-at-point" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+
+  <ul class="a11y-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+  </ul>
+  <!--
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  -->
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">Emacs: 封装 webjump 搜索 symbol-at-point</h1>
+</header><p>
+<code>webjump</code> 是 Emacs 里内置的一个包，你可以配置想要搜索的网站，然后通过 webjump 选择搜索。
+</p>
+
+<p>
+例如这是我设置的网站：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff; font-weight: bold;">setq</span> webjump-sites '((<span style="color: #79a8ff;">"Kagi"</span> . [simple-query <span style="color: #79a8ff;">"kagi.com"</span> <span style="color: #79a8ff;">"kagi.com/search?q="</span> <span style="color: #79a8ff;">""</span>])
+                      (<span style="color: #79a8ff;">"Kagi Translate"</span> . [simple-query <span style="color: #79a8ff;">"translate.kagi.com"</span> <span style="color: #79a8ff;">"translate.kagi.com/?from=auto&amp;to=zh_cn&amp;text="</span> <span style="color: #79a8ff;">""</span>])
+                      (<span style="color: #79a8ff;">"Wikipedia"</span> . [simple-query <span style="color: #79a8ff;">"wikipedia.org"</span> <span style="color: #79a8ff;">"wikipedia.org/wiki/"</span> <span style="color: #79a8ff;">""</span>])
+                      (<span style="color: #79a8ff;">"Kagi(site:github.com)"</span> . [simple-query <span style="color: #79a8ff;">"kagi.com"</span> <span style="color: #79a8ff;">"kagi.com/search?q=site:github.com+"</span> <span style="color: #79a8ff;">""</span>])
+                      (<span style="color: #79a8ff;">"Album"</span> . [simple-query <span style="color: #79a8ff;">"kagi.com"</span> <span style="color: #79a8ff;">"kagi.com/images?q="</span> <span style="color: #79a8ff;">"&amp;size=large"</span>])
+                      (<span style="color: #79a8ff;">"MDN"</span> . [simple-query <span style="color: #79a8ff;">"developer.mozilla.org"</span> <span style="color: #79a8ff;">"developer.mozilla.org/en-US/search?q="</span> <span style="color: #79a8ff;">""</span>])
+                      (<span style="color: #79a8ff;">"Haici"</span> . [simple-query <span style="color: #79a8ff;">"dict.cn"</span> <span style="color: #79a8ff;">"dict.cn/search?q="</span> <span style="color: #79a8ff;">""</span>])))
+</pre>
+</div>
+
+<p>
+当我调用 webjump 时，它会让我从上面的选项里选一个，然后输入搜索关键字，之后就会跳转到对应的网站搜索。
+</p>
+
+<p>
+可以将一些比较高频的搜索条件内置在搜索链接里。如果经常搜索 GitHub 上的内容，可以加上 <code>site:github.com</code> ，使得总是搜索 <code>github.com</code> 的内容；或者也可以直接用 GitHub 本身的搜索 <code>https://github.com/search?q=%s</code> 。
+</p>
+
+<p>
+<code>symbol-at-point</code> 也是 Emacs 里内置的一个函数，可以获取当前指针下的内容。
+</p>
+
+<p>
+结合两者，我写了一个函数，获取指针下的内容，然后调用 webjump 去搜索，这样在 Emacs 里碰到什么我想要查询的，就可以快速调用常用的网站进行搜索。例如写页面的时候快速去 MDN 查询一些 API 的使用。
+</p>
+
+<details>
+<summary>代码</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff; font-weight: bold;">use-package</span> webjump
+  <span style="color: #f78fe7; font-weight: bold;">:bind</span> ((<span style="color: #79a8ff;">"C-M-?"</span> . spike-leung/webjump-symbol-at-point))
+  <span style="color: #f78fe7; font-weight: bold;">:config</span>
+  (<span style="color: #b6a0ff; font-weight: bold;">setq</span> webjump-sites '((<span style="color: #79a8ff;">"Kagi"</span> . [simple-query <span style="color: #79a8ff;">"kagi.com"</span> <span style="color: #79a8ff;">"kagi.com/search?q="</span> <span style="color: #79a8ff;">""</span>])
+                        (<span style="color: #79a8ff;">"Kagi Translate"</span> . [simple-query <span style="color: #79a8ff;">"translate.kagi.com"</span> <span style="color: #79a8ff;">"translate.kagi.com/?from=auto&amp;to=zh_cn&amp;text="</span> <span style="color: #79a8ff;">""</span>])
+                        (<span style="color: #79a8ff;">"Wikipedia"</span> . [simple-query <span style="color: #79a8ff;">"wikipedia.org"</span> <span style="color: #79a8ff;">"wikipedia.org/wiki/"</span> <span style="color: #79a8ff;">""</span>])
+                        (<span style="color: #79a8ff;">"Kagi(site:github.com)"</span> . [simple-query <span style="color: #79a8ff;">"kagi.com"</span> <span style="color: #79a8ff;">"kagi.com/search?q=site:github.com+"</span> <span style="color: #79a8ff;">""</span>])
+                        (<span style="color: #79a8ff;">"Album"</span> . [simple-query <span style="color: #79a8ff;">"kagi.com"</span> <span style="color: #79a8ff;">"kagi.com/images?q="</span> <span style="color: #79a8ff;">"&amp;size=large"</span>])
+                        (<span style="color: #79a8ff;">"MDN"</span> . [simple-query <span style="color: #79a8ff;">"developer.mozilla.org"</span> <span style="color: #79a8ff;">"developer.mozilla.org/en-US/search?q="</span> <span style="color: #79a8ff;">""</span>])
+                        (<span style="color: #79a8ff;">"Haici"</span> . [simple-query <span style="color: #79a8ff;">"dict.cn"</span> <span style="color: #79a8ff;">"dict.cn/search?q="</span> <span style="color: #79a8ff;">""</span>])))
+  (<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/webjump-symbol-at-point</span> ()
+    <span style="color: #9ac8e0; font-style: italic;">"&#33719;&#21462;&#20809;&#26631;&#19979;&#30340; symbol &#24182;&#36890;&#36807; webjump &#25628;&#32034;&#12290;"</span>
+    (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
+    (<span style="color: #b6a0ff; font-weight: bold;">let*</span> ((completion-ignore-case t)
+           (query (<span style="color: #b6a0ff; font-weight: bold;">if</span> (use-region-p)
+                      (buffer-substring-no-properties (region-beginning) (region-end))
+                    (thing-at-point 'symbol t)))
+           <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">(query (read-string (format "Webjump search (%s): " (or content ""))
+</span>           <span style="color: #989898; font-style: italic;">;;                     </span><span style="color: #989898; font-style: italic;">nil nil content))
+</span>           (item (assoc-string
+                  (completing-read <span style="color: #79a8ff;">"WebJump to site: "</span> webjump-sites nil t)
+                  webjump-sites t))
+           (name (car item))
+           (expr (cdr item))
+           (query-prefix (aref expr 2))
+           (query-suffix (aref expr 3))
+           (fun (<span style="color: #b6a0ff; font-weight: bold;">if</span> webjump-use-internal-browser
+                    (apply-partially #'browse-url-with-browser-kind 'internal)
+                  #'browse-url)))
+      (funcall fun (webjump-url-fix
+                    (<span style="color: #b6a0ff; font-weight: bold;">cond</span> ((concat query-prefix (webjump-url-encode query) query-suffix))
+                          (t (<span style="color: #fec43f; font-weight: bold;">error</span> <span style="color: #79a8ff;">"WebJump URL expression for \"%s\" invalid"</span>
+                                    name))))))))
+</pre>
+</div>
+</details>
+
+<p>
+<a href="https://emacs-china.org/t/webjump-symbol-at-point/30838">Emacs China 上的相关讨论</a>
+</p>
+
+<hr>
+
+<p>
+webjump 和浏览器或者搜索引擎中的 Search Shortcuts 差不多, 可以保存常用的搜索条件便于快速搜索。
+</p>
+
+<p>
+例如我经常需要从 Kagi 找专辑封面的图片，而且希望图片尺寸尽可能大。
+</p>
+
+<p>
+我平常的操作是：
+</p>
+<ol class="org-ol">
+<li>触发搜索栏</li>
+<li>输入关键字搜索</li>
+<li>切换到图片搜索</li>
+<li>设置尺寸为 large 进行过滤</li>
+</ol>
+
+<p>
+通过 Search Shortcuts，我设置了 <code>https://kagi.com/images?q=%s&amp;size=large</code> ，并绑定 <code>@a</code> 。
+</p>
+
+<p>
+我的操作就变成:
+</p>
+<ol class="org-ol">
+<li>触发搜索栏</li>
+<li>输入 <code>@a</code> 快捷键触发 Search Shortcuts，输入关键字搜索，结束</li>
+</ol>
+
+<p>
+可以了解一下搜索引擎的搜索操作符，例如这是 <a href="https://help.kagi.com/kagi/features/search-operators.html#search-operators-1">Kagi Search Operators</a>：
+</p>
+<ul class="org-ul">
+<li><code>site:</code> 可以搜索指定域名</li>
+<li><code>filetype:</code> 可以搜索指定的文件类型</li>
+<li>&#x2026;</li>
+</ul>
+
+<p>
+然后将平时频繁使用的一些搜索条件保存到 Search Shortcuts，这样下次使用就会方便一些。
+</p>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention-container js-required">
+<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
+<p class="webmention-tip">
+如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention-content-list"></ul>
+</details>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： <span class="dt-published">2026-01-26 Mon 11:54</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-01-26 Mon 13:05</span></p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<!--
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+-->
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
