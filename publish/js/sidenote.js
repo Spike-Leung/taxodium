@@ -276,6 +276,6 @@ function unmountSidenotes() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  setTimeout(handleFootnoteMode);
+  setTimeout(handleFootnoteMode, 500);
   window.addEventListener('resize', handleFootnoteMode);
 });
