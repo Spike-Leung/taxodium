@@ -64,15 +64,23 @@
 </figure>
 
 <p>
-最近用 LLM 挺多的，尝试用英文写 prompt，但有时我不知道怎么写（英文比较菜）就想着翻译一下。
+最近用 LLM 挺多的，尝试用英文写 prompt，但有时我不知道怎么写，就想着翻译一下。
+Emacs 中的翻译的工具也不少，写这个函数只是分享一下 <code>gptel-request</code> 的一种实现。
 </p>
 
+<section role="note" id="org210ce19">
 <p>
-<a href="translation-in-emacs.html">当然 Emacs 中的翻译的工具很多</a> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>，写这个函数只是分享一下 <code>gptel-request</code> 的一种实现。
+一些 Emacs 的翻译配置：
 </p>
 
+<ul class="org-ul">
+<li><a href="translation-in-emacs.html">Translation In Emacs</a></li>
+<li><a href="https://manateelazycat.github.io/2022/11/07/how-i-use-emacs/#:~:text=%E5%B8%83%E5%B1%80%EF%BC%8C%20%E9%9D%9E%E5%B8%B8%E6%96%B9%E4%BE%BF%E3%80%82-,%E8%8B%B1%E6%96%87%E7%BF%BB%E8%AF%91,-%E5%81%9A%E4%B8%BA%E4%B8%80%E4%B8%AA%E8%8B%B1%E6%96%87">英文翻译</a> by Manatee LazyCat</li>
+</ul>
+</section>
+
 <p>
-逻辑都是 LLM 写的，大体的逻辑是：(源码见 <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-gptel.el">init-gptel</a>)
+逻辑都是 LLM 写的，大体的逻辑是（源码见 <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-gptel.el">init-gptel.el</a>）：
 </p>
 
 <ol class="org-ol">
@@ -81,8 +89,10 @@
 <li>调用 <code>gptel-request</code> ，写一个翻译的 prompt，发起请求，得到响应后覆盖第 1 步选中的内容。</li>
 </ol>
 
+<hr>
+
 <p>
-更新:
+更新：
 </p>
 
 <ul class="org-ul">
@@ -209,7 +219,7 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 </div>
 </details>
 
-<section role="note" id="orgb847da8">
+<section role="note" id="org4a21b0d">
 <p>
 在 preset 中 <code>:rewrite-message</code> 对应的是 <code>gptel-rewrite-message</code> 或者 <code>gptel--rewrite-message</code> ，你还可以定义很多参数，具体见 <a href="https://github.com/karthink/gptel?tab=readme-ov-file#option-presets">gptel - Option presets</a>。
 </p>
@@ -220,7 +230,7 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 </section>
 
 <p>
-接下来定一个方法，选择 preset 然后调用 <code>gptel--suffix-rewrite</code> :
+接下来定义一个方法，选择 preset 然后调用 <code>gptel--suffix-rewrite</code> :
 </p>
 
 <details>
@@ -234,11 +244,14 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 </span>  (<span style="color: #b6a0ff; font-weight: bold;">require</span> '<span style="color: #00bcff;">gptel-rewrite</span>)
   (<span style="color: #b6a0ff; font-weight: bold;">unless</span> (use-region-p) (<span style="color: #fec43f; font-weight: bold;">user-error</span> <span style="color: #79a8ff;">"Requires a selected region"</span>))
   (<span style="color: #b6a0ff; font-weight: bold;">let*</span> ((preset-name
-          <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#36807;&#28388;&#24102;&#26377; rewrite-message &#30340; preset
-</span>          (completing-read <span style="color: #79a8ff;">"&#36873;&#25321;&#19968;&#20010; Preset:"</span> (seq-filter
-                                               (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> (preset)
-                                                 (plist-member (cdr preset) <span style="color: #f78fe7; font-weight: bold;">:rewrite-message</span>))
-                                               gptel--known-presets)))
+          <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#36873;&#25321; preset
+</span>          (completing-read <span style="color: #79a8ff;">"Pick a preset: "</span>
+                           gptel--known-presets
+                           <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#36807;&#28388;&#36873;&#39033;&#65292;&#21482;&#20445;&#30041;&#24102;&#26377; `</span><span style="color: #00bcff; font-style: italic;">:rewrite-message</span><span style="color: #989898; font-style: italic;">' &#30340;&#36873;&#39033;
+</span>                           (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> (preset)
+                             (plist-member (cdr preset) <span style="color: #f78fe7; font-weight: bold;">:rewrite-message</span>))
+                           <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#24517;&#39035;&#21305;&#37197;&#36873;&#39033;
+</span>                           t))
          <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#25214;&#21040;&#23545;&#24212;&#30340; preset&#65292;&#33719;&#21462; preset &#35774;&#32622;
 </span>         (preset (gptel-get-preset (intern preset-name))))
     <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#20351;&#29992; preset &#35843;&#29992; gptel-rewrite
@@ -248,22 +261,20 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 </div>
 </details>
 
+<p>
+相关代码见：
+</p>
+<ul class="org-ul">
+<li><a href="https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-ai.el">init-ai.el</a></li>
+<li><a href="https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-keybinding.el">init-keybinding.el</a></li>
+</ul>
+
 <hr>
 
 <p>
 你可以在 <a href="https://emacs-china.org/t/gptel-request/29360">使用 gptel-request 写的一个翻译函数</a> 进行讨论，或者看看其他人分享的思路。
 </p>
-<div id="footnotes">
-<h2 class="footnotes">&#33050;&#27880;: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-<a href="https://manateelazycat.github.io/2022/11/07/how-i-use-emacs/#:~:text=%E5%B8%83%E5%B1%80%EF%BC%8C%20%E9%9D%9E%E5%B8%B8%E6%96%B9%E4%BE%BF%E3%80%82-,%E8%8B%B1%E6%96%87%E7%BF%BB%E8%AF%91,-%E5%81%9A%E4%B8%BA%E4%B8%80%E4%B8%AA%E8%8B%B1%E6%96%87">Manatee LazyCat 的英文翻译</a> 里还有更多的工具介绍。
-</p></div></div>
-
-
 </div>
-</div></div>
 <div id="postamble" class="status">
 
 <details class="webmention-container js-required">
@@ -282,7 +293,7 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-04-15 Tue 16:24</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-01-29 Thu 19:40</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-01-29 Thu 22:02</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">

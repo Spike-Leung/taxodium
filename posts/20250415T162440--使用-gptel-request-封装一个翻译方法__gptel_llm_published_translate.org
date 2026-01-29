@@ -14,17 +14,26 @@
 #+CAPTION: 一个 GIF 图，演示了选中中文，然后调用 spike-leung/translate-region-to-english 翻译成英文。
 [[file:./images/use-gptel-request-to-translate/demo.gif]]
 
-最近用 LLM 挺多的，尝试用英文写 prompt，但有时我不知道怎么写（英文比较菜）就想着翻译一下。
+最近用 LLM 挺多的，尝试用英文写 prompt，但有时我不知道怎么写，就想着翻译一下。
+Emacs 中的翻译的工具也不少，写这个函数只是分享一下 =gptel-request= 的一种实现。
 
-[[denote:20250116T213957][当然 Emacs 中的翻译的工具很多]] [fn:1]，写这个函数只是分享一下 =gptel-request= 的一种实现。
+#+attr_html: :role note
+#+begin_section
+一些 Emacs 的翻译配置：
 
-逻辑都是 LLM 写的，大体的逻辑是：(源码见 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-gptel.el][init-gptel]])
+- [[denote:20250116T213957][Translation In Emacs]]
+- [[https://manateelazycat.github.io/2022/11/07/how-i-use-emacs/#:~:text=%E5%B8%83%E5%B1%80%EF%BC%8C%20%E9%9D%9E%E5%B8%B8%E6%96%B9%E4%BE%BF%E3%80%82-,%E8%8B%B1%E6%96%87%E7%BF%BB%E8%AF%91,-%E5%81%9A%E4%B8%BA%E4%B8%80%E4%B8%AA%E8%8B%B1%E6%96%87][英文翻译]] by Manatee LazyCat
+#+end_section
+
+逻辑都是 LLM 写的，大体的逻辑是（源码见 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-gptel.el][init-gptel.el]]）：
 
 1. 找到当前选中区域，或者基于当前 point 获取对应的行/段落，作为要翻译的内容。
 2. 绑定一些本地变量，如 model，backend，因为翻译只需要一个快速便宜的模型。
 3. 调用 =gptel-request= ，写一个翻译的 prompt，发起请求，得到响应后覆盖第 1 步选中的内容。
 
-更新:
+-----
+
+更新：
 
 - 偶尔碰到 openai 的模型会失效，Google 的相对稳定一点，
   设置一个 fallback 的模型，如果失效了就调用 fallback 模型重试。
@@ -149,7 +158,7 @@
 如果不了解 macro，推荐阅读 [[https://protesilaos.com/emacs/emacs-lisp-elements#h:evaluation-inside-of-a-macro-or-special-form][Evaluation inside of a macro or special form]]。
 #+end_section
 
-接下来定一个方法，选择 preset 然后调用 ~gptel--suffix-rewrite~ :
+接下来定义一个方法，选择 preset 然后调用 ~gptel--suffix-rewrite~ :
 
 #+begin_details
 #+html: <summary>spike-leung/gptel-rewrite-preset</summary>
@@ -162,11 +171,14 @@
     (require 'gptel-rewrite)
     (unless (use-region-p) (user-error "Requires a selected region"))
     (let* ((preset-name
-            ;; 过滤带有 rewrite-message 的 preset
-            (completing-read "选择一个 Preset:" (seq-filter
-                                                 (lambda (preset)
-                                                   (plist-member (cdr preset) :rewrite-message))
-                                                 gptel--known-presets)))
+            ;; 选择 preset
+            (completing-read "Pick a preset: "
+                             gptel--known-presets
+                             ;; 过滤选项，只保留带有 `:rewrite-message' 的选项
+                             (lambda (preset)
+                               (plist-member (cdr preset) :rewrite-message))
+                             ;; 必须匹配选项
+                             t))
            ;; 找到对应的 preset，获取 preset 设置
            (preset (gptel-get-preset (intern preset-name))))
       ;; 使用 preset 调用 gptel-rewrite
@@ -175,13 +187,10 @@
 #+end_src
 #+end_details
 
+相关代码见：
+- [[https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-ai.el][init-ai.el]]
+- [[https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-keybinding.el][init-keybinding.el]]
+
 -----
 
 你可以在 [[https://emacs-china.org/t/gptel-request/29360][使用 gptel-request 写的一个翻译函数]] 进行讨论，或者看看其他人分享的思路。
-
-* Footnotes
-:PROPERTIES:
-:CUSTOM_ID: F533A078-6F14-4D96-A6AA-992B7760B5EF
-:END:
-
-[fn:1] [[https://manateelazycat.github.io/2022/11/07/how-i-use-emacs/#:~:text=%E5%B8%83%E5%B1%80%EF%BC%8C%20%E9%9D%9E%E5%B8%B8%E6%96%B9%E4%BE%BF%E3%80%82-,%E8%8B%B1%E6%96%87%E7%BF%BB%E8%AF%91,-%E5%81%9A%E4%B8%BA%E4%B8%80%E4%B8%AA%E8%8B%B1%E6%96%87][Manatee LazyCat 的英文翻译]] 里还有更多的工具介绍。
