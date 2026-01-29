@@ -68,7 +68,7 @@
 </p>
 
 <p>
-<a href="translation-in-emacs.html">当然 Emacs 中的翻译的工具很多</a> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>，写这个函数只是分享一下 <code>gptel-request</code> 的一种实现<sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>。
+<a href="translation-in-emacs.html">当然 Emacs 中的翻译的工具很多</a> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>，写这个函数只是分享一下 <code>gptel-request</code> 的一种实现。
 </p>
 
 <p>
@@ -94,59 +94,59 @@
 <summary>spike-leung/translate-region</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/translate-region</span> (prompt)
-  <span style="color: #9ac8e0;">"Translate the selected region (default to English) replace it.
+<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/translate-region</span> (prompt)
+  <span style="color: #9ac8e0; font-style: italic;">"Translate the selected region (default to English) replace it.
 If no region is active, try to guess the sentence or paragraph at point.
 With prefix argument, PROMPT is used as the translation prompt."</span>
-  (<span style="color: #b6a0ff;">interactive</span>
-   (list (<span style="color: #b6a0ff;">when</span> current-prefix-arg
+  (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>
+   (list (<span style="color: #b6a0ff; font-weight: bold;">when</span> current-prefix-arg
            (read-string <span style="color: #79a8ff;">"Translation prompt: "</span> <span style="color: #79a8ff;">"Translate the following text to English:"</span>))))
-  (<span style="color: #b6a0ff;">require</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gptel</span>)
-  (<span style="color: #b6a0ff;">let*</span> ((has-region (use-region-p))
+  (<span style="color: #b6a0ff; font-weight: bold;">require</span> '<span style="color: #00bcff;">gptel</span>)
+  (<span style="color: #b6a0ff; font-weight: bold;">let*</span> ((has-region (use-region-p))
          (bounds
-          (<span style="color: #b6a0ff;">cond</span>
+          (<span style="color: #b6a0ff; font-weight: bold;">cond</span>
            (has-region
             (cons (region-beginning) (region-end)))
            ((use-region-p)
             (cons (region-beginning) (region-end)))
-           ((<span style="color: #b6a0ff;">and</span> (fboundp <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">bounds-of-thing-at-point</span>))
-            (<span style="color: #b6a0ff;">or</span> (bounds-of-thing-at-point <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">sentence</span>)
-                (bounds-of-thing-at-point <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">paragraph</span>)
-                (bounds-of-thing-at-point <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">line</span>)
+           ((<span style="color: #b6a0ff; font-weight: bold;">and</span> (fboundp 'bounds-of-thing-at-point))
+            (<span style="color: #b6a0ff; font-weight: bold;">or</span> (bounds-of-thing-at-point 'sentence)
+                (bounds-of-thing-at-point 'paragraph)
+                (bounds-of-thing-at-point 'line)
                 (cons (point) (point))))
            (t (cons (point) (point)))))
          (start (car bounds))
          (end (cdr bounds))
          (text (buffer-substring-no-properties start end))
-         (prompt-text (<span style="color: #b6a0ff;">or</span> prompt <span style="color: #79a8ff;">"Translate the following text to English:"</span>)))
-    (<span style="color: #b6a0ff;">if</span> (string-blank-p text)
-        (<span style="color: #fec43f;">user-error</span> <span style="color: #79a8ff;">"No text to translate"</span>)
-      (<span style="color: #b6a0ff;">let</span> ((openrouter-backend (gptel-make-openai <span style="color: #79a8ff;">"OpenRouter"</span>
-                                  <span style="color: #f78fe7;">:host</span> <span style="color: #79a8ff;">"openrouter.ai"</span>
-                                  <span style="color: #f78fe7;">:endpoint</span> <span style="color: #79a8ff;">"/api/v1/chat/completions"</span>
-                                  <span style="color: #f78fe7;">:stream</span> t
-                                  <span style="color: #f78fe7;">:key</span> (spike-leung/get-openrouter-api-key)
-                                  <span style="color: #f78fe7;">:models</span> spike-leung/openrouter-models))
-            (primary-model <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">openai/gpt-4.1-nano</span>)
-            (fallback-model <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">google/gemini-2.0-flash-001</span>))
-        (<span style="color: #b6a0ff;">cl-labels</span>
+         (prompt-text (<span style="color: #b6a0ff; font-weight: bold;">or</span> prompt <span style="color: #79a8ff;">"Translate the following text to English:"</span>)))
+    (<span style="color: #b6a0ff; font-weight: bold;">if</span> (string-blank-p text)
+        (<span style="color: #fec43f; font-weight: bold;">user-error</span> <span style="color: #79a8ff;">"No text to translate"</span>)
+      (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((openrouter-backend (gptel-make-openai <span style="color: #79a8ff;">"OpenRouter"</span>
+                                  <span style="color: #f78fe7; font-weight: bold;">:host</span> <span style="color: #79a8ff;">"openrouter.ai"</span>
+                                  <span style="color: #f78fe7; font-weight: bold;">:endpoint</span> <span style="color: #79a8ff;">"/api/v1/chat/completions"</span>
+                                  <span style="color: #f78fe7; font-weight: bold;">:stream</span> t
+                                  <span style="color: #f78fe7; font-weight: bold;">:key</span> (spike-leung/get-openrouter-api-key)
+                                  <span style="color: #f78fe7; font-weight: bold;">:models</span> spike-leung/openrouter-models))
+            (primary-model 'openai/gpt-4.1-nano)
+            (fallback-model 'google/gemini-2.0-flash-001))
+        (<span style="color: #b6a0ff; font-weight: bold;">cl-labels</span>
             ((do-translate
                (model)
-               (<span style="color: #b6a0ff;">let</span> ((gptel-backend openrouter-backend)
+               (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((gptel-backend openrouter-backend)
                      (gptel-model model)
                      (gptel-use-tools nil)
                      (gptel-use-context nil))
                  (gptel-request
-                     (format <span style="color: #79a8ff;">"%s</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">n</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">n</span><span style="color: #79a8ff;">%s"</span> prompt-text text)
-                   <span style="color: #f78fe7;">:callback</span>
-                   (<span style="color: #b6a0ff;">lambda</span> (response _)
-                     (<span style="color: #b6a0ff;">if</span> (<span style="color: #b6a0ff;">and</span> response (not (string-blank-p response)))
-                         (<span style="color: #b6a0ff;">save-excursion</span>
+                     (format <span style="color: #79a8ff;">"%s\n\n%s"</span> prompt-text text)
+                   <span style="color: #f78fe7; font-weight: bold;">:callback</span>
+                   (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> (response _)
+                     (<span style="color: #b6a0ff; font-weight: bold;">if</span> (<span style="color: #b6a0ff; font-weight: bold;">and</span> response (not (string-blank-p response)))
+                         (<span style="color: #b6a0ff; font-weight: bold;">save-excursion</span>
                            (delete-region start end)
                            (goto-char start)
                            (insert response))
-                       (<span style="color: #b6a0ff;">if</span> (eq model primary-model)
-                           (<span style="color: #b6a0ff;">progn</span>
+                       (<span style="color: #b6a0ff; font-weight: bold;">if</span> (eq model primary-model)
+                           (<span style="color: #b6a0ff; font-weight: bold;">progn</span>
                              (message <span style="color: #79a8ff;">"Primary model failed, retrying with fallback model..."</span>)
                              (do-translate fallback-model))
                          (message <span style="color: #79a8ff;">"Translation failed with both models."</span>))))))))
@@ -159,17 +159,106 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 <p>
 利用 <code>gptel-request</code> ，封装一些 prompt，可以方便地解决平时一些重复的、可以使用 LLM 解决的任务。
 </p>
+
+<hr>
+
+<p>
+更新一个更好的实现，代码更优雅一些。
+</p>
+
+<p>
+首先通过 <code>defmacro</code> 定义一些 preset，在 preset 中设置 <code>:rewrite-message</code> ，定义 rewrite 的 prompt：
+</p>
+
+<details>
+<summary>定义 preset</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff; font-weight: bold;">defmacro</span> <span style="color: #feacd0;">spike-leung/define-gptel-preset</span> (name <span style="color: #6ae4b9; font-weight: bold;">&amp;rest</span> args)
+  `(gptel-make-preset ,name
+     <span style="color: #f78fe7; font-weight: bold;">:backend</span> <span style="color: #79a8ff;">"OpenRouter"</span>
+     <span style="color: #f78fe7; font-weight: bold;">:model</span> 'google/gemini-3-flash-preview
+     ,@args))
+
+(<span style="color: #b6a0ff; font-weight: bold;">spike-leung/define-gptel-preset</span> 'quote-format
+                                 <span style="color: #f78fe7; font-weight: bold;">:description</span> <span style="color: #79a8ff;">"&#26684;&#24335;&#21270;&#24341;&#29992;"</span>
+                                 <span style="color: #f78fe7; font-weight: bold;">:rewrite-message</span> <span style="color: #79a8ff;">"&#25353;&#29031;&#20197;&#19979;&#35201;&#27714;&#65292;&#26684;&#24335;&#21270;&#20869;&#23481;:
+- &#24403;&#23384;&#22312;&#33521;&#25991;&#21644;&#20013;&#25991;&#32763;&#35793;&#65292;&#31227;&#38500;&#33521;&#25991;
+- &#24403;&#28041;&#21450;&#21040;&#32553;&#20889;&#65292;&#38656;&#35201;&#22312;&#20013;&#25991;&#38468;&#36817;&#34917;&#20805;&#33521;&#25991;&#32553;&#20889;&#21644;&#23436;&#25972;&#30340;&#33521;&#25991;&#65292;&#22914;&#26368;&#20302;&#21512;&#26684;&#35835;&#32773; (MQR, Minimum Qualified Reader)
+- &#24403;&#23384;&#22312;&#20013;&#33521;&#25991;&#28151;&#21512;&#65292;&#20013;&#25991;&#21644;&#33521;&#25991;/&#25968;&#23383;&#20043;&#38388;&#38656;&#35201;&#20445;&#30041;&#19968;&#20010;&#31354;&#26684;
+- &#24403;&#25991;&#26412;&#20013;&#21253;&#21547;&#30772;&#25240;&#21495;&#65292;&#20363;&#22914; &#8212;&#8212;&#12289;--&#65292;&#38656;&#35201;&#23558;&#20182;&#20204;&#26367;&#25442;&#20026; &#11834; &#65292;&#27880;&#24847;&#65292;&#11834;  &#30340;&#21069;&#21518;&#38656;&#35201;&#20445;&#30041;&#19968;&#20010;&#31354;&#26684;
+- &#25991;&#26412;&#20013;&#30340;&#24341;&#21495;&#26367;&#25442;&#20026;&#30452;&#35282;&#24341;&#21495; &#12300;&#12301;&#12289;&#12302;&#12303;&#65292;&#22914;&#26524;&#24341;&#21495;&#37324;&#38754;&#36824;&#26377;&#24341;&#21495;&#65292;&#21017;&#37319;&#29992; &#12300;&#12302;&#12303;&#12301;&#30340;&#23884;&#22871;&#24418;&#24335;
+&#38656;&#35201;&#26684;&#24335;&#21270;&#20869;&#23481;&#65306;"</span>)
+
+(<span style="color: #b6a0ff; font-weight: bold;">spike-leung/define-gptel-preset</span> 'lyric-format
+                                 <span style="color: #f78fe7; font-weight: bold;">:description</span> <span style="color: #79a8ff;">"&#26684;&#24335;&#21270;&#27468;&#35789;"</span>
+                                 <span style="color: #f78fe7; font-weight: bold;">:rewrite-message</span> <span style="color: #79a8ff;">"&#26684;&#24335;&#21270;&#27468;&#35789;&#65292;&#23558;&#21407;&#22987;&#27468;&#35789;&#21644;&#20013;&#25991;&#32763;&#35793;&#25286;&#20998;&#25104;&#20004;&#37096;&#20998;&#12290;
+&#23545;&#20110;&#21407;&#25991;&#27468;&#35789;&#65292;&#36755;&#20986;&#26684;&#24335;&#20026;&#65306;
+#+begin_verse
+[&#21407;&#25991;&#27468;&#35789;]
+#+end_verse
+
+&#23545;&#20110;&#32763;&#35793;&#65292;&#36755;&#20986;&#26684;&#24335;&#20026;&#65306;
+#+begin_details
+#+html: &lt;summary&gt;&#27468;&#35789;&#22823;&#24847;&lt;/summary&gt;
+#+begin_verse
+[&#32763;&#35793;]
+#+end_verse
+#+end_details"</span>)
+</pre>
+</div>
+</details>
+
+<section role="note" id="orgb847da8">
+<p>
+在 preset 中 <code>:rewrite-message</code> 对应的是 <code>gptel-rewrite-message</code> 或者 <code>gptel--rewrite-message</code> ，你还可以定义很多参数，具体见 <a href="https://github.com/karthink/gptel?tab=readme-ov-file#option-presets">gptel - Option presets</a>。
+</p>
+
+<p>
+如果不了解 macro，推荐阅读 <a href="https://protesilaos.com/emacs/emacs-lisp-elements#h:evaluation-inside-of-a-macro-or-special-form">Evaluation inside of a macro or special form</a>。
+</p>
+</section>
+
+<p>
+接下来定一个方法，选择 preset 然后调用 <code>gptel--suffix-rewrite</code> :
+</p>
+
+<details>
+<summary>spike-leung/gptel-rewrite-preset</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/gptel-rewrite-preset</span> ()
+  <span style="color: #9ac8e0; font-style: italic;">"Pick a preset from `</span><span style="color: #00bcff; font-style: italic;">gptel--known-presets</span><span style="color: #9ac8e0; font-style: italic;">' and execute `</span><span style="color: #00bcff; font-style: italic;">gptel--suffix-rewrite</span><span style="color: #9ac8e0; font-style: italic;">'."</span>
+  (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
+  <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">gptel--suffix-rewrite &#20381;&#36182; gptel-rewrite &#30340;&#21152;&#36733;
+</span>  (<span style="color: #b6a0ff; font-weight: bold;">require</span> '<span style="color: #00bcff;">gptel-rewrite</span>)
+  (<span style="color: #b6a0ff; font-weight: bold;">unless</span> (use-region-p) (<span style="color: #fec43f; font-weight: bold;">user-error</span> <span style="color: #79a8ff;">"Requires a selected region"</span>))
+  (<span style="color: #b6a0ff; font-weight: bold;">let*</span> ((preset-name
+          <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#36807;&#28388;&#24102;&#26377; rewrite-message &#30340; preset
+</span>          (completing-read <span style="color: #79a8ff;">"&#36873;&#25321;&#19968;&#20010; Preset:"</span> (seq-filter
+                                               (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> (preset)
+                                                 (plist-member (cdr preset) <span style="color: #f78fe7; font-weight: bold;">:rewrite-message</span>))
+                                               gptel--known-presets)))
+         <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#25214;&#21040;&#23545;&#24212;&#30340; preset&#65292;&#33719;&#21462; preset &#35774;&#32622;
+</span>         (preset (gptel-get-preset (intern preset-name))))
+    <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#20351;&#29992; preset &#35843;&#29992; gptel-rewrite
+</span>    (<span style="color: #b6a0ff; font-weight: bold;">gptel-with-preset</span> preset
+      (gptel--suffix-rewrite))))
+</pre>
+</div>
+</details>
+
+<hr>
+
+<p>
+你可以在 <a href="https://emacs-china.org/t/gptel-request/29360">使用 gptel-request 写的一个翻译函数</a> 进行讨论，或者看看其他人分享的思路。
+</p>
 <div id="footnotes">
 <h2 class="footnotes">&#33050;&#27880;: </h2>
 <div id="text-footnotes">
 
 <div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 <a href="https://manateelazycat.github.io/2022/11/07/how-i-use-emacs/#:~:text=%E5%B8%83%E5%B1%80%EF%BC%8C%20%E9%9D%9E%E5%B8%B8%E6%96%B9%E4%BE%BF%E3%80%82-,%E8%8B%B1%E6%96%87%E7%BF%BB%E8%AF%91,-%E5%81%9A%E4%B8%BA%E4%B8%80%E4%B8%AA%E8%8B%B1%E6%96%87">Manatee LazyCat 的英文翻译</a> 里还有更多的工具介绍。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-在 <a href="https://emacs-china.org/t/gptel-request/29360">Emacs China 的讨论</a> 中，其他人还有别的实现方法。
-Emacs 中同一件事情可以有很多实现，也是折腾 Emacs 的乐趣之一吧。
 </p></div></div>
 
 
@@ -193,7 +282,7 @@ Emacs 中同一件事情可以有很多实现，也是折腾 Emacs 的乐趣之�
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-04-15 Tue 16:24</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-11-05 Wed 15:44</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-01-29 Thu 19:40</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">

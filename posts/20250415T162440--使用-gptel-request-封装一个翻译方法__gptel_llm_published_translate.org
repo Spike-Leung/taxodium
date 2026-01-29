@@ -16,7 +16,7 @@
 
 最近用 LLM 挺多的，尝试用英文写 prompt，但有时我不知道怎么写（英文比较菜）就想着翻译一下。
 
-[[denote:20250116T213957][当然 Emacs 中的翻译的工具很多]] [fn:1]，写这个函数只是分享一下 =gptel-request= 的一种实现[fn:2]。
+[[denote:20250116T213957][当然 Emacs 中的翻译的工具很多]] [fn:1]，写这个函数只是分享一下 =gptel-request= 的一种实现。
 
 逻辑都是 LLM 写的，大体的逻辑是：(源码见 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-gptel.el][init-gptel]])
 
@@ -97,12 +97,91 @@
 
 利用 =gptel-request= ，封装一些 prompt，可以方便地解决平时一些重复的、可以使用 LLM 解决的任务。
 
+-----
+
+更新一个更好的实现，代码更优雅一些。
+
+首先通过 ~defmacro~ 定义一些 preset，在 preset 中设置 ~:rewrite-message~ ，定义 rewrite 的 prompt：
+
+#+begin_details
+#+html: <summary>定义 preset</summary>
+
+#+begin_src emacs-lisp
+  (defmacro spike-leung/define-gptel-preset (name &rest args)
+    `(gptel-make-preset ,name
+       :backend "OpenRouter"
+       :model 'google/gemini-3-flash-preview
+       ,@args))
+
+  (spike-leung/define-gptel-preset 'quote-format
+                                   :description "格式化引用"
+                                   :rewrite-message "按照以下要求，格式化内容:
+  - 当存在英文和中文翻译，移除英文
+  - 当涉及到缩写，需要在中文附近补充英文缩写和完整的英文，如最低合格读者 (MQR, Minimum Qualified Reader)
+  - 当存在中英文混合，中文和英文/数字之间需要保留一个空格
+  - 当文本中包含破折号，例如 ——、--，需要将他们替换为 ⸺ ，注意，⸺  的前后需要保留一个空格
+  - 文本中的引号替换为直角引号 「」、『』，如果引号里面还有引号，则采用 「『』」的嵌套形式
+  需要格式化内容：")
+
+  (spike-leung/define-gptel-preset 'lyric-format
+                                   :description "格式化歌词"
+                                   :rewrite-message "格式化歌词，将原始歌词和中文翻译拆分成两部分。
+  对于原文歌词，输出格式为：
+  ,#+begin_verse
+  [原文歌词]
+  ,#+end_verse
+
+  对于翻译，输出格式为：
+  ,#+begin_details
+  ,#+html: <summary>歌词大意</summary>
+  ,#+begin_verse
+  [翻译]
+  ,#+end_verse
+  ,#+end_details")
+#+end_src
+#+end_details
+
+#+attr_html: :role note
+#+begin_section
+在 preset 中 ~:rewrite-message~ 对应的是 ~gptel-rewrite-message~ 或者 ~gptel--rewrite-message~ ，
+你还可以定义很多参数，具体见 [[https://github.com/karthink/gptel?tab=readme-ov-file#option-presets][gptel - Option presets]]。
+
+如果不了解 macro，推荐阅读 [[https://protesilaos.com/emacs/emacs-lisp-elements#h:evaluation-inside-of-a-macro-or-special-form][Evaluation inside of a macro or special form]]。
+#+end_section
+
+接下来定一个方法，选择 preset 然后调用 ~gptel--suffix-rewrite~ :
+
+#+begin_details
+#+html: <summary>spike-leung/gptel-rewrite-preset</summary>
+
+#+begin_src emacs-lisp
+  (defun spike-leung/gptel-rewrite-preset ()
+    "Pick a preset from `gptel--known-presets' and execute `gptel--suffix-rewrite'."
+    (interactive)
+    ;; gptel--suffix-rewrite 依赖 gptel-rewrite 的加载
+    (require 'gptel-rewrite)
+    (unless (use-region-p) (user-error "Requires a selected region"))
+    (let* ((preset-name
+            ;; 过滤带有 rewrite-message 的 preset
+            (completing-read "选择一个 Preset:" (seq-filter
+                                                 (lambda (preset)
+                                                   (plist-member (cdr preset) :rewrite-message))
+                                                 gptel--known-presets)))
+           ;; 找到对应的 preset，获取 preset 设置
+           (preset (gptel-get-preset (intern preset-name))))
+      ;; 使用 preset 调用 gptel-rewrite
+      (gptel-with-preset preset
+        (gptel--suffix-rewrite))))
+#+end_src
+#+end_details
+
+-----
+
+你可以在 [[https://emacs-china.org/t/gptel-request/29360][使用 gptel-request 写的一个翻译函数]] 进行讨论，或者看看其他人分享的思路。
+
 * Footnotes
 :PROPERTIES:
 :CUSTOM_ID: F533A078-6F14-4D96-A6AA-992B7760B5EF
 :END:
 
 [fn:1] [[https://manateelazycat.github.io/2022/11/07/how-i-use-emacs/#:~:text=%E5%B8%83%E5%B1%80%EF%BC%8C%20%E9%9D%9E%E5%B8%B8%E6%96%B9%E4%BE%BF%E3%80%82-,%E8%8B%B1%E6%96%87%E7%BF%BB%E8%AF%91,-%E5%81%9A%E4%B8%BA%E4%B8%80%E4%B8%AA%E8%8B%B1%E6%96%87][Manatee LazyCat 的英文翻译]] 里还有更多的工具介绍。
-
-[fn:2] 在 [[https://emacs-china.org/t/gptel-request/29360][Emacs China 的讨论]] 中，其他人还有别的实现方法。
-Emacs 中同一件事情可以有很多实现，也是折腾 Emacs 的乐趣之一吧。
