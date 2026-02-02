@@ -1,3 +1,6 @@
+:root {
+  --bg-fai-chun: lch(from #fc1f0d 60% c h);
+}
 .org-ul {
   padding-inline-start: 0;
   counter-reset: step;
@@ -74,8 +77,67 @@ header  {
 
 
 @media screen and (max-width: 400px) {
-    #table-of-contents ul,
-    #content :is(.org-ul) {
-        padding-inline-start: 0;
+  #table-of-contents ul,
+  #content :is(.org-ul) {
+    padding-inline-start: 0;
+  }
+}
+
+
+.fai-chun {
+  display: none;
+}
+
+.fu {
+  width: 300px;
+  height: 300px;
+  background: lch(from #fc1f0d 60% c h);
+  font-size: 6.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(180deg) translateX(50%);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  z-index: -1;
+  position: absolute;
+  left: 50%;
+  top: 40vh;
+  color: var(--color-text);
+  opacity: 0.3;
+}
+
+@media screen and (width >= 1440px) {
+  .title {
+    background: var(--bg-fai-chun);
+    padding-inline: 1em;
+    padding-block-start: .2em;
+    color: var(--color-text);
+    font-family: "Special Elite", var(--font-family-alternative);
+  }
+
+  .fai-chun {
+    display: block;
+    writing-mode: vertical-rl;
+    font-family: "Huiwen-mincho";
+    position: absolute;
+    background: var(--bg-fai-chun);
+    color: var(--color-text);
+    letter-spacing: .5em;
+    font-size: 4em;
+    white-space: nowrap;
+    padding-inline-start: 1em;
+    padding-inline-end: .5em;
+
+    &.start {
+      right: calc((100vw - var(--content-width)) / 2 - 2.5em);
     }
+
+    &.end {
+      left: calc((100vw - var(--content-width)) / 2 - 2.5em);
+    }
+  }
+
+  .fu {
+    opacity: 1;
+  }
 }
