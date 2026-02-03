@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>博客春节彩蛋：贴春联</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="博客春节彩蛋，在首页放了对春联" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<link rel="stylesheet" href="/styles/image-enhance.css" />
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+
+  <ul class="a11y-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/inside-black-hole.html">黑洞里</a></li>
+  </ul>
+  <!--
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  -->
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">博客春节彩蛋：贴春联</h1>
+</header><p>
+快到春节了，想着给博客添加一点节日气息，做点什么好呢？想到春节一定会做的一件事就是贴春联，那不如就给博客贴上一对春联吧！
+</p>
+
+<p>
+效果请看下图（ <code>@media screen and (width &gt;= 1440px)</code> ）：
+</p>
+
+
+<figure>
+<a href="images/fai-chun-the-blog-spring-festival-easter-egg/faichun.webp"><img src="images/fai-chun-the-blog-spring-festival-easter-egg/faichun.webp" alt="faichun.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>博客首页上的春联和门神</figcaption>
+</figure>
+
+<hr>
+
+<p>
+如果你对实现感兴趣，那下面的内容就是为你准备的：
+</p>
+
+<p>
+春联我用的是 <a href="https://zh.wikipedia.org/zh-hans/%E6%A5%BC%E9%92%A5">楼钥</a> 曾经的春联：「门前莫约频来客，坐上同观未见书」，我还蛮喜欢这句话的。
+</p>
+
+<p>
+春联一般都是竖着的，可以用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/writing-mode">writing-mode</a> 控制文字方向，然后还要设置 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/letter-spacing">letter-spacing</a> 增加字与字之间的间距；字体我用的是 <a href="https://chinese-font.netlify.app/zh-cn/fonts/hwmct/%E6%B1%87%E6%96%87%E6%98%8E%E6%9C%9D%E4%BD%93">汇文明朝体</a>，看起来会有一点点书法的感觉（如果你有更好的字体请推荐给我！）；春联的颜色我是从网上找了一些春联的图片，提取了一个红色，基于这个红色，用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Colors/Using_relative_colors">relative colors</a> 调整了亮度、饱和度，让它看起来没那么刺眼；如果你留意的话，会发现春联上还有一些黄色的斑点，我是想模拟春联上那些金箔，使得更有春联纸的质感（感谢女朋友给我的建议(´｡• ᵕ •｡`) ♡），幸运的是，我以前存的博客背景图里正好有一张满足需要，我觉得效果还不错！
+</p>
+
+<p>
+这对春联是没有横幅的，我也想不到更好的横幅，干脆就把博客标题作为横幅了。
+</p>
+
+<p>
+福字是用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/transform-function/rotate">rotate</a> 倒转过来，用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/clip-path">clip-path</a> 将背景裁剪成菱形。
+</p>
+
+<p>
+门神的是从网上找了些图片，用 MacOS 自带的 preview 可以移除背景，只保留人物； 目前这两个门神形象我还蛮喜欢的，问了 <a href="maybe-you-want-to-try-kagi.html">Kagi</a>，据说是 <a href="https://zh.wikipedia.org/wiki/%E5%B0%89%E8%BF%9F%E6%95%AC%E5%BE%B7">尉迟敬德</a>（左）和 <a href="https://zh.wikipedia.org/zh-hans/%E7%A7%A6%E7%90%BC">秦琼</a>（右）。
+</p>
+
+<p>
+剩下的还要做一些小优化：
+</p>
+
+<ul class="org-ul">
+<li>适配 dark-mode</li>
+<li>使用媒体查询，只在屏幕足够大的时候才展示，在手机上只会展示一个「福」字</li>
+<li>因为门神会使得文字看不清，当鼠标悬浮在目录上时，我会添加一个背景，使得目录能看清。我也尝试过降低门神的透明度，避免影响文字，但透明度太低，门神就没那么好看了。目前这样算是一个相对折中的做法。</li>
+</ul>
+
+<p>
+具体的样式可以见：<a href="https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/sitemap.css">sitemap.css</a>，或者用开发者工具来了解。
+</p>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention-container js-required">
+<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
+<p class="webmention-tip">
+如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention-content-list"></ul>
+</details>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： <span class="dt-published">2026-02-03 Tue 18:48</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-02-03 Tue 19:37</span></p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<!--
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+-->
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
