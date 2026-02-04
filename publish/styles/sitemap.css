@@ -175,12 +175,68 @@ header  {
 
 .quick-access a {
   text-decoration: none;
+  position: relative;
+  display: inline-block;
+  transition: transform 0.2s;
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  /* tv */
+  &:nth-child(3) {
+    filter: grayscale(1) brightness(0.75);
+    transition: all .8s;
+  }
 
   &:hover {
     background: unset;
+
+    /* headphone & notebook */
+    &:nth-child(1),
+    &:nth-child(4) {
+      transform-origin: center bottom;
+      animation: jelly .7s;
+    }
+
+    /* cd */
+    &:nth-child(2) {
+      animation: infinite play-cd 1s linear;
+      transform-origin: center center;
+    }
+    /* tv */
+    &:nth-child(3) {
+      filter: grayscale(0) brightness(120%);
+    }
+  }
+
+  /* 扩大 icon 的 hover 范围 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: var(--extra-active-area-size);
+    left: var(--extra-active-area-size);
+    right: var(--extra-active-area-size);
+    bottom: var(--extra-active-area-size);
+    cursor: pointer;
   }
 
   &::after {
     display: none!important;
   }
+}
+
+@keyframes jelly {
+  0% { transform: scale(1, 1); }
+  30% { transform: scale(1.25, 0.75); }
+  40% { transform: scale(0.75, 1.25); }
+  50% { transform: scale(1.15, 0.85); }
+  65% { transform: scale(0.95, 1.05); }
+  75% { transform: scale(1.05, 0.95); }
+  100% { transform: scale(1, 1); }
+}
+
+@keyframes play-cd {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
 }
