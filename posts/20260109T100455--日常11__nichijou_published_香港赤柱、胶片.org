@@ -12,7 +12,6 @@
 #+options: ^:{}
 #+startup: content
 #+html_head_extra: <link rel="stylesheet" href="/styles/image-enhance.css" />
-#+html_head_extra: <style> p { text-indent: 2em; } </style>
 
 🎵 追太阳 - 施鑫文月
 
@@ -47,7 +46,7 @@
 - 诺日士 HS1800： 色调偏冷，更小清新一些
 #+end_section
 
-下面请欣赏我的摄影作品 ( 〃▽〃)：
+请欣赏我的胶片 ( 〃▽〃)：
 
 #+CAPTION: 赤柱卜公码头（SP3000）
 [[file:images/nichijou/11/blake-pier-at-stanley--fuji.webp]]
@@ -113,6 +112,35 @@
 
 #+CAPTION: 豚骨拉面
 [[file:images/nichijou/11/ramen.webp]]
+
+#+begin_details
+#+html: <summary>使用 iPhone 图片的一段插曲</summary>
+
+上面两张拉面的图片是用 iPhone 拍的，AirDrop 到 Mac mini 上面，默认是 HEIC 格式，方向是对的。
+
+但是 HEIC 尺寸太大了，
+我一般会右键选中 Quick Actions 中的 Convert Image 将其先转换成 jpg，
+再用 [[https://imagemagick.org][ImageMagick]] 转换成 webp（其实可以一步到位，ImageMagick 可以直接处理 HEIC）。
+
+但是通过 Convert Image 导出的 jpep，图片的 Orientation（方向）竟然会变，导致我基于 jpeg 转换的 webp，Orientation 也是变了的。
+
+#+attr_html: :role note
+#+begin_section
+安装了 ImageMagick 之后，可以通过 ~identify -verbose input.jpg~ 查看图片的参数信息。
+#+end_section
+
+奇怪的是，jpeg 方向错了，但是在 Mac mini 的 preview 和在浏览器中查看，方向还是对的。
+而 webp，在 preview 中方向是对的，但在浏览器上是错的。
+
+似乎是浏览器对于 jpeg 和 webp 在处理 Exif 数据上有差异，
+具体可以看看 [[https://zpl.fi/exif-orientation-in-different-formats][Exif orientation in different formats]]，和文章说的症状一样。
+
+解决办法：
+
+- 直接从 HEIC 转换到 webp: ~magick input.HEIC output.webp~
+- 使用 ImageMagick 修正方向： ~magick input.png -auto-orient output.png~
+
+#+end_details
 
 -----
 
