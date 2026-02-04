@@ -60,7 +60,7 @@
 Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/modus-themes">modus-themes</a> 和 <a href="https://github.com/protesilaos/ef-themes">ef-themes</a>，它们都是出自 <a href="https://github.com/protesilaos">protesilaos</a>。
 </p>
 
-<section role="note" id="org45976bd">
+<section role="note" id="orgf34fcf7">
 <p>
 后续可能还会加入 <a href="https://github.com/protesilaos/doric-themes">doric-themes</a>，也是 Prot 的写的主题，这个主题的颜色比较单一，写作的时候用感觉不错。
 </p>
@@ -90,8 +90,8 @@ ef-themes 则提供了更多的色彩选择。
 <summary>主题切换相关 Elisp</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">defvar</span> <span style="color: #00d3d0;">spike-leung/candidate-themes</span>
-  <span style="color: #b6a0ff;">'</span>(modus-operandi
+<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff; font-weight: bold;">defvar</span> <span style="color: #00d3d0;">spike-leung/candidate-themes</span>
+  '(modus-operandi
     modus-operandi-tinted
     modus-vivendi
     modus-vivendi-tinted
@@ -114,7 +114,7 @@ ef-themes 则提供了更多的色彩选择。
     ef-light
     ef-maris-dark
     ef-maris-light
-    <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">ef-melissa-dark
+    <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">ef-melissa-dark
 </span>    ef-melissa-light
     ef-night
     ef-owl
@@ -128,32 +128,32 @@ ef-themes 则提供了更多的色彩选择。
     ef-tritanopia-dark
     ef-tritanopia-light
     ef-winter)
-  <span style="color: #9ac8e0;">"A list of themes to randomly cycle through."</span>)
+  <span style="color: #9ac8e0; font-style: italic;">"A list of themes to randomly cycle through."</span>)
 
-<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">theme related
-</span><span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">@see: https://emacsredux.com/blog/2025/02/03/clean-unloading-of-emacs-themes/
-</span>(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/disable-all-active-themes</span> ()
-  <span style="color: #9ac8e0;">"Disable all currently active themes."</span>
-  (<span style="color: #b6a0ff;">interactive</span>)
-  (<span style="color: #b6a0ff;">dolist</span> (theme custom-enabled-themes)
+<span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">theme related
+</span><span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">@see: https://emacsredux.com/blog/2025/02/03/clean-unloading-of-emacs-themes/
+</span>(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/disable-all-active-themes</span> ()
+  <span style="color: #9ac8e0; font-style: italic;">"Disable all currently active themes."</span>
+  (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
+  (<span style="color: #b6a0ff; font-weight: bold;">dolist</span> (theme custom-enabled-themes)
     (disable-theme theme)))
 
-(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/apply-random-theme</span> ()
-  <span style="color: #9ac8e0;">"Disable current themes and apply a random theme from `spike-leung/candidate-themes`."</span>
-  (<span style="color: #b6a0ff;">interactive</span>)
-  (<span style="color: #b6a0ff;">when</span> (boundp <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">spike-leung/candidate-themes</span>)
+(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/apply-random-theme</span> ()
+  <span style="color: #9ac8e0; font-style: italic;">"Disable current themes and apply a random theme from `spike-leung/candidate-themes`."</span>
+  (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
+  (<span style="color: #b6a0ff; font-weight: bold;">when</span> (boundp 'spike-leung/candidate-themes)
     (spike-leung/disable-all-active-themes)
-    (<span style="color: #b6a0ff;">let</span> ((theme (nth (random (length spike-leung/candidate-themes)) spike-leung/candidate-themes)))
-      (<span style="color: #b6a0ff;">condition-case</span> err
-          (<span style="color: #b6a0ff;">progn</span>
-            <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">Load theme to ensure its specific settings/customizations are applied
-</span>            (load-theme theme <span style="color: #f78fe7;">:no-confirm</span>)
-            <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">Enable the theme (this actually applies it and adds to custom-enabled-themes)
+    (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((theme (nth (random (length spike-leung/candidate-themes)) spike-leung/candidate-themes)))
+      (<span style="color: #b6a0ff; font-weight: bold;">condition-case</span> err
+          (<span style="color: #b6a0ff; font-weight: bold;">progn</span>
+            <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Load theme to ensure its specific settings/customizations are applied
+</span>            (load-theme theme <span style="color: #f78fe7; font-weight: bold;">:no-confirm</span>)
+            <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Enable the theme (this actually applies it and adds to custom-enabled-themes)
 </span>            (enable-theme theme)
             (message <span style="color: #79a8ff;">"Applied random theme: %s"</span> theme))
-        (<span style="color: #fec43f;">error</span> (message <span style="color: #79a8ff;">"Error applying theme %s: %s"</span> theme err))))))
+        (<span style="color: #fec43f; font-weight: bold;">error</span> (message <span style="color: #79a8ff;">"Error applying theme %s: %s"</span> theme err))))))
 
-(run-with-timer (* 15 60) (* 15 60) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">spike-leung/apply-random-theme</span>)
+(run-with-timer (* 15 60) (* 15 60) 'spike-leung/apply-random-theme)
 </pre>
 </div>
 </details>
@@ -181,7 +181,7 @@ ef-themes 则提供了更多的色彩选择。
 へ(゜∇、°)へ へ(゜∇、°)へ
 </p>
 
-<section role="note" id="orgafb7279">
+<section role="note" id="orgd0b408a">
 <p>
 说起来奇怪，如果是我自己主动切换的主题，可能切换后我马上就想换了。
 </p>
@@ -198,6 +198,9 @@ ef-themes 则提供了更多的色彩选择。
 <p class="webmention-tip">
 如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
 </p>
+<section role="note">
+<p>我用 <a href="https://fed.brid.gy/">Birdgy Fed</a> 将博客链接到了 <a href="https://en.wikipedia.org/wiki/Fediverse">Fediverse</a> 和 <a href="https://bsky.social/about">Bluesky</a>，上面的回复大概会通过 Webmention 呈现在这里，你或许可以试试在 Fediverse 和 BlueSky 关注 <a href="https://fed.brid.gy/web/taxodium.ink">我的账号</a> 试试。</p>
+</section>
 <form action="https://webmention.io/taxodium.ink/webmention" method="post">
 <label for="source">你文章的 URL:</label>
 <input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>

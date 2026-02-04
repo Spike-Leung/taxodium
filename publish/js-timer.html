@@ -151,15 +151,15 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <div id="outline-container-82e839e4-7bda-4599-a7b9-3d9eeceef12b" class="outline-3">
 <h3 id="82e839e4-7bda-4599-a7b9-3d9eeceef12b">对于长时间的同步任务</h3>
 <div class="outline-text-3" id="text-82e839e4-7bda-4599-a7b9-3d9eeceef12b"><div class="org-src-container">
-<pre class="src src-js"><span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">fakeTimeIntensiveOperation</span> = <span style="color: #b6a0ff;">function</span>() {
-  <span style="color: #b6a0ff;">for</span> (<span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">i</span> = 0; i&lt; Math.pow(10, 10); i++) {}
-  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">insideTimeTakingFunction</span>  = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>().toLocaleTimeString();
+<pre class="src src-js"><span style="color: #b6a0ff; font-weight: bold;">var</span> <span style="color: #00d3d0;">fakeTimeIntensiveOperation</span> = <span style="color: #b6a0ff; font-weight: bold;">function</span>() {
+  <span style="color: #b6a0ff; font-weight: bold;">for</span> (<span style="color: #b6a0ff; font-weight: bold;">var</span> <span style="color: #00d3d0;">i</span> = 0; i&lt; Math.pow(10, 10); i++) {}
+  <span style="color: #b6a0ff; font-weight: bold;">let</span> <span style="color: #00d3d0;">insideTimeTakingFunction</span>  = <span style="color: #b6a0ff; font-weight: bold;">new</span> <span style="color: #6ae4b9; font-weight: bold;">Date</span>().toLocaleTimeString();
   console.log(<span style="color: #79a8ff;">'insideTimeTakingFunction'</span>, insideTimeTakingFunction);
 };
 
-<span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">timer</span> = setInterval(<span style="color: #b6a0ff;">function</span>(){
+<span style="color: #b6a0ff; font-weight: bold;">var</span> <span style="color: #00d3d0;">timer</span> = setInterval(<span style="color: #b6a0ff; font-weight: bold;">function</span>(){
   fakeTimeIntensiveOperation();
-  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">insideSetInterval</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>().toLocaleTimeString();
+  <span style="color: #b6a0ff; font-weight: bold;">let</span> <span style="color: #00d3d0;">insideSetInterval</span> = <span style="color: #b6a0ff; font-weight: bold;">new</span> <span style="color: #6ae4b9; font-weight: bold;">Date</span>().toLocaleTimeString();
   console.log(<span style="color: #79a8ff;">'insideSetInterval'</span>, insideSetInterval);
 }, 1000);
 </pre>
@@ -173,17 +173,17 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <div id="outline-container-6de052fe-4204-4e10-8196-fcbfbdb40a37" class="outline-3">
 <h3 id="6de052fe-4204-4e10-8196-fcbfbdb40a37">对于长时间的异步任务</h3>
 <div class="outline-text-3" id="text-6de052fe-4204-4e10-8196-fcbfbdb40a37"><div class="org-src-container">
-<pre class="src src-js"><span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">counter</span> = 0;
-<span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">fakeTimeIntensiveOperation</span> = <span style="color: #b6a0ff;">function</span>() {
+<pre class="src src-js"><span style="color: #b6a0ff; font-weight: bold;">let</span> <span style="color: #00d3d0;">counter</span> = 0;
+<span style="color: #b6a0ff; font-weight: bold;">var</span> <span style="color: #00d3d0;">fakeTimeIntensiveOperation</span> = <span style="color: #b6a0ff; font-weight: bold;">function</span>() {
   setTimeout(() =&gt; {
     counter--;
   }, 60000);
 };
 
-<span style="color: #b6a0ff;">var</span> <span style="color: #00d3d0;">timer</span> = setInterval(<span style="color: #b6a0ff;">function</span>() {
+<span style="color: #b6a0ff; font-weight: bold;">var</span> <span style="color: #00d3d0;">timer</span> = setInterval(<span style="color: #b6a0ff; font-weight: bold;">function</span>() {
   counter++;
   fakeTimeIntensiveOperation();
-  <span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">insideSetInterval</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>().toLocaleTimeString();
+  <span style="color: #b6a0ff; font-weight: bold;">let</span> <span style="color: #00d3d0;">insideSetInterval</span> = <span style="color: #b6a0ff; font-weight: bold;">new</span> <span style="color: #6ae4b9; font-weight: bold;">Date</span>().toLocaleTimeString();
   console.log(<span style="color: #79a8ff;">'insideSetInterval'</span>, insideSetInterval);
   console.log(<span style="color: #79a8ff;">'counter'</span>, counter);
 }, 200);
@@ -202,9 +202,9 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <div id="outline-container-46d047df-e0c6-47dd-821d-ca4b193e2771" class="outline-2">
 <h2 id="46d047df-e0c6-47dd-821d-ca4b193e2771">嵌套的 setTimeout</h2>
 <div class="outline-text-2" id="text-46d047df-e0c6-47dd-821d-ca4b193e2771"><div class="org-src-container">
-<pre class="src src-js">(<span style="color: #b6a0ff;">function</span> loop() {
-  setTimeout(<span style="color: #b6a0ff;">function</span>() {
-    <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">your logic here
+<pre class="src src-js">(<span style="color: #b6a0ff; font-weight: bold;">function</span> loop() {
+  setTimeout(<span style="color: #b6a0ff; font-weight: bold;">function</span>() {
+    <span style="color: #989898; font-style: italic;">// </span><span style="color: #989898; font-style: italic;">your logic here
 </span>    loop();
   }, delay);
 })()
@@ -224,13 +224,13 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">delay</span> = 5000;
+<pre class="src src-js"><span style="color: #b6a0ff; font-weight: bold;">let</span> <span style="color: #00d3d0;">delay</span> = 5000;
 
-<span style="color: #b6a0ff;">let</span> <span style="color: #00d3d0;">timerId</span> = setTimeout(<span style="color: #b6a0ff;">function</span> request() {
-  <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">...&#21457;&#36865;&#35831;&#27714;...
+<span style="color: #b6a0ff; font-weight: bold;">let</span> <span style="color: #00d3d0;">timerId</span> = setTimeout(<span style="color: #b6a0ff; font-weight: bold;">function</span> request() {
+  <span style="color: #989898; font-style: italic;">// </span><span style="color: #989898; font-style: italic;">...&#21457;&#36865;&#35831;&#27714;...
 </span>
-  <span style="color: #b6a0ff;">if</span> (request failed due to server overload) {
-    <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#19979;&#19968;&#27425;&#25191;&#34892;&#30340;&#38388;&#38548;&#26159;&#24403;&#21069;&#30340; 2 &#20493;
+  <span style="color: #b6a0ff; font-weight: bold;">if</span> (request failed due to server overload) {
+    <span style="color: #989898; font-style: italic;">// </span><span style="color: #989898; font-style: italic;">&#19979;&#19968;&#27425;&#25191;&#34892;&#30340;&#38388;&#38548;&#26159;&#24403;&#21069;&#30340; 2 &#20493;
 </span>    delay *= 2;
   }
 
@@ -350,6 +350,9 @@ smooth animations </a>- javascriptkit
 <p class="webmention-tip">
 如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
 </p>
+<section role="note">
+<p>我用 <a href="https://fed.brid.gy/">Birdgy Fed</a> 将博客链接到了 <a href="https://en.wikipedia.org/wiki/Fediverse">Fediverse</a> 和 <a href="https://bsky.social/about">Bluesky</a>，上面的回复大概会通过 Webmention 呈现在这里，你或许可以试试在 Fediverse 和 BlueSky 关注 <a href="https://fed.brid.gy/web/taxodium.ink">我的账号</a> 试试。</p>
+</section>
 <form action="https://webmention.io/taxodium.ink/webmention" method="post">
 <label for="source">你文章的 URL:</label>
 <input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>

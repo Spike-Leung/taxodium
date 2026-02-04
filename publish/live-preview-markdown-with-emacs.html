@@ -76,7 +76,7 @@ Emacs 中可以集成 <a href="https://github.com/jrblevin/markdown-mode">markdo
 它的原理是开启一个 HTTP 服务，将 Emacs 中的 buffer 渲染成 HTML 进行预览，每当 buffer 的内容变化，就主动发送新的 HTML 内容进行更新。
 </p>
 
-<section role="note" id="orgbdc1440">
+<section role="note" id="org3119473">
 <p>
 buffer 可以简单理解为文件内容，感兴趣可以看 <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html">Buffers</a>。
 </p>
@@ -101,27 +101,27 @@ HTML 中加载 <a href="https://github.com/markedjs/marked">Marked</a>，将 mar
 <details>
 <summary>init-my-markdown.el</summary>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">init-my-markdown.el --- use impatient-mode to preview markdown
-</span><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">Commentary:
-</span><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">@see:  https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type
-</span><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">Code:
+<pre class="src src-emacs-lisp"><span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">init-my-markdown.el --- use impatient-mode to preview markdown
+</span><span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">Commentary:
+</span><span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">@see:  https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type
+</span><span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">Code:
 </span>
-(maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">impatient-mode</span>)
+(maybe-require-package 'impatient-mode)
 
-(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/imp-markdown-filter</span> (buffer)
-  <span style="color: #9ac8e0;">"Define imp markdown filter.
+(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/imp-markdown-filter</span> (buffer)
+  <span style="color: #9ac8e0; font-style: italic;">"Define imp markdown filter.
 Wrap BUFFER with HTML, render with https://github.com/markedjs/marked and style with https://github.com/sindresorhus/github-markdown-css"</span>
-  (princ (<span style="color: #b6a0ff;">with-current-buffer</span> buffer
+  (princ (<span style="color: #b6a0ff; font-weight: bold;">with-current-buffer</span> buffer
            (format <span style="color: #79a8ff;">"&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;title&gt;Markdown Preview&lt;/title&gt;
   &lt;head&gt;
     &lt;link
-      rel=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">stylesheet</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">
-      href=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">
-      integrity=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">sha512-BrOPA520KmDMqieeM7XFe6a3u3Sb3F1JBaQnrIAmWg3EYrciJ+Qqe6ZcKCdfPv26rGcgTrJnZ/IdQEct8h3Zhw==</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">
-      crossorigin=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">anonymous</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">
-      referrerpolicy=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">no-referrer</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">
+      rel=\"stylesheet\"
+      href=\"https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css\"
+      integrity=\"sha512-BrOPA520KmDMqieeM7XFe6a3u3Sb3F1JBaQnrIAmWg3EYrciJ+Qqe6ZcKCdfPv26rGcgTrJnZ/IdQEct8h3Zhw==\"
+      crossorigin=\"anonymous\"
+      referrerpolicy=\"no-referrer\"
     /&gt;
     &lt;style&gt;
           .markdown-body {
@@ -138,10 +138,10 @@ Wrap BUFFER with HTML, render with https://github.com/markedjs/marked and style 
                   }
           }
     &lt;/style&gt;
-    &lt;script src=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">https://cdn.jsdelivr.net/npm/marked/marked.min.js</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">&gt;&lt;/script&gt;
+    &lt;script src=\"https://cdn.jsdelivr.net/npm/marked/marked.min.js\"&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;div id=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">markdown-body</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;"> class=</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">markdown-body</span><span style="color: #feacd0;">\</span><span style="color: #00c06f;">"</span><span style="color: #79a8ff;">&gt;&lt;/div&gt;
+    &lt;div id=\"markdown-body\" class=\"markdown-body\"&gt;&lt;/div&gt;
     &lt;script&gt;
       document.getElementById('</span><span style="color: #00bcff;">markdown-body</span><span style="color: #79a8ff;">').innerHTML = marked.parse(%s);
     &lt;/script&gt;
@@ -150,22 +150,22 @@ Wrap BUFFER with HTML, render with https://github.com/markedjs/marked and style 
                    (json-encode (buffer-substring-no-properties (point-min) (point-max)))))
          (current-buffer)))
 
-(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/preview-markdown</span> ()
-  <span style="color: #9ac8e0;">"Live Preview markdown."</span>
-  (<span style="color: #b6a0ff;">interactive</span>)
+(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/preview-markdown</span> ()
+  <span style="color: #9ac8e0; font-style: italic;">"Live Preview markdown."</span>
+  (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
   (imp-visit-buffer)
-  (imp-set-user-filter <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">spike-leung/imp-markdown-filter</span>))
+  (imp-set-user-filter 'spike-leung/imp-markdown-filter))
 
-(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/disable-preview-markdown</span> ()
-  <span style="color: #9ac8e0;">"Disable preview markdown."</span>
-  (<span style="color: #b6a0ff;">interactive</span>)
-  (<span style="color: #b6a0ff;">progn</span>
+(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/disable-preview-markdown</span> ()
+  <span style="color: #9ac8e0; font-style: italic;">"Disable preview markdown."</span>
+  (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
+  (<span style="color: #b6a0ff; font-weight: bold;">progn</span>
     (httpd-stop)
     (impatient-mode -1)
     (imp-remove-user-filter)))
 
-(<span style="color: #b6a0ff;">provide</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-my-markdown</span>)
-<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">init-my-markdown.el ends here</span>
+(<span style="color: #b6a0ff; font-weight: bold;">provide</span> '<span style="color: #00bcff;">init-my-markdown</span>)
+<span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">init-my-markdown.el ends here</span>
 </pre>
 </div>
 </details>
@@ -203,6 +203,9 @@ Wrap BUFFER with HTML, render with https://github.com/markedjs/marked and style 
 <p class="webmention-tip">
 如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
 </p>
+<section role="note">
+<p>我用 <a href="https://fed.brid.gy/">Birdgy Fed</a> 将博客链接到了 <a href="https://en.wikipedia.org/wiki/Fediverse">Fediverse</a> 和 <a href="https://bsky.social/about">Bluesky</a>，上面的回复大概会通过 Webmention 呈现在这里，你或许可以试试在 Fediverse 和 BlueSky 关注 <a href="https://fed.brid.gy/web/taxodium.ink">我的账号</a> 试试。</p>
+</section>
 <form action="https://webmention.io/taxodium.ink/webmention" method="post">
 <label for="source">你文章的 URL:</label>
 <input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>

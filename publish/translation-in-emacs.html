@@ -141,11 +141,11 @@ fanyi 则是当作字典使用，碰到一两个单词不熟悉，就使用 fany
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">immersive-translate
-</span>(<span style="color: #b6a0ff;">require</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">immersive-translate</span>)
-(add-hook <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">elfeed-show-mode-hook</span> <span style="color: #b6a0ff;">#'</span><span style="color: #00bcff;">immersive-translate-setup</span>)
-<span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">need to api key with user `apikey` in `.authinfo`
-</span>(<span style="color: #b6a0ff;">setq</span> immersive-translate-backend <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">chatgpt</span>
+<pre class="src src-elisp"><span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">immersive-translate
+</span>(<span style="color: #b6a0ff; font-weight: bold;">require</span> '<span style="color: #00bcff;">immersive-translate</span>)
+(add-hook 'elfeed-show-mode-hook #'immersive-translate-setup)
+<span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">need to api key with user `apikey` in `.authinfo`
+</span>(<span style="color: #b6a0ff; font-weight: bold;">setq</span> immersive-translate-backend 'chatgpt
       immersive-translate-chatgpt-host <span style="color: #79a8ff;">"openrouter.ai/api"</span>
       immersive-translate-chatgpt-model <span style="color: #79a8ff;">"google/gemini-2.5-flash"</span>
       immersive-translate-pending-message <span style="color: #79a8ff;">"(&#8790;&#7447;&#8790;&#3665;)"</span>
@@ -158,11 +158,11 @@ API Key 在 <code>~/.authinfo</code> 中配置，由于 emacs-immersive-translat
 </p>
 
 <div class="org-src-container">
-<pre class="src src-authinfo"><span style="color: #00d3d0;">machine</span> <span style="color: #f78fe7;">openrouter.ai/api</span> <span style="color: #db7b5f;">login</span> <span style="color: #b6a0ff;">apikey</span> <span style="color: #db7b5f;">password</span> <span style="color: #9ac8e0;">********************************</span>
+<pre class="src src-authinfo"><span style="color: #00d3d0;">machine</span> <span style="color: #f78fe7; font-weight: bold;">openrouter.ai/api</span> <span style="color: #989898; font-style: italic;">login</span> <span style="color: #b6a0ff; font-weight: bold;">apikey</span> <span style="color: #989898; font-style: italic;">password</span> <span style="color: #9ac8e0; font-style: italic;">********************************</span>
 </pre>
 </div>
 
-<section role="note" id="orgd53c7a0">
+<section role="note" id="orgf3c0dc0">
 <p>
 关于 .authinfo 你可以参考：
 </p>
@@ -186,22 +186,22 @@ gt.el 也是可以在 MELPA 上直接安装。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">@see: https://github.com/lorniu/gt.el
-</span>(maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gt</span>)
-(maybe-require-package <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">plz</span>)
-(<span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-auth</span>
-  (<span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gt</span>
-    (<span style="color: #b6a0ff;">setq</span> gt-langs <span style="color: #b6a0ff;">'</span>(en zh)
+<pre class="src src-elisp"><span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">@see: https://github.com/lorniu/gt.el
+</span>(maybe-require-package 'gt)
+(maybe-require-package 'plz)
+(<span style="color: #b6a0ff; font-weight: bold;">with-eval-after-load</span> 'init-auth
+  (<span style="color: #b6a0ff; font-weight: bold;">with-eval-after-load</span> 'gt
+    (<span style="color: #b6a0ff; font-weight: bold;">setq</span> gt-langs '(en zh)
           gt-chatgpt-key (spike-leung/get-openrouter-api-key)
           gt-chatgpt-host <span style="color: #79a8ff;">"https://openrouter.ai/api"</span>
           gt-chatgpt-model <span style="color: #79a8ff;">"google/gemini-2.5-flash"</span>
           gt-default-translator (gt-translator
-                                 <span style="color: #f78fe7;">:taker</span> (gt-taker <span style="color: #f78fe7;">:pick</span> nil <span style="color: #f78fe7;">:prompt</span> t)
-                                 <span style="color: #f78fe7;">:engines</span> (gt-chatgpt-engine <span style="color: #f78fe7;">:stream</span> t)
-                                 <span style="color: #f78fe7;">:render</span> (gt-buffer-render
-                                          <span style="color: #f78fe7;">:name</span> <span style="color: #79a8ff;">"gt-translator"</span>
-                                          <span style="color: #f78fe7;">:window-config</span> <span style="color: #b6a0ff;">'</span>((display-buffer-at-bottom))
-                                          <span style="color: #f78fe7;">:then</span> (<span style="color: #b6a0ff;">lambda</span> (_) (pop-to-buffer <span style="color: #79a8ff;">"gt-translator"</span>)))))))
+                                 <span style="color: #f78fe7; font-weight: bold;">:taker</span> (gt-taker <span style="color: #f78fe7; font-weight: bold;">:pick</span> nil <span style="color: #f78fe7; font-weight: bold;">:prompt</span> t)
+                                 <span style="color: #f78fe7; font-weight: bold;">:engines</span> (gt-chatgpt-engine <span style="color: #f78fe7; font-weight: bold;">:stream</span> t)
+                                 <span style="color: #f78fe7; font-weight: bold;">:render</span> (gt-buffer-render
+                                          <span style="color: #f78fe7; font-weight: bold;">:name</span> <span style="color: #79a8ff;">"gt-translator"</span>
+                                          <span style="color: #f78fe7; font-weight: bold;">:window-config</span> '((display-buffer-at-bottom))
+                                          <span style="color: #f78fe7; font-weight: bold;">:then</span> (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> (_) (pop-to-buffer <span style="color: #79a8ff;">"gt-translator"</span>)))))))
 </pre>
 </div>
 
@@ -217,37 +217,37 @@ Source: <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/i
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">init-auth --- config for auth related -*- lexical-binding: t -*-
-</span><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">Commentary:
-</span><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">Code:
-</span>(<span style="color: #b6a0ff;">setq</span> epa-pinentry-mode <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">loopback</span>) <span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">input pass in minibuffer
+<pre class="src src-elisp"><span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">init-auth --- config for auth related -*- lexical-binding: t -*-
+</span><span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">Commentary:
+</span><span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">Code:
+</span>(<span style="color: #b6a0ff; font-weight: bold;">setq</span> epa-pinentry-mode 'loopback) <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">input pass in minibuffer
 </span>
-<span style="color: #db7b5f;">;; </span><span style="color: #db7b5f;">(auth-source-pass-enable) ;;; use pass to manage auth-source
+<span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">(auth-source-pass-enable) ;;; use pass to manage auth-source
 </span>
-<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">function to get api-key from authinfo
-</span>(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/get-api-key</span> (service <span style="color: #6ae4b9;">&amp;optional</span> host)
-  <span style="color: #9ac8e0;">"Retrieve the API key for SERVICE from authinfo.  if HOST exist, retrieve by HOST."</span>
-  (<span style="color: #b6a0ff;">let*</span> ((host (<span style="color: #b6a0ff;">or</span> host (format <span style="color: #79a8ff;">"api.%s.com"</span> service)))
-         (creds (car (auth-source-search <span style="color: #f78fe7;">:host</span> host <span style="color: #f78fe7;">:port</span> 443))))
-    (<span style="color: #b6a0ff;">if</span> creds
-        (<span style="color: #b6a0ff;">let</span> ((api-key (plist-get creds <span style="color: #f78fe7;">:secret</span>
+<span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">function to get api-key from authinfo
+</span>(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/get-api-key</span> (service <span style="color: #6ae4b9; font-weight: bold;">&amp;optional</span> host)
+  <span style="color: #9ac8e0; font-style: italic;">"Retrieve the API key for SERVICE from authinfo.  if HOST exist, retrieve by HOST."</span>
+  (<span style="color: #b6a0ff; font-weight: bold;">let*</span> ((host (<span style="color: #b6a0ff; font-weight: bold;">or</span> host (format <span style="color: #79a8ff;">"api.%s.com"</span> service)))
+         (creds (car (auth-source-search <span style="color: #f78fe7; font-weight: bold;">:host</span> host <span style="color: #f78fe7; font-weight: bold;">:port</span> 443))))
+    (<span style="color: #b6a0ff; font-weight: bold;">if</span> creds
+        (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((api-key (plist-get creds <span style="color: #f78fe7; font-weight: bold;">:secret</span>
                                   )))
-          (<span style="color: #b6a0ff;">if</span> (functionp api-key)
+          (<span style="color: #b6a0ff; font-weight: bold;">if</span> (functionp api-key)
               (funcall api-key)
             api-key
-            (<span style="color: #fec43f;">error</span> <span style="color: #79a8ff;">"API key not found for %s"</span> service)))
-      (<span style="color: #fec43f;">error</span> <span style="color: #79a8ff;">"No credentials found for %s"</span> service))))
+            (<span style="color: #fec43f; font-weight: bold;">error</span> <span style="color: #79a8ff;">"API key not found for %s"</span> service)))
+      (<span style="color: #fec43f; font-weight: bold;">error</span> <span style="color: #79a8ff;">"No credentials found for %s"</span> service))))
 
-(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/get-deepseek-api-key</span> ()
-  <span style="color: #9ac8e0;">"Retrieve the DeepSeek API key from authinfo."</span>
+(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/get-deepseek-api-key</span> ()
+  <span style="color: #9ac8e0; font-style: italic;">"Retrieve the DeepSeek API key from authinfo."</span>
   (spike-leung/get-api-key <span style="color: #79a8ff;">"deepseek"</span>))
 
-(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">spike-leung/get-openrouter-api-key</span> ()
-  <span style="color: #9ac8e0;">"Retrieve the OpenRouter API key from authinfo."</span>
+(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/get-openrouter-api-key</span> ()
+  <span style="color: #9ac8e0; font-style: italic;">"Retrieve the OpenRouter API key from authinfo."</span>
   (spike-leung/get-api-key <span style="color: #79a8ff;">"openrouter"</span> <span style="color: #79a8ff;">"openrouter.ai"</span>))
 
-(<span style="color: #b6a0ff;">provide</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-auth</span>)
-<span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">init-auth.el ends here.</span>
+(<span style="color: #b6a0ff; font-weight: bold;">provide</span> '<span style="color: #00bcff;">init-auth</span>)
+<span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">init-auth.el ends here.</span>
 </pre>
 </div>
 
@@ -282,17 +282,17 @@ gptel 就是当 LLM 用，需要翻译的时候就复制文字和它对话。此
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><span style="color: #db7b5f;">;;; </span><span style="color: #db7b5f;">keybindings
-</span>(<span style="color: #b6a0ff;">defvar</span> <span style="color: #00d3d0;">spike-leung/my-translate-keymap</span> (make-sparse-keymap)
-  <span style="color: #9ac8e0;">"Keymap for translation commands."</span>)
+<pre class="src src-elisp"><span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">keybindings
+</span>(<span style="color: #b6a0ff; font-weight: bold;">defvar</span> <span style="color: #00d3d0;">spike-leung/my-translate-keymap</span> (make-sparse-keymap)
+  <span style="color: #9ac8e0; font-style: italic;">"Keymap for translation commands."</span>)
 
-(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"i"</span>) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">immersive-translate-buffer</span>)
-(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"p"</span>) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">immersive-translate-paragraph</span>)
-(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"c"</span>) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">immersive-translate-clear</span>)
-(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"f"</span>) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">fanyi-dwim2</span>)
-(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"g"</span>) <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">gt-translate</span>)
+(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"i"</span>) 'immersive-translate-buffer)
+(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"p"</span>) 'immersive-translate-paragraph)
+(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"c"</span>) 'immersive-translate-clear)
+(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"f"</span>) 'fanyi-dwim2)
+(define-key spike-leung/my-translate-keymap (kbd <span style="color: #79a8ff;">"g"</span>) 'gt-translate)
 
-(<span style="color: #b6a0ff;">with-eval-after-load</span> <span style="color: #b6a0ff;">'</span><span style="color: #00bcff;">init-my-keybindings</span>
+(<span style="color: #b6a0ff; font-weight: bold;">with-eval-after-load</span> 'init-my-keybindings
   (define-key spike-leung/meta-o-keymap (kbd <span style="color: #79a8ff;">"t"</span>) spike-leung/my-translate-keymap))
 </pre>
 </div>
@@ -333,6 +333,9 @@ See:
 <p class="webmention-tip">
 如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
 </p>
+<section role="note">
+<p>我用 <a href="https://fed.brid.gy/">Birdgy Fed</a> 将博客链接到了 <a href="https://en.wikipedia.org/wiki/Fediverse">Fediverse</a> 和 <a href="https://bsky.social/about">Bluesky</a>，上面的回复大概会通过 Webmention 呈现在这里，你或许可以试试在 Fediverse 和 BlueSky 关注 <a href="https://fed.brid.gy/web/taxodium.ink">我的账号</a> 试试。</p>
+</section>
 <form action="https://webmention.io/taxodium.ink/webmention" method="post">
 <label for="source">你文章的 URL:</label>
 <input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>

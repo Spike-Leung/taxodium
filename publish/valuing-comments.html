@@ -110,24 +110,24 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Initial Stack: array</span><span style="color: #db7b5f;"> */</span>
+<pre class="src src-c"><span style="color: #989898; font-style: italic;">/* </span><span style="color: #989898; font-style: italic;">Initial Stack: array</span><span style="color: #989898; font-style: italic;"> */</span>
   <span style="color: #feacd0;">lua_getglobal</span>(lua,<span style="color: #79a8ff;">"table"</span>);
   <span style="color: #feacd0;">lua_pushstring</span>(lua,<span style="color: #79a8ff;">"sort"</span>);
-  <span style="color: #feacd0;">lua_gettable</span>(lua,-2);       <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #db7b5f;"> */</span>
-  <span style="color: #feacd0;">lua_pushvalue</span>(lua,-3);      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #db7b5f;"> */</span>
-  <span style="color: #b6a0ff;">if</span> (lua_pcall(lua,1,0,0)) {
-      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, error</span><span style="color: #db7b5f;"> */</span>
+  <span style="color: #feacd0;">lua_gettable</span>(lua,-2);       <span style="color: #989898; font-style: italic;">/* </span><span style="color: #989898; font-style: italic;">Stack: array, table, table.sort</span><span style="color: #989898; font-style: italic;"> */</span>
+  <span style="color: #feacd0;">lua_pushvalue</span>(lua,-3);      <span style="color: #989898; font-style: italic;">/* </span><span style="color: #989898; font-style: italic;">Stack: array, table, table.sort, array</span><span style="color: #989898; font-style: italic;"> */</span>
+  <span style="color: #b6a0ff; font-weight: bold;">if</span> (lua_pcall(lua,1,0,0)) {
+      <span style="color: #989898; font-style: italic;">/* </span><span style="color: #989898; font-style: italic;">Stack: array, table, error</span><span style="color: #989898; font-style: italic;"> */</span>
 
-      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">We are not interested in the error, we assume that the problem is
+      <span style="color: #989898; font-style: italic;">/* </span><span style="color: #989898; font-style: italic;">We are not interested in the error, we assume that the problem is
        * that there are 'false' elements inside the array, so we try
        * again with a slower function but able to handle this case, that
-       * is: table.sort(table, __redis__compare_helper)</span><span style="color: #db7b5f;"> */</span>
-      lua_pop(lua,1);             <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table</span><span style="color: #db7b5f;"> */</span>
-      lua_pushstring(lua,<span style="color: #79a8ff;">"sort"</span>); <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, sort</span><span style="color: #db7b5f;"> */</span>
-      lua_gettable(lua,-2);       <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort</span><span style="color: #db7b5f;"> */</span>
-      lua_pushvalue(lua,-3);      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array</span><span style="color: #db7b5f;"> */</span>
+       * is: table.sort(table, __redis__compare_helper)</span><span style="color: #989898; font-style: italic;"> */</span>
+      lua_pop(lua,1);             <span style="color: #989898; font-style: italic;">/* </span><span style="color: #989898; font-style: italic;">Stack: array, table</span><span style="color: #989898; font-style: italic;"> */</span>
+      lua_pushstring(lua,<span style="color: #79a8ff;">"sort"</span>); <span style="color: #989898; font-style: italic;">/* </span><span style="color: #989898; font-style: italic;">Stack: array, table, sort</span><span style="color: #989898; font-style: italic;"> */</span>
+      lua_gettable(lua,-2);       <span style="color: #989898; font-style: italic;">/* </span><span style="color: #989898; font-style: italic;">Stack: array, table, table.sort</span><span style="color: #989898; font-style: italic;"> */</span>
+      lua_pushvalue(lua,-3);      <span style="color: #989898; font-style: italic;">/* </span><span style="color: #989898; font-style: italic;">Stack: array, table, table.sort, array</span><span style="color: #989898; font-style: italic;"> */</span>
       lua_getglobal(lua,<span style="color: #79a8ff;">"__redis__compare_helper"</span>);
-      <span style="color: #db7b5f;">/* </span><span style="color: #db7b5f;">Stack: array, table, table.sort, array, __redis__compare_helper</span><span style="color: #db7b5f;"> */</span>
+      <span style="color: #989898; font-style: italic;">/* </span><span style="color: #989898; font-style: italic;">Stack: array, table, table.sort, array, __redis__compare_helper</span><span style="color: #989898; font-style: italic;"> */</span>
       lua_call(lua,2,0);
   }
 </pre>
@@ -212,20 +212,20 @@ Writing code is sharing the experience of understanding the requirements/impleme
 使用具体含义的变量
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> // &#24635;&#20215;&#26684;&#20013;&#20943;&#21435;&#25240;&#25187;
-</span><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> finalPrice = (numItems * itemPrice) - min(5, numItems) * itemPrice * 0.1;
+<pre class="src src-diff"><span style="color: #ff9095; background-color: #4f1119;">-</span><span style="color: #ffbfbf; background-color: #4f1119;"> // &#24635;&#20215;&#26684;&#20013;&#20943;&#21435;&#25240;&#25187;
+</span><span style="color: #ff9095; background-color: #4f1119;">-</span><span style="color: #ffbfbf; background-color: #4f1119;"> finalPrice = (numItems * itemPrice) - min(5, numItems) * itemPrice * 0.1;
 </span>
-<span style="color: #44df44;">+</span><span style="color: #44bc44;"> price = numItems * itemPrice;
-</span><span style="color: #44df44;">+</span><span style="color: #44bc44;"> discount = min(5, numItems) * itemPrice * 0.1;
-</span><span style="color: #44df44;">+</span><span style="color: #44bc44;"> finalPrice = price - discount;
+<span style="color: #80e080; background-color: #00381f;">+</span><span style="color: #a0e0a0; background-color: #00381f;"> price = numItems * itemPrice;
+</span><span style="color: #80e080; background-color: #00381f;">+</span><span style="color: #a0e0a0; background-color: #00381f;"> discount = min(5, numItems) * itemPrice * 0.1;
+</span><span style="color: #80e080; background-color: #00381f;">+</span><span style="color: #a0e0a0; background-color: #00381f;"> finalPrice = price - discount;
 </span>
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> int width = ...; // Width in pixels.
+<pre class="src src-diff"><span style="color: #ff9095; background-color: #4f1119;">-</span><span style="color: #ffbfbf; background-color: #4f1119;"> int width = ...; // Width in pixels.
 </span>
-<span style="color: #44df44;">+</span><span style="color: #44bc44;"> int widthInPixels = ...;
+<span style="color: #80e080; background-color: #00381f;">+</span><span style="color: #a0e0a0; background-color: #00381f;"> int widthInPixels = ...;
 </span>
 </pre>
 </div>
@@ -234,10 +234,10 @@ Writing code is sharing the experience of understanding the requirements/impleme
 使用函数封装，函数名揭示逻辑
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> // Filter offensive words.
-</span><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> for (String word : words) { ... }
+<pre class="src src-diff"><span style="color: #ff9095; background-color: #4f1119;">-</span><span style="color: #ffbfbf; background-color: #4f1119;"> // Filter offensive words.
+</span><span style="color: #ff9095; background-color: #4f1119;">-</span><span style="color: #ffbfbf; background-color: #4f1119;"> for (String word : words) { ... }
 </span>
-<span style="color: #44df44;">+</span><span style="color: #44bc44;"> filterOffensiveWords(words);
+<span style="color: #80e080; background-color: #00381f;">+</span><span style="color: #a0e0a0; background-color: #00381f;"> filterOffensiveWords(words);
 </span>
 </pre>
 </div></li>
@@ -247,11 +247,11 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> // height &#24635;&#26159;&#22823;&#20110; 0&#65292;&#25152;&#20197;&#36825;&#37324;&#19981;&#20250;&#20986;&#38169;
-</span><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> return width / height;
+<pre class="src src-diff"><span style="color: #ff9095; background-color: #4f1119;">-</span><span style="color: #ffbfbf; background-color: #4f1119;"> // height &#24635;&#26159;&#22823;&#20110; 0&#65292;&#25152;&#20197;&#36825;&#37324;&#19981;&#20250;&#20986;&#38169;
+</span><span style="color: #ff9095; background-color: #4f1119;">-</span><span style="color: #ffbfbf; background-color: #4f1119;"> return width / height;
 </span>
-<span style="color: #44df44;">+</span><span style="color: #44bc44;"> checkArgument(height &gt; 0);
-</span><span style="color: #44df44;">+</span><span style="color: #44bc44;"> return width / height;
+<span style="color: #80e080; background-color: #00381f;">+</span><span style="color: #a0e0a0; background-color: #00381f;"> checkArgument(height &gt; 0);
+</span><span style="color: #80e080; background-color: #00381f;">+</span><span style="color: #a0e0a0; background-color: #00381f;"> return width / height;
 </span>
 </pre>
 </div></li>
@@ -260,9 +260,9 @@ Writing code is sharing the experience of understanding the requirements/impleme
 代码已经足够清楚，不需要重复描述
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> // Get all users.
+<pre class="src src-diff"><span style="color: #ff9095; background-color: #4f1119;">-</span><span style="color: #ffbfbf; background-color: #4f1119;"> // Get all users.
 </span>userService.getAllUsers();
-<span style="color: #ff5f5f;">-</span><span style="color: #ff5f59;"> // Check if the name is empty.
+<span style="color: #ff9095; background-color: #4f1119;">-</span><span style="color: #ffbfbf; background-color: #4f1119;"> // Check if the name is empty.
 </span>if (name.isEmpty()) { ... }
 </pre>
 </div></li>
@@ -276,7 +276,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 揭示你的意图：解释代码 <i>为什么</i> 要做某些事情（而不是做什么）。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
+<pre class="src src-js"><span style="color: #989898; font-style: italic;">// </span><span style="color: #989898; font-style: italic;">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
 </pre>
 </div></li>
 
@@ -284,7 +284,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 保护未来善意的编辑人员不会错误地「修正」你的代码。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
+<pre class="src src-js"><span style="color: #989898; font-style: italic;">// </span><span style="color: #989898; font-style: italic;">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
 </pre>
 </div></li>
 
@@ -292,7 +292,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 澄清：代码审查过程中出现的问题，或代码读者可能提出/困惑的问题。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
+<pre class="src src-js"><span style="color: #989898; font-style: italic;">// </span><span style="color: #989898; font-style: italic;">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
 </pre>
 </div></li>
 
@@ -300,7 +300,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 解释你写不符合规范/要求的代码的理由
 </p>
 <div class="org-src-container">
-<pre class="src src-js">@SuppressWarnings(<span style="color: #79a8ff;">"unchecked"</span>) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
+<pre class="src src-js">@SuppressWarnings(<span style="color: #79a8ff;">"unchecked"</span>) <span style="color: #989898; font-style: italic;">// </span><span style="color: #989898; font-style: italic;">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
 </pre>
 </div></li>
 </ul>
@@ -322,7 +322,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 为什么注释用于解释代码做某些事情的原因，即使代码正在做的事情非常清楚。看代码虽然知道在做什么，但可能不知道为什么要这么做，而为什么注释可以补充这些背景。
 </p>
 
-<section role="note" id="org9d15924">
+<section role="note" id="org898800a">
 <p>
 例如有的代码可能需要放在前面先执行，虽然那行代码确实写在前面，但对于其他人可能不知道为什么要放在前面先执行，而为什么注释就可以告诉他。
 </p>
@@ -334,7 +334,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 有时由于语言限制、设计问题，或者仅仅是由于系统中自然产生的复杂性，不可能将某个概念或界面集中在一块，因此代码中有些地方会告诉你要记住在代码的其他地方做事情。
 </p>
 
-<section role="note" id="org531718f">
+<section role="note" id="orgc9e9e81">
 <p>
 例如有的逻辑分散在很多个文件，修改了一个地方，其他好几个地方也需要修改，
 checklist 可以提醒开发者需要留意修改的地方。
@@ -379,7 +379,7 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 如果你想保存一个函数或代码部分的旧版本，你的工作还没有完成，不能提交。要么确保新函数比过去的函数更好，要么就在本地开发环境中保留它，直到确定为止。
 </p>
 
-<section role="note" id="org1761278">
+<section role="note" id="orgc5055aa">
 <p>
 看代码有时会看到一些已经注释不用的代码，既没写为什么要注释掉，也没有删掉，会影响阅读正常代码逻辑，也不确定能不能删除，最后可能就变成一种债务了。
 </p>
@@ -451,6 +451,9 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 <p class="webmention-tip">
 如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
 </p>
+<section role="note">
+<p>我用 <a href="https://fed.brid.gy/">Birdgy Fed</a> 将博客链接到了 <a href="https://en.wikipedia.org/wiki/Fediverse">Fediverse</a> 和 <a href="https://bsky.social/about">Bluesky</a>，上面的回复大概会通过 Webmention 呈现在这里，你或许可以试试在 Fediverse 和 BlueSky 关注 <a href="https://fed.brid.gy/web/taxodium.ink">我的账号</a> 试试。</p>
+</section>
 <form action="https://webmention.io/taxodium.ink/webmention" method="post">
 <label for="source">你文章的 URL:</label>
 <input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>

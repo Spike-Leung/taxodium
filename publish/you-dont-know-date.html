@@ -76,16 +76,16 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #b6a0ff;">function</span> <span style="color: #feacd0;">getMonth</span>(<span style="color: #00d3d0;">startDate</span>, <span style="color: #00d3d0;">endDate</span>) {
-  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">endSeconds</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(endDate).<span style="color: #d09dc0;">getTime</span>() / 1000
-  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">startSeconds</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(startDate).<span style="color: #d09dc0;">getTime</span>() / 1000
-  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">SECONDS_IN_A_MONTH</span> = 30 * 24 * 60 * 60
+<pre class="src src-typescript">function getMonth(startDate, endDate) {
+  const endSeconds = new Date(endDate).getTime() / 1000
+  const startSeconds = new Date(startDate).getTime() / 1000
+  const SECONDS_IN_A_MONTH = 30 * 24 * 60 * 60
 
-  <span style="color: #b6a0ff;">return</span> Math.<span style="color: #d09dc0;">floor</span>((endSeconds - startSeconds) / SECONDS_IN_A_MONTH)
+  return Math.floor((endSeconds - startSeconds) / SECONDS_IN_A_MONTH)
 }
 
-<span style="color: #d09dc0;">getMonth</span>(<span style="color: #79a8ff;">'2023-03'</span>, <span style="color: #79a8ff;">'2024-03-25 01:00:00'</span>) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">12
-</span><span style="color: #d09dc0;">getMonth</span>(<span style="color: #79a8ff;">'2023-03'</span>, <span style="color: #79a8ff;">'2024-03-25 08:00:00'</span>) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">13</span>
+getMonth('2023-03', '2024-03-25 01:00:00') // 12
+getMonth('2023-03', '2024-03-25 08:00:00') // 13
 </pre>
 </div>
 
@@ -106,8 +106,8 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(<span style="color: #79a8ff;">'2024-01-01'</span>) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">Mon Jan 01 2024 08:00:00 GMT+0800 (China Standard </span><span style="color: #00d3d0;">Time</span><span style="color: #db7b5f;">)
-</span><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(<span style="color: #79a8ff;">'2024-01-01 00:00:00'</span>) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">Mon Jan 01 2024 00:00:00 GMT+0800 (China Standard </span><span style="color: #00d3d0;">Time</span><span style="color: #db7b5f;">)</span>
+<pre class="src src-typescript">new Date('2024-01-01') // Mon Jan 01 2024 08:00:00 GMT+0800 (China Standard Time)
+new Date('2024-01-01 00:00:00') // Mon Jan 01 2024 00:00:00 GMT+0800 (China Standard Time)
 </pre>
 </div>
 
@@ -154,23 +154,23 @@ Parser – A Web Reality Issue.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#36820;&#22238;&#26412;&#22320;&#26102;&#38388;
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">date-only forms are interpreted as a UTC time
-</span><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(<span style="color: #79a8ff;">'2023-03'</span>) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard </span><span style="color: #00d3d0;">Time</span><span style="color: #db7b5f;">)
-</span><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(<span style="color: #79a8ff;">'2023-03-01'</span>) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard </span><span style="color: #00d3d0;">Time</span><span style="color: #db7b5f;">)
-</span>
-<span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">date-time forms are interpreted as local time
-</span><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(<span style="color: #79a8ff;">'2023-03-01T00:00:00'</span>) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard </span><span style="color: #00d3d0;">Time</span><span style="color: #db7b5f;">)
-</span><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(<span style="color: #79a8ff;">'2023-03-01 00:00:00'</span>) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard </span><span style="color: #00d3d0;">Time</span><span style="color: #db7b5f;">)
-</span>
-<span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#36820;&#22238; UTC &#26102;&#38388;
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">date-only forms are interpreted as a UTC time
-</span><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(<span style="color: #79a8ff;">'2023-03'</span>).<span style="color: #d09dc0;">toUTCString</span>() <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'</span><span style="color: #00d3d0;">Wed</span><span style="color: #db7b5f;">, 01 Mar 2023 00:00:00 GMT'
-</span><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(<span style="color: #79a8ff;">'2023-03-01'</span>).<span style="color: #d09dc0;">toUTCString</span>() <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'</span><span style="color: #00d3d0;">Wed</span><span style="color: #db7b5f;">, 01 Mar 2023 00:00:00 GMT'
-</span>
-<span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">date-time forms are interpreted as local time
-</span><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(<span style="color: #79a8ff;">'2023-03-01T00:00:00'</span>).<span style="color: #d09dc0;">toUTCString</span>() <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'</span><span style="color: #00d3d0;">Tue</span><span style="color: #db7b5f;">, 28 Feb 2023 16:00:00 GMT'
-</span><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(<span style="color: #79a8ff;">'2023-03-01 00:00:00'</span>).<span style="color: #d09dc0;">toUTCString</span>() <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'</span><span style="color: #00d3d0;">Tue</span><span style="color: #db7b5f;">, 28 Feb 2023 16:00:00 GMT'</span>
+<pre class="src src-typescript">// 返回本地时间
+// date-only forms are interpreted as a UTC time
+new Date('2023-03') // Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard Time)
+new Date('2023-03-01') // Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard Time)
+
+// date-time forms are interpreted as local time
+new Date('2023-03-01T00:00:00') // Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard Time)
+new Date('2023-03-01 00:00:00') // Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard Time)
+
+// 返回 UTC 时间
+// date-only forms are interpreted as a UTC time
+new Date('2023-03').toUTCString() // 'Wed, 01 Mar 2023 00:00:00 GMT'
+new Date('2023-03-01').toUTCString() // 'Wed, 01 Mar 2023 00:00:00 GMT'
+
+// date-time forms are interpreted as local time
+new Date('2023-03-01T00:00:00').toUTCString() // 'Tue, 28 Feb 2023 16:00:00 GMT'
+new Date('2023-03-01 00:00:00').toUTCString() // 'Tue, 28 Feb 2023 16:00:00 GMT'
 </pre>
 </div>
 
@@ -192,9 +192,9 @@ midnight at the beginning of January 1, 1970, UTC.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(<span style="color: #79a8ff;">'2023-03'</span>).<span style="color: #d09dc0;">toUTCString</span>() <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'</span><span style="color: #00d3d0;">Wed</span><span style="color: #db7b5f;">, 01 Mar 2023 00:00:00 GMT'
-</span><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(<span style="color: #79a8ff;">'2024-03-25 01:00:00'</span>).<span style="color: #d09dc0;">toUTCString</span>() <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'</span><span style="color: #00d3d0;">Sun</span><span style="color: #db7b5f;">, 24 Mar 2024 17:00:00 GMT'
-</span><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(<span style="color: #79a8ff;">'2024-03-25 08:00:00'</span>).<span style="color: #d09dc0;">toUTCString</span>() <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'</span><span style="color: #00d3d0;">Mon</span><span style="color: #db7b5f;">, 25 Mar 2024 00:00:00 GMT'</span>
+<pre class="src src-typescript">new Date('2023-03').toUTCString() // 'Wed, 01 Mar 2023 00:00:00 GMT'
+new Date('2024-03-25 01:00:00').toUTCString() // 'Sun, 24 Mar 2024 17:00:00 GMT'
+new Date('2024-03-25 08:00:00').toUTCString() // 'Mon, 25 Mar 2024 00:00:00 GMT'
 </pre>
 </div>
 
@@ -209,8 +209,8 @@ midnight at the beginning of January 1, 1970, UTC.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">Remember (and accept) that month is zero-indexed in JavaScript.
-</span><span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Date</span>(2023, 02, 01) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard </span><span style="color: #00d3d0;">Time</span><span style="color: #db7b5f;">)</span>
+<pre class="src src-typescript">// Remember (and accept) that month is zero-indexed in JavaScript.
+new Date(2023, 02, 01) // Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard Time)
 </pre>
 </div>
 </div>
@@ -234,6 +234,9 @@ midnight at the beginning of January 1, 1970, UTC.
 <p class="webmention-tip">
 如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
 </p>
+<section role="note">
+<p>我用 <a href="https://fed.brid.gy/">Birdgy Fed</a> 将博客链接到了 <a href="https://en.wikipedia.org/wiki/Fediverse">Fediverse</a> 和 <a href="https://bsky.social/about">Bluesky</a>，上面的回复大概会通过 Webmention 呈现在这里，你或许可以试试在 Fediverse 和 BlueSky 关注 <a href="https://fed.brid.gy/web/taxodium.ink">我的账号</a> 试试。</p>
+</section>
 <form action="https://webmention.io/taxodium.ink/webmention" method="post">
 <label for="source">你文章的 URL:</label>
 <input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>

@@ -129,8 +129,8 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>gu.<span style="color: #d09dc0;">test</span>(<span style="color: #79a8ff;">"&#20320;&#22909;hello123&#128516;hi&#127799;456&#127568;"</span>) <span style="color: #db7b5f;">// </span><span style="color: #00d3d0;">true</span><span style="color: #db7b5f;">
-</span><span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>gu.<span style="color: #d09dc0;">test</span>(<span style="color: #79a8ff;">"&#20320;&#22909;hello123"</span>) <span style="color: #db7b5f;">// </span><span style="color: #00d3d0;">false</span>
+<pre class="src src-typescript">/\p{Extended_Pictographic}/gu.test("你好hello123😄hi🌷456🉐") // true
+/\p{Extended_Pictographic}/gu.test("你好hello123") // false
 </pre>
 </div>
 
@@ -160,7 +160,7 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">/(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]/</span>
+<pre class="src src-typescript">/(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]/
 </pre>
 </div>
 
@@ -231,16 +231,16 @@
 </dl>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #6ae4b9;">console</span>.<span style="color: #d09dc0;">log</span>(
-  <span style="color: #79a8ff;">/\p{Emoji}/</span>u.<span style="color: #d09dc0;">test</span>(<span style="color: #79a8ff;">'flowers'</span>), <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">false :)
-</span>  <span style="color: #79a8ff;">/\p{Emoji}/</span>u.<span style="color: #d09dc0;">test</span>(<span style="color: #79a8ff;">'flowers &#127804;&#127802;&#127800;'</span>), <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">true :)
-</span>  <span style="color: #79a8ff;">/\p{Emoji}/</span>u.<span style="color: #d09dc0;">test</span>(<span style="color: #79a8ff;">'flowers 123'</span>), <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">true :(
-</span>)
-<span style="color: #6ae4b9;">console</span>.<span style="color: #d09dc0;">log</span>(
-  <span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>u.<span style="color: #d09dc0;">test</span>(<span style="color: #79a8ff;">'flowers'</span>), <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">false :)
-</span>  <span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>u.<span style="color: #d09dc0;">test</span>(<span style="color: #79a8ff;">'flowers &#127804;&#127802;&#127800;'</span>), <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">true :)
-</span>  <span style="color: #79a8ff;">/\p{Extended_Pictographic}/</span>u.<span style="color: #d09dc0;">test</span>(<span style="color: #79a8ff;">'flowers 123'</span>), <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">false :)
-</span>)
+<pre class="src src-typescript">console.log(
+  /\p{Emoji}/u.test('flowers'), // false :)
+  /\p{Emoji}/u.test('flowers 🌼🌺🌸'), // true :)
+  /\p{Emoji}/u.test('flowers 123'), // true :(
+)
+console.log(
+  /\p{Extended_Pictographic}/u.test('flowers'), // false :)
+  /\p{Extended_Pictographic}/u.test('flowers 🌼🌺🌸'), // true :)
+  /\p{Extended_Pictographic}/u.test('flowers 123'), // false :)
+)
 </pre>
 </div>
 </div>
@@ -310,7 +310,7 @@ represents 1–6 hex digits.
 概括来说，在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。而超出 65536 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
 </p>
 
-<section role="note" id="orgbae96c7">
+<section role="note" id="org48ee442">
 <p>
 为什么 Unicode 要这么设计，参考 <a href="https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm">Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?</a>
 </p>
@@ -332,9 +332,9 @@ represents 1–6 hex digits.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #d09dc0;">charAt</span>(0) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'\uD83C'
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #d09dc0;">charAt</span>(1) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'\uDE50'
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #d09dc0;">split</span>(<span style="color: #79a8ff;">""</span>) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">['\uD83C', '\uDE50']</span>
+<pre class="src src-typescript">'🉐'.charAt(0) // '\uD83C'
+'🉐'.charAt(1) // '\uDE50'
+'🉐'.split("") // ['\uD83C', '\uDE50']
 </pre>
 </div>
 
@@ -361,14 +361,14 @@ charAt() 返回字符串对应下标的单个 UTF-16 编码单元。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #d09dc0;">charAt</span>(0) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'\uD83C'
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #d09dc0;">charAt</span>(1) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'\uDE50'
-</span>
-<span style="color: #79a8ff;">'a'</span>.<span style="color: #d09dc0;">charAt</span>(0) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'a'
-</span><span style="color: #79a8ff;">'a'</span>.<span style="color: #d09dc0;">charAt</span>(1) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">''
-</span>
-<span style="color: #79a8ff;">'apple'</span>.<span style="color: #d09dc0;">charAt</span>(0) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'a'
-</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #d09dc0;">charAt</span>(1) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'p'</span>
+<pre class="src src-typescript">'🉐'.charAt(0) // '\uD83C'
+'🉐'.charAt(1) // '\uDE50'
+
+'a'.charAt(0) // 'a'
+'a'.charAt(1) // ''
+
+'apple'.charAt(0) // 'a'
+'apple'.charAt(1) // 'p'
 </pre>
 </div></dd>
 
@@ -383,14 +383,14 @@ charCodeAt() 返回字符一个 <code>0-65535</code> 之间的 <code>数字(inte
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #d09dc0;">charCodeAt</span>(0) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">55356
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #d09dc0;">charCodeAt</span>(1) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">56912
-</span>
-<span style="color: #79a8ff;">'a'</span>.<span style="color: #d09dc0;">charCodeAt</span>(0) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">97
-</span><span style="color: #79a8ff;">'a'</span>.<span style="color: #d09dc0;">charCodeAt</span>(1) <span style="color: #db7b5f;">// </span><span style="color: #00d3d0;">NaN</span><span style="color: #db7b5f;">
-</span>
-<span style="color: #79a8ff;">'apple'</span>.<span style="color: #d09dc0;">charCodeAt</span>(0) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">97
-</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #d09dc0;">charCodeAt</span>(1) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">112</span>
+<pre class="src src-typescript">'🉐'.charCodeAt(0) // 55356
+'🉐'.charCodeAt(1) // 56912
+
+'a'.charCodeAt(0) // 97
+'a'.charCodeAt(1) // NaN
+
+'apple'.charCodeAt(0) // 97
+'apple'.charCodeAt(1) // 112
 </pre>
 </div></dd>
 
@@ -409,16 +409,16 @@ fromCharCode() 和 charCodeAt() 是对应的。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #d09dc0;">charCodeAt</span>(0) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">55356
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #d09dc0;">charCodeAt</span>(1) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">56912
-</span>String.<span style="color: #d09dc0;">fromCharCode</span>(55356, 56912) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'&#127568;'
-</span>
-<span style="color: #79a8ff;">'apple'</span>.<span style="color: #d09dc0;">charCodeAt</span>(0) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">97
-</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #d09dc0;">charCodeAt</span>(1) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">112
-</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #d09dc0;">charCodeAt</span>(2) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">112
-</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #d09dc0;">charCodeAt</span>(3) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">108
-</span><span style="color: #79a8ff;">'apple'</span>.<span style="color: #d09dc0;">charCodeAt</span>(4) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">101
-</span>String.<span style="color: #d09dc0;">fromCharCode</span>(97, 112, 112, 108, 101) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'apple'</span>
+<pre class="src src-typescript">'🉐'.charCodeAt(0) // 55356
+'🉐'.charCodeAt(1) // 56912
+String.fromCharCode(55356, 56912) // '🉐'
+
+'apple'.charCodeAt(0) // 97
+'apple'.charCodeAt(1) // 112
+'apple'.charCodeAt(2) // 112
+'apple'.charCodeAt(3) // 108
+'apple'.charCodeAt(4) // 101
+String.fromCharCode(97, 112, 112, 108, 101) // 'apple'
 </pre>
 </div></dd>
 
@@ -437,14 +437,14 @@ codePointAt() 返回的是一个数字，是字符串对应下标的对应的 Un
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #d09dc0;">charCodeAt</span>(0) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">55356
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #d09dc0;">charCodeAt</span>(1) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">56912
-</span>
-<span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #d09dc0;">codePointAt</span>(0) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">127568
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#38656;&#35201;&#27880;&#24847;&#30340;&#26159;&#65292;&#19979;&#26631;&#26159;&#22522;&#20110; UTF-16 &#35745;&#31639;&#30340;&#65292;&#127568; &#26159;&#30001;&#20004;&#20010; UTF-16 &#32452;&#25104;&#30340;
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#23545;&#20110;&#19979;&#26631; 0&#65292;&#21487;&#20197;&#25214;&#21040;&#19968;&#20010;&#20195;&#29702;&#23545;&#65292;&#23545;&#24212; Unicode code point&#65292;&#25152;&#20197;&#36820;&#22238;&#20102; 127568
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#23545;&#20110;&#19979;&#26631; 1&#65292;&#30001;&#20110;&#21482;&#26377;&#20302;&#20195;&#29702;&#20301;&#65292;&#26080;&#27861;&#32452;&#25104;&#20195;&#29702;&#23545;&#65292;&#23601;&#36820;&#22238;&#20302;&#20195;&#29702;&#20301;&#23545;&#24212;&#30340; Unicode Code Point
-</span><span style="color: #79a8ff;">'&#127568;'</span>.<span style="color: #d09dc0;">codePointAt</span>(1) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">56912</span>
+<pre class="src src-typescript">'🉐'.charCodeAt(0) // 55356
+'🉐'.charCodeAt(1) // 56912
+
+'🉐'.codePointAt(0) // 127568
+// 需要注意的是，下标是基于 UTF-16 计算的，🉐 是由两个 UTF-16 组成的
+// 对于下标 0，可以找到一个代理对，对应 Unicode code point，所以返回了 127568
+// 对于下标 1，由于只有低代理位，无法组成代理对，就返回低代理位对应的 Unicode Code Point
+'🉐'.codePointAt(1) // 56912
 </pre>
 </div></dd>
 
@@ -463,17 +463,17 @@ fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePo
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">fromCodePoint
-</span>String.<span style="color: #d09dc0;">fromCodePoint</span>(127568) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'&#127568;'
-</span>String.<span style="color: #d09dc0;">fromCodePoint</span>(55356, 56912) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'&#127568;'
-</span>
-<span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">fromCharCode
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">fromCharCode &#21482;&#33021;&#22788;&#29702; 0-65535 &#20043;&#38388;&#30340;&#25968;&#23383;&#65292;&#23545;&#20110;&#36229;&#36807; 65535 &#30340;&#25968;&#23383;&#65292;&#21017;&#25130;&#26029;&#21040;&#26368;&#21518;&#30340; 16 &#20301;&#25968;&#23383;
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">&#31561;&#21516;&#20110; String.</span><span style="color: #d09dc0;">fromCharCode</span><span style="color: #db7b5f;">(62032)
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">Number(127568).</span><span style="color: #d09dc0;">toString</span><span style="color: #db7b5f;">(16) -&gt; '1f250' -&gt; &#25130;&#21462;&#26368;&#21518;&#30340; 16 &#20301;&#65292;&#21363; </span><span style="color: #00d3d0;">f250</span><span style="color: #db7b5f;">
-</span><span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">Number.</span><span style="color: #d09dc0;">parseInt</span><span style="color: #db7b5f;">('f250', 16) -&gt; 62032
-</span>String.<span style="color: #d09dc0;">fromCharCode</span>(127568) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'&#62032;'
-</span>String.<span style="color: #d09dc0;">fromCharCode</span>(55356, 56912) <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">'&#127568;'</span>
+<pre class="src src-typescript">// fromCodePoint
+String.fromCodePoint(127568) // '🉐'
+String.fromCodePoint(55356, 56912) // '🉐'
+
+// fromCharCode
+// fromCharCode 只能处理 0-65535 之间的数字，对于超过 65535 的数字，则截断到最后的 16 位数字
+// 等同于 String.fromCharCode(62032)
+// Number(127568).toString(16) -&gt; '1f250' -&gt; 截取最后的 16 位，即 f250
+// Number.parseInt('f250', 16) -&gt; 62032
+String.fromCharCode(127568) // ''
+String.fromCharCode(55356, 56912) // '🉐'
 </pre>
 </div></dd>
 </dl>
@@ -491,9 +491,9 @@ fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePo
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #79a8ff;">'a'</span>.length <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">1
-</span>
-<span style="color: #79a8ff;">'&#127568;'</span>.length <span style="color: #db7b5f;">// </span><span style="color: #db7b5f;">2</span>
+<pre class="src src-typescript">'a'.length // 1
+
+'🉐'.length // 2
 </pre>
 </div>
 
@@ -546,6 +546,9 @@ fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePo
 <p class="webmention-tip">
 如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
 </p>
+<section role="note">
+<p>我用 <a href="https://fed.brid.gy/">Birdgy Fed</a> 将博客链接到了 <a href="https://en.wikipedia.org/wiki/Fediverse">Fediverse</a> 和 <a href="https://bsky.social/about">Bluesky</a>，上面的回复大概会通过 Webmention 呈现在这里，你或许可以试试在 Fediverse 和 BlueSky 关注 <a href="https://fed.brid.gy/web/taxodium.ink">我的账号</a> 试试。</p>
+</section>
 <form action="https://webmention.io/taxodium.ink/webmention" method="post">
 <label for="source">你文章的 URL:</label>
 <input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>

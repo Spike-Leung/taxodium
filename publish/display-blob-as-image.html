@@ -80,13 +80,13 @@ img 的 src。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">imageURL</span> = <span style="color: #79a8ff;">"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"</span>
+<pre class="src src-typescript">const imageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"
 
-<span style="color: #d09dc0;">fetch</span>(imageURL).<span style="color: #d09dc0;">then</span>((<span style="color: #00d3d0;">res</span>) <span style="color: #b6a0ff;">=&gt;</span> {
-  <span style="color: #b6a0ff;">return</span> res.<span style="color: #d09dc0;">blob</span>()
-}).<span style="color: #d09dc0;">then</span>((<span style="color: #00d3d0;">blob</span>) <span style="color: #b6a0ff;">=&gt;</span> {
-  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">imageObjectURL</span> = URL.<span style="color: #d09dc0;">createObjectURL</span>(blob);
-  document.<span style="color: #d09dc0;">querySelector</span>(<span style="color: #79a8ff;">"#img"</span>).src = imageObjectURL
+fetch(imageURL).then((res) =&gt; {
+  return res.blob()
+}).then((blob) =&gt; {
+  const imageObjectURL = URL.createObjectURL(blob);
+  document.querySelector("#img").src = imageObjectURL
 })
 </pre>
 </div>
@@ -123,23 +123,23 @@ result 属性将包含一个data:URL 格式的字符串（base64 编码）以表
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">imageURL</span> = <span style="color: #79a8ff;">"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"</span>
+<pre class="src src-typescript">const imageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"
 
-<span style="color: #b6a0ff;">function</span> <span style="color: #feacd0;">blob2Base64</span>(<span style="color: #00d3d0;">blob</span>) {
-  <span style="color: #b6a0ff;">const</span> <span style="color: #00d3d0;">reader</span> = <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">FileReader</span>();
-  reader.<span style="color: #d09dc0;">readAsDataURL</span>(blob);
+function blob2Base64(blob) {
+  const reader = new FileReader();
+  reader.readAsDataURL(blob);
 
-  <span style="color: #b6a0ff;">return</span> <span style="color: #b6a0ff;">new</span> <span style="color: #6ae4b9;">Promise</span>((<span style="color: #00d3d0;">resolve</span>) <span style="color: #b6a0ff;">=&gt;</span> {
-    reader.onloadend = () <span style="color: #b6a0ff;">=&gt;</span> {
-      <span style="color: #d09dc0;">resolve</span>(reader.result)
+  return new Promise((resolve) =&gt; {
+    reader.onloadend = () =&gt; {
+      resolve(reader.result)
     };
   })
 }
 
-<span style="color: #d09dc0;">fetch</span>(imageURL).<span style="color: #d09dc0;">then</span>((<span style="color: #00d3d0;">res</span>) <span style="color: #b6a0ff;">=&gt;</span> {
-  <span style="color: #b6a0ff;">return</span> res.<span style="color: #d09dc0;">blob</span>()
-}).<span style="color: #d09dc0;">then</span>(<span style="color: #b6a0ff;">async</span> (<span style="color: #00d3d0;">blob</span>) <span style="color: #b6a0ff;">=&gt;</span> {
-  document.<span style="color: #d09dc0;">querySelector</span>(<span style="color: #79a8ff;">"#img"</span>).src = <span style="color: #b6a0ff;">await</span> <span style="color: #d09dc0;">blob2Base64</span>(blob)
+fetch(imageURL).then((res) =&gt; {
+  return res.blob()
+}).then(async (blob) =&gt; {
+  document.querySelector("#img").src = await blob2Base64(blob)
 })
 </pre>
 </div>
@@ -158,6 +158,9 @@ result 属性将包含一个data:URL 格式的字符串（base64 编码）以表
 <p class="webmention-tip">
 如果你想回应这篇文章，你可以在你的文章中链接这篇文章，然后在下面输入你的文章的 URL 并提交。你的回应随后会显示在此页面上（如果是垃圾信息我会屏蔽）。如果要更新或删除你的回应，请更新或删除你的文章，然后再次输入该文章的 URL 并提交。<a href="https://taxodium.ink/add-webmention-to-blog.html">（了解有关 Webmention 的更多信息。）</a>
 </p>
+<section role="note">
+<p>我用 <a href="https://fed.brid.gy/">Birdgy Fed</a> 将博客链接到了 <a href="https://en.wikipedia.org/wiki/Fediverse">Fediverse</a> 和 <a href="https://bsky.social/about">Bluesky</a>，上面的回复大概会通过 Webmention 呈现在这里，你或许可以试试在 Fediverse 和 BlueSky 关注 <a href="https://fed.brid.gy/web/taxodium.ink">我的账号</a> 试试。</p>
+</section>
 <form action="https://webmention.io/taxodium.ink/webmention" method="post">
 <label for="source">你文章的 URL:</label>
 <input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
