@@ -12,7 +12,23 @@
 #+options: ^:{}
 #+startup: content
 
-* 前言
+* TL;DR
+:PROPERTIES:
+:CUSTOM_ID: 3dd21c20-23d8-4d1c-a431-e8edf6b76a1e
+:CUSTOM_ID:       052D35CE-BA3F-4E12-A0E4-AEE13967B83D
+:ID:       4B34D03B-CD42-4B69-B001-BB6E755A3E70
+:END:
+
+如果你想匹配 Emoji，可以考虑使用 [[https://github.com/mathiasbynens/emoji-regex][emoji-regex]] 这个库。
+
+如果你不想新增依赖，
+并且浏览器版本支持 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicodeSets][RegExp.prototype.unicodeSets]]，也可以用这个正则表达式：
+
+=/\p{RGI_Emoji}/gv=
+
+这里提供一个测试用例： =测试abc123🉐👨‍👩‍👧‍👦👋🏽❤️👮‍♀️👩‍❤️‍👨= 。
+
+* 需求
 :PROPERTIES:
 :CUSTOM_ID: a252e66a-efb6-4f6d-9692-767160e1cbde
 :CUSTOM_ID:       958F607C-8D52-4FBF-BF22-20DEE094942D
@@ -23,26 +39,6 @@
 
 我的理解就是将 Emoji 排除掉，通过 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp][RegExp]] 匹配 Emoji 判断是否存在特殊表情。
 
-* TL;DR
-:PROPERTIES:
-:CUSTOM_ID: 3dd21c20-23d8-4d1c-a431-e8edf6b76a1e
-:CUSTOM_ID:       052D35CE-BA3F-4E12-A0E4-AEE13967B83D
-:ID:       4B34D03B-CD42-4B69-B001-BB6E755A3E70
-:END:
-
-+如果你只是想要一个能够匹配表情的正则，下面这个应该就满足👇：+ [fn:1]
-
-#+begin_src typescript
-    /\p{Extended_Pictographic}/gu.test("你好hello123😄hi🌷456🉐") // true
-    /\p{Extended_Pictographic}/gu.test("你好hello123") // false
-#+end_src
-
-[[file:./images/emoji-regexp/regexp101-emoji-corret.png]]
-
-如果你想匹配 Emoji，可以考虑使用 [[https://github.com/mathiasbynens/emoji-regex][emoji-regex]] 这个库。
-
-如果你只需要兼容高版本的浏览器（如 Chrome 112+），你也可以使用 =\p{RGI_Emoji}\gv=[fn:2]。
-
 * 解决过程
 :PROPERTIES:
 :CUSTOM_ID: 1347354e-0cd0-4408-b10f-efa68d00cb27
@@ -50,8 +46,7 @@
 :ID:       2FB86304-D1A3-4636-AA30-C66A2AB08598
 :END:
 
-对于 Emoji 这种正则，一开始想不到如何构建，
-理论上它也是属于 String，大致知道 Emoji 和 Unicode 相关，
+对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道 Emoji 和 Unicode 相关，
 但怎么用正则描述它呢？
 
 所以我的第一步是 Google，得到一个这样的正则：
@@ -67,15 +62,15 @@
 上面的正则表达式应该是表示的是一个 Unicode 范围，
 部分 Emoji (🉐)没匹配上，说明这个范围小了，没有囊括所有的 Emoji。
 
-那么 Emoji 的 Unicode 范围是多少？是不是穷举就行了？
+那么 Emoji 的 Unicode 范围是多少？能否穷举呢？
 
-其实没办法用一个固定的范围去表达，
-因为 Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicode，
-没办法用一个固定的范围去表达所有的 Emoji。
+Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicode，
+是没办法用一个固定的范围去表达所有的 Emoji。
 
-于是又搜索了一下，StackOverflow 有一个 [[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][回答]]，
-里面提到了用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape]] 进行匹配，
-也就是 ~/\p{Emoji}/u~ 和 ~/\p{Extended_Pictographic}/u~ 。
+于是又搜索了一下，StackOverflow 有一个 [[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][回答]]，里面提到了用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape]] 进行匹配，
+即:
+- ~/\p{Emoji}/u~
+- ~/\p{Extended_Pictographic}/u~ 。
 
 #+begin_details
 #+html: <summary>什么是 Unicode character class escpae</summary>
@@ -95,12 +90,16 @@
 [[file:./images/emoji-regexp/regexp101-emoji-hex-digit.png]]
 
 需要注意的是，使用 Unicode character class escpae 要启用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode#unicode-aware_mode][unicode-aware mode]]，即加上 =/u= 标记。
+
 #+end_details
 
-- ~/\p{Emoji}/u~ :: 这个正则实际测试并不符合需求，因为在 [[https://www.unicode.org/Public/15.1.0/ucd/emoji/emoji-data.txt][Emoji 官方文档]] 中， =123456789*#= 也是被看作是 Emoji，
+- ~/\p{Emoji}/u~ ::
+  这个正则实际测试并不符合需求，因为在 [[https://www.unicode.org/Public/15.1.0/ucd/emoji/emoji-data.txt#:~:text=0023%20%3B%20Emoji%20%23%20E0%2E0%20%5B1%5D%20%28%23%EF%B8%8F%29%20hash%20sign%20002A%20%3B%20Emoji%20%23%20E0%2E0%20%5B1%5D%20%28%2A%EF%B8%8F%29%20asterisk%200030%2E%2E0039%20%3B%20Emoji%20%23%20E0%2E0%20%5B10%5D%20%280%EF%B8%8F%2E%2E9%EF%B8%8F%29%20digit%20zero%2E%2Edigit%20nine][Emoji 官方文档]] 中，
+  =123456789*#= 也是被看作是 Emoji，
   如果用这个正则的话，就会把数字也认为是 Emoji，不符合只排除特殊表情的要求。
 
-- ~/\p{Extended_Pictographic}/u~ :: 而 Extended_Pictographic 表示的 Emoji 才是我们认为的那些表情符号。
+- ~/\p{Extended_Pictographic}/u~ ::
+  Extended_Pictographic 表示的 Emoji 才是我们认为的那些表情符号。
 
 #+begin_src typescript
   console.log(
@@ -115,64 +114,63 @@
   )
 #+end_src
 
-* 为什么 /(\ud83c[\udf00-\udfff].../u 的正则无法匹配 🉐
+=/u= ([[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode][RegExp.prototype.unicode]]) 只能匹配单个 Unicode，
+但是 [[https://emojipedia.org/emoji-sequence][有的表情]] 是由多个 Unicode 组成的，例如 [[https://emojipedia.org/couple-with-heart-woman-man][👩‍❤️‍👨]] 是由 👩、[[https://emojipedia.org/zero-width-joiner][ZWJ]]、❤️、[[https://emojipedia.org/zero-width-joiner][ZWJ]]、👨 一起组合得到的。
+
+=/u= 可以匹配 👩、❤️、👨，但是无法匹配 👩‍❤️‍👨，
+此时需要用到 =/v= ([[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicodeSets][RegExp.prototype.unicodeSets]])，它可以匹配 Unicode 序列。[fn:1]
+
+#+attr_html: :role note
+#+begin_section
+按照字母顺序，v 在 u 的， =/v= 比 =/u= 更晚提出，它基本包含了 =/u= 的能力，是对 =/u= 的一次升级。
+#+end_section
+
+使用 =/v= ， =\p{loneProperty}= 的 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape#loneproperty:~:text=In%20v%20mode%2C%20it%20can%20also%20be%20a%20binary%20Unicode%20property%20of%20strings%2E%E4%B8%80%E4%B8%AA][loneProperty 的范围就扩大了]]，
+可以支持 [[https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties-of-strings][Binary Unicode properties of strings]]，
+而其中的 =RGI_Emoji= 包含了所有的那些认为是表情的 Emoji，所以最终匹配表情的正则表达式可以写成：
+
+=/\p{RGI_Emoji}/gv=
+
+#+begin_details
+#+html: <summary>关于  Binary Unicode properties of strings</summary>
+
+[[https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties-of-strings][Binary Unicode properties of strings]] 包括：
+
+- Basic_Emoji
+- Emoji_Keycap_Sequence
+- RGI_Emoji_Modifier_Sequence
+- RGI_Emoji_Flag_Sequence
+- RGI_Emoji_Tag_Sequence
+- RGI_Emoji_ZWJ_Sequence
+- RGI_Emoji
+
+它们之间的关系可以参考 [[https://www.unicode.org/reports/tr18/#Full_Properties][UTS18]]、[[https://www.unicode.org/reports/tr51/][UTS51]]，它们对应的 Emoji 参考 [[https://emojipedia.org/emoji-sequence][Emoji Sequence]]。
+#+end_details
+
+* Emoji 在 JS 中到底是什么？
 :PROPERTIES:
 :CUSTOM_ID: 981cd9a6-3bc0-4c8d-8144-da19e135b56c
 :CUSTOM_ID:       6B39F3DA-4DC5-4079-A5C0-2D50846588FE
 :ID:       FEE4F9A3-99A9-44C0-AA15-99CEE5CBF40A
 :END:
 
-现在，使用 Unicode character class escpae 可以匹配 Emoji 了，
-但是为什么一开始 Google 搜到的正则 ~/(\ud83c[\udf00-\udfff].../u~ 无法匹配 🉐 呢？
+现在，已经知道怎么匹配 Emoji 了，
+但是为什么一开始找到的正则 ~/(\ud83c[\udf00-\udfff].../u~ 无法匹配 🉐 呢？
 
 为此，首先需要知道 🉐 在 JS 中到底是什么。
 
-** String & Unicode
-:PROPERTIES:
-:CUSTOM_ID: 02f1594b-e08e-43d6-a94d-36f1d534eae0
-:CUSTOM_ID:       27932DC1-43B2-4ADF-85B5-2D9ACC139218
-:ID:       1BA1CF0E-AADA-4FEC-A783-881B05BA2C09
-:END:
-
-#+begin_details
-#+html: <summary>UTF-16 characters, Unicode code points, and grapheme clusters</summary>
-
-#+begin_quote
-Strings are represented fundamentally as sequences of [[https://en.wikipedia.org/wiki/UTF-16][UTF-16]] code
-units. In UTF-16 encoding, every code unit is exact 16 bits long. This
-means there are a maximum of 2^16, or 65536 possible characters
-representable as single UTF-16 code units.
-
-...
-
-However, the entire Unicode character set is much, much bigger
-than 65536. The extra characters are stored in UTF-16 as surrogate
-pairs, which are pairs of 16-bit code units that represent a single
-character.To avoid ambiguity, the two parts of the pair must be
-between 0xD800 and 0xDFFF, and these code units are not used to encode
-single-code-unit characters. (More precisely, leading surrogates, also
-called *high-surrogate* code units, have values between *0xD800 and
-0xDBFF*, inclusive, while trailing surrogates, also called
-*low-surrogate* code units, have values between *0xDC00 and 0xDFFF*,
-inclusive.) Each Unicode character, comprised of one or two UTF-16
-code units, is also called a *Unicode code point*. Each Unicode code
-point can be written in a string with \u{xxxxxx} where xxxxxx
-represents 1–6 hex digits.
-
-[[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters:~:text=Strings%20are%20represented,6%20hex%20digits.][Source]]
-#+end_quote
-#+end_details
-
-在 JavaScript 中，String 实际是 UTF-16 (16-bit Unicode Transformation Format) 编码的，
+在 JavaScript 中，String 是用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters][UTF-16]] (16-bit Unicode Transformation Format) 编码的，
 它以 16 位去表示一个字符（code unit），最多可以表示 65536 (0x0000 - 0xFFFF) 个字符。
 
 这 65536 个字符中包含了大部分常用字符，例如字母，数字，拉丁字符，以及一些东亚文字字符。
 但是后来发现 65536 并不足以表达所有字符，16 位不够，那就需要增加 Unicode 去表达更多字符。
 
-实现的方法就是定义了 *代理对 (Surrogates pairs)*  , 代理对由 20 位组成。
-规定前 10 位作为 *高代理位 (high-surrogate)* ，取值范围是 0xD800 - 0xDBFF。
-后 10 位为 *低代理位 (low-surrogate)* ，取值范围是 0xDC00 - 0xDFFF。
+实现的方法就是定义@@html:<em>代理对</em>@@(Surrogates pairs), 代理对由 20 位组成。
+
+规定前 10 位作为@@html:<em>高代理位</em>@@ (high-surrogate)，取值范围是 0xD800 - 0xDBFF。
+后 10 位为@@html:<em>低代理位</em>@@ (low-surrogate)，取值范围是 0xDC00 - 0xDFFF。
 高代理位和低代理位组成代理对 。
+
 由于有 20 位的长度，因此可以表达 1048576 个字符，可以在原来 65536 个字符之上，再增加 1048576 个字符。
 
 概括来说，在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。
@@ -186,12 +184,6 @@ represents 1–6 hex digits.
 
 为什么高代理和低代理这么取值，参考 [[https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen][How was the position of the Surrogates Area (UTF-16) chosen?]]
 #+end_section
-
-** 为什么匹配不到
-:PROPERTIES:
-:CUSTOM_ID:       5D9B7985-E1CA-4BE5-826D-09D3869F9008
-:ID:       D3CED168-058A-4596-89B9-18A04E0677BF
-:END:
 
 现在已经知道 Emoji 是通过代理对表示的，那么 🉐 的代理对是什么呢？
 
@@ -214,10 +206,11 @@ represents 1–6 hex digits.
 - [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charAt][String.prototype.charAt()]] ::
 
   #+begin_quote
-    The charAt() method of String values returns a new string consisting of the single UTF-16 code unit at the given index.
+  The charAt() method of String values returns a new string
+  consisting of the single UTF-16 code unit at the given index.
   #+end_quote
 
-  charAt() 返回字符串对应下标的单个 UTF-16 编码单元。
+  ~charAt()~ 返回字符串对应下标的单个 UTF-16 编码单元。
 
   #+begin_src typescript
       '🉐'.charAt(0) // '\uD83C'
@@ -233,10 +226,11 @@ represents 1–6 hex digits.
 - [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt][String.property.charCodeAt()]] ::
 
   #+begin_quote
-  The charCodeAt() method of String values returns an integer between 0 and 65535 representing the UTF-16 code unit at the given index.
+  The charCodeAt() method of String values returns an integer between 0 and 65535
+  representing the UTF-16 code unit at the given index.
   #+end_quote
 
-  charCodeAt() 返回字符一个 =0-65535= 之间的 =数字(integer)= , 是字符串对应下标的 UTF-16 编码单元对应的数值。
+  ~charCodeAt()~ 返回字符一个 0-65535 之间的数字, 是字符串对应下标的 UTF-16 编码单元对应的数值。
 
   #+begin_src typescript
       '🉐'.charCodeAt(0) // 55356
@@ -252,12 +246,13 @@ represents 1–6 hex digits.
 - [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode][String.fromCharCode()]] ::
 
   #+begin_quote
-  The String.fromCharCode() static method returns a string created from the specified sequence of UTF-16 code units.
+  The String.fromCharCode() static method returns a string
+  created from the specified sequence of UTF-16 code units.
   #+end_quote
 
-  fromCharCode() 可以接受多个 0-65535 之间的数字，返回这些 char code 组成的字符串。
+  ~fromCharCode()~ 可以接受多个 0-65535 之间的数字，返回这些 char code 组成的字符串。
 
-  fromCharCode() 和 charCodeAt() 是对应的。
+  ~fromCharCode()~ 和 ~charCodeAt()~ 是对应的。
 
   #+begin_src typescript
       '🉐'.charCodeAt(0) // 55356
@@ -275,12 +270,14 @@ represents 1–6 hex digits.
 - [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/codePointAt][String.prototype.codePointAt()]] ::
 
   #+begin_quote
-  The codePointAt() method of String values returns a non-negative integer that is the Unicode code point value of the character starting at the given index.
+  The codePointAt() method of String values returns a non-negative integer
+  that is the Unicode code point value of the character starting at the given index.
 
   Note that the index is still based on UTF-16 code units, not Unicode code points.
   #+end_quote
 
-  codePointAt() 返回的是一个数字，是字符串对应下标的对应的 Unicode code point (不局限在 0-65535, 而是 0-1114111 (0x10FFFF))。
+  ~codePointAt()~ 返回的是一个数字，是字符串对应下标的对应的 Unicode code point
+   (不局限在 0-65535, 而是 0-1114111 (0x10FFFF))。
 
   #+begin_src typescript
     '🉐'.charCodeAt(0) // 55356
@@ -296,12 +293,14 @@ represents 1–6 hex digits.
 - [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint][String.fromCodePoint()]] ::
 
   #+begin_quote
-  The String.fromCodePoint() static method returns a string created from the specified sequence of code points.
+  The String.fromCodePoint() static method returns a string
+   created from the specified sequence of code points.
   #+end_quote
 
-  fromCodePoint() 可以接受多个 codePoint 数字，返回对应的字符串。
+  ~fromCodePoint()~ 可以接受多个 codePoint 数字，返回对应的字符串。
 
-  fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePoint() 则可以输入 0-1114111 范围的数字。
+  ~fromCharCode()~ 的每个参数只能是 0-65535 范围的数字，
+  而 ~fromCodePoint()~ 则可以输入 0-1114111 范围的数字。
 
   #+begin_src typescript
     // fromCodePoint
@@ -356,23 +355,9 @@ represents 1–6 hex digits.
 
 具体可以参考 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters][UTF-16 characters, Unicode code points, and grapheme clusters]]。
 
-* Refs
-:PROPERTIES:
-:CUSTOM_ID: 79e8a27e-35a0-4246-9bc6-5a8bdae90c45
-:CUSTOM_ID:       644C1F6E-E9BB-4E52-932F-FC5AEBFCF23E
-:ID:       9E64BBD6-3201-4BED-AE49-A1D81ACFDFAB
-:END:
-
-- [[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][How to detect emoji using javascript]]
-- [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape: \p{...}, \P{...}]]
-- [[https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties][Binary Unicode property aliases and their canonical property names]]
-- [[https://v8.dev/features/regexp-v-flag][RegExp v flag with set notation and properties of strings]]
-
 * Footnotes
 :PROPERTIES:
 :CUSTOM_ID: 88F6EDA2-46A5-4303-85E5-42A98034F795
 :END:
 
 [fn:1] 感谢 [[https://github.com/JunQu][JunQu]] 指出 [[https://github.com/Spike-Leung/taxodium/discussions/9][问题]]。
-
-[fn:2] 参考 [[https://v8.dev/features/regexp-v-flag][RegExp v flag with set notation and properties of strings]]

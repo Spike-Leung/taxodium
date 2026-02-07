@@ -92,60 +92,46 @@
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#958F607C-8D52-4FBF-BF22-20DEE094942D">前言</a></li>
 <li><a href="#052D35CE-BA3F-4E12-A0E4-AEE13967B83D">TL;DR</a></li>
+<li><a href="#958F607C-8D52-4FBF-BF22-20DEE094942D">需求</a></li>
 <li><a href="#4DBDB35F-3BFB-4693-86EB-1AC2A75524D0">解决过程</a></li>
-<li><a href="#6B39F3DA-4DC5-4079-A5C0-2D50846588FE">为什么 /(\ud83c[\udf00-\udfff]&#x2026;/u 的正则无法匹配 🉐</a>
-<ul>
-<li><a href="#27932DC1-43B2-4ADF-85B5-2D9ACC139218">String &amp; Unicode</a></li>
-<li><a href="#5D9B7985-E1CA-4BE5-826D-09D3869F9008">为什么匹配不到</a></li>
-</ul>
-</li>
+<li><a href="#6B39F3DA-4DC5-4079-A5C0-2D50846588FE">Emoji 在 JS 中到底是什么？</a></li>
 <li><a href="#B1F0270A-ED43-44E0-AB4E-C33AE2B4787C">一些注意点</a>
 <ul>
 <li><a href="#EE6E5AC1-0200-4C0A-A490-78754F2A680B">字符串长度</a></li>
 <li><a href="#E0A57CA1-ED21-4C97-964F-04294BBD480D">Lone surrogates</a></li>
 </ul>
 </li>
-<li><a href="#644C1F6E-E9BB-4E52-932F-FC5AEBFCF23E">Refs</a></li>
 </ul>
 </div>
 </nav>
+<div id="outline-container-052D35CE-BA3F-4E12-A0E4-AEE13967B83D" class="outline-2">
+<h2 id="052D35CE-BA3F-4E12-A0E4-AEE13967B83D">TL;DR</h2>
+<div class="outline-text-2" id="text-052D35CE-BA3F-4E12-A0E4-AEE13967B83D"><p>
+如果你想匹配 Emoji，可以考虑使用 <a href="https://github.com/mathiasbynens/emoji-regex">emoji-regex</a> 这个库。
+</p>
+
+<p>
+如果你不想新增依赖，并且浏览器版本支持 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicodeSets">RegExp.prototype.unicodeSets</a>，也可以用这个正则表达式：
+</p>
+
+<p>
+<code>/\p{RGI_Emoji}/gv</code>
+</p>
+
+<p>
+这里提供一个测试用例： <code>测试abc123🉐👨‍👩‍👧‍👦👋🏽❤️👮‍♀️👩‍❤️‍👨</code> 。
+</p>
+</div>
+</div>
 <div id="outline-container-958F607C-8D52-4FBF-BF22-20DEE094942D" class="outline-2">
-<h2 id="958F607C-8D52-4FBF-BF22-20DEE094942D">前言</h2>
+<h2 id="958F607C-8D52-4FBF-BF22-20DEE094942D">需求</h2>
 <div class="outline-text-2" id="text-958F607C-8D52-4FBF-BF22-20DEE094942D"><p>
 要求输入框能输入除了特殊表情外的任意字符。
 </p>
 
 <p>
 我的理解就是将 Emoji 排除掉，通过 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a> 匹配 Emoji 判断是否存在特殊表情。
-</p>
-</div>
-</div>
-<div id="outline-container-052D35CE-BA3F-4E12-A0E4-AEE13967B83D" class="outline-2">
-<h2 id="052D35CE-BA3F-4E12-A0E4-AEE13967B83D">TL;DR</h2>
-<div class="outline-text-2" id="text-052D35CE-BA3F-4E12-A0E4-AEE13967B83D"><p>
-<del>如果你只是想要一个能够匹配表情的正则，下面这个应该就满足👇：</del> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
-</p>
-
-<div class="org-src-container">
-<pre class="src src-typescript">/\p{Extended_Pictographic}/gu.test("你好hello123😄hi🌷456🉐") // true
-/\p{Extended_Pictographic}/gu.test("你好hello123") // false
-</pre>
-</div>
-
-
-<figure>
-<a href="./images/emoji-regexp/regexp101-emoji-corret.png"><img src="./images/emoji-regexp/regexp101-emoji-corret.png" alt="regexp101-emoji-corret.png"></a>
-
-</figure>
-
-<p>
-如果你想匹配 Emoji，可以考虑使用 <a href="https://github.com/mathiasbynens/emoji-regex">emoji-regex</a> 这个库。
-</p>
-
-<p>
-如果你只需要兼容高版本的浏览器（如 Chrome 112+），你也可以使用 <code>\p{RGI_Emoji}\gv</code><sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>。
 </p>
 </div>
 </div>
@@ -179,16 +165,20 @@
 </p>
 
 <p>
-那么 Emoji 的 Unicode 范围是多少？是不是穷举就行了？
+那么 Emoji 的 Unicode 范围是多少？能否穷举呢？
 </p>
 
 <p>
-其实没办法用一个固定的范围去表达，因为 Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicode，没办法用一个固定的范围去表达所有的 Emoji。
+Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicode，是没办法用一个固定的范围去表达所有的 Emoji。
 </p>
 
 <p>
-于是又搜索了一下，StackOverflow 有一个 <a href="https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript">回答</a>，里面提到了用 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape">Unicode character class escape</a> 进行匹配，也就是 <code>/\p{Emoji}/u</code> 和 <code>/\p{Extended_Pictographic}/u</code> 。
+于是又搜索了一下，StackOverflow 有一个 <a href="https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript">回答</a>，里面提到了用 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape">Unicode character class escape</a> 进行匹配，即:
 </p>
+<ul class="org-ul">
+<li><code>/\p{Emoji}/u</code></li>
+<li><code>/\p{Extended_Pictographic}/u</code> 。</li>
+</ul>
 
 <details>
 <summary>什么是 Unicode character class escpae</summary>
@@ -225,9 +215,9 @@
 </details>
 
 <dl class="org-dl">
-<dt><code>/\p{Emoji}/u</code></dt><dd>这个正则实际测试并不符合需求，因为在 <a href="https://www.unicode.org/Public/15.1.0/ucd/emoji/emoji-data.txt">Emoji 官方文档</a> 中， <code>123456789*#</code> 也是被看作是 Emoji，如果用这个正则的话，就会把数字也认为是 Emoji，不符合只排除特殊表情的要求。</dd>
+<dt><code>/\p{Emoji}/u</code></dt><dd>这个正则实际测试并不符合需求，因为在 <a href="https://www.unicode.org/Public/15.1.0/ucd/emoji/emoji-data.txt#:~:text=0023%20%3B%20Emoji%20%23%20E0%2E0%20%5B1%5D%20%28%23%EF%B8%8F%29%20hash%20sign%20002A%20%3B%20Emoji%20%23%20E0%2E0%20%5B1%5D%20%28%2A%EF%B8%8F%29%20asterisk%200030%2E%2E0039%20%3B%20Emoji%20%23%20E0%2E0%20%5B10%5D%20%280%EF%B8%8F%2E%2E9%EF%B8%8F%29%20digit%20zero%2E%2Edigit%20nine">Emoji 官方文档</a> 中，<code>123456789*#</code> 也是被看作是 Emoji，如果用这个正则的话，就会把数字也认为是 Emoji，不符合只排除特殊表情的要求。</dd>
 
-<dt><code>/\p{Extended_Pictographic}/u</code></dt><dd>而 Extended_Pictographic 表示的 Emoji 才是我们认为的那些表情符号。</dd>
+<dt><code>/\p{Extended_Pictographic}/u</code></dt><dd>Extended_Pictographic 表示的 Emoji 才是我们认为的那些表情符号。</dd>
 </dl>
 
 <div class="org-src-container">
@@ -243,59 +233,64 @@ console.log(
 )
 </pre>
 </div>
+
+<p>
+<code>/u</code> (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode">RegExp.prototype.unicode</a>) 只能匹配单个 Unicode，但是 <a href="https://emojipedia.org/emoji-sequence">有的表情</a> 是由多个 Unicode 组成的，例如 <a href="https://emojipedia.org/couple-with-heart-woman-man">👩‍❤️‍👨</a> 是由 👩、<a href="https://emojipedia.org/zero-width-joiner">ZWJ</a>、❤️、<a href="https://emojipedia.org/zero-width-joiner">ZWJ</a>、👨 一起组合得到的。
+</p>
+
+<p>
+<code>/u</code> 可以匹配 👩、❤️、👨，但是无法匹配 👩‍❤️‍👨，此时需要用到 <code>/v</code> (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicodeSets">RegExp.prototype.unicodeSets</a>)，它可以匹配 Unicode 序列。<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
+</p>
+
+<section role="note" id="org1e0d310">
+<p>
+按照字母顺序，v 在 u 的， <code>/v</code> 比 <code>/u</code> 更晚提出，它基本包含了 <code>/u</code> 的能力，是对 <code>/u</code> 的一次升级。
+</p>
+</section>
+
+<p>
+使用 <code>/v</code> ， <code>\p{loneProperty}</code> 的 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape#loneproperty:~:text=In%20v%20mode%2C%20it%20can%20also%20be%20a%20binary%20Unicode%20property%20of%20strings%2E%E4%B8%80%E4%B8%AA">loneProperty 的范围就扩大了</a>，可以支持 <a href="https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties-of-strings">Binary Unicode properties of strings</a>，而其中的 <code>RGI_Emoji</code> 包含了所有的那些认为是表情的 Emoji，所以最终匹配表情的正则表达式可以写成：
+</p>
+
+<p>
+<code>/\p{RGI_Emoji}/gv</code>
+</p>
+
+<details>
+<summary>关于  Binary Unicode properties of strings</summary>
+
+<p>
+<a href="https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties-of-strings">Binary Unicode properties of strings</a> 包括：
+</p>
+
+<ul class="org-ul">
+<li>Basic_Emoji</li>
+<li>Emoji_Keycap_Sequence</li>
+<li>RGI_Emoji_Modifier_Sequence</li>
+<li>RGI_Emoji_Flag_Sequence</li>
+<li>RGI_Emoji_Tag_Sequence</li>
+<li>RGI_Emoji_ZWJ_Sequence</li>
+<li>RGI_Emoji</li>
+</ul>
+
+<p>
+它们之间的关系可以参考 <a href="https://www.unicode.org/reports/tr18/#Full_Properties">UTS18</a>、<a href="https://www.unicode.org/reports/tr51/">UTS51</a>，它们对应的 Emoji 参考 <a href="https://emojipedia.org/emoji-sequence">Emoji Sequence</a>。
+</p>
+</details>
 </div>
 </div>
 <div id="outline-container-6B39F3DA-4DC5-4079-A5C0-2D50846588FE" class="outline-2">
-<h2 id="6B39F3DA-4DC5-4079-A5C0-2D50846588FE">为什么 /(\ud83c[\udf00-\udfff]&#x2026;/u 的正则无法匹配 🉐</h2>
+<h2 id="6B39F3DA-4DC5-4079-A5C0-2D50846588FE">Emoji 在 JS 中到底是什么？</h2>
 <div class="outline-text-2" id="text-6B39F3DA-4DC5-4079-A5C0-2D50846588FE"><p>
-现在，使用 Unicode character class escpae 可以匹配 Emoji 了，但是为什么一开始 Google 搜到的正则 <code>/(\ud83c[\udf00-\udfff].../u</code> 无法匹配 🉐 呢？
+现在，已经知道怎么匹配 Emoji 了，但是为什么一开始找到的正则 <code>/(\ud83c[\udf00-\udfff].../u</code> 无法匹配 🉐 呢？
 </p>
 
 <p>
 为此，首先需要知道 🉐 在 JS 中到底是什么。
 </p>
-</div>
-<div id="outline-container-27932DC1-43B2-4ADF-85B5-2D9ACC139218" class="outline-3">
-<h3 id="27932DC1-43B2-4ADF-85B5-2D9ACC139218">String &amp; Unicode</h3>
-<div class="outline-text-3" id="text-27932DC1-43B2-4ADF-85B5-2D9ACC139218"><details>
-<summary>UTF-16 characters, Unicode code points, and grapheme clusters</summary>
-
-<blockquote>
-<p>
-Strings are represented fundamentally as sequences of <a href="https://en.wikipedia.org/wiki/UTF-16">UTF-16</a> code
-units. In UTF-16 encoding, every code unit is exact 16 bits long. This
-means there are a maximum of 2^16, or 65536 possible characters
-representable as single UTF-16 code units.
-</p>
 
 <p>
-&#x2026;
-</p>
-
-<p>
-However, the entire Unicode character set is much, much bigger
-than 65536. The extra characters are stored in UTF-16 as surrogate
-pairs, which are pairs of 16-bit code units that represent a single
-character.To avoid ambiguity, the two parts of the pair must be
-between 0xD800 and 0xDFFF, and these code units are not used to encode
-single-code-unit characters. (More precisely, leading surrogates, also
-called <b>high-surrogate</b> code units, have values between <b>0xD800 and
-0xDBFF</b>, inclusive, while trailing surrogates, also called
-<b>low-surrogate</b> code units, have values between <b>0xDC00 and 0xDFFF</b>,
-inclusive.) Each Unicode character, comprised of one or two UTF-16
-code units, is also called a <b>Unicode code point</b>. Each Unicode code
-point can be written in a string with \u{xxxxxx} where xxxxxx
-represents 1–6 hex digits.
-</p>
-
-<p>
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters:~:text=Strings%20are%20represented,6%20hex%20digits.">Source</a>
-</p>
-</blockquote>
-</details>
-
-<p>
-在 JavaScript 中，String 实际是 UTF-16 (16-bit Unicode Transformation Format) 编码的，它以 16 位去表示一个字符（code unit），最多可以表示 65536 (0x0000 - 0xFFFF) 个字符。
+在 JavaScript 中，String 是用 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters">UTF-16</a> (16-bit Unicode Transformation Format) 编码的，它以 16 位去表示一个字符（code unit），最多可以表示 65536 (0x0000 - 0xFFFF) 个字符。
 </p>
 
 <p>
@@ -303,14 +298,22 @@ represents 1–6 hex digits.
 </p>
 
 <p>
-实现的方法就是定义了 <b>代理对 (Surrogates pairs)</b>  , 代理对由 20 位组成。规定前 10 位作为 <b>高代理位 (high-surrogate)</b> ，取值范围是 0xD800 - 0xDBFF。后 10 位为 <b>低代理位 (low-surrogate)</b> ，取值范围是 0xDC00 - 0xDFFF。高代理位和低代理位组成代理对 。由于有 20 位的长度，因此可以表达 1048576 个字符，可以在原来 65536 个字符之上，再增加 1048576 个字符。
+实现的方法就是定义<em>代理对</em>(Surrogates pairs), 代理对由 20 位组成。
+</p>
+
+<p>
+规定前 10 位作为<em>高代理位</em> (high-surrogate)，取值范围是 0xD800 - 0xDBFF。后 10 位为<em>低代理位</em> (low-surrogate)，取值范围是 0xDC00 - 0xDFFF。高代理位和低代理位组成代理对 。
+</p>
+
+<p>
+由于有 20 位的长度，因此可以表达 1048576 个字符，可以在原来 65536 个字符之上，再增加 1048576 个字符。
 </p>
 
 <p>
 概括来说，在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。而超出 65536 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
 </p>
 
-<section role="note" id="org49750da">
+<section role="note" id="org37a1e2a">
 <p>
 为什么 Unicode 要这么设计，参考 <a href="https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm">Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?</a>
 </p>
@@ -319,11 +322,8 @@ represents 1–6 hex digits.
 为什么高代理和低代理这么取值，参考 <a href="https://stackoverflow.com/questions/5178202/how-was-the-position-of-the-surrogates-area-utf-16-chosen">How was the position of the Surrogates Area (UTF-16) chosen?</a>
 </p>
 </section>
-</div>
-</div>
-<div id="outline-container-5D9B7985-E1CA-4BE5-826D-09D3869F9008" class="outline-3">
-<h3 id="5D9B7985-E1CA-4BE5-826D-09D3869F9008">为什么匹配不到</h3>
-<div class="outline-text-3" id="text-5D9B7985-E1CA-4BE5-826D-09D3869F9008"><p>
+
+<p>
 现在已经知道 Emoji 是通过代理对表示的，那么 🉐 的代理对是什么呢？
 </p>
 
@@ -352,12 +352,13 @@ represents 1–6 hex digits.
 <dl class="org-dl">
 <dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charAt">String.prototype.charAt()</a></dt><dd><blockquote>
 <p>
-The charAt() method of String values returns a new string consisting of the single UTF-16 code unit at the given index.
+The charAt() method of String values returns a new string
+consisting of the single UTF-16 code unit at the given index.
 </p>
 </blockquote>
 
 <p>
-charAt() 返回字符串对应下标的单个 UTF-16 编码单元。
+<code>charAt()</code> 返回字符串对应下标的单个 UTF-16 编码单元。
 </p>
 
 <div class="org-src-container">
@@ -374,12 +375,13 @@ charAt() 返回字符串对应下标的单个 UTF-16 编码单元。
 
 <dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt">String.property.charCodeAt()</a></dt><dd><blockquote>
 <p>
-The charCodeAt() method of String values returns an integer between 0 and 65535 representing the UTF-16 code unit at the given index.
+The charCodeAt() method of String values returns an integer between 0 and 65535
+representing the UTF-16 code unit at the given index.
 </p>
 </blockquote>
 
 <p>
-charCodeAt() 返回字符一个 <code>0-65535</code> 之间的 <code>数字(integer)</code> , 是字符串对应下标的 UTF-16 编码单元对应的数值。
+<code>charCodeAt()</code> 返回字符一个 0-65535 之间的数字, 是字符串对应下标的 UTF-16 编码单元对应的数值。
 </p>
 
 <div class="org-src-container">
@@ -396,16 +398,17 @@ charCodeAt() 返回字符一个 <code>0-65535</code> 之间的 <code>数字(inte
 
 <dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode">String.fromCharCode()</a></dt><dd><blockquote>
 <p>
-The String.fromCharCode() static method returns a string created from the specified sequence of UTF-16 code units.
+The String.fromCharCode() static method returns a string
+created from the specified sequence of UTF-16 code units.
 </p>
 </blockquote>
 
 <p>
-fromCharCode() 可以接受多个 0-65535 之间的数字，返回这些 char code 组成的字符串。
+<code>fromCharCode()</code> 可以接受多个 0-65535 之间的数字，返回这些 char code 组成的字符串。
 </p>
 
 <p>
-fromCharCode() 和 charCodeAt() 是对应的。
+<code>fromCharCode()</code> 和 <code>charCodeAt()</code> 是对应的。
 </p>
 
 <div class="org-src-container">
@@ -424,7 +427,8 @@ String.fromCharCode(97, 112, 112, 108, 101) // 'apple'
 
 <dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/codePointAt">String.prototype.codePointAt()</a></dt><dd><blockquote>
 <p>
-The codePointAt() method of String values returns a non-negative integer that is the Unicode code point value of the character starting at the given index.
+The codePointAt() method of String values returns a non-negative integer
+that is the Unicode code point value of the character starting at the given index.
 </p>
 
 <p>
@@ -433,7 +437,8 @@ Note that the index is still based on UTF-16 code units, not Unicode code points
 </blockquote>
 
 <p>
-codePointAt() 返回的是一个数字，是字符串对应下标的对应的 Unicode code point (不局限在 0-65535, 而是 0-1114111 (0x10FFFF))。
+<code>codePointAt()</code> 返回的是一个数字，是字符串对应下标的对应的 Unicode code point
+ (不局限在 0-65535, 而是 0-1114111 (0x10FFFF))。
 </p>
 
 <div class="org-src-container">
@@ -450,16 +455,17 @@ codePointAt() 返回的是一个数字，是字符串对应下标的对应的 Un
 
 <dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint">String.fromCodePoint()</a></dt><dd><blockquote>
 <p>
-The String.fromCodePoint() static method returns a string created from the specified sequence of code points.
+The String.fromCodePoint() static method returns a string
+ created from the specified sequence of code points.
 </p>
 </blockquote>
 
 <p>
-fromCodePoint() 可以接受多个 codePoint 数字，返回对应的字符串。
+<code>fromCodePoint()</code> 可以接受多个 codePoint 数字，返回对应的字符串。
 </p>
 
 <p>
-fromCharCode() 的每个参数只能是 0-65535 范围的数字，而 fromCodePoint() 则可以输入 0-1114111 范围的数字。
+<code>fromCharCode()</code> 的每个参数只能是 0-65535 范围的数字，而 <code>fromCodePoint()</code> 则可以输入 0-1114111 范围的数字。
 </p>
 
 <div class="org-src-container">
@@ -478,7 +484,6 @@ String.fromCharCode(55356, 56912) // '🉐'
 </div></dd>
 </dl>
 </details>
-</div>
 </div>
 </div>
 <div id="outline-container-B1F0270A-ED43-44E0-AB4E-C33AE2B4787C" class="outline-2">
@@ -514,26 +519,12 @@ String.fromCharCode(55356, 56912) // '🉐'
 </div>
 </div>
 </div>
-<div id="outline-container-644C1F6E-E9BB-4E52-932F-FC5AEBFCF23E" class="outline-2">
-<h2 id="644C1F6E-E9BB-4E52-932F-FC5AEBFCF23E">Refs</h2>
-<div class="outline-text-2" id="text-644C1F6E-E9BB-4E52-932F-FC5AEBFCF23E"><ul class="org-ul">
-<li><a href="https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript">How to detect emoji using javascript</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape">Unicode character class escape: \p{...}, &para;{&#x2026;}</a></li>
-<li><a href="https://tc39.es/ecma262/multipage/text-processing.html#table-binary-unicode-properties">Binary Unicode property aliases and their canonical property names</a></li>
-<li><a href="https://v8.dev/features/regexp-v-flag">RegExp v flag with set notation and properties of strings</a></li>
-</ul>
-</div>
-</div>
 <div id="footnotes">
 <h2 class="footnotes">&#33050;&#27880;: </h2>
 <div id="text-footnotes">
 
 <div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
 感谢 <a href="https://github.com/JunQu">JunQu</a> 指出 <a href="https://github.com/Spike-Leung/taxodium/discussions/9">问题</a>。
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
-参考 <a href="https://v8.dev/features/regexp-v-flag">RegExp v flag with set notation and properties of strings</a>
 </p></div></div>
 
 
@@ -557,7 +548,7 @@ String.fromCharCode(55356, 56912) // '🉐'
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2024-05-09 Thu 10:15</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-02-07 Sat 01:07</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-02-07 Sat 17:12</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
