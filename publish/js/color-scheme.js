@@ -126,11 +126,20 @@ function initColorScheme() {
 // 马上执行，避免页面切换导致的闪烁
 initColorScheme();
 
+function setSafariFlag() {
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+  if (isSafari) {
+    document.body.classList.add('is-safari');
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const savedMode = getSavedColorScheme();
   setModeSelectValue(savedMode);
   setBodyClass(savedMode);
   requestAnimationFrame(() => switchIframeColorScheme(savedMode));
 
+  setSafariFlag();
   document.querySelector("#lightdark").addEventListener('change', (event) => switchMode(event.target.value));
 });
