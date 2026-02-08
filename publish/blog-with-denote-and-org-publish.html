@@ -65,6 +65,7 @@ org-publish 则用于发布，涉及一些 Elisp 使得 denote 能用于 org-pub
 <li><a href="#87C0701B-710B-4D2A-A430-2D9B5F7BD909">denote</a></li>
 <li><a href="#E2C507A0-88EB-4F2A-8080-4919454582AC">博客文章</a></li>
 <li><a href="#E566CAD6-D575-4D43-B989-F7BA96130DA2">org-publish</a></li>
+<li><a href="#A4290C59-745D-4231-B018-55D52A571DDE">Tips</a></li>
 <li><a href="#CE7BFB08-7866-426F-AE18-931A06C13AA9">写在最后</a></li>
 <li><a href="#19FCD5BB-C71D-48A5-89C1-80AE7703636A">其他你可以参考的文章</a></li>
 </ul>
@@ -307,7 +308,7 @@ backend."</span>
 此外，还需要利用 denote 提供的方法，将文件重命名成 denote 的命名格式。
 </p>
 
-<section role="note" id="orgd62acd1">
+<section role="note" id="org4c5c14d">
 <p>
 Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如:
 </p>
@@ -335,9 +336,11 @@ Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如
 </div>
 <div id="outline-container-E566CAD6-D575-4D43-B989-F7BA96130DA2" class="outline-2">
 <h2 id="E566CAD6-D575-4D43-B989-F7BA96130DA2">org-publish</h2>
-<div class="outline-text-2" id="text-E566CAD6-D575-4D43-B989-F7BA96130DA2"><p>
-(关于如何使用 org-publish 发布博客，在 <a href="org-publish-blog.html">使用 org-publish 发布博客</a> 中已经分享过，这里不再赘述。）
+<div class="outline-text-2" id="text-E566CAD6-D575-4D43-B989-F7BA96130DA2"><section role="note" id="orgb92ceb2">
+<p>
+关于如何使用 org-publish 发布博客，见 <a href="org-publish-blog.html">使用 org-publish 发布博客</a>，这里不再赘述。
 </p>
+</section>
 
 <p>
 对于 org-publish，由于我将所有的博客文件都放在了一个目录，要区分 draft 和 published，就不能通过原来的文件目录了。
@@ -485,6 +488,52 @@ KEYWORD is case-insensitive."</span>
 </details>
 </div>
 </div>
+<div id="outline-container-A4290C59-745D-4231-B018-55D52A571DDE" class="outline-2">
+<h2 id="A4290C59-745D-4231-B018-55D52A571DDE">Tips</h2>
+<div class="outline-text-2" id="text-A4290C59-745D-4231-B018-55D52A571DDE"><p>
+有时我想修改已发布的文章，修改后需要执行 org-publish 构建预览，但是已发布的文章可能比较多，构建起来会比较慢。而草稿的文章比较少，一般构建会很快。
+</p>
+
+<p>
+可以通过切换 denote 的 keyword 来切换发布和草稿状态，在编辑的时候，先将文章切换成草稿，从而快速构建预览；等改完之后再切回发布状态，进行发布。
+</p>
+
+<details>
+<summary>spike-leung/denote-toggle-publish-draft</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/denote-toggle-publish-draft</span> ()
+  <span style="color: #9ac8e0; font-style: italic;">"&#20999;&#25442;&#21338;&#23458;&#25991;&#31456;&#30340;&#29366;&#24577;&#65292;&#22312; :published: &#21644; :draft:preview: &#20043;&#38388;&#20999;&#25442;&#12290;
+&#22240;&#20026; :published: &#30340;&#25991;&#31456;&#27604;&#36739;&#22810;&#65292;org-publish &#26500;&#24314;&#27604;&#36739;&#24930;&#65292;
+&#20999;&#25442;&#21040; :draft:preview: &#26500;&#24314;&#26356;&#24555;&#65292;&#26041;&#20415;&#39044;&#35272;&#12290;"</span>
+  (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
+  (<span style="color: #b6a0ff; font-weight: bold;">unless</span> (buffer-file-name)
+    (<span style="color: #fec43f; font-weight: bold;">user-error</span> <span style="color: #79a8ff;">"&#24403;&#21069;&#32531;&#20914;&#21306;&#27809;&#26377;&#20851;&#32852;&#25991;&#20214;"</span>))
+  (<span style="color: #b6a0ff; font-weight: bold;">let*</span> ((file (buffer-file-name))
+         (type (denote-filetype-heuristics file))
+         (keywords (denote-retrieve-front-matter-keywords-value file type))
+         (denote-rename-confirmations nil)
+         (base-keywords (seq-remove (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> (k)
+                                      (member k '(<span style="color: #79a8ff;">"published"</span> <span style="color: #79a8ff;">"draft"</span> <span style="color: #79a8ff;">"preview"</span>)))
+                                    keywords))
+         (new-keywords (<span style="color: #b6a0ff; font-weight: bold;">if</span> (member <span style="color: #79a8ff;">"published"</span> keywords)
+                           (append '(<span style="color: #79a8ff;">"draft"</span> <span style="color: #79a8ff;">"preview"</span>) base-keywords)
+                         (cons <span style="color: #79a8ff;">"published"</span> base-keywords))))
+    (<span style="color: #b6a0ff; font-weight: bold;">when</span> (buffer-modified-p)
+      (save-buffer))
+    (denote-rewrite-keywords file new-keywords type)
+    (denote-rename-file-using-front-matter file)
+    (<span style="color: #b6a0ff; font-weight: bold;">when</span> (buffer-modified-p)
+      (save-buffer))
+    (message <span style="color: #79a8ff;">"&#29366;&#24577;&#24050;&#20999;&#25442;&#33267;: %s"</span>
+             (<span style="color: #b6a0ff; font-weight: bold;">if</span> (member <span style="color: #79a8ff;">"published"</span> new-keywords)
+                 <span style="color: #79a8ff;">"published"</span>
+               <span style="color: #79a8ff;">"draft-preview"</span>))))
+</pre>
+</div>
+</details>
+</div>
+</div>
 <div id="outline-container-CE7BFB08-7866-426F-AE18-931A06C13AA9" class="outline-2">
 <h2 id="CE7BFB08-7866-426F-AE18-931A06C13AA9">写在最后</h2>
 <div class="outline-text-2" id="text-CE7BFB08-7866-426F-AE18-931A06C13AA9"><p>
@@ -506,7 +555,7 @@ KEYWORD is case-insensitive."</span>
 好啦，博客构建就折腾到这，要开始多写内容了！
 </p>
 
-<section role="note" id="org06f972b">
+<section role="note" id="org2da8989">
 <p>
 关于文章内容，你可以 Emacs China 中讨论：<a href="https://emacs-china.org/t/denote-org-publish/30027">结合 denote 和 org-publish 写博客</a>。
 </p>
@@ -547,7 +596,7 @@ KEYWORD is case-insensitive."</span>
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-08-28 Thu 18:40</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-02-01 Sun 22:08</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-02-08 Sun 16:28</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">

@@ -226,7 +226,10 @@ Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如
 :CUSTOM_ID: E566CAD6-D575-4D43-B989-F7BA96130DA2
 :END:
 
-(关于如何使用 org-publish 发布博客，在 [[denote:20240927T214034][使用 org-publish 发布博客]] 中已经分享过，这里不再赘述。）
+#+attr_html: :role note
+#+begin_section
+关于如何使用 org-publish 发布博客，见 [[denote:20240927T214034][使用 org-publish 发布博客]]，这里不再赘述。
+#+end_section
 
 对于 org-publish，由于我将所有的博客文件都放在了一个目录，
 要区分 draft 和 published，就不能通过原来的文件目录了。
@@ -357,6 +360,53 @@ Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如
           (let* ((normalized-keyword (s-upcase keyword))
                  (keywords (org-collect-keywords (list normalized-keyword))))
             (car (cdr (assoc normalized-keyword keywords))))))))
+#+end_src
+#+end_details
+
+* Tips
+:PROPERTIES:
+:CUSTOM_ID: A4290C59-745D-4231-B018-55D52A571DDE
+:END:
+
+有时我想修改已发布的文章，修改后需要执行 org-publish 构建预览，
+但是已发布的文章可能比较多，构建起来会比较慢。
+而草稿的文章比较少，一般构建会很快。
+
+可以通过切换 denote 的 keyword 来切换发布和草稿状态，
+在编辑的时候，先将文章切换成草稿，从而快速构建预览；
+等改完之后再切回发布状态，进行发布。
+
+#+begin_details
+#+html: <summary>spike-leung/denote-toggle-publish-draft</summary>
+
+#+begin_src emacs-lisp
+  (defun spike-leung/denote-toggle-publish-draft ()
+    "切换博客文章的状态，在 :published: 和 :draft:preview: 之间切换。
+  因为 :published: 的文章比较多，org-publish 构建比较慢，
+  切换到 :draft:preview: 构建更快，方便预览。"
+    (interactive)
+    (unless (buffer-file-name)
+      (user-error "当前缓冲区没有关联文件"))
+    (let* ((file (buffer-file-name))
+           (type (denote-filetype-heuristics file))
+           (keywords (denote-retrieve-front-matter-keywords-value file type))
+           (denote-rename-confirmations nil)
+           (base-keywords (seq-remove (lambda (k)
+                                        (member k '("published" "draft" "preview")))
+                                      keywords))
+           (new-keywords (if (member "published" keywords)
+                             (append '("draft" "preview") base-keywords)
+                           (cons "published" base-keywords))))
+      (when (buffer-modified-p)
+        (save-buffer))
+      (denote-rewrite-keywords file new-keywords type)
+      (denote-rename-file-using-front-matter file)
+      (when (buffer-modified-p)
+        (save-buffer))
+      (message "状态已切换至: %s"
+               (if (member "published" new-keywords)
+                   "published"
+                 "draft-preview"))))
 #+end_src
 #+end_details
 
