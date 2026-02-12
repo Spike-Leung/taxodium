@@ -56,12 +56,12 @@ async function ensureLittlefootMounted() {
       anchorPattern: /#(fn|footnote|note)[:\-\._\d]/gi,
       footnoteSelector: 'div',
       buttonTemplate: `<button
-  aria-label="脚注 <% number %>"
+  aria-label="查看脚注"
   class="littlefoot__button"
   id="<% reference %>"
-  title="查看脚注 <% number %>"
+  title="查看脚注"
 />
-  <% number %>
+*
 </button>`
     });
   }
