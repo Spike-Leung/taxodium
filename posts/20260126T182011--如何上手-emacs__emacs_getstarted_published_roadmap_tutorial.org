@@ -133,10 +133,51 @@ Emacs 里的一些搜索文档的方法也很有用，例如：
 - ~find-library~
 - ~info-apropos~
 
-如果你英文阅读比较吃力：
+*如果你英文阅读比较吃力*
 
 - 对于 Emacs 中的文档，可以尝试安装一些 Emacs 中的翻译工具，见 [[denote:20250116T213957][Translation In Emacs]]
 - 对于浏览器上的文档，可以试试 [[https://immersivetranslate.com/en/][Immersive Translate]]、或者 [[https://translate.kagi.com/website][Kagi Translate]]
+
+*排查 Emacs 启动时就报错的问题*
+
+用命令 ~emacs --debug-init~ 启动 Emacs，Emacs 会在启动时报错告诉你报错位置和调用堆栈。
+
+*排查 Minibuffer 的报错*
+
+执行 ~M-x toggle-debug-on-error~ 命令，再次执行你触发错误的操作，Emacs 会告诉你报错位置和调用堆栈。
+
+*排查是否配置文件引起的问题*
+
+1. 用 ~emacs -Q -l test.el~ 启动 Emacs
+2. ~test.el~ 这个文件需要你手动创建，文件的内容之包括需要测试的插件和配置
+3. 如果 ~emacs -Q~ 启动没有问题，请使用二分注释法排查自己的配置代码
+
+需要注意的是，如果 ~*.el~ 文件内容是正确的，
+但是 Emacs 行为总是不对，请检查是否有老版本的 ~*.elc~ 或 ~*.eln~ 文件没有删除。
+
+*排查 Emacs 卡顿的问题*
+
+用 ~profiler-start~ 命令来启动性能分析程序，重现卡顿的操作，
+用 ~profiler-report~ 命令来找出性能瓶颈的地方。
+
+*排查输出消息的命令*
+
+在 Minibuffer 看到某种 message 但没有报错，可以通过在 ~ielm~ 中执行代码 ~(setq debug-on-message "xxx")~ 。
+当 Emacs 输出 xxx 时， Emacs 就会启动 debugger ，告诉我们哪行代码输出了消息。
+通过分析堆栈信息，你可以定制 Emacs 的行为，避免输出不必要的消息。
+
+*调试小技巧*
+
+- 确认正则对不对，善用 ~M-x re-builder~
+- 确认当前命令，善用 ~M-x interaction-log~ ([[https://epkg.vercel.app/interaction-log][interaction-log]])
+- 查询光标处编码、字体、颜色等信息，善用 ~M-x describe-char~
+
+*其他：*
+
+- [[https://protesilaos.com/codelog/2026-02-18-emacs-confirm-package-bugs/][Emacs: confirm package bugs with --init-directory]]
+- 定制某个函数的行为，但却不想改插件源代码，请善用 [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Advising-Functions.html][advice]]；
+  加载某个模式时执行某些代码，请善用 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html][Hooks]]。
+  关于 Hooks 和 Advice，推荐阅读：[[https://protesilaos.com/emacs/emacs-lisp-elements#h:hooks-and-the-advice-mechanism][Hooks and the advice mechanism]]
 #+end_details
 
 #+begin_quote
