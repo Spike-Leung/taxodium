@@ -17,14 +17,9 @@ Emacs 里我目前最喜欢的主题是 [[https://github.com/protesilaos/modus-t
 #+attr_html: :role note
 #+begin_section
 后续可能还会加入 [[https://github.com/protesilaos/doric-themes][doric-themes]]，也是 Prot 的写的主题，这个主题的颜色比较单一，写作的时候用感觉不错。
-
-对于 Prot，我也很佩服，他写的文章、手册、教程都很不错，从他那学到了不少。
-他的 [[https://github.com/protesilaos/denote][denote]] 也是我用的最多的一个笔记记录工具。
 #+end_section
 
-modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景。
-
-ef-themes 则提供了更多的色彩选择。
+modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景；ef-themes 则提供了更多的色彩选择。
 
 一个主题用久了就会觉得有些厌倦，想有一些新鲜感，就总是会找新主题，换新主题。
 
@@ -121,3 +116,38 @@ ef-themes 则提供了更多的色彩选择。
 
 但是随机切换的主题，我反而有种顺其自然的心境，更愿意先用用看。
 #+end_section
+
+-----
+
+*更新*
+
+现在主要使用 modus-themes，通过 ~light~ 和 ~dark~ 两个函数切换明暗主题。
+
+#+begin_details
+#+html: <summary>代码</summary>
+
+#+begin_src emacs-lisp
+  (use-package modus-themes
+    :ensure
+    ;; 因为 desktop 会保存 face 相关内容，可能会和主题冲突，因此主题加载需要在恢复 desktop 之后
+    :hook (desktop-after-read . modus-themes-load-random)
+    :config
+    (setq modus-themes-italic-constructs t
+          modus-themes-bold-constructs t
+          modus-themes-disable-other-themes t)
+    ;; remove fill-column-indicator background
+    (modus-themes-with-colors
+      (custom-set-faces
+       `(fill-column-indicator ((,c :background unspecified :foreground ,bg-dim :height 1.0)))))
+    (defun light()
+      "Toggle light theme."
+      (interactive)
+      (modus-themes-load-random-light))
+    (defun dark()
+      "Toggle dark theme."
+      (interactive)
+      (modus-themes-load-random-dark)))
+#+end_src
+
+[[https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-ui.el][Source]]
+#+end_details

@@ -60,22 +60,14 @@
 Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/modus-themes">modus-themes</a> 和 <a href="https://github.com/protesilaos/ef-themes">ef-themes</a>，它们都是出自 <a href="https://github.com/protesilaos">protesilaos</a>。
 </p>
 
-<section role="note" id="orgb70e314">
+<section role="note" id="org54463a4">
 <p>
 后续可能还会加入 <a href="https://github.com/protesilaos/doric-themes">doric-themes</a>，也是 Prot 的写的主题，这个主题的颜色比较单一，写作的时候用感觉不错。
-</p>
-
-<p>
-对于 Prot，我也很佩服，他写的文章、手册、教程都很不错，从他那学到了不少。他的 <a href="https://github.com/protesilaos/denote">denote</a> 也是我用的最多的一个笔记记录工具。
 </p>
 </section>
 
 <p>
-modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景。
-</p>
-
-<p>
-ef-themes 则提供了更多的色彩选择。
+modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景；ef-themes 则提供了更多的色彩选择。
 </p>
 
 <p>
@@ -181,7 +173,7 @@ ef-themes 则提供了更多的色彩选择。
 へ(゜∇、°)へ へ(゜∇、°)へ
 </p>
 
-<section role="note" id="orgf29fcb9">
+<section role="note" id="org886d0be">
 <p>
 说起来奇怪，如果是我自己主动切换的主题，可能切换后我马上就想换了。
 </p>
@@ -190,6 +182,48 @@ ef-themes 则提供了更多的色彩选择。
 但是随机切换的主题，我反而有种顺其自然的心境，更愿意先用用看。
 </p>
 </section>
+
+<hr>
+
+<p>
+<b>更新</b>
+</p>
+
+<p>
+现在主要使用 modus-themes，通过 <code>light</code> 和 <code>dark</code> 两个函数切换明暗主题。
+</p>
+
+<details>
+<summary>代码</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff; font-weight: bold;">use-package</span> modus-themes
+  <span style="color: #f78fe7; font-weight: bold;">:ensure</span>
+  <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#22240;&#20026; desktop &#20250;&#20445;&#23384; face &#30456;&#20851;&#20869;&#23481;&#65292;&#21487;&#33021;&#20250;&#21644;&#20027;&#39064;&#20914;&#31361;&#65292;&#22240;&#27492;&#20027;&#39064;&#21152;&#36733;&#38656;&#35201;&#22312;&#24674;&#22797; desktop &#20043;&#21518;
+</span>  <span style="color: #f78fe7; font-weight: bold;">:hook</span> (desktop-after-read . modus-themes-load-random)
+  <span style="color: #f78fe7; font-weight: bold;">:config</span>
+  (<span style="color: #b6a0ff; font-weight: bold;">setq</span> modus-themes-italic-constructs t
+        modus-themes-bold-constructs t
+        modus-themes-disable-other-themes t)
+  <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">remove fill-column-indicator background
+</span>  (<span style="color: #b6a0ff; font-weight: bold;">modus-themes-with-colors</span>
+    (custom-set-faces
+     `(fill-column-indicator ((,c <span style="color: #f78fe7; font-weight: bold;">:background</span> unspecified <span style="color: #f78fe7; font-weight: bold;">:foreground</span> ,bg-dim <span style="color: #f78fe7; font-weight: bold;">:height</span> 1.0)))))
+  (<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">light</span>()
+    <span style="color: #9ac8e0; font-style: italic;">"Toggle light theme."</span>
+    (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
+    (modus-themes-load-random-light))
+  (<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">dark</span>()
+    <span style="color: #9ac8e0; font-style: italic;">"Toggle dark theme."</span>
+    (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
+    (modus-themes-load-random-dark)))
+</pre>
+</div>
+
+<p>
+<a href="https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-ui.el">Source</a>
+</p>
+</details>
 </div>
 <div id="postamble" class="status">
 
@@ -210,7 +244,7 @@ ef-themes 则提供了更多的色彩选择。
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-05-21 Wed 21:40</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-11-05 Wed 20:47</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-02-26 Thu 15:37</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
