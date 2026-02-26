@@ -8,7 +8,7 @@
 #+language: zh-CN
 #+author: Spike Leung
 #+email: l-yanlei@hotmail.com
-#+options: ^:{}
+#+options: ^:{} toc:1
 #+startup: content
 
 🎶 The Great Escape Of Our Time - 椅子乐团 The Chairs
@@ -81,15 +81,11 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 :CUSTOM_ID: D55D3AFA-42A0-4D14-A52F-FB34162E31DD
 :END:
 
-如果自己搭建的话，可以参照 [[https://www.w3.org/TR/webmention][Webmention 规范]] 实现。你也可以找现成的工具。
+如果自己搭建的话，可以参照 [[https://www.w3.org/TR/webmention][Webmention 规范]] 实现；
+或者找现成的工具，你可以在 [[https://indieweb.org/Webmention][Webmention | IndieWeb]] 找到很多工具和服务。
 
-#+attr_html: :role note
-#+begin_section
-你可以在 [[https://indieweb.org/Webmention][Webmention | IndieWeb]] 找到很多工具和服务。
-#+end_section
-
-我目前实现很简单，接收依赖 webmention.io 提供的服务，以及一些自己编写的脚本；
-发送目前还是手动触发，麻烦一些的地方是给博客添加 [[https://microformats.org/wiki/Main_Page][microformats]] 。
+我目前实现很简单，接收依赖 webmention.io 提供的服务，以及一些自己编写的 [[file:js/webmention.js][脚本]]；
+发送通过手动触发；麻烦一些的地方是给博客添加 [[https://microformats.org/wiki/Main_Page][microformats]] 。
 
 ** 作为接收方
 :PROPERTIES:
@@ -115,9 +111,27 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 这样就能通过 webmention.io 的验证了。
 
 接下来按照 webmention.io 提供的 API 获取 Webmentions 的数量和内容，
-需要在页面上添加 HTML 元素，
-写 [[file:js/webmention.js][一些 JS 代码]] 调用 API 渲染数据（也可以用 [[https://github.com/PlaidWeb/webmention.js][webmention.js]]），
+需要在页面上添加 HTML 元素，写 [[file:js/webmention.js][一些 JS 代码]] 调用 API 渲染数据（也可以用 [[https://github.com/PlaidWeb/webmention.js][webmention.js]]），
 再写点 CSS 优化一下样式。
+
+#+attr_html: :role note
+#+begin_section
+如果你打算渲染 Webmentions 返回的 HTML，需要注意 [[https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS][Cross-site scripting (XSS)]] 攻击。
+
+#+begin_details
+#+html: <summary>防止 XSS 攻击</summary>
+防止 XSS 攻击，[[https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API#using_a_csp_to_enforce_trusted_types][Trusted Types API]] 看起来不错，可惜浏览器支持度不够。
+
+防御 XSS 主要从两方面入手：
+- 净化 (sanitize) 用户输入的内容。可以使用 [[https://github.com/cure53/DOMPurify][DOMPurify]] 处理。
+- 使用 [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP][Content Security Policy (CSP)]] 限制执行。[[https://www.netlify.com/blog/general-availability-content-security-policy-csp-nonce-integration/][Netlify 有插件支持]]，倒是方便了许多。
+  要注意的是，当开启了 CSP，一些行内的脚本，
+  如写在元素上的 onclick、 onchange 等会被阻止执行，需要将他们挪动到 JS 文件里。
+
+也可以期待一下 [[https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML][Element: setHTML() method]] 被广泛支持，
+它提供了一种 XSS 安全的方法用于插入 HTML 内容到页面中。
+#+end_details
+#+end_section
 
 搭建好之后，可以用 [[https://webmention.rocks/#:~:text=Testing%20your%20Receiver][Webmention Rocks!]] 提供的服务进行测试。
 
@@ -135,20 +149,26 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 :CUSTOM_ID: 582BF4C8-77F8-4E6E-B823-8C9941F41233
 :END:
 
-作为发送方，你只需要在你的文章中包含对方的链接，就可以向对方发送 Webmention 了。[fn:1]
+作为发送方，你只需要在你的文章中包含对方的链接，就可以向对方发送 Webmention 了。
 
 但是如果你想让你发送的内容更丰富一些，就需要通过 [[https://microformats.org/wiki/Main_Page][microformats]] 标记网站信息，
 如用户名、头像、内容、你要提及的链接等，从而让 Webmention 解析展示。
 
-最主要的标记是 [[https://microformats.org/wiki/h-card][h-card]] 和 [[https://microformats.org/wiki/h-entry][h-entry]]，前者标记用户信息；
-后者标记内容信息，标记的部分会作为 Webmention 的内容呈现。
+#+attr_html: :role note
+#+begin_section
+按理说只要包含了对方链接，对方就能收到 Webmention。
 
-#+attr_html: :class u-in-reply-to e-content
+但我发送后却收到了
+「The Microformats at the source URL do not contain a link to the target URL.」的错误提示。
+
+可能是因为我使用 microformats 标记了内容，此时需要确保 microformats 解析后的内容中，包含对方的 URL。
+#+end_section
+
+最主要的标记是 [[https://microformats.org/wiki/h-card][h-card]] 和 [[https://microformats.org/wiki/h-entry][h-entry]]，h-card 标记@@html:<em>用户</em>@@信息；
+h-entry 标记@@html:<em>内容</em>@@信息，标记的部分会作为 Webmention 的内容呈现。
+
 关于 h-card 和 h-entry 的作用，推荐看 [[https://aaronparecki.com/2018/06/30/11/your-first-webmention][Sending your First Webmention from Scratch]]，
-文章循序渐进地引导你添加相应的标记，并且有对应的示例，
-同时文章本身也可以用来测试 Webmention 的发送。
-
-我在往自己博客添加的过程中折腾了很久，也分享一些我的经验。
+文章循序渐进地引导你添加相应的标记，并且有对应的示例，同时文章本身也可以用来测试 Webmention 的发送。
 
 microformats 这些标记，可以和 HTML 做类比，它也是有层级关系的，最终会解析成一个 JSON 的树形结构。
 在你测试的时候，可以从 [[https://microformats.org/wiki/parsers][Microformats Parsers]] 找一个 parser 检查你的文章解析出来的内容。
@@ -271,7 +291,7 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
 :CUSTOM_ID: 1A041E70-EA18-4ED8-9055-099F9CC42152
 :END:
 
-=u-in-reply-to= 标记的链接，应该结合 =e-content= 标记回应的内容，一般会作为评论出现，不包含上下文是没有意义的。
+=u-in-reply-to= 用于标记 h-entry 中要回复的链接，应该结合 =e-content= 标记回应的内容。
 
 如果只是引用了一些链接，并没有对于这些链接的回应，
 不需要用 =u-in-reply-to= 标记，直接发送 Webmention 就好了。
@@ -281,10 +301,9 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
 :CUSTOM_ID: 0EA3F8F1-CA64-48D1-BBF2-99216CC827A6
 :END:
 
-尽管可以设置多个 h-entry，但我觉得一篇文章应该只有一个 h-entry。
+尽管可以设置多个 h-entry，但我觉得一篇文章一个 h-entry 就够了。
 
-原因是 h-entry 中往往你需要指定文章标题、作者、发布和更新时间、内容，
-这和一篇文章的内容是刚好对应上的。
+原因是 h-entry 中往往你需要指定文章标题、作者、发布和更新时间、内容， 这和一篇文章的内容是刚好对应上的。
 
 如果标记多个 h-entry，比较难保证每个 h-entry 都有这些信息，尽管 [[https://microformats.org/wiki/h-entry#:~:text=the%20%22datetime%22%20property.-,what%20is%20the%20bare%20minimum%20list%20of%20required%20properties%20on%20an,a%20nested%20h%2Dcard%20with%20author%20details%20like%20name%2C%20photo%2C%20url.,-Examples%20in%20the][h-entry 不要求包含任一属性]]。
 
@@ -294,28 +313,14 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
 - e-content 标记在整篇文章内容上
 
   好处是，只要在文章中的链接都能被发现，而不需要额外再标记什么。
-
-  缺点是，有的 Webmention 接收方会把 e-content 的内容全部展示出来。
-  如果标记的是整篇文章，那么整篇文章都会被渲染出来，回复的部分就会被淹没在整篇文章中。
-
-  我尝试过只把 e-content 标记在回应链接（记为 =链接 A= ）的部分，
-  这样渲染到对方 Webmention 的就只有我标记的部分。
-
-  但当我想 mention 其他链接的时候，
-  因为 e-content 现在只标记了 =链接A= 的内容，而不包含其他链接的内容，
-  就导致发送 Webmention 的时候，对方无法找到 Target URL，无法完成 Webmention。
-
-  我可以给其他链接也增加 e-content 的标记，但这会导致 =链接 A= 的 Webmention 得到一个 content 数组，
-  有的网站只获取数组中的第一个元素，但里面的内容却不一定和 =链接 A= 有关，渲染出来就会有点怪。
-
-  权衡之下，目前我觉得把 e-content 标记在整篇文章里是最方便的。
+  缺点是，e-content 标记的内容可能太多，导致实际回复的部分被淹没其中。
 
 ** webmention.io 的 target 需要完全匹配
 :PROPERTIES:
 :CUSTOM_ID: 061A4259-3D8B-4AB6-B8DC-B9C76BC6EEE5
 :END:
 
-问题见 [[https://github.com/aaronpk/webmention.io/issues/229#issuecomment-3602563563][When URL has hash，webmention.io'a API not reponse data #229]]。
+见 [[https://github.com/aaronpk/webmention.io/issues/229#issuecomment-3602563563][When URL has hash，webmention.io'a API not reponse data #229]]。
 
 有的 webmention 的发送时的 URL 是 =https://domain/page.html#abc= ，
 通过 webmention.io 的 API，target 参数设置为 =https://domain/page.html= 是无法获取到数据的，
@@ -339,32 +344,6 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
 排查的方法是，在浏览器中查看网络请求，找到源页面返回的内容，搜索一下内容中是否包含目标页面的链接。
 
 也可能是网站显示的问题，可以尝试联系作者。
-
-* TODO TODO
-:PROPERTIES:
-:CUSTOM_ID: C60020F6-33E8-4CB2-A8DD-968BE0EABC31
-:END:
-
-- [X] 优化博客中 Webmention 的展示，支持头像、主页等内容的展示，
-  会参考 [[https://aaronparecki.com/2018/06/30/11/your-first-webmention][Sending your First Webmention from Scratch]] 的实现
-- [ ] 支持不同类型的 Webmention 展示和发送，
-  如回应、点赞、[[https://indieweb.org/rsvp][RSVP]] (源自法语 [[https://en.wikipedia.org/wiki/RSVP][répondez s'il vous plaît]]，请回复的意思) 等
-- [ ] 实现自动发送 Webmention
-- [X] 支持 HTML 内容的渲染，但要避免 [[https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS][Cross-site scripting (XSS)]]
-
-#+begin_details
-#+html: <summary>防止 XSS 攻击</summary>
-防止 XSS 攻击，[[https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API#using_a_csp_to_enforce_trusted_types][Trusted Types API]] 看起来不错，可惜浏览器支持度不够。
-
-防御 XSS 主要从两方面入手：
-- 净化 (sanitize) 用户输入的内容。可以使用 [[https://github.com/cure53/DOMPurify][DOMPurify]] 处理。
-- 使用 [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP][Content Security Policy (CSP)]] 限制执行。[[https://www.netlify.com/blog/general-availability-content-security-policy-csp-nonce-integration/][Netlify 有插件支持]]，倒是方便了许多。
-  要注意的是，当开启了 CSP，一些行内的脚本，
-  如写在元素上的 onclick、 onchange 等会被阻止执行，需要将他们挪动到 JS 文件里。
-
-也可以期待一下 [[https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML][Element: setHTML() method]] 被广泛支持，
-它提供了一种 XSS 安全的方法用于插入 HTML 内容到页面中。
-#+end_details
 
 * 写在最后
 :PROPERTIES:
@@ -390,15 +369,3 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
 - [[https://blog.xiang578.com/note/641ea60f-a31e-4979-9327-c50509c146e3.html][Webmention 实现参考 | Runye]]
 - [[https://www.owenyoung.com/en/blog/indieweb/][Now, I'm in IndieWeb? | Owen Young]]
 - [[https://cytrogen.icu/posts/1de][在 Hexo 项目中添加 Webmention | Cytrogen]]
-
-* Footnotes
-:PROPERTIES:
-:CUSTOM_ID: DBEDDBE8-0217-464F-B3A8-3046108B465B
-:END:
-
-[fn:1] 我的文章中，有的链接没有任何标记，按理说只要包含了链接，对方就能收到我的 Webmention。
-
-但我发送后却收到了
-「The Microformats at the source URL do not contain a link to the target URL.」的错误提示。
-
-可能是因为我使用 microformats 标记了内容，此时需要确保 microformats 解析后的内容中，包含对方的 URL。
