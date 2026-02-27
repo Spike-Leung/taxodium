@@ -60,7 +60,7 @@
 Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/modus-themes">modus-themes</a> 和 <a href="https://github.com/protesilaos/ef-themes">ef-themes</a>，它们都是出自 <a href="https://github.com/protesilaos">protesilaos</a>。
 </p>
 
-<section role="note" id="org54463a4">
+<section role="note" id="org79128fe">
 <p>
 后续可能还会加入 <a href="https://github.com/protesilaos/doric-themes">doric-themes</a>，也是 Prot 的写的主题，这个主题的颜色比较单一，写作的时候用感觉不错。
 </p>
@@ -173,7 +173,7 @@ modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景；e
 へ(゜∇、°)へ へ(゜∇、°)へ
 </p>
 
-<section role="note" id="org886d0be">
+<section role="note" id="org0d4fbc6">
 <p>
 说起来奇怪，如果是我自己主动切换的主题，可能切换后我马上就想换了。
 </p>
@@ -199,8 +199,15 @@ modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景；e
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff; font-weight: bold;">use-package</span> modus-themes
   <span style="color: #f78fe7; font-weight: bold;">:ensure</span>
+  <span style="color: #f78fe7; font-weight: bold;">:init</span>
+  (<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/modus-themes-load-based-on-time</span> ()
+    <span style="color: #9ac8e0; font-style: italic;">"&#26681;&#25454;&#24403;&#21069;&#26102;&#38388;&#21152;&#36733;&#20027;&#39064;&#65306;08:00-18:00 &#20351;&#29992;&#27973;&#33394;&#20027;&#39064;&#65292;&#20854;&#20182;&#26102;&#38388;&#20351;&#29992;&#28145;&#33394;&#20027;&#39064;&#12290;"</span>
+    (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((hour (string-to-number (format-time-string <span style="color: #79a8ff;">"%H"</span>))))
+      (<span style="color: #b6a0ff; font-weight: bold;">if</span> (<span style="color: #b6a0ff; font-weight: bold;">and</span> (&gt;= hour 8) (&lt; hour 18))
+          (modus-themes-load-random 'light)
+        (modus-themes-load-random 'dark))))
   <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#22240;&#20026; desktop &#20250;&#20445;&#23384; face &#30456;&#20851;&#20869;&#23481;&#65292;&#21487;&#33021;&#20250;&#21644;&#20027;&#39064;&#20914;&#31361;&#65292;&#22240;&#27492;&#20027;&#39064;&#21152;&#36733;&#38656;&#35201;&#22312;&#24674;&#22797; desktop &#20043;&#21518;
-</span>  <span style="color: #f78fe7; font-weight: bold;">:hook</span> (desktop-after-read . modus-themes-load-random)
+</span>  <span style="color: #f78fe7; font-weight: bold;">:hook</span> (desktop-after-read . spike-leung/modus-themes-load-based-on-time)
   <span style="color: #f78fe7; font-weight: bold;">:config</span>
   (<span style="color: #b6a0ff; font-weight: bold;">setq</span> modus-themes-italic-constructs t
         modus-themes-bold-constructs t
@@ -212,11 +219,11 @@ modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景；e
   (<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">light</span>()
     <span style="color: #9ac8e0; font-style: italic;">"Toggle light theme."</span>
     (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
-    (modus-themes-load-random-light))
+    (modus-themes-load-random 'light))
   (<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">dark</span>()
     <span style="color: #9ac8e0; font-style: italic;">"Toggle dark theme."</span>
     (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
-    (modus-themes-load-random-dark)))
+    (modus-themes-load-random 'dark)))
 </pre>
 </div>
 
@@ -244,7 +251,7 @@ modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景；e
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-05-21 Wed 21:40</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-02-26 Thu 15:37</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-02-27 Fri 14:14</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">

@@ -129,8 +129,15 @@ modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景；e
 #+begin_src emacs-lisp
   (use-package modus-themes
     :ensure
+    :init
+    (defun spike-leung/modus-themes-load-based-on-time ()
+      "根据当前时间加载主题：08:00-18:00 使用浅色主题，其他时间使用深色主题。"
+      (let ((hour (string-to-number (format-time-string "%H"))))
+        (if (and (>= hour 8) (< hour 18))
+            (modus-themes-load-random 'light)
+          (modus-themes-load-random 'dark))))
     ;; 因为 desktop 会保存 face 相关内容，可能会和主题冲突，因此主题加载需要在恢复 desktop 之后
-    :hook (desktop-after-read . modus-themes-load-random)
+    :hook (desktop-after-read . spike-leung/modus-themes-load-based-on-time)
     :config
     (setq modus-themes-italic-constructs t
           modus-themes-bold-constructs t
@@ -142,11 +149,11 @@ modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景；e
     (defun light()
       "Toggle light theme."
       (interactive)
-      (modus-themes-load-random-light))
+      (modus-themes-load-random 'light))
     (defun dark()
       "Toggle dark theme."
       (interactive)
-      (modus-themes-load-random-dark)))
+      (modus-themes-load-random 'dark)))
 #+end_src
 
 [[https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-ui.el][Source]]
