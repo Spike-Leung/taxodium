@@ -1,0 +1,195 @@
+#+title:      Emacs: 封装 webjump 搜索 symbol-at-point
+#+export_file_name: emacs-use-webjump-to-search-symbol-at-point
+#+date:       [2026-01-26 Mon 11:54]
+#+filetags:   :emacs:published:search:webjump:
+#+identifier: 20260126T115449
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: Emacs: 封装 webjump 搜索 symbol-at-point
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content
+
+~webjump~ 是 Emacs 里内置的一个包，你可以配置想要搜索的网站，然后通过 webjump 选择搜索。
+
+例如这是我设置的网站：
+
+#+begin_src emacs-lisp
+  (setq webjump-sites '(("Kagi" . [simple-query "kagi.com" "kagi.com/search?q=" ""])
+                        ("Kagi Translate" . [simple-query "translate.kagi.com" "translate.kagi.com/?from=auto&to=zh_cn&text=" ""])
+                        ("Wikipedia" . [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""])
+                        ("Kagi(site:github.com)" . [simple-query "kagi.com" "kagi.com/search?q=site:github.com+" ""])
+                        ("Album" . [simple-query "kagi.com" "kagi.com/images?q=" "&size=large"])
+                        ("MDN" . [simple-query "developer.mozilla.org" "developer.mozilla.org/en-US/search?q=" ""])
+                        ("Haici" . [simple-query "dict.cn" "dict.cn/search?q=" ""])))
+#+end_src
+
+当我调用 webjump 时，它会让我从上面的选项里选一个，然后输入搜索关键字，之后就会跳转到对应的网站搜索。
+
+可以将一些比较高频的搜索条件内置在搜索链接里。
+如果经常搜索 GitHub 上的内容，可以加上 =site:github.com= ，使得总是搜索 =github.com= 的内容；
+或者也可以直接用 GitHub 本身的搜索 =https://github.com/search?q=%s= 。
+
+~symbol-at-point~ 也是 Emacs 里内置的一个函数，可以获取当前指针下的内容。
+
+结合两者，我写了一个函数，获取指针下的内容，然后调用 webjump 去搜索，
+这样在 Emacs 里碰到什么我想要查询的，就可以快速调用常用的网站进行搜索。
+例如写页面的时候快速去 MDN 查询一些 API 的使用。
+
+#+begin_details
+#+html: <summary>代码</summary>
+
+#+begin_src emacs-lisp
+  (use-package webjump
+    :bind (("C-M-?" . spike-leung/webjump-symbol-at-point))
+    :config
+    (setq webjump-sites '(("Kagi" . [simple-query "kagi.com" "kagi.com/search?q=" ""])
+                          ("Kagi Translate" . [simple-query "translate.kagi.com" "translate.kagi.com/?from=auto&to=zh_cn&text=" ""])
+                          ("Wikipedia" . [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""])
+                          ("Kagi(site:github.com)" . [simple-query "kagi.com" "kagi.com/search?q=site:github.com+" ""])
+                          ("Album" . [simple-query "kagi.com" "kagi.com/images?q=" "&size=large"])
+                          ("MDN" . [simple-query "developer.mozilla.org" "developer.mozilla.org/en-US/search?q=" ""])
+                          ("Haici" . [simple-query "dict.cn" "dict.cn/search?q=" ""])))
+    (defun spike-leung/webjump-symbol-at-point ()
+      "获取光标下的 symbol 并通过 webjump 搜索。"
+      (interactive)
+      (let* ((completion-ignore-case t)
+             (query (if (use-region-p)
+                        (buffer-substring-no-properties (region-beginning) (region-end))
+                      (thing-at-point 'symbol t)))
+             ;; (query (read-string (format "Webjump search (%s): " (or content ""))
+             ;;                     nil nil content))
+             (item (assoc-string
+                    (completing-read "WebJump to site: " webjump-sites nil t)
+                    webjump-sites t))
+             (name (car item))
+             (expr (cdr item))
+             (query-prefix (aref expr 2))
+             (query-suffix (aref expr 3))
+             (fun (if webjump-use-internal-browser
+                      (apply-partially #'browse-url-with-browser-kind 'internal)
+                    #'browse-url)))
+        (funcall fun (webjump-url-fix
+                      (cond ((concat query-prefix (webjump-url-encode query) query-suffix))
+                            (t (error "WebJump URL expression for \"%s\" invalid"
+                                      name))))))))
+#+end_src
+#+end_details
+
+[[https://emacs-china.org/t/webjump-symbol-at-point/30838][Emacs China 上的相关讨论]]
+
+-----
+
+更新：
+
+因为是针对 point 下的内容操作，所以很适合用 [[https://github.com/oantolin/embark][embark]]，可以不用记忆额外的快捷键，更容易想起来用。
+
+#+attr_html: :role note
+#+begin_section
+embark 可以理解成 Emacs 里的右键菜单，在任何位置都可以调用 ~embark-act~ 唤起这个菜单，
+菜单中的内容是可以自己定制的，这样就可以快速进行一些操作。
+#+end_section
+
+最近还经常用 [[https://kagi.com/assistant][Kagi Assistant]]，所以把 Kagi Assistant 的链接也加入到了 webjump，
+这样我就可以随时从 Emacs 中获取上下文，然后去 Kagi Assistant 进行对话。
+
+现在我的操作流程是：
+
+- 在 Emacs 中，按下 @@html:<kbd>C-.</kbd>@@，这会调用 ~embark-act~ 。
+  embark 会自动帮我选择 point 下的内容，可能是一个符号，可能是一个 region（选中的区域）。
+- 按下 @@html:<kbd>W</kbd>@@，这个按键绑定了 ~spike-leung/webjump-symbol-at-point~ 。
+- 选择 「Kagi LLM」，输入 prompt，然后就会带着上下文和 prompt，跳转到 Kagi Assistant 开始对话
+
+具体代码：
+
+#+begin_details
+#+html: <summary>webjump 部分</summary>
+
+#+begin_src emacs-lisp
+  (use-package webjump
+    :after embark
+    :defer nil
+    :config
+    (setq webjump-sites '(("Kagi" . [simple-query "kagi.com" "kagi.com/search?q=" ""])
+                          ("Kagi Translate Text" . [simple-query "translate.kagi.com" "translate.kagi.com/?from=auto&to=zh_cn&text=" ""])
+                          ("Kagi Translate Page" . [simple-query "translate.kagi.com" "translate.kagi.com/zh_cn/" "?kt_view=both_vertical?kt_view=both_vertical"])
+                          ("Kagi LLM" . [simple-query "kagi.com" "kagi.com/assistant?q=" "&profile=kimi-k2.5-reasoning&internet=on"])
+                          ("Kagi Summary" . [simple-query "kagi.com" "kagi.com/summarizer?url=" "&target_language=ZH&summary=takeaway"])
+                          ("Wikipedia" . [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""])
+                          ("Kagi(site:github.com)" . [simple-query "kagi.com" "kagi.com/search?q=site:github.com+" ""])
+                          ("Album" . [simple-query "kagi.com" "kagi.com/images?q=" "&size=large"])
+                          ("MDN" . [simple-query "developer.mozilla.org" "developer.mozilla.org/en-US/search?q=" ""])
+                          ("Haici" . [simple-query "dict.cn" "dict.cn/search?q=" ""])))
+
+    (defun spike-leung/webjump-symbol-at-point (target)
+      "获取光标下的 symbol 并通过 webjump 搜索。TARGET 是 `embark-act' 的对象。"
+      (let* ((completion-ignore-case t)
+             ;; 从 WebJump 列表选项
+             (item (assoc-string
+                    (completing-read "WebJump to site: " webjump-sites nil t)
+                    webjump-sites t))
+             ;; 选项名称
+             (name (car item))
+             ;; 选项配置
+             (expr (cdr item))
+             ;; 选项的第 3 个参数，获取查询前缀
+             (query-prefix (aref expr 2))
+             ;; 选项的第 4 个参数，获取查询后缀
+             (query-suffix (aref expr 3))
+             (fun (if webjump-use-internal-browser
+                      (apply-partially #'browse-url-with-browser-kind 'internal)
+                    #'browse-url))
+             ;; 如果选择的是 LLM 相关的 URL，则需要输入 Prompt
+             (prompt (and (string-match-p "LLM" name) (read-string "Prompt: " "解释" t)))
+             ;; 如果存在 prompt 则拼接 prompt
+             (query (or (and prompt (concat target "\n" prompt)) target)))
+        (funcall fun (webjump-url-fix
+                      (cond ((concat query-prefix (webjump-url-encode query) query-suffix))
+                            (t (error "WebJump URL expression for \"%s\" invalid"
+                                      name))))))))
+#+end_src
+#+end_details
+
+#+begin_details
+#+html: <summary>embark 部分</summary>
+
+#+begin_src emacs-lisp
+  (use-package embark
+    :bind
+    (("C-." . embark-act)
+     ("M-." . embark-dwim)
+     ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+    :init
+    ;; Optionally replace the key help with a completing-read interface
+    (setq prefix-help-command #'embark-prefix-help-command)
+    :config
+    (keymap-set embark-general-map "W" #'spike-leung/webjump-symbol-at-point)
+    (keymap-set embark-region-map "W" #'spike-leung/webjump-symbol-at-point))
+#+end_src
+#+end_details
+
+-----
+
+webjump 和浏览器或者搜索引擎中的 Search Shortcuts 差不多, 可以保存常用的搜索条件便于快速搜索。
+
+例如我经常需要从 Kagi 找专辑封面的图片，而且希望图片尺寸尽可能大。
+
+我平常的操作是：
+1. 触发搜索栏
+2. 输入关键字搜索
+3. 切换到图片搜索
+4. 设置尺寸为 large 进行过滤
+
+通过 Search Shortcuts，我设置了 =https://kagi.com/images?q=%s&size=large= ，并绑定 =@a= 。
+
+我的操作就变成:
+1. 触发搜索栏
+2. 输入 =@a= 快捷键触发 Search Shortcuts，输入关键字搜索，结束
+
+可以了解一下搜索引擎的搜索操作符，例如这是 [[https://help.kagi.com/kagi/features/search-operators.html#search-operators-1][Kagi Search Operators]]：
+- =site:= 可以搜索指定域名
+- =filetype:= 可以搜索指定的文件类型
+- ...
+
+然后将平时频繁使用的一些搜索条件保存到 Search Shortcuts，这样下次使用就会方便一些。

@@ -1,0 +1,240 @@
+#+title:      Translation In Emacs
+#+export_file_name: translation-in-emacs
+#+date:       [2025-01-16 Thu 21:39]
+#+filetags:   :emacs:llm:published:translate:
+#+identifier: 20250116T213957
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 我在 Emacs 中配置的一些翻译工具
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content
+
+#+CAPTION: Emacs 中翻译插件的使用截图，包括 emacs-immersive-translate, gt, fanyi
+[[file:./images/translate-in-emacs/screenshot.png]]
+
+逛 [[https://emacs-china.org/][Emacs China]] 的时候看到了一些在 Emacs 中翻译的插件[fn:1]，我也跟着配置了一些。
+得益于 LLM(Large Language Model)，翻译的质量也好了很多。
+这篇文章记录一下我都使用了什么插件，怎么配置的以及是如何使用的。
+
+* 插件使用
+:PROPERTIES:
+:CUSTOM_ID:       D467719F-6657-47BD-B3A5-DCB6F7A89480
+:ID:       2482300C-70EC-455A-B104-D29B2D11D9CB
+:END:
+
+插件我主要使用这几个：
+
+- [[https://github.com/Elilif/emacs-immersive-translate][Elilif/emacs-immersive-translate]] ::
+  Immersive-translate provides bilingual simultaneous display and translation of any text in Emacs.
+- [[https://github.com/lorniu/gt.el][lorniu/gt.el]] ::
+  Translator on Emacs.
+  Supports multiple engines such as Google, Bing, deepL, ChatGPT, StarDict, Youdao and so on.
+- [[https://github.com/condy0919/fanyi.el][condy0919/fanyi.el]] ::
+  Not only English-Chinese translator for Emacs.
+- [[https://github.com/karthink/gptel][karthink/gptel]] :: A simple LLM client for Emacs.
+
+我使用最多的是 emacs-immersive-translate，
+它的灵感是 [[https://immersivetranslate.com/en/][Immersive Translate]]，是我使用频率极高的一个浏览器翻译插件。
+emacs-immersive-translate 给我的体验和 Immersive Translate 很接近，
+我主要是用来查看 Emacs 中的 Info，
+它还有 =immersive-translate-auto-mode= ，可以在 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html][buffer]] 变化的时候自动翻译，很方便。
+
+emacs-immersive-translate 针对 Emacs 中的 Info，[[https://github.com/skeeto/elfeed][elfeed]] 等做了适配，
+总体效果看起来是不错的，每次我看 Info 都会用到。
+
+gt.el 的灵活度会更高一些，我主要用来选中文本之后进行翻译。
+
+fanyi 则是当作字典使用，碰到一两个单词不熟悉，就使用 fanyi 进行查询。
+我很喜欢 fanyi 里面的 [[https://dict.cn/][海词]]，它可以生成图表，呈现单词含义的使用频率，让我了解这个单词最常见的含义。
+
+最后，我还会用到 gptel，它实际上不是专门用来翻译的，
+但是作为 LLM，我可以在任何地方调用它，帮我完成一些翻译任务。
+
+* 插件配置
+:PROPERTIES:
+:CUSTOM_ID:       F0C6CAC8-45B4-4716-97E4-045ECFDAE27F
+:ID:       7D6408C0-9FAE-4C24-BA56-DAB39C85BE78
+:END:
+
+你可以在 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-translate.el][init-translate.el]] 中查看翻译的相关配置。
+
+** [[https://github.com/Elilif/emacs-immersive-translate][emacs-immersive-translate]]
+:PROPERTIES:
+:CUSTOM_ID:       C011324B-80BA-4CA2-8F8B-474BC2448BBD
+:ID:       9FF10D60-81D1-409C-928D-6A07B2324D8A
+:END:
+
+你可以在 [[https://melpa.org/][MELPA]] 上直接安装 emacs-immersive-translate。
+
+不过我修改了源码，[[https://github.com/Spike-Leung/emacs-immersive-translate/commit/330dcfa3603845ead9408000577b429f8c47ee87][调整了翻译文字颜色]]，所以我是作为 [[https://git-scm.com/docs/gitsubmodules][git submodules]] 安装的。
+
+然后我配置了使用 [[https://openrouter.ai/][OpenRouter]] 作为翻译服务：
+
+#+begin_src elisp
+  ;;; immersive-translate
+  (require 'immersive-translate)
+  (add-hook 'elfeed-show-mode-hook #'immersive-translate-setup)
+  ;; need to api key with user `apikey` in `.authinfo`
+  (setq immersive-translate-backend 'chatgpt
+        immersive-translate-chatgpt-host "openrouter.ai/api"
+        immersive-translate-chatgpt-model "google/gemini-2.5-flash"
+        immersive-translate-pending-message "(≖ᴗ≖๑)"
+        immersive-translate-failed-message "(つд⊂) ")
+#+end_src
+
+API Key 在 ~~/.authinfo~ 中配置，
+由于 emacs-immersive-translate 是查找 user 为 =apikey= 的配置，因此 user 这里需要设置为 =apikey= 。
+
+#+begin_src authinfo
+  machine openrouter.ai/api login apikey password ********************************
+#+end_src
+
+#+attr_html: :role note
+#+begin_section
+关于 .authinfo 你可以参考：
+
+- [[denote:20250227T142947][Emacs 中配置 .authinfo.gpg]]
+- [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Authentication.html][50.5 Keeping Persistent Authentication Information ¶]]
+- [[https://www.emacswiki.org/emacs/GnusAuthinfo][Gnus Authinfo]]
+#+end_section
+
+** [[https://github.com/lorniu/gt.el][gt.el]]
+:PROPERTIES:
+:CUSTOM_ID:       BE4581E7-1D8C-44A7-8F87-224AFFDA8278
+:ID:       955D50E0-E68B-417F-9BB6-0F3C52437C9A
+:END:
+
+gt.el 也是可以在 MELPA 上直接安装。
+
+我将它配置成使用 [[https://openrouter.ai/][OpenRouter]] 作为翻译服务，翻译显示在一个新的 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html][buffer]] 中。
+
+#+begin_src elisp
+  ;; @see: https://github.com/lorniu/gt.el
+  (maybe-require-package 'gt)
+  (maybe-require-package 'plz)
+  (with-eval-after-load 'init-auth
+    (with-eval-after-load 'gt
+      (setq gt-langs '(en zh)
+            gt-chatgpt-key (spike-leung/get-openrouter-api-key)
+            gt-chatgpt-host "https://openrouter.ai/api"
+            gt-chatgpt-model "google/gemini-2.5-flash"
+            gt-default-translator (gt-translator
+                                   :taker (gt-taker :pick nil :prompt t)
+                                   :engines (gt-chatgpt-engine :stream t)
+                                   :render (gt-buffer-render
+                                            :name "gt-translator"
+                                            :window-config '((display-buffer-at-bottom))
+                                            :then (lambda (_) (pop-to-buffer "gt-translator")))))))
+#+end_src
+
+API Key 也是配置在 =~/.authinfo= ，
+使用 =spike-leung/get-openrouter-api-key= 这个方法从文件中查找对应的密钥。
+
+#+begin_details
+#+HTML: <summary>spike-leung/get-openrouter-api-key</summary>
+
+Source: [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-auth.el][init-auth.el]]
+
+#+begin_src elisp
+  ;;; init-auth --- config for auth related -*- lexical-binding: t -*-
+  ;;; Commentary:
+  ;;; Code:
+  (setq epa-pinentry-mode 'loopback) ;; input pass in minibuffer
+
+  ;; (auth-source-pass-enable) ;;; use pass to manage auth-source
+
+  ;;; function to get api-key from authinfo
+  (defun spike-leung/get-api-key (service &optional host)
+    "Retrieve the API key for SERVICE from authinfo.  if HOST exist, retrieve by HOST."
+    (let* ((host (or host (format "api.%s.com" service)))
+           (creds (car (auth-source-search :host host :port 443))))
+      (if creds
+          (let ((api-key (plist-get creds :secret
+                                    )))
+            (if (functionp api-key)
+                (funcall api-key)
+              api-key
+              (error "API key not found for %s" service)))
+        (error "No credentials found for %s" service))))
+
+  (defun spike-leung/get-deepseek-api-key ()
+    "Retrieve the DeepSeek API key from authinfo."
+    (spike-leung/get-api-key "deepseek"))
+
+  (defun spike-leung/get-openrouter-api-key ()
+    "Retrieve the OpenRouter API key from authinfo."
+    (spike-leung/get-api-key "openrouter" "openrouter.ai"))
+
+  (provide 'init-auth)
+  ;;; init-auth.el ends here.
+#+end_src
+
+[[https://github.com/Spike-Leung/emacs.d/blob/eb72b335c90942e43d6082227c646b47725475d2/lisp/my-lisp/init-my-misc.el#L125-L144][Source]]
+#+end_details
+
+** [[https://github.com/condy0919/fanyi.el][fanyi]]
+:PROPERTIES:
+:CUSTOM_ID:       049C7544-172F-4A42-B006-13303F6D3314
+:ID:       1344874C-9187-410F-827E-A9BAF0F8944D
+:END:
+
+fanyi 从 MELPA 上直接安装使用即可。
+
+** [[https://github.com/karthink/gptel][gptel]]
+:PROPERTIES:
+:CUSTOM_ID:       EFE3FF83-B693-4094-834E-BCB33096A1AA
+:ID:       B0ADAF8F-874F-4DAB-ADA4-144B6D553695
+:END:
+
+gptel 也是从 MELPA 上直接安装，然后配置 OpenRouter，具体配置见 [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-gptel.el][init-gptel.el]]。
+
+gptel 就是当 LLM 用，需要翻译的时候就复制文字和它对话。
+此外，在日常开发中，gptel 还能用来重构代码，完成一些重复任务，
+给我一些初始代码逻辑等，也是我用的很频繁的插件。
+
+** 快捷键
+:PROPERTIES:
+:CUSTOM_ID:       10EBCE0C-3A78-486F-B1F6-EF7BE2F577A5
+:ID:       86E1A00C-CEB2-4F5A-A19A-0D509635EAF9
+:END:
+
+为了方便使用，我将这几个插件绑定到了相同的快捷键入口。
+
+#+begin_src elisp
+  ;;; keybindings
+  (defvar spike-leung/my-translate-keymap (make-sparse-keymap)
+    "Keymap for translation commands.")
+
+  (define-key spike-leung/my-translate-keymap (kbd "i") 'immersive-translate-buffer)
+  (define-key spike-leung/my-translate-keymap (kbd "p") 'immersive-translate-paragraph)
+  (define-key spike-leung/my-translate-keymap (kbd "c") 'immersive-translate-clear)
+  (define-key spike-leung/my-translate-keymap (kbd "f") 'fanyi-dwim2)
+  (define-key spike-leung/my-translate-keymap (kbd "g") 'gt-translate)
+
+  (with-eval-after-load 'init-my-keybindings
+    (define-key spike-leung/meta-o-keymap (kbd "t") spike-leung/my-translate-keymap))
+#+end_src
+
+* 写在最后
+:PROPERTIES:
+:CUSTOM_ID:       A748F2BB-E210-48A0-8DF4-4022AC91C716
+:ID:       FF4D31E8-1ABB-498A-81C6-BB7047E93F2A
+:END:
+
+有了翻译插件，在阅读 info 等文档上真的帮助很大，极大地提高阅读效率。
+集成了 LLM 后，翻译的质量也好了很多。
+但依赖翻译插件也有个问题，就是原文会看的比较少，不利于增进英语学习。
+
+如果你还有更好的插件，欢迎推荐啦 (ﾉ>ω<)ﾉ
+
+* Footnotes
+:PROPERTIES:
+:CUSTOM_ID: EDCCD714-9EC3-45D7-A05C-FD8164C69770
+:END:
+
+[fn:1] See:
+- [[https://emacs-china.org/t/emacs-immersive-translate-emacs/24990][emacs-immersive-translate: Emacs 版本的沉浸式翻译（支持多个翻译后端）]]
+- [[https://emacs-china.org/t/google/14407][新写的 Google 翻译插件]]
+- [[https://emacs-china.org/t/topic/18006][一个支持多词典的翻译插件(目前仅支持单词)]]

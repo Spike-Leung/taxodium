@@ -1,0 +1,190 @@
+#+title:      package.json 中依赖版本的记忆技巧
+#+export_file_name: package-json-version-remember-trick
+#+INDEX: pacakge.json 中依赖版本的记忆技巧
+#+date:       [2025-02-21 Fri 21:39]
+#+filetags:   :js:packagejson:published:trick:version:
+#+identifier: 20250221T213912
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 关于如何区分 package.json 中 ^ 和 ~ 的作用，以及个人的记忆技巧
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content
+
+如果你做过前端开发，那么对 [[https://docs.npmjs.com/cli/v11/configuring-npm/package-json][pacakge.json]] 一定不陌生，它描述了：
+
+- 项目名称、版本等基本信息
+- 项目依赖的外部工具/库
+- 运行项目所需的命令脚本
+
+而其中，依赖项都会有对应的版本号，例如:
+
+- ="vue": "^2.6.14"=
+- ="vue-template-compiler": "~2.6.14"=
+
+但你会不会总是搞不明白版本号前面的标记 =^= 和 =~= 的作用？
+
+例如上面的两个依赖，它们可使用的版本号范围是多少呢？
+
+#+begin_details
+#+HTML: <summary>答案</summary/>
+
+=^2.6.14= := ~>=2.6.14 <3.0.0-0~
+
+=~2.6.14= := ~>=2.6.14 <2.(6+1).0-0~ := ~>=2.6.14 <2.7.0-0~
+
+#+attr_html: :role note
+#+begin_section
+~:=~ 的意思是 =可定义/表示为= ，a := b 即 a 可以定义为 b 的表示。
+#+end_section
+#+end_details
+
+如果你答对了，我想你肯定有你的记忆方法，欢迎留言分享。
+如果你也容易忘记，那么接下来我想分享一个我的记忆方法，或许对你有帮助。
+
+* TL;DR
+:PROPERTIES:
+:CUSTOM_ID:       8A1BCD01-EC4A-42FA-BF12-B13BC85B750E
+:ID:       8440B0FA-E443-4348-9EFB-E4037D308E4E
+:END:
+
+=^= 和 =~= 都是用来判断 *固定* 哪一位版本号的。
+
+- =^= 可以用正则表达式的 =^= 记忆，表示开头，
+   对应的含义就是从头(左边)找到第一位非 0 的版本号，
+   固定非 0 的那一位版本号不变，后面(右)的版本号可以变。
+- =~= 可以用范围符号记忆，1 =~= 3 往往表示一个范围，
+   =~= 是放在中间的，第二位版本号也是在中间，
+   因此 =~= 主要是和第二位版本号(minor)有关。
+  + 第二位(minor)存在，则固定第二位，可以改第三位(patch)。
+  + 第二位(minor)不存在，则固定第一位(major)，可以改第二位(minor)，第三位(patch)。
+
+* 关于版本号
+:PROPERTIES:
+:CUSTOM_ID:       69FC14E5-4E6D-4605-AF0A-ADCE9FBA7084
+:ID:       6F266AD7-0911-4BA3-85D9-20732B5A8D81
+:END:
+
+package.json 的版本号遵循 [[https://semver.org/lang/zh-CN/][语义化版本 2.0.0]]：
+
+#+begin_quote
+版本格式： =主版本号.次版本号.修订号= ，版本号递增规则如下：
+
+- 主版本号 (MAJOR) :: 当你做了不兼容的 API 修改。
+- 次版本号 (MINOR) :: 当你做了向下兼容的功能性新增。
+- 修订号 (PATCH) :: 当你做了向下兼容的问题修正。
+
+先行版本号 (pre-release) 及版本编译信息 (build metadata)
+可以加到 =主版本号.次版本号.修订号= 的后面，作为延伸。
+#+end_quote
+
+package.json 中 [[https://docs.npmjs.com/cli/v11/configuring-npm/package-json#git-urls-as-dependencies][关于版本号范围的定义]] 是这样的:
+
+#+begin_quote
+- version : 必须完全匹配 ~version~
+- >version : 必须大于 ~version~
+- >=version : 大于等于 ~version~
+- <version : 必须小于 ~version~
+- <=version : 小于等于 ~version~
+- ~version : 大致相当于 =version= (参见 [[https://github.com/npm/node-semver#versions][semver]])
+- ^version : 与 ~version~ 兼容 (参见 [[https://github.com/npm/node-semver#versions][semver]])
+- 1.2.x : ~1.2.0~, ~1.2.1~, 等等，但不包括 ~1.3.0~
+- * : 匹配任何版本
+- "" : (空字符串) 等同于 ~*~
+- version1 - version2 : 等同于 ~>=version1 <=version2~
+- range1 || range2 : 如果 ~range1~ 或 ~range2~ 满足，则通过。
+- http://... : 参见 [[https://docs.npmjs.com/cli/v11/configuring-npm/package-json#urls-as-dependencies][URLs as Dependencies]]
+- git... : 参见 [[https://docs.npmjs.com/cli/v11/configuring-npm/package-json#git-urls-as-dependencies][Git URLs as Dependencies]]
+- user/repo : 参见 [[https://docs.npmjs.com/cli/v11/configuring-npm/package-json#github-urls][GitHub URLs]]
+- tag : 一个特定的版本，被标记并发布为 ~tag~ (参见 [[https://docs.npmjs.com/cli/v11/commands/npm-dist-tag][npm dist-tag]])
+- path/path/path : 参见 [[https://docs.npmjs.com/cli/v11/using-npm/package-spec#aliases][本地路径]]
+- npm:@scope/pkg@version : 包的自定义别名 (参见 [[https://docs.npmjs.com/cli/v11/using-npm/package-spec#aliases][package-spec]])
+#+end_quote
+
+除了 =^= 和 =~= 其实都是比较容易明白的。
+
+* ^ (Caret Ranges) 和 ~ (Tilde Ranges)
+:PROPERTIES:
+:CUSTOM_ID:       8D5AC283-1EEC-4007-A14C-650F0EF43518
+:ID:       F6E2B914-3035-4436-BD4B-236D35817D6B
+:END:
+
+- [[https://github.com/npm/node-semver?tab=readme-ov-file#caret-ranges-123-025-004][^ (Caret Ranges)]] :: 允许不修改 =[major, minor, patch]= 元组中最左边非零元素的更改。
+  (Allows changes that do not modify the left-most non-zero element
+  in the =[major, minor, patch]= tuple.)
+
+  + ~^1.2.3~ := ~>=1.2.3 <2.0.0-0~
+  + ~^0.2.3~ := ~>=0.2.3 <0.3.0-0~
+  + ~^0.0.3~ := ~>=0.0.3 <0.0.4-0~
+  + ~^1.2.3-beta.2~ := ~>=1.2.3-beta.2 <2.0.0-0~
+  + ~^0.0.3-beta~ := ~>=0.0.3-beta <0.0.4-0~
+  + ~^1.2.x~ := ~>=1.2.0 <2.0.0-0~
+  + ~^0.0.x~ := ~>=0.0.0 <0.1.0-0~
+  + ~^0.0~ := ~>=0.0.0 <0.1.0-0~
+  + ~^1.x~ := ~>=1.0.0 <2.0.0-0~
+  + ~^0.x~ := ~>=0.0.0 <1.0.0-0~
+
+#+attr_html: :role note
+#+begin_section
+~:=~ 的意思是 =可定义/表示为= ，a := b 即 a 可以定义为 b 的表示。
+#+end_section
+
+在正则表达式中， =^= 表示匹配匹配字符串的开头，利用这个联想，
+=^= 表示的就是从头(最左边)开始，找第一个非 0 的版本号，固定这一位版本号。
+
+例如 =^0.1.2= ，从头开始第一个非 0 的版本号是第二位版本号 =1= ，
+因此第二位之前都是固定的，因此可以推断出它表示的范围是 ~>=0.1.2 <0.2.0~ 。
+
+再如 =^1= , 首先补全到 3 位版本号，即 =^1.0.0= ，
+从头开始第一个非 0 的版本号是第一位的 =1= ，因此第一位版本号是固定的，范围是 ~>=1.0.0 <2.0.0~ 。
+
+/特殊的/ ，当 3 位版本号都是 0 的时候，即 =^0.0.0= , 此时从头往后找不到非 0 的版本号，
+则固定第一位，即固定主版本号，其他版本号随意，范围是 ~>=0.0.0 <1.0.0~ 。
+
+- [[https://github.com/npm/node-semver?tab=readme-ov-file#tilde-ranges-123-12-1][~ (Tilde Ranges)]]  :: 如果存在 =次版本号= ，则允许进行 =修订号= 修改。如果没有，则允许 =次版本号= 的更改。
+
+  + =~1.2.3= := ~>=1.2.3 <1.3.0-0~
+  + =~1.2= := ~>=1.2.0 <1.3.0-0~ (Same as ~1.2.x~)
+  + =~1= := ~>=1.0.0 <2.0.0-0~ (Same as ~1.x~)
+  + =~0.2.3= := ~>=0.2.3 <0.3.0-0~
+  + =~0.2= := ~>=0.2.0 <0.3.0-0~ (Same as ~0.2.x~)
+  + =~0= := ~>=0.0.0 <1.0.0-0~ (Same as ~0.x~)
+  + =~1.2.3-beta.2= := ~>=1.2.3-beta.2 <1.3.0-0~
+
+=~= 常见于表示的一个范围，例如 1 =~= 3,
+它往往是夹在中间的，也就是中间第二位，而它的作用就是针对第二位的 =次版本号(minor)= 。
+
+如果第二位(minor)存在，则固定第二位(minor), 可以改第三位(patch)；
+
+如果第二位(minor)不存在，则可以改第二位(minor)，第一位(major)固定。
+
+例如 =~1.2.3= , 第二位是 =2= ，存在第二位，因此固定第二位，范围是 ~>=1.2.3 < 1.3.0~ 。
+
+例如 =~1.0.3= , 第二位是 =0= ，存在第二位，因此固定第二位，范围是 ~>=1.0.3 < 1.1.0~ 。
+
+例如 =~1=, 不存在第二位，因此可以修改第二位，固定第一位，范围是 ~>=1.0.0 <2.0.0~ 。
+
+例如 =~0=, 不存在第二位，因此可以修改第二位，固定第一位，范围是 ~>=0.0.0 <1.0.0~ 。
+
+* 写在最后
+:PROPERTIES:
+:CUSTOM_ID:       75DAF627-234E-406A-981B-7F05C7C0B7AE
+:ID:       D85DA5C6-6C0F-4752-B311-F594C2EFFE24
+:END:
+
+这个问题源于开发中碰到一个依赖版本升级了，看 package.json 的版本号我一时不知道它升级的版本对不对，
+看了一下文档，决定把这个语法记忆一下。
+
+或许文中的内容存在一些错误，如果你发现了欢迎留言指出。
+
+如果你有更好的记忆方法，也欢迎分享~
+
+* Refs
+:PROPERTIES:
+:CUSTOM_ID:       85794B8E-0CBC-47E4-9D35-D814D1338A94
+:ID:       6688C80E-E86B-43C6-BB4B-184A900D13E6
+:END:
+
+- [[https://docs.npmjs.com/cli/v11/configuring-npm/package-json#dependencies][package.json - dependencies]]
+- [[https://github.com/npm/node-semver#versions][node-semver#versions]]
