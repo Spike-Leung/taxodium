@@ -859,6 +859,32 @@ img.inline-image {
   list-style: circle;
 }
 
+#table-of-contents {
+
+  @media screen and (width >= 1550px) {
+    & {
+      opacity: 0.2;
+      position: fixed;
+      top: 5em;
+      right: calc(var(--content-width) + (100vw - var(--content-width)) / 2 + 2em);
+      max-width: calc((100vw - var(--content-width)) / 2 - 2em);
+      transition: opacity .25s ease-in-out;
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    & ul {
+      max-height: 75vh;
+      overflow: auto;
+    }
+
+    & li:has(a.active) {
+      list-style: '☞';
+    }
+  }
+}
+
 :is(.org-ol, .org-ul) li {
   margin-block: .2em;
 }
