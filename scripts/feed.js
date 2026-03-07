@@ -246,7 +246,7 @@ ${ALL_CATEGORIES.map((cat) => `  <category term="${cat.term}" label="${cat.label
 
 async function generateFeed() {
   try {
-    const entries = parseOrgIndex();
+    const entries = parseOrgIndex().sort((a, b) => new Date(b.date) - new Date(a.date));
     const limit = pLimit(8);
     const limitedEntries = entries.slice(0, CONFIG.postsToInclude);
     const processingPromises = limitedEntries.map((entry) =>
