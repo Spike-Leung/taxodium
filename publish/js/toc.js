@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const visibleSectionIds = new Set();
   let currentActiveId = null;
+  let userSelectSectionId = null
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -40,7 +41,10 @@ document.addEventListener('DOMContentLoaded', function() {
       activeId = sections[sections.length - 1]?.id;
     }
 
-    // 关键修复：反向遍历，优先选择子级（文档顺序中靠后的）Section
+    if (userSelectSectionId) {
+      activeId = userSelectSectionId;
+    }
+
     if (!activeId) {
       for (let i = sections.length - 1; i >= 0; i--) {
         const { id } = sections[i];
@@ -115,8 +119,13 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
       const targetId = this.getAttribute('href').slice(1);
       const targetSection = document.getElementById(`outline-container-${targetId}`);
+      userSelectSectionId = targetId
+      window.addEventListener('scrollend', () => {
+        userSelectSectionId = null
+      }, { once: true })
       if (targetSection) {
-        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        targetSection.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
       }
     });
   });
