@@ -1,23 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
+  const mediaQuery = window.matchMedia("(width >= 1550px)");
+  if (!mediaQuery.matches) return;
+
   const navLinks = document.querySelectorAll('#text-table-of-contents a[href^="#"]');
 
-  const sections = Array.from(navLinks).map(link => {
+  const sections = [];
+  navLinks.forEach(link => {
     const id = link.getAttribute('href').slice(1);
-    return document.getElementById(`outline-container-${id}`);
-  }).filter(Boolean);
+    const section = document.getElementById(`outline-container-${id}`);
+    if (section) {
+      sections.push({ id, section, link });
+    }
+  });
 
-  // 追踪当前所有可见的 section IDs
+  if (sections.length === 0) return;
+
   const visibleSectionIds = new Set();
-
-  const observerOptions = {
-    root: null,
-    // 调整：顶部 -10% 让触发提前，底部 20% 让 section 更晚才被视为不可见
-    rootMargin: '-10% 0px 20% 0px',
-    threshold: 0
-  };
+  let currentActiveId = null;
 
   const observer = new IntersectionObserver((entries) => {
-    // 更新可见 section 集合
     entries.forEach(entry => {
       const match = entry.target.id.match(/outline-container-(.*)/);
       if (!match) return;
@@ -30,44 +31,92 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
-    // 在 sections 数组（文档顺序）中找到第一个可见的 section
-    // 这样向上滚动时，上方的 section 会优先被高亮
     let activeId = null;
-    for (const section of sections) {
-      const match = section.id.match(/outline-container-(.*)/);
-      if (!match) continue;
-      const id = match[1];
+    const scrollBottom = window.scrollY + window.innerHeight;
+    const docHeight = document.documentElement.scrollHeight;
+    const isAtBottom = scrollBottom >= docHeight - 100;
 
-      if (visibleSectionIds.has(id)) {
-        activeId = id;
-        break; // 找到文档顺序中最靠前的可见 section
+    if (isAtBottom) {
+      activeId = sections[sections.length - 1]?.id;
+    }
+
+    // 关键修复：反向遍历，优先选择子级（文档顺序中靠后的）Section
+    if (!activeId) {
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const { id } = sections[i];
+        if (visibleSectionIds.has(id)) {
+          activeId = id;
+          break;
+        }
       }
     }
 
-    // 更新高亮
-    if (activeId) {
-      navLinks.forEach(link => link.classList.remove('active'));
-      const activeLink = document.querySelector(`a[href="#${CSS.escape(activeId)}"]`);
-      if (activeLink) {
-        activeLink.classList.add('active');
-      }
+    if (activeId && activeId !== currentActiveId) {
+      currentActiveId = activeId;
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        const li = link.closest('li');
+        if (li) li.classList.remove('active-parent');
+      });
+
+      const selector = `#text-table-of-contents a[href="#${CSS.escape(activeId)}"]`;
+      const activeLinks = document.querySelectorAll(selector);
+
+      activeLinks.forEach(link => {
+        link.classList.add('active');
+
+        let parent = link.parentElement;
+        while (parent && parent.id !== 'text-table-of-contents') {
+          if (parent.tagName === 'LI') {
+            parent.classList.add('active-parent');
+            const subUl = parent.querySelector('ul');
+            if (subUl) subUl.style.display = 'block';
+          }
+          parent = parent.parentElement;
+        }
+      });
     }
-  }, observerOptions);
+  }, {
+    root: null,
+    rootMargin: '-10% 0px -55% 0px',
+    threshold: 0
+  });
 
-  sections.forEach(section => observer.observe(section));
+  sections.forEach(({ section }) => observer.observe(section));
 
-  // 平滑滚动
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const scrollBottom = window.scrollY + window.innerHeight;
+        if (scrollBottom >= document.documentElement.scrollHeight - 50) {
+          const lastId = sections[sections.length - 1]?.id;
+          if (lastId && lastId !== currentActiveId) {
+            navLinks.forEach(link => {
+              link.classList.remove('active');
+              const li = link.closest('li');
+              if (li) li.classList.remove('active-parent');
+            });
+            document.querySelectorAll(`a[href="#${CSS.escape(lastId)}"]`).forEach(link => {
+              link.classList.add('active');
+            });
+            currentActiveId = lastId;
+          }
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
   navLinks.forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
       const targetId = this.getAttribute('href').slice(1);
       const targetSection = document.getElementById(`outline-container-${targetId}`);
-
       if (targetSection) {
-        targetSection.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   });
