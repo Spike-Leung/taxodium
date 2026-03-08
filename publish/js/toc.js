@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const mediaQuery = window.matchMedia("(width >= 1550px)");
+  const mediaQuery = window.matchMedia("(width >= 1500px)");
   if (!mediaQuery.matches) return;
 
   const navLinks = document.querySelectorAll('#text-table-of-contents a[href^="#"]');
