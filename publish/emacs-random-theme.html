@@ -60,7 +60,7 @@
 Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/modus-themes">modus-themes</a> 和 <a href="https://github.com/protesilaos/ef-themes">ef-themes</a>，它们都是出自 <a href="https://github.com/protesilaos">protesilaos</a>。
 </p>
 
-<section role="note" id="org83a9e4b">
+<section role="note" id="org96843ec">
 <p>
 后续可能还会加入 <a href="https://github.com/protesilaos/doric-themes">doric-themes</a>，也是 Prot 的写的主题，这个主题的颜色比较单一，写作的时候用感觉不错。
 </p>
@@ -75,7 +75,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 </p>
 
 <p>
-平时主要用 <code>consult-theme</code> （<a href="https://github.com/minad/consult">consult</a> 提供的一个方法）去切换主题，前阵子看了 <a href="https://tomoemami.github.io/20250520T155435--emacs-%E6%9B%B4%E6%94%B9%E9%85%8D%E8%89%B2%E6%96%B9%E6%A1%88__blog.html">emacs-更改配色方案</a>，受到文章的启发，我找 LLM 帮我写了一些用于定时切换主题的方法（源码: <a href="https://github.com/Spike-Leung/emacs.d/blob/b154827ba5be6944b5134cfc5abdb0603178ee5e/lisp/my-lisp/init-my-theme.el">init-my-theme.el</a>）。
+平时主要用 <code>consult-theme</code> （<a href="https://github.com/minad/consult">consult</a> 提供的一个方法）去切换主题，前阵子看了 <a href="https://tomoemami.github.io/20250520T155435--emacs-%E6%9B%B4%E6%94%B9%E9%85%8D%E8%89%B2%E6%96%B9%E6%A1%88__blog.html">emacs-更改配色方案</a>，受到文章的启发，我找 LLM 帮我写了一些用于定时切换主题的方法。
 </p>
 
 <details>
@@ -148,6 +148,10 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 (run-with-timer (* 15 60) (* 15 60) 'spike-leung/apply-random-theme)
 </pre>
 </div>
+
+<p>
+<a href="https://github.com/Spike-Leung/emacs.d/blob/b154827ba5be6944b5134cfc5abdb0603178ee5e/lisp/my-lisp/init-my-theme.el">Source</a>
+</p>
 </details>
 
 <p>
@@ -173,7 +177,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 へ(゜∇、°)へ へ(゜∇、°)へ
 </p>
 
-<section role="note" id="org9f7eef5">
+<section role="note" id="orgc140e66">
 <p>
 说起来奇怪，如果是我自己主动切换的主题，可能切换后我马上就想换了。
 </p>
@@ -228,7 +232,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 </div>
 
 <p>
-<a href="https://github.com/Spike-Leung/Spikemacs/blob/89772555ee975cdac276b0678d758cbac7bfdbc8/lisp/init-ui.el">Source</a>
+<a href="https://github.com/Spike-Leung/Spikemacs/blob/89772555ee975cdac276b0678d758cbac7bfdbc8/lisp/init-ui.el#L48-L76">Source</a>
 </p>
 </details>
 
@@ -250,43 +254,58 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 <summary>代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/load-theme-by-time</span> (light-fn dark-fn)
+<pre class="src src-emacs-lisp"><span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">theme
+</span>(<span style="color: #b6a0ff; font-weight: bold;">use-package</span> modus-themes
+  <span style="color: #f78fe7; font-weight: bold;">:config</span>
+  (<span style="color: #b6a0ff; font-weight: bold;">setq</span> modus-themes-italic-constructs t
+        modus-themes-bold-constructs t
+        modus-themes-disable-other-themes t)
+  <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">remove fill-column-indicator background
+</span>  (<span style="color: #b6a0ff; font-weight: bold;">modus-themes-with-colors</span>
+    (custom-set-faces
+     `(fill-column-indicator ((,c <span style="color: #f78fe7; font-weight: bold;">:background</span> unspecified <span style="color: #f78fe7; font-weight: bold;">:foreground</span> ,bg-dim <span style="color: #f78fe7; font-weight: bold;">:height</span> 1.0))))))
+
+(<span style="color: #b6a0ff; font-weight: bold;">use-package</span> ef-themes)
+(<span style="color: #b6a0ff; font-weight: bold;">use-package</span> doric-themes)
+
+(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/load-theme-by-time</span> (light-fn dark-fn)
   <span style="color: #9ac8e0; font-style: italic;">"Call LIGHT-FN  to load light themes from 8:00a.m to 6:00p.m.
-  otherwise, call DARK-FN to load dark themes."</span>
+otherwise, call DARK-FN to load dark themes."</span>
   (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((hour (string-to-number (format-time-string <span style="color: #79a8ff;">"%H"</span>))))
     (funcall (<span style="color: #b6a0ff; font-weight: bold;">if</span> (<span style="color: #b6a0ff; font-weight: bold;">and</span> (&gt;= hour 8) (&lt; hour 18)) light-fn dark-fn))))
 
 (<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/themes-load-random</span> (<span style="color: #6ae4b9; font-weight: bold;">&amp;optional</span> background-mode)
   <span style="color: #9ac8e0; font-style: italic;">"Random load themes.
 
-  Use `</span><span style="color: #00bcff; font-style: italic;">ef-themes</span><span style="color: #9ac8e0; font-style: italic;">' for Monday,Tuesday,Wednesday.
-  Use `</span><span style="color: #00bcff; font-style: italic;">modus-themes</span><span style="color: #9ac8e0; font-style: italic;">' on Thursday, Friday.
-  Use `</span><span style="color: #00bcff; font-style: italic;">doric-themes</span><span style="color: #9ac8e0; font-style: italic;">' on Saturday, Sunday.
-  Use light themes at day, use dark themes at night.
+Use `</span><span style="color: #00bcff; font-style: italic;">ef-themes</span><span style="color: #9ac8e0; font-style: italic;">' for Monday,Tuesday,Wednesday.
+Use `</span><span style="color: #00bcff; font-style: italic;">modus-themes</span><span style="color: #9ac8e0; font-style: italic;">' on Thursday, Friday.
+Use `</span><span style="color: #00bcff; font-style: italic;">doric-themes</span><span style="color: #9ac8e0; font-style: italic;">' on Saturday, Sunday.
+Use light themes at day, use dark themes at night.
 
-  With optional BACKGROUND-MODE as a prefix argument, prompt to limit the
-  set of themes to either dark or light variants."</span>
+With optional BACKGROUND-MODE as a prefix argument, prompt to limit the
+set of themes to either dark or light variants."</span>
   (<span style="color: #b6a0ff; font-weight: bold;">require</span> '<span style="color: #00bcff;">modus-themes</span>)
   (<span style="color: #b6a0ff; font-weight: bold;">require</span> '<span style="color: #00bcff;">ef-themes</span>)
   (<span style="color: #b6a0ff; font-weight: bold;">require</span> '<span style="color: #00bcff;">doric-themes</span>)
   (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((week (string-to-number (format-time-string <span style="color: #79a8ff;">"%u"</span>))))
     (<span style="color: #b6a0ff; font-weight: bold;">cond</span>
-     ((&lt;= 3 week)
+     ((&lt;= week 3)
       (<span style="color: #b6a0ff; font-weight: bold;">cond</span>
        ((eq background-mode 'light) (ef-themes-load-random-light))
        ((eq background-mode 'dark) (ef-themes-load-random-dark))
        (t (spike-leung/load-theme-by-time #'ef-themes-load-random-light #'ef-themes-load-random-dark))))
-     ((&lt;= 5 week)
+     ((&lt;= week 5)
       (<span style="color: #b6a0ff; font-weight: bold;">if</span> background-mode
           (modus-themes-load-random background-mode)
         (spike-leung/load-theme-by-time
          (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> () (modus-themes-load-random 'light))
          (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> () (modus-themes-load-random 'dark)))))
      (t
-      (<span style="color: #b6a0ff; font-weight: bold;">cond</span>
-       ((eq background-mode 'light) (doric-themes-load-random-light))
-       ((eq background-mode 'dark) (doric-themes-load-random-dark))
-       (t (spike-leung/load-theme-by-time #'doric-themes-load-random-light #'doric-themes-load-random-dark)))))))
+      (<span style="color: #b6a0ff; font-weight: bold;">if</span> background-mode
+          (doric-themes-load-random background-mode)
+        (spike-leung/load-theme-by-time
+         (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> () (doric-themes-load-random 'light))
+         (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> () (doric-themes-load-random 'dark))))))))
 
 (<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">light</span>()
   <span style="color: #9ac8e0; font-style: italic;">"Load random light themes."</span>
@@ -304,7 +323,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 </div>
 
 <p>
-<a href="https://github.com/Spike-Leung/Spikemacs/blob/bc8286c3dc3f332d15c5d8e6a0ae61788f035508/lisp/init-ui.el">Source</a>
+<a href="https://github.com/Spike-Leung/Spikemacs/blob/65b9510858af876df69ed38a00aa3916a9b83280/lisp/init-ui.el#L51-L115">Source</a>
 </p>
 </details>
 
@@ -340,7 +359,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-05-21 Wed 21:40</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-03-08 Sun 21:42</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-09 Mon 00:42</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">

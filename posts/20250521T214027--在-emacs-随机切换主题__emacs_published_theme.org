@@ -24,7 +24,7 @@ Emacs 里我目前最喜欢的主题是 [[https://github.com/protesilaos/modus-t
 一个主题用久了就会觉得有些厌倦，想有一些新鲜感，就总是会找新主题，换新主题。
 
 平时主要用 ~consult-theme~ （[[https://github.com/minad/consult][consult]] 提供的一个方法）去切换主题，前阵子看了 [[https://tomoemami.github.io/20250520T155435--emacs-%E6%9B%B4%E6%94%B9%E9%85%8D%E8%89%B2%E6%96%B9%E6%A1%88__blog.html][emacs-更改配色方案]]，
-受到文章的启发，我找 LLM 帮我写了一些用于定时切换主题的方法（源码: [[https://github.com/Spike-Leung/emacs.d/blob/b154827ba5be6944b5134cfc5abdb0603178ee5e/lisp/my-lisp/init-my-theme.el][init-my-theme.el]]）。
+受到文章的启发，我找 LLM 帮我写了一些用于定时切换主题的方法。
 
 #+begin_details
 #+html: <summary>主题切换相关 Elisp</summary>
@@ -95,6 +95,8 @@ Emacs 里我目前最喜欢的主题是 [[https://github.com/protesilaos/modus-t
 
   (run-with-timer (* 15 60) (* 15 60) 'spike-leung/apply-random-theme)
 #+end_src
+
+[[https://github.com/Spike-Leung/emacs.d/blob/b154827ba5be6944b5134cfc5abdb0603178ee5e/lisp/my-lisp/init-my-theme.el][Source]]
 #+end_details
 
 这段代码主要做了这几个事：
@@ -156,7 +158,7 @@ Emacs 里我目前最喜欢的主题是 [[https://github.com/protesilaos/modus-t
       (modus-themes-load-random 'dark)))
 #+end_src
 
-[[https://github.com/Spike-Leung/Spikemacs/blob/89772555ee975cdac276b0678d758cbac7bfdbc8/lisp/init-ui.el][Source]]
+[[https://github.com/Spike-Leung/Spikemacs/blob/89772555ee975cdac276b0678d758cbac7bfdbc8/lisp/init-ui.el#L48-L76][Source]]
 #+end_details
 
 -----
@@ -175,43 +177,58 @@ Emacs 里我目前最喜欢的主题是 [[https://github.com/protesilaos/modus-t
 #+html: <summary>代码</summary>
 
 #+begin_src emacs-lisp
+  ;; theme
+  (use-package modus-themes
+    :config
+    (setq modus-themes-italic-constructs t
+          modus-themes-bold-constructs t
+          modus-themes-disable-other-themes t)
+    ;; remove fill-column-indicator background
+    (modus-themes-with-colors
+      (custom-set-faces
+       `(fill-column-indicator ((,c :background unspecified :foreground ,bg-dim :height 1.0))))))
+
+  (use-package ef-themes)
+  (use-package doric-themes)
+
   (defun spike-leung/load-theme-by-time (light-fn dark-fn)
     "Call LIGHT-FN  to load light themes from 8:00a.m to 6:00p.m.
-    otherwise, call DARK-FN to load dark themes."
+  otherwise, call DARK-FN to load dark themes."
     (let ((hour (string-to-number (format-time-string "%H"))))
       (funcall (if (and (>= hour 8) (< hour 18)) light-fn dark-fn))))
 
   (defun spike-leung/themes-load-random (&optional background-mode)
     "Random load themes.
 
-    Use `ef-themes' for Monday,Tuesday,Wednesday.
-    Use `modus-themes' on Thursday, Friday.
-    Use `doric-themes' on Saturday, Sunday.
-    Use light themes at day, use dark themes at night.
+  Use `ef-themes' for Monday,Tuesday,Wednesday.
+  Use `modus-themes' on Thursday, Friday.
+  Use `doric-themes' on Saturday, Sunday.
+  Use light themes at day, use dark themes at night.
 
-    With optional BACKGROUND-MODE as a prefix argument, prompt to limit the
-    set of themes to either dark or light variants."
+  With optional BACKGROUND-MODE as a prefix argument, prompt to limit the
+  set of themes to either dark or light variants."
     (require 'modus-themes)
     (require 'ef-themes)
     (require 'doric-themes)
     (let ((week (string-to-number (format-time-string "%u"))))
       (cond
-       ((<= 3 week)
+       ((<= week 3)
         (cond
          ((eq background-mode 'light) (ef-themes-load-random-light))
          ((eq background-mode 'dark) (ef-themes-load-random-dark))
          (t (spike-leung/load-theme-by-time #'ef-themes-load-random-light #'ef-themes-load-random-dark))))
-       ((<= 5 week)
+       ((<= week 5)
         (if background-mode
             (modus-themes-load-random background-mode)
           (spike-leung/load-theme-by-time
            (lambda () (modus-themes-load-random 'light))
            (lambda () (modus-themes-load-random 'dark)))))
        (t
-        (cond
-         ((eq background-mode 'light) (doric-themes-load-random-light))
-         ((eq background-mode 'dark) (doric-themes-load-random-dark))
-         (t (spike-leung/load-theme-by-time #'doric-themes-load-random-light #'doric-themes-load-random-dark)))))))
+        (if background-mode
+            (doric-themes-load-random background-mode)
+          (spike-leung/load-theme-by-time
+           (lambda () (doric-themes-load-random 'light))
+           (lambda () (doric-themes-load-random 'dark))))))))
 
   (defun light()
     "Load random light themes."
@@ -227,7 +244,7 @@ Emacs 里我目前最喜欢的主题是 [[https://github.com/protesilaos/modus-t
   (add-hook 'desktop-after-read-hook #'spike-leung/themes-load-random)
 #+end_src
 
-[[https://github.com/Spike-Leung/Spikemacs/blob/bc8286c3dc3f332d15c5d8e6a0ae61788f035508/lisp/init-ui.el][Source]]
+[[https://github.com/Spike-Leung/Spikemacs/blob/65b9510858af876df69ed38a00aa3916a9b83280/lisp/init-ui.el#L51-L115][Source]]
 #+end_details
 
 -----
