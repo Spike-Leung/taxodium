@@ -19,12 +19,12 @@ Emacs 里我目前最喜欢的主题是 [[https://github.com/protesilaos/modus-t
 后续可能还会加入 [[https://github.com/protesilaos/doric-themes][doric-themes]]，也是 Prot 的写的主题，这个主题的颜色比较单一，写作的时候用感觉不错。
 #+end_section
 
-modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景；ef-themes 则提供了更多的色彩选择。
+~modus-themes~ 相对来说更成熟，覆盖了大部分的包和使用场景； ~ef-themes~ 则提供了更多的色彩选择。
 
 一个主题用久了就会觉得有些厌倦，想有一些新鲜感，就总是会找新主题，换新主题。
 
 平时主要用 ~consult-theme~ （[[https://github.com/minad/consult][consult]] 提供的一个方法）去切换主题，前阵子看了 [[https://tomoemami.github.io/20250520T155435--emacs-%E6%9B%B4%E6%94%B9%E9%85%8D%E8%89%B2%E6%96%B9%E6%A1%88__blog.html][emacs-更改配色方案]]，
-受到文章的启发，我找 LLM 帮我写了一些用于定时切换主题的方法（源码: [[https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-my-theme.el][init-my-theme.el]]）。
+受到文章的启发，我找 LLM 帮我写了一些用于定时切换主题的方法（源码: [[https://github.com/Spike-Leung/emacs.d/blob/b154827ba5be6944b5134cfc5abdb0603178ee5e/lisp/my-lisp/init-my-theme.el][init-my-theme.el]]）。
 
 #+begin_details
 #+html: <summary>主题切换相关 Elisp</summary>
@@ -121,7 +121,7 @@ modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景；e
 
 *更新*
 
-现在主要使用 modus-themes，通过 ~light~ 和 ~dark~ 两个函数切换明暗主题。
+现在主要使用 ~modus-themes~ ，通过 ~light~ 和 ~dark~ 两个函数切换明暗主题。
 
 #+begin_details
 #+html: <summary>代码</summary>
@@ -156,12 +156,85 @@ modus-themes 相对来说更成熟，覆盖了大部分的包和使用场景；e
       (modus-themes-load-random 'dark)))
 #+end_src
 
-[[https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-ui.el][Source]]
+[[https://github.com/Spike-Leung/Spikemacs/blob/89772555ee975cdac276b0678d758cbac7bfdbc8/lisp/init-ui.el][Source]]
 #+end_details
 
-* 其他参考
-:PROPERTIES:
-:CUSTOM_ID: 5AEC137F-38C4-42C9-BB6E-9F1EF8F4F83C
-:END:
+-----
 
-- [[https://www.kindness.city/blog/2026-trying-out-emacs-colour-themes.html][Picking an emacs colour theme]]
+*更新*
+
+看到 Prot 一直在更新 ~doric-themes~ 和 ~ef-themes~ ，于是又心痒痒。
+
+~ef-themes~ 颜色最鲜艳， ~modus-themes~ 次之， ~doric-themes~ 最单调，
+周三前觉得周末很远，比较煎熬，所以周一到周三使用 ~ef-themes~ ，让色彩丰富明亮一些；
+周四周五快到周末了，心情渐佳，改用 ~modus-themes~ ；
+周末应该好好休息，就用单调一些的 ~doric-themes~ ，避免过分沉浸在 Emacs 中。
+白天用亮色主题，晚上用暗色主题。
+
+#+begin_details
+#+html: <summary>代码</summary>
+
+#+begin_src emacs-lisp
+  (defun spike-leung/load-theme-by-time (light-fn dark-fn)
+    "Call LIGHT-FN  to load light themes from 8:00a.m to 6:00p.m.
+    otherwise, call DARK-FN to load dark themes."
+    (let ((hour (string-to-number (format-time-string "%H"))))
+      (funcall (if (and (>= hour 8) (< hour 18)) light-fn dark-fn))))
+
+  (defun spike-leung/themes-load-random (&optional background-mode)
+    "Random load themes.
+
+    Use `ef-themes' for Monday,Tuesday,Wednesday.
+    Use `modus-themes' on Thursday, Friday.
+    Use `doric-themes' on Saturday, Sunday.
+    Use light themes at day, use dark themes at night.
+
+    With optional BACKGROUND-MODE as a prefix argument, prompt to limit the
+    set of themes to either dark or light variants."
+    (require 'modus-themes)
+    (require 'ef-themes)
+    (require 'doric-themes)
+    (let ((week (string-to-number (format-time-string "%u"))))
+      (cond
+       ((<= 3 week)
+        (cond
+         ((eq background-mode 'light) (ef-themes-load-random-light))
+         ((eq background-mode 'dark) (ef-themes-load-random-dark))
+         (t (spike-leung/load-theme-by-time #'ef-themes-load-random-light #'ef-themes-load-random-dark))))
+       ((<= 5 week)
+        (if background-mode
+            (modus-themes-load-random background-mode)
+          (spike-leung/load-theme-by-time
+           (lambda () (modus-themes-load-random 'light))
+           (lambda () (modus-themes-load-random 'dark)))))
+       (t
+        (cond
+         ((eq background-mode 'light) (doric-themes-load-random-light))
+         ((eq background-mode 'dark) (doric-themes-load-random-dark))
+         (t (spike-leung/load-theme-by-time #'doric-themes-load-random-light #'doric-themes-load-random-dark)))))))
+
+  (defun light()
+    "Load random light themes."
+    (interactive)
+    (spike-leung/themes-load-random 'light))
+
+  (defun dark()
+    "Load random dark themes."
+    (interactive)
+    (spike-leung/themes-load-random 'dark))
+
+  ;; 要在 desktop 加载后再执行，避免被 desktop 记录的主题覆盖，导致混乱
+  (add-hook 'desktop-after-read-hook #'spike-leung/themes-load-random)
+#+end_src
+
+[[https://github.com/Spike-Leung/Spikemacs/blob/bc8286c3dc3f332d15c5d8e6a0ae61788f035508/lisp/init-ui.el][Source]]
+#+end_details
+
+-----
+
+*其他参考*
+
+- [[https://www.kindness.city/blog/2026-trying-out-emacs-colour-themes.html][Picking an emacs colour theme]] by gds
+- [[https://github.com/guidoschmidt/circadian.el][guidoschmidt/circadian.el]] Theme-switching for Emacs based on daytime
+- [[https://matthewbilyeu.com/blog/2018-04-09/setting-emacs-theme-based-on-ambient-light][Setting Emacs Theme Based on Ambient Light]] by Matt Bilyeu
+- [[https://darkman.grtcdr.tn/][Darkman for Emacs]]
