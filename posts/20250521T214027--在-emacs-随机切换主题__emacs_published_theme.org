@@ -245,6 +245,34 @@ Emacs 里我目前最喜欢的主题是 [[https://github.com/protesilaos/modus-t
 #+end_src
 
 [[https://github.com/Spike-Leung/Spikemacs/blob/65b9510858af876df69ed38a00aa3916a9b83280/lisp/init-ui.el#L51-L115][Source]]
+
+-----
+
+另外，我平时写博客会用到 [[https://github.com/rnkn/olivetti][Olivetti]]，
+~ef-themes~ 和 ~doric-themes~ 没有设置 Olivetti 两侧的 fringe 的颜色，没法和主体部分区分开。
+所以我写了个函数，在切换主题之后，获取一个和主体接近的颜色作为 ~olivetti-fringe~ 的颜色。
+
+#+begin_src emacs-lisp
+  ;; olivetti 是一款打字机的名字，这个模式会模仿打字机的纸张大小，写作时用
+  (use-package olivetti
+    :diminish
+    :custom
+    (olivetti-style 'fancy)
+    (olivetti-body-width 100)
+    (olivetti-margin-width 5)
+    :config
+    (defun spike-leung/set-olivetti-fringe-face (&rest _)
+      "Set olivetti-fringe to fringe background, fallback to tab-bar."
+      (let ((bg-default (face-attribute 'default :background nil))
+            (bg-fringe (face-attribute 'fringe :background nil))
+            (bg-tab-bar (face-attribute 'tab-bar :background nil)))
+        (if (eq bg-default bg-fringe)
+            (set-face-attribute 'olivetti-fringe nil :background bg-tab-bar)
+          (set-face-attribute 'olivetti-fringe nil :background bg-fringe))))
+
+    (advice-remove 'spike-leung/themes-load-random #'spike-leung/set-olivetti-fringe-face)
+    (advice-add 'spike-leung/themes-load-random :after #'spike-leung/set-olivetti-fringe-face))
+#+end_src
 #+end_details
 
 -----
