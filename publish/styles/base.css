@@ -6,7 +6,7 @@
 
   --color-bg: #eee;
   --color-bg-secondary: #ffffffe6;
-  --color-bg-src-block: #ffffff51;
+  --color-bg-src-block: oklch(0 0 0 / .7);
   --color-text: #2e2e2e;
   --color-text-secondary: #787878;
   --color-border: #ddd;
@@ -26,7 +26,7 @@
 
   --dark-color-bg: #232323;
   --dark-color-bg-secondary: #1e1e1e;
-  --dark-color-bg-src-block: #1e1e1e;
+  --dark-color-bg-src-block: oklch(0 0 0 / .3);
   --dark-color-text: aliceblue;
   --dark-color-text-secondary: #b8b8b8;
   --dark-color-border: #595959;
@@ -419,6 +419,10 @@ a {
       background: var(--color-link);
       background: light-dark(var(--color-link), var(--dark-color-link));
       color: #fff;
+
+      & code {
+        color: #fff;
+      }
     }
   }
 }
@@ -607,12 +611,10 @@ button {
 pre {
   color: var(--color-text);
   color: light-dark(var(--color-text), var(--dark-color-text));
-  background-color: var(--color-bg-src-block);
-  background-color: light-dark(var(--color-bg-src-block), var(--dark-color-bg-src-block));
   border-color: var(--color-border);
   border-color: light-dark(var(--color-border), var(--dark-color-border));
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, "Courier New", Courier, monospace;
-  font-size: .8em;
+  font-size: .85em;
   margin-inline: 0;
   overflow: auto;
 }
@@ -627,9 +629,13 @@ pre.example {
 pre.src {
   margin: 0;
   border: unset;
-  background: unset;
   color: var(--dark-color-text);
   padding: 1em;
+
+  & code {
+    color: unset;
+    font-size: inherit;
+  }
 }
 
 /* 不太重要，且和复制按钮重叠，所以隐藏 */
@@ -927,7 +933,8 @@ img.inline-image {
   border-color: light-dark(var(--color-border), var(--dark-color-border));
   border-width: 2px;
   border-style: solid;
-  background-color: var(--dark-color-bg-src-block);
+  background-color: var(--color-bg-src-block);
+  background-color: light-dark(var(--color-bg-src-block), var(--dark-color-bg-src-block));
   margin: 0.5em 0;
   display: grid;
   grid-template-areas: "code copy-btn";
