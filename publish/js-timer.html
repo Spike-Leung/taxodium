@@ -151,18 +151,18 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <div id="outline-container-82e839e4-7bda-4599-a7b9-3d9eeceef12b" class="outline-3">
 <h3 id="82e839e4-7bda-4599-a7b9-3d9eeceef12b">对于长时间的同步任务</h3>
 <div class="outline-text-3" id="text-82e839e4-7bda-4599-a7b9-3d9eeceef12b"><div class="org-src-container">
-<pre class="src src-js"><span style="color: #b6a0ff; font-weight: bold;">var</span> <span style="color: #00d3d0;">fakeTimeIntensiveOperation</span> = <span style="color: #b6a0ff; font-weight: bold;">function</span>() {
-  <span style="color: #b6a0ff; font-weight: bold;">for</span> (<span style="color: #b6a0ff; font-weight: bold;">var</span> <span style="color: #00d3d0;">i</span> = 0; i&lt; Math.pow(10, 10); i++) {}
-  <span style="color: #b6a0ff; font-weight: bold;">let</span> <span style="color: #00d3d0;">insideTimeTakingFunction</span>  = <span style="color: #b6a0ff; font-weight: bold;">new</span> <span style="color: #6ae4b9; font-weight: bold;">Date</span>().toLocaleTimeString();
-  console.log(<span style="color: #79a8ff;">'insideTimeTakingFunction'</span>, insideTimeTakingFunction);
+<pre class="src src-js"><code><span class="org-keyword">var</span> <span class="org-variable-name">fakeTimeIntensiveOperation</span> = <span class="org-keyword">function</span>() {
+  <span class="org-keyword">for</span> (<span class="org-keyword">var</span> <span class="org-variable-name">i</span> = 0; i&lt; Math.pow(10, 10); i++) {}
+  <span class="org-keyword">let</span> <span class="org-variable-name">insideTimeTakingFunction</span>  = <span class="org-keyword">new</span> <span class="org-type">Date</span>().toLocaleTimeString();
+  console.log(<span class="org-string">'insideTimeTakingFunction'</span>, insideTimeTakingFunction);
 };
 
-<span style="color: #b6a0ff; font-weight: bold;">var</span> <span style="color: #00d3d0;">timer</span> = setInterval(<span style="color: #b6a0ff; font-weight: bold;">function</span>(){
+<span class="org-keyword">var</span> <span class="org-variable-name">timer</span> = setInterval(<span class="org-keyword">function</span>(){
   fakeTimeIntensiveOperation();
-  <span style="color: #b6a0ff; font-weight: bold;">let</span> <span style="color: #00d3d0;">insideSetInterval</span> = <span style="color: #b6a0ff; font-weight: bold;">new</span> <span style="color: #6ae4b9; font-weight: bold;">Date</span>().toLocaleTimeString();
-  console.log(<span style="color: #79a8ff;">'insideSetInterval'</span>, insideSetInterval);
+  <span class="org-keyword">let</span> <span class="org-variable-name">insideSetInterval</span> = <span class="org-keyword">new</span> <span class="org-type">Date</span>().toLocaleTimeString();
+  console.log(<span class="org-string">'insideSetInterval'</span>, insideSetInterval);
 }, 1000);
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -173,21 +173,21 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <div id="outline-container-6de052fe-4204-4e10-8196-fcbfbdb40a37" class="outline-3">
 <h3 id="6de052fe-4204-4e10-8196-fcbfbdb40a37">对于长时间的异步任务</h3>
 <div class="outline-text-3" id="text-6de052fe-4204-4e10-8196-fcbfbdb40a37"><div class="org-src-container">
-<pre class="src src-js"><span style="color: #b6a0ff; font-weight: bold;">let</span> <span style="color: #00d3d0;">counter</span> = 0;
-<span style="color: #b6a0ff; font-weight: bold;">var</span> <span style="color: #00d3d0;">fakeTimeIntensiveOperation</span> = <span style="color: #b6a0ff; font-weight: bold;">function</span>() {
+<pre class="src src-js"><code><span class="org-keyword">let</span> <span class="org-variable-name">counter</span> = 0;
+<span class="org-keyword">var</span> <span class="org-variable-name">fakeTimeIntensiveOperation</span> = <span class="org-keyword">function</span>() {
   setTimeout(() =&gt; {
     counter--;
   }, 60000);
 };
 
-<span style="color: #b6a0ff; font-weight: bold;">var</span> <span style="color: #00d3d0;">timer</span> = setInterval(<span style="color: #b6a0ff; font-weight: bold;">function</span>() {
+<span class="org-keyword">var</span> <span class="org-variable-name">timer</span> = setInterval(<span class="org-keyword">function</span>() {
   counter++;
   fakeTimeIntensiveOperation();
-  <span style="color: #b6a0ff; font-weight: bold;">let</span> <span style="color: #00d3d0;">insideSetInterval</span> = <span style="color: #b6a0ff; font-weight: bold;">new</span> <span style="color: #6ae4b9; font-weight: bold;">Date</span>().toLocaleTimeString();
-  console.log(<span style="color: #79a8ff;">'insideSetInterval'</span>, insideSetInterval);
-  console.log(<span style="color: #79a8ff;">'counter'</span>, counter);
+  <span class="org-keyword">let</span> <span class="org-variable-name">insideSetInterval</span> = <span class="org-keyword">new</span> <span class="org-type">Date</span>().toLocaleTimeString();
+  console.log(<span class="org-string">'insideSetInterval'</span>, insideSetInterval);
+  console.log(<span class="org-string">'counter'</span>, counter);
 }, 200);
-</pre>
+</code></pre>
 </div>
 <p>
 对于执行时间长的异步任务，例如接口请求，接口的响应可能需要很长时间，这就会造成大量请求的堆积。
@@ -202,13 +202,13 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <div id="outline-container-46d047df-e0c6-47dd-821d-ca4b193e2771" class="outline-2">
 <h2 id="46d047df-e0c6-47dd-821d-ca4b193e2771">嵌套的 setTimeout</h2>
 <div class="outline-text-2" id="text-46d047df-e0c6-47dd-821d-ca4b193e2771"><div class="org-src-container">
-<pre class="src src-js">(<span style="color: #b6a0ff; font-weight: bold;">function</span> loop() {
-  setTimeout(<span style="color: #b6a0ff; font-weight: bold;">function</span>() {
-    <span style="color: #989898; font-style: italic;">// </span><span style="color: #989898; font-style: italic;">your logic here
+<pre class="src src-js"><code>(<span class="org-keyword">function</span> loop() {
+  setTimeout(<span class="org-keyword">function</span>() {
+    <span class="org-comment-delimiter">// </span><span class="org-comment">your logic here
 </span>    loop();
   }, delay);
 })()
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -224,20 +224,20 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-js"><span style="color: #b6a0ff; font-weight: bold;">let</span> <span style="color: #00d3d0;">delay</span> = 5000;
+<pre class="src src-js"><code><span class="org-keyword">let</span> <span class="org-variable-name">delay</span> = 5000;
 
-<span style="color: #b6a0ff; font-weight: bold;">let</span> <span style="color: #00d3d0;">timerId</span> = setTimeout(<span style="color: #b6a0ff; font-weight: bold;">function</span> request() {
-  <span style="color: #989898; font-style: italic;">// </span><span style="color: #989898; font-style: italic;">...&#21457;&#36865;&#35831;&#27714;...
+<span class="org-keyword">let</span> <span class="org-variable-name">timerId</span> = setTimeout(<span class="org-keyword">function</span> request() {
+  <span class="org-comment-delimiter">// </span><span class="org-comment">...&#21457;&#36865;&#35831;&#27714;...
 </span>
-  <span style="color: #b6a0ff; font-weight: bold;">if</span> (request failed due to server overload) {
-    <span style="color: #989898; font-style: italic;">// </span><span style="color: #989898; font-style: italic;">&#19979;&#19968;&#27425;&#25191;&#34892;&#30340;&#38388;&#38548;&#26159;&#24403;&#21069;&#30340; 2 &#20493;
+  <span class="org-keyword">if</span> (request failed due to server overload) {
+    <span class="org-comment-delimiter">// </span><span class="org-comment">&#19979;&#19968;&#27425;&#25191;&#34892;&#30340;&#38388;&#38548;&#26159;&#24403;&#21069;&#30340; 2 &#20493;
 </span>    delay *= 2;
   }
 
   timerId = setTimeout(request, delay);
 
 }, delay);
-</pre>
+</code></pre>
 </div>
 </div>
 </div>

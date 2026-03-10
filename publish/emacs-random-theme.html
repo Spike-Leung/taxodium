@@ -60,7 +60,7 @@
 Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/modus-themes">modus-themes</a> 和 <a href="https://github.com/protesilaos/ef-themes">ef-themes</a>，它们都是出自 <a href="https://github.com/protesilaos">protesilaos</a>。
 </p>
 
-<section role="note" id="orgb9e53fa">
+<section role="note" id="org4e9b478">
 <p>
 后续可能还会加入 <a href="https://github.com/protesilaos/doric-themes">doric-themes</a>，也是 Prot 的写的主题，这个主题的颜色比较单一，写作的时候用感觉不错。
 </p>
@@ -82,7 +82,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 <summary>主题切换相关 Elisp</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code>(<span style="color: #b6a0ff; font-weight: bold;">defvar</span> <span style="color: #00d3d0;">spike-leung/candidate-themes</span>
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defvar</span> <span class="org-variable-name">spike-leung/candidate-themes</span>
   '(modus-operandi
     modus-operandi-tinted
     modus-vivendi
@@ -106,7 +106,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
     ef-light
     ef-maris-dark
     ef-maris-light
-    <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">ef-melissa-dark
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">ef-melissa-dark
 </span>    ef-melissa-light
     ef-night
     ef-owl
@@ -120,30 +120,30 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
     ef-tritanopia-dark
     ef-tritanopia-light
     ef-winter)
-  <span style="color: #9ac8e0; font-style: italic;">"A list of themes to randomly cycle through."</span>)
+  <span class="org-doc">"A list of themes to randomly cycle through."</span>)
 
-<span style="color: #989898; font-style: italic;">;;; </span><span style="color: #989898; font-style: italic;">theme related
-</span><span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">@see: https://emacsredux.com/blog/2025/02/03/clean-unloading-of-emacs-themes/
-</span>(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/disable-all-active-themes</span> ()
-  <span style="color: #9ac8e0; font-style: italic;">"Disable all currently active themes."</span>
-  (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
-  (<span style="color: #b6a0ff; font-weight: bold;">dolist</span> (theme custom-enabled-themes)
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">theme related
+</span><span class="org-comment-delimiter">;; </span><span class="org-comment">@see: https://emacsredux.com/blog/2025/02/03/clean-unloading-of-emacs-themes/
+</span>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/disable-all-active-themes</span> ()
+  <span class="org-doc">"Disable all currently active themes."</span>
+  (<span class="org-keyword">interactive</span>)
+  (<span class="org-keyword">dolist</span> (theme custom-enabled-themes)
     (disable-theme theme)))
 
-(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/apply-random-theme</span> ()
-  <span style="color: #9ac8e0; font-style: italic;">"Disable current themes and apply a random theme from `spike-leung/candidate-themes`."</span>
-  (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
-  (<span style="color: #b6a0ff; font-weight: bold;">when</span> (boundp 'spike-leung/candidate-themes)
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/apply-random-theme</span> ()
+  <span class="org-doc">"Disable current themes and apply a random theme from `spike-leung/candidate-themes`."</span>
+  (<span class="org-keyword">interactive</span>)
+  (<span class="org-keyword">when</span> (boundp 'spike-leung/candidate-themes)
     (spike-leung/disable-all-active-themes)
-    (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((theme (nth (random (length spike-leung/candidate-themes)) spike-leung/candidate-themes)))
-      (<span style="color: #b6a0ff; font-weight: bold;">condition-case</span> err
-          (<span style="color: #b6a0ff; font-weight: bold;">progn</span>
-            <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Load theme to ensure its specific settings/customizations are applied
-</span>            (load-theme theme <span style="color: #f78fe7; font-weight: bold;">:no-confirm</span>)
-            <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Enable the theme (this actually applies it and adds to custom-enabled-themes)
+    (<span class="org-keyword">let</span> ((theme (nth (random (length spike-leung/candidate-themes)) spike-leung/candidate-themes)))
+      (<span class="org-keyword">condition-case</span> err
+          (<span class="org-keyword">progn</span>
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Load theme to ensure its specific settings/customizations are applied
+</span>            (load-theme theme <span class="org-builtin">:no-confirm</span>)
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Enable the theme (this actually applies it and adds to custom-enabled-themes)
 </span>            (enable-theme theme)
-            (message <span style="color: #79a8ff;">"Applied random theme: %s"</span> theme))
-        (<span style="color: #fec43f; font-weight: bold;">error</span> (message <span style="color: #79a8ff;">"Error applying theme %s: %s"</span> theme err))))))
+            (message <span class="org-string">"Applied random theme: %s"</span> theme))
+        (<span class="org-warning">error</span> (message <span class="org-string">"Error applying theme %s: %s"</span> theme err))))))
 
 (run-with-timer (* 15 60) (* 15 60) 'spike-leung/apply-random-theme)
 </code></pre>
@@ -177,7 +177,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 へ(゜∇、°)へ へ(゜∇、°)へ
 </p>
 
-<section role="note" id="org3463362">
+<section role="note" id="org28eca97">
 <p>
 说起来奇怪，如果是我自己主动切换的主题，可能切换后我马上就想换了。
 </p>
@@ -201,32 +201,32 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 <summary>代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code>(<span style="color: #b6a0ff; font-weight: bold;">use-package</span> modus-themes
-  <span style="color: #f78fe7; font-weight: bold;">:ensure</span>
-  <span style="color: #f78fe7; font-weight: bold;">:init</span>
-  (<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/modus-themes-load-based-on-time</span> ()
-    <span style="color: #9ac8e0; font-style: italic;">"&#26681;&#25454;&#24403;&#21069;&#26102;&#38388;&#21152;&#36733;&#20027;&#39064;&#65306;08:00-18:00 &#20351;&#29992;&#27973;&#33394;&#20027;&#39064;&#65292;&#20854;&#20182;&#26102;&#38388;&#20351;&#29992;&#28145;&#33394;&#20027;&#39064;&#12290;"</span>
-    (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((hour (string-to-number (format-time-string <span style="color: #79a8ff;">"%H"</span>))))
-      (<span style="color: #b6a0ff; font-weight: bold;">if</span> (<span style="color: #b6a0ff; font-weight: bold;">and</span> (&gt;= hour 8) (&lt; hour 18))
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">use-package</span> modus-themes
+  <span class="org-builtin">:ensure</span>
+  <span class="org-builtin">:init</span>
+  (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/modus-themes-load-based-on-time</span> ()
+    <span class="org-doc">"&#26681;&#25454;&#24403;&#21069;&#26102;&#38388;&#21152;&#36733;&#20027;&#39064;&#65306;08:00-18:00 &#20351;&#29992;&#27973;&#33394;&#20027;&#39064;&#65292;&#20854;&#20182;&#26102;&#38388;&#20351;&#29992;&#28145;&#33394;&#20027;&#39064;&#12290;"</span>
+    (<span class="org-keyword">let</span> ((hour (string-to-number (format-time-string <span class="org-string">"%H"</span>))))
+      (<span class="org-keyword">if</span> (<span class="org-keyword">and</span> (&gt;= hour 8) (&lt; hour 18))
           (modus-themes-load-random 'light)
         (modus-themes-load-random 'dark))))
-  <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#22240;&#20026; desktop &#20250;&#20445;&#23384; face &#30456;&#20851;&#20869;&#23481;&#65292;&#21487;&#33021;&#20250;&#21644;&#20027;&#39064;&#20914;&#31361;&#65292;&#22240;&#27492;&#20027;&#39064;&#21152;&#36733;&#38656;&#35201;&#22312;&#24674;&#22797; desktop &#20043;&#21518;
-</span>  <span style="color: #f78fe7; font-weight: bold;">:hook</span> (desktop-after-read . spike-leung/modus-themes-load-based-on-time)
-  <span style="color: #f78fe7; font-weight: bold;">:config</span>
-  (<span style="color: #b6a0ff; font-weight: bold;">setq</span> modus-themes-italic-constructs t
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22240;&#20026; desktop &#20250;&#20445;&#23384; face &#30456;&#20851;&#20869;&#23481;&#65292;&#21487;&#33021;&#20250;&#21644;&#20027;&#39064;&#20914;&#31361;&#65292;&#22240;&#27492;&#20027;&#39064;&#21152;&#36733;&#38656;&#35201;&#22312;&#24674;&#22797; desktop &#20043;&#21518;
+</span>  <span class="org-builtin">:hook</span> (desktop-after-read . spike-leung/modus-themes-load-based-on-time)
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">setq</span> modus-themes-italic-constructs t
         modus-themes-bold-constructs t
         modus-themes-disable-other-themes t)
-  <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">remove fill-column-indicator background
-</span>  (<span style="color: #b6a0ff; font-weight: bold;">modus-themes-with-colors</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">remove fill-column-indicator background
+</span>  (<span class="org-keyword">modus-themes-with-colors</span>
     (custom-set-faces
-     `(fill-column-indicator ((,c <span style="color: #f78fe7; font-weight: bold;">:background</span> unspecified <span style="color: #f78fe7; font-weight: bold;">:foreground</span> ,bg-dim <span style="color: #f78fe7; font-weight: bold;">:height</span> 1.0)))))
-  (<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">light</span>()
-    <span style="color: #9ac8e0; font-style: italic;">"Toggle light theme."</span>
-    (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
+     `(fill-column-indicator ((,c <span class="org-builtin">:background</span> unspecified <span class="org-builtin">:foreground</span> ,bg-dim <span class="org-builtin">:height</span> 1.0)))))
+  (<span class="org-keyword">defun</span> <span class="org-function-name">light</span>()
+    <span class="org-doc">"Toggle light theme."</span>
+    (<span class="org-keyword">interactive</span>)
     (modus-themes-load-random 'light))
-  (<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">dark</span>()
-    <span style="color: #9ac8e0; font-style: italic;">"Toggle dark theme."</span>
-    (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
+  (<span class="org-keyword">defun</span> <span class="org-function-name">dark</span>()
+    <span class="org-doc">"Toggle dark theme."</span>
+    (<span class="org-keyword">interactive</span>)
     (modus-themes-load-random 'dark)))
 </code></pre>
 </div>
@@ -254,70 +254,70 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 <summary>代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code><span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">theme
-</span>(<span style="color: #b6a0ff; font-weight: bold;">use-package</span> modus-themes
-  <span style="color: #f78fe7; font-weight: bold;">:config</span>
-  (<span style="color: #b6a0ff; font-weight: bold;">setq</span> modus-themes-italic-constructs t
+<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">theme
+</span>(<span class="org-keyword">use-package</span> modus-themes
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">setq</span> modus-themes-italic-constructs t
         modus-themes-bold-constructs t
         modus-themes-disable-other-themes t)
-  <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">remove fill-column-indicator background
-</span>  (<span style="color: #b6a0ff; font-weight: bold;">modus-themes-with-colors</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">remove fill-column-indicator background
+</span>  (<span class="org-keyword">modus-themes-with-colors</span>
     (custom-set-faces
-     `(fill-column-indicator ((,c <span style="color: #f78fe7; font-weight: bold;">:background</span> unspecified <span style="color: #f78fe7; font-weight: bold;">:foreground</span> ,bg-dim <span style="color: #f78fe7; font-weight: bold;">:height</span> 1.0))))))
+     `(fill-column-indicator ((,c <span class="org-builtin">:background</span> unspecified <span class="org-builtin">:foreground</span> ,bg-dim <span class="org-builtin">:height</span> 1.0))))))
 
-(<span style="color: #b6a0ff; font-weight: bold;">use-package</span> ef-themes)
-(<span style="color: #b6a0ff; font-weight: bold;">use-package</span> doric-themes)
+(<span class="org-keyword">use-package</span> ef-themes)
+(<span class="org-keyword">use-package</span> doric-themes)
 
-(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/load-theme-by-time</span> (light-fn dark-fn)
-  <span style="color: #9ac8e0; font-style: italic;">"Call LIGHT-FN  to load light themes from 8:00a.m to 6:00p.m.
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/load-theme-by-time</span> (light-fn dark-fn)
+  <span class="org-doc">"Call LIGHT-FN  to load light themes from 8:00a.m to 6:00p.m.
 otherwise, call DARK-FN to load dark themes."</span>
-  (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((hour (string-to-number (format-time-string <span style="color: #79a8ff;">"%H"</span>))))
-    (funcall (<span style="color: #b6a0ff; font-weight: bold;">if</span> (<span style="color: #b6a0ff; font-weight: bold;">and</span> (&gt;= hour 8) (&lt; hour 18)) light-fn dark-fn))))
+  (<span class="org-keyword">let</span> ((hour (string-to-number (format-time-string <span class="org-string">"%H"</span>))))
+    (funcall (<span class="org-keyword">if</span> (<span class="org-keyword">and</span> (&gt;= hour 8) (&lt; hour 18)) light-fn dark-fn))))
 
-(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/themes-load-random</span> (<span style="color: #6ae4b9; font-weight: bold;">&amp;optional</span> background-mode)
-  <span style="color: #9ac8e0; font-style: italic;">"Random load themes.
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/themes-load-random</span> (<span class="org-type">&amp;optional</span> background-mode)
+  <span class="org-doc">"Random load themes.
 
-Use `</span><span style="color: #00bcff; font-style: italic;">ef-themes</span><span style="color: #9ac8e0; font-style: italic;">' for Monday,Tuesday,Wednesday.
-Use `</span><span style="color: #00bcff; font-style: italic;">modus-themes</span><span style="color: #9ac8e0; font-style: italic;">' on Thursday, Friday.
-Use `</span><span style="color: #00bcff; font-style: italic;">doric-themes</span><span style="color: #9ac8e0; font-style: italic;">' on Saturday, Sunday.
+Use `</span><span class="org-doc"><span class="org-constant">ef-themes</span></span><span class="org-doc">' for Monday,Tuesday,Wednesday.
+Use `</span><span class="org-doc"><span class="org-constant">modus-themes</span></span><span class="org-doc">' on Thursday, Friday.
+Use `</span><span class="org-doc"><span class="org-constant">doric-themes</span></span><span class="org-doc">' on Saturday, Sunday.
 Use light themes at day, use dark themes at night.
 
 With optional BACKGROUND-MODE as a prefix argument, prompt to limit the
 set of themes to either dark or light variants."</span>
-  (<span style="color: #b6a0ff; font-weight: bold;">require</span> '<span style="color: #00bcff;">modus-themes</span>)
-  (<span style="color: #b6a0ff; font-weight: bold;">require</span> '<span style="color: #00bcff;">ef-themes</span>)
-  (<span style="color: #b6a0ff; font-weight: bold;">require</span> '<span style="color: #00bcff;">doric-themes</span>)
-  (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((week (string-to-number (format-time-string <span style="color: #79a8ff;">"%u"</span>))))
-    (<span style="color: #b6a0ff; font-weight: bold;">cond</span>
+  (<span class="org-keyword">require</span> '<span class="org-constant">modus-themes</span>)
+  (<span class="org-keyword">require</span> '<span class="org-constant">ef-themes</span>)
+  (<span class="org-keyword">require</span> '<span class="org-constant">doric-themes</span>)
+  (<span class="org-keyword">let</span> ((week (string-to-number (format-time-string <span class="org-string">"%u"</span>))))
+    (<span class="org-keyword">cond</span>
      ((&lt;= week 3)
-      (<span style="color: #b6a0ff; font-weight: bold;">cond</span>
+      (<span class="org-keyword">cond</span>
        ((eq background-mode 'light) (ef-themes-load-random-light))
        ((eq background-mode 'dark) (ef-themes-load-random-dark))
        (t (spike-leung/load-theme-by-time #'ef-themes-load-random-light #'ef-themes-load-random-dark))))
      ((&lt;= week 5)
-      (<span style="color: #b6a0ff; font-weight: bold;">if</span> background-mode
+      (<span class="org-keyword">if</span> background-mode
           (modus-themes-load-random background-mode)
         (spike-leung/load-theme-by-time
-         (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> () (modus-themes-load-random 'light))
-         (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> () (modus-themes-load-random 'dark)))))
+         (<span class="org-keyword">lambda</span> () (modus-themes-load-random 'light))
+         (<span class="org-keyword">lambda</span> () (modus-themes-load-random 'dark)))))
      (t
-      (<span style="color: #b6a0ff; font-weight: bold;">if</span> background-mode
+      (<span class="org-keyword">if</span> background-mode
           (doric-themes-load-random background-mode)
         (spike-leung/load-theme-by-time
-         (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> () (doric-themes-load-random 'light))
-         (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> () (doric-themes-load-random 'dark))))))))
+         (<span class="org-keyword">lambda</span> () (doric-themes-load-random 'light))
+         (<span class="org-keyword">lambda</span> () (doric-themes-load-random 'dark))))))))
 
-(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">light</span>()
-  <span style="color: #9ac8e0; font-style: italic;">"Load random light themes."</span>
-  (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
+(<span class="org-keyword">defun</span> <span class="org-function-name">light</span>()
+  <span class="org-doc">"Load random light themes."</span>
+  (<span class="org-keyword">interactive</span>)
   (spike-leung/themes-load-random 'light))
 
-(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">dark</span>()
-  <span style="color: #9ac8e0; font-style: italic;">"Load random dark themes."</span>
-  (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
+(<span class="org-keyword">defun</span> <span class="org-function-name">dark</span>()
+  <span class="org-doc">"Load random dark themes."</span>
+  (<span class="org-keyword">interactive</span>)
   (spike-leung/themes-load-random 'dark))
 
-<span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#35201;&#22312; desktop &#21152;&#36733;&#21518;&#20877;&#25191;&#34892;&#65292;&#36991;&#20813;&#34987; desktop &#35760;&#24405;&#30340;&#20027;&#39064;&#35206;&#30422;&#65292;&#23548;&#33268;&#28151;&#20081;
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#35201;&#22312; desktop &#21152;&#36733;&#21518;&#20877;&#25191;&#34892;&#65292;&#36991;&#20813;&#34987; desktop &#35760;&#24405;&#30340;&#20027;&#39064;&#35206;&#30422;&#65292;&#23548;&#33268;&#28151;&#20081;
 </span>(add-hook 'desktop-after-read-hook #'spike-leung/themes-load-random)
 </code></pre>
 </div>
@@ -335,26 +335,26 @@ set of themes to either dark or light variants."</span>
 <summary>代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code><span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">olivetti &#26159;&#19968;&#27454;&#25171;&#23383;&#26426;&#30340;&#21517;&#23383;&#65292;&#36825;&#20010;&#27169;&#24335;&#20250;&#27169;&#20223;&#25171;&#23383;&#26426;&#30340;&#32440;&#24352;&#22823;&#23567;&#65292;&#20889;&#20316;&#26102;&#29992;
-</span>(<span style="color: #b6a0ff; font-weight: bold;">use-package</span> olivetti
-  <span style="color: #f78fe7; font-weight: bold;">:diminish</span>
-  <span style="color: #f78fe7; font-weight: bold;">:custom</span>
+<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">olivetti &#26159;&#19968;&#27454;&#25171;&#23383;&#26426;&#30340;&#21517;&#23383;&#65292;&#36825;&#20010;&#27169;&#24335;&#20250;&#27169;&#20223;&#25171;&#23383;&#26426;&#30340;&#32440;&#24352;&#22823;&#23567;&#65292;&#20889;&#20316;&#26102;&#29992;
+</span>(<span class="org-keyword">use-package</span> olivetti
+  <span class="org-builtin">:diminish</span>
+  <span class="org-builtin">:custom</span>
   (olivetti-style 'fancy)
   (olivetti-body-width 100)
   (olivetti-margin-width 5)
-  <span style="color: #f78fe7; font-weight: bold;">:hook</span> (olivetti-mode-on . spike-leung/set-olivetti-fringe-face)
-  <span style="color: #f78fe7; font-weight: bold;">:config</span>
-  (<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/set-olivetti-fringe-face</span> (<span style="color: #6ae4b9; font-weight: bold;">&amp;rest</span> _)
-    <span style="color: #9ac8e0; font-style: italic;">"Set `</span><span style="color: #00bcff; font-style: italic;">olivetti-fringe</span><span style="color: #9ac8e0; font-style: italic;">' to `</span><span style="color: #00bcff; font-style: italic;">fringe</span><span style="color: #9ac8e0; font-style: italic;">''s background, fallback to `</span><span style="color: #00bcff; font-style: italic;">tab-bar</span><span style="color: #9ac8e0; font-style: italic;">''s background."</span>
-    (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((bg-default (face-attribute 'default <span style="color: #f78fe7; font-weight: bold;">:background</span> nil))
-          (bg-fringe (face-attribute 'fringe <span style="color: #f78fe7; font-weight: bold;">:background</span> nil))
-          (bg-tab-bar (face-attribute 'tab-bar <span style="color: #f78fe7; font-weight: bold;">:background</span> nil)))
-      (<span style="color: #b6a0ff; font-weight: bold;">if</span> (eq bg-default bg-fringe)
-          (set-face-attribute 'olivetti-fringe nil <span style="color: #f78fe7; font-weight: bold;">:background</span> bg-tab-bar)
-        (set-face-attribute 'olivetti-fringe nil <span style="color: #f78fe7; font-weight: bold;">:background</span> bg-fringe))))
+  <span class="org-builtin">:hook</span> (olivetti-mode-on . spike-leung/set-olivetti-fringe-face)
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/set-olivetti-fringe-face</span> (<span class="org-type">&amp;rest</span> _)
+    <span class="org-doc">"Set `</span><span class="org-doc"><span class="org-constant">olivetti-fringe</span></span><span class="org-doc">' to `</span><span class="org-doc"><span class="org-constant">fringe</span></span><span class="org-doc">''s background, fallback to `</span><span class="org-doc"><span class="org-constant">tab-bar</span></span><span class="org-doc">''s background."</span>
+    (<span class="org-keyword">let</span> ((bg-default (face-attribute 'default <span class="org-builtin">:background</span> nil))
+          (bg-fringe (face-attribute 'fringe <span class="org-builtin">:background</span> nil))
+          (bg-tab-bar (face-attribute 'tab-bar <span class="org-builtin">:background</span> nil)))
+      (<span class="org-keyword">if</span> (eq bg-default bg-fringe)
+          (set-face-attribute 'olivetti-fringe nil <span class="org-builtin">:background</span> bg-tab-bar)
+        (set-face-attribute 'olivetti-fringe nil <span class="org-builtin">:background</span> bg-fringe))))
 
   (advice-remove 'spike-leung/themes-load-random #'spike-leung/set-olivetti-fringe-face)
-  (advice-add 'spike-leung/themes-load-random <span style="color: #f78fe7; font-weight: bold;">:after</span> #'spike-leung/set-olivetti-fringe-face))
+  (advice-add 'spike-leung/themes-load-random <span class="org-builtin">:after</span> #'spike-leung/set-olivetti-fringe-face))
 </code></pre>
 </div>
 </details>

@@ -274,7 +274,7 @@ part2 的问题是，你可以按任意按钮任意次，最终使得电压达�
 </p>
 
 <p>
-[&#x2026;]
+[&hellip;]
 </p>
 
 <p>
@@ -331,38 +331,38 @@ part2 的问题是，你可以按任意按钮任意次，最终使得电压达�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span style="color: #b6a0ff; font-weight: bold;">from</span> z3 <span style="color: #b6a0ff; font-weight: bold;">import</span> Int, Optimize, sat
+<pre class="src src-python"><code><span class="org-keyword">from</span> z3 <span class="org-keyword">import</span> Int, Optimize, sat
 
-<span style="color: #b6a0ff; font-weight: bold;">def</span> <span style="color: #feacd0;">min_operations_z3</span>(ops, target):
-    <span style="color: #9ac8e0; font-style: italic;">"""&#20351;&#29992; Z3 &#27714;&#35299;&#26368;&#23567;&#25805;&#20316;&#27425;&#25968;&#65292;&#36820;&#22238;&#25972;&#25968;&#26368;&#20248;&#20540;&#65288;&#33509;&#26080;&#35299;&#36820;&#22238; None&#65289;"""</span>
-    <span style="color: #00d3d0;">n</span> <span style="color: #ffffff;">=</span> <span style="color: #f78fe7; font-weight: bold;">len</span>(ops)           <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#25805;&#20316;&#25968;&#37327;
-</span>    <span style="color: #00d3d0;">m</span> <span style="color: #ffffff;">=</span> <span style="color: #f78fe7; font-weight: bold;">len</span>(target)        <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#32034;&#24341;&#25968;&#37327;
+<span class="org-keyword">def</span> <span class="org-function-name">min_operations_z3</span>(ops, target):
+    <span class="org-doc">"""&#20351;&#29992; Z3 &#27714;&#35299;&#26368;&#23567;&#25805;&#20316;&#27425;&#25968;&#65292;&#36820;&#22238;&#25972;&#25968;&#26368;&#20248;&#20540;&#65288;&#33509;&#26080;&#35299;&#36820;&#22238; None&#65289;"""</span>
+    <span class="org-variable-name">n</span> <span class="org-operator">=</span> <span class="org-builtin">len</span>(ops)           <span class="org-comment-delimiter"># </span><span class="org-comment">&#25805;&#20316;&#25968;&#37327;
+</span>    <span class="org-variable-name">m</span> <span class="org-operator">=</span> <span class="org-builtin">len</span>(target)        <span class="org-comment-delimiter"># </span><span class="org-comment">&#32034;&#24341;&#25968;&#37327;
 </span>
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#21019;&#24314;&#21464;&#37327;&#65292;&#34920;&#31034;&#30340;&#26159;&#27599;&#20010;&#25353;&#38062;&#30340;&#25805;&#20316;&#27425;&#25968;&#65292;x0 &#34920;&#31034;&#31532;&#19968;&#20010;&#25353;&#38062;&#30340;&#25805;&#20316;&#27425;&#25968;
-</span>    <span style="color: #f78fe7; font-weight: bold;">vars</span> <span style="color: #ffffff;">=</span> [Int(f<span style="color: #79a8ff;">'x</span>{i}<span style="color: #79a8ff;">'</span>) <span style="color: #b6a0ff; font-weight: bold;">for</span> i <span style="color: #b6a0ff; font-weight: bold;">in</span> <span style="color: #f78fe7; font-weight: bold;">range</span>(n)]
+    <span class="org-comment-delimiter"># </span><span class="org-comment">&#21019;&#24314;&#21464;&#37327;&#65292;&#34920;&#31034;&#30340;&#26159;&#27599;&#20010;&#25353;&#38062;&#30340;&#25805;&#20316;&#27425;&#25968;&#65292;x0 &#34920;&#31034;&#31532;&#19968;&#20010;&#25353;&#38062;&#30340;&#25805;&#20316;&#27425;&#25968;
+</span>    <span class="org-builtin">vars</span> <span class="org-operator">=</span> [Int(f<span class="org-string">'x</span>{i}<span class="org-string">'</span>) <span class="org-keyword">for</span> i <span class="org-keyword">in</span> <span class="org-builtin">range</span>(n)]
 
-    <span style="color: #00d3d0;">opt</span> <span style="color: #ffffff;">=</span> Optimize()
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#28155;&#21152;&#32422;&#26463;&#65292;&#25805;&#20316;&#27425;&#25968;&#21482;&#33021;&#22823;&#20110;&#25110;&#31561;&#20110; 0
-</span>    <span style="color: #b6a0ff; font-weight: bold;">for</span> v <span style="color: #b6a0ff; font-weight: bold;">in</span> <span style="color: #f78fe7; font-weight: bold;">vars</span>:
-        opt.add(v <span style="color: #ffffff;">&gt;=</span> 0)
+    <span class="org-variable-name">opt</span> <span class="org-operator">=</span> Optimize()
+    <span class="org-comment-delimiter"># </span><span class="org-comment">&#28155;&#21152;&#32422;&#26463;&#65292;&#25805;&#20316;&#27425;&#25968;&#21482;&#33021;&#22823;&#20110;&#25110;&#31561;&#20110; 0
+</span>    <span class="org-keyword">for</span> v <span class="org-keyword">in</span> <span class="org-builtin">vars</span>:
+        opt.add(v <span class="org-operator">&gt;=</span> 0)
 
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#36941;&#21382;&#25152;&#26377;&#30340;&#30446;&#26631;&#30005;&#21387;
-</span>    <span style="color: #b6a0ff; font-weight: bold;">for</span> i <span style="color: #b6a0ff; font-weight: bold;">in</span> <span style="color: #f78fe7; font-weight: bold;">range</span>(m):
-        <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#36941;&#21382;&#25152;&#26377;&#30340;&#25353;&#38062;&#65292;&#24403;&#25353;&#38062;&#20250;&#24433;&#21709;&#30446;&#26631;&#30005;&#21387;&#65292;&#21017;&#32047;&#35745;&#25805;&#20316;&#27425;&#25968;&#65292;&#30456;&#24403;&#20110;&#26500;&#36896; e + f = 3
-</span>        <span style="color: #00d3d0;">coeff_sum</span> <span style="color: #ffffff;">=</span> <span style="color: #f78fe7; font-weight: bold;">sum</span>(<span style="color: #f78fe7; font-weight: bold;">vars</span>[j] <span style="color: #b6a0ff; font-weight: bold;">for</span> j <span style="color: #b6a0ff; font-weight: bold;">in</span> <span style="color: #f78fe7; font-weight: bold;">range</span>(n) <span style="color: #b6a0ff; font-weight: bold;">if</span> i <span style="color: #b6a0ff; font-weight: bold;">in</span> ops[j])
-        opt.add(coeff_sum <span style="color: #ffffff;">==</span> target[i])
+    <span class="org-comment-delimiter"># </span><span class="org-comment">&#36941;&#21382;&#25152;&#26377;&#30340;&#30446;&#26631;&#30005;&#21387;
+</span>    <span class="org-keyword">for</span> i <span class="org-keyword">in</span> <span class="org-builtin">range</span>(m):
+        <span class="org-comment-delimiter"># </span><span class="org-comment">&#36941;&#21382;&#25152;&#26377;&#30340;&#25353;&#38062;&#65292;&#24403;&#25353;&#38062;&#20250;&#24433;&#21709;&#30446;&#26631;&#30005;&#21387;&#65292;&#21017;&#32047;&#35745;&#25805;&#20316;&#27425;&#25968;&#65292;&#30456;&#24403;&#20110;&#26500;&#36896; e + f = 3
+</span>        <span class="org-variable-name">coeff_sum</span> <span class="org-operator">=</span> <span class="org-builtin">sum</span>(<span class="org-builtin">vars</span>[j] <span class="org-keyword">for</span> j <span class="org-keyword">in</span> <span class="org-builtin">range</span>(n) <span class="org-keyword">if</span> i <span class="org-keyword">in</span> ops[j])
+        opt.add(coeff_sum <span class="org-operator">==</span> target[i])
 
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#26368;&#23567;&#21270;&#24635;&#25805;&#20316;&#27425;&#25968;&#65292;&#20351;&#29992; minimize &#27714;&#26368;&#23567;&#20540;
-</span>    <span style="color: #00d3d0;">total</span> <span style="color: #ffffff;">=</span> <span style="color: #f78fe7; font-weight: bold;">sum</span>(<span style="color: #f78fe7; font-weight: bold;">vars</span>)
+    <span class="org-comment-delimiter"># </span><span class="org-comment">&#26368;&#23567;&#21270;&#24635;&#25805;&#20316;&#27425;&#25968;&#65292;&#20351;&#29992; minimize &#27714;&#26368;&#23567;&#20540;
+</span>    <span class="org-variable-name">total</span> <span class="org-operator">=</span> <span class="org-builtin">sum</span>(<span class="org-builtin">vars</span>)
     opt.minimize(total)
 
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#24403;&#25152;&#26377;&#32422;&#26463;&#37117;&#33021;&#28385;&#36275;&#30340;&#26102;&#20505;&#65292;&#24471;&#21040;&#36825;&#20010;&#27169;&#22411;&#23545;&#35937;&#65292;&#33719;&#21462;&#25805;&#20316;&#24635;&#27425;&#25968;&#30340;&#26368;&#23567;&#20540;
-</span>    <span style="color: #b6a0ff; font-weight: bold;">if</span> opt.check() <span style="color: #ffffff;">==</span> sat:
-        <span style="color: #00d3d0;">model</span> <span style="color: #ffffff;">=</span> opt.model()
-        <span style="color: #b6a0ff; font-weight: bold;">return</span> model.evaluate(total).as_long()
-    <span style="color: #b6a0ff; font-weight: bold;">else</span>:
-        <span style="color: #b6a0ff; font-weight: bold;">return</span> <span style="color: #00bcff;">None</span>
-</pre>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">&#24403;&#25152;&#26377;&#32422;&#26463;&#37117;&#33021;&#28385;&#36275;&#30340;&#26102;&#20505;&#65292;&#24471;&#21040;&#36825;&#20010;&#27169;&#22411;&#23545;&#35937;&#65292;&#33719;&#21462;&#25805;&#20316;&#24635;&#27425;&#25968;&#30340;&#26368;&#23567;&#20540;
+</span>    <span class="org-keyword">if</span> opt.check() <span class="org-operator">==</span> sat:
+        <span class="org-variable-name">model</span> <span class="org-operator">=</span> opt.model()
+        <span class="org-keyword">return</span> model.evaluate(total).as_long()
+    <span class="org-keyword">else</span>:
+        <span class="org-keyword">return</span> <span class="org-constant">None</span>
+</code></pre>
 </div>
 
 <p>

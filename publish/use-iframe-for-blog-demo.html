@@ -57,11 +57,11 @@
 <header>
 <h1 class="title p-name">用 iframe 显示 HTML 例子</h1>
 </header><div class="org-src-container">
-<pre class="src src-html">&lt;<span style="color: #b6a0ff; font-weight: bold;">!DOCTYPE</span>&gt;
-&lt;<span style="color: #feacd0;">html</span>&gt;
-  &lt;<span style="color: #feacd0;">body</span>&gt;hello world&lt;/<span style="color: #feacd0;">body</span>&gt;
-&lt;/<span style="color: #feacd0;">html</span>&gt;
-</pre>
+<pre class="src src-html"><code>&lt;<span class="org-keyword">!DOCTYPE</span>&gt;
+&lt;<span class="org-function-name">html</span>&gt;
+  &lt;<span class="org-function-name">body</span>&gt;hello world&lt;/<span class="org-function-name">body</span>&gt;
+&lt;/<span class="org-function-name">html</span>&gt;
+</code></pre>
 </div>
 
 <iframe style="width: 100%;" srcdoc="&lt;!DOCTYPE&gt; &lt;html&gt; &lt;body&gt;hello world&lt;/body&gt; &lt;/html&gt;"></iframe>
@@ -123,46 +123,46 @@ iframe 实例是：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp">(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/process-next-html-src-block</span> ()
-  <span style="color: #9ac8e0; font-style: italic;">"Process the next HTML block from the current position, escape it, compress it, and generate a #+begin_export html block with an iframe, replacing any existing export block."</span>
-  (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
-  (<span style="color: #b6a0ff; font-weight: bold;">let</span> (html-content escaped-html srcdoc start end export-start export-end)
-    <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Search for the next #+begin_src html block from the current position
-</span>    (<span style="color: #b6a0ff; font-weight: bold;">save-excursion</span>
-      (<span style="color: #b6a0ff; font-weight: bold;">when</span> (re-search-forward <span style="color: #79a8ff;">"^#\\+begin_src html"</span> nil t)
-        (<span style="color: #b6a0ff; font-weight: bold;">setq</span> start (match-end 0))
-        (<span style="color: #b6a0ff; font-weight: bold;">when</span> (re-search-forward <span style="color: #79a8ff;">"^#\\+end_src"</span> nil t)
-          (<span style="color: #b6a0ff; font-weight: bold;">setq</span> end (match-beginning 0))
-          (<span style="color: #b6a0ff; font-weight: bold;">setq</span> html-content (buffer-substring-no-properties start end))
-          <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Process the HTML content
-</span>          (<span style="color: #b6a0ff; font-weight: bold;">when</span> html-content
-            <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Escape HTML characters using sgml-quote in a temporary buffer
-</span>            (<span style="color: #b6a0ff; font-weight: bold;">setq</span> escaped-html
-                  (<span style="color: #b6a0ff; font-weight: bold;">with-temp-buffer</span>
+<pre class="src src-elisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/process-next-html-src-block</span> ()
+  <span class="org-doc">"Process the next HTML block from the current position, escape it, compress it, and generate a #+begin_export html block with an iframe, replacing any existing export block."</span>
+  (<span class="org-keyword">interactive</span>)
+  (<span class="org-keyword">let</span> (html-content escaped-html srcdoc start end export-start export-end)
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">Search for the next #+begin_src html block from the current position
+</span>    (<span class="org-keyword">save-excursion</span>
+      (<span class="org-keyword">when</span> (re-search-forward <span class="org-string">"^#\\+begin_src html"</span> nil t)
+        (<span class="org-keyword">setq</span> start (match-end 0))
+        (<span class="org-keyword">when</span> (re-search-forward <span class="org-string">"^#\\+end_src"</span> nil t)
+          (<span class="org-keyword">setq</span> end (match-beginning 0))
+          (<span class="org-keyword">setq</span> html-content (buffer-substring-no-properties start end))
+          <span class="org-comment-delimiter">;; </span><span class="org-comment">Process the HTML content
+</span>          (<span class="org-keyword">when</span> html-content
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Escape HTML characters using sgml-quote in a temporary buffer
+</span>            (<span class="org-keyword">setq</span> escaped-html
+                  (<span class="org-keyword">with-temp-buffer</span>
                     (insert html-content)
-                    (sgml-mode) <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Switch to sgml-mode to enable sgml-quote
+                    (sgml-mode) <span class="org-comment-delimiter">;; </span><span class="org-comment">Switch to sgml-mode to enable sgml-quote
 </span>                    (sgml-quote (point-min) (point-max))
                     (buffer-string)))
 
-            <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Compress into a single line and remove extra spaces
-</span>            (<span style="color: #b6a0ff; font-weight: bold;">setq</span> srcdoc (replace-regexp-in-string <span style="color: #79a8ff;">"[\n\r]+"</span> <span style="color: #79a8ff;">" "</span> escaped-html))
-            (<span style="color: #b6a0ff; font-weight: bold;">setq</span> srcdoc (replace-regexp-in-string <span style="color: #79a8ff;">"[ \t]+"</span> <span style="color: #79a8ff;">" "</span> srcdoc))
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Compress into a single line and remove extra spaces
+</span>            (<span class="org-keyword">setq</span> srcdoc (replace-regexp-in-string <span class="org-string">"[\n\r]+"</span> <span class="org-string">" "</span> escaped-html))
+            (<span class="org-keyword">setq</span> srcdoc (replace-regexp-in-string <span class="org-string">"[ \t]+"</span> <span class="org-string">" "</span> srcdoc))
 
-            <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Move to the end of the block and check for existing export block
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Move to the end of the block and check for existing export block
 </span>            (goto-char end)
-            (forward-line 1) <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Move to the line after #+end_src
+            (forward-line 1) <span class="org-comment-delimiter">;; </span><span class="org-comment">Move to the line after #+end_src
 </span>
-            <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Check if there's an existing #+begin_export html block
-</span>            (<span style="color: #b6a0ff; font-weight: bold;">when</span> (looking-at <span style="color: #79a8ff;">"^#\\+begin_export html"</span>)
-              (<span style="color: #b6a0ff; font-weight: bold;">setq</span> export-start (point))
-              (<span style="color: #b6a0ff; font-weight: bold;">when</span> (re-search-forward <span style="color: #79a8ff;">"^#\\+end_export"</span> nil t)
-                (<span style="color: #b6a0ff; font-weight: bold;">setq</span> export-end (point))
-                <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Delete the existing export block
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Check if there's an existing #+begin_export html block
+</span>            (<span class="org-keyword">when</span> (looking-at <span class="org-string">"^#\\+begin_export html"</span>)
+              (<span class="org-keyword">setq</span> export-start (point))
+              (<span class="org-keyword">when</span> (re-search-forward <span class="org-string">"^#\\+end_export"</span> nil t)
+                (<span class="org-keyword">setq</span> export-end (point))
+                <span class="org-comment-delimiter">;; </span><span class="org-comment">Delete the existing export block
 </span>                (delete-region export-start export-end)))
 
-            <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">Insert the new #+begin_export html block
-</span>            (insert (format <span style="color: #79a8ff;">"#+begin_export html\n&lt;iframe style=\"width:100%%\" srcdoc=\"%s\"&gt;&lt;/iframe&gt;\n#+end_export\n"</span> srcdoc))))))))
-</pre>
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Insert the new #+begin_export html block
+</span>            (insert (format <span class="org-string">"#+begin_export html\n&lt;iframe style=\"width:100%%\" srcdoc=\"%s\"&gt;&lt;/iframe&gt;\n#+end_export\n"</span> srcdoc))))))))
+</code></pre>
 </div>
 
 <p>

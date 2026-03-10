@@ -131,29 +131,29 @@ path(you-&gt;out)
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span style="color: #b6a0ff; font-weight: bold;">def</span> <span style="color: #feacd0;">count_path_to_out</span>(graph, node, memo <span style="color: #ffffff;">=</span> <span style="color: #00bcff;">None</span>):
-  <span style="color: #b6a0ff; font-weight: bold;">if</span> memo <span style="color: #b6a0ff; font-weight: bold;">is</span> <span style="color: #00bcff;">None</span>:
-    <span style="color: #00d3d0;">memo</span> <span style="color: #ffffff;">=</span> {}
-  <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#22914;&#26524;&#33410;&#28857;&#35745;&#31639;&#36807;&#20102;&#65292;&#30452;&#25509;&#36820;&#22238;&#35745;&#31639;&#32467;&#26524;
-</span>  <span style="color: #b6a0ff; font-weight: bold;">if</span> node <span style="color: #b6a0ff; font-weight: bold;">in</span> memo:
-    <span style="color: #b6a0ff; font-weight: bold;">return</span> memo[node]
+<pre class="src src-python"><code><span class="org-keyword">def</span> <span class="org-function-name">count_path_to_out</span>(graph, node, memo <span class="org-operator">=</span> <span class="org-constant">None</span>):
+  <span class="org-keyword">if</span> memo <span class="org-keyword">is</span> <span class="org-constant">None</span>:
+    <span class="org-variable-name">memo</span> <span class="org-operator">=</span> {}
+  <span class="org-comment-delimiter"># </span><span class="org-comment">&#22914;&#26524;&#33410;&#28857;&#35745;&#31639;&#36807;&#20102;&#65292;&#30452;&#25509;&#36820;&#22238;&#35745;&#31639;&#32467;&#26524;
+</span>  <span class="org-keyword">if</span> node <span class="org-keyword">in</span> memo:
+    <span class="org-keyword">return</span> memo[node]
 
-  <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#25269;&#36798; out&#65292;&#25214;&#21040;&#19968;&#26465;&#36335;&#24452;&#65292;&#36820;&#22238; 1
-</span>  <span style="color: #b6a0ff; font-weight: bold;">if</span> node <span style="color: #ffffff;">==</span> <span style="color: #79a8ff;">'out'</span>:
-    <span style="color: #00d3d0;">memo</span>[node] <span style="color: #ffffff;">=</span> 1
-    <span style="color: #b6a0ff; font-weight: bold;">return</span> memo[node]
+  <span class="org-comment-delimiter"># </span><span class="org-comment">&#25269;&#36798; out&#65292;&#25214;&#21040;&#19968;&#26465;&#36335;&#24452;&#65292;&#36820;&#22238; 1
+</span>  <span class="org-keyword">if</span> node <span class="org-operator">==</span> <span class="org-string">'out'</span>:
+    <span class="org-variable-name">memo</span>[node] <span class="org-operator">=</span> 1
+    <span class="org-keyword">return</span> memo[node]
 
-  <span style="color: #00d3d0;">count</span> <span style="color: #ffffff;">=</span> 0
-  <span style="color: #00d3d0;">next_paths</span> <span style="color: #ffffff;">=</span> graph[node]
+  <span class="org-variable-name">count</span> <span class="org-operator">=</span> 0
+  <span class="org-variable-name">next_paths</span> <span class="org-operator">=</span> graph[node]
 
-  <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#36941;&#21382;&#30456;&#37051;&#30340;&#33410;&#28857;&#65292;&#32047;&#35745;&#21040;&#36798; out &#30340;&#36335;&#24452;&#25968;&#37327;
-</span>  <span style="color: #b6a0ff; font-weight: bold;">for</span> path <span style="color: #b6a0ff; font-weight: bold;">in</span> next_paths:
-    <span style="color: #00d3d0;">count</span> <span style="color: #ffffff;">+=</span> count_path_to_out(graph, path, memo)
-  <span style="color: #00d3d0;">memo</span>[node] <span style="color: #ffffff;">=</span> count
-  <span style="color: #b6a0ff; font-weight: bold;">return</span> memo[node]
+  <span class="org-comment-delimiter"># </span><span class="org-comment">&#36941;&#21382;&#30456;&#37051;&#30340;&#33410;&#28857;&#65292;&#32047;&#35745;&#21040;&#36798; out &#30340;&#36335;&#24452;&#25968;&#37327;
+</span>  <span class="org-keyword">for</span> path <span class="org-keyword">in</span> next_paths:
+    <span class="org-variable-name">count</span> <span class="org-operator">+=</span> count_path_to_out(graph, path, memo)
+  <span class="org-variable-name">memo</span>[node] <span class="org-operator">=</span> count
+  <span class="org-keyword">return</span> memo[node]
 
-count_path_to_out(graph, <span style="color: #79a8ff;">'start'</span>)
-</pre>
+count_path_to_out(graph, <span class="org-string">'start'</span>)
+</code></pre>
 </div>
 
 <p>
@@ -197,8 +197,8 @@ hhh: out
 <p style="white-space: nowrap; overflow: auto;" class="verse">
 svr,aaa, <b>fft</b>,ccc,ddd,hub,fff,ggg,out<br>
 svr,aaa, <b>fft</b>,ccc,ddd,hub,fff,hhh,out<br>
-svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,ggg,out &lt;&#x2013;<br>
-svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,hhh,out &lt;&#x2013;<br>
+svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,ggg,out &lt;&ndash;<br>
+svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,hhh,out &lt;&ndash;<br>
 svr,bbb,tty,ccc,ddd,hub,fff,ggg,out<br>
 svr,bbb,tty,ccc,ddd,hub,fff,hhh,out<br>
 svr,bbb,tty,ccc,eee, <b>dac</b>,fff,ggg,out<br>
@@ -220,8 +220,8 @@ svr,bbb,tty,ccc,eee, <b>dac</b>,fff,hhh,out<br>
 <p style="white-space: nowrap; overflow: auto;" class="verse">
 svr,aaa, <b>fft</b>,ccc,ddd,hub,fff,ggg,out<br>
 svr,aaa, <b>fft</b>,ccc,ddd,hub,fff,hhh,out<br>
-svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,ggg,out &lt;&#x2013;<br>
-svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,hhh,out &lt;&#x2013;<br>
+svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,ggg,out &lt;&ndash;<br>
+svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,hhh,out &lt;&ndash;<br>
 </p>
 
 <p>
@@ -243,40 +243,40 @@ svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,hhh,out &lt;&#x2013;<br>
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><span style="color: #b6a0ff; font-weight: bold;">def</span> <span style="color: #feacd0;">count_path_to_out_with_ftt_dac</span>(graph, node, memo <span style="color: #ffffff;">=</span> <span style="color: #00bcff;">None</span>, fft_seen <span style="color: #ffffff;">=</span> <span style="color: #00bcff;">False</span>, dac_seen <span style="color: #ffffff;">=</span> <span style="color: #00bcff;">False</span>):
-  <span style="color: #b6a0ff; font-weight: bold;">if</span> memo <span style="color: #b6a0ff; font-weight: bold;">is</span> <span style="color: #00bcff;">None</span>:
-    <span style="color: #00d3d0;">memo</span> <span style="color: #ffffff;">=</span> {}
-  <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#23558; fft_seen &#21644; dac_seen &#28155;&#21152;&#21040; key &#20013;&#65292;&#21306;&#20998;&#19981;&#21516;&#29366;&#24577;&#30340; node
-</span>  <span style="color: #00d3d0;">key</span> <span style="color: #ffffff;">=</span> (node, fft_seen, dac_seen)
+<pre class="src src-python"><code><span class="org-keyword">def</span> <span class="org-function-name">count_path_to_out_with_ftt_dac</span>(graph, node, memo <span class="org-operator">=</span> <span class="org-constant">None</span>, fft_seen <span class="org-operator">=</span> <span class="org-constant">False</span>, dac_seen <span class="org-operator">=</span> <span class="org-constant">False</span>):
+  <span class="org-keyword">if</span> memo <span class="org-keyword">is</span> <span class="org-constant">None</span>:
+    <span class="org-variable-name">memo</span> <span class="org-operator">=</span> {}
+  <span class="org-comment-delimiter"># </span><span class="org-comment">&#23558; fft_seen &#21644; dac_seen &#28155;&#21152;&#21040; key &#20013;&#65292;&#21306;&#20998;&#19981;&#21516;&#29366;&#24577;&#30340; node
+</span>  <span class="org-variable-name">key</span> <span class="org-operator">=</span> (node, fft_seen, dac_seen)
 
-  <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#22914;&#26524;&#33410;&#28857;&#35745;&#31639;&#36807;&#20102;&#65292;&#30452;&#25509;&#36820;&#22238;&#35745;&#31639;&#32467;&#26524;
-</span>  <span style="color: #b6a0ff; font-weight: bold;">if</span> key <span style="color: #b6a0ff; font-weight: bold;">in</span> memo:
-    <span style="color: #b6a0ff; font-weight: bold;">return</span> memo[key]
+  <span class="org-comment-delimiter"># </span><span class="org-comment">&#22914;&#26524;&#33410;&#28857;&#35745;&#31639;&#36807;&#20102;&#65292;&#30452;&#25509;&#36820;&#22238;&#35745;&#31639;&#32467;&#26524;
+</span>  <span class="org-keyword">if</span> key <span class="org-keyword">in</span> memo:
+    <span class="org-keyword">return</span> memo[key]
 
-  <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#21028;&#26029;&#26159;&#21542;&#32463;&#36807;&#20102; fft &#21644; dac
-</span>  <span style="color: #00d3d0;">fft_seen</span> <span style="color: #ffffff;">=</span> node <span style="color: #ffffff;">==</span> <span style="color: #79a8ff;">'fft'</span> <span style="color: #b6a0ff; font-weight: bold;">or</span> fft_seen
-  <span style="color: #00d3d0;">dac_seen</span> <span style="color: #ffffff;">=</span> node <span style="color: #ffffff;">==</span> <span style="color: #79a8ff;">'dac'</span> <span style="color: #b6a0ff; font-weight: bold;">or</span> dac_seen
+  <span class="org-comment-delimiter"># </span><span class="org-comment">&#21028;&#26029;&#26159;&#21542;&#32463;&#36807;&#20102; fft &#21644; dac
+</span>  <span class="org-variable-name">fft_seen</span> <span class="org-operator">=</span> node <span class="org-operator">==</span> <span class="org-string">'fft'</span> <span class="org-keyword">or</span> fft_seen
+  <span class="org-variable-name">dac_seen</span> <span class="org-operator">=</span> node <span class="org-operator">==</span> <span class="org-string">'dac'</span> <span class="org-keyword">or</span> dac_seen
 
-  <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#25269;&#36798; out
-</span>  <span style="color: #b6a0ff; font-weight: bold;">if</span> node <span style="color: #ffffff;">==</span> <span style="color: #79a8ff;">'out'</span>:
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#24403;&#36335;&#24452;&#21253;&#21547; fft &#21644; dac&#65292;&#25214;&#21040;&#19968;&#26465;&#31526;&#21512;&#30340;&#36335;&#24452;&#65292;&#36820;&#22238; 1
-</span>    <span style="color: #b6a0ff; font-weight: bold;">if</span> fft_seen <span style="color: #b6a0ff; font-weight: bold;">and</span> dac_seen:
-      <span style="color: #00d3d0;">memo</span>[key] <span style="color: #ffffff;">=</span> 1
-    <span style="color: #b6a0ff; font-weight: bold;">else</span>:
-      <span style="color: #00d3d0;">memo</span>[key] <span style="color: #ffffff;">=</span> 0
-    <span style="color: #b6a0ff; font-weight: bold;">return</span> memo[key]
+  <span class="org-comment-delimiter"># </span><span class="org-comment">&#25269;&#36798; out
+</span>  <span class="org-keyword">if</span> node <span class="org-operator">==</span> <span class="org-string">'out'</span>:
+    <span class="org-comment-delimiter"># </span><span class="org-comment">&#24403;&#36335;&#24452;&#21253;&#21547; fft &#21644; dac&#65292;&#25214;&#21040;&#19968;&#26465;&#31526;&#21512;&#30340;&#36335;&#24452;&#65292;&#36820;&#22238; 1
+</span>    <span class="org-keyword">if</span> fft_seen <span class="org-keyword">and</span> dac_seen:
+      <span class="org-variable-name">memo</span>[key] <span class="org-operator">=</span> 1
+    <span class="org-keyword">else</span>:
+      <span class="org-variable-name">memo</span>[key] <span class="org-operator">=</span> 0
+    <span class="org-keyword">return</span> memo[key]
 
-  <span style="color: #00d3d0;">count</span> <span style="color: #ffffff;">=</span> 0
-  <span style="color: #00d3d0;">next_paths</span> <span style="color: #ffffff;">=</span> graph[node]
+  <span class="org-variable-name">count</span> <span class="org-operator">=</span> 0
+  <span class="org-variable-name">next_paths</span> <span class="org-operator">=</span> graph[node]
 
-  <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#36941;&#21382;&#30456;&#37051;&#30340;&#33410;&#28857;&#65292;&#32047;&#35745;&#21040;&#36798; out &#30340;&#36335;&#24452;&#25968;&#37327;
-</span>  <span style="color: #b6a0ff; font-weight: bold;">for</span> path <span style="color: #b6a0ff; font-weight: bold;">in</span> next_paths:
-    <span style="color: #00d3d0;">count</span> <span style="color: #ffffff;">+=</span> count_path_to_out_with_ftt_dac(graph, path, memo, fft_seen, dac_seen)
-  <span style="color: #00d3d0;">memo</span>[key] <span style="color: #ffffff;">=</span> count
-  <span style="color: #b6a0ff; font-weight: bold;">return</span> memo[key]
+  <span class="org-comment-delimiter"># </span><span class="org-comment">&#36941;&#21382;&#30456;&#37051;&#30340;&#33410;&#28857;&#65292;&#32047;&#35745;&#21040;&#36798; out &#30340;&#36335;&#24452;&#25968;&#37327;
+</span>  <span class="org-keyword">for</span> path <span class="org-keyword">in</span> next_paths:
+    <span class="org-variable-name">count</span> <span class="org-operator">+=</span> count_path_to_out_with_ftt_dac(graph, path, memo, fft_seen, dac_seen)
+  <span class="org-variable-name">memo</span>[key] <span class="org-operator">=</span> count
+  <span class="org-keyword">return</span> memo[key]
 
-count_path_to_out_with_ftt_dac(graph, <span style="color: #79a8ff;">'svr'</span>)
-</pre>
+count_path_to_out_with_ftt_dac(graph, <span class="org-string">'svr'</span>)
+</code></pre>
 </div>
 
 <hr>

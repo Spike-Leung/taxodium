@@ -131,7 +131,7 @@ Emacs 是通过 auth-source 去实现身份验证的，一般将验证信息 (�
 <b>machine</b> 服务器，DNS 名称或 IP 地址，在 <code>auth-source-search</code> 查询中称为 <code>:host</code> 。
 </p>
 
-<section role="note" id="orga016397">
+<section role="note" id="org494f0f9">
 <p>
 auth-source-search 是 Emacs 中的一个函数，可以基于条件查询返回用 auth-source 定义的密钥。
 </p>
@@ -167,23 +167,23 @@ machine openrouter.ai/api login apikey password xxxx
 <a href="https://github.com/Elilif/emacs-immersive-translate/blob/1d00d558363985fa988fc40cd5093bfc6926d83e/immersive-translate.el#L197-L212">immersive-translate-api-key</a>:
 </p>
 <div class="org-src-container">
-<pre class="src src-lisp">(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">immersive-translate-api-key</span> (host user)
-  <span style="color: #9ac8e0; font-style: italic;">"Lookup api key in the auth source.
+<pre class="src src-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">immersive-translate-api-key</span> (host user)
+  <span class="org-doc">"Lookup api key in the auth source.
 
-By default, `</span><span style="color: #00bcff; font-style: italic;">immersive-translate-chatgpt-host</span><span style="color: #9ac8e0; font-style: italic;">' is used as HOST
+By default, `</span><span class="org-doc"><span class="org-constant">immersive-translate-chatgpt-host</span></span><span class="org-doc">' is used as HOST
 and \"apikey\" as USER in Chatgpt backend.
 \"fanyi-api.baidu.com\" is used as HOST and
-`</span><span style="color: #00bcff; font-style: italic;">immersive-translate-baidu-appid</span><span style="color: #9ac8e0; font-style: italic;">' as USER in Baidu backend."</span>
+`</span><span class="org-doc"><span class="org-constant">immersive-translate-baidu-appid</span></span><span class="org-doc">' as USER in Baidu backend."</span>
   (if-let ((secret (plist-get (car (auth-source-search
-                                    <span style="color: #f78fe7; font-weight: bold;">:host</span> host
-                                    <span style="color: #f78fe7; font-weight: bold;">:user</span> user
-                                    <span style="color: #f78fe7; font-weight: bold;">:require</span> '(<span style="color: #f78fe7; font-weight: bold;">:secret</span>)))
-                              <span style="color: #f78fe7; font-weight: bold;">:secret</span>)))
-      (<span style="color: #b6a0ff; font-weight: bold;">if</span> (functionp secret)
+                                    <span class="org-builtin">:host</span> host
+                                    <span class="org-builtin">:user</span> user
+                                    <span class="org-builtin">:require</span> '(<span class="org-builtin">:secret</span>)))
+                              <span class="org-builtin">:secret</span>)))
+      (<span class="org-keyword">if</span> (functionp secret)
           (encode-coding-string (funcall secret) 'utf-8)
         secret)
-    (user-error <span style="color: #79a8ff;">"No %s found in the auth source"</span> user)))
-</pre>
+    (user-error <span class="org-string">"No %s found in the auth source"</span> user)))
+</code></pre>
 </div>
 
 <p>
@@ -191,12 +191,12 @@ and \"apikey\" as USER in Chatgpt backend.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">...&#20854;&#20182;&#20195;&#30721;
-</span>(<span style="color: #79a8ff;">"Authorization"</span> . ,(concat <span style="color: #79a8ff;">"Bearer "</span> (immersive-translate-api-key
+<pre class="src src-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">...&#20854;&#20182;&#20195;&#30721;
+</span>(<span class="org-string">"Authorization"</span> . ,(concat <span class="org-string">"Bearer "</span> (immersive-translate-api-key
                                        immersive-translate-chatgpt-host
-                                       <span style="color: #79a8ff;">"apikey"</span>))))))
-<span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">...&#20854;&#20182;&#20195;&#30721;</span>
-</pre>
+                                       <span class="org-string">"apikey"</span>))))))
+<span class="org-comment-delimiter">;; </span><span class="org-comment">...&#20854;&#20182;&#20195;&#30721;</span>
+</code></pre>
 </div>
 
 <p>
@@ -263,7 +263,7 @@ sub   rsa4096 2025-02-27 [E]
 <li><code>l-yanlei@hotmail.com</code> 是和这个 gpg 密钥关联的邮箱</li>
 </ul>
 
-<section role="note" id="orgeefcd69">
+<section role="note" id="org8a002c1">
 <p>
 关于 GPG 密钥的更详细的解释，你可以看 <a href="https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/">Anatomy of a GPG Key</a>。
 </p>
@@ -301,7 +301,7 @@ sub   rsa4096 2025-02-27 [E]
 Emacs 内置的 EasyPG Assistant 可以帮你自动完成加密解密，当需要访问 gpg 加密文件的时候它就会启用，你不需要额外做什么。
 </p>
 
-<section role="note" id="orgdeb3432">
+<section role="note" id="org83fcb9d">
 <p>
 在 Emacs 中你可以通过 <code>C-h R epa</code> 查看 EasyPG Assistant 的文档。
 </p>
@@ -316,8 +316,8 @@ Emacs 内置的 EasyPG Assistant 可以帮你自动完成加密解密，当需�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff; font-weight: bold;">setq</span> epa-pinentry-mode 'loopback) <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">&#22312; minibuffer &#36755;&#20837;&#23494;&#30721;</span>
-</pre>
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">setq</span> epa-pinentry-mode 'loopback) <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22312; minibuffer &#36755;&#20837;&#23494;&#30721;</span>
+</code></pre>
 </div>
 
 <p>
@@ -357,8 +357,8 @@ Emacs 内置的 EasyPG Assistant 可以帮你自动完成加密解密，当需�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(auth-source-pass-enable)
-</pre>
+<pre class="src src-emacs-lisp"><code>(auth-source-pass-enable)
+</code></pre>
 </div>
 </div>
 </div>

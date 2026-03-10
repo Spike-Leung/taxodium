@@ -86,7 +86,7 @@
 </ul>
 </div>
 </nav>
-<section role="note" id="org46b5e2c">
+<section role="note" id="org5e8a952">
 <p>
 另见：<a href="blog-with-denote-and-org-publish.html">结合 denote 和 org-publish 写博客</a>
 </p>
@@ -188,7 +188,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 <li>检查一下是不是 <code>:exclude</code> 正则表达式写得有问题</li>
 </ul>
 
-<section role="note" id="org7a72f3a">
+<section role="note" id="org7c60d5c">
 <p>
 RSS 的生成已经换成了 NodeJS 脚本生成，效率更高一些，见 <a href="blog-update-2025-04-08.html">博客的一些更新</a>。
 </p>
@@ -221,10 +221,10 @@ RSS 的生成已经换成了 NodeJS 脚本生成，效率更高一些，见 <a h
 </p>
 
 <p>
-于是改成 org 的日期格式 (<span class="timestamp-wrapper"><span class="timestamp">&lt;2023-05-31 Wed&gt;</span></span>)，这样 sitemap 就能正常按照时间排序了。
+于是改成 org 的日期格式 (<span class="timestamp-wrapper"><time class="timestamp" datetime="2023-05-31">&lt;2023-05-31 Wed&gt;</time></span>)，这样 sitemap 就能正常按照时间排序了。
 </p>
 
-<section role="note" id="org9999e8a">
+<section role="note" id="orgcbb72e3">
 <p>
 在 <a href="blog-with-denote-and-org-publish.html">结合 denote 和 org-publish 写博客</a> 中，已经改成了 denote 的 date 格式。
 </p>
@@ -256,20 +256,20 @@ RSS 的生成已经换成了 NodeJS 脚本生成，效率更高一些，见 <a h
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp">(<span style="color: #b6a0ff; font-weight: bold;">defconst</span> <span style="color: #00d3d0;">spike-leung/html-head</span> <span style="color: #79a8ff;">"
+<pre class="src src-elisp"><code>(<span class="org-keyword">defconst</span> <span class="org-variable-name">spike-leung/html-head</span> <span class="org-string">"
   &lt;link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/&gt;
   &lt;link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\"&gt;
   "</span>
-  <span style="color: #9ac8e0; font-style: italic;">"`</span><span style="color: #00bcff; font-style: italic;">:html-head</span><span style="color: #9ac8e0; font-style: italic;">' for `</span><span style="color: #00bcff; font-style: italic;">org-publish</span><span style="color: #9ac8e0; font-style: italic;">'."</span>)
+  <span class="org-doc">"`</span><span class="org-doc"><span class="org-constant">:html-head</span></span><span class="org-doc">' for `</span><span class="org-doc"><span class="org-constant">org-publish</span></span><span class="org-doc">'."</span>)
 
-(<span style="color: #b6a0ff; font-weight: bold;">setq</span> org-publish-project-alist
-      '((<span style="color: #79a8ff;">"orgfiles"</span>
-         <span style="color: #f78fe7; font-weight: bold;">:base-directory</span> <span style="color: #79a8ff;">"~/git/taxodium/post"</span>
-         <span style="color: #f78fe7; font-weight: bold;">:base-extension</span> <span style="color: #79a8ff;">"org"</span>
-         <span style="color: #f78fe7; font-weight: bold;">:html-head</span> ,spike-leung/html-head
-         <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
+(<span class="org-keyword">setq</span> org-publish-project-alist
+      '((<span class="org-string">"orgfiles"</span>
+         <span class="org-builtin">:base-directory</span> <span class="org-string">"~/git/taxodium/post"</span>
+         <span class="org-builtin">:base-extension</span> <span class="org-string">"org"</span>
+         <span class="org-builtin">:html-head</span> ,spike-leung/html-head
+         <span class="org-comment-delimiter">;; </span><span class="org-comment">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
 </span>         )))
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -300,21 +300,21 @@ which are not self-evaluating objects, in a program.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff">  (defconst spike-leung/html-head "
+<pre class="src src-diff"><code><span class="org-diff-context">  (defconst spike-leung/html-head "
     &lt;link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/&gt;
     &lt;link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\"&gt;
     "
     "`:html-head' for `org-publish'.")
 
   (setq org-publish-project-alist
-<span style="color: #ff9095; background-color: #4f1119;">-</span><span style="color: #ffbfbf; background-color: #4f1119;">          '(("orgfiles"
-</span><span style="color: #80e080; background-color: #00381f;">+</span><span style="color: #a0e0a0; background-color: #00381f;">          `(("orgfiles"
-</span>           :base-directory "~/git/taxodium/post"
+</span><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed">          '(("orgfiles"
+</span><span class="org-diff-indicator-added">+</span><span class="org-diff-added">          `(("orgfiles"
+</span><span class="org-diff-context">           :base-directory "~/git/taxodium/post"
            :base-extension "org"
            :html-head ,spike-leung/html-head
            ;; ... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
-           )))
-</pre>
+</span>           )))
+</code></pre>
 </div>
 
 <blockquote>
@@ -328,7 +328,7 @@ In the simplest case, it is identical to the special form quote
 </p>
 
 <p>
-&#x2026;
+&hellip;
 </p>
 
 <p>
@@ -367,7 +367,7 @@ org publish 的时候会给 heading、figure、details、pre 等元素生成 id�
 具体的做法是每次保存 org 文件的时候，我都为 heading 生成 <code>CUSTOM_ID</code> 。
 </p>
 
-<section role="note" id="org8f6321d">
+<section role="note" id="org94e2eec">
 <p>
 在 <a href="https://emacs-china.org/t/rx/30034">用 rx 写正则表达式，太舒服了！</a> 中，有人提到了其他方法，例如覆盖 <code>org-export-get-reference</code> 的实现。
 </p>
@@ -377,21 +377,21 @@ org publish 的时候会给 heading、figure、details、pre 等元素生成 id�
 <summary>相关代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/org-add-custom-id-to-headings-in-blog-files</span> ()
-  <span style="color: #9ac8e0; font-style: italic;">"Add a CUSTOM_ID property to all headings in the current buffer, if it does not already exist."</span>
-  (<span style="color: #b6a0ff; font-weight: bold;">interactive</span>)
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/org-add-custom-id-to-headings-in-blog-files</span> ()
+  <span class="org-doc">"Add a CUSTOM_ID property to all headings in the current buffer, if it does not already exist."</span>
+  (<span class="org-keyword">interactive</span>)
   (org-map-entries
-   (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> ()
-     (<span style="color: #b6a0ff; font-weight: bold;">unless</span> (org-entry-get nil <span style="color: #79a8ff;">"CUSTOM_ID"</span>)
-       (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((custom-id (org-id-new)))
-         (org-set-property <span style="color: #79a8ff;">"CUSTOM_ID"</span> custom-id))))))
+   (<span class="org-keyword">lambda</span> ()
+     (<span class="org-keyword">unless</span> (org-entry-get nil <span class="org-string">"CUSTOM_ID"</span>)
+       (<span class="org-keyword">let</span> ((custom-id (org-id-new)))
+         (org-set-property <span class="org-string">"CUSTOM_ID"</span> custom-id))))))
 
 (add-hook 'org-mode-hook
-          (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> ()
-            (<span style="color: #b6a0ff; font-weight: bold;">when</span> (<span style="color: #b6a0ff; font-weight: bold;">and</span> buffer-file-name
-                       (string-match <span style="color: #79a8ff;">"taxodium"</span> buffer-file-name)) <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">only apply to blog files
+          (<span class="org-keyword">lambda</span> ()
+            (<span class="org-keyword">when</span> (<span class="org-keyword">and</span> buffer-file-name
+                       (string-match <span class="org-string">"taxodium"</span> buffer-file-name)) <span class="org-comment-delimiter">;; </span><span class="org-comment">only apply to blog files
 </span>              (add-hook 'before-save-hook 'spike-leung/org-add-custom-id-to-headings-in-blog-files nil 'local))))
-</pre>
+</code></pre>
 </div>
 </details>
 
@@ -403,28 +403,28 @@ org publish 的时候会给 heading、figure、details、pre 等元素生成 id�
 <summary>相关代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/remove-unnessary-id-from-html</span> (text backend info)
-  <span style="color: #9ac8e0; font-style: italic;">"Remove unnecessarily id attibute.
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/remove-unnessary-id-from-html</span> (text backend info)
+  <span class="org-doc">"Remove unnecessarily id attibute.
 These elements's ID will be remove: figure,details,pre ..."</span>
-  (<span style="color: #b6a0ff; font-weight: bold;">when</span> (org-export-derived-backend-p backend 'html)
-    (replace-regexp-in-string (<span style="color: #b6a0ff; font-weight: bold;">rx</span> (seq <span style="color: #79a8ff;">"&lt;"</span>
-                                       (group (<span style="color: #b6a0ff; font-weight: bold;">or</span> <span style="color: #79a8ff;">"figure"</span> <span style="color: #79a8ff;">"details"</span> <span style="color: #79a8ff;">"pre"</span>))
-                                       (group (zero-or-more (not <span style="color: #79a8ff;">"&gt;"</span>)))
-                                       (group (seq whitespace <span style="color: #79a8ff;">"id="</span> (syntax string-quote) <span style="color: #79a8ff;">"org"</span> (zero-or-more hex) (syntax string-quote)))
-                                       (group (zero-or-more (not <span style="color: #79a8ff;">"&gt;"</span>)))
-                                       <span style="color: #79a8ff;">"&gt;"</span>))
-                              (<span style="color: #b6a0ff; font-weight: bold;">lambda</span> (match)
-                                (format <span style="color: #79a8ff;">"&lt;%s%s%s%s&gt;"</span>
-                                        (match-string 1 match) <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">tag
-</span>                                        (match-string 2 match) <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">keep other attrs
-</span>                                        <span style="color: #79a8ff;">""</span> <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">remove id
-</span>                                        (match-string 4 match) <span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">keep other attrs
+  (<span class="org-keyword">when</span> (org-export-derived-backend-p backend 'html)
+    (replace-regexp-in-string (<span class="org-keyword">rx</span> (seq <span class="org-string">"&lt;"</span>
+                                       (group (<span class="org-keyword">or</span> <span class="org-string">"figure"</span> <span class="org-string">"details"</span> <span class="org-string">"pre"</span>))
+                                       (group (zero-or-more (not <span class="org-string">"&gt;"</span>)))
+                                       (group (seq whitespace <span class="org-string">"id="</span> (syntax string-quote) <span class="org-string">"org"</span> (zero-or-more hex) (syntax string-quote)))
+                                       (group (zero-or-more (not <span class="org-string">"&gt;"</span>)))
+                                       <span class="org-string">"&gt;"</span>))
+                              (<span class="org-keyword">lambda</span> (match)
+                                (format <span class="org-string">"&lt;%s%s%s%s&gt;"</span>
+                                        (match-string 1 match) <span class="org-comment-delimiter">;; </span><span class="org-comment">tag
+</span>                                        (match-string 2 match) <span class="org-comment-delimiter">;; </span><span class="org-comment">keep other attrs
+</span>                                        <span class="org-string">""</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">remove id
+</span>                                        (match-string 4 match) <span class="org-comment-delimiter">;; </span><span class="org-comment">keep other attrs
 </span>                                        ))
                               text)))
-(<span style="color: #b6a0ff; font-weight: bold;">with-eval-after-load</span> 'ox
+(<span class="org-keyword">with-eval-after-load</span> 'ox
   (add-to-list 'org-export-filter-final-output-functions
                'spike-leung/remove-unnessary-id-from-html))
-</pre>
+</code></pre>
 </div>
 </details>
 </div>
@@ -455,7 +455,7 @@ These elements's ID will be remove: figure,details,pre ..."</span>
 <details>
 <summary>weekly snippet</summary>
 <div class="org-src-container">
-<pre class="src src-elisp"># -*- mode: snippet -*-
+<pre class="src src-elisp"><code># -*- mode: snippet -*-
 # name: weekly
 # key: weekly
 # group: blog
@@ -463,11 +463,11 @@ These elements's ID will be remove: figure,details,pre ..."</span>
 
 #+title: Zine#$1
 #+INDEX: weekly!#$1
-#+date: `(format-time-string <span style="color: #79a8ff;">"&lt;%Y-%m-%d %a&gt;"</span> (current-time))`
-#+lastmod: `(format-time-string <span style="color: #79a8ff;">"&lt;%Y-%m-%d %a %H:%M&gt;"</span> (current-time))`
+#+date: `(format-time-string <span class="org-string">"&lt;%Y-%m-%d %a&gt;"</span> (current-time))`
+#+lastmod: `(format-time-string <span class="org-string">"&lt;%Y-%m-%d %a %H:%M&gt;"</span> (current-time))`
 #+author: Spike Leung
 #+email: l-yanlei@hotmail.com
-#+description: <span style="color: #79a8ff;">""</span>
+#+description: <span class="org-string">""</span>
 #+tags: weekly
 
 
@@ -482,7 +482,7 @@ $0
 * Tool | Library
 
 * Music
-</pre>
+</code></pre>
 </div>
 </details>
 </div>
@@ -494,9 +494,9 @@ $0
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp">(<span style="color: #b6a0ff; font-weight: bold;">setq</span> org-html-html5-fancy t)
-(<span style="color: #b6a0ff; font-weight: bold;">setq</span> org-html-doctype <span style="color: #79a8ff;">"html5"</span>)
-</pre>
+<pre class="src src-elisp"><code>(<span class="org-keyword">setq</span> org-html-html5-fancy t)
+(<span class="org-keyword">setq</span> org-html-doctype <span class="org-string">"html5"</span>)
+</code></pre>
 </div>
 
 <p>
@@ -530,19 +530,19 @@ console.log('Hello world!')
 </p>
 
 <div class="org-src-container">
-<pre class="src src-css"><span style="color: #feacd0;">img.inline-image</span> {
-  <span style="color: #b6a0ff; font-weight: bold;">width</span>: 1em;
-  <span style="color: #b6a0ff; font-weight: bold;">height</span>: 1em;
-  <span style="color: #b6a0ff; font-weight: bold;">vertical-align</span>: -3.5px;
+<pre class="src src-css"><code><span class="org-css-selector">img.inline-image</span> {
+  <span class="org-css-property">width</span>: 1em;
+  <span class="org-css-property">height</span>: 1em;
+  <span class="org-css-property">vertical-align</span>: -3.5px;
 }
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div id="outline-container-ac3d4dcc-6a00-4860-99b4-89905b893ab6" class="outline-2">
 <h2 id="ac3d4dcc-6a00-4860-99b4-89905b893ab6">Refs</h2>
-<div class="outline-text-2" id="text-ac3d4dcc-6a00-4860-99b4-89905b893ab6"><section role="note" id="orgf6e26c2">
+<div class="outline-text-2" id="text-ac3d4dcc-6a00-4860-99b4-89905b893ab6"><section role="note" id="org8477664">
 <p>
 文章可以在 Emacs China 上讨论：<a href="https://emacs-china.org/t/org-publish/28006">使用 org-publish 构建博客</a>。
 </p>

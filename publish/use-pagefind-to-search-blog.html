@@ -171,15 +171,15 @@ pagefind 的一些特点：
 </ol>
 
 <div class="org-src-container">
-<pre class="src src-html">&lt;<span style="color: #feacd0;">link</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"/pagefind/pagefind-ui.css"</span> <span style="color: #00d3d0;">rel</span>=<span style="color: #79a8ff;">"stylesheet"</span>&gt;
-&lt;<span style="color: #feacd0;">script</span> <span style="color: #00d3d0;">src</span>=<span style="color: #79a8ff;">"/pagefind/pagefind-ui.js"</span>&gt;&lt;/<span style="color: #feacd0;">script</span>&gt;
-&lt;<span style="color: #feacd0;">div</span> <span style="color: #00d3d0;">id</span>=<span style="color: #79a8ff;">"search"</span>&gt;&lt;/<span style="color: #feacd0;">div</span>&gt;
-&lt;<span style="color: #feacd0;">script</span>&gt;
+<pre class="src src-html"><code>&lt;<span class="org-function-name">link</span> <span class="org-variable-name">href</span>=<span class="org-string">"/pagefind/pagefind-ui.css"</span> <span class="org-variable-name">rel</span>=<span class="org-string">"stylesheet"</span>&gt;
+&lt;<span class="org-function-name">script</span> <span class="org-variable-name">src</span>=<span class="org-string">"/pagefind/pagefind-ui.js"</span>&gt;&lt;/<span class="org-function-name">script</span>&gt;
+&lt;<span class="org-function-name">div</span> <span class="org-variable-name">id</span>=<span class="org-string">"search"</span>&gt;&lt;/<span class="org-function-name">div</span>&gt;
+&lt;<span class="org-function-name">script</span>&gt;
   window.addEventListener('DOMContentLoaded', (event) =&gt; {
   new PagefindUI({ element: "#search", showSubResults: true });
   });
-&lt;/<span style="color: #feacd0;">script</span>&gt;
-</pre>
+&lt;/<span class="org-function-name">script</span>&gt;
+</code></pre>
 </div>
 
 <p>
@@ -197,23 +197,23 @@ pagefind 的一些特点：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff"><span style="color: #989898; font-style: italic;">#</span><span style="color: #989898; font-style: italic;">!/bin/bash</span>
+<pre class="src src-diff"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/bin/bash</span>
 
-<span style="color: #989898; font-style: italic;">#</span><span style="color: #989898; font-style: italic;"> Enable command printing (debug mode)</span>
-set -x
-
-<span style="color: #989898; font-style: italic;">#</span><span style="color: #989898; font-style: italic;"> Only build when `publish` change</span>
-git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF publish
-
-<span style="color: #989898; font-style: italic;">#</span><span style="color: #989898; font-style: italic;"> index.xml is for https://www.v2ex.com/xna</span>
-cp -f publish/rss.xml publish/index.xml
-
-<span style="color: #80e080; background-color: #00381f;">+</span><span style="color: #a0e0a0; background-color: #00381f;"> # see: https://pagefind.app/docs/multilingual/#opting-out-of-multilingual-search
-</span><span style="color: #80e080; background-color: #00381f;">+</span><span style="color: #a0e0a0; background-color: #00381f;"> npx -y pagefind --site publish --force-language zh-CN
+<span class="org-comment-delimiter">#</span><span class="org-comment"> Enable command printing (debug mode)</span>
+<span class="org-diff-context">set -x
 </span>
-<span style="color: #989898; font-style: italic;">#</span><span style="color: #989898; font-style: italic;"> Disable debug mode</span>
+<span class="org-comment-delimiter">#</span><span class="org-comment"> Only build when `publish` change</span>
+<span class="org-diff-context">git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF publish
+</span>
+<span class="org-comment-delimiter">#</span><span class="org-comment"> index.xml is for https://www.v2ex.com/xna</span>
+<span class="org-diff-context">cp -f publish/rss.xml publish/index.xml
+</span>
+<span class="org-diff-indicator-added">+</span><span class="org-diff-added"> # see: https://pagefind.app/docs/multilingual/#opting-out-of-multilingual-search
+</span><span class="org-diff-indicator-added">+</span><span class="org-diff-added"> npx -y pagefind --site publish --force-language zh-CN
+</span>
+<span class="org-comment-delimiter">#</span><span class="org-comment"> Disable debug mode</span>
 set +x
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -236,23 +236,23 @@ set +x
 </p>
 
 <div class="org-src-container">
-<pre class="src src-html">&lt;<span style="color: #b6a0ff; font-weight: bold;">!DOCTYPE</span> html&gt;
-&lt;<span style="color: #feacd0;">html</span> <span style="color: #00d3d0;">lang</span>=<span style="color: #79a8ff;">"zh-CN"</span>&gt;
-  &lt;<span style="color: #feacd0;">head</span>&gt;
-    &lt;<span style="color: #feacd0;">meta</span> <span style="color: #00d3d0;">http-equiv</span>=<span style="color: #79a8ff;">"Content-Type"</span> <span style="color: #00d3d0;">content</span>=<span style="color: #79a8ff;">"text/html;charset=utf-8"</span> /&gt;
-    &lt;<span style="color: #feacd0;">meta</span> <span style="color: #00d3d0;">name</span>=<span style="color: #79a8ff;">"viewport"</span> <span style="color: #00d3d0;">content</span>=<span style="color: #79a8ff;">"width=device-width, initial-scale=1"</span> /&gt;
-    &lt;<span style="color: #feacd0;">title</span>&gt;<span style="font-weight: bold; text-decoration: underline;">Search</span>&lt;/<span style="color: #feacd0;">title</span>&gt;
-    &lt;<span style="color: #feacd0;">meta</span> <span style="color: #00d3d0;">name</span>=<span style="color: #79a8ff;">"author"</span> <span style="color: #00d3d0;">content</span>=<span style="color: #79a8ff;">"Spike Leung"</span> /&gt;
-    &lt;<span style="color: #feacd0;">meta</span> <span style="color: #00d3d0;">name</span>=<span style="color: #79a8ff;">"description"</span> <span style="color: #00d3d0;">content</span>=<span style="color: #79a8ff;">"&amp;quot;&amp;quot;"</span> /&gt;
-    &lt;<span style="color: #feacd0;">meta</span> <span style="color: #00d3d0;">name</span>=<span style="color: #79a8ff;">"generator"</span> <span style="color: #00d3d0;">content</span>=<span style="color: #79a8ff;">"Org Mode"</span> /&gt;
-    &lt;<span style="color: #feacd0;">link</span> <span style="color: #00d3d0;">rel</span>=<span style="color: #79a8ff;">"stylesheet"</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"../styles/style.css"</span> <span style="color: #00d3d0;">type</span>=<span style="color: #79a8ff;">"text/css"</span>/&gt;
-    &lt;<span style="color: #feacd0;">link</span> <span style="color: #00d3d0;">rel</span>=<span style="color: #79a8ff;">"icon"</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"/favicon.ico"</span> <span style="color: #00d3d0;">type</span>=<span style="color: #79a8ff;">"image/x-icon"</span>&gt;
-    &lt;<span style="color: #feacd0;">link</span> <span style="color: #00d3d0;">href</span>=<span style="color: #79a8ff;">"/pagefind/pagefind-ui.css"</span> <span style="color: #00d3d0;">rel</span>=<span style="color: #79a8ff;">"stylesheet"</span>&gt;
-    &lt;<span style="color: #feacd0;">script</span> <span style="color: #00d3d0;">src</span>=<span style="color: #79a8ff;">"/pagefind/pagefind-ui.js"</span>&gt;&lt;/<span style="color: #feacd0;">script</span>&gt;
-  &lt;/<span style="color: #feacd0;">head</span>&gt;
-  &lt;<span style="color: #feacd0;">body</span>&gt;
-    &lt;<span style="color: #feacd0;">div</span> <span style="color: #00d3d0;">id</span>=<span style="color: #79a8ff;">"search"</span>&gt;&lt;/<span style="color: #feacd0;">div</span>&gt;
-    &lt;<span style="color: #feacd0;">script</span>&gt;
+<pre class="src src-html"><code>&lt;<span class="org-keyword">!DOCTYPE</span> html&gt;
+&lt;<span class="org-function-name">html</span> <span class="org-variable-name">lang</span>=<span class="org-string">"zh-CN"</span>&gt;
+  &lt;<span class="org-function-name">head</span>&gt;
+    &lt;<span class="org-function-name">meta</span> <span class="org-variable-name">http-equiv</span>=<span class="org-string">"Content-Type"</span> <span class="org-variable-name">content</span>=<span class="org-string">"text/html;charset=utf-8"</span> /&gt;
+    &lt;<span class="org-function-name">meta</span> <span class="org-variable-name">name</span>=<span class="org-string">"viewport"</span> <span class="org-variable-name">content</span>=<span class="org-string">"width=device-width, initial-scale=1"</span> /&gt;
+    &lt;<span class="org-function-name">title</span>&gt;<span class="org-underline"><span class="org-bold">Search</span></span>&lt;/<span class="org-function-name">title</span>&gt;
+    &lt;<span class="org-function-name">meta</span> <span class="org-variable-name">name</span>=<span class="org-string">"author"</span> <span class="org-variable-name">content</span>=<span class="org-string">"Spike Leung"</span> /&gt;
+    &lt;<span class="org-function-name">meta</span> <span class="org-variable-name">name</span>=<span class="org-string">"description"</span> <span class="org-variable-name">content</span>=<span class="org-string">"&amp;quot;&amp;quot;"</span> /&gt;
+    &lt;<span class="org-function-name">meta</span> <span class="org-variable-name">name</span>=<span class="org-string">"generator"</span> <span class="org-variable-name">content</span>=<span class="org-string">"Org Mode"</span> /&gt;
+    &lt;<span class="org-function-name">link</span> <span class="org-variable-name">rel</span>=<span class="org-string">"stylesheet"</span> <span class="org-variable-name">href</span>=<span class="org-string">"../styles/style.css"</span> <span class="org-variable-name">type</span>=<span class="org-string">"text/css"</span>/&gt;
+    &lt;<span class="org-function-name">link</span> <span class="org-variable-name">rel</span>=<span class="org-string">"icon"</span> <span class="org-variable-name">href</span>=<span class="org-string">"/favicon.ico"</span> <span class="org-variable-name">type</span>=<span class="org-string">"image/x-icon"</span>&gt;
+    &lt;<span class="org-function-name">link</span> <span class="org-variable-name">href</span>=<span class="org-string">"/pagefind/pagefind-ui.css"</span> <span class="org-variable-name">rel</span>=<span class="org-string">"stylesheet"</span>&gt;
+    &lt;<span class="org-function-name">script</span> <span class="org-variable-name">src</span>=<span class="org-string">"/pagefind/pagefind-ui.js"</span>&gt;&lt;/<span class="org-function-name">script</span>&gt;
+  &lt;/<span class="org-function-name">head</span>&gt;
+  &lt;<span class="org-function-name">body</span>&gt;
+    &lt;<span class="org-function-name">div</span> <span class="org-variable-name">id</span>=<span class="org-string">"search"</span>&gt;&lt;/<span class="org-function-name">div</span>&gt;
+    &lt;<span class="org-function-name">script</span>&gt;
       window.addEventListener('DOMContentLoaded', (event) =&gt; {
         new PagefindUI({
           element: "#search",
@@ -262,10 +262,10 @@ set +x
           excerptLength: 50,
         });
       });
-    &lt;/<span style="color: #feacd0;">script</span>&gt;
-  &lt;/<span style="color: #feacd0;">body</span>&gt;
-&lt;/<span style="color: #feacd0;">html</span>&gt;
-</pre>
+    &lt;/<span class="org-function-name">script</span>&gt;
+  &lt;/<span class="org-function-name">body</span>&gt;
+&lt;/<span class="org-function-name">html</span>&gt;
+</code></pre>
 </div>
 
 <p>

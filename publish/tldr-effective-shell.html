@@ -89,7 +89,7 @@
 </p>
 
 <p>
-&#x2013; <a href="https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md">命令行的艺术</a>
+&ndash; <a href="https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md">命令行的艺术</a>
 </p>
 </blockquote>
 
@@ -289,22 +289,22 @@ Functions are powerful ways to write logic but will normally be shell-specific.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">wsl_proxy_on</span>() {
-    <span style="color: #f78fe7; font-weight: bold;">local</span> <span style="color: #00d3d0;">port</span>=10810
-    <span style="color: #f78fe7; font-weight: bold;">export</span> <span style="color: #00d3d0;">windows_host</span>=<span style="color: #f78fe7; font-weight: bold;">`cat /etc/resolv.conf | grep nameserver | cut -d' ' -f 2`</span>
-    <span style="color: #f78fe7; font-weight: bold;">export</span> <span style="color: #00d3d0;">ALL_PROXY</span>=socks5://$<span style="color: #00d3d0;">windows_host</span>:$<span style="color: #00d3d0;">port</span>
-    <span style="color: #f78fe7; font-weight: bold;">export</span> <span style="color: #00d3d0;">HTTP_PROXY</span>=$<span style="color: #00d3d0;">ALL_PROXY</span>
-    <span style="color: #f78fe7; font-weight: bold;">export</span> <span style="color: #00d3d0;">http_proxy</span>=$<span style="color: #00d3d0;">ALL_PROXY</span>
-    <span style="color: #f78fe7; font-weight: bold;">export</span> <span style="color: #00d3d0;">HTTPS_PROXY</span>=$<span style="color: #00d3d0;">ALL_PROXY</span>
-    <span style="color: #f78fe7; font-weight: bold;">export</span> <span style="color: #00d3d0;">https_proxy</span>=$<span style="color: #00d3d0;">ALL_PROXY</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> -e <span style="color: #79a8ff;">"proxy on"</span>
+<pre class="src src-bash"><code><span class="org-function-name">wsl_proxy_on</span>() {
+    <span class="org-builtin">local</span> <span class="org-variable-name">port</span>=10810
+    <span class="org-builtin">export</span> <span class="org-variable-name">windows_host</span>=<span class="org-sh-quoted-exec">`cat /etc/resolv.conf | grep nameserver | cut -d' ' -f 2`</span>
+    <span class="org-builtin">export</span> <span class="org-variable-name">ALL_PROXY</span>=socks5://$<span class="org-variable-name">windows_host</span>:$<span class="org-variable-name">port</span>
+    <span class="org-builtin">export</span> <span class="org-variable-name">HTTP_PROXY</span>=$<span class="org-variable-name">ALL_PROXY</span>
+    <span class="org-builtin">export</span> <span class="org-variable-name">http_proxy</span>=$<span class="org-variable-name">ALL_PROXY</span>
+    <span class="org-builtin">export</span> <span class="org-variable-name">HTTPS_PROXY</span>=$<span class="org-variable-name">ALL_PROXY</span>
+    <span class="org-builtin">export</span> <span class="org-variable-name">https_proxy</span>=$<span class="org-variable-name">ALL_PROXY</span>
+    <span class="org-builtin">echo</span> -e <span class="org-string">"proxy on"</span>
 }
 
-<span style="color: #feacd0;">wsl_proxy_off</span>() {
-    <span style="color: #f78fe7; font-weight: bold;">unset</span> ALL_PROXY HTTPS_PROXY https_proxy HTTP_PROXY http_proxy
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> -e <span style="color: #79a8ff;">"proxy off"</span>
+<span class="org-function-name">wsl_proxy_off</span>() {
+    <span class="org-builtin">unset</span> ALL_PROXY HTTPS_PROXY https_proxy HTTP_PROXY http_proxy
+    <span class="org-builtin">echo</span> -e <span class="org-string">"proxy off"</span>
 }
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -317,13 +317,13 @@ Aliases are conveniences for human operators, but only in the context of an inte
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">---------------------------------------------------------------- #
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">alias
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">---------------------------------------------------------------- #
-</span><span style="color: #f78fe7; font-weight: bold;">alias</span> <span style="color: #00d3d0;">wpon</span>=wsl_proxy_on
-<span style="color: #f78fe7; font-weight: bold;">alias</span> <span style="color: #00d3d0;">pbcopy</span>=<span style="color: #79a8ff;">'clip.exe'</span>
-<span style="color: #f78fe7; font-weight: bold;">alias</span> <span style="color: #00d3d0;">pbpaste</span>=<span style="color: #79a8ff;">"powershell.exe -command 'Get-Clipboard' | tr -d '\r' | head -n -1"</span>
-</pre>
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">---------------------------------------------------------------- #
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">alias
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">---------------------------------------------------------------- #
+</span><span class="org-builtin">alias</span> <span class="org-variable-name">wpon</span>=wsl_proxy_on
+<span class="org-builtin">alias</span> <span class="org-variable-name">pbcopy</span>=<span class="org-string">'clip.exe'</span>
+<span class="org-builtin">alias</span> <span class="org-variable-name">pbpaste</span>=<span class="org-string">"powershell.exe -command 'Get-Clipboard' | tr -d '\r' | head -n -1"</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -355,34 +355,34 @@ Aliases are conveniences for human operators, but only in the context of an inte
 <div id="outline-container-13e79491-f2a3-4523-8ce3-e0495e89cac0" class="outline-4">
 <h4 id="13e79491-f2a3-4523-8ce3-e0495e89cac0"><a href="https://github.com/tldr-pages/tldr">tldr</a></h4>
 <div class="outline-text-4" id="text-13e79491-f2a3-4523-8ce3-e0495e89cac0"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">install
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">use npm
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">install
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">use npm
 </span>npm install -g tldr
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">use python
+<span class="org-comment-delimiter"># </span><span class="org-comment">use python
 </span>pip3 install tldr
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">use Homebrew
+<span class="org-comment-delimiter"># </span><span class="org-comment">use Homebrew
 </span>brew install tldr
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">how to use
+<span class="org-comment-delimiter"># </span><span class="org-comment">how to use
 </span>tldr git
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
 <div id="outline-container-64cc3741-18d4-4c44-ae71-7cc410c36686" class="outline-4">
 <h4 id="64cc3741-18d4-4c44-ae71-7cc410c36686"><a href="https://github.com/chubin/cheat.sh">cht.sh</a></h4>
 <div class="outline-text-4" id="text-64cc3741-18d4-4c44-ae71-7cc410c36686"><div class="org-src-container">
-<pre class="src src-bash">curl cheat.sh/tar
+<pre class="src src-bash"><code>curl cheat.sh/tar
 curl cht.sh/curl
 curl https://cheat.sh/rsync
 curl https://cht.sh/tr
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">keyword
+<span class="org-comment-delimiter"># </span><span class="org-comment">keyword
 </span>curl cht.sh/~snapshot
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">language name space
+<span class="org-comment-delimiter"># </span><span class="org-comment">language name space
 </span>curl cht.sh/go/Pointers
 curl cht.sh/scala/Functions
 curl cht.sh/python/lambda
@@ -391,16 +391,16 @@ curl cht.sh/go/reverse+a+list
 curl cht.sh/python/random+list+elements
 curl cht.sh/js/parse+json
 curl cht.sh/lua/merge+tables
-curl cht.sh/clojure/variadic+<span style="color: #b6a0ff; font-weight: bold;">function</span>
+curl cht.sh/clojure/variadic+<span class="org-keyword">function</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">ask question
-</span>curl cht.sh/<span style="color: #79a8ff;">"How do I copy a folder in bash?"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">ask question
+</span>curl cht.sh/<span class="org-string">"How do I copy a folder in bash?"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">pick another answer
+<span class="org-comment-delimiter"># </span><span class="org-comment">pick another answer
 </span>curl cht.sh/python/random+string
 curl cht.sh/python/random+string/1
 curl cht.sh/python/random+string/2
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -423,14 +423,14 @@ curl cht.sh/python/random+string/2
 </dl>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #f78fe7; font-weight: bold;">alias</span> ..=<span style="color: #79a8ff;">"cd .."</span>
-<span style="color: #f78fe7; font-weight: bold;">alias</span> ...=<span style="color: #79a8ff;">"cd ../.."</span>
-<span style="color: #f78fe7; font-weight: bold;">alias</span> ....=<span style="color: #79a8ff;">"cd ../../.."</span>
-<span style="color: #f78fe7; font-weight: bold;">alias</span> .....=<span style="color: #79a8ff;">"cd ../../../.."</span>
-<span style="color: #f78fe7; font-weight: bold;">alias</span> ......=<span style="color: #79a8ff;">"cd ../../../../.."</span>
-<span style="color: #f78fe7; font-weight: bold;">alias</span> .......=<span style="color: #79a8ff;">"cd ../../../../../.."</span>
-<span style="color: #f78fe7; font-weight: bold;">alias</span> ........=<span style="color: #79a8ff;">"cd ../../../../../../.."</span>
-</pre>
+<pre class="src src-bash"><code><span class="org-builtin">alias</span> ..=<span class="org-string">"cd .."</span>
+<span class="org-builtin">alias</span> ...=<span class="org-string">"cd ../.."</span>
+<span class="org-builtin">alias</span> ....=<span class="org-string">"cd ../../.."</span>
+<span class="org-builtin">alias</span> .....=<span class="org-string">"cd ../../../.."</span>
+<span class="org-builtin">alias</span> ......=<span class="org-string">"cd ../../../../.."</span>
+<span class="org-builtin">alias</span> .......=<span class="org-string">"cd ../../../../../.."</span>
+<span class="org-builtin">alias</span> ........=<span class="org-string">"cd ../../../../../../.."</span>
+</code></pre>
 </div>
 
 <blockquote>
@@ -481,7 +481,7 @@ One thing we might want to do is quickly move from one location to another, then
 </p>
 
 <p>
-&#x2013; <a href="https://missing-semester-cn.github.io/2020/shell-tools/">Shell 工具和脚本</a>
+&ndash; <a href="https://missing-semester-cn.github.io/2020/shell-tools/">Shell 工具和脚本</a>
 </p>
 </blockquote></li>
 </ul>
@@ -593,45 +593,45 @@ space and then passes it to the <code>echo</code> command.
 </dl>
 
 <div class="org-src-container">
-<pre class="src src-shell"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#23558;&#25214;&#21040;&#30340;&#25991;&#20214;&#36890;&#36807; xargs &#25340;&#25509;&#21518;&#65292;&#20256;&#32473; rm &#25191;&#34892;
+<pre class="src src-shell"><code><span class="org-comment-delimiter"># </span><span class="org-comment">&#23558;&#25214;&#21040;&#30340;&#25991;&#20214;&#36890;&#36807; xargs &#25340;&#25509;&#21518;&#65292;&#20256;&#32473; rm &#25191;&#34892;
 </span>touch file{1..100}.txt
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">fail
+<span class="org-comment-delimiter"># </span><span class="org-comment">fail
 </span>find . -empty | rm
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">success
+<span class="org-comment-delimiter"># </span><span class="org-comment">success
 </span>find . -empty | xargs rm
 
-touch <span style="color: #79a8ff;">"chapter "</span>{1,2,3}.md
+touch <span class="org-string">"chapter "</span>{1,2,3}.md
 find . -type f
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">./chapter 1.md
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">./chapter 2.md
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">./chapter 3.md
+<span class="org-comment-delimiter"># </span><span class="org-comment">./chapter 1.md
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">./chapter 2.md
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">./chapter 3.md
 </span>
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#19978;&#38754;&#30340;&#25991;&#20214;&#21517;&#26377;&#31354;&#26684;
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">-print0 &#32473;&#27599;&#19968;&#20010; item &#36861;&#21152;&#19968;&#20010;&#29305;&#27530; 'null' &#23383;&#31526;
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">-0 &#21578;&#35785; xargs &#27599;&#20010;&#20803;&#32032;&#26159;&#29992;&#29305;&#27530;&#30340; 'null' &#23383;&#31526;&#20998;&#38548;&#30340;&#65288;&#32780;&#19981;&#26159;&#31354;&#26684;&#65289;
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#36825;&#20040;&#20570;&#65292;&#21487;&#20197;&#36991;&#20813;&#19968;&#20123;&#31354;&#26684;&#65292;tab&#65292;&#24341;&#21495;&#36896;&#25104;&#30340;&#38382;&#39064;&#65292;&#24314;&#35758;&#24635;&#26159;&#24102;&#19978;&#36825;&#20004;&#20010;&#36873;&#39033;
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#19978;&#38754;&#30340;&#25991;&#20214;&#21517;&#26377;&#31354;&#26684;
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">-print0 &#32473;&#27599;&#19968;&#20010; item &#36861;&#21152;&#19968;&#20010;&#29305;&#27530; 'null' &#23383;&#31526;
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">-0 &#21578;&#35785; xargs &#27599;&#20010;&#20803;&#32032;&#26159;&#29992;&#29305;&#27530;&#30340; 'null' &#23383;&#31526;&#20998;&#38548;&#30340;&#65288;&#32780;&#19981;&#26159;&#31354;&#26684;&#65289;
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">&#36825;&#20040;&#20570;&#65292;&#21487;&#20197;&#36991;&#20813;&#19968;&#20123;&#31354;&#26684;&#65292;tab&#65292;&#24341;&#21495;&#36896;&#25104;&#30340;&#38382;&#39064;&#65292;&#24314;&#35758;&#24635;&#26159;&#24102;&#19978;&#36825;&#20004;&#20010;&#36873;&#39033;
 </span>find . -type f -print0 | xargs -0 -t rm
 
 touch file{1..5}
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#21578;&#35785; xargs &#26368;&#22810;&#29992;&#22810;&#23569;&#34892;&#21435;&#25191;&#34892;&#21629;&#20196;
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#21578;&#35785; xargs &#26368;&#22810;&#29992;&#22810;&#23569;&#34892;&#21435;&#25191;&#34892;&#21629;&#20196;
 </span>find . -type f | xargs -L 3 echo
 ./file1 ./file2 ./file3
 ./file4 ./file5
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#40664;&#35748; xargs &#23558;&#21442;&#25968;&#25918;&#21040;&#26368;&#21518;
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#26377;&#26102;&#24819;&#25226;&#21442;&#25968;&#25918;&#22312;&#21035;&#30340;&#22320;&#26041;&#65292;&#21487;&#20197;&#20351;&#29992; -I &#36873;&#39033;
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">-I {} &#34920;&#31034;&#23558;&#21442;&#25968;&#25226; {} &#24403;&#20316; placeholder&#65292;&#28982;&#21518;&#21487;&#20197;&#22312;&#21518;&#38754;&#20219;&#20309;&#22320;&#26041;&#22810;&#27425;&#21435;&#29992;
-</span>find . -name <span style="color: #79a8ff;">"*.txt"</span> -print0 | xargs -0 -t -I {} cp {} ~/backups
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#40664;&#35748; xargs &#23558;&#21442;&#25968;&#25918;&#21040;&#26368;&#21518;
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">&#26377;&#26102;&#24819;&#25226;&#21442;&#25968;&#25918;&#22312;&#21035;&#30340;&#22320;&#26041;&#65292;&#21487;&#20197;&#20351;&#29992; -I &#36873;&#39033;
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">-I {} &#34920;&#31034;&#23558;&#21442;&#25968;&#25226; {} &#24403;&#20316; placeholder&#65292;&#28982;&#21518;&#21487;&#20197;&#22312;&#21518;&#38754;&#20219;&#20309;&#22320;&#26041;&#22810;&#27425;&#21435;&#29992;
+</span>find . -name <span class="org-string">"*.txt"</span> -print0 | xargs -0 -t -I {} cp {} ~/backups
 cp ./file2.txt /home/dwmkerr/backups
 cp ./file3.txt /home/dwmkerr/backups
 cp ./file1.txt /home/dwmkerr/backups
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">-p &#22312;&#25191;&#34892;&#21629;&#20196;&#26102;&#36827;&#34892;&#35810;&#38382;
+<span class="org-comment-delimiter"># </span><span class="org-comment">-p &#22312;&#25191;&#34892;&#21629;&#20196;&#26102;&#36827;&#34892;&#35810;&#38382;
 </span>kubectl get pods -o name | xargs -L 1 -p kubectl delete
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">-d (delimiter) &#21578;&#35785; xargs &#65292;&#36755;&#20837;&#26159;&#36890;&#36807;&#20160;&#20040;&#20998;&#38548;&#31526;&#65292;&#20998;&#21106;&#25104;&#22810;&#20010;&#21442;&#25968;&#30340;
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> $<span style="color: #00d3d0;">PATH</span> | xargs -d <span style="color: #79a8ff;">':'</span> -p -L 1 ls
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">-d (delimiter) &#21578;&#35785; xargs &#65292;&#36755;&#20837;&#26159;&#36890;&#36807;&#20160;&#20040;&#20998;&#38548;&#31526;&#65292;&#20998;&#21106;&#25104;&#22810;&#20010;&#21442;&#25968;&#30340;
+</span><span class="org-builtin">echo</span> $<span class="org-variable-name">PATH</span> | xargs -d <span class="org-string">':'</span> -p -L 1 ls
+</code></pre>
 </div>
 </div>
 </div>
@@ -707,8 +707,8 @@ user.
 </figure>
 
 <div class="org-src-container">
-<pre class="src src-bash">cat ~/effective-shell/text/simpsons-characters.txt | sort | uniq
-</pre>
+<pre class="src src-bash"><code>cat ~/effective-shell/text/simpsons-characters.txt | sort | uniq
+</code></pre>
 </div>
 
 
@@ -778,8 +778,8 @@ user.
 </figure>
 
 <div class="org-src-container">
-<pre class="src src-bash">mkdir ~/effective-shell/new-folder | tr <span style="color: #79a8ff;">'[:lower:]'</span> <span style="color: #79a8ff;">'[:upper:]'</span>
-</pre>
+<pre class="src src-bash"><code>mkdir ~/effective-shell/new-folder | tr <span class="org-string">'[:lower:]'</span> <span class="org-string">'[:upper:]'</span>
+</code></pre>
 </div>
 
 
@@ -789,8 +789,8 @@ user.
 </figure>
 
 <div class="org-src-container">
-<pre class="src src-bash">mkdir ~/effective-shell/new-folder 2&gt;&amp;1 | tr <span style="color: #79a8ff;">'[:lower:]'</span> <span style="color: #79a8ff;">'[:upper:]'</span>
-</pre>
+<pre class="src src-bash"><code>mkdir ~/effective-shell/new-folder 2&gt;&amp;1 | tr <span class="org-string">'[:lower:]'</span> <span class="org-string">'[:upper:]'</span>
+</code></pre>
 </div>
 
 
@@ -865,8 +865,8 @@ right</i>, <a href="https://www.brianstorti.com/understanding-shell-script-idiom
 </figure>
 
 <div class="org-src-container">
-<pre class="src src-bash">cat ~/effective-shell/text/simpsons-characters.txt | sort | tee sorted.txt | uniq | grep <span style="color: #79a8ff;">'^A'</span>
-</pre>
+<pre class="src src-bash"><code>cat ~/effective-shell/text/simpsons-characters.txt | sort | tee sorted.txt | uniq | grep <span class="org-string">'^A'</span>
+</code></pre>
 </div>
 
 <blockquote>
@@ -991,25 +991,25 @@ A shell script is just a text file which contains a set of commands.
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-zsh"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Write the title of our command.
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"common commands:"</span>
+<pre class="src src-zsh"><code><span class="org-comment-delimiter"># </span><span class="org-comment">Write the title of our command.
+</span><span class="org-builtin">echo</span> <span class="org-string">"common commands:"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Show the most commonly used commands.
-</span>tail ~/.bash_history -n 1000 | sort | uniq -c | sed <span style="color: #79a8ff;">'s/^ *//'</span> | sort -n -r | head -n 10
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Show the most commonly used commands.
+</span>tail ~/.bash_history -n 1000 | sort | uniq -c | sed <span class="org-string">'s/^ *//'</span> | sort -n -r | head -n 10
+</code></pre>
 </div>
 </div>
 <div id="outline-container-41d10d0d-3cd1-4c6d-b4db-213b85f45b8d" class="outline-4">
 <h4 id="41d10d0d-3cd1-4c6d-b4db-213b85f45b8d"><a href="https://effective-shell.com/part-3-manipulating-text/shell-script-essentials/#multi-line-commands">命令过长时如何换行</a></h4>
 <div class="outline-text-4" id="text-41d10d0d-3cd1-4c6d-b4db-213b85f45b8d"><div class="org-src-container">
-<pre class="src src-zsh"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Show the most commonly used commands.
-</span>tail ~/.bash_history -n 1000 <span style="color: #79a8ff;">\</span>
-    | sort <span style="color: #79a8ff;">\</span>
-    | uniq -c <span style="color: #79a8ff;">\</span>
-    | sed <span style="color: #79a8ff;">'s/^ *//'</span> <span style="color: #79a8ff;">\</span>
-    | sort -n -r <span style="color: #79a8ff;">\</span>
+<pre class="src src-zsh"><code><span class="org-comment-delimiter"># </span><span class="org-comment">Show the most commonly used commands.
+</span>tail ~/.bash_history -n 1000 <span class="org-sh-escaped-newline">\</span>
+    | sort <span class="org-sh-escaped-newline">\</span>
+    | uniq -c <span class="org-sh-escaped-newline">\</span>
+    | sed <span class="org-string">'s/^ *//'</span> <span class="org-sh-escaped-newline">\</span>
+    | sort -n -r <span class="org-sh-escaped-newline">\</span>
     | head -n 10
-</pre>
+</code></pre>
 </div>
 
 <blockquote>
@@ -1028,20 +1028,20 @@ as a comment) then the command will fail.
 <div id="outline-container-981c5080-2503-4fc2-9ad7-f54f4792d8d3" class="outline-4">
 <h4 id="981c5080-2503-4fc2-9ad7-f54f4792d8d3">通过 shell 程序执行</h4>
 <div class="outline-text-4" id="text-981c5080-2503-4fc2-9ad7-f54f4792d8d3"><div class="org-src-container">
-<pre class="src src-shell">bash ~/scripts/common.sh
+<pre class="src src-shell"><code>bash ~/scripts/common.sh
 
 sh ~/scripts/common.sh
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
 <div id="outline-container-3db4c8f3-8970-4ec1-8d82-d4f7e6700ac7" class="outline-4">
 <h4 id="3db4c8f3-8970-4ec1-8d82-d4f7e6700ac7">让脚本可执行，通过脚本的路径执行</h4>
 <div class="outline-text-4" id="text-3db4c8f3-8970-4ec1-8d82-d4f7e6700ac7"><div class="org-src-container">
-<pre class="src src-shell">chmod +x ~/scripts/common.sh
+<pre class="src src-shell"><code>chmod +x ~/scripts/common.sh
 
 ~/scripts/common.v1.sh
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -1085,14 +1085,14 @@ together, we get 'sharp bang', which is shortened to 'shebang'.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;">#</span><span style="color: #989898; font-style: italic;">!/usr/bin/</span><span style="color: #b6a0ff; font-weight: bold;">sh</span><span style="color: #989898; font-style: italic;">
+<pre class="src src-bash"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">sh</span><span class="org-comment">
 </span>
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Write the title of our command.
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"common commands:"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Write the title of our command.
+</span><span class="org-builtin">echo</span> <span class="org-string">"common commands:"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Show the most commonly used commands.
-</span>tail ~/.bash_history -n 1000 | sort | uniq -c | sed <span style="color: #79a8ff;">'s/^ *//'</span> | sort -n -r | head -n 10
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Show the most commonly used commands.
+</span>tail ~/.bash_history -n 1000 | sort | uniq -c | sed <span class="org-string">'s/^ *//'</span> | sort -n -r | head -n 10
+</code></pre>
 </div>
 
 <p>
@@ -1100,24 +1100,24 @@ together, we get 'sharp bang', which is shortened to 'shebang'.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;">#</span><span style="color: #989898; font-style: italic;">!/usr/bin/</span><span style="color: #b6a0ff; font-weight: bold;">python3</span><span style="color: #989898; font-style: italic;">
+<pre class="src src-bash"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">python3</span><span class="org-comment">
 </span>
-<span style="color: #f78fe7; font-weight: bold;">print</span>(<span style="color: #79a8ff;">'Hello from Python'</span>)
-</pre>
+<span class="org-builtin">print</span>(<span class="org-string">'Hello from Python'</span>)
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;">#</span><span style="color: #989898; font-style: italic;">!/usr/bin/</span><span style="color: #b6a0ff; font-weight: bold;">bash</span><span style="color: #989898; font-style: italic;">
+<pre class="src src-bash"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">bash</span><span class="org-comment">
 </span>
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Hello from Bash"</span>
-</pre>
+<span class="org-builtin">echo</span> <span class="org-string">"Hello from Bash"</span>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;">#</span><span style="color: #989898; font-style: italic;">!/usr/bin/</span><span style="color: #b6a0ff; font-weight: bold;">node</span><span style="color: #989898; font-style: italic;">
+<pre class="src src-bash"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">node</span><span class="org-comment">
 </span>
-<span style="color: #feacd0;">console.log</span>(<span style="color: #79a8ff;">"Hello from Node.js"</span>);
-</pre>
+<span class="org-function-name">console.log</span>(<span class="org-string">"Hello from Node.js"</span>);
+</code></pre>
 </div>
 </div>
 <div id="outline-container-7afd0829-35b8-400e-81c1-933f7de43407" class="outline-4">
@@ -1135,10 +1135,10 @@ together, we get 'sharp bang', which is shortened to 'shebang'.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;">#</span><span style="color: #989898; font-style: italic;">!/usr/bin/</span><span style="color: #b6a0ff; font-weight: bold;">env</span><span style="color: #989898; font-style: italic;"> bash
+<pre class="src src-bash"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">env</span><span class="org-comment"> bash
 </span>
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Hello from Bash"</span>
-</pre>
+<span class="org-builtin">echo</span> <span class="org-string">"Hello from Bash"</span>
+</code></pre>
 </div>
 
 <blockquote>
@@ -1176,11 +1176,11 @@ the environment of the shell that ran the script.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #f78fe7; font-weight: bold;">source</span> ~/effective-shell/scripts/show-info.sh
+<pre class="src src-bash"><code><span class="org-builtin">source</span> ~/effective-shell/scripts/show-info.sh
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">dot sourcing
+<span class="org-comment-delimiter"># </span><span class="org-comment">dot sourcing
 </span>. ~/effective-shell/scripts/show-info.sh
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -1208,8 +1208,8 @@ yourself.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash">ln -s ~/scripts/common.v1.sh /usr/local/bin/common
-</pre>
+<pre class="src src-bash"><code>ln -s ~/scripts/common.v1.sh /usr/local/bin/common
+</code></pre>
 </div>
 </div>
 </div>
@@ -1287,24 +1287,24 @@ process, you will likely want to export your variable.
 <div id="outline-container-8406a3b1-5eca-46d9-98dd-e9c1f98c2b2c" class="outline-4">
 <h4 id="8406a3b1-5eca-46d9-98dd-e9c1f98c2b2c">赋值和引用</h4>
 <div class="outline-text-4" id="text-8406a3b1-5eca-46d9-98dd-e9c1f98c2b2c"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#36890;&#36807; `=` &#36171;&#20540;&#21464;&#37327;&#65292;&#27880;&#24847;&#27809;&#26377;&#31354;&#26684;
-</span><span style="color: #00d3d0;">password</span>=<span style="color: #79a8ff;">"somethingsecret"</span>
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">&#36890;&#36807; `=` &#36171;&#20540;&#21464;&#37327;&#65292;&#27880;&#24847;&#27809;&#26377;&#31354;&#26684;
+</span><span class="org-variable-name">password</span>=<span class="org-string">"somethingsecret"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">$(...) execute a set of commands in a 'sub shell'
-</span><span style="color: #00d3d0;">masked_password</span>=$(<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"$password"</span> | sed <span style="color: #79a8ff;">'s/./*/g'</span>)
+<span class="org-comment-delimiter"># </span><span class="org-comment">$(...) execute a set of commands in a 'sub shell'
+</span><span class="org-variable-name">masked_password</span>=$(<span class="org-builtin">echo</span> <span class="org-string">"$password"</span> | sed <span class="org-string">'s/./*/g'</span>)
 
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Setting password '${masked_password}'..."</span>
+<span class="org-builtin">echo</span> <span class="org-string">"Setting password '${masked_password}'..."</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#26174;&#31034;&#24341;&#29992;&#21464;&#37327; ${variable}
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#26174;&#31034;&#24341;&#29992;&#21464;&#37327; ${variable}
 </span>
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">wrong&#65292;&#20250;&#25214; USER_backup &#21464;&#37327;&#65292;&#20294;&#25214;&#19981;&#21040;
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Creating backup folder at: '$USER_backup'"</span>
-mkdir $<span style="color: #00d3d0;">USER_backup</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">wrong&#65292;&#20250;&#25214; USER_backup &#21464;&#37327;&#65292;&#20294;&#25214;&#19981;&#21040;
+</span><span class="org-builtin">echo</span> <span class="org-string">"Creating backup folder at: '$USER_backup'"</span>
+mkdir $<span class="org-variable-name">USER_backup</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">correct
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Creating backup folder at: '${USER}_backup'"</span>
-mkdir <span style="color: #79a8ff;">"${USER}_backup"</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">correct
+</span><span class="org-builtin">echo</span> <span class="org-string">"Creating backup folder at: '${USER}_backup'"</span>
+mkdir <span class="org-string">"${USER}_backup"</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -1324,11 +1324,11 @@ can be used by either shell.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #00d3d0;">days</span>=(<span style="color: #79a8ff;">"Monday"</span> <span style="color: #79a8ff;">"Tuesday"</span> <span style="color: #79a8ff;">"Wednesday"</span> <span style="color: #79a8ff;">"Thursday"</span> <span style="color: #79a8ff;">"Friday"</span> <span style="color: #79a8ff;">"Saturday"</span> <span style="color: #79a8ff;">"Sunday"</span>)
+<pre class="src src-bash"><code><span class="org-variable-name">days</span>=(<span class="org-string">"Monday"</span> <span class="org-string">"Tuesday"</span> <span class="org-string">"Wednesday"</span> <span class="org-string">"Thursday"</span> <span class="org-string">"Friday"</span> <span class="org-string">"Saturday"</span> <span class="org-string">"Sunday"</span>)
 
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"The first day is: ${days[0]}"</span>
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"The last day is: ${days[6]}"</span>
-</pre>
+<span class="org-builtin">echo</span> <span class="org-string">"The first day is: ${days[0]}"</span>
+<span class="org-builtin">echo</span> <span class="org-string">"The last day is: ${days[6]}"</span>
+</code></pre>
 </div>
 
 <div class="table-wrapper"> <table width="100%">
@@ -1405,16 +1405,16 @@ can be used by either shell.
 <div id="outline-container-a8d9b23b-3106-46ac-b957-67ff2019e392" class="outline-4">
 <h4 id="a8d9b23b-3106-46ac-b957-67ff2019e392"><a href="https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#associative-arrays">对象 (Associative Arrays)</a></h4>
 <div class="outline-text-4" id="text-a8d9b23b-3106-46ac-b957-67ff2019e392"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Create an associative array called 'book'.
-</span><span style="color: #f78fe7; font-weight: bold;">declare</span> -A book
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">Create an associative array called 'book'.
+</span><span class="org-builtin">declare</span> -A book
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Set some values on the array.
-</span><span style="color: #00d3d0;">book</span>[title]=<span style="color: #79a8ff;">"Effective Shell"</span>
-<span style="color: #00d3d0;">book</span>[author]=<span style="color: #79a8ff;">"Dave Kerr"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Set some values on the array.
+</span><span class="org-variable-name">book</span>[title]=<span class="org-string">"Effective Shell"</span>
+<span class="org-variable-name">book</span>[author]=<span class="org-string">"Dave Kerr"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Show one of the values.
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Book details: ${book[title]} - ${book[author]}"</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Show one of the values.
+</span><span class="org-builtin">echo</span> <span class="org-string">"Book details: ${book[title]} - ${book[author]}"</span>
+</code></pre>
 </div>
 
 <blockquote>
@@ -1464,9 +1464,9 @@ characters.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #00d3d0;">message</span>=<span style="color: #79a8ff;">'   ~~ Save $$$ on with ** "this deal" ** ! ~~   '</span>
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"$message"</span>
-</pre>
+<pre class="src src-bash"><code><span class="org-variable-name">message</span>=<span class="org-string">'   ~~ Save $$$ on with ** "this deal" ** ! ~~   '</span>
+<span class="org-builtin">echo</span> <span class="org-string">"$message"</span>
+</code></pre>
 </div>
 </div>
 </li>
@@ -1480,13 +1480,13 @@ they allow you to <b>use parameter expansion</b> with the <code>$</code> dollar 
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #00d3d0;">deal</span>=<span style="color: #79a8ff;">"Buy one get one free"</span>
-<span style="color: #00d3d0;">message</span>=<span style="color: #79a8ff;">"Deal is '$deal' - save \$"</span>
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"$message"</span>
+<pre class="src src-bash"><code><span class="org-variable-name">deal</span>=<span class="org-string">"Buy one get one free"</span>
+<span class="org-variable-name">message</span>=<span class="org-string">"Deal is '$deal' - save \$"</span>
+<span class="org-builtin">echo</span> <span class="org-string">"$message"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">`` &#20869;&#30340;&#20063;&#22312;&#19968;&#20010; sub-shell &#25191;&#34892;&#65292;&#20294;&#24212;&#35813;&#36991;&#20813;&#20351;&#29992;&#65292;&#32479;&#19968;&#20351;&#29992; $() &#30340;&#24418;&#24335;
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"The date is `date`"</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">`` &#20869;&#30340;&#20063;&#22312;&#19968;&#20010; sub-shell &#25191;&#34892;&#65292;&#20294;&#24212;&#35813;&#36991;&#20813;&#20351;&#29992;&#65292;&#32479;&#19968;&#20351;&#29992; $() &#30340;&#24418;&#24335;
+</span><span class="org-builtin">echo</span> <span class="org-string">"The date is `date`"</span>
+</code></pre>
 </div>
 </div>
 </li>
@@ -1557,7 +1557,7 @@ string manipulation.
 
 <li>Make Lowercase: <code>${var,,}</code></li>
 
-<li>&#x2026;</li>
+<li>&hellip;</li>
 </ul>
 </div>
 </li>
@@ -1589,36 +1589,36 @@ variable name explicitly we make our script easier to follow.
 
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#40664;&#35748;&#23384;&#22312; $REPLY
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"What is your name?"</span>
-<span style="color: #f78fe7; font-weight: bold;">read</span>
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Hello, $REPLY"</span>
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">&#40664;&#35748;&#23384;&#22312; $REPLY
+</span><span class="org-builtin">echo</span> <span class="org-string">"What is your name?"</span>
+<span class="org-builtin">read</span>
+<span class="org-builtin">echo</span> <span class="org-string">"Hello, $REPLY"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#25351;&#23450;&#23384;&#20540;&#30340;&#21464;&#37327;
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"What is your name?"</span>
-<span style="color: #f78fe7; font-weight: bold;">read</span> name
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Hello, ${name}"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#25351;&#23450;&#23384;&#20540;&#30340;&#21464;&#37327;
+</span><span class="org-builtin">echo</span> <span class="org-string">"What is your name?"</span>
+<span class="org-builtin">read</span> name
+<span class="org-builtin">echo</span> <span class="org-string">"Hello, ${name}"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">prompt (bash)
-</span><span style="color: #f78fe7; font-weight: bold;">read</span> -p <span style="color: #79a8ff;">"Please enter your name: "</span> name
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Hello, $name"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">prompt (bash)
+</span><span class="org-builtin">read</span> -p <span class="org-string">"Please enter your name: "</span> name
+<span class="org-builtin">echo</span> <span class="org-string">"Hello, $name"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">prompt (zsh)
-</span><span style="color: #f78fe7; font-weight: bold;">read</span> <span style="color: #79a8ff;">"?Please enter your name: "</span>
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Hello, $REPLY"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">prompt (zsh)
+</span><span class="org-builtin">read</span> <span class="org-string">"?Please enter your name: "</span>
+<span class="org-builtin">echo</span> <span class="org-string">"Hello, $REPLY"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">The -s (silent) flag can be used to hide the input as it is being written.
-</span><span style="color: #f78fe7; font-weight: bold;">read</span> -s -p <span style="color: #79a8ff;">"Enter a new password: "</span> password
-<span style="color: #00d3d0;">masked_password</span>=$(<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"$password"</span> | sed <span style="color: #79a8ff;">'s/./*/g'</span>)
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">""</span>
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Your password is: $masked_password"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">The -s (silent) flag can be used to hide the input as it is being written.
+</span><span class="org-builtin">read</span> -s -p <span class="org-string">"Enter a new password: "</span> password
+<span class="org-variable-name">masked_password</span>=$(<span class="org-builtin">echo</span> <span class="org-string">"$password"</span> | sed <span class="org-string">'s/./*/g'</span>)
+<span class="org-builtin">echo</span> <span class="org-string">""</span>
+<span class="org-builtin">echo</span> <span class="org-string">"Your password is: $masked_password"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Limiting the Input
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Use the -n flag with the value 1 to specify that we want to read a single character only.
-</span><span style="color: #f78fe7; font-weight: bold;">read</span> -n 1 -p <span style="color: #79a8ff;">"Continue? (y/n): "</span> yesorno
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">""</span>
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"You typed: ${yesorno}"</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Limiting the Input
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">Use the -n flag with the value 1 to specify that we want to read a single character only.
+</span><span class="org-builtin">read</span> -n 1 -p <span class="org-string">"Continue? (y/n): "</span> yesorno
+<span class="org-builtin">echo</span> <span class="org-string">""</span>
+<span class="org-builtin">echo</span> <span class="org-string">"You typed: ${yesorno}"</span>
+</code></pre>
 </div>
 
 <p>
@@ -1693,15 +1693,15 @@ variable name explicitly we make our script easier to follow.
 </tr>
 
 <tr>
-<td class="org-left">&#x2013;i</td>
+<td class="org-left">&ndash;i</td>
 <td class="org-left">Prefix Decrement</td>
-<td class="org-left">i=3; echo $((&#x2013;i)) # prints 3, i is set to 2</td>
+<td class="org-left">i=3; echo $((&ndash;i)) # prints 3, i is set to 2</td>
 </tr>
 
 <tr>
 <td class="org-left">i--</td>
 <td class="org-left">Postfix Decrement</td>
-<td class="org-left">i=3; echo $((i&#x2013;)) # prints 2, i is set to 2</td>
+<td class="org-left">i=3; echo $((i&ndash;)) # prints 2, i is set to 2</td>
 </tr>
 
 <tr>
@@ -1729,17 +1729,17 @@ variable name explicitly we make our script easier to follow.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">if</span> &lt;test-commands&gt;
-<span style="color: #b6a0ff; font-weight: bold;">then</span>
+<pre class="src src-bash"><code><span class="org-keyword">if</span> &lt;test-commands&gt;
+<span class="org-keyword">then</span>
     &lt;conditional-command 1&gt;
     &lt;conditional-command 2&gt;
     &lt;conditional-command n&gt;
-<span style="color: #b6a0ff; font-weight: bold;">fi</span>
+<span class="org-keyword">fi</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#20889;&#22312;&#19968;&#34892;, &#29992; `;` &#20998;&#38548;
-</span><span style="color: #b6a0ff; font-weight: bold;">if</span> &lt;test-commands&gt;; <span style="color: #b6a0ff; font-weight: bold;">then</span> &lt;conditional-command 1&gt; &lt;conditional-command 2&gt; &lt;conditional-command n&gt;; <span style="color: #b6a0ff; font-weight: bold;">fi</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#20889;&#22312;&#19968;&#34892;, &#29992; `;` &#20998;&#38548;
+</span><span class="org-keyword">if</span> &lt;test-commands&gt;; <span class="org-keyword">then</span> &lt;conditional-command 1&gt; &lt;conditional-command 2&gt; &lt;conditional-command n&gt;; <span class="org-keyword">fi</span>
 
-</pre>
+</code></pre>
 </div>
 
 <blockquote>
@@ -1754,50 +1754,50 @@ the <code>fi</code> keyword, which is <code>if</code> written backwards.
 <div id="outline-container-7786dcb8-b470-48b5-98fe-d6f33a105b56" class="outline-4">
 <h4 id="7786dcb8-b470-48b5-98fe-d6f33a105b56"><a href="https://effective-shell.com/part-4-shell-scripting/mastering-conditional-logic#the-test-command">The Test Command</a></h4>
 <div class="outline-text-4" id="text-7786dcb8-b470-48b5-98fe-d6f33a105b56"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">if</span> <span style="color: #ff5f59;">!</span> test -d ~/backups
-<span style="color: #b6a0ff; font-weight: bold;">then</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Creating backups folder"</span>
+<pre class="src src-bash"><code><span class="org-keyword">if</span> <span class="org-negation-char">!</span> test -d ~/backups
+<span class="org-keyword">then</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"Creating backups folder"</span>
     mkdir ~/backups
-<span style="color: #b6a0ff; font-weight: bold;">fi</span>
+<span class="org-keyword">fi</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#31616;&#20889;
-</span><span style="color: #b6a0ff; font-weight: bold;">if</span> <span style="color: #ff5f59;">!</span> [ -d ~/backups ]
-<span style="color: #b6a0ff; font-weight: bold;">then</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Creating backups folder"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#31616;&#20889;
+</span><span class="org-keyword">if</span> <span class="org-negation-char">!</span> [ -d ~/backups ]
+<span class="org-keyword">then</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"Creating backups folder"</span>
     mkdir ~/backups
-<span style="color: #b6a0ff; font-weight: bold;">fi</span>
-</pre>
+<span class="org-keyword">fi</span>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">if</span> [ -x /usr/local/bin/common ]; <span style="color: #b6a0ff; font-weight: bold;">then</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"The 'common' command has been installed and is executable."</span>
-<span style="color: #b6a0ff; font-weight: bold;">elif</span> [ -e /usr/local/bin/common ]; <span style="color: #b6a0ff; font-weight: bold;">then</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"The 'common' command has been installed and is not executable."</span>
-<span style="color: #b6a0ff; font-weight: bold;">else</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"The 'common' command has not been installed."</span>
-<span style="color: #b6a0ff; font-weight: bold;">fi</span>
-</pre>
+<pre class="src src-bash"><code><span class="org-keyword">if</span> [ -x /usr/local/bin/common ]; <span class="org-keyword">then</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"The 'common' command has been installed and is executable."</span>
+<span class="org-keyword">elif</span> [ -e /usr/local/bin/common ]; <span class="org-keyword">then</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"The 'common' command has been installed and is not executable."</span>
+<span class="org-keyword">else</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"The 'common' command has not been installed."</span>
+<span class="org-keyword">fi</span>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&amp;&amp; 'and' || 'or'
-</span><span style="color: #b6a0ff; font-weight: bold;">if</span> [ $<span style="color: #00d3d0;">year</span> -ge 1980 ] &amp;&amp; [ $<span style="color: #00d3d0;">year</span> -lt 1990 ]; <span style="color: #b6a0ff; font-weight: bold;">then</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"$year is in the 1980s"</span>
-<span style="color: #b6a0ff; font-weight: bold;">fi</span>
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">&amp;&amp; 'and' || 'or'
+</span><span class="org-keyword">if</span> [ $<span class="org-variable-name">year</span> -ge 1980 ] &amp;&amp; [ $<span class="org-variable-name">year</span> -lt 1990 ]; <span class="org-keyword">then</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"$year is in the 1980s"</span>
+<span class="org-keyword">fi</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">-a 'and' -o 'or'
-</span><span style="color: #b6a0ff; font-weight: bold;">if</span> [ $<span style="color: #00d3d0;">year</span> -ge 1980 ] &amp;&amp; [ $<span style="color: #00d3d0;">year</span> -lt 1990 ]; <span style="color: #b6a0ff; font-weight: bold;">then</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"$year is in the 1980s"</span>
-<span style="color: #b6a0ff; font-weight: bold;">fi</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">-a 'and' -o 'or'
+</span><span class="org-keyword">if</span> [ $<span class="org-variable-name">year</span> -ge 1980 ] &amp;&amp; [ $<span class="org-variable-name">year</span> -lt 1990 ]; <span class="org-keyword">then</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"$year is in the 1980s"</span>
+<span class="org-keyword">fi</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Chaining
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Run command1, if it succeeds run command2.
+<span class="org-comment-delimiter"># </span><span class="org-comment">Chaining
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">Run command1, if it succeeds run command2.
 </span>command1 &amp;&amp; command2
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Run command1, if it does not succeed run command2.
+<span class="org-comment-delimiter"># </span><span class="org-comment">Run command1, if it does not succeed run command2.
 </span>command1 || command2
-</pre>
+</code></pre>
 </div>
 
 <div class="table-wrapper"> <table width="100%">
@@ -1933,7 +1933,7 @@ the <code>fi</code> keyword, which is <code>if</code> written backwards.
 <div id="outline-container-671e65c6-295e-4426-ad42-c14c51114988" class="outline-4">
 <h4 id="671e65c6-295e-4426-ad42-c14c51114988"><a href="https://effective-shell.com/part-4-shell-scripting/mastering-conditional-logic#case-statements">Case Statements</a></h4>
 <div class="outline-text-4" id="text-671e65c6-295e-4426-ad42-c14c51114988"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">case</span> &lt;expression&gt;<span style="color: #b6a0ff; font-weight: bold;"> in</span>
+<pre class="src src-bash"><code><span class="org-keyword">case</span> &lt;expression&gt;<span class="org-keyword"> in</span>
     pattern1)
         &lt;pattern1-commands&gt;
         ;;
@@ -1943,8 +1943,8 @@ the <code>fi</code> keyword, which is <code>if</code> written backwards.
     *)
         &lt;default-commands&gt;
         ;;
-<span style="color: #b6a0ff; font-weight: bold;">esac</span>
-</pre>
+<span class="org-keyword">esac</span>
+</code></pre>
 </div>
 
 <p>
@@ -1952,32 +1952,32 @@ the <code>fi</code> keyword, which is <code>if</code> written backwards.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #f78fe7; font-weight: bold;">read</span> -p <span style="color: #79a8ff;">"Yes or no: "</span> response
-<span style="color: #b6a0ff; font-weight: bold;">case</span> <span style="color: #79a8ff;">"${response}"</span><span style="color: #b6a0ff; font-weight: bold;"> in</span>
+<pre class="src src-bash"><code><span class="org-builtin">read</span> -p <span class="org-string">"Yes or no: "</span> response
+<span class="org-keyword">case</span> <span class="org-string">"${response}"</span><span class="org-keyword"> in</span>
     y | Y | yes | ok)
-        <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"You have confirmed"</span>
+        <span class="org-builtin">echo</span> <span class="org-string">"You have confirmed"</span>
         ;;
     n | N | no)
-        <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"You have denied"</span>
+        <span class="org-builtin">echo</span> <span class="org-string">"You have denied"</span>
         ;;
     *)
-        <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"'${response}' is not a valid response"</span>
+        <span class="org-builtin">echo</span> <span class="org-string">"'${response}' is not a valid response"</span>
         ;;
-<span style="color: #b6a0ff; font-weight: bold;">esac</span>
+<span class="org-keyword">esac</span>
 
-<span style="color: #f78fe7; font-weight: bold;">read</span> -p <span style="color: #79a8ff;">"Yes or no: "</span> response
-<span style="color: #b6a0ff; font-weight: bold;">case</span> <span style="color: #79a8ff;">"${response}"</span><span style="color: #b6a0ff; font-weight: bold;"> in</span>
+<span class="org-builtin">read</span> -p <span class="org-string">"Yes or no: "</span> response
+<span class="org-keyword">case</span> <span class="org-string">"${response}"</span><span class="org-keyword"> in</span>
     [yY]*)
-        <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"You have (probably) confirmed"</span>
+        <span class="org-builtin">echo</span> <span class="org-string">"You have (probably) confirmed"</span>
         ;;
     [nN]*)
-        <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"You have (probably) denied"</span>
+        <span class="org-builtin">echo</span> <span class="org-string">"You have (probably) denied"</span>
         ;;
     *)
-        <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"'${response}' is not a valid response"</span>
+        <span class="org-builtin">echo</span> <span class="org-string">"'${response}' is not a valid response"</span>
     ;;
-<span style="color: #b6a0ff; font-weight: bold;">esac</span>
-</pre>
+<span class="org-keyword">esac</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -1988,44 +1988,44 @@ the <code>fi</code> keyword, which is <code>if</code> written backwards.
 <div id="outline-container-6f8fcb95-d8b4-4c94-ba83-ece6fd64b013" class="outline-4">
 <h4 id="6f8fcb95-d8b4-4c94-ba83-ece6fd64b013"><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#the-for-loop-index-">The For Loop</a></h4>
 <div class="outline-text-4" id="text-6f8fcb95-d8b4-4c94-ba83-ece6fd64b013"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">for</span> &lt;name&gt;<span style="color: #b6a0ff; font-weight: bold;"> in</span> &lt;words&gt;
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
+<pre class="src src-bash"><code><span class="org-keyword">for</span> &lt;name&gt;<span class="org-keyword"> in</span> &lt;words&gt;
+<span class="org-keyword">do</span>
     &lt;conditional-command 1&gt;
     &lt;conditional-command 2&gt;
     &lt;conditional-command n&gt;
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-</pre>
+<span class="org-keyword">done</span>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">for</span> item<span style="color: #b6a0ff; font-weight: bold;"> in</span> ./*
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Found: $item"</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-</pre>
+<pre class="src src-bash"><code><span class="org-keyword">for</span> item<span class="org-keyword"> in</span> ./*
+<span class="org-keyword">do</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"Found: $item"</span>
+<span class="org-keyword">done</span>
+</code></pre>
 </div>
 </div>
 <ul class="org-ul">
 <li><a id="b4c13ae7-7708-4bc2-824e-40df89f49087"></a><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---arrays">For Loops - Arrays</a><br>
 <div class="outline-text-5" id="text-b4c13ae7-7708-4bc2-824e-40df89f49087"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #00d3d0;">days</span>=(<span style="color: #79a8ff;">"Monday"</span> <span style="color: #79a8ff;">"Tuesday"</span> <span style="color: #79a8ff;">"Wednesday"</span> <span style="color: #79a8ff;">"Thursday"</span> <span style="color: #79a8ff;">"Friday"</span> <span style="color: #79a8ff;">"Saturday"</span> <span style="color: #79a8ff;">"Sunday"</span>)
-<span style="color: #b6a0ff; font-weight: bold;">for</span> day<span style="color: #b6a0ff; font-weight: bold;"> in</span> ${<span style="color: #00d3d0;">days</span>[@]}
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> -n <span style="color: #79a8ff;">"$day, "</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"happy days!"</span>
-</pre>
+<pre class="src src-bash"><code><span class="org-variable-name">days</span>=(<span class="org-string">"Monday"</span> <span class="org-string">"Tuesday"</span> <span class="org-string">"Wednesday"</span> <span class="org-string">"Thursday"</span> <span class="org-string">"Friday"</span> <span class="org-string">"Saturday"</span> <span class="org-string">"Sunday"</span>)
+<span class="org-keyword">for</span> day<span class="org-keyword"> in</span> ${<span class="org-variable-name">days</span>[@]}
+<span class="org-keyword">do</span>
+    <span class="org-builtin">echo</span> -n <span class="org-string">"$day, "</span>
+<span class="org-keyword">done</span>
+<span class="org-builtin">echo</span> <span class="org-string">"happy days!"</span>
+</code></pre>
 </div>
 </div>
 </li>
 <li><a id="d062db0d-cbc5-4754-bf4a-72199222d3ad"></a><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---words">For Loops - Words</a><br>
 <div class="outline-text-5" id="text-d062db0d-cbc5-4754-bf4a-72199222d3ad"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #00d3d0;">sentence</span>=<span style="color: #79a8ff;">"What can the harvest hope for, if not for the care of the Reaper Man?"</span>
-<span style="color: #b6a0ff; font-weight: bold;">for</span> word<span style="color: #b6a0ff; font-weight: bold;"> in</span> $<span style="color: #00d3d0;">sentence</span>
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"$word"</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-</pre>
+<pre class="src src-bash"><code><span class="org-variable-name">sentence</span>=<span class="org-string">"What can the harvest hope for, if not for the care of the Reaper Man?"</span>
+<span class="org-keyword">for</span> word<span class="org-keyword"> in</span> $<span class="org-variable-name">sentence</span>
+<span class="org-keyword">do</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"$word"</span>
+<span class="org-keyword">done</span>
+</code></pre>
 </div>
 
 <blockquote>
@@ -2042,11 +2042,11 @@ split the output up.
 </li>
 <li><a id="b9725fd4-e3ad-430f-8fac-a9f9c5c3af4d"></a><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#for-loops---files-with-wildcards">For Loops - Files with Wildcards</a><br>
 <div class="outline-text-5" id="text-b9725fd4-e3ad-430f-8fac-a9f9c5c3af4d"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">for</span> script<span style="color: #b6a0ff; font-weight: bold;"> in</span> ~/effective-shell/scripts/*.sh
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Found script: $script"</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-</pre>
+<pre class="src src-bash"><code><span class="org-keyword">for</span> script<span class="org-keyword"> in</span> ~/effective-shell/scripts/*.sh
+<span class="org-keyword">do</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"Found script: $script"</span>
+<span class="org-keyword">done</span>
+</code></pre>
 </div>
 
 <blockquote>
@@ -2064,24 +2064,24 @@ does not match any files, the shell simply leaves the pattern as-is.
 <ul class="org-ul">
 <li><a id="f8b19778-57ad-414b-ab66-d4f2d67846ac"></a>nullglob (return null for unmatched globs)<br>
 <div class="outline-text-6" id="text-f8b19778-57ad-414b-ab66-d4f2d67846ac"><div class="org-src-container">
-<pre class="src src-bash">shopt -s nullglob
-<span style="color: #b6a0ff; font-weight: bold;">for</span> script<span style="color: #b6a0ff; font-weight: bold;"> in</span> ~/bad-shell/scripts/*.sh
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Found: $script"</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-</pre>
+<pre class="src src-bash"><code>shopt -s nullglob
+<span class="org-keyword">for</span> script<span class="org-keyword"> in</span> ~/bad-shell/scripts/*.sh
+<span class="org-keyword">do</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"Found: $script"</span>
+<span class="org-keyword">done</span>
+</code></pre>
 </div>
 </div>
 </li>
 <li><a id="286e7a8c-e6f3-44a0-8cd5-dcb5809f62b2"></a>test<br>
 <div class="outline-text-6" id="text-286e7a8c-e6f3-44a0-8cd5-dcb5809f62b2"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">for</span> script<span style="color: #b6a0ff; font-weight: bold;"> in</span> ~/bad-shell/scripts/*.sh
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">If the file / folder doesn't exist, skip it.
-</span>    <span style="color: #b6a0ff; font-weight: bold;">if</span> <span style="color: #ff5f59;">!</span> [ -e <span style="color: #79a8ff;">"$script"</span> ]; <span style="color: #b6a0ff; font-weight: bold;">then continue</span>; <span style="color: #b6a0ff; font-weight: bold;">fi</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Found: $script"</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-</pre>
+<pre class="src src-bash"><code><span class="org-keyword">for</span> script<span class="org-keyword"> in</span> ~/bad-shell/scripts/*.sh
+<span class="org-keyword">do</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">If the file / folder doesn't exist, skip it.
+</span>    <span class="org-keyword">if</span> <span class="org-negation-char">!</span> [ -e <span class="org-string">"$script"</span> ]; <span class="org-keyword">then continue</span>; <span class="org-keyword">fi</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"Found: $script"</span>
+<span class="org-keyword">done</span>
+</code></pre>
 </div>
 </div>
 </li>
@@ -2097,16 +2097,16 @@ files, then loop through the results.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Create a symlink to 'effective-shell' that has a space in it...
-</span>ln -s ~/effective shell ~/effective<span style="color: #79a8ff;">\ </span>shell
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">Create a symlink to 'effective-shell' that has a space in it...
+</span>ln -s ~/effective shell ~/effective<span class="org-string">\ </span>shell
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Find all symlinks and print each one.
-</span><span style="color: #00d3d0;">links</span>=$(find ~ -type l)
-<span style="color: #b6a0ff; font-weight: bold;">for</span> link<span style="color: #b6a0ff; font-weight: bold;"> in</span> $<span style="color: #00d3d0;">links</span>
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Found Link: $link"</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Find all symlinks and print each one.
+</span><span class="org-variable-name">links</span>=$(find ~ -type l)
+<span class="org-keyword">for</span> link<span class="org-keyword"> in</span> $<span class="org-variable-name">links</span>
+<span class="org-keyword">do</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"Found Link: $link"</span>
+<span class="org-keyword">done</span>
+</code></pre>
 </div>
 
 <p>
@@ -2118,21 +2118,21 @@ files, then loop through the results.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Save the current value of IFS - so we can restore it later. Split on newlines.
-</span><span style="color: #00d3d0;">old_ifs</span>=$<span style="color: #00d3d0;">IFS</span>
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">We have to use the complex looking 'ANSI C Quoting' syntax to set $IFS to a newline
-</span><span style="color: #00d3d0;">IFS</span>=$<span style="color: #79a8ff;">'\n'</span>
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">Save the current value of IFS - so we can restore it later. Split on newlines.
+</span><span class="org-variable-name">old_ifs</span>=$<span class="org-variable-name">IFS</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">We have to use the complex looking 'ANSI C Quoting' syntax to set $IFS to a newline
+</span><span class="org-variable-name">IFS</span>=$<span class="org-string">'\n'</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Find all symlinks and print each one.
-</span><span style="color: #00d3d0;">links</span>=$(find ~ -type l)
-<span style="color: #b6a0ff; font-weight: bold;">for</span> link<span style="color: #b6a0ff; font-weight: bold;"> in</span> $<span style="color: #00d3d0;">links</span>
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Found Link: $link"</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Find all symlinks and print each one.
+</span><span class="org-variable-name">links</span>=$(find ~ -type l)
+<span class="org-keyword">for</span> link<span class="org-keyword"> in</span> $<span class="org-variable-name">links</span>
+<span class="org-keyword">do</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"Found Link: $link"</span>
+<span class="org-keyword">done</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Restore the original value of IFS.
-</span><span style="color: #00d3d0;">IFS</span>=$<span style="color: #00d3d0;">old_ifs</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Restore the original value of IFS.
+</span><span class="org-variable-name">IFS</span>=$<span class="org-variable-name">old_ifs</span>
+</code></pre>
 </div>
 
 <blockquote>
@@ -2164,14 +2164,14 @@ it to generate a sequence of values.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash">touch {coffee,tea,milkshake}-menu.txt
+<pre class="src src-bash"><code>touch {coffee,tea,milkshake}-menu.txt
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">loop through a sequence of values or a range of numbers with 'increment'
-</span><span style="color: #b6a0ff; font-weight: bold;">for</span> i<span style="color: #b6a0ff; font-weight: bold;"> in</span> {0..25..5}
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Loop ${i}"</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">loop through a sequence of values or a range of numbers with 'increment'
+</span><span class="org-keyword">for</span> i<span class="org-keyword"> in</span> {0..25..5}
+<span class="org-keyword">do</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"Loop ${i}"</span>
+<span class="org-keyword">done</span>
+</code></pre>
 </div>
 </div>
 </li>
@@ -2191,13 +2191,13 @@ condition is met.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">while</span> &lt;test-commands&gt;
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
+<pre class="src src-bash"><code><span class="org-keyword">while</span> &lt;test-commands&gt;
+<span class="org-keyword">do</span>
     &lt;conditional-command 1&gt;
     &lt;conditional-command 2&gt;
     &lt;conditional-command n&gt;
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-</pre>
+<span class="org-keyword">done</span>
+</code></pre>
 </div>
 
 <p>
@@ -2205,32 +2205,32 @@ condition is met.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Create an empty array of random numbers.
-</span><span style="color: #00d3d0;">random_numbers</span>=()
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">Create an empty array of random numbers.
+</span><span class="org-variable-name">random_numbers</span>=()
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">As long as the length of the array is less than five, continue to loop.
-</span><span style="color: #b6a0ff; font-weight: bold;">while</span> [ ${#<span style="color: #00d3d0;">random_numbers</span>[@]} -lt 5 ]
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Get a random number, ask the user if they want to add it to the array.
-</span>    <span style="color: #00d3d0;">random_number</span>=$<span style="color: #00d3d0;">RANDOM</span>
-    <span style="color: #f78fe7; font-weight: bold;">read</span> -p <span style="color: #79a8ff;">"Add $random_number to the list? (y/n): "</span> choice
+<span class="org-comment-delimiter"># </span><span class="org-comment">As long as the length of the array is less than five, continue to loop.
+</span><span class="org-keyword">while</span> [ ${#<span class="org-variable-name">random_numbers</span>[@]} -lt 5 ]
+<span class="org-keyword">do</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Get a random number, ask the user if they want to add it to the array.
+</span>    <span class="org-variable-name">random_number</span>=$<span class="org-variable-name">RANDOM</span>
+    <span class="org-builtin">read</span> -p <span class="org-string">"Add $random_number to the list? (y/n): "</span> choice
 
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">If the user chose 'y' add the random number to the array.
-</span>    <span style="color: #b6a0ff; font-weight: bold;">if</span> [ <span style="color: #79a8ff;">"$choice"</span> = <span style="color: #79a8ff;">"y"</span> ]; <span style="color: #b6a0ff; font-weight: bold;">then</span> <span style="color: #00d3d0;">random_numbers</span>+=($<span style="color: #00d3d0;">random_number</span>); <span style="color: #b6a0ff; font-weight: bold;">fi</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">If the user chose 'y' add the random number to the array.
+</span>    <span class="org-keyword">if</span> [ <span class="org-string">"$choice"</span> = <span class="org-string">"y"</span> ]; <span class="org-keyword">then</span> <span class="org-variable-name">random_numbers</span>+=($<span class="org-variable-name">random_number</span>); <span class="org-keyword">fi</span>
+<span class="org-keyword">done</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Show the contents of the array.
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Random Numbers: ${random_numbers[@]}"</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Show the contents of the array.
+</span><span class="org-builtin">echo</span> <span class="org-string">"Random Numbers: ${random_numbers[@]}"</span>
+</code></pre>
 </div>
 </div>
 <ul class="org-ul">
 <li><a id="95eb99dd-340a-4bc7-a76f-fbe47ab315c1"></a><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#while-loops---looping-through-the-lines-in-a-file">While Loops - Looping through the lines in a file</a><br>
 <div class="outline-text-5" id="text-95eb99dd-340a-4bc7-a76f-fbe47ab315c1"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">while </span><span style="color: #f78fe7; font-weight: bold;">read</span> line; <span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Read: $line"</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span> &lt; ~/effective-shell/data/top100.csv
-</pre>
+<pre class="src src-bash"><code><span class="org-keyword">while </span><span class="org-builtin">read</span> line; <span class="org-keyword">do</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"Read: $line"</span>
+<span class="org-keyword">done</span> &lt; ~/effective-shell/data/top100.csv
+</code></pre>
 </div>
 
 <p>
@@ -2248,23 +2248,23 @@ processes it, and then starts again.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">while </span><span style="color: #f78fe7; font-weight: bold;">true</span>
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"1) Move forwards"</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"2) Move backwards"</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"3) Turn Left"</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"4) Turn Right"</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"5) Explore"</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"0) Quit"</span>
+<pre class="src src-bash"><code><span class="org-keyword">while </span><span class="org-builtin">true</span>
+<span class="org-keyword">do</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"1) Move forwards"</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"2) Move backwards"</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"3) Turn Left"</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"4) Turn Right"</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"5) Explore"</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"0) Quit"</span>
 
-    <span style="color: #f78fe7; font-weight: bold;">read</span> -p <span style="color: #79a8ff;">"What will you do: "</span> choice
-    <span style="color: #b6a0ff; font-weight: bold;">if</span> [ $<span style="color: #00d3d0;">choice</span> -eq 0 ]; <span style="color: #b6a0ff; font-weight: bold;">then</span>
-        <span style="color: #b6a0ff; font-weight: bold;">exit</span>
-    <span style="color: #b6a0ff; font-weight: bold;">fi</span>
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">The rest of the game logic would go here!
-</span>    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">...
-</span><span style="color: #b6a0ff; font-weight: bold;">done</span>
-</pre>
+    <span class="org-builtin">read</span> -p <span class="org-string">"What will you do: "</span> choice
+    <span class="org-keyword">if</span> [ $<span class="org-variable-name">choice</span> -eq 0 ]; <span class="org-keyword">then</span>
+        <span class="org-keyword">exit</span>
+    <span class="org-keyword">fi</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">The rest of the game logic would go here!
+</span>    <span class="org-comment-delimiter"># </span><span class="org-comment">...
+</span><span class="org-keyword">done</span>
+</code></pre>
 </div>
 </div>
 </li>
@@ -2295,57 +2295,57 @@ simply inverting the test commands you are running.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">until</span> &lt;test-commands&gt;
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
+<pre class="src src-bash"><code><span class="org-keyword">until</span> &lt;test-commands&gt;
+<span class="org-keyword">do</span>
     &lt;conditional-command 1&gt;
     &lt;conditional-command 2&gt;
     &lt;conditional-command n&gt;
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-</pre>
+<span class="org-keyword">done</span>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">until loop
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Create an empty random number string - we're going to build it up in the loop.
-</span><span style="color: #00d3d0;">random_number</span>=<span style="color: #79a8ff;">""</span>
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">until loop
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">Create an empty random number string - we're going to build it up in the loop.
+</span><span class="org-variable-name">random_number</span>=<span class="org-string">""</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Keep on looping until the random number is at least 15 characters long.
-</span><span style="color: #b6a0ff; font-weight: bold;">until</span> [ <span style="color: #79a8ff;">"${#random_number}"</span> -ge 15 ]
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #00d3d0;">random_number</span>+=$<span style="color: #00d3d0;">RANDOM</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Random Number: ${random_number}"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Keep on looping until the random number is at least 15 characters long.
+</span><span class="org-keyword">until</span> [ <span class="org-string">"${#random_number}"</span> -ge 15 ]
+<span class="org-keyword">do</span>
+    <span class="org-variable-name">random_number</span>+=$<span class="org-variable-name">RANDOM</span>
+<span class="org-keyword">done</span>
+<span class="org-builtin">echo</span> <span class="org-string">"Random Number: ${random_number}"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">while loop
-</span><span style="color: #00d3d0;">random_number</span>=<span style="color: #79a8ff;">""</span>
-<span style="color: #b6a0ff; font-weight: bold;">while</span> [ <span style="color: #79a8ff;">"${#random_number}"</span> -lt 15 ]
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #00d3d0;">random_number</span>+=$<span style="color: #00d3d0;">RANDOM</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Random Number: ${random_number}"</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">while loop
+</span><span class="org-variable-name">random_number</span>=<span class="org-string">""</span>
+<span class="org-keyword">while</span> [ <span class="org-string">"${#random_number}"</span> -lt 15 ]
+<span class="org-keyword">do</span>
+    <span class="org-variable-name">random_number</span>+=$<span class="org-variable-name">RANDOM</span>
+<span class="org-keyword">done</span>
+<span class="org-builtin">echo</span> <span class="org-string">"Random Number: ${random_number}"</span>
+</code></pre>
 </div>
 </div>
 </div>
 <div id="outline-container-72a148b8-c8fc-4439-ba54-913a490ba24d" class="outline-4">
 <h4 id="72a148b8-c8fc-4439-ba54-913a490ba24d"><a href="https://effective-shell.com/part-4-shell-scripting/loops-and-working-with-files-and-folders/#continue-and-break">Continue and Break</a></h4>
 <div class="outline-text-4" id="text-72a148b8-c8fc-4439-ba54-913a490ba24d"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"For each folder, choose y/n to show contents, or c to cancel."</span>
-<span style="color: #b6a0ff; font-weight: bold;">for</span> file<span style="color: #b6a0ff; font-weight: bold;"> in</span> ~/*
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">If the file is not a directory, or it cannot be searched, skip it.
-</span>    <span style="color: #b6a0ff; font-weight: bold;">if</span> <span style="color: #ff5f59;">!</span> [ -d <span style="color: #79a8ff;">"$file"</span> ] || <span style="color: #ff5f59;">!</span> [ -x <span style="color: #79a8ff;">"$file"</span> ]; <span style="color: #b6a0ff; font-weight: bold;">then continue</span>; <span style="color: #b6a0ff; font-weight: bold;">fi</span>
+<pre class="src src-bash"><code><span class="org-builtin">echo</span> <span class="org-string">"For each folder, choose y/n to show contents, or c to cancel."</span>
+<span class="org-keyword">for</span> file<span class="org-keyword"> in</span> ~/*
+<span class="org-keyword">do</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">If the file is not a directory, or it cannot be searched, skip it.
+</span>    <span class="org-keyword">if</span> <span class="org-negation-char">!</span> [ -d <span class="org-string">"$file"</span> ] || <span class="org-negation-char">!</span> [ -x <span class="org-string">"$file"</span> ]; <span class="org-keyword">then continue</span>; <span class="org-keyword">fi</span>
 
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Ask the user if they want to see the contents.
-</span>    <span style="color: #f78fe7; font-weight: bold;">read</span> -p <span style="color: #79a8ff;">"Show: $file? [y/n/c]: "</span> choice
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Ask the user if they want to see the contents.
+</span>    <span class="org-builtin">read</span> -p <span class="org-string">"Show: $file? [y/n/c]: "</span> choice
 
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">If the user chose 'c' for cancel, break.
-</span>    <span style="color: #b6a0ff; font-weight: bold;">if</span> [ <span style="color: #79a8ff;">"$choice"</span> = <span style="color: #79a8ff;">"c"</span> ]; <span style="color: #b6a0ff; font-weight: bold;">then break</span>; <span style="color: #b6a0ff; font-weight: bold;">fi</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">If the user chose 'c' for cancel, break.
+</span>    <span class="org-keyword">if</span> [ <span class="org-string">"$choice"</span> = <span class="org-string">"c"</span> ]; <span class="org-keyword">then break</span>; <span class="org-keyword">fi</span>
 
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">If the user choice 'y' to show contents, list them.
-</span>    <span style="color: #b6a0ff; font-weight: bold;">if</span> [ <span style="color: #79a8ff;">"$choice"</span> = <span style="color: #79a8ff;">"y"</span> ]; <span style="color: #b6a0ff; font-weight: bold;">then</span> ls <span style="color: #79a8ff;">"$file"</span>; <span style="color: #b6a0ff; font-weight: bold;">fi</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-</pre>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">If the user choice 'y' to show contents, list them.
+</span>    <span class="org-keyword">if</span> [ <span class="org-string">"$choice"</span> = <span class="org-string">"y"</span> ]; <span class="org-keyword">then</span> ls <span class="org-string">"$file"</span>; <span class="org-keyword">fi</span>
+<span class="org-keyword">done</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -2364,19 +2364,19 @@ can call at any time.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash">&lt;function-name&gt; {
+<pre class="src src-bash"><code>&lt;function-name&gt; {
     &lt;function-command 1&gt;
     &lt;function-command 2&gt;
     &lt;function-command n&gt;
 }
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">title</span>() {
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"My Script version 1.0"</span>
+<pre class="src src-bash"><code><span class="org-function-name">title</span>() {
+    <span class="org-builtin">echo</span> <span class="org-string">"My Script version 1.0"</span>
 }
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -2386,27 +2386,27 @@ can call at any time.
 <div id="outline-container-f7e8ae88-5ba9-474c-a694-7df4cfdd6bb3" class="outline-4">
 <h4 id="f7e8ae88-5ba9-474c-a694-7df4cfdd6bb3"><a href="https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#variables-in-functions">变量</a></h4>
 <div class="outline-text-4" id="text-f7e8ae88-5ba9-474c-a694-7df4cfdd6bb3"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Set some variables.
-</span><span style="color: #00d3d0;">title</span>=<span style="color: #79a8ff;">"My Cool Script"</span>
-<span style="color: #00d3d0;">version</span>=<span style="color: #79a8ff;">"1.2"</span>
-<span style="color: #00d3d0;">succeeded</span>=0
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">Set some variables.
+</span><span class="org-variable-name">title</span>=<span class="org-string">"My Cool Script"</span>
+<span class="org-variable-name">version</span>=<span class="org-string">"1.2"</span>
+<span class="org-variable-name">succeeded</span>=0
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Create a function that writes a message and changes a variable.
-</span><span style="color: #feacd0;">title</span>() {
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Note that we can read variables...
-</span>    <span style="color: #00d3d0;">title_message</span>=<span style="color: #79a8ff;">"${title} - version ${version}"</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"${title_message}"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Create a function that writes a message and changes a variable.
+</span><span class="org-function-name">title</span>() {
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Note that we can read variables...
+</span>    <span class="org-variable-name">title_message</span>=<span class="org-string">"${title} - version ${version}"</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"${title_message}"</span>
 
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">...and set them as well.
-</span>    <span style="color: #00d3d0;">succeeded</span>=1
+    <span class="org-comment-delimiter"># </span><span class="org-comment">...and set them as well.
+</span>    <span class="org-variable-name">succeeded</span>=1
 }
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Show the value of 'succeeded' before and after the function call.
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Succeeded: ${succeeded}"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Show the value of 'succeeded' before and after the function call.
+</span><span class="org-builtin">echo</span> <span class="org-string">"Succeeded: ${succeeded}"</span>
 title
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Succeeded: ${succeeded}"</span>
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Title Message: ${title_message}"</span>
-</pre>
+<span class="org-builtin">echo</span> <span class="org-string">"Succeeded: ${succeeded}"</span>
+<span class="org-builtin">echo</span> <span class="org-string">"Title Message: ${title_message}"</span>
+</code></pre>
 </div>
 </div>
 <ul class="org-ul">
@@ -2437,15 +2437,15 @@ errors.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">run_loop</span>() {
-    <span style="color: #f78fe7; font-weight: bold;">local</span> <span style="color: #00d3d0;">count</span>=0
-    <span style="color: #b6a0ff; font-weight: bold;">for</span> i<span style="color: #b6a0ff; font-weight: bold;"> in</span> {1..10}; <span style="color: #b6a0ff; font-weight: bold;">do</span>
-        <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Update our counter.
-</span>        <span style="color: #00d3d0;">count</span>=$((count + 1))
-    <span style="color: #b6a0ff; font-weight: bold;">done</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Count is: ${count}"</span>
+<pre class="src src-bash"><code><span class="org-function-name">run_loop</span>() {
+    <span class="org-builtin">local</span> <span class="org-variable-name">count</span>=0
+    <span class="org-keyword">for</span> i<span class="org-keyword"> in</span> {1..10}; <span class="org-keyword">do</span>
+        <span class="org-comment-delimiter"># </span><span class="org-comment">Update our counter.
+</span>        <span class="org-variable-name">count</span>=$((count + 1))
+    <span class="org-keyword">done</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"Count is: ${count}"</span>
 }
-</pre>
+</code></pre>
 </div>
 
 <blockquote>
@@ -2457,16 +2457,16 @@ unintended side effects:
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#27604;&#36739;&#29992; local &#21644;&#19981;&#29992;&#30340;&#21306;&#21035;
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Set a count variable somewhere in our script...
-</span><span style="color: #00d3d0;">count</span>=3
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">&#27604;&#36739;&#29992; local &#21644;&#19981;&#29992;&#30340;&#21306;&#21035;
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">Set a count variable somewhere in our script...
+</span><span class="org-variable-name">count</span>=3
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Call our 'run_loop' function.
+<span class="org-comment-delimiter"># </span><span class="org-comment">Call our 'run_loop' function.
 </span>run_loop
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Write out the value of 'count'.
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"The 'count' variable is: ${count}"</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Write out the value of 'count'.
+</span><span class="org-builtin">echo</span> <span class="org-string">"The 'count' variable is: ${count}"</span>
+</code></pre>
 </div>
 </div>
 </li>
@@ -2475,22 +2475,22 @@ unintended side effects:
 <div id="outline-container-84039f93-7505-429e-a4af-d6700069295e" class="outline-4">
 <h4 id="84039f93-7505-429e-a4af-d6700069295e"><a href="https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#passing-parameters-to-functions">传参</a></h4>
 <div class="outline-text-4" id="text-84039f93-7505-429e-a4af-d6700069295e"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">sum</span>() {
-    <span style="color: #f78fe7; font-weight: bold;">local</span> <span style="color: #00d3d0;">value1</span>=$<span style="color: #00d3d0;">1</span>
-    <span style="color: #f78fe7; font-weight: bold;">local</span> <span style="color: #00d3d0;">value2</span>=$<span style="color: #00d3d0;">2</span>
-    <span style="color: #f78fe7; font-weight: bold;">local</span> <span style="color: #00d3d0;">result</span>=$((value1 + value2))
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"The sum of ${value1} and ${value2} is ${result}"</span>
+<pre class="src src-bash"><code><span class="org-function-name">sum</span>() {
+    <span class="org-builtin">local</span> <span class="org-variable-name">value1</span>=$<span class="org-variable-name">1</span>
+    <span class="org-builtin">local</span> <span class="org-variable-name">value2</span>=$<span class="org-variable-name">2</span>
+    <span class="org-builtin">local</span> <span class="org-variable-name">result</span>=$((value1 + value2))
+    <span class="org-builtin">echo</span> <span class="org-string">"The sum of ${value1} and ${value2} is ${result}"</span>
 }
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Create a function that calculates the sum of two numbers.
-</span><span style="color: #feacd0;">sum</span>() {
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"The sum of $1 and $2 is $(($1 + $2))"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Create a function that calculates the sum of two numbers.
+</span><span class="org-function-name">sum</span>() {
+    <span class="org-builtin">echo</span> <span class="org-string">"The sum of $1 and $2 is $(($1 + $2))"</span>
 }
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">usage
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">sum 3 6
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">sum 10 33</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">usage
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">sum 3 6
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">sum 10 33</span>
+</code></pre>
 </div>
 
 <div class="table-wrapper"> <table width="100%">
@@ -2555,17 +2555,17 @@ unintended side effects:
 <ul class="org-ul">
 <li><a id="333f96d2-eda5-4014-bfdc-548ccd188a57"></a><a href="https://effective-shell.com/part-4-shell-scripting/functions-parameters-and-error-handling#parameter-shifting">Parameter Shifting</a><br>
 <div class="outline-text-5" id="text-333f96d2-eda5-4014-bfdc-548ccd188a57"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Show the top 'n' values of a set.
-</span><span style="color: #feacd0;">show_top</span>() {
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Grab the number of values to show, then shift.
-</span>    <span style="color: #f78fe7; font-weight: bold;">local</span> <span style="color: #00d3d0;">n</span>=$<span style="color: #00d3d0;">1</span>
-    <span style="color: #f78fe7; font-weight: bold;">shift</span>
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">Show the top 'n' values of a set.
+</span><span class="org-function-name">show_top</span>() {
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Grab the number of values to show, then shift.
+</span>    <span class="org-builtin">local</span> <span class="org-variable-name">n</span>=$<span class="org-variable-name">1</span>
+    <span class="org-builtin">shift</span>
 
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Get the set of values to show. Notice that we start in position 1 now.
-</span>    <span style="color: #f78fe7; font-weight: bold;">local</span> <span style="color: #00d3d0;">values</span>=${<span style="color: #00d3d0;">@</span>:1:n}
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Top ${n} values: ${values}"</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Get the set of values to show. Notice that we start in position 1 now.
+</span>    <span class="org-builtin">local</span> <span class="org-variable-name">values</span>=${<span class="org-variable-name">@</span>:1:n}
+    <span class="org-builtin">echo</span> <span class="org-string">"Top ${n} values: ${values}"</span>
 }
-</pre>
+</code></pre>
 </div>
 </div>
 </li>
@@ -2577,26 +2577,26 @@ unintended side effects:
 <ul class="org-ul">
 <li><a id="d9368b21-9ec7-48a3-820a-aa07f5a5491a"></a>通过设置变量值<br>
 <div class="outline-text-5" id="text-d9368b21-9ec7-48a3-820a-aa07f5a5491a"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">is_even</span>() {
-    <span style="color: #f78fe7; font-weight: bold;">local</span> <span style="color: #00d3d0;">number</span>=$<span style="color: #00d3d0;">1</span>
+<pre class="src src-bash"><code><span class="org-function-name">is_even</span>() {
+    <span class="org-builtin">local</span> <span class="org-variable-name">number</span>=$<span class="org-variable-name">1</span>
 
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">A number is even if when we divide it by 2 there is no remainder.
-</span>    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Set 'result' to 1 if the parameter is even and 0 otherwise.
-</span>    <span style="color: #b6a0ff; font-weight: bold;">if</span> [ $((number % 2)) -eq 0 ]; <span style="color: #b6a0ff; font-weight: bold;">then</span>
-        <span style="color: #00d3d0;">result</span>=1
-    <span style="color: #b6a0ff; font-weight: bold;">else</span>
-        <span style="color: #00d3d0;">result</span>=0
-    <span style="color: #b6a0ff; font-weight: bold;">fi</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">A number is even if when we divide it by 2 there is no remainder.
+</span>    <span class="org-comment-delimiter"># </span><span class="org-comment">Set 'result' to 1 if the parameter is even and 0 otherwise.
+</span>    <span class="org-keyword">if</span> [ $((number % 2)) -eq 0 ]; <span class="org-keyword">then</span>
+        <span class="org-variable-name">result</span>=1
+    <span class="org-keyword">else</span>
+        <span class="org-variable-name">result</span>=0
+    <span class="org-keyword">fi</span>
 }
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-bash">$ <span style="color: #00d3d0;">number</span>=33
-$ is_even $<span style="color: #00d3d0;">number</span>
-$ echo <span style="color: #79a8ff;">"Result is: $result"</span>
+<pre class="src src-bash"><code>$ <span class="org-variable-name">number</span>=33
+$ is_even $<span class="org-variable-name">number</span>
+$ echo <span class="org-string">"Result is: $result"</span>
 Result is: 0
-</pre>
+</code></pre>
 </div>
 
 <blockquote>
@@ -2615,19 +2615,19 @@ result to <b>stdout</b>
 </li>
 <li><a id="d62f95b8-93f0-4e62-afac-be77525f3171"></a>输出到 stdout<br>
 <div class="outline-text-5" id="text-d62f95b8-93f0-4e62-afac-be77525f3171"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">lowercase</span>() {
-    <span style="color: #f78fe7; font-weight: bold;">local</span> <span style="color: #00d3d0;">params</span>=<span style="color: #79a8ff;">"$@"</span>
-    <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Translate all uppercase characters to lowercase characters.
-</span>    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"$params"</span> | tr <span style="color: #79a8ff;">'[:upper:]'</span> <span style="color: #79a8ff;">'[:lower:]'</span>
+<pre class="src src-bash"><code><span class="org-function-name">lowercase</span>() {
+    <span class="org-builtin">local</span> <span class="org-variable-name">params</span>=<span class="org-string">"$@"</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Translate all uppercase characters to lowercase characters.
+</span>    <span class="org-builtin">echo</span> <span class="org-string">"$params"</span> | tr <span class="org-string">'[:upper:]'</span> <span class="org-string">'[:lower:]'</span>
 }
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-bash">$ <span style="color: #00d3d0;">result</span>=$(lowercase <span style="color: #79a8ff;">"Don't SHOUT!"</span>)
-$ echo <span style="color: #79a8ff;">"$result"</span>
-don<span style="color: #79a8ff;">'t shout!</span>
-</pre>
+<pre class="src src-bash"><code>$ <span class="org-variable-name">result</span>=$(lowercase <span class="org-string">"Don't SHOUT!"</span>)
+$ echo <span class="org-string">"$result"</span>
+don<span class="org-string">'t shout!</span>
+</code></pre>
 </div>
 
 <blockquote>
@@ -2658,17 +2658,17 @@ to stdout is a tried and tested method of returning results.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">command_exists</span>() {
-    <span style="color: #b6a0ff; font-weight: bold;">if </span><span style="color: #f78fe7; font-weight: bold;">type</span> <span style="color: #79a8ff;">"$1"</span>; <span style="color: #b6a0ff; font-weight: bold;">then</span>
-        <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"1"</span>
-    <span style="color: #b6a0ff; font-weight: bold;">else</span>
-        <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"0"</span>
-    <span style="color: #b6a0ff; font-weight: bold;">fi</span>
+<pre class="src src-bash"><code><span class="org-function-name">command_exists</span>() {
+    <span class="org-keyword">if </span><span class="org-builtin">type</span> <span class="org-string">"$1"</span>; <span class="org-keyword">then</span>
+        <span class="org-builtin">echo</span> <span class="org-string">"1"</span>
+    <span class="org-keyword">else</span>
+        <span class="org-builtin">echo</span> <span class="org-string">"0"</span>
+    <span class="org-keyword">fi</span>
 }
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">result=$(command_exists "touch")
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">echo "Result is: ${result}"</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">result=$(command_exists "touch")
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">echo "Result is: ${result}"</span>
+</code></pre>
 </div>
 
 <p>
@@ -2676,14 +2676,14 @@ to stdout is a tried and tested method of returning results.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">command_exists</span>() {
-    <span style="color: #b6a0ff; font-weight: bold;">if </span><span style="color: #f78fe7; font-weight: bold;">type</span> <span style="color: #79a8ff;">"$1"</span> &gt;&gt; /dev/null; <span style="color: #b6a0ff; font-weight: bold;">then</span>
-        <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"1"</span>
-    <span style="color: #b6a0ff; font-weight: bold;">else</span>
-        <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"0"</span>
-    <span style="color: #b6a0ff; font-weight: bold;">fi</span>
+<pre class="src src-bash"><code><span class="org-function-name">command_exists</span>() {
+    <span class="org-keyword">if </span><span class="org-builtin">type</span> <span class="org-string">"$1"</span> &gt;&gt; /dev/null; <span class="org-keyword">then</span>
+        <span class="org-builtin">echo</span> <span class="org-string">"1"</span>
+    <span class="org-keyword">else</span>
+        <span class="org-builtin">echo</span> <span class="org-string">"0"</span>
+    <span class="org-keyword">fi</span>
 }
-</pre>
+</code></pre>
 </div>
 </div>
 </li>
@@ -2718,23 +2718,23 @@ or if you must, set the value of a global variable.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #feacd0;">command_exists</span>() {
-    <span style="color: #b6a0ff; font-weight: bold;">if </span><span style="color: #f78fe7; font-weight: bold;">type</span> <span style="color: #79a8ff;">"$1"</span> &gt;&gt; /dev/null; <span style="color: #b6a0ff; font-weight: bold;">then</span>
-        <span style="color: #b6a0ff; font-weight: bold;">return</span> 0
-    <span style="color: #b6a0ff; font-weight: bold;">else</span>
-        <span style="color: #b6a0ff; font-weight: bold;">return</span> 1
-    <span style="color: #b6a0ff; font-weight: bold;">fi</span>
+<pre class="src src-bash"><code><span class="org-function-name">command_exists</span>() {
+    <span class="org-keyword">if </span><span class="org-builtin">type</span> <span class="org-string">"$1"</span> &gt;&gt; /dev/null; <span class="org-keyword">then</span>
+        <span class="org-keyword">return</span> 0
+    <span class="org-keyword">else</span>
+        <span class="org-keyword">return</span> 1
+    <span class="org-keyword">fi</span>
 }
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">if</span> command_exists <span style="color: #79a8ff;">"common"</span>; <span style="color: #b6a0ff; font-weight: bold;">then</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"The 'common' command is installed on your system"</span>
-<span style="color: #b6a0ff; font-weight: bold;">else</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"The 'common' command is not installed on your system"</span>
-<span style="color: #b6a0ff; font-weight: bold;">fi</span>
-</pre>
+<pre class="src src-bash"><code><span class="org-keyword">if</span> command_exists <span class="org-string">"common"</span>; <span class="org-keyword">then</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"The 'common' command is installed on your system"</span>
+<span class="org-keyword">else</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"The 'common' command is not installed on your system"</span>
+<span class="org-keyword">fi</span>
+</code></pre>
 </div>
 </div>
 </li>
@@ -2769,23 +2769,22 @@ failure, which can lead to all sorts of unexpected behaviour.
 touch "/tmp/$(date +"%Y-%m-%d")"
 </pre>
 
-
 <div class="org-src-container">
-<pre class="src src-sh"><span style="color: #989898; font-style: italic;">#</span><span style="color: #989898; font-style: italic;">!/usr/bin/</span><span style="color: #b6a0ff; font-weight: bold;">env</span><span style="color: #989898; font-style: italic;"> sh
+<pre class="src src-sh"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">env</span><span class="org-comment"> sh
 </span>
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Get today's date in the format YYYY-MM-DD.
-</span><span style="color: #00d3d0;">today</span>=$(date +<span style="color: #79a8ff;">"%Y-%m-%d"</span>)
+<span class="org-comment-delimiter"># </span><span class="org-comment">Get today's date in the format YYYY-MM-DD.
+</span><span class="org-variable-name">today</span>=$(date +<span class="org-string">"%Y-%m-%d"</span>)
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Create the path to today's temp folder and then make sure the folder exists.
-</span><span style="color: #00d3d0;">temp_path</span>=<span style="color: #79a8ff;">"/tmp/${today}"</span>
-mkdir -p <span style="color: #79a8ff;">"${temp_path}"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Create the path to today's temp folder and then make sure the folder exists.
+</span><span class="org-variable-name">temp_path</span>=<span class="org-string">"/tmp/${today}"</span>
+mkdir -p <span class="org-string">"${temp_path}"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Now that we've created the folder, make a symlink to it in our homedir.
-</span>ln -sf <span style="color: #79a8ff;">"${temp_path}"</span> <span style="color: #79a8ff;">"${HOME}/today"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Now that we've created the folder, make a symlink to it in our homedir.
+</span>ln -sf <span class="org-string">"${temp_path}"</span> <span class="org-string">"${HOME}/today"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Write out the path we created.
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"${temp_path}"</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Write out the path we created.
+</span><span class="org-builtin">echo</span> <span class="org-string">"${temp_path}"</span>
+</code></pre>
 </div>
 </div>
 <div id="outline-container-758d9778-06c3-457e-b165-c5d8e469b5d3" class="outline-4">
@@ -2805,13 +2804,13 @@ non-zero status'.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;">#</span><span style="color: #989898; font-style: italic;">!/usr/bin/</span><span style="color: #b6a0ff; font-weight: bold;">env</span><span style="color: #989898; font-style: italic;"> sh
+<pre class="src src-bash"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">env</span><span class="org-comment"> sh
 </span>
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Exit if any command fails.
-</span><span style="color: #f78fe7; font-weight: bold;">set</span> -e
+<span class="org-comment-delimiter"># </span><span class="org-comment">Exit if any command fails.
+</span><span class="org-builtin">set</span> -e
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">...</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">...</span>
+</code></pre>
 </div>
 
 <blockquote>
@@ -2827,8 +2826,8 @@ we must set the pipefail option: <code>set -o pipefail</code>
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash">grep <span style="color: #79a8ff;">'[:space:]*#'</span> ~/effective-shell/scripts/common.sh | tr <span style="color: #79a8ff;">'a-z'</span> <span style="color: #79a8ff;">'A-Z'</span>
-</pre>
+<pre class="src src-bash"><code>grep <span class="org-string">'[:space:]*#'</span> ~/effective-shell/scripts/common.sh | tr <span class="org-string">'a-z'</span> <span class="org-string">'A-Z'</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -2845,28 +2844,28 @@ is evaluated.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">today.sh - creates a 'today' symlink in the home directory folder to a fresh
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">temporary folder each day.
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">today.sh - creates a 'today' symlink in the home directory folder to a fresh
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">temporary folder each day.
 </span>
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Enable tracing in the script.
-</span><span style="color: #f78fe7; font-weight: bold;">set</span> -x
+<span class="org-comment-delimiter"># </span><span class="org-comment">Enable tracing in the script.
+</span><span class="org-builtin">set</span> -x
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Get today's date in the format YYYY-MM-DD.
-</span><span style="color: #00d3d0;">today</span>=$(date +<span style="color: #79a8ff;">"%Y-%m-%d"</span>)
+<span class="org-comment-delimiter"># </span><span class="org-comment">Get today's date in the format YYYY-MM-DD.
+</span><span class="org-variable-name">today</span>=$(date +<span class="org-string">"%Y-%m-%d"</span>)
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Create the path to today's temp folder and then make sure the folder exists.
-</span><span style="color: #00d3d0;">temp_path</span>=<span style="color: #79a8ff;">"/tmp/${today}"</span>
-mkdir -p <span style="color: #79a8ff;">"${temp_path}"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Create the path to today's temp folder and then make sure the folder exists.
+</span><span class="org-variable-name">temp_path</span>=<span class="org-string">"/tmp/${today}"</span>
+mkdir -p <span class="org-string">"${temp_path}"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Now that we've created the folder, make a symlink to it in our homedir.
-</span>ln -sf <span style="color: #79a8ff;">"${temp_path}"</span> <span style="color: #79a8ff;">"${HOME}/today"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Now that we've created the folder, make a symlink to it in our homedir.
+</span>ln -sf <span class="org-string">"${temp_path}"</span> <span class="org-string">"${HOME}/today"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Disable tracing now that we are done with the work.
-</span><span style="color: #f78fe7; font-weight: bold;">set</span> +x
+<span class="org-comment-delimiter"># </span><span class="org-comment">Disable tracing now that we are done with the work.
+</span><span class="org-builtin">set</span> +x
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Write out the path we created.
-</span><span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"${temp_path}"</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Write out the path we created.
+</span><span class="org-builtin">echo</span> <span class="org-string">"${temp_path}"</span>
+</code></pre>
 </div>
 
 <blockquote>
@@ -2890,9 +2889,9 @@ The number of + symbols indicates the <b>'level of indirection'</b>
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #f78fe7; font-weight: bold;">set</span> -x
-<span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"Name of home folder is $(basename $(echo ~) )"</span>
-</pre>
+<pre class="src src-bash"><code><span class="org-builtin">set</span> -x
+<span class="org-builtin">echo</span> <span class="org-string">"Name of home folder is $(basename $(echo ~) )"</span>
+</code></pre>
 </div>
 
 <p>
@@ -2900,13 +2899,13 @@ The number of + symbols indicates the <b>'level of indirection'</b>
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Fail on errors in commands or in pipelines.
-</span><span style="color: #f78fe7; font-weight: bold;">set</span> -e
-<span style="color: #f78fe7; font-weight: bold;">set</span> -o pipefail
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">Fail on errors in commands or in pipelines.
+</span><span class="org-builtin">set</span> -e
+<span class="org-builtin">set</span> -o pipefail
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Uncomment the below if you want to enable tracing to debug the script.
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">set -x</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Uncomment the below if you want to enable tracing to debug the script.
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">set -x</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -2920,9 +2919,9 @@ The number of + symbols indicates the <b>'level of indirection'</b>
 <div id="outline-container-123ad59f-dd70-46c9-b31b-c3aa60aa9c90" class="outline-4">
 <h4 id="123ad59f-dd70-46c9-b31b-c3aa60aa9c90"><a href="https://effective-shell.com/part-4-shell-scripting/useful-patterns-for-shell-scripts#unsetting-values">Unsetting Values</a></h4>
 <div class="outline-text-4" id="text-123ad59f-dd70-46c9-b31b-c3aa60aa9c90"><div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Remove the 'is_even' function from the shell session.
-</span><span style="color: #f78fe7; font-weight: bold;">unset</span> -f is_even
-</pre>
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">Remove the 'is_even' function from the shell session.
+</span><span class="org-builtin">unset</span> -f is_even
+</code></pre>
 </div>
 </div>
 </div>
@@ -2937,27 +2936,27 @@ points such as when the script exits or a function returns.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Create a temporary folder for the effective shell download.
-</span><span style="color: #00d3d0;">source</span>=<span style="color: #79a8ff;">"https://effective-shell.com/downloads/effective-shell-samples.tar.gz"</span>
-<span style="color: #00d3d0;">tmp_dir</span>=$(mktemp -d 2&gt;/dev/null || mktemp -d -t <span style="color: #79a8ff;">'effective-shell'</span>)
-<span style="color: #00d3d0;">tmp_tar</span>=<span style="color: #79a8ff;">"${tmp_dir}/effective-shell.tar.gz"</span>
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">Create a temporary folder for the effective shell download.
+</span><span class="org-variable-name">source</span>=<span class="org-string">"https://effective-shell.com/downloads/effective-shell-samples.tar.gz"</span>
+<span class="org-variable-name">tmp_dir</span>=$(mktemp -d 2&gt;/dev/null || mktemp -d -t <span class="org-string">'effective-shell'</span>)
+<span class="org-variable-name">tmp_tar</span>=<span class="org-string">"${tmp_dir}/effective-shell.tar.gz"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Define a cleanup function that we will call when the script exits or if
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">it is aborted.
-</span><span style="color: #feacd0;">cleanup</span> () {
-    <span style="color: #b6a0ff; font-weight: bold;">if</span> [ -e <span style="color: #79a8ff;">"${tmp_tar}"</span> ]; <span style="color: #b6a0ff; font-weight: bold;">then</span> rm <span style="color: #79a8ff;">"$tmp_tar}"</span>; <span style="color: #b6a0ff; font-weight: bold;">fi</span>
-    <span style="color: #b6a0ff; font-weight: bold;">if</span> [ -d <span style="color: #79a8ff;">"${tmp_dir}"</span> ]; <span style="color: #b6a0ff; font-weight: bold;">then</span> rm -rf <span style="color: #79a8ff;">"${tmp_dir}"</span>; <span style="color: #b6a0ff; font-weight: bold;">fi</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Define a cleanup function that we will call when the script exits or if
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">it is aborted.
+</span><span class="org-function-name">cleanup</span> () {
+    <span class="org-keyword">if</span> [ -e <span class="org-string">"${tmp_tar}"</span> ]; <span class="org-keyword">then</span> rm <span class="org-string">"$tmp_tar}"</span>; <span class="org-keyword">fi</span>
+    <span class="org-keyword">if</span> [ -d <span class="org-string">"${tmp_dir}"</span> ]; <span class="org-keyword">then</span> rm -rf <span class="org-string">"${tmp_dir}"</span>; <span class="org-keyword">fi</span>
 }
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Cleanup on interrupt or terminate signals and on exit.
-</span><span style="color: #b6a0ff; font-weight: bold;">trap</span> <span style="color: #79a8ff;">"cleanup"</span> INT TERM EXIT
+<span class="org-comment-delimiter"># </span><span class="org-comment">Cleanup on interrupt or terminate signals and on exit.
+</span><span class="org-keyword">trap</span> <span class="org-string">"cleanup"</span> INT TERM EXIT
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Download the samples.
-</span>curl --fail --compressed -q -s <span style="color: #79a8ff;">"${source}"</span> -o <span style="color: #79a8ff;">"${tmp_tar}"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Download the samples.
+</span>curl --fail --compressed -q -s <span class="org-string">"${source}"</span> -o <span class="org-string">"${tmp_tar}"</span>
 
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Extract the samples.
-</span>tar -xzf <span style="color: #79a8ff;">"${tmp_tar}"</span> -C <span style="color: #79a8ff;">"${tmp_dir}"</span>
-</pre>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Extract the samples.
+</span>tar -xzf <span class="org-string">"${tmp_tar}"</span> -C <span class="org-string">"${tmp_dir}"</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -2986,12 +2985,12 @@ Bash and most Bash-like shells.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #b6a0ff; font-weight: bold;">select</span> fruit<span style="color: #b6a0ff; font-weight: bold;"> in</span> Apple Banana Cherry Durian
-<span style="color: #b6a0ff; font-weight: bold;">do</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"You chose: $fruit"</span>
-    <span style="color: #f78fe7; font-weight: bold;">echo</span> <span style="color: #79a8ff;">"This is item number: $REPLY"</span>
-<span style="color: #b6a0ff; font-weight: bold;">done</span>
-</pre>
+<pre class="src src-bash"><code><span class="org-keyword">select</span> fruit<span class="org-keyword"> in</span> Apple Banana Cherry Durian
+<span class="org-keyword">do</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"You chose: $fruit"</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"This is item number: $REPLY"</span>
+<span class="org-keyword">done</span>
+</code></pre>
 </div>
 </div>
 </div>
@@ -3014,8 +3013,8 @@ have completed.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-bash">(mkdir -p ~/new-project; <span style="color: #f78fe7; font-weight: bold;">cd</span> ~/new-project; touch README.md)
-</pre>
+<pre class="src src-bash"><code>(mkdir -p ~/new-project; <span class="org-builtin">cd</span> ~/new-project; touch README.md)
+</code></pre>
 </div>
 </div>
 </div>
@@ -3053,26 +3052,26 @@ also a powerful scripting language.</dd>
 </p>
 
 <div class="org-src-container">
-<pre class="src src-sh"><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">------------------------------- #
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Prerequire:
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">oh my zsh: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">starship: curl -sS https://starship.rs/install.sh | sh
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-</span><span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">------------------------------- #
+<pre class="src src-sh"><code><span class="org-comment-delimiter"># </span><span class="org-comment">------------------------------- #
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">Prerequire:
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">oh my zsh: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">starship: curl -sS https://starship.rs/install.sh | sh
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">------------------------------- #
 </span>
-<span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">Path to your oh-my-zsh installation.
-</span><span style="color: #f78fe7; font-weight: bold;">export</span> <span style="color: #00d3d0;">ZSH</span>=<span style="color: #79a8ff;">"$HOME/.oh-my-zsh"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Path to your oh-my-zsh installation.
+</span><span class="org-builtin">export</span> <span class="org-variable-name">ZSH</span>=<span class="org-string">"$HOME/.oh-my-zsh"</span>
 
-<span style="color: #00d3d0;">plugins</span>=(
-    aliases <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#25512;&#33616;
-</span>    common-aliases <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#25512;&#33616;
+<span class="org-variable-name">plugins</span>=(
+    aliases <span class="org-comment-delimiter"># </span><span class="org-comment">&#25512;&#33616;
+</span>    common-aliases <span class="org-comment-delimiter"># </span><span class="org-comment">&#25512;&#33616;
 </span>    deno
     docker
-    git <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#25512;&#33616;
+    git <span class="org-comment-delimiter"># </span><span class="org-comment">&#25512;&#33616;
 </span>    gulp
-    <span style="color: #f78fe7; font-weight: bold;">history</span> <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#25512;&#33616;
-</span>    jira <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#25512;&#33616;
+    <span class="org-builtin">history</span> <span class="org-comment-delimiter"># </span><span class="org-comment">&#25512;&#33616;
+</span>    jira <span class="org-comment-delimiter"># </span><span class="org-comment">&#25512;&#33616;
 </span>    jsontools
     node
     npm
@@ -3083,14 +3082,14 @@ also a powerful scripting language.</dd>
     ubuntu
     web-search
     yarn
-    z <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#26497;&#21147;&#25512;&#33616;
+    z <span class="org-comment-delimiter"># </span><span class="org-comment">&#26497;&#21147;&#25512;&#33616;
 </span>    zbell
-    zsh-autosuggestions <span style="color: #989898; font-style: italic;"># </span><span style="color: #989898; font-style: italic;">&#26497;&#21147;&#25512;&#33616;
+    zsh-autosuggestions <span class="org-comment-delimiter"># </span><span class="org-comment">&#26497;&#21147;&#25512;&#33616;
 </span>    zsh-syntax-highlighting
 )
 
-<span style="color: #f78fe7; font-weight: bold;">source</span> $<span style="color: #00d3d0;">ZSH</span>/oh-my-zsh.sh
-</pre>
+<span class="org-builtin">source</span> $<span class="org-variable-name">ZSH</span>/oh-my-zsh.sh
+</code></pre>
 </div>
 </div>
 </div>
