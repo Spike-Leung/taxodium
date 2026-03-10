@@ -60,9 +60,9 @@
 我的博客是用 <code>org-publish</code> 生成的，后面我给博客添加了主题切换（见 <a href="setup-blog-color-scheme.html#0E86BEB5-D1F9-451D-8271-B63E836FE0A3">给博客添加 dark mode</a>）， 当时留下了一个问题 ⸺ <code>org-publish</code> 生成的代码高亮是内联在 HTML 标签里的，我没法通过 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark">light-dark</a> 去设置亮色/暗色主题下不同的颜色，只能选择一种代码高亮主题，要么是亮色，要么是暗色。
 </p>
 
-<section role="note" id="orga39ddad">
+<section role="note" id="org7bcf250">
 <p>
-关于博客的构建见：
+如果你好奇博客是如何用 <code>org-publish</code> 构建的：
 </p>
 
 <ul class="org-ul">
@@ -72,7 +72,7 @@
 </section>
 
 <p>
-因为只能二选一，我最终选择的是暗色。这会导致在亮色主题下，出现一大块黑色的内容，看着有点突兀。但比在暗色主题下，出现一大块白色的内容更好，毕竟在暗色主题下，白色太刺眼了。
+因为只能二选一，我最终选择的是暗色。这会导致在亮色主题下，出现一大块黑色的内容，看着有点突兀。没有选择亮色，是因为亮色主题一般需要配合一个偏白的背景色，当切换成暗色主题时，大块的白色会很刺眼。
 </p>
 
 <p>
@@ -122,11 +122,19 @@
 使用 <code>org-html-htmlize-generate-css</code> 这个方法去生成当前 Emacs 主题的 CSS：
 </p>
 <ul class="org-ul">
-<li>找一个喜欢的 Emacs 亮色主题，生成一份 <code>light.txt</code></li>
-<li>再找一个喜欢的暗色主题，生成一份 <code>dark.txt</code></li>
+<li>找一个喜欢的亮色主题，生成一份 <code>light.txt</code></li>
+<li>找一个喜欢的暗色主题，生成一份 <code>dark.txt</code></li>
 </ul>
 
-<section role="note" id="org239cbc3">
+<section role="note" id="orgdb136db">
+<p>
+<code>org-html-htmlize-generate-css</code> 生成的类名前缀可以通过 <code>org-html-htmlize-font-prefix</code> 修改，默认是 <code>org-。</code>
+</p>
+</section>
+
+<details>
+<summary> org-html-htmlize-generate-css 的注意事项</summary>
+
 <p>
 <code>org-html-htmlize-generate-css</code> 的描述是：
 </p>
@@ -135,22 +143,44 @@
 <p>
 Create the CSS for <b>all font definitions</b> in the <b>current Emacs session</b>.
 </p>
+
+<p>
+Use this to create face definitions in your CSS style file
+that can then be used by code snippets transformed by htmlize.
+</p>
+
+<p>
+This command just produces a buffer
+that contains class definitions for all faces used in the current Emacs session.
+</p>
+
+<p>
+You can copy and paste <b>the ones you need</b> into your CSS file.
+</p>
 </blockquote>
 
 <p>
 有的 font definitions 应该是需要启用了某个 mode 才会生成，可能需要在 Emacs 中，把那些常用的语言文件都访问一下，例如打开一下 <code>.css</code> 、 <code>.js</code>  、 <code>.html</code> 等文件，使得 font definitions 尽可能齐全。
 </p>
-</section>
 
 <p>
-写一个脚本，合并 <code>light.txt</code> 和 <code>dark.txt</code> ，生成一份 CSS 文件，将两个主题的颜色合并，使用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark">light-dark</a> 定义亮色/暗色主题下的颜色。
+不过我目前还没碰到缺少的 font definitions 的问题，我觉得先不用考虑这个问题，等碰到缺少的情况，再打开对应的文件启用一下对应的 mode 就好了。
+</p>
+
+<p>
+另外， <code>org-html-htmlize-output-type</code> 生成的 class 定义很多，有的未必用得上，可以考虑只选择那些需要的，从而减小最终合并的 CSS 的体积。
+</p>
+</details>
+
+<p>
+写一个 <a href="https://github.com/Spike-Leung/taxodium/blob/b777de19ab27ac41bdb9681d3e1838d88d3c1593/scripts/generate-fontify-code-css.js">脚本</a>，合并 <code>light.txt</code> 和 <code>dark.txt</code> ，生成一份 CSS 文件，将两个主题的颜色合并，使用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark">light-dark</a> 定义亮色/暗色主题下的颜色。
 </p>
 
 <details>
 <summary>我现在用的 JS 脚本</summary>
 
 <p>
-如果你打算使用这个脚本，你可能需要调整一下代码中文件的路径。或者你可以找
+如果你打算使用这个脚本，你可能需要调整一下代码中文件的路径。或者你可以找 LLM 写一个。
 </p>
 
 <div class="org-src-container">
@@ -260,7 +290,7 @@ Happy hacking - <a href="how-to-get-started-with-emacs.html">Emacs</a> ♥ you!
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2026-03-10 Tue 21:00</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-03-10 Tue 21:32</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-10 Tue 23:40</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">

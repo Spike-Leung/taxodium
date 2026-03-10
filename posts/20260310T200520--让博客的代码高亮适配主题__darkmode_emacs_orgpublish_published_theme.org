@@ -17,7 +17,7 @@
 
 #+attr_html: :role note
 #+begin_section
-关于博客的构建见：
+如果你好奇博客是如何用 ~org-publish~ 构建的：
 
 - [[denote:20240927T214034][使用 org-publish 发布博客]]
 - [[denote:20250828T184037][结合 denote 和 org-publish 写博客]]
@@ -25,7 +25,8 @@
 
 因为只能二选一，我最终选择的是暗色。
 这会导致在亮色主题下，出现一大块黑色的内容，看着有点突兀。
-但比在暗色主题下，出现一大块白色的内容更好，毕竟在暗色主题下，白色太刺眼了。
+没有选择亮色，是因为亮色主题一般需要配合一个偏白的背景色，
+当切换成暗色主题时，大块的白色会很刺眼。
 
 内联的颜色默认是当前 Emacs 的主题色，因为我平时的习惯是 [[denote:20250521T214027][随机切换主题]]，
 我当前用的 Emacs 主题和 ~org-publish~ 用到的主题未必是一致的，
@@ -66,30 +67,49 @@
 具体做法：
 
 使用 ~org-html-htmlize-generate-css~ 这个方法去生成当前 Emacs 主题的 CSS：
-- 找一个喜欢的 Emacs 亮色主题，生成一份 ~light.txt~
-- 再找一个喜欢的暗色主题，生成一份 ~dark.txt~
+- 找一个喜欢的亮色主题，生成一份 ~light.txt~
+- 找一个喜欢的暗色主题，生成一份 ~dark.txt~
 
 #+attr_html: :role note
 #+begin_section
+~org-html-htmlize-generate-css~ 生成的类名前缀可以通过 ~org-html-htmlize-font-prefix~ 修改，默认是 ~org-。~
+#+end_section
+
+#+begin_details
+#+html: <summary> org-html-htmlize-generate-css 的注意事项</summary>
+
 ~org-html-htmlize-generate-css~ 的描述是：
 
 #+begin_quote
 Create the CSS for *all font definitions* in the *current Emacs session*.
+
+Use this to create face definitions in your CSS style file
+that can then be used by code snippets transformed by htmlize.
+
+This command just produces a buffer
+that contains class definitions for all faces used in the current Emacs session.
+
+You can copy and paste *the ones you need* into your CSS file.
 #+end_quote
 
 有的 font definitions 应该是需要启用了某个 mode 才会生成，
 可能需要在 Emacs 中，把那些常用的语言文件都访问一下，
 例如打开一下 ~.css~ 、 ~.js~  、 ~.html~ 等文件，使得 font definitions 尽可能齐全。
-#+end_section
 
-写一个脚本，合并 ~light.txt~ 和 ~dark.txt~ ，生成一份 CSS 文件，将两个主题的颜色合并，
+不过我目前还没碰到缺少的 font definitions 的问题，我觉得先不用考虑这个问题，
+等碰到缺少的情况，再打开对应的文件启用一下对应的 mode 就好了。
+
+另外， ~org-html-htmlize-output-type~ 生成的 class 定义很多，有的未必用得上，
+可以考虑只选择那些需要的，从而减小最终合并的 CSS 的体积。
+#+end_details
+
+写一个 [[https://github.com/Spike-Leung/taxodium/blob/b777de19ab27ac41bdb9681d3e1838d88d3c1593/scripts/generate-fontify-code-css.js][脚本]]，合并 ~light.txt~ 和 ~dark.txt~ ，生成一份 CSS 文件，将两个主题的颜色合并，
 使用 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark][light-dark]] 定义亮色/暗色主题下的颜色。
 
 #+begin_details
 #+html: <summary>我现在用的 JS 脚本</summary>
 
-如果你打算使用这个脚本，你可能需要调整一下代码中文件的路径。
-或者你可以找
+如果你打算使用这个脚本，你可能需要调整一下代码中文件的路径。或者你可以找 LLM 写一个。
 
 #+begin_src javascript
   import fs from "fs"
