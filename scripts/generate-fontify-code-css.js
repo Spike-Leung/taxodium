@@ -9,7 +9,6 @@ const DarkThemeFilePath = path.join(__dirname, ".", "dark.txt");
 const OutputFilePath = path.join(__dirname, "..", "publish/styles/fontify-code.css");
 
 function parseCSS(content) {
-  // content = content.replace(/<\/?[^>]+>/, '').replace(/<\/?[^>]+>/, '').replace(/<!--|-->/g, '');
   const rules = {};
   // org- 对应的是 ox-html.el 中 `org-html-htmlize-font-prefix` 的值
   const ruleRegex = /\.org-[^{]+\{[^}]+\}/g;
@@ -29,10 +28,9 @@ function parseCSS(content) {
       const m = line.match(/^([a-z-]+)\s*:\s*([^;]+)/);
       if (m) {
         props[m[1]] = m[2].trim();
-        if (lastComment) { comments[m[1]] = lastComment; lastComment = null; }
       }
     });
-    rules[selector] = { properties: props, comments };
+    rules[selector] = { properties: props };
   });
   return rules;
 }
@@ -40,28 +38,27 @@ function parseCSS(content) {
 function generate(light, dark) {
   const selectors = Array.from(new Set([...Object.keys(light), ...Object.keys(dark)])).sort();
   return selectors.map(sel => {
-    const l = light[sel] || { properties: {}, comments: {} };
-    const d = dark[sel] || { properties: {}, comments: {} };
+    const l = light[sel] || { properties: {} };
+    const d = dark[sel] || { properties: {} };
     const props = [...new Set([...Object.keys(l.properties), ...Object.keys(d.properties)])];
 
-    let block = `  ${sel} {\n    /* ${sel.replace('.org-', '')} */\n`;
+    let block = `${sel}{`;
 
     props.forEach(prop => {
-      if (l.comments[prop]) block += `    ${l.comments[prop]}\n`;
       const lv = l.properties[prop] || '', dv = d.properties[prop] || '';
       const isColor = /color|background|border|outline/.test(prop);
 
       if (isColor && lv && dv) {
-        block += `    ${prop}: ${lv};\n    ${prop}: light-dark(${lv}, ${dv});\n`;
+        block += `${prop}:${lv};${prop}:light-dark(${lv},${dv});`;
       } else if (lv) {
-        block += `    ${prop}: ${lv};\n`;
+        block += `${prop}:${lv};`;
       } else if (dv) {
-        block += `    ${prop}: ${dv};\n`;
+        block += `${prop}:${dv};`;
       }
     });
 
-    return block + '  }';
-  }).join('\n\n') + '\n';
+    return block + '}';
+  }).join('');
 }
 
 const light = parseCSS(fs.readFileSync(LightThemeFilePath, 'utf8'));
