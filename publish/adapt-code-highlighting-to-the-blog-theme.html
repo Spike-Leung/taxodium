@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>让博客的代码高亮适配主题</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="让 org-puhlish 生成的代码高亮，和亮色/暗色主题适配，基于亮色/暗色主题切换。" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+
+  <ul class="a11y-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <!-- <li><a href="/inside-black-hole.html">黑洞里</a></li> -->
+  </ul>
+  <!--
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  -->
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">让博客的代码高亮适配主题</h1>
+</header><p>
+我的博客是用 <code>org-publish</code> 生成的，后面我给博客添加了主题切换（见 <a href="setup-blog-color-scheme.html#0E86BEB5-D1F9-451D-8271-B63E836FE0A3">给博客添加 dark mode</a>）， 当时留下了一个问题 ⸺ <code>org-publish</code> 生成的代码高亮是内联在 HTML 标签里的，我没法通过 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark">light-dark</a> 去设置亮色/暗色主题下不同的颜色，只能选择一种代码高亮主题，要么是亮色，要么是暗色。
+</p>
+
+<section role="note" id="org8add347">
+<p>
+关于博客的构建见：
+</p>
+
+<ul class="org-ul">
+<li><a href="org-publish-blog.html">使用 org-publish 发布博客</a></li>
+<li><a href="blog-with-denote-and-org-publish.html">结合 denote 和 org-publish 写博客</a></li>
+</ul>
+</section>
+
+<p>
+因为只能二选一，我最终选择的是暗色。这会导致在亮色主题下，出现一大块黑色的内容，看着有点突兀。但比在暗色主题下，出现一大块白色的内容更好，毕竟在暗色主题下，白色太刺眼了。
+</p>
+
+<p>
+内联的颜色默认是当前 Emacs 的主题色，因为我平时的习惯是 <a href="emacs-random-theme.html">随机切换主题</a>，我当前用的 Emacs 主题和 <code>org-publish</code> 用到的主题未必是一致的，所以我每次在 <code>org-publish</code> 前还需要将 Emacs 主题重置一下。
+</p>
+
+<details>
+<summary>重置主题相关的代码</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/apply-theme-when-publish</span> (<span class="org-type">&amp;rest</span> args)
+  <span class="org-doc">"Switch theme when do `</span><span class="org-doc"><span class="org-constant">org-publish</span></span><span class="org-doc">'.ARGS will pass to `</span><span class="org-doc"><span class="org-constant">org-publish</span></span><span class="org-doc">'."</span>
+  (<span class="org-keyword">require</span> '<span class="org-constant">modus-themes</span>)
+  (<span class="org-keyword">require</span> '<span class="org-constant">ef-themes</span>)
+  (<span class="org-keyword">require</span> '<span class="org-constant">doric-themes</span>)
+  (<span class="org-keyword">let</span> ((current-theme (car custom-enabled-themes)))
+    (load-theme 'modus-vivendi t)
+    (apply args)
+    (<span class="org-keyword">when</span> current-theme
+      (disable-theme 'modus-vivendi)
+      (enable-theme current-theme)
+      (load-theme current-theme <span class="org-builtin">:no-confirm</span>))))
+
+(advice-remove 'org-publish #'spike-leung/apply-theme-when-publish)
+(advice-remove 'load-theme #'spike-leung/set-olivetti-fringe-face)
+(advice-add 'org-publish <span class="org-builtin">:around</span> #'spike-leung/apply-theme-when-publish)
+(advice-add 'load-theme <span class="org-builtin">:after</span> #'spike-leung/set-olivetti-fringe-face)
+</code></pre>
+</div>
+</details>
+
+<p>
+最近又在折腾博客样式，就顺便去看了一下 <code>org-publish</code> 中代码块的高亮是如何实现的，于是看到了 <code>org-html-htmlize-output-type</code> 这个参数，将其设置为 <code>css</code> ，代码高亮就会使用添加类名的方式实现，而不是内联，这样我就可以基于类名去应用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark">light-dark</a> 了。
+</p>
+
+<p>
+(ﾉ&gt;ω&lt;)ﾉ 好耶！
+</p>
+
+<hr>
+
+<p>
+具体做法：
+</p>
+
+<p>
+使用 <code>org-html-htmlize-generate-css</code> 这个方法去生成当前 Emacs 主题的 CSS：
+</p>
+<ul class="org-ul">
+<li>找一个喜欢的 Emacs 亮色主题，生成一份 <code>light.txt</code></li>
+<li>再找一个喜欢的暗色主题，生成一份 <code>dark.txt</code></li>
+</ul>
+
+<section role="note" id="org2175717">
+<p>
+<code>org-html-htmlize-generate-css</code> 的描述是：
+</p>
+
+<blockquote>
+<p>
+Create the CSS for <b>all font definitions</b> in the <b>current Emacs session</b>.
+</p>
+</blockquote>
+
+<p>
+有的 font definitions 应该是需要启用了某个 mode 才会生成，可能需要在 Emacs 中，把那些常用的语言文件都访问一下，例如打开一下 <code>.css</code> 、 <code>.js</code>  、 <code>.html</code> 等文件，使得 font definitions 尽可能齐全。
+</p>
+</section>
+
+<p>
+写一个脚本，合并 <code>light.txt</code> 和 <code>dark.txt</code> ，生成一份 CSS 文件，将两个主题的颜色合并，使用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark">light-dark</a> 定义亮色/暗色主题下的颜色。
+</p>
+
+<details>
+<summary>我现在用的 JS 脚本</summary>
+
+<p>
+如果你打算使用这个脚本，你可能需要调整一下代码中文件的路径。或者你可以找
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><code><span class="org-keyword">import</span> fs from <span class="org-string">"fs"</span>
+<span class="org-keyword">import</span> path from <span class="org-string">"path"</span>;
+<span class="org-keyword">import</span> { fileURLToPath } from <span class="org-string">"url"</span>;
+<span class="org-keyword">const</span> <span class="org-variable-name">__filename</span> = fileURLToPath(<span class="org-keyword">import</span>.meta.url);
+<span class="org-keyword">const</span> <span class="org-variable-name">__dirname</span> = path.dirname(__filename);
+
+<span class="org-keyword">const</span> <span class="org-variable-name">LightThemeFilePath</span> = path.join(__dirname, <span class="org-string">"."</span>, <span class="org-string">"light.txt"</span>);
+<span class="org-keyword">const</span> <span class="org-variable-name">DarkThemeFilePath</span> = path.join(__dirname, <span class="org-string">"."</span>, <span class="org-string">"dark.txt"</span>);
+<span class="org-keyword">const</span> <span class="org-variable-name">OutputFilePath</span> = path.join(__dirname, <span class="org-string">".."</span>, <span class="org-string">"publish/styles/fontify-code.css"</span>);
+
+<span class="org-keyword">function</span> <span class="org-function-name">parseCSS</span>(<span class="org-variable-name">content</span>) {
+  <span class="org-keyword">const</span> <span class="org-variable-name">rules</span> = {};
+  <span class="org-comment-delimiter">// </span><span class="org-comment">org- &#23545;&#24212;&#30340;&#26159; ox-html.el &#20013; `org-html-htmlize-font-prefix` &#30340;&#20540;
+</span>  <span class="org-keyword">const</span> <span class="org-variable-name">ruleRegex</span> = <span class="org-string">/\.org-[^{]+\{[^}]+\}/</span>g;
+
+  (content.match(ruleRegex) || []).forEach(rule =&gt; {
+    <span class="org-keyword">const</span> <span class="org-variable-name">selector</span> = rule.match(<span class="org-string">/(\.org-[\w-]+)/</span>)[1];
+    <span class="org-keyword">const</span> <span class="org-variable-name">block</span> = rule.match(<span class="org-string">/\{([^}]+)\}/</span>)[1];
+    <span class="org-keyword">const</span> <span class="org-variable-name">props</span> = {}, <span class="org-variable-name">comments</span> = {};
+    <span class="org-keyword">let</span> <span class="org-variable-name">lastComment</span> = <span class="org-constant">null</span>;
+
+    block.split(<span class="org-string">'\n'</span>).forEach(line =&gt; {
+      line = line.trim();
+      <span class="org-keyword">if</span> (!line) <span class="org-keyword">return</span>;
+      <span class="org-keyword">if</span> (line.startsWith(<span class="org-string">'/*'</span>) &amp;&amp; line.endsWith(<span class="org-string">'*/'</span>)) {
+        lastComment = line; <span class="org-keyword">return</span>;
+      }
+      <span class="org-keyword">const</span> <span class="org-variable-name">m</span> = line.match(<span class="org-string">/^([a-z-]+)\s*:\s*([^;]+)/</span>);
+      <span class="org-keyword">if</span> (m) {
+        props[m[1]] = m[2].trim();
+      }
+    });
+    rules[selector] = { properties: props };
+  });
+  <span class="org-keyword">return</span> rules;
+}
+
+<span class="org-keyword">function</span> <span class="org-function-name">generate</span>(<span class="org-variable-name">light</span>, <span class="org-variable-name">dark</span>) {
+  <span class="org-keyword">const</span> <span class="org-variable-name">selectors</span> = Array.from(<span class="org-keyword">new</span> <span class="org-type">Set</span>([...Object.keys(light), ...Object.keys(dark)])).sort();
+  <span class="org-keyword">return</span> selectors.map(sel =&gt; {
+    <span class="org-keyword">const</span> <span class="org-variable-name">l</span> = light[sel] || { properties: {} };
+    <span class="org-keyword">const</span> <span class="org-variable-name">d</span> = dark[sel] || { properties: {} };
+    <span class="org-keyword">const</span> <span class="org-variable-name">props</span> = [...<span class="org-keyword">new</span> <span class="org-type">Set</span>([...Object.keys(l.properties), ...Object.keys(d.properties)])];
+
+    <span class="org-keyword">let</span> <span class="org-variable-name">block</span> = <span class="org-string">`${sel}{`</span>;
+
+    props.forEach(prop =&gt; {
+      <span class="org-keyword">const</span> <span class="org-variable-name">lv</span> = l.properties[prop] || <span class="org-string">''</span>, <span class="org-variable-name">dv</span> = d.properties[prop] || <span class="org-string">''</span>;
+      <span class="org-keyword">const</span> <span class="org-variable-name">isColor</span> = <span class="org-string">/color|background|border|outline/</span>.test(prop);
+
+      <span class="org-keyword">if</span> (isColor &amp;&amp; lv &amp;&amp; dv) {
+        block += <span class="org-string">`${prop}:${lv};${prop}:light-dark(${lv},${dv});`</span>;
+      } <span class="org-keyword">else</span> <span class="org-keyword">if</span> (lv) {
+        block += <span class="org-string">`${prop}:${lv};`</span>;
+      } <span class="org-keyword">else</span> <span class="org-keyword">if</span> (dv) {
+        block += <span class="org-string">`${prop}:${dv};`</span>;
+      }
+    });
+
+    <span class="org-keyword">return</span> block + <span class="org-string">'}'</span>;
+  }).join(<span class="org-string">''</span>);
+}
+
+<span class="org-keyword">const</span> <span class="org-variable-name">light</span> = parseCSS(fs.readFileSync(LightThemeFilePath, <span class="org-string">'utf8'</span>));
+<span class="org-keyword">const</span> <span class="org-variable-name">dark</span> = parseCSS(fs.readFileSync(DarkThemeFilePath, <span class="org-string">'utf8'</span>));
+fs.writeFileSync(OutputFilePath, generate(light, dark));
+console.log(<span class="org-string">'Generated Finished'</span>);
+</code></pre>
+</div>
+
+<p>
+<a href="https://github.com/Spike-Leung/taxodium/blob/b777de19ab27ac41bdb9681d3e1838d88d3c1593/scripts/generate-fontify-code-css.js">Source</a>
+</p>
+</details>
+
+<p>
+最后在博客中引用生成好的 CSS 文件就好了。
+</p>
+
+<p>
+Happy hacking - <a href="how-to-get-started-with-emacs.html">Emacs</a> ♥ you!
+</p>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention-container js-required">
+<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
+<p class="webmention-tip">
+如果你想回应这篇文章，可以在你的文章或社交媒体帖子中链接这篇文章，然后提交你的 URL，你的回应随后会显示在此页面上。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章或帖子的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention-content-list"></ul>
+</details>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： <span class="dt-published">2026-03-10 Tue 21:00</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-10 Tue 21:20</span></p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/toc.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<!--
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+-->
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
