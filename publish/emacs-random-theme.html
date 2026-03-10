@@ -60,7 +60,7 @@
 Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/modus-themes">modus-themes</a> 和 <a href="https://github.com/protesilaos/ef-themes">ef-themes</a>，它们都是出自 <a href="https://github.com/protesilaos">protesilaos</a>。
 </p>
 
-<section role="note" id="orga98591f">
+<section role="note" id="orgb9e53fa">
 <p>
 后续可能还会加入 <a href="https://github.com/protesilaos/doric-themes">doric-themes</a>，也是 Prot 的写的主题，这个主题的颜色比较单一，写作的时候用感觉不错。
 </p>
@@ -177,7 +177,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 へ(゜∇、°)へ へ(゜∇、°)へ
 </p>
 
-<section role="note" id="org2cd4f2e">
+<section role="note" id="org3463362">
 <p>
 说起来奇怪，如果是我自己主动切换的主题，可能切换后我马上就想换了。
 </p>
@@ -325,12 +325,14 @@ set of themes to either dark or light variants."</span>
 <p>
 <a href="https://github.com/Spike-Leung/Spikemacs/blob/65b9510858af876df69ed38a00aa3916a9b83280/lisp/init-ui.el#L51-L115">Source</a>
 </p>
-
-<hr>
+</details>
 
 <p>
-另外，我平时写博客会用到 <a href="https://github.com/rnkn/olivetti">Olivetti</a>，<code>ef-themes</code> 和 <code>doric-themes</code> 没有设置 Olivetti 两侧的 fringe 的颜色，没法和主体部分区分开。所以我写了个函数，在切换主题之后，获取一个和主体接近的颜色作为 <code>olivetti-fringe</code> 的颜色。
+另外，我平时写博客会用到 <a href="https://github.com/rnkn/olivetti">Olivetti</a>，<code>ef-themes</code> 和 <code>doric-themes</code> 没有设置 fringe 的颜色，导致 Olivetti 主体和 fringe 无法区分。所以我写了个函数，在切换主题之后，获取一个和 Olivetti 主体接近的颜色作为 <code>olivetti-fringe</code> 的颜色。
 </p>
+
+<details>
+<summary>代码</summary>
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><code><span style="color: #989898; font-style: italic;">;; </span><span style="color: #989898; font-style: italic;">olivetti &#26159;&#19968;&#27454;&#25171;&#23383;&#26426;&#30340;&#21517;&#23383;&#65292;&#36825;&#20010;&#27169;&#24335;&#20250;&#27169;&#20223;&#25171;&#23383;&#26426;&#30340;&#32440;&#24352;&#22823;&#23567;&#65292;&#20889;&#20316;&#26102;&#29992;
@@ -343,7 +345,7 @@ set of themes to either dark or light variants."</span>
   <span style="color: #f78fe7; font-weight: bold;">:hook</span> (olivetti-mode-on . spike-leung/set-olivetti-fringe-face)
   <span style="color: #f78fe7; font-weight: bold;">:config</span>
   (<span style="color: #b6a0ff; font-weight: bold;">defun</span> <span style="color: #feacd0;">spike-leung/set-olivetti-fringe-face</span> (<span style="color: #6ae4b9; font-weight: bold;">&amp;rest</span> _)
-    <span style="color: #9ac8e0; font-style: italic;">"Set olivetti-fringe to fringe background, fallback to tab-bar."</span>
+    <span style="color: #9ac8e0; font-style: italic;">"Set `</span><span style="color: #00bcff; font-style: italic;">olivetti-fringe</span><span style="color: #9ac8e0; font-style: italic;">' to `</span><span style="color: #00bcff; font-style: italic;">fringe</span><span style="color: #9ac8e0; font-style: italic;">''s background, fallback to `</span><span style="color: #00bcff; font-style: italic;">tab-bar</span><span style="color: #9ac8e0; font-style: italic;">''s background."</span>
     (<span style="color: #b6a0ff; font-weight: bold;">let</span> ((bg-default (face-attribute 'default <span style="color: #f78fe7; font-weight: bold;">:background</span> nil))
           (bg-fringe (face-attribute 'fringe <span style="color: #f78fe7; font-weight: bold;">:background</span> nil))
           (bg-tab-bar (face-attribute 'tab-bar <span style="color: #f78fe7; font-weight: bold;">:background</span> nil)))
@@ -389,7 +391,7 @@ set of themes to either dark or light variants."</span>
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-05-21 Wed 21:40</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-03-10 Tue 11:19</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-10 Tue 14:15</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
