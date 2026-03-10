@@ -87,6 +87,33 @@ org-publish 的使用有点像 [[https://gulpjs.com/][gulp]]，
 
 为此写了 =spike-leung/apply-theme-when-publish= 用于在执行 =org-publish= 的时候切换主题。
 
+#+begin_details
+#+html: <summary>代码</summary>
+
+#+begin_src emacs-lisp
+  ;; pin code block theme
+
+  (defun spike-leung/apply-theme-when-publish (&rest args)
+    "Switch theme when do `org-publish'.
+  ARGS will pass to `org-publish'."
+    (require 'modus-themes)
+    (require 'ef-themes)
+    (require 'doric-themes)
+    (let ((current-theme (car custom-enabled-themes)))
+      (load-theme 'modus-vivendi t)
+      (apply args)
+      (when current-theme
+        (disable-theme 'modus-vivendi)
+        (enable-theme current-theme)
+        (load-theme current-theme :no-confirm))))
+
+  (advice-remove 'org-publish #'spike-leung/apply-theme-when-publish)
+  (advice-remove 'load-theme #'spike-leung/set-olivetti-fringe-face)
+  (advice-add 'org-publish :around #'spike-leung/apply-theme-when-publish)
+  (advice-add 'load-theme :after #'spike-leung/set-olivetti-fringe-face)
+#+end_src
+#+end_details
+
 ** RSS 的设置
 :PROPERTIES:
 :CUSTOM_ID: 584B050A-A533-4758-9527-1A47C0FDD016
