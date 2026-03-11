@@ -34,6 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
         target.classList.remove(CodeHighlightedClass);
       }
     });
+
+    coderef.addEventListener("click", (e) => e.preventDefault())
   });
 });
 
