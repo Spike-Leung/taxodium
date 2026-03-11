@@ -66,6 +66,40 @@
 
 具体做法：
 
+将 ~org-html-htmlize-output-type~ 设置为 ~css~ 。
+
+因为我希望只在 ~org-publish~ 的时候才设置为 ~css~ ，其他导出 HTML 的情况还是保持内联，
+所以我会在 ~org-publish~ 之前将 ~org-html-htmlize-output-type~ 设置为 ~css~ ，
+在 ~org-publish~ 结束后将其重置会 ~inline-css~ 。
+
+#+begin_details
+#+html: <summary>相关代码</summary>
+
+#+begin_src emacs-lisp
+  (defun spike-leung/setup-org-publish-project-alist (&rest _args)
+    "Setup `org-publish-project-alist'."
+    (message "setup org-publish-project-alist")
+    ;; 在 `org-publish' 开始的时候设置为 css
+    (setq org-html-htmlize-output-type 'css)
+    ;; 设置 org-publish 相关配置
+    ;; (setq org-publish-project-alist '())
+    )
+
+  (spike-leung/setup-org-publish-project-alist)
+
+  (defun spike-leung/org-publish-after-callback (&rest _)
+    "Stuff to do after `org-publish'"
+    (setq org-html-htmlize-output-type 'inline-css))
+
+  (advice-remove 'org-publish #'spike-leung/setup-org-publish-project-alist)
+  (advice-add 'org-publish :before #'spike-leung/setup-org-publish-project-alist)
+
+  ;; 在 `org-publish' 结束之后重置会 inline-css
+  (advice-remove 'org-publish #'spike-leung/org-publish-after-callback)
+  (advice-add 'org-publish :after #'spike-leung/org-publish-after-callback)
+#+end_src
+#+end_details
+
 使用 ~org-html-htmlize-generate-css~ 这个方法去生成当前 Emacs 主题的 CSS：
 - 找一个喜欢的亮色主题，生成一份 ~light.txt~
 - 找一个喜欢的暗色主题，生成一份 ~dark.txt~
@@ -87,7 +121,7 @@ Use this to create face definitions in your CSS style file
 that can then be used by code snippets transformed by htmlize.
 
 This command just produces a buffer
-that contains class definitions for all faces used in the current Emacs session.
+that contains class definitions for *all faces used in the current Emacs session.*
 
 You can copy and paste *the ones you need* into your CSS file.
 #+end_quote

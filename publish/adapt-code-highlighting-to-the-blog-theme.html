@@ -60,7 +60,7 @@
 我的博客是用 <code>org-publish</code> 生成的，后面我给博客添加了主题切换（见 <a href="setup-blog-color-scheme.html#0E86BEB5-D1F9-451D-8271-B63E836FE0A3">给博客添加 dark mode</a>）， 当时留下了一个问题 ⸺ <code>org-publish</code> 生成的代码高亮是内联在 HTML 标签里的，我没法通过 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark">light-dark</a> 去设置亮色/暗色主题下不同的颜色，只能选择一种代码高亮主题，要么是亮色，要么是暗色。
 </p>
 
-<section role="note" id="org7bcf250">
+<section role="note" id="org3af3031">
 <p>
 如果你好奇博客是如何用 <code>org-publish</code> 构建的：
 </p>
@@ -119,6 +119,43 @@
 </p>
 
 <p>
+将 <code>org-html-htmlize-output-type</code> 设置为 <code>css</code> 。
+</p>
+
+<p>
+因为我希望只在 <code>org-publish</code> 的时候才设置为 <code>css</code> ，其他导出 HTML 的情况还是保持内联，所以我会在 <code>org-publish</code> 之前将 <code>org-html-htmlize-output-type</code> 设置为 <code>css</code> ，在 <code>org-publish</code> 结束后将其重置会 <code>inline-css</code> 。
+</p>
+
+<details>
+<summary>相关代码</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/setup-org-publish-project-alist</span> (<span class="org-type">&amp;rest</span> _args)
+  <span class="org-doc">"Setup `</span><span class="org-doc"><span class="org-constant">org-publish-project-alist</span></span><span class="org-doc">'."</span>
+  (message <span class="org-string">"setup org-publish-project-alist"</span>)
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22312; `</span><span class="org-comment"><span class="org-constant">org-publish</span></span><span class="org-comment">' &#24320;&#22987;&#30340;&#26102;&#20505;&#35774;&#32622;&#20026; css
+</span>  (<span class="org-keyword">setq</span> org-html-htmlize-output-type 'css)
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#35774;&#32622; org-publish &#30456;&#20851;&#37197;&#32622;
+</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">(setq org-publish-project-alist '())
+</span>  )
+
+(spike-leung/setup-org-publish-project-alist)
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/org-publish-after-callback</span> (<span class="org-type">&amp;rest</span> _)
+  <span class="org-doc">"Stuff to do after `</span><span class="org-doc"><span class="org-constant">org-publish</span></span><span class="org-doc">'"</span>
+  (<span class="org-keyword">setq</span> org-html-htmlize-output-type 'inline-css))
+
+(advice-remove 'org-publish #'spike-leung/setup-org-publish-project-alist)
+(advice-add 'org-publish <span class="org-builtin">:before</span> #'spike-leung/setup-org-publish-project-alist)
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#22312; `</span><span class="org-comment"><span class="org-constant">org-publish</span></span><span class="org-comment">' &#32467;&#26463;&#20043;&#21518;&#37325;&#32622;&#20250; inline-css
+</span>(advice-remove 'org-publish #'spike-leung/org-publish-after-callback)
+(advice-add 'org-publish <span class="org-builtin">:after</span> #'spike-leung/org-publish-after-callback)
+</code></pre>
+</div>
+</details>
+
+<p>
 使用 <code>org-html-htmlize-generate-css</code> 这个方法去生成当前 Emacs 主题的 CSS：
 </p>
 <ul class="org-ul">
@@ -126,7 +163,7 @@
 <li>找一个喜欢的暗色主题，生成一份 <code>dark.txt</code></li>
 </ul>
 
-<section role="note" id="orgdb136db">
+<section role="note" id="org6fa8634">
 <p>
 <code>org-html-htmlize-generate-css</code> 生成的类名前缀可以通过 <code>org-html-htmlize-font-prefix</code> 修改，默认是 <code>org-。</code>
 </p>
@@ -151,7 +188,7 @@ that can then be used by code snippets transformed by htmlize.
 
 <p>
 This command just produces a buffer
-that contains class definitions for all faces used in the current Emacs session.
+that contains class definitions for <b>all faces used in the current Emacs session.</b>
 </p>
 
 <p>
@@ -290,7 +327,7 @@ Happy hacking - <a href="how-to-get-started-with-emacs.html">Emacs</a> ♥ you!
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2026-03-10 Tue 21:00</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-03-10 Tue 23:40</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-11 Wed 11:36</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
