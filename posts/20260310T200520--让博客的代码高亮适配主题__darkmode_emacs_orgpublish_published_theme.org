@@ -68,35 +68,34 @@
 
 将 ~org-html-htmlize-output-type~ 设置为 ~css~ 。
 
-因为我希望只在 ~org-publish~ 的时候才设置为 ~css~ ，其他导出 HTML 的情况还是保持内联，
-所以我会在 ~org-publish~ 之前将 ~org-html-htmlize-output-type~ 设置为 ~css~ ，
-在 ~org-publish~ 结束后将其重置会 ~inline-css~ 。
-
 #+begin_details
-#+html: <summary>相关代码</summary>
+#+html: <summary>如果只希望作用于 org-publish</summary>
 
-#+begin_src emacs-lisp
+因为我希望只在 ~org-publish~ 的时候才设置为 ~css~ ，其他导出 HTML 的情况还是保持内联，
+所以我会在 ~org-publish~ [[(before)][之前]] 将 ~org-html-htmlize-output-type~ [[(css)][设置为 ~css~]]，
+在 ~org-publish~ [[(after)][完成]] 后将其 [[(inline-css)][重置回 ~inline-css~]]。
+
+#+NAME: org-html-htmlize-output-type
+#+begin_src emacs-lisp -r
   (defun spike-leung/setup-org-publish-project-alist (&rest _args)
     "Setup `org-publish-project-alist'."
     (message "setup org-publish-project-alist")
-    ;; 在 `org-publish' 开始的时候设置为 css
-    (setq org-html-htmlize-output-type 'css)
-    ;; 设置 org-publish 相关配置
-    ;; (setq org-publish-project-alist '())
-    )
+    (setq org-html-htmlize-output-type 'css) (ref:css)
+    (setq org-publish-project-alist
+          `() ;; 此处省略 `org-publish-project-alist' 相关配置
+          ))
 
   (spike-leung/setup-org-publish-project-alist)
 
-  (defun spike-leung/org-publish-after-callback (&rest _)
+  (defun spike-leung/org-publish-after-callback ()
     "Stuff to do after `org-publish'"
-    (setq org-html-htmlize-output-type 'inline-css))
+    (setq org-html-htmlize-output-type 'inline-css)) (ref:inline-css)
 
   (advice-remove 'org-publish #'spike-leung/setup-org-publish-project-alist)
-  (advice-add 'org-publish :before #'spike-leung/setup-org-publish-project-alist)
+  (advice-add 'org-publish :before #'spike-leung/setup-org-publish-project-alist) (ref:before)
 
-  ;; 在 `org-publish' 结束之后重置会 inline-css
   (advice-remove 'org-publish #'spike-leung/org-publish-after-callback)
-  (advice-add 'org-publish :after #'spike-leung/org-publish-after-callback)
+  (advice-add 'org-publish :after #'spike-leung/org-publish-after-callback) (ref:after)
 #+end_src
 #+end_details
 

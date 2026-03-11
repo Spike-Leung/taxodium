@@ -22,6 +22,26 @@
 <link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
 <link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
 <link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<script>
+// @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&amp;dn=gpl-3.0.txt GPL-v3-or-Later
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+// @license-end
+</script>
 </head>
 <body class="h-entry">
 <div id="preamble" class="status">
@@ -60,7 +80,7 @@
 我的博客是用 <code>org-publish</code> 生成的，后面我给博客添加了主题切换（见 <a href="setup-blog-color-scheme.html#0E86BEB5-D1F9-451D-8271-B63E836FE0A3">给博客添加 dark mode</a>）， 当时留下了一个问题 ⸺ <code>org-publish</code> 生成的代码高亮是内联在 HTML 标签里的，我没法通过 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark">light-dark</a> 去设置亮色/暗色主题下不同的颜色，只能选择一种代码高亮主题，要么是亮色，要么是暗色。
 </p>
 
-<section role="note" id="org3af3031">
+<section role="note" id="orgfa4a1e3">
 <p>
 如果你好奇博客是如何用 <code>org-publish</code> 构建的：
 </p>
@@ -122,35 +142,33 @@
 将 <code>org-html-htmlize-output-type</code> 设置为 <code>css</code> 。
 </p>
 
-<p>
-因为我希望只在 <code>org-publish</code> 的时候才设置为 <code>css</code> ，其他导出 HTML 的情况还是保持内联，所以我会在 <code>org-publish</code> 之前将 <code>org-html-htmlize-output-type</code> 设置为 <code>css</code> ，在 <code>org-publish</code> 结束后将其重置会 <code>inline-css</code> 。
-</p>
-
 <details>
-<summary>相关代码</summary>
+<summary>如果只希望作用于 org-publish</summary>
+
+<p>
+因为我希望只在 <code>org-publish</code> 的时候才设置为 <code>css</code> ，其他导出 HTML 的情况还是保持内联，所以我会在 <code>org-publish</code> <a href="#coderef-before" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-before');" onmouseout="CodeHighlightOff(this, 'coderef-before');">之前</a> 将 <code>org-html-htmlize-output-type</code> <a href="#coderef-css" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-css');" onmouseout="CodeHighlightOff(this, 'coderef-css');">设置为 <code>css</code></a>，在 <code>org-publish</code> <a href="#coderef-after" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-after');" onmouseout="CodeHighlightOff(this, 'coderef-after');">完成</a> 后将其 <a href="#coderef-inline-css" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-inline-css');" onmouseout="CodeHighlightOff(this, 'coderef-inline-css');">重置回 <code>inline-css</code></a>。
+</p>
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/setup-org-publish-project-alist</span> (<span class="org-type">&amp;rest</span> _args)
   <span class="org-doc">"Setup `</span><span class="org-doc"><span class="org-constant">org-publish-project-alist</span></span><span class="org-doc">'."</span>
   (message <span class="org-string">"setup org-publish-project-alist"</span>)
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22312; `</span><span class="org-comment"><span class="org-constant">org-publish</span></span><span class="org-comment">' &#24320;&#22987;&#30340;&#26102;&#20505;&#35774;&#32622;&#20026; css
-</span>  (<span class="org-keyword">setq</span> org-html-htmlize-output-type 'css)
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#35774;&#32622; org-publish &#30456;&#20851;&#37197;&#32622;
-</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">(setq org-publish-project-alist '())
-</span>  )
+<span id="coderef-css" class="coderef-off">  (<span class="org-keyword">setq</span> org-html-htmlize-output-type 'css)</span>
+  (<span class="org-keyword">setq</span> org-publish-project-alist
+        `() <span class="org-comment-delimiter">;; </span><span class="org-comment">&#27492;&#22788;&#30465;&#30053; `</span><span class="org-comment"><span class="org-constant">org-publish-project-alist</span></span><span class="org-comment">' &#30456;&#20851;&#37197;&#32622;
+</span>        ))
 
 (spike-leung/setup-org-publish-project-alist)
 
-(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/org-publish-after-callback</span> (<span class="org-type">&amp;rest</span> _)
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/org-publish-after-callback</span> ()
   <span class="org-doc">"Stuff to do after `</span><span class="org-doc"><span class="org-constant">org-publish</span></span><span class="org-doc">'"</span>
-  (<span class="org-keyword">setq</span> org-html-htmlize-output-type 'inline-css))
+<span id="coderef-inline-css" class="coderef-off">  (<span class="org-keyword">setq</span> org-html-htmlize-output-type 'inline-css))</span>
 
 (advice-remove 'org-publish #'spike-leung/setup-org-publish-project-alist)
-(advice-add 'org-publish <span class="org-builtin">:before</span> #'spike-leung/setup-org-publish-project-alist)
+<span id="coderef-before" class="coderef-off">(advice-add 'org-publish <span class="org-builtin">:before</span> #'spike-leung/setup-org-publish-project-alist)</span>
 
-<span class="org-comment-delimiter">;; </span><span class="org-comment">&#22312; `</span><span class="org-comment"><span class="org-constant">org-publish</span></span><span class="org-comment">' &#32467;&#26463;&#20043;&#21518;&#37325;&#32622;&#20250; inline-css
-</span>(advice-remove 'org-publish #'spike-leung/org-publish-after-callback)
-(advice-add 'org-publish <span class="org-builtin">:after</span> #'spike-leung/org-publish-after-callback)
+(advice-remove 'org-publish #'spike-leung/org-publish-after-callback)
+<span id="coderef-after" class="coderef-off">(advice-add 'org-publish <span class="org-builtin">:after</span> #'spike-leung/org-publish-after-callback)</span>
 </code></pre>
 </div>
 </details>
@@ -163,7 +181,7 @@
 <li>找一个喜欢的暗色主题，生成一份 <code>dark.txt</code></li>
 </ul>
 
-<section role="note" id="org6fa8634">
+<section role="note" id="org120a34f">
 <p>
 <code>org-html-htmlize-generate-css</code> 生成的类名前缀可以通过 <code>org-html-htmlize-font-prefix</code> 修改，默认是 <code>org-。</code>
 </p>
@@ -327,7 +345,7 @@ Happy hacking - <a href="how-to-get-started-with-emacs.html">Emacs</a> ♥ you!
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2026-03-10 Tue 21:00</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-03-11 Wed 11:36</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-11 Wed 21:18</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
