@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
     pre.addEventListener("mousemove", function (e) {
       const rect = pre.getBoundingClientRect();
       const x = e.clientX - rect.left;
-      const edgeSize = 32; // px
+      const edgeSize = 15; // px
 
       if (x < edgeSize) {
         scrollDirection = -1;
