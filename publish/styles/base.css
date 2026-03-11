@@ -23,6 +23,7 @@
   --color-highlight-secondary: var(--color-text);
   --color-lyrics: #7c0100;
   --color-code: #8f0075;
+  --color-bg-code-highlighted: oklch(0 0 0 / .1);
 
   --dark-color-bg: #232323;
   --dark-color-bg-secondary: #1e1e1e;
@@ -43,6 +44,7 @@
   --dark-color-highlight-secondary: var(--dark-color-text);
   --dark-color-lyrics: #e95632;
   --dark-color-code: #f78fe7;
+  --dark-color-bg-code-highlighted: oklch(1 0 0 / .3);
 
   --table-border: 2px solid var(--color-text);
   --table-cell-border: 1px solid var(--color-border);
@@ -945,6 +947,14 @@ img.inline-image {
                          "code";
     gap: .5em;
   }
+}
+
+.code-highlighted:not(.coderef) {
+  background-color: var(--color-bg-code-highlighted);
+  background-color: light-dark(var(--color-bg-code-highlighted), var(--dark-color-bg-code-highlighted));
+  /* 让 span 的宽度扩大到容器宽度，从而让背景更长，更明显 */
+  display: inline-block;
+  width: 1000%;
 }
 
 .table-wrapper {
