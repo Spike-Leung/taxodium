@@ -386,7 +386,7 @@ async function generateTagFeeds() {
         ...CONFIG,
         feedTitle: `${CONFIG.feedTitle} - Tag: ${tag}`,
         feedLink: `${CONFIG.feedId}${tag}.xml`,
-        feedId: `${CONFIG.feedId}tags/${tag}/`,
+        feedId: CONFIG.feedId,
         feedSubtitle: `Posts tagged with '${tag}'`,
       };
       const feed = generateAtomFeed(processedEntries, tagFeedConfig);
