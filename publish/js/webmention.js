@@ -47,10 +47,13 @@ function renderWebmentions(feedList = [], container) {
     if (entry["wm-private"] === true) continue;
 
     const li = document.createElement("li");
+    li.className = "webmention-card"
 
     // author info
-    const divAuthor = document.createElement("div");
-    divAuthor.className = "webmention-author-container"
+    const divAuthorContainer = document.createElement("div");
+    divAuthorContainer.className = "webmention-author-container"
+    const divSourceInfo = document.createElement("div");
+    divSourceInfo.className = "webmention-source-info"
 
     const { name, url, photo } = entry.author || {}
 
@@ -65,7 +68,19 @@ function renderWebmentions(feedList = [], container) {
     aAuthor.className = "webmention-author"
     aAuthor.textContent = name || wmSourceUrl.host || "Unknown"
 
-    Array.from([imgAvatar, aAuthor]).forEach((child) => divAuthor.appendChild(child))
+    const aSource = document.createElement("a");
+    aSource.href = wmSourceUrl.href
+    aSource.className = "webmention-source-url"
+    aSource.textContent = entry.name || wmSourceUrl.href
+
+    const pSourceContainer = document.createElement("p")
+    pSourceContainer.className ="webmention-source"
+    pSourceContainer.innerText = "原文："
+    pSourceContainer.appendChild(aSource)
+
+    Array.from([aAuthor, pSourceContainer]).forEach((child) => divSourceInfo.appendChild(child))
+
+    Array.from([imgAvatar, divSourceInfo]).forEach((child) => divAuthorContainer.appendChild(child))
 
     // content
     const divContent = document.createElement("div");
@@ -75,11 +90,8 @@ function renderWebmentions(feedList = [], container) {
     // meta info
     const divMeta = document.createElement("div");
     divMeta.className = "webmention-meta"
-    const aSource = document.createElement("a");
-    const pReceived = document.createElement("p");
 
-    aSource.href = wmSourceUrl.href
-    aSource.textContent = wmSourceUrl.href
+    const pReceived = document.createElement("p");
 
     pReceived.textContent = new Intl.DateTimeFormat("zh-CN", {
       dateStyle: "full",
@@ -88,8 +100,8 @@ function renderWebmentions(feedList = [], container) {
     }).format(new Date(entry["wm-received"]))
     pReceived.className = "webmention-date"
 
-    Array.from([aSource, pReceived]).forEach((child) => divMeta.appendChild(child))
-    Array.from([divAuthor, divContent, divMeta]).forEach((child) => li.appendChild(child))
+    Array.from([pReceived]).forEach((child) => divMeta.appendChild(child))
+    Array.from([divAuthorContainer, divContent, divMeta]).forEach((child) => li.appendChild(child))
     frag.appendChild(li);
   }
 

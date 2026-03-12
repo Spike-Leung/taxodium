@@ -25,6 +25,7 @@
   --color-code: #8f0075;
   --color-bg-code-highlighted: oklch(0 0 0 / .1);
   --color-fucus-visible-outline: #8f0075;
+  --color-bg-webmention-content: oklch(1 0 0 / .5);
 
   --dark-color-bg: #232323;
   --dark-color-bg-secondary: #1e1e1e;
@@ -47,6 +48,7 @@
   --dark-color-code: #f78fe7;
   --dark-color-bg-code-highlighted: oklch(1 0 0 / .3);
   --dark-color-fucus-visible-outline: #f78fe7;
+  --dark-color-bg-webmention-content: oklch(0 0 0 / .3);
 
   --table-border: 2px solid var(--color-text);
   --table-cell-border: 1px solid var(--color-border);
@@ -1426,7 +1428,7 @@ td,th {
     gap: .8em;
     align-items: center;
 
-    @media screen and (width <= 500px) {
+    @media screen and (width <= 680px) {
       grid-template-columns: 1fr;
     }
 
@@ -1482,14 +1484,38 @@ td,th {
 
 .webmention-content-list {
   list-style: none;
-  padding-inline-start: 0;
+  padding-inline: 0;
+  display: flex;
+  flex-direction: column;
 
   & blockquote {
     margin: 0;
   }
 
-  & li + li {
-    margin-block-start: 2em;
+  & .webmention-card {
+    padding-block: 1em;
+
+    &:not(:first-child) {
+      border-block-start: 2px dashed;
+      border-color: var(--color-border);
+      border-color: light-dark(var(--color-border), var(--dark-color-border));
+    }
+
+    &:first-child {
+      padding-block-start: 0;
+    }
+    &:last-child {
+      padding-block-end: 0;
+    }
+  }
+
+  & .webmention-content {
+    clear: both;
+    padding-block: 1em;
+
+    &:empty {
+      display: none;
+    }
   }
 
   @media screen and (width <= 400px) {
@@ -1499,19 +1525,28 @@ td,th {
 
   .webmention-author-container {
     font-size: 0.8em;
+    display: flex;
+    gap: 1em;
+  }
+
+  .webmention-source-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .webmention-source {
+    word-break: break-all;
   }
 
   .webmention-avatar {
-    float: inline-start;
-    margin-inline-end: 1em;
-    margin-block-start: 0.5em;
     object-fit: contain;
     border-radius: 0.5em;
     width: 4em;
+    align-self: start;
 
     @media screen and (width <= 400px) {
       width: 3em;
-
     }
   }
 
@@ -1520,11 +1555,21 @@ td,th {
   }
 
   .webmention-meta {
-    font-size: 0.8em;
+    font-size: .8em;
+    margin-block-start: .5em;
+
+    @media screen and (width <= 400px) {
+      margin-block-start: 0;
+      font-size: .65em;
+    }
   }
 
   .webmention-date {
     margin-block: 0;
+    text-align: end;
+    color: var(--color-text-secondary);
+    color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+    word-break: break-all;
   }
 }
 
