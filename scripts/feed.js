@@ -28,66 +28,7 @@ const CONFIG = {
   orgPostsDir: path.join(__dirname, "..", "posts"),
   postsDir: path.join(__dirname, "..", "publish"),
   outputFile: path.join(__dirname, "..", "publish/rss.xml"),
-  // follows: [
-  //   { feedId: '58021783497765889', userId: '72185894417953792' },
-  //   { feedId: '63132271001948160', userId: '72185894417953792' }
-  // ]
 };
-
-async function generateSummary(text) {
-  if (!OPENROUTER_API_KEY) {
-    console.warn("No OpenRouter API key set, skipping summary generation.");
-    return "";
-  }
-
-  try {
-    const response = await fetch(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
-          messages: [
-            {
-              role: "user",
-              content: `请为以下博客文章撰写一段简洁的概述，要求：
-1. **长度**：100-150字左右
-2. **内容要点**：
-   - 文章的核心主题或观点
-   - 主要讨论的问题或解决方案
-   - 关键结论或价值点
-3. **语言风格**：清晰易懂，避免过多专业术语
-4. **目标读者**：让读者快速了解文章是否符合他们的需求
-5. **不要包含**：
-   - "本文介绍了..."、"作者讨论了..." 等套话
-   - 过于细节的技术实现
-   - 个人化的评论
-
-请直接输出概述内容，不需要其他解释。
-请阅读以下文章内容，并为我生成一份简明扼要的总结。
-
-\n\n${text}`,
-            },
-          ],
-          temperature: 1,
-        }),
-      },
-    );
-
-    const data = await response.json();
-    return (
-      data.choices?.[0]?.message?.content?.trim() ||
-        "LLM 罢工啦，直接看原文吧 _​(:3 」∠)_​"
-    );
-  } catch (error) {
-    console.warn("Error generating summary:", error);
-    return "";
-  }
-}
 
 function parseDateString(dateStr) {
   // Handle formats like "2025-04-07 Mon" or "2025-04-07 Mon 15:09"
@@ -168,13 +109,11 @@ async function processPost(entry) {
           .trim()
           .replace(/\s+/g, " ")
           .slice(0, 2000); // limit prompt size
-    // const summary = await generateSummary(plainText)
 
     return {
       ...entry,
       content: contentHtml,
       updated: updatedDate,
-      // summary,
     };
   } catch (error) {
     console.error(`Error processing ${entry.file}:`, error);
@@ -211,13 +150,6 @@ function generateAtomFeed(entries, feedConfig = CONFIG) {
   <generator uri="https://github.com/Spike-Leung/taxodium/blob/org-publish/feed.js">Taxodium Feed Generator</generator>
 ${ALL_CATEGORIES.map((cat) => `  <category term="${cat.term}" label="${cat.label}" />`).join("\n")}
 `;
-
-  // for (const follow of CONFIG.follows) {
-  //   feed += `  <follow_challenge>
-  //   <feedId>${follow.feedId}</feedId>
-  //   <userId>${follow.userId}</userId>
-  // </follow_challenge>\n`;
-  // }
 
   // Sort entries by date (newest first)
   entries.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -401,7 +333,6 @@ async function generateTagFeeds() {
     }
   }
 }
-
 
 async function main() {
   await generateFeed();
