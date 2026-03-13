@@ -54,6 +54,7 @@
   --table-cell-border: 1px solid var(--color-border);
   --pagefind-ui-font: var(--font-family);
   --pagefind-ui-border: var(--dark-color-text-secondary);
+  --pagefind-ui-custom-mark-mix-blend-mode: multiply;
 
   --content-width: 900px;
   --pagefind-ui-scale: 1.2;
@@ -1606,14 +1607,46 @@ td,th {
 
 /** ------------------------------ pagefind-ui ------------------------------ */
 .pagefind-ui--reset mark {
-  background: var(--color-selection-background);
-  background: light-dark(var(--color-selection-background), var(--dark-color-selection-background));
-  color: var(--color-selection-text);
-  color: light-dark(var(--color-selection-text), var(--dark-color-selection-text));
-  text-emphasis: dot open;
-  text-emphasis-position: under;
-  text-emphasis-color: var(--color-selection-text);
-  text-emphasis-color: light-dark(var(--color-selection-text), var(--dark-color-selection-text));
+  --inset-pagefind-mark: -0.65ch;;
+  --color-pagefind-mark: var(--color-link);
+  --dark-color-pagefind-mark: var(--dark-color-link);
+
+  background: transparent;
+  position: relative;
+  color: var(--color-pagefind-mark);
+  color: light-dark(var(--color-pagefind-mark), var(--dark-color-pagefind-mark));
+  white-space: nowrap;
+
+  span {
+    opacity: 0.5;
+    mix-blend-mode: var(--pagefind-ui-custom-mark-mix-blend-mode);
+
+    &::before,
+    &::after {
+      content: "";
+      border: 2px solid;
+      border-color: var(--color-pagefind-mark);
+      border-color: light-dark(var(--color-pagefind-mark), var(--dark-color-pagefind-mark));
+      /* 让 border 完全撑开 */
+      inset: var(--inset-pagefind-mark);
+      position: absolute;
+    }
+
+    &::before {
+      border-inline-end: none;
+      border-radius: 100% 0 0 75% / 50% 0 0 50%;
+      /* 让 border 错位 */
+      inset-block-start: calc(var(--inset-pagefind-mark) / 2);
+      inset-inline-end: 50%;
+    }
+
+    &::after {
+      border-inline-start: none;
+      border-radius: 0 100% 75% 0 / 0 50% 50% 0;
+      inset-inline-start: 30%;
+
+    }
+  }
 }
 
 .pagefind-ui--reset ::placeholder {
@@ -1648,6 +1681,7 @@ body {
     --pagefind-ui-background: var(--dark-color-bg-secondary);
     --pagefind-ui-primary: var(--dark-color-text);
     --pagefind-ui-border: var(--dark-color-text-secondary);
+    --pagefind-ui-custom-mark-mix-blend-mode: difference;
   }
 
   &.auto {
@@ -1656,6 +1690,7 @@ body {
       --pagefind-ui-background: var(--dark-color-bg-secondary);
       --pagefind-ui-primary: var(--dark-color-text);
       --pagefind-ui-border: var(--dark-color-text-secondary);
+      --pagefind-ui-custom-mark-mix-blend-mode: difference;
     }
   }
 }

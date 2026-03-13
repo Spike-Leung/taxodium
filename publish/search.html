@@ -135,6 +135,13 @@
           showImages: false,
           autofocus: true,
           excerptLength: 50,
+          processResult: function (result) {
+            result.excerpt = result.excerpt.replaceAll("<mark>", "<mark><span></span>")
+            result?.sub_results.forEach((sr) => {
+              sr.excerpt = sr.excerpt.replaceAll("<mark>", "<mark><span></span>")
+            })
+            return result;
+          }
         });
       });
     </script>
