@@ -131,7 +131,7 @@ Emacs 是通过 <code>auth-source</code> 去实现身份验证的，一般将验
 <b>machine</b> 是服务器，可以是 DNS 名称或 IP 地址，对应 <code>auth-source-search</code> 中的 <code>:host</code> 。
 </p>
 
-<section role="note" id="org84302cd">
+<section role="note" id="orgb6e0c3f">
 <p>
 <code>auth-source-search</code> 是 Emacs 中的一个函数，可以基于条件查询返回用 <code>auth-source</code> 定义的密钥。
 </p>
@@ -168,9 +168,22 @@ machine openrouter.ai/api login apikey password xxxx
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code>(authinfo-source-search
- <span class="org-builtin">:host</span> <span class="org-string">"api.deepseek.com"</span>
- <span class="org-builtin">:user</span> <span class="org-string">"login"</span>)
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">get-deepseek-api-key</span> ()
+  <span class="org-doc">"Get deepseek api from .authinfo."</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">auth-source-search</span></span><span class="org-comment">' &#36820;&#22238;&#30340;&#26159;&#19968;&#20010; list&#65292;&#37324;&#38754;&#21253;&#21547;&#22810;&#20010; pList&#65292;
+</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36890;&#36807; `</span><span class="org-comment"><span class="org-constant">:host</span></span><span class="org-comment">'&#12289;`</span><span class="org-comment"><span class="org-constant">:user</span></span><span class="org-comment">'&#12289;`</span><span class="org-comment"><span class="org-constant">:requrie</span></span><span class="org-comment">' &#38480;&#21046;&#26597;&#35810;&#26465;&#20214;&#65292;&#19968;&#33324;&#21482;&#20250;&#36820;&#22238;&#19968;&#20010; pList
+</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36890;&#36807; `</span><span class="org-comment"><span class="org-constant">car</span></span><span class="org-comment">' &#33719;&#21462;&#31532;&#19968;&#20010; pList&#65292;&#20877;&#36890;&#36807; `</span><span class="org-comment"><span class="org-constant">plist-get</span></span><span class="org-comment">' &#33719;&#21462; `</span><span class="org-comment"><span class="org-constant">:secret</span></span><span class="org-comment">' &#23646;&#24615;&#30340;&#20540;
+</span>  (<span class="org-keyword">if-let</span> ((secret (plist-get (car (auth-source-search
+                                    <span class="org-builtin">:host</span> <span class="org-string">"api.deepseek.com"</span>
+                                    <span class="org-builtin">:user</span> <span class="org-string">"apikey"</span>
+                                    <span class="org-builtin">:require</span> '(<span class="org-builtin">:secret</span>)))
+                              <span class="org-builtin">:secret</span>)))
+      <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">:secret</span></span><span class="org-comment">' &#21487;&#33021;&#26159;&#19968;&#20010;&#20989;&#25968;
+</span>      (<span class="org-keyword">if</span> (functionp secret)
+          (encode-coding-string (funcall secret) 'utf-8)
+        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22914;&#26524;&#19981;&#26159;&#20989;&#25968;&#21017;&#30452;&#25509;&#36820;&#22238;
+</span>        secret)
+    (<span class="org-warning">user-error</span> <span class="org-string">"No %s found in the auth source"</span> user)))
 </code></pre>
 </div>
 
@@ -295,7 +308,7 @@ sub   rsa4096 2025-02-27 [E]
 <li><code>l-yanlei@hotmail.com</code> 是和这个 gpg 密钥关联的邮箱</li>
 </ul>
 
-<section role="note" id="org8aed952">
+<section role="note" id="org5d9dc22">
 <p>
 关于 GPG 密钥的更详细的解释，你可以看 <a href="https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/">Anatomy of a GPG Key</a>。
 </p>
@@ -332,7 +345,7 @@ sub   rsa4096 2025-02-27 [E]
 Emacs 内置的 EasyPG Assistant 可以帮你 <b>自动</b> 完成加密解密，当需要访问 gpg 加密文件的时候它就会启用，你不需要额外做什么。
 </p>
 
-<section role="note" id="org1817e91">
+<section role="note" id="org14b017b">
 <p>
 在 Emacs 中你可以通过 <code>C-h R epa</code> 查看 EasyPG Assistant 的文档。
 </p>
@@ -420,7 +433,7 @@ Emacs 内置的 EasyPG Assistant 可以帮你 <b>自动</b> 完成加密解密�
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-02-27 Thu 14:29</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-03-13 Fri 12:46</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-13 Fri 14:50</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
