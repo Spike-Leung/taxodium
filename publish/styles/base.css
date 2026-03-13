@@ -420,16 +420,6 @@ a {
   text-decoration-style: solid;
   text-decoration-thickness: 1px;
 
-  &.coderef {
-    background-color: var(--color-bg-code);
-    background-color: light-dark(var(--color-bg-code), var(--dark-color-bg-code));
-    border-radius: 6px;
-    padding: 0.05em .2em;
-    color: var(--color-text);
-    color: light-dark(var(--color-text), var(--dark-color-text));
-    text-decoration: none;;
-  }
-
   &:has(> img) {
     height: 0;
     display: inline-block;
@@ -586,7 +576,7 @@ a[href*="genius.com"]::before {
 }
 
 /* :visited style */
-:is(#content, #postamble) a:visited {
+:where(#content, #postamble) a:visited {
   color: var(--color-link-visited);
   color: light-dark(var(--color-link-visited), var(--dark-color-link-visited));
 
@@ -974,6 +964,31 @@ img.inline-image {
   transition: background-color .1s ease-in-out;
   background-color: var(--color-bg-code-highlighted);
   background-color: light-dark(var(--color-bg-code-highlighted), var(--dark-color-bg-code-highlighted));
+}
+
+:is(#content, #postamble) a.coderef {
+  background: var(--color-bg-code);
+  background: light-dark(var(--color-bg-code), var(--dark-color-bg-code));
+  border-radius: 6px;
+  padding: 0.05em .2em;
+  color: var(--color-text);
+  color: light-dark(var(--color-text), var(--dark-color-text));
+  text-decoration: none;
+
+  &:visited {
+    color: var(--color-text);
+    color: light-dark(var(--color-text), var(--dark-color-text));
+  }
+
+  &:hover {
+    color: #fff;
+    background: var(--color-link);
+    background: light-dark(var(--color-link), var(--dark-color-link));
+
+    & code {
+      color: #fff;
+    }
+  }
 }
 
 .table-wrapper {
