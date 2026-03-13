@@ -10,6 +10,7 @@
 #+email: l-yanlei@hotmail.com
 #+options: ^:{}
 #+startup: content
+#+html_head_extra: <link rel="stylesheet" href="/styles/image-enhance.css" />
 
 (ﾉ>ω<)ﾉ
 
@@ -100,9 +101,9 @@ pagefind 的一些特点：
 :CUSTOM_ID: 8a7bf407-8909-44d5-ad65-75a4d48ba47a
 :END:
 
-我的博客[fn:1]是部署在 [[https://www.netlify.com/][Netlify]]，我只需要在构建的最后，添加一行执行索引的指令就完成索引了。
+我的博客[fn:1]是部署在 [[https://www.netlify.com/][Netlify]]，我只需要在构建的最后，添加 [[(pagefind-command)][一行执行索引的指令]] 就完成索引了。
 
-#+begin_src diff
+#+begin_src bash -r
   #!/bin/bash
 
   # Enable command printing (debug mode)
@@ -114,8 +115,7 @@ pagefind 的一些特点：
   # index.xml is for https://www.v2ex.com/xna
   cp -f publish/rss.xml publish/index.xml
 
-  + # see: https://pagefind.app/docs/multilingual/#opting-out-of-multilingual-search
-  + npx -y pagefind --site publish --force-language zh-CN
+  npx -y pagefind --site publish --force-language zh-CN (ref:pagefind-command)
 
   # Disable debug mode
   set +x
@@ -138,18 +138,11 @@ pagefind 的一些特点：
 单独一个页面，在我不需要的时候也可以轻易移除。
 
 #+NAME: search.html
-#+begin_src html
+#+begin_src html -r
   <!DOCTYPE html>
-  <html lang="zh-CN">
+  <html lang="zh-CN"> (ref:zh-cn)
     <head>
-      <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>Search</title>
-      <meta name="author" content="Spike Leung" />
-      <meta name="description" content="&quot;&quot;" />
-      <meta name="generator" content="Org Mode" />
-      <link rel="stylesheet" href="../styles/style.css" type="text/css"/>
-      <link rel="icon" href="/favicon.ico" type="image/x-icon">
+      <!-- ... -->
       <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
       <script src="/pagefind/pagefind-ui.js"></script>
     </head>
@@ -160,9 +153,9 @@ pagefind 的一些特点：
           new PagefindUI({
             element: "#search",
             showSubResults: true,
-            showImages: false,
+            showImages: false, (ref:showImages)
             autofocus: true,
-            excerptLength: 50,
+            excerptLength: 50, (ref:excerptLength)
           });
         });
       </script>
@@ -170,15 +163,112 @@ pagefind 的一些特点：
   </html>
 #+end_src
 
-页面上我设置了 ~lang="zh-CN"~ ，pagefind 会基于 lang 去匹配索引和组件的多语言文字。
+页面上我设置了 [[(zh-cn)][lang="zh-CN"]] ，pagefind 会基于 lang 去匹配索引和组件的多语言文字。
 之前我的页面都是 ~lang="en"~ ，pagefind 将页面按照 en 索引，导致我搜索不到任何内容。
 因此我也更新了博客页面的 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang][lang]] 属性，从 en 改为了 zh-CN，这样 [[https://www.youtube.com/watch?v=NP94u7y_KkQ][对于使用屏幕阅读器的人也会友好一点]]。
 
-=showIamges= 我设置成了 false，因为我的博客文章基本没有封面图，图片还会增加搜索时的带宽消耗。
+[[(showImages)][showImages]] 我设置成了 false，因为我的博客文章基本没有封面图，图片还会增加搜索时的带宽消耗。
 
-=excerptLength= 可以考虑设置一个大一点值，这样关键字附近的上下文会多一些。
+[[(excerptLength)][excerptLength]] 可以考虑设置一个大一点值，这样关键字附近的上下文会多一些。
 
 页面完整代码你可以查看 [[file:search.html][搜索页面]] 的源码。
+
+* 自定义样式
+:PROPERTIES:
+:CUSTOM_ID: 8935D410-6B99-439A-8D54-4AB6C1AFF33C
+:END:
+** 调整 excerpt 的样式
+:PROPERTIES:
+:CUSTOM_ID: 0DE52050-E2B9-4DD9-91FE-E7369C07D394
+:END:
+
+参考 [[https://www.zolkos.com/2025/12/03/vanilla-css-is-all-you-need][Vanilla CSS is all you need]]，可以给 ~<mark>~ 添加一个样式，看起来像是用记号笔圈起来一样。
+
+#+CAPTION: excerpt 的样式
+[[file:images/use-pagefind-to-search-blog/pagefind-mark-style.webp]]
+
+首先，需要用 [[(processResult)][processResult]] 处理返回结果，
+将 excerpt 返回的 ~<mark>~ [[(replace)][替换成]] ~<mark><span></span>~ ，新增一个 ~<span>~ 用于承载样式。
+虽然只用一个 ~<mark>~ 也可以实现类似样式，但 ~border~ 连接的地方混色会有问题。
+
+#+begin_src javascript -r
+  new PagefindUI({
+    element: "#search",
+    showSubResults: true,
+    showImages: false,
+    autofocus: true,
+    excerptLength: 50,
+    processResult: function (result) { (ref:processResult)
+      result.excerpt = result.excerpt.replaceAll("<mark>", "<mark><span></span>") (ref:replace)
+      result?.sub_results.forEach((sr) => {
+        sr.excerpt = sr.excerpt.replaceAll("<mark>", "<mark><span></span>")
+      })
+      return result;
+    }
+  });
+#+end_src
+
+然后将下面的样式按需要调整一下，集成到你的样式代码里：
+
+#+begin_details
+#+html: <summary>样式</summary>
+
+#+begin_src css
+  @layer components {
+    .circled-text {
+      --circled-color: oklch(var(--lch-blue-dark));
+      --circled-padding: -0.5ch;
+
+      background: none;
+      color: var(--circled-color);
+      position: relative;
+      white-space: nowrap;
+
+      span {
+        opacity: 0.5;
+        mix-blend-mode: multiply;
+
+        @media (prefers-color-scheme: dark) {
+          mix-blend-mode: screen;
+        }
+      }
+
+      span::before,
+      span::after {
+        border: 2px solid var(--circled-color);
+        content: "";
+        inset: var(--circled-padding);
+        position: absolute;
+      }
+
+      span::before {
+        border-inline-end: none;
+        border-radius: 100% 0 0 75% / 50% 0 0 50%;
+        inset-block-start: calc(var(--circled-padding) / 2);
+        inset-inline-end: 50%;
+      }
+
+      span::after {
+        border-inline-start: none;
+        border-radius: 0 100% 75% 0 / 0 50% 50% 0;
+        inset-inline-start: 30%;
+      }
+    }
+  }
+#+end_src
+#+end_details
+
+* 一些建议
+:PROPERTIES:
+:CUSTOM_ID: C5CBE53A-0D3E-475A-B2FC-607367583477
+:END:
+
+由于 pagefind 依赖 JS，但是用户可能禁用了 JS，或者某些原因导致 pagefind 的 JS 加载错误，
+此时搜索就失效了。针对这种场景，考虑添加一段文本，引导用户使用搜索引擎搜索：
+
+#+begin_quote
+如果你未启用 JavaScript，也可以使用你喜欢的搜索引擎进行搜索。例如：[[https://kagi.com/search?q=site%3Ataxodium.ink][Kagi]]、[[https://www.google.com/search?q=site%3Ataxodium.ink][Google]]。
+#+end_quote
 
 * 写在最后
 :PROPERTIES:

@@ -22,6 +22,7 @@
 <link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
 <link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
 <link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<link rel="stylesheet" href="/styles/image-enhance.css" />
 </head>
 <body class="h-entry">
 <div id="preamble" class="status">
@@ -67,6 +68,12 @@
 <li><a href="#23066128-897c-40cf-8243-04d8238d55cc">引用 pagefind 资源</a></li>
 </ul>
 </li>
+<li><a href="#8935D410-6B99-439A-8D54-4AB6C1AFF33C">自定义样式</a>
+<ul>
+<li><a href="#0DE52050-E2B9-4DD9-91FE-E7369C07D394">调整 excerpt 的样式</a></li>
+</ul>
+</li>
+<li><a href="#C5CBE53A-0D3E-475A-B2FC-607367583477">一些建议</a></li>
 <li><a href="#1f87fbcb-c481-404c-b4ac-97db76feb1ad">写在最后</a></li>
 </ul>
 </div>
@@ -193,26 +200,25 @@ pagefind 的一些特点：
 <div id="outline-container-8a7bf407-8909-44d5-ad65-75a4d48ba47a" class="outline-3">
 <h3 id="8a7bf407-8909-44d5-ad65-75a4d48ba47a">CI/CD 中添加索引指令</h3>
 <div class="outline-text-3" id="text-8a7bf407-8909-44d5-ad65-75a4d48ba47a"><p>
-我的博客<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>是部署在 <a href="https://www.netlify.com/">Netlify</a>，我只需要在构建的最后，添加一行执行索引的指令就完成索引了。
+我的博客<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>是部署在 <a href="https://www.netlify.com/">Netlify</a>，我只需要在构建的最后，添加 <a href="#coderef-pagefind-command" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-pagefind-command');" onmouseout="CodeHighlightOff(this, 'coderef-pagefind-command');">一行执行索引的指令</a> 就完成索引了。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/bin/bash</span>
+<pre class="src src-bash"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/bin/</span><span class="org-keyword">bash</span><span class="org-comment">
+</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Enable command printing (debug mode)
+</span><span class="org-builtin">set</span> -x
 
-<span class="org-comment-delimiter">#</span><span class="org-comment"> Enable command printing (debug mode)</span>
-<span class="org-diff-context">set -x
-</span>
-<span class="org-comment-delimiter">#</span><span class="org-comment"> Only build when `publish` change</span>
-<span class="org-diff-context">git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF publish
-</span>
-<span class="org-comment-delimiter">#</span><span class="org-comment"> index.xml is for https://www.v2ex.com/xna</span>
-<span class="org-diff-context">cp -f publish/rss.xml publish/index.xml
-</span>
-<span class="org-diff-indicator-added">+</span><span class="org-diff-added"> # see: https://pagefind.app/docs/multilingual/#opting-out-of-multilingual-search
-</span><span class="org-diff-indicator-added">+</span><span class="org-diff-added"> npx -y pagefind --site publish --force-language zh-CN
-</span>
-<span class="org-comment-delimiter">#</span><span class="org-comment"> Disable debug mode</span>
-set +x
+<span class="org-comment-delimiter"># </span><span class="org-comment">Only build when `publish` change
+</span>git diff --quiet $<span class="org-variable-name">CACHED_COMMIT_REF</span> $<span class="org-variable-name">COMMIT_REF</span> publish
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">index.xml is for https://www.v2ex.com/xna
+</span>cp -f publish/rss.xml publish/index.xml
+
+<span id="coderef-pagefind-command" class="coderef-off">npx -y pagefind --site publish --force-language zh-CN</span>
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Disable debug mode
+</span><span class="org-builtin">set</span> +x
 </code></pre>
 </div>
 
@@ -237,16 +243,9 @@ set +x
 
 <div class="org-src-container">
 <pre class="src src-html"><code>&lt;<span class="org-keyword">!DOCTYPE</span> html&gt;
-&lt;<span class="org-function-name">html</span> <span class="org-variable-name">lang</span>=<span class="org-string">"zh-CN"</span>&gt;
+<span id="coderef-zh-cn" class="coderef-off">&lt;<span class="org-function-name">html</span> <span class="org-variable-name">lang</span>=<span class="org-string">"zh-CN"</span>&gt;</span>
   &lt;<span class="org-function-name">head</span>&gt;
-    &lt;<span class="org-function-name">meta</span> <span class="org-variable-name">http-equiv</span>=<span class="org-string">"Content-Type"</span> <span class="org-variable-name">content</span>=<span class="org-string">"text/html;charset=utf-8"</span> /&gt;
-    &lt;<span class="org-function-name">meta</span> <span class="org-variable-name">name</span>=<span class="org-string">"viewport"</span> <span class="org-variable-name">content</span>=<span class="org-string">"width=device-width, initial-scale=1"</span> /&gt;
-    &lt;<span class="org-function-name">title</span>&gt;<span class="org-underline"><span class="org-bold">Search</span></span>&lt;/<span class="org-function-name">title</span>&gt;
-    &lt;<span class="org-function-name">meta</span> <span class="org-variable-name">name</span>=<span class="org-string">"author"</span> <span class="org-variable-name">content</span>=<span class="org-string">"Spike Leung"</span> /&gt;
-    &lt;<span class="org-function-name">meta</span> <span class="org-variable-name">name</span>=<span class="org-string">"description"</span> <span class="org-variable-name">content</span>=<span class="org-string">"&amp;quot;&amp;quot;"</span> /&gt;
-    &lt;<span class="org-function-name">meta</span> <span class="org-variable-name">name</span>=<span class="org-string">"generator"</span> <span class="org-variable-name">content</span>=<span class="org-string">"Org Mode"</span> /&gt;
-    &lt;<span class="org-function-name">link</span> <span class="org-variable-name">rel</span>=<span class="org-string">"stylesheet"</span> <span class="org-variable-name">href</span>=<span class="org-string">"../styles/style.css"</span> <span class="org-variable-name">type</span>=<span class="org-string">"text/css"</span>/&gt;
-    &lt;<span class="org-function-name">link</span> <span class="org-variable-name">rel</span>=<span class="org-string">"icon"</span> <span class="org-variable-name">href</span>=<span class="org-string">"/favicon.ico"</span> <span class="org-variable-name">type</span>=<span class="org-string">"image/x-icon"</span>&gt;
+    <span class="org-comment-delimiter">&lt;!-- </span><span class="org-comment">...</span><span class="org-comment-delimiter"> --&gt;</span>
     &lt;<span class="org-function-name">link</span> <span class="org-variable-name">href</span>=<span class="org-string">"/pagefind/pagefind-ui.css"</span> <span class="org-variable-name">rel</span>=<span class="org-string">"stylesheet"</span>&gt;
     &lt;<span class="org-function-name">script</span> <span class="org-variable-name">src</span>=<span class="org-string">"/pagefind/pagefind-ui.js"</span>&gt;&lt;/<span class="org-function-name">script</span>&gt;
   &lt;/<span class="org-function-name">head</span>&gt;
@@ -257,9 +256,9 @@ set +x
         new PagefindUI({
           element: "#search",
           showSubResults: true,
-          showImages: false,
+<span id="coderef-showImages" class="coderef-off">          showImages: false,</span>
           autofocus: true,
-          excerptLength: 50,
+<span id="coderef-excerptLength" class="coderef-off">          excerptLength: 50,</span>
         });
       });
     &lt;/<span class="org-function-name">script</span>&gt;
@@ -269,21 +268,127 @@ set +x
 </div>
 
 <p>
-页面上我设置了 <code>lang="zh-CN"</code> ，pagefind 会基于 lang 去匹配索引和组件的多语言文字。之前我的页面都是 <code>lang="en"</code> ，pagefind 将页面按照 en 索引，导致我搜索不到任何内容。因此我也更新了博客页面的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang">lang</a> 属性，从 en 改为了 zh-CN，这样 <a href="https://www.youtube.com/watch?v=NP94u7y_KkQ">对于使用屏幕阅读器的人也会友好一点</a>。
+页面上我设置了 <a href="#coderef-zh-cn" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-zh-cn');" onmouseout="CodeHighlightOff(this, 'coderef-zh-cn');">lang="zh-CN"</a> ，pagefind 会基于 lang 去匹配索引和组件的多语言文字。之前我的页面都是 <code>lang="en"</code> ，pagefind 将页面按照 en 索引，导致我搜索不到任何内容。因此我也更新了博客页面的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang">lang</a> 属性，从 en 改为了 zh-CN，这样 <a href="https://www.youtube.com/watch?v=NP94u7y_KkQ">对于使用屏幕阅读器的人也会友好一点</a>。
 </p>
 
 <p>
-<code>showIamges</code> 我设置成了 false，因为我的博客文章基本没有封面图，图片还会增加搜索时的带宽消耗。
+<a href="#coderef-showImages" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-showImages');" onmouseout="CodeHighlightOff(this, 'coderef-showImages');">showImages</a> 我设置成了 false，因为我的博客文章基本没有封面图，图片还会增加搜索时的带宽消耗。
 </p>
 
 <p>
-<code>excerptLength</code> 可以考虑设置一个大一点值，这样关键字附近的上下文会多一些。
+<a href="#coderef-excerptLength" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-excerptLength');" onmouseout="CodeHighlightOff(this, 'coderef-excerptLength');">excerptLength</a> 可以考虑设置一个大一点值，这样关键字附近的上下文会多一些。
 </p>
 
 <p>
 页面完整代码你可以查看 <a href="search.html">搜索页面</a> 的源码。
 </p>
 </div>
+</div>
+</div>
+<div id="outline-container-8935D410-6B99-439A-8D54-4AB6C1AFF33C" class="outline-2">
+<h2 id="8935D410-6B99-439A-8D54-4AB6C1AFF33C">自定义样式</h2>
+<div class="outline-text-2" id="text-8935D410-6B99-439A-8D54-4AB6C1AFF33C"></div>
+<div id="outline-container-0DE52050-E2B9-4DD9-91FE-E7369C07D394" class="outline-3">
+<h3 id="0DE52050-E2B9-4DD9-91FE-E7369C07D394">调整 excerpt 的样式</h3>
+<div class="outline-text-3" id="text-0DE52050-E2B9-4DD9-91FE-E7369C07D394"><p>
+参考 <a href="https://www.zolkos.com/2025/12/03/vanilla-css-is-all-you-need">Vanilla CSS is all you need</a>，可以给 <code>&lt;mark&gt;</code> 添加一个样式，看起来像是用记号笔圈起来一样。
+</p>
+
+
+<figure>
+<a href="images/use-pagefind-to-search-blog/pagefind-mark-style.webp"><img src="images/use-pagefind-to-search-blog/pagefind-mark-style.webp" alt="pagefind-mark-style.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>excerpt 的样式</figcaption>
+</figure>
+
+<p>
+首先，需要用 <a href="#coderef-processResult" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-processResult');" onmouseout="CodeHighlightOff(this, 'coderef-processResult');">processResult</a> 处理返回结果，将 excerpt 返回的 <code>&lt;mark&gt;</code> <a href="#coderef-replace" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-replace');" onmouseout="CodeHighlightOff(this, 'coderef-replace');">替换成</a> <code>&lt;mark&gt;&lt;span&gt;&lt;/span&gt;</code> ，新增一个 <code>&lt;span&gt;</code> 用于承载样式。虽然只用一个 <code>&lt;mark&gt;</code> 也可以实现类似样式，但 <code>border</code> 连接的地方混色会有问题。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><code><span class="org-keyword">new</span> <span class="org-type">PagefindUI</span>({
+  element: <span class="org-string">"#search"</span>,
+  showSubResults: <span class="org-constant">true</span>,
+  showImages: <span class="org-constant">false</span>,
+  autofocus: <span class="org-constant">true</span>,
+  excerptLength: 50,
+<span id="coderef-processResult" class="coderef-off">  <span class="org-function-name">processResult</span>: <span class="org-keyword">function</span> (<span class="org-variable-name">result</span>) {</span>
+<span id="coderef-replace" class="coderef-off">    result.excerpt = result.excerpt.replaceAll(<span class="org-string">"&lt;mark&gt;"</span>, <span class="org-string">"&lt;mark&gt;&lt;span&gt;&lt;/span&gt;"</span>)</span>
+    result?.sub_results.forEach((sr) =&gt; {
+      sr.excerpt = sr.excerpt.replaceAll(<span class="org-string">"&lt;mark&gt;"</span>, <span class="org-string">"&lt;mark&gt;&lt;span&gt;&lt;/span&gt;"</span>)
+    })
+    <span class="org-keyword">return</span> result;
+  }
+});
+</code></pre>
+</div>
+
+<p>
+然后将下面的样式按需要调整一下，集成到你的样式代码里：
+</p>
+
+<details>
+<summary>样式</summary>
+
+<div class="org-src-container">
+<pre class="src src-css"><code><span class="org-builtin">@layer</span> components {
+  <span class="org-css-selector">.circled-text</span> {
+    <span class="org-variable-name">--circled-color</span>: oklch(var(<span class="org-variable-name">--lch-blue-dark</span>));
+    <span class="org-variable-name">--circled-padding</span>: -0.5ch;
+
+    <span class="org-css-property">background</span>: none;
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--circled-color</span>);
+    <span class="org-css-property">position</span>: relative;
+    <span class="org-css-property">white-space</span>: nowrap;
+
+    <span class="org-css-selector">span</span> {
+      <span class="org-css-property">opacity</span>: 0.5;
+      <span class="org-css-property">mix-blend-mode</span>: multiply;
+
+      <span class="org-builtin">@media</span> (prefers-color-scheme: dark) {
+        <span class="org-css-property">mix-blend-mode</span>: screen;
+      }
+    }
+
+    <span class="org-css-selector">span::before,
+    span::after</span> {
+      <span class="org-css-property">border</span>: 2px solid var(<span class="org-variable-name">--circled-color</span>);
+      <span class="org-css-property">content</span>: <span class="org-string">""</span>;
+      <span class="org-css-property">inset</span>: var(<span class="org-variable-name">--circled-padding</span>);
+      <span class="org-css-property">position</span>: absolute;
+    }
+
+    <span class="org-css-selector">span::before</span> {
+      <span class="org-css-property">border-inline-end</span>: none;
+      <span class="org-css-property">border-radius</span>: 100% 0 0 75% / 50% 0 0 50%;
+      <span class="org-css-property">inset-block-start</span>: calc(var(<span class="org-variable-name">--circled-padding</span>) / 2);
+      <span class="org-css-property">inset-inline-end</span>: 50%;
+    }
+
+    <span class="org-css-selector">span::after</span> {
+      <span class="org-css-property">border-inline-start</span>: none;
+      <span class="org-css-property">border-radius</span>: 0 100% 75% 0 / 0 50% 50% 0;
+      <span class="org-css-property">inset-inline-start</span>: 30%;
+    }
+  }
+}
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+</div>
+<div id="outline-container-C5CBE53A-0D3E-475A-B2FC-607367583477" class="outline-2">
+<h2 id="C5CBE53A-0D3E-475A-B2FC-607367583477">一些建议</h2>
+<div class="outline-text-2" id="text-C5CBE53A-0D3E-475A-B2FC-607367583477"><p>
+由于 pagefind 依赖 JS，但是用户可能禁用了 JS，或者某些原因导致 pagefind 的 JS 加载错误，此时搜索就失效了。针对这种场景，考虑添加一段文本，引导用户使用搜索引擎搜索：
+</p>
+
+<blockquote>
+<p>
+如果你未启用 JavaScript，也可以使用你喜欢的搜索引擎进行搜索。例如：<a href="https://kagi.com/search?q=site%3Ataxodium.ink">Kagi</a>、<a href="https://www.google.com/search?q=site%3Ataxodium.ink">Google</a>。
+</p>
+</blockquote>
 </div>
 </div>
 <div id="outline-container-1f87fbcb-c481-404c-b4ac-97db76feb1ad" class="outline-2">
@@ -331,7 +436,7 @@ set +x
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2024-11-16 Sat 16:26</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-02-12 Thu 22:56</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-13 Fri 21:31</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
