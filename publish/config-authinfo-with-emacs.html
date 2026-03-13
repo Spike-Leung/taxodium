@@ -105,17 +105,17 @@ machine <i>mymachine</i> login <i>myloginname</i> password <i>mypassword</i> por
 </blockquote>
 
 <p>
-Emacs 是通过 auth-source 去实现身份验证的，一般将验证信息 (例如 API Key) 存储在这三个文件中:
+Emacs 是通过 <code>auth-source</code> 去实现身份验证的，一般将验证信息 (例如 API Key) 存储在这三个文件中:
 </p>
 
 <ul class="org-ul">
-<li>~/.authinfo</li>
-<li>~/.authinfo.gpg (加密)</li>
-<li>~/.netrc</li>
+<li><code>~/.authinfo</code></li>
+<li><code>~/.authinfo.gpg</code> (加密)</li>
+<li><code>~/.netrc</code></li>
 </ul>
 
 <p>
-而验证信息的格式是：
+验证信息的格式是：
 </p>
 
 <p class="verse">
@@ -128,19 +128,23 @@ Emacs 是通过 auth-source 去实现身份验证的，一般将验证信息 (�
 
 <ul class="org-ul">
 <li><p>
-<b>machine</b> 服务器，DNS 名称或 IP 地址，在 <code>auth-source-search</code> 查询中称为 <code>:host</code> 。
+<b>machine</b> 是服务器，可以是 DNS 名称或 IP 地址，对应 <code>auth-source-search</code> 中的 <code>:host</code> 。
 </p>
 
-<section role="note" id="org2cf9cbb">
+<section role="note" id="org84302cd">
 <p>
-auth-source-search 是 Emacs 中的一个函数，可以基于条件查询返回用 auth-source 定义的密钥。
+<code>auth-source-search</code> 是 Emacs 中的一个函数，可以基于条件查询返回用 <code>auth-source</code> 定义的密钥。
 </p>
 </section></li>
 
-<li><b>login</b> 是用户名，在 auth-source-search 查询中称为 <code>:user</code> 。也可以使用 login 和 account 。</li>
-<li><b>port</b> 是连接端口或协议，在 auth-source-search 查询中称为 <code>:port</code> 。</li>
-<li><b>password</b> 就是对应的密钥，或者 API key 之类的</li>
+<li><b>login</b> 是用户名，对应 <code>auth-source-search</code> 中的 <code>:user</code> 。</li>
+<li><b>port</b> 是连接端口或协议，对应 <code>auth-source-search</code> 中的 <code>:port</code> 。</li>
+<li><b>password</b> 就是对应的密钥，或者 API key 之类的。</li>
 </ul>
+
+<p>
+你可以按照这个格式，在 <code>~/.authinfo</code> 存储相关的密钥。
+</p>
 
 <p>
 一些例子：
@@ -149,23 +153,65 @@ auth-source-search 是 Emacs 中的一个函数，可以基于条件查询返回
 <pre class="example">
 machine localhost login spike port sudo password xxxx
 machine 192.168.100.100 login root port ssh password xxxx
-machine api.deepseek.com login apikey password xxxx
+<span id="coderef-deepseek" class="coderef-off">machine api.deepseek.com login apikey password xxxx</span>
 machine api.siliconflow.cn login apikey password xxxx
 machine openrouter.ai login apikey password xxxx
 machine openrouter.ai/api login apikey password xxxx
 </pre>
 
 <p>
-一些插件可能会基于 machine 或者 login 去查找密钥，具体如何设置就需要看插件是如何读取的。
+在 Emacs 里，可以通过 <code>auth-source-search</code> 去查询 <code>~/.authinfo</code> 的信息，获取对应的密钥。
 </p>
 
 <p>
-例如 <a href="https://github.com/Elilif/emacs-immersive-translate/tree/main">emacs-immersive-translate</a> 是这样读取的:
+例如，我想查询 <code>~/.authinfo</code> 中 <a href="#coderef-deepseek" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-deepseek');" onmouseout="CodeHighlightOff(this, 'coderef-deepseek');">deepseek</a> 的密钥，在 Emacs 中可以这么写：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(authinfo-source-search
+ <span class="org-builtin">:host</span> <span class="org-string">"api.deepseek.com"</span>
+ <span class="org-builtin">:user</span> <span class="org-string">"login"</span>)
+</code></pre>
+</div>
+
+<p>
+如果你只是希望配置好 API key 给插件用，你只需要将 API key 按照插件要求定义在 <code>~/.authinfo</code> 中，然后使用 <code>auth-source-search</code> 去读取就可以了。
+</p>
+
+<details>
+<summary>例子 1：emacs-immersive-translate</summary>
+
+<p>
+<a href="https://github.com/Elilif/emacs-immersive-translate/tree/main">emacs-immersive-translate</a> 是 Emacs 中的一个翻译插件（我在 <a href="translation-in-emacs.html">Translation In Emacs</a> 中介绍过）。
 </p>
 
 <p>
-<a href="https://github.com/Elilif/emacs-immersive-translate/blob/1d00d558363985fa988fc40cd5093bfc6926d83e/immersive-translate.el#L197-L212">immersive-translate-api-key</a>:
+它可以使用 LLM 进行翻译，LLM 翻译需要配置 API Key，而 API Key 需要写入到 <code>~/.authinfo</code> ，然后从里面读取。
 </p>
+
+<p>
+它支持配置 chatgpt，从 <a href="https://github.com/Elilif/emacs-immersive-translate/blob/1d00d558363985fa988fc40cd5093bfc6926d83e/immersive-translate-chatgpt.el#L109C6-L111C66">immersive-translate-chatgpt.el</a> 中可以看到它获取 API Key 的逻辑：
+</p>
+
+<p>
+它调用了 <a href="#coderef-call-immersive-translate-api-key" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-call-immersive-translate-api-key');" onmouseout="CodeHighlightOff(this, 'coderef-call-immersive-translate-api-key');">immersive-translate-api-key</a> 这个方法获取 API key，传入 <a href="#coderef-param-host" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-param-host');" onmouseout="CodeHighlightOff(this, 'coderef-param-host');">immersive-translate-chatgpt-host</a> 作为 <code>host</code> 参数，默认值是 <code>api.openai.com</code> ，传入 <a href="#coderef-param-user" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-param-user');" onmouseout="CodeHighlightOff(this, 'coderef-param-user');">apikey</a> 作为 <code>user</code> 参数。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">&#30465;&#30053;&#20854;&#20182;&#20195;&#30721;
+</span>
+<span id="coderef-call-immersive-translate-api-key" class="coderef-off">(<span class="org-string">"Authorization"</span> . ,(concat <span class="org-string">"Bearer "</span> (immersive-translate-api-key</span>
+<span id="coderef-param-host" class="coderef-off">                                       immersive-translate-chatgpt-host</span>
+<span id="coderef-param-user" class="coderef-off">                                       <span class="org-string">"apikey"</span>))))))</span>
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#30465;&#30053;&#20854;&#20182;&#20195;&#30721;</span>
+</code></pre>
+</div>
+
+<p>
+而 <a href="https://github.com/Elilif/emacs-immersive-translate/blob/1d00d558363985fa988fc40cd5093bfc6926d83e/immersive-translate.el#L197-L212">immersive-translate-api-key</a> 则是使用 <a href="#coderef-auth-source-search" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-auth-source-search');" onmouseout="CodeHighlightOff(this, 'coderef-auth-source-search');">auth-source-search</a> 从 <code>~/.authinfo</code> 中读取密钥的。
+</p>
+
 <div class="org-src-container">
 <pre class="src src-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">immersive-translate-api-key</span> (host user)
   <span class="org-doc">"Lookup api key in the auth source.
@@ -174,54 +220,41 @@ By default, `</span><span class="org-doc"><span class="org-constant">immersive-t
 and \"apikey\" as USER in Chatgpt backend.
 \"fanyi-api.baidu.com\" is used as HOST and
 `</span><span class="org-doc"><span class="org-constant">immersive-translate-baidu-appid</span></span><span class="org-doc">' as USER in Baidu backend."</span>
-  (if-let ((secret (plist-get (car (auth-source-search
-                                    <span class="org-builtin">:host</span> host
-                                    <span class="org-builtin">:user</span> user
+<span id="coderef-auth-source-search" class="coderef-off">  (if-let ((secret (plist-get (car (auth-source-search</span>
+<span id="coderef-host" class="coderef-off">                                    <span class="org-builtin">:host</span> host</span>
+<span id="coderef-user" class="coderef-off">                                    <span class="org-builtin">:user</span> user</span>
                                     <span class="org-builtin">:require</span> '(<span class="org-builtin">:secret</span>)))
                               <span class="org-builtin">:secret</span>)))
       (<span class="org-keyword">if</span> (functionp secret)
           (encode-coding-string (funcall secret) 'utf-8)
-        secret)
+          secret)
     (user-error <span class="org-string">"No %s found in the auth source"</span> user)))
 </code></pre>
 </div>
 
 <p>
-<a href="https://github.com/Elilif/emacs-immersive-translate/blob/1d00d558363985fa988fc40cd5093bfc6926d83e/immersive-translate-chatgpt.el#L109C6-L111C66">immersive-translate-chatgpt.el</a> 中设置 ChatGPT 的密钥:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">...&#20854;&#20182;&#20195;&#30721;
-</span>(<span class="org-string">"Authorization"</span> . ,(concat <span class="org-string">"Bearer "</span> (immersive-translate-api-key
-                                       immersive-translate-chatgpt-host
-                                       <span class="org-string">"apikey"</span>))))))
-<span class="org-comment-delimiter">;; </span><span class="org-comment">...&#20854;&#20182;&#20195;&#30721;</span>
-</code></pre>
-</div>
-
-<p>
-可以看到，emacs-immersive-translate 基于 :host 和 :user 去查找的：
-</p>
-
-<ul class="org-ul">
-<li><code>:host</code> (machine) 是 <code>immersive-translate-chatgpt-host</code> ，默认是 api.openai.com</li>
-<li><code>:user</code> (login) 是 <code>apikey</code></li>
-</ul>
-
-<p>
-所以按照默认配置，当你获取到 openai 的 API key 后，要这样配置:
+因此，为了能够让 <a href="https://github.com/Elilif/emacs-immersive-translate/tree/main">emacs-immersive-translate</a> 使用 chatgpt 翻译，需要在 <code>~/.authinfo</code> 中添加以下配置：
 </p>
 
 <pre class="example">
 machine api.openai.com login apikey password your_openai_api_key
 </pre>
+</details>
+
+<details>
+<summary>例子 2：我的 gptel 相关配置</summary>
 
 <p>
-如果你只是希望配置好 API key 给插件用，你只需要将 API key 按照插件要求定义在 ~/.authinfo 中，就足够了。
+我在 <a href="https://github.com/Spike-Leung/Spikemacs/blob/5c2c68f8a338c3a1de0d325b06183b5ca58eb063/lisp/init-auth.el">init-auth.el</a> 使用 <code>auth-source-search</code> 读取 <code>~/.authinfo</code> 配置的密钥。
 </p>
 
 <p>
-如果你想共享 ~/.authinfo，例如分享给特定的人，推送到公开的 git 仓库，同步到云盘，你不想所有人都能看到你的密钥，那你可能需要进一步对文件进行加密。
+然后在 <a href="https://github.com/Spike-Leung/Spikemacs/blob/5c2c68f8a338c3a1de0d325b06183b5ca58eb063/lisp/init-ai.el">init-ai.el</a> 引用了 <code>init-auth</code> ，将密钥传递给了 gptel 使用。
+</p>
+</details>
+
+<p>
+如果你想共享 <code>~/.authinfo</code> ，例如分享给特定的人，推送到公开的 git 仓库，同步到云盘，你不想所有人都能看到你的密钥，那你可能需要进一步对文件进行加密。
 </p>
 </div>
 </div>
@@ -231,9 +264,8 @@ machine api.openai.com login apikey password your_openai_api_key
 我对 GnuPG 研究得不多，简单分享一下如何创建 gpg 密钥，如何加密文件。
 </p>
 
-<ol class="org-ol">
-<li><p>
-创建 gpg 密钥
+<p>
+<b>创建 gpg 密钥</b>
 </p>
 
 <p>
@@ -263,34 +295,33 @@ sub   rsa4096 2025-02-27 [E]
 <li><code>l-yanlei@hotmail.com</code> 是和这个 gpg 密钥关联的邮箱</li>
 </ul>
 
-<section role="note" id="org8652785">
+<section role="note" id="org8aed952">
 <p>
 关于 GPG 密钥的更详细的解释，你可以看 <a href="https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/">Anatomy of a GPG Key</a>。
 </p>
-</section></li>
+</section>
 
-<li><p>
-加密文件
+<p>
+<b>加密文件</b>
 </p>
 
 <p>
-<code>gpg -e -r "SpikeLeung" ~/.authinfo</code> 或者 <code>gpg -e -r "l-yanlei@hotmail.com" ~/.authinfo</code>
+执行 <code>gpg -e -r "SpikeLeung" ~/.authinfo</code> 。
 </p>
 
 <p>
-其中， <code>-e</code> 表示加密， <code>-r</code> 指定使用哪个 user-id，对应的是上面 uid 中的内容，你可以用名字或者邮箱。
+其中， <code>-e</code> 表示加密， <code>-r</code> 指定使用哪个 user-id，对应的是上面 uid 中的内容，你可以用名字或者邮箱，例如这里用的是名字 <code>SpikeLeung</code> 。
 </p>
 
 <p>
 加密成功的话，就会在当前目录生成一个带有 <code>.gpg</code> 后缀的加密文件 <code>~/.authinfo.gpg</code> 。
-</p></li>
-</ol>
+</p>
 </div>
 </div>
 <div id="outline-container-14bd3095-f26b-4acb-8e8b-0510e9462424" class="outline-2">
 <h2 id="14bd3095-f26b-4acb-8e8b-0510e9462424">配置 Emacs 读取 ~/.authinfo.gpg</h2>
 <div class="outline-text-2" id="text-14bd3095-f26b-4acb-8e8b-0510e9462424"><p>
-原来 ~/.authinfo 是未加密的，Emacs 里可以随便访问，现在加密了，那么在访问前就要先解密才能访问了。
+原来 <code>~/.authinfo</code> 是未加密的，Emacs 里可以随便访问，现在加密了，那么在访问前就要先解密才能访问了。
 </p>
 
 <p>
@@ -298,10 +329,10 @@ sub   rsa4096 2025-02-27 [E]
 </p>
 
 <p>
-Emacs 内置的 EasyPG Assistant 可以帮你自动完成加密解密，当需要访问 gpg 加密文件的时候它就会启用，你不需要额外做什么。
+Emacs 内置的 EasyPG Assistant 可以帮你 <b>自动</b> 完成加密解密，当需要访问 gpg 加密文件的时候它就会启用，你不需要额外做什么。
 </p>
 
-<section role="note" id="org75648a7">
+<section role="note" id="org1817e91">
 <p>
 在 Emacs 中你可以通过 <code>C-h R epa</code> 查看 EasyPG Assistant 的文档。
 </p>
@@ -389,7 +420,7 @@ Emacs 内置的 EasyPG Assistant 可以帮你自动完成加密解密，当需�
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-02-27 Thu 14:29</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-11-05 Wed 14:31</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-13 Fri 12:46</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
