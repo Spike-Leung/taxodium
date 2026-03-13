@@ -30,16 +30,8 @@
 :END:
 
 #+begin_quote
-Pagefind 是一个完全静态的搜索库，其目标是在大型网站上运行良好，
-同时尽可能少地占用用户带宽，并且无需托管任何基础设施。
-
-Pagefind 的目标是，拥有数万个页面的网站应能让用户在浏览器中进行搜索，同时尽可能减少带宽消耗。
-
-Pagefind 的搜索索引被分割成若干块，因此在浏览器中进行搜索只需加载搜索索引的一小部分。
-
-Pagefind 可以在一个 10,000 页的网站上运行全文搜索，
-包括 Pagefind 库本身在内的总网络有效载荷不到 300kB。
-对于大多数网站来说，这将接近 100kB。
+Pagefind 是一个完全 *静态* 的搜索库，其目标是在大型网站上运行良好，
+同时 *尽可能少地占用用户带宽* ，并且无需托管任何基础设施。
 
 [[https://pagefind.app/][pagefind]]
 #+end_quote
@@ -52,25 +44,6 @@ pagefind 的一些特点：
 
 对我来说，它最大的优点就是配置简单，不依赖第三方服务，而且搜索效果也不错。
 
-[[denote:20241007T123052::#7bee7a6a-ef75-480b-b599-824d597ff576][Zine#11::It's hard to write code for computers, but it's even harder to write code for humans]] 里面的观点我觉得说的很对：
-
-#+begin_quote
-
-入门（Getting Started）不应该是在构建产品之后才考虑的问题。入门就是产品！
-
-*我认为这值得重构你的整个产品，以便实现快速入门。去掉强制配置。*
-*让设置 API 令牌变得极其简单。消除所有障碍。*
-*让用户能够在几分钟内在他们的笔记本电脑上使用你的产品。*
-
-你可能会说，我不知道，「谁在乎懒惰的用户」。
-那就让我靠在豆袋椅上，打开一袋多力多滋，解释一下吧：
-
-目前有 7,000,000,000 种开发工具。
-用户没有那么多精力和耐心去深入了解你的 LRU 缓存 NPM 包或其他东西有什么不同。抱歉了！
-
-[[https://erikbern.com/2024/09/27/its-hard-to-write-code-for-humans.html#:~:text=Getting%20started%20shouldn%27t,or%20whatever.%20Sorry][Source]]
-#+end_quote
-
 * 配置 pagefind
 :PROPERTIES:
 :CUSTOM_ID: d0cb0641-caef-4bb1-8bd5-f55349aa923c
@@ -81,13 +54,13 @@ pagefind 的一些特点：
 1. 执行 =npx -y pagefind --site publish= 生成索引，其中 =publish= 是你的静态页面存放的目录
 2. 引用对应的 CSS，JS，并且添加一个 DOM 元素让 pagefind 挂载
 
-#+begin_src html
+#+begin_src html -r
   <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
   <script src="/pagefind/pagefind-ui.js"></script>
   <div id="search"></div>
   <script>
     window.addEventListener('DOMContentLoaded', (event) => {
-    new PagefindUI({ element: "#search", showSubResults: true });
+      new PagefindUI({ element: "#search", showSubResults: true });
     });
   </script>
 #+end_src
@@ -187,8 +160,8 @@ pagefind 的一些特点：
 #+CAPTION: excerpt 的样式
 [[file:images/use-pagefind-to-search-blog/pagefind-mark-style.webp]]
 
-首先，需要用 [[(processResult)][processResult]] 处理返回结果，
-将 excerpt 返回的 ~<mark>~ [[(replace)][替换成]] ~<mark><span></span>~ ，新增一个 ~<span>~ 用于承载样式。
+首先，新增一个 ~<span>~ 用于承载样式，
+可以通过 [[(processResult)][processResult]] 将 excerpt 返回的 ~<mark>~ [[(replace)][替换成]] ~<mark><span></span>~ 。
 虽然只用一个 ~<mark>~ 也可以实现类似样式，但 ~border~ 连接的地方混色会有问题。
 
 #+begin_src javascript -r
