@@ -138,7 +138,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedMode = getSavedColorScheme();
   setModeSelectValue(savedMode);
   setBodyClass(savedMode);
-  requestAnimationFrame(() => switchIframeColorScheme(savedMode));
+  /* 等待 iframe 加载完成 */
+  setTimeout(() => {
+    switchIframeColorScheme(savedMode)
+  }, 500)
 
   setSafariFlag();
   document.querySelector("#lightdark").addEventListener('change', (event) => switchMode(event.target.value));
