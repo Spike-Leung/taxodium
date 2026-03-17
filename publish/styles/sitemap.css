@@ -89,6 +89,24 @@ header  {
   line-height: 1;
 }
 
+.quotes {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: var(--extra-active-area-size);
+    left: var(--extra-active-area-size);
+    right: var(--extra-active-area-size);
+    bottom: var(--extra-active-area-size);
+    cursor: pointer;
+  }
+}
+
+.quotes:hover a {
+  animation: unroll 1s;
+}
+
 .quick-access a {
   text-decoration: none;
   position: relative;
@@ -99,13 +117,12 @@ header  {
     transform: scale(0.9);
   }
 
-  /* tv */
-  &:nth-child(4) {
+  &.anime {
     filter: grayscale(1) brightness(0.75);
     transition: all .8s;
   }
 
-  &:nth-child(3) {
+  &.black-hole {
     padding-inline: .3em;
     cursor: none;
   }
@@ -113,21 +130,17 @@ header  {
   &:hover {
     background: unset;
 
-    /* headphone & notebook */
-    &:nth-child(1),
-    &:nth-child(5) {
+    &.changelog {
       transform-origin: center bottom;
       animation: jelly .7s;
     }
 
-    /* cd */
-    &:nth-child(2) {
+    &.music-rank {
       animation: infinite play-cd 1s linear;
       transform-origin: 48% 55%;
     }
 
-    /* black hole */
-    &:nth-child(3) {
+    &.black-hole {
       cursor: none;
 
       &::before {
@@ -135,13 +148,11 @@ header  {
       }
     }
 
-    /* tv */
-    &:nth-child(4) {
+    &.anime {
       filter: grayscale(0) brightness(120%);
     }
 
-    /* hammer */
-    &:nth-child(5) {
+    &.tools {
       transform-origin: center center;
       animation: infinite heat-hammer .8s linear;
     }
@@ -180,5 +191,10 @@ header  {
 
 @keyframes heat-hammer {
   0% { transform: rotateZ(-25deg); }
-  100% { transform: rotateZ(15deg); }
+  100% { transform: rotateZ(15deg); }n
+}
+
+@keyframes unroll {
+  0% { clip-path: inset(0 0 100% 0); opacity: 0; }
+  100% { clip-path: inset(0 0 0 0); opacity: 1; }
 }
