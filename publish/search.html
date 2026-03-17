@@ -17,75 +17,76 @@
     <script src="/js/color-scheme.js"></script>
     <script src="/pagefind/pagefind-ui.js"></script>
     <style>
-      .search-container {
-        position: relative;
-      }
-      #search {
-        margin-block-start: 1em;
-      }
-      #help-content {
-        color: var(--color-text);
-        color: light-dark(var(--color-text), var(--dark-color-text));
-        background-color: var(--color-bg-src-block);
-        background-color: light-dark(var(--color-bg-src-block), var(--dark-color-bg-src-block));
-        border-color: var(--color-border);
-        border-color: light-dark(var(--color-border), var(--dark-color-border));
-        border-radius: .25em;
-        padding: 0 1em;
-        /* Final state of the exit animation */
-        opacity: 0;
-        transition: all 0.5s allow-discrete;
+     .search-container {
+       position: relative;
+     }
+     #search {
+       margin-block-start: 1em;
+     }
+     #help-content {
+       color: var(--color-text);
+       color: light-dark(var(--color-text), var(--dark-color-text));
+       background-color: var(--color-bg-src-block);
+       background-color: light-dark(var(--color-bg-src-block), var(--dark-color-bg-src-block));
+       border-color: var(--color-border);
+       border-color: light-dark(var(--color-border), var(--dark-color-border));
+       border-radius: .25em;
+       padding: 0 1em;
+       /* Final state of the exit animation */
+       opacity: 0;
+       transition: all 0.5s allow-discrete;
 
-        @media screen and (max-width: 1000px) {
-          margin-inline: 1em;
-        }
+       @media screen and (max-width: 1000px) {
+         margin-inline: 1em;
+       }
 
-        &:popover-open {
-          opacity: 1;
-        }
+       &:popover-open {
+         opacity: 1;
+       }
 
-        /* Needs to be after the previous [popover]:popover-open rule
- to take effect, as the specificity is the same */
-        @starting-style {
-          &:popover-open {
-            opacity: 0;
-          }
-        }
+       /* Needs to be after the previous [popover]:popover-open rule
+          to take effect, as the specificity is the same */
+       @starting-style {
+         &:popover-open {
+           opacity: 0;
+         }
+       }
 
-        &::backdrop {
-          backdrop-filter: none;
-          transition: all 0.3s allow-discrete;
-          pointer-events: none;
-        }
+       &::backdrop {
+         backdrop-filter: none;
+         transition: all 0.3s allow-discrete;
+         pointer-events: none;
+       }
 
-        &:popover-open::backdrop {
-          backdrop-filter: blur(15px);
-        }
+       &:popover-open::backdrop {
+         backdrop-filter: blur(15px);
+       }
 
-        /* The nesting selector (&) cannot represent pseudo-elements
- so this starting-style rule cannot be nested */
-        @starting-style {
-          &:popover-open::backdrop {
-            backdrop-filter: none;
-          }
-        }
-      }
+       /* The nesting selector (&) cannot represent pseudo-elements
+          so this starting-style rule cannot be nested */
+       @starting-style {
+         &:popover-open::backdrop {
+           backdrop-filter: none;
+         }
+       }
+     }
 
-      /* https://stackoverflow.com/questions/78995412/how-to-stop-mouse-events-through-css-backdrop */
-      /* filter element not supposed to catch mouse events */
-      body:has(:popover-open) * {
-        pointer-events: none;
-      }
+     /* https://stackoverflow.com/questions/78995412/how-to-stop-mouse-events-through-css-backdrop */
+     /* filter element not supposed to catch mouse events */
+     body:has(:popover-open) * {
+       pointer-events: none;
+     }
 
-      /* then allow click from #mypopover */
-      div[popover] * {
-        pointer-events: auto;
-      }
+     /* then allow click from #mypopover */
+     div[popover] * {
+       pointer-events: auto;
+     }
 
-      .help-tip {
-        color: var(--color-text-secondary);
-        color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
-      }
+     .help-tip {
+       color: var(--color-text-secondary);
+       color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+     }
+
     </style>
   </head>
   <body>
@@ -128,31 +129,31 @@
       </div>
     </div>
     <script>
-      window.addEventListener('DOMContentLoaded', (event) => {
-        new PagefindUI({
-          element: "#search",
-          showSubResults: true,
-          showImages: false,
-          autofocus: true,
-          excerptLength: 50,
-          processResult: function (result) {
-            result.excerpt = result.excerpt.replaceAll("<mark>", "<mark><span></span>")
-            result?.sub_results.forEach((sr) => {
-              sr.excerpt = sr.excerpt.replaceAll("<mark>", "<mark><span></span>")
-            })
-            return result;
-          }
-        });
-      });
+     window.addEventListener('DOMContentLoaded', (event) => {
+       new PagefindUI({
+         element: "#search",
+         showSubResults: true,
+         showImages: false,
+         autofocus: true,
+         excerptLength: 50,
+         processResult: function (result) {
+           result.excerpt = result.excerpt.replaceAll("<mark>", "<mark><span></span>")
+           result?.sub_results.forEach((sr) => {
+             sr.excerpt = sr.excerpt.replaceAll("<mark>", "<mark><span></span>")
+           })
+           return result;
+         }
+       });
+     });
     </script>
     <script src="/js/backtop.js" defer=""></script>
     <!-- <script src="/js/snow-fall.js" defer type="module"></script> -->
     <!-- <snow-fall></snow-fall> -->
     <noscript>
       <style>
-        .js-required {
-          display: none;
-        }
+       .js-required {
+         display: none;
+       }
       </style>
     </noscript>
   </body>
