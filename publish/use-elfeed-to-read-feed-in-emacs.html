@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>在 Emacs 中用 Elfeed 阅读订阅流</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="介绍如何用 elfeed 在 Emacs 里阅读订阅流，以及分享一些方便的 elfeed 方法" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
+<link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
+<link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+
+  <ul class="a11y-nav">
+    <li>
+      <a id="skip-content" href="#content">Skip to main content</a>
+    </li>
+  </ul>
+
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <!-- <li><a href="/inside-black-hole.html">黑洞里</a></li> -->
+  </ul>
+  <!--
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  -->
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">在 Emacs 中用 Elfeed 阅读订阅流</h1>
+</header><p>
+在 Emacs 里，可以用 <a href="https://github.com/skeeto/elfeed">skeeto/elfeed</a> 阅读订阅流（<a href="about-feeds.html">关于订阅流</a>），为了方便管理订阅流，我还会结合 <a href="https://github.com/remyhonig/elfeed-org">remyhonig/elfeed-org</a> 一起用，在一个 org 文件里维护所有的订阅。
+</p>
+
+<p>
+然后在 Emacs 里，只需要执行 <code>M-x elfeed</code> ，就可以看到所有的订阅流了。
+</p>
+
+
+<figure>
+<a href="images/use-elfeed-to-read-feed-in-emacs/elfeed.webp"><img src="images/use-elfeed-to-read-feed-in-emacs/elfeed.webp" alt="elfeed.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>elfeed 阅读页面</figcaption>
+</figure>
+
+<p>
+在 Emacs 中可以这样配置：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defconst</span> <span class="org-variable-name">spike-leung/elfeed-org-files</span> <span class="org-string">"~/.emacs.d/elfeed.org"</span>
+  <span class="org-doc">"My elfeed org files path."</span>)
+
+(<span class="org-keyword">use-package</span> elfeed
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">setq-default</span> elfeed-search-filter <span class="org-string">"@3-months-ago +unread +default"</span>))
+
+(<span class="org-keyword">use-package</span> elfeed-org
+<span id="coderef-after-init-hook" class="coderef-off">  <span class="org-builtin">:hook</span> ((after-init . elfeed-org))</span>
+  <span class="org-builtin">:init</span> (<span class="org-keyword">setq</span> rmh-elfeed-org-files (list spike-leung/elfeed-org-files)))
+</code></pre>
+</div>
+
+<p>
+如果使用 <code>elfeed-org</code> ，注意在执行 <code>elfeed</code> 前先执行 <code>elfeed-org</code> ，让 <code>elfeed-org</code> 将 org 文件的订阅流转换成 <code>elfeed</code> 需要的格式，可以通过 <a href="#coderef-after-init-hook" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-after-init-hook');" onmouseout="CodeHighlightOff(this, 'coderef-after-init-hook');">hook</a> 实现。
+</p>
+
+<p>
+<a href="https://github.com/Spike-Leung/Spikemacs/blob/f57261be4b32121e86dc4e37e60f932e2b15cfd8/elfeed.org">elfeed.org</a> 是我的 <code>elfeed-org</code> 配置文件，基于 Kedara 分享的 <a href="https://kedara.eu/organising-feeds-permaculture/">Organising my feeds using Permaculture principles</a> 整理，我也推荐你试试这个方法。
+</p>
+
+<p>
+<a href="https://github.com/Spike-Leung/Spikemacs/blob/f57261be4b32121e86dc4e37e60f932e2b15cfd8/elfeed.org">elfeed.org</a> 的结构大致如下：
+</p>
+
+<pre class="example">
+<span id="coderef-elfeed-tag" class="coderef-off">* feed :elfeed:</span>
+** Z0:Home :z0:default:
+*** [[https://taxodium.ink/rss.xml][taxodium]]
+*** [[https://webmention.io/api/mentions.html?token=qcwPCX61g9khbvZWp3U0qg][webmention.io]]
+
+** Z1:Porch :z1:default:
+*** [[https://anotherdayu.com/feed/][Another Dayu]]
+*** [[https://antfu.me/feed.xml][Anthony Fu]] :frontend:
+</pre>
+
+<p>
+要想让 <code>elfeed-org</code> 识别出订阅流，需要在 <a href="#coderef-elfeed-tag" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-elfeed-tag');" onmouseout="CodeHighlightOff(this, 'coderef-elfeed-tag');">heading 上</a> 添加 <code>rmh-elfeed-org-tree-id</code> （默认是 <code>elfeed</code> ）作为 tag。
+tag 可以被下一层级的 heading 集成，可以相对方便地归类订阅流。
+</p>
+
+<p>
+至此，就可以使用 <code>elfeed</code> 在 Emacs 中阅读订阅流了，还可以看看 <a href="https://github.com/skeeto/elfeed?tab=readme-ov-file#filter-syntax">elfeed 的过滤条件</a>，方便搜索想看的订阅流。
+</p>
+
+<p>
+下面再分享一些方法，它们解决了一些我使用 <code>elfeed</code> 的问题。
+</p>
+
+<hr>
+
+<pre class="example">
+* feed :elfeed:
+** Z0:Home :z0:default:
+<span id="coderef-elfeed-link" class="coderef-off">*** [[https://taxodium.ink/rss.xml][taxodium]]</span>
+*** [[https://webmention.io/api/mentions.html?token=qcwPCX61g9khbvZWp3U0qg][webmention.io]]
+
+** Z1:Porch :z1:default:
+*** [[https://anotherdayu.com/feed/][Another Dayu]]
+*** [[https://antfu.me/feed.xml][Anthony Fu]] :frontend:
+</pre>
+
+<p>
+观察 <code>elfeed-org</code> 的 <a href="#coderef-elfeed-link" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-elfeed-link');" onmouseout="CodeHighlightOff(this, 'coderef-elfeed-link');">链接</a>，你会发现基本都是 <code>rss.xml</code> 或者 <code>feed.xml</code> ，点击链接跳转过去就是显示的就是一个 XML 页面，一般来说都是密密麻麻的字，它的主要目的不是为了给人阅读的（你也可以 <a href="pretty-feed.html">让你的 RSS/Atom feed 更好看</a>）。
+</p>
+
+<p>
+我更希望点击链接的时候，跳转到对应的博客主页。
+</p>
+
+<figure>
+  <a href="/images/use-elfeed-to-read-feed-in-emacs/elfeed-link.webm" target="_blank">
+    <video autoplay loop muted playsinline>
+      <source src="/images/use-elfeed-to-read-feed-in-emacs/elfeed-link.webm" type="video/webm">
+    </video>
+  </a>
+  <figcaption>在 elfeed.org 中点击订阅流链接，可以直接跳转到订阅流的主页，而不是 XML 页面。</figcaption>
+</figure>
+
+<p>
+实现这个功能，只需要在点击链接的时候，提取订阅流的域名，再跳转到域名就好了。
+</p>
+
+<p>
+<code>org-mode</code> 中打开链接的方式是 <code>org-open-at-point</code> ，可以给这个方法 <a href="#coderef-advice-add" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-advice-add');" onmouseout="CodeHighlightOff(this, 'coderef-advice-add');">添加</a> 一个 <a href="https://protesilaos.com/emacs/emacs-lisp-elements#h:hooks-and-the-advice-mechanism">advice</a>，如果 <a href="#coderef-in-elfeed-org-files" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-in-elfeed-org-files');" onmouseout="CodeHighlightOff(this, 'coderef-in-elfeed-org-files');">当前是 elfeed-org 文件</a>，并且链接是 <a href="#coderef-is-feed-link" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-is-feed-link');" onmouseout="CodeHighlightOff(this, 'coderef-is-feed-link');">订阅流链接</a>，则从中 <a href="#coderef-url-generic-parse-url" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-url-generic-parse-url');" onmouseout="CodeHighlightOff(this, 'coderef-url-generic-parse-url');">解析域名</a>，然后 <a href="#coderef-browse-url" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-browse-url');" onmouseout="CodeHighlightOff(this, 'coderef-browse-url');">调用 browse-url</a> 跳转访问。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defconst</span> <span class="org-variable-name">spike-leung/elfeed-org-files</span> <span class="org-string">"~/.emacs.d/elfeed.org"</span>
+  <span class="org-doc">"My elfeed org files path."</span>)
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/org-open-rss-feed-as-site-in-elfeed-org-files</span> (orig-fun <span class="org-type">&amp;rest</span> args)
+  <span class="org-doc">"Advice for `</span><span class="org-doc"><span class="org-constant">org-open-at-point</span></span><span class="org-doc">' to redirect RSS links only in a specific file."</span>
+  (<span class="org-keyword">let*</span> ((element (org-element-context))
+         (link (<span class="org-keyword">and</span> (eq (org-element-type element) 'link)
+                    (org-element-property <span class="org-builtin">:raw-link</span> element))))
+<span id="coderef-in-elfeed-org-files" class="coderef-off">    (<span class="org-keyword">if</span> (<span class="org-keyword">and</span> buffer-file-name (string-equal</span>
+                                            (expand-file-name (buffer-file-name))
+                                            (expand-file-name spike-leung/elfeed-org-files))
+<span id="coderef-is-feed-link" class="coderef-off">             link (string-match-p (<span class="org-keyword">rx</span> (<span class="org-keyword">or</span> <span class="org-string">"rss"</span> <span class="org-string">"feed"</span> <span class="org-string">"atom"</span> <span class="org-string">"xml"</span>)) link))</span>
+<span id="coderef-url-generic-parse-url" class="coderef-off">      (<span class="org-keyword">let*</span> ((url-parts (url-generic-parse-url link))</span>
+             (scheme (url-type url-parts))
+             (host (url-host url-parts))
+             (site-url (concat scheme <span class="org-string">"://"</span> host)))
+        (message <span class="org-string">"Opening site for feed: %s"</span> site-url)
+<span id="coderef-browse-url" class="coderef-off">        (browse-url site-url))</span>
+      (apply orig-fun args))))
+
+<span id="coderef-advice-add" class="coderef-off">(advice-add 'org-open-at-point <span class="org-builtin">:around</span> #'spike-leung/org-open-rss-feed-as-site-in-elfeed-org-files)</span>
+</code></pre>
+</div>
+
+<hr>
+
+<p>
+<code>elfeed</code> 支持很多 <a href="https://github.com/skeeto/elfeed?tab=readme-ov-file#filter-syntax">过滤条件</a>，可以使用 <code>elfeed-search-live-filter</code> 设置过滤器并实时预览过滤结果。我最常设置的过滤条件是过滤博客名字，但现在我订阅了 300 多个订阅流，很多名字我都记不下来。我想到的一个办法是把所有订阅流的名字罗列出来，然后让我从中选择，这样我就不需要记了。
+</p>
+
+<figure>
+  <a href="/images/use-elfeed-to-read-feed-in-emacs/consult-elfeed.webm" target="_blank">
+    <video autoplay loop muted playsinline>
+      <source src="/images/use-elfeed-to-read-feed-in-emacs/consult-elfeed.webm" type="video/webm">
+    </video>
+  </a>
+  <figcaption>通过选择不同的订阅流名字，过滤 elfeed 的结果，并且能够实时预览变化</figcaption>
+</figure>
+
+<p>
+下面我分享一下是如何实现的。
+</p>
+
+<details>
+<summary>完整代码</summary>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defconst</span> <span class="org-variable-name">spike-leung/elfeed-search-filter</span> <span class="org-string">"@3-months-ago +unread"</span>
+  <span class="org-doc">"Query string filtering shown entries."</span>)
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/get-feed-candidates</span> (<span class="org-type">&amp;optional</span> level)
+  <span class="org-doc">"Extract headings title from `</span><span class="org-doc"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-doc">' as consult candidates.
+If LEVEL exist, filter heading which level is greater or equal LEVEL."</span>
+  (mapcan
+   (<span class="org-keyword">lambda</span> (elfeed-org-file)
+     (<span class="org-keyword">with-current-buffer</span> (<span class="org-keyword">or</span> (find-buffer-visiting elfeed-org-file)
+                              (find-file-noselect elfeed-org-file))
+       (delq nil
+             (org-element-map (org-element-parse-buffer 'headline) 'headline
+               (<span class="org-keyword">lambda</span> (hl)
+                 <span class="org-comment-delimiter">;; </span><span class="org-comment">property &#30340;&#20540;&#21487;&#20197;&#22312;&#36825;&#37324;&#25214;&#65306; https://orgmode.org/worg/dev/org-element-api.html
+</span>                 (<span class="org-keyword">when</span> (<span class="org-keyword">or</span> (null level) (&gt;= (org-element-property <span class="org-builtin">:level</span> hl) level))
+                   (<span class="org-keyword">let*</span> ((raw-title (org-element-property <span class="org-builtin">:raw-value</span> hl))
+                          (title (org-link-display-format raw-title))
+                          (annotation (org-entry-get hl <span class="org-string">"description"</span>))
+                          (feed-url (<span class="org-keyword">when</span> (string-match org-link-bracket-re raw-title)
+                                      (match-string 1 raw-title))))
+                     (list <span class="org-builtin">:items</span> (list title) <span class="org-builtin">:feed-url</span> feed-url <span class="org-builtin">:annotation</span> annotation))))
+               nil))))
+   rmh-elfeed-org-files))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/elfeed-preview-state</span> (state candidate)
+  <span class="org-doc">"Return consult state function for live `</span><span class="org-doc"><span class="org-constant">elfeed</span></span><span class="org-doc">' preview.
+See `</span><span class="org-doc"><span class="org-constant">consult--with-preview</span></span><span class="org-doc">' about STATE and CANDIDATE."</span>
+  (<span class="org-keyword">unless</span> (null candidate)
+    (<span class="org-keyword">let*</span> ((cand (car candidate))
+           (metadata (cdr candidate))
+           (feed-url (plist-get metadata <span class="org-builtin">:feed-url</span>)))
+      (<span class="org-keyword">pcase</span> state
+        ('setup
+         (<span class="org-keyword">unless</span> (get-buffer <span class="org-string">"*elfeed-search*"</span>)
+           (elfeed-apply-hooks-now)
+           (elfeed-org)
+           (elfeed)
+           (elfeed-search-clear-filter))
+         (display-buffer <span class="org-string">"*elfeed-search*"</span> '(display-buffer-reuse-window)))
+        ('preview
+         (elfeed-search-clear-filter)
+         (<span class="org-keyword">when</span> (<span class="org-keyword">and</span> cand (get-buffer <span class="org-string">"*elfeed-search*"</span>))
+           (<span class="org-keyword">unless</span> (string-empty-p cand)
+             (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter <span class="org-string">" ="</span> (string-replace <span class="org-string">" "</span> <span class="org-string">"."</span> cand))))))
+        ('return
+         (<span class="org-keyword">unless</span> (string-empty-p cand)
+           (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter <span class="org-string">" ="</span> (string-replace <span class="org-string">" "</span> <span class="org-string">"."</span> cand)))
+           (elfeed-update-feed feed-url)))))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/consult-elfeed</span> ()
+  <span class="org-doc">"Select feed from `</span><span class="org-doc"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-doc">' with live preview in `</span><span class="org-doc"><span class="org-constant">elfeed</span></span><span class="org-doc">'."</span>
+  (<span class="org-keyword">interactive</span>)
+  (<span class="org-keyword">let*</span> ((candidates (spike-leung/get-feed-candidates 3)))
+    (consult--multi candidates
+                    <span class="org-builtin">:prompt</span> <span class="org-string">"Feed: "</span>
+                    <span class="org-builtin">:state</span> #'spike-leung/elfeed-preview-state
+                    <span class="org-builtin">:history</span> 'spike-leung/consult-elfeed-history
+                    <span class="org-builtin">:annotate</span> (<span class="org-keyword">lambda</span> (cand)
+                                (<span class="org-keyword">let*</span> ((match-cand (seq-find
+                                                    (<span class="org-keyword">lambda</span> (v)
+                                                      (string-match-p (car (plist-get v <span class="org-builtin">:items</span>)) cand))
+                                                    candidates))
+                                       (annotation (<span class="org-keyword">and</span> match-cand (plist-get match-cand <span class="org-builtin">:annotation</span>))))
+                                  (<span class="org-keyword">when</span> annotation
+                                    (concat (make-string 25 ?\s) annotation)))))
+    (<span class="org-keyword">when</span> (get-buffer <span class="org-string">"*elfeed-search*"</span>)
+      (pop-to-buffer <span class="org-string">"*elfeed-search*"</span>))))
+</code></pre>
+</div>
+</details>
+
+<p>
+在 Emacs 中，可以通过 <code>completing-read</code> 来做这件事，给它传入一个选项列表，然后就可以在 <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Minibuffer.html">Minibuffer</a> 中选择选项，获取到这个选项的值，再基于这个值做后续的处理。
+</p>
+
+<p>
+Emacs 里我安装了 <a href="https://github.com/minad/consult">minad/consult</a>，它是一个基于 <code>completing-read</code> 的补全扩展，提供了很多方便的方法，可以理解为 <code>completing-read</code> 的增强版本。<code>consult</code> 提供了 <code>consult--read</code> ，和 <code>completing-read</code> 功能一样，但支持实时预览；<code>consult--read</code> 默认返回的是字符串，但有时我还要一些额外的信息，例如订阅流的 URL、订阅流的描述等，这时可以用 <code>consult--multi</code> ，返回一个 <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Property-Lists.html">plist</a> (Property Lists)。
+</p>
+
+<p>
+具体可以拆成几步：
+</p>
+<ol class="org-ol">
+<li>从 <code>elfeed.org</code> 中解析出所有的订阅流名字，作为选项列表</li>
+<li>使用 <code>consult--multi</code> 中选择订阅流</li>
+<li>实时预览选项
+<ul class="org-ul">
+<li>调用 <code>elfeed-search-set-filter</code> 将选中的值作为过滤条件，过滤 <code>elfeed</code> 的结果</li>
+<li>调用 <code>elfeed-update-feed</code> 更新选中的订阅流，拉取最新的数据</li>
+</ul></li>
+<li>选择完成后，应用过滤条件，结束</li>
+</ol>
+
+<p>
+接下来看看具体的代码实现。
+</p>
+
+<p>
+先定义一个默认的 <code>elfeed</code> 过滤条件，之后会拼接订阅流的名称，形成最终的过滤条件。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defconst</span> <span class="org-variable-name">spike-leung/elfeed-search-filter</span> <span class="org-string">"@3-months-ago +unread"</span>
+  <span class="org-doc">"Query string filtering shown entries."</span>)
+</code></pre>
+</div>
+
+<p>
+之后定义一个方法，从 <code>rmh-elfeed-org-files</code> (<code>elfeed-org</code> 读取的文件路径列表)
+中获取所有订阅流的数据，返回一个选项列表。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/get-feed-candidates</span> (<span class="org-type">&amp;optional</span> level)
+  <span class="org-doc">"Extract headings title from `</span><span class="org-doc"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-doc">' as consult candidates.
+If LEVEL exist, filter heading which level is greater or equal LEVEL."</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36941;&#21382; `</span><span class="org-comment"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-comment">'
+</span>  (mapcan
+   <span class="org-comment-delimiter">;; </span><span class="org-comment">&#23545; `</span><span class="org-comment"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-comment">' &#25991;&#20214;&#22788;&#29702;
+</span>   (<span class="org-keyword">lambda</span> (elfeed-org-file)
+     <span class="org-comment-delimiter">;; </span><span class="org-comment">&#35835;&#21462;&#25991;&#20214;&#20869;&#23481;&#65292;&#21152;&#36733;&#21040;&#19968;&#20010;&#20020;&#26102; buffer &#20013;
+</span>     (<span class="org-keyword">with-current-buffer</span> (<span class="org-keyword">or</span> (find-buffer-visiting elfeed-org-file)
+                              (find-file-noselect elfeed-org-file))
+       <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20174;&#36820;&#22238;&#30340;&#21015;&#34920;&#20013;&#31227;&#38500; nil
+</span>       (delq nil
+             <span class="org-comment-delimiter">;; </span><span class="org-comment">&#23558;&#29992; `</span><span class="org-comment"><span class="org-constant">org-element-parse-buffer</span></span><span class="org-comment">' &#22788;&#29702; buffer &#20869;&#23481;&#65292;&#36820;&#22238; headline
+</span>             <span class="org-comment-delimiter">;; </span><span class="org-comment">&#28982;&#21518;&#29992; `</span><span class="org-comment"><span class="org-constant">org-element-map</span></span><span class="org-comment">' &#36941;&#21382;&#25152;&#26377; headline
+</span>             (org-element-map (org-element-parse-buffer 'headline) 'headline
+               <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22788;&#29702;&#27599;&#19968;&#20010; headline
+</span>               (<span class="org-keyword">lambda</span> (hl)
+                 <span class="org-comment-delimiter">;; </span><span class="org-comment">property &#30340;&#20540;&#21487;&#20197;&#22312;&#36825;&#37324;&#25214;&#65306; https://orgmode.org/worg/dev/org-element-api.html
+</span>                 <span class="org-comment-delimiter">;; </span><span class="org-comment">&#38480;&#21046; headline &#30340; level&#65292;&#21482;&#22788;&#29702; headline level &#22823;&#20110;&#31561;&#20110; `</span><span class="org-comment"><span class="org-constant">level</span></span><span class="org-comment">' &#30340; headline
+</span>                 (<span class="org-keyword">when</span> (<span class="org-keyword">or</span> (null level) (&gt;= (org-element-property <span class="org-builtin">:level</span> hl) level))
+                   (<span class="org-keyword">let*</span> ((raw-title (org-element-property <span class="org-builtin">:raw-value</span> hl)) <span class="org-comment-delimiter">; </span><span class="org-comment">headline &#21407;&#22987;&#25968;&#25454;
+</span>                          <span class="org-comment-delimiter">;; </span><span class="org-comment">&#33719;&#21462; title&#65292;&#23545;&#24212;&#35746;&#38405;&#27969;&#30340;&#21517;&#23383;
+</span>                          (title (org-link-display-format raw-title))
+<span id="coderef-description" class="coderef-off">                          (annotation (org-entry-get hl <span class="org-string">"description"</span>))</span>
+                          <span class="org-comment-delimiter">;; </span><span class="org-comment">&#35299;&#26512;&#35746;&#38405;&#27969;&#30340; URL
+</span>                          (feed-url (<span class="org-keyword">when</span> (string-match org-link-bracket-re raw-title)
+                                      (match-string 1 raw-title))))
+                     <span class="org-comment-delimiter">;; </span><span class="org-comment">&#26500;&#24314;&#19968;&#20010; plist &#36820;&#22238;&#65292;&#20854;&#20013; `</span><span class="org-comment"><span class="org-constant">:items</span></span><span class="org-comment">' &#26159; `</span><span class="org-comment"><span class="org-constant">consult--multi</span></span><span class="org-comment">' &#35201;&#27714;&#30340;&#23383;&#27573;&#65292;&#26159;&#19968;&#20010;&#23383;&#31526;&#20018;&#21015;&#34920;
+</span>                     (list <span class="org-builtin">:items</span> (list title) <span class="org-builtin">:feed-url</span> feed-url <span class="org-builtin">:annotation</span> annotation))))
+               nil))))
+   rmh-elfeed-org-files))
+</code></pre>
+</div>
+
+<p>
+其中 <a href="#coderef-description" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-description');" onmouseout="CodeHighlightOff(this, 'coderef-description');">description</a> 是通过 <code>org-mode</code> 的 <a href="https://orgmode.org/manual/Property-Syntax.html">Property</a> 定义的，需要将 <a href="#coderef-define-description" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-define-description');" onmouseout="CodeHighlightOff(this, 'coderef-define-description');">字段</a> 包裹在 <code>:PROPERTIES:</code> 和 <code>:END:</code> 之间：
+</p>
+
+<pre class="example">
+*** [[https://sightlessscribbles.com/feed.xml][Sightless Scribbles]]
+:PROPERTIES:
+<span id="coderef-define-description" class="coderef-off">:DESCRIPTION: 盲人作家 (define-description)</span>
+:END:
+</pre>
+
+<p>
+得到一个选项列表之后，就可以将列表丢给 <code>consult--multi</code> 处理。
+</p>
+
+<p>
+因为我的订阅流主要定义为 level 3 的 heading，所以我会 <a href="#coderef-headline-limit" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-headline-limit');" onmouseout="CodeHighlightOff(this, 'coderef-headline-limit');">过滤大于等于 level 3 的 heading</a>。然后将过滤后的选项列表，<a href="#coderef-candidates" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-candidates');" onmouseout="CodeHighlightOff(this, 'coderef-candidates');">传给 consult&ndash;multi</a>；<a href="#coderef-prompt" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-prompt');" onmouseout="CodeHighlightOff(this, 'coderef-prompt');">:prompt</a> 是提示文字；<a href="#coderef-state" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-state');" onmouseout="CodeHighlightOff(this, 'coderef-state');">:state</a> 传入一个用于预览操作的函数；<a href="#coderef-history" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-history');" onmouseout="CodeHighlightOff(this, 'coderef-history');">:history</a> 提供一个 symbol 用于存储输入历史；<a href="#coderef-annotate" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-annotate');" onmouseout="CodeHighlightOff(this, 'coderef-annotate');">:annotate</a> 传入一个函数，返回一个 string，用于给选项添加注释内容。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/consult-elfeed</span> ()
+  <span class="org-doc">"Select feed from `</span><span class="org-doc"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-doc">' with live preview in `</span><span class="org-doc"><span class="org-constant">elfeed</span></span><span class="org-doc">'."</span>
+  (<span class="org-keyword">interactive</span>)
+<span id="coderef-headline-limit" class="coderef-off">  (<span class="org-keyword">let*</span> ((candidates (spike-leung/get-feed-candidates 3)))</span>
+<span id="coderef-candidates" class="coderef-off">    (consult--multi candidates</span>
+<span id="coderef-prompt" class="coderef-off">                    <span class="org-builtin">:prompt</span> <span class="org-string">"Feed: "</span></span>
+<span id="coderef-state" class="coderef-off">                    <span class="org-builtin">:state</span> #'spike-leung/elfeed-preview-state</span>
+<span id="coderef-history" class="coderef-off">                    <span class="org-builtin">:history</span> 'spike-leung/consult-elfeed-history</span>
+<span id="coderef-annotate" class="coderef-off">                    <span class="org-builtin">:annotate</span> (<span class="org-keyword">lambda</span> (cand)</span>
+                                <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">cand</span></span><span class="org-comment">' &#26159; string&#65292;&#20174; candidates &#20013;&#26597;&#25214;&#21305;&#37197; `</span><span class="org-comment"><span class="org-constant">cand</span></span><span class="org-comment">' &#30340; plist
+</span>                                (<span class="org-keyword">let*</span> ((match-cand (seq-find
+                                                    (<span class="org-keyword">lambda</span> (v)
+                                                      (string-match-p (car (plist-get v <span class="org-builtin">:items</span>)) cand))
+                                                    candidates))
+                                       <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20174; plist &#20013;&#35835;&#21462; `</span><span class="org-comment"><span class="org-constant">:annotation</span></span><span class="org-comment">' &#23383;&#27573;
+</span>                                       (annotation (<span class="org-keyword">and</span> match-cand (plist-get match-cand <span class="org-builtin">:annotation</span>))))
+                                  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36820;&#22238; annotation&#65292;&#22686;&#21152;&#19968;&#20123;&#31354;&#26684;&#65292;&#21644;&#36873;&#39033;&#21306;&#20998;&#24320;
+</span>                                  (<span class="org-keyword">when</span> annotation
+                                    (concat (make-string 25 ?\s) annotation)))))
+    (<span class="org-keyword">when</span> (get-buffer <span class="org-string">"*elfeed-search*"</span>)
+      (pop-to-buffer <span class="org-string">"*elfeed-search*"</span>))))
+</code></pre>
+</div>
+
+<p>
+预览功能通过 <a href="#coderef-state" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-state');" onmouseout="CodeHighlightOff(this, 'coderef-state');">:state</a> 传入一个 <a href="#coderef-elfeed-preview-state" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-elfeed-preview-state');" onmouseout="CodeHighlightOff(this, 'coderef-elfeed-preview-state');">用于预览操作的函数</a>，函数接收两个参数：
+</p>
+
+<ul class="org-ul">
+<li><p>
+<code>state</code> 表示当前 <code>consult--multi</code> 的状态，状态分成 <code>setup</code> 、 <code>preview</code> 、 <code>exit</code> 、 <code>return</code> 四个阶段。
+</p>
+<pre class="example">
+  1. 'setup nil         After entering the mb (minibuffer-setup-hook).
+⎧ 2. 'preview CAND/nil  Preview candidate CAND or reset if CAND is nil.
+⎪    'preview CAND/nil
+⎪    'preview CAND/nil
+⎪    ...
+⎩ 3. 'preview nil       Reset preview.
+  4. 'exit nil          Before exiting the mb (minibuffer-exit-hook).
+  5. 'return CAND/nil   After leaving the mb, CAND has been selected.
+</pre></li>
+<li><code>candidate</code> 是当前选择的选项</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code><span id="coderef-elfeed-preview-state" class="coderef-off">(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/elfeed-preview-state</span> (state candidate)</span>
+  <span class="org-doc">"Return consult state function for live `</span><span class="org-doc"><span class="org-constant">elfeed</span></span><span class="org-doc">' preview.
+      See `</span><span class="org-doc"><span class="org-constant">consult--with-preview</span></span><span class="org-doc">' about STATE and CANDIDATE."</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">candidate</span></span><span class="org-comment">' &#21487;&#33021;&#20026;&#31354; (nil)&#65292;&#27492;&#26102;&#19981;&#38656;&#35201;&#20570;&#22788;&#29702;&#65292;&#25552;&#21069;&#32467;&#26463;
+</span>  (<span class="org-keyword">unless</span> (null candidate)
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">&#33719;&#21462; `</span><span class="org-comment"><span class="org-constant">candidate</span></span><span class="org-comment">' &#30340;&#20449;&#24687;&#65292;candidate &#30340;&#32467;&#26500;&#26159; '(name prop1 value1 prop2 value2...)
+</span>    (<span class="org-keyword">let*</span> ((cand (car candidate))
+           (metadata (cdr candidate))
+           (feed-url (plist-get metadata <span class="org-builtin">:feed-url</span>)))
+      <span class="org-comment-delimiter">;; </span><span class="org-comment">switch case
+</span>      (<span class="org-keyword">pcase</span> state
+        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#21021;&#22987;&#21270;&#30340;&#26102;&#20505;&#35843;&#29992; `</span><span class="org-comment"><span class="org-constant">elfeed</span></span><span class="org-comment">' &#30456;&#20851;&#30340;&#21021;&#22987;&#26041;&#27861;&#65307;&#37325;&#32622;&#36807;&#28388;&#26465;&#20214;&#65307;&#25171;&#24320; `</span><span class="org-comment"><span class="org-constant">elfeed</span></span><span class="org-comment">' &#30340; buffer&#12290;
+</span>        ('setup
+         (<span class="org-keyword">unless</span> (get-buffer <span class="org-string">"*elfeed-search*"</span>)
+           (elfeed-apply-hooks-now)
+           (elfeed-org)
+           (elfeed)
+           (elfeed-search-clear-filter))
+         (display-buffer <span class="org-string">"*elfeed-search*"</span> '(display-buffer-reuse-window)))
+        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#39044;&#35272;&#30340;&#26102;&#20505;&#65292;&#23558;&#35746;&#38405;&#27969;&#30340;&#21517;&#23383;&#25340;&#25509;&#21040;&#36807;&#28388;&#26465;&#20214;&#19978;&#38754;&#65292;
+</span>        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36825;&#26679;&#23601;&#21487;&#20197;&#22312;&#20999;&#25442;&#35746;&#38405;&#27969;&#21517;&#23383;&#26102;&#65292;&#24212;&#29992;&#19981;&#21516;&#36807;&#28388;&#26465;&#20214;&#65292;&#26597;&#30475;&#23545;&#24212;&#30340;&#32467;&#26524;
+</span>        ('preview
+         (elfeed-search-clear-filter)
+         (<span class="org-keyword">when</span> (<span class="org-keyword">and</span> cand (get-buffer <span class="org-string">"*elfeed-search*"</span>))
+           (<span class="org-keyword">unless</span> (string-empty-p cand)
+             (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter <span class="org-string">" ="</span> (string-replace <span class="org-string">" "</span> <span class="org-string">"."</span> cand))))))
+        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#25353;&#19979; return &#30830;&#23450;&#36873;&#39033;&#21518;&#65292;&#25226;&#36873;&#25321;&#30340;&#36807;&#28388;&#26465;&#20214;&#24212;&#29992;&#19978;&#21435;&#65292;&#21516;&#26102;&#33719;&#21462;&#36873;&#25321;&#30340;&#35746;&#38405;&#27969;&#30340; URL&#65292;&#25191;&#34892;&#19968;&#27425;&#25289;&#21462;
+</span>        ('return
+         (<span class="org-keyword">unless</span> (string-empty-p cand)
+           (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter <span class="org-string">" ="</span> (string-replace <span class="org-string">" "</span> <span class="org-string">"."</span> cand)))
+           (elfeed-update-feed feed-url)))))))
+</code></pre>
+</div>
+
+<hr>
+
+<p>
+不知道上面的方法对你是否有用，如果有帮助那就太好了。
+</p>
+
+<p>
+上面的方法是我和 LLM (Large Language Model，大语言模型) 对话后写出来的，阅读和调整代码以及调试，折腾了几个小时（所以写得比较详细）。对于现在的 LLM 而言，我这是龟速了，不过我还是有所收获的，我知道了很多 Elisp 的 API，更熟悉 Elisp 的语法。
+</p>
+
+<p>
+在这个 LLM 的时代，学习 Elisp 、扩展 Emacs 变得容易了放多，通过 LLM 可以很快地获取到相关资料和代码例子。但如果是初学者，不能只将 LLM 生成的代码拿过来就用，还应该搞清楚代码是如何实现的，并从中学习。更好地做法是自己写，将 LLM 的代码作为参考。学习和成长是需要摩擦<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>的，如果完全依赖 LLM 生成代码，依然什么都不懂，在碰到问题时，就没有修复问题的能力。
+</p>
+
+<section role="note" id="orgc68a4a6">
+<p>
+如果你打算入门 Emacs，可以看看： <a href="how-to-get-started-with-emacs.html">如何上手 Emacs</a>
+</p>
+</section>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="41.html#9929A22A-4621-458E-824F-3699BA68B10D">推荐阅读：Zine#41 - My favourite German word by Daniele Procida</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<details class="webmention-container js-required">
+<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
+<p class="webmention-tip">
+如果你想回应这篇文章，可以在你的文章或社交媒体帖子中链接这篇文章，然后提交你的 URL，你的回应随后会显示在此页面上。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章或帖子的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention-content-list"></ul>
+</details>
+<p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
+<p class="date">创建于： <span class="dt-published">2026-03-20 Fri 11:30</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-21 Sat 11:43</span></p>
+<p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
+<p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/toc.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<!--
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+-->
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
