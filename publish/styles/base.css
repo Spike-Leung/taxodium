@@ -56,10 +56,25 @@
   --pagefind-ui-border: var(--dark-color-text-secondary);
   --pagefind-ui-custom-mark-mix-blend-mode: multiply;
 
-  --content-width: 900px;
+  --half-content-margin: calc((100vw - var(--content-width)) / 2);
   --pagefind-ui-scale: 1.2;
   /* footnote 数字的点击范围 */
   --extra-active-area-size: -.8em;
+  --padding-inline-body: 10px;
+  --padding-inline-list: 40px;
+}
+
+/* media query */
+@media screen and (width >= 900px) {
+  :root {
+    --content-width: 90vw;
+  }
+}
+
+@media screen and (width >= 1200px) {
+  :root {
+    --content-width: 900px;
+  }
 }
 
 /* ------------------------------ common tag ------------------------------ */
@@ -72,26 +87,14 @@ body {
   background-image: url("/images/background/xv.png");
   background-attachment: fixed;
   margin: 20px auto;
-  padding: 0 10px;
+  padding: 0 var(--padding-inline-body);
   font-family: var(--font-family);
   word-break: break-word;
   box-sizing: border-box;
+  max-width: var(--content-width);
 
   &.dark {
     background-image: url("/images/background/xv.png");
-  }
-}
-
-/* media query */
-@media screen and (width >= 900px) {
-  body {
-    max-width: 90vw;
-  }
-}
-
-@media screen and (width >= 1200px) {
-  body {
-    max-width: var(--content-width);
   }
 }
 
@@ -809,13 +812,12 @@ video {
 }
 
 #table-of-contents {
-
   @media screen and (width >= 1500px) {
     & {
       opacity: 0.2;
       position: fixed;
       top: 4em;
-      right: calc(var(--content-width) + (100vw - var(--content-width)) / 2 + 2em);
+      right: calc(var(--content-width) + var(--half-content-margin) + 2em);
       max-width: calc((100vw - var(--content-width)) / 2 - 2em);
       transition: opacity .25s ease-in-out;
       &:hover {
@@ -1259,7 +1261,7 @@ background-size: calc(2 * var(--scan-line-width)) calc(2 * var(--scan-line-width
 
  .sidenote {
    /* 屏幕宽度减去内容宽度后，剩余 margin 的一半用于展示 sidenote, 宽度减少 1em 避免内容溢出到右侧，导致横向滚动条 */
-   width: calc((100vw - var(--content-width)) / 2 - 1em);
+   width: calc(var(--half-content-margin) - 1em);
    max-width: 500px;
    font-size: 0.8em;
    pointer-events: auto;
@@ -1354,7 +1356,7 @@ background-size: calc(2 * var(--scan-line-width)) calc(2 * var(--scan-line-width
 
  @media screen and (width >= 1200px) {
    #back-to-top {
-     right: calc((100vw - var(--content-width)) / 2 - 4em);
+     right: calc(var(--half-content-margin) - 4em);
    }
  }
 
