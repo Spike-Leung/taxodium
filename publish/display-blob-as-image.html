@@ -80,13 +80,13 @@ img 的 src。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code>const imageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"
+<pre class="src src-js"><code><span class="org-keyword">const</span> <span class="org-variable-name">imageURL</span> = <span class="org-string">"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"</span>
 
 fetch(imageURL).then((res) =&gt; {
-  return res.blob()
+  <span class="org-keyword">return</span> res.blob()
 }).then((blob) =&gt; {
-  const imageObjectURL = URL.createObjectURL(blob);
-  document.querySelector("#img").src = imageObjectURL
+  <span class="org-keyword">const</span> <span class="org-variable-name">imageObjectURL</span> = URL.createObjectURL(blob);
+  document.querySelector(<span class="org-string">"#img"</span>).src = imageObjectURL
 })
 </code></pre>
 </div>
@@ -123,13 +123,13 @@ result 属性将包含一个data:URL 格式的字符串（base64 编码）以表
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code>const imageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"
+<pre class="src src-js"><code><span class="org-keyword">const</span> <span class="org-variable-name">imageURL</span> = <span class="org-string">"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"</span>
 
-function blob2Base64(blob) {
-  const reader = new FileReader();
+<span class="org-keyword">function</span> <span class="org-function-name">blob2Base64</span>(<span class="org-variable-name">blob</span>) {
+  <span class="org-keyword">const</span> <span class="org-variable-name">reader</span> = <span class="org-keyword">new</span> <span class="org-type">FileReader</span>();
   reader.readAsDataURL(blob);
 
-  return new Promise((resolve) =&gt; {
+  <span class="org-keyword">return</span> <span class="org-keyword">new</span> <span class="org-type">Promise</span>((resolve) =&gt; {
     reader.onloadend = () =&gt; {
       resolve(reader.result)
     };
@@ -137,9 +137,9 @@ function blob2Base64(blob) {
 }
 
 fetch(imageURL).then((res) =&gt; {
-  return res.blob()
-}).then(async (blob) =&gt; {
-  document.querySelector("#img").src = await blob2Base64(blob)
+  <span class="org-keyword">return</span> res.blob()
+}).then(<span class="org-keyword">async</span> (blob) =&gt; {
+  document.querySelector(<span class="org-string">"#img"</span>).src = <span class="org-keyword">await</span> blob2Base64(blob)
 })
 </code></pre>
 </div>
@@ -170,7 +170,7 @@ fetch(imageURL).then((res) =&gt; {
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2022-08-09 Tue 14:35</span></p>
-<p class="date">修改于： <span class="dt-updated">2025-09-10 Wed 13:04</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-21 Sat 11:44</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
