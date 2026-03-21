@@ -1,7 +1,7 @@
 #+title:      在 Emacs 中用 Elfeed 阅读订阅流
 #+export_file_name: use-elfeed-to-read-feed-in-emacs
-#+date:       [2026-03-21 Sat 11:30]
-#+filetags:   :draft:elfeed:emacs:preview:rss:
+#+date:       [2026-03-21 Sat 15:00]
+#+filetags:   :elfeed:emacs:published:rss:
 #+identifier: 20260320T113000
 #+bind:       denote-directory "~/git/taxodium/posts"
 #+description: 介绍如何用 elfeed 在 Emacs 里阅读订阅流，以及分享一些方便的 elfeed 方法
@@ -11,13 +11,11 @@
 #+options: ^:{}
 #+startup: content
 
-在 Emacs 里，可以用 [[https://github.com/skeeto/elfeed][skeeto/elfeed]] 阅读订阅流（[[denote:20250410T150930][关于订阅流]]），
-为了方便管理订阅流，我还会结合 [[https://github.com/remyhonig/elfeed-org][remyhonig/elfeed-org]] 一起用，在一个 org 文件里维护所有的订阅。
-
-然后在 Emacs 里，只需要执行 ~M-x elfeed~ ，就可以看到所有的订阅流了。
-
 #+CAPTION: elfeed 阅读页面
 [[file:images/use-elfeed-to-read-feed-in-emacs/elfeed.webp]]
+
+在 Emacs 里，可以用 [[https://github.com/skeeto/elfeed][skeeto/elfeed]] 阅读订阅流（[[denote:20250410T150930][关于订阅流]]），
+为了方便管理订阅流，我还会结合 [[https://github.com/remyhonig/elfeed-org][remyhonig/elfeed-org]] 一起用，在一个 org 文件里维护所有的订阅。
 
 在 Emacs 中可以这样配置：
 
@@ -38,7 +36,7 @@
 让 ~elfeed-org~ 将 org 文件的订阅流转换成 ~elfeed~ 需要的格式，可以通过 [[(after-init-hook)][hook]] 实现。
 
 [[https://github.com/Spike-Leung/Spikemacs/blob/f57261be4b32121e86dc4e37e60f932e2b15cfd8/elfeed.org][elfeed.org]] 是我的 ~elfeed-org~ 配置文件，
-基于 Kedara 分享的 [[https://kedara.eu/organising-feeds-permaculture/][Organising my feeds using Permaculture principles]] 整理，我也推荐你试试这个方法。
+基于 Kedara 分享的 [[https://kedara.eu/organising-feeds-permaculture/][Organising my feeds using Permaculture principles]] 整理。
 
 [[https://github.com/Spike-Leung/Spikemacs/blob/f57261be4b32121e86dc4e37e60f932e2b15cfd8/elfeed.org][elfeed.org]] 的结构大致如下：
 
@@ -46,8 +44,6 @@
   ,* feed :elfeed: (ref:elfeed-tag)
   ,** Z0:Home :z0:default:
   ,*** [[https://taxodium.ink/rss.xml][taxodium]]
-  ,*** [[https://webmention.io/api/mentions.html?token=qcwPCX61g9khbvZWp3U0qg][webmention.io]]
-
   ,** Z1:Porch :z1:default:
   ,*** [[https://anotherdayu.com/feed/][Another Dayu]]
   ,*** [[https://antfu.me/feed.xml][Anthony Fu]] :frontend:
@@ -55,12 +51,12 @@
 
 要想让 ~elfeed-org~ 识别出订阅流，
 需要在 [[(elfeed-tag)][heading 上]] 添加 ~rmh-elfeed-org-tree-id~ （默认是 ~elfeed~ ）作为 tag。
-tag 可以被下一层级的 heading 集成，可以相对方便地归类订阅流。
+tag 会被下一层级的 heading 继承，可以方便地归类订阅流。
 
-至此，就可以使用 ~elfeed~ 在 Emacs 中阅读订阅流了，
-还可以看看 [[https://github.com/skeeto/elfeed?tab=readme-ov-file#filter-syntax][elfeed 的过滤条件]]，方便搜索想看的订阅流。
+配置好之后，在 Emacs 里只需要执行 ~M-x elfeed~ ，就可以看到所有的订阅流了。
+另外，可以看看 [[https://github.com/skeeto/elfeed?tab=readme-ov-file#filter-syntax][elfeed 的过滤条件]]，方便过滤想看的订阅流。
 
-下面再分享一些方法，它们解决了一些我使用 ~elfeed~ 的问题。
+下面再分享一些方法，可以让 ~elfeed~ 的使用体验更好。
 
 -----
 
@@ -68,16 +64,14 @@ tag 可以被下一层级的 heading 集成，可以相对方便地归类订阅�
   ,* feed :elfeed:
   ,** Z0:Home :z0:default:
   ,*** [[https://taxodium.ink/rss.xml][taxodium]] (ref:elfeed-link)
-  ,*** [[https://webmention.io/api/mentions.html?token=qcwPCX61g9khbvZWp3U0qg][webmention.io]]
-
   ,** Z1:Porch :z1:default:
   ,*** [[https://anotherdayu.com/feed/][Another Dayu]]
   ,*** [[https://antfu.me/feed.xml][Anthony Fu]] :frontend:
 #+end_example
 
 观察 ~elfeed-org~ 的 [[(elfeed-link)][链接]]，你会发现基本都是 ~rss.xml~ 或者 ~feed.xml~ ，
-点击链接跳转过去就是显示的就是一个 XML 页面，一般来说都是密密麻麻的字，
-它的主要目的不是为了给人阅读的（你也可以 [[denote:20250411T160537][让你的 RSS/Atom feed 更好看]]）。
+点击链接跳转过去显示的就是一个 XML 页面，一般来说都是密密麻麻的字，不适合阅读
+（你也可以 [[denote:20250411T160537][让你的 RSS/Atom feed 更好看]]）。
 
 我更希望点击链接的时候，跳转到对应的博客主页。
 
@@ -88,14 +82,11 @@ tag 可以被下一层级的 heading 集成，可以相对方便地归类订阅�
       <source src="/images/use-elfeed-to-read-feed-in-emacs/elfeed-link.webm" type="video/webm">
     </video>
   </a>
-  <figcaption>在 elfeed.org 中点击订阅流链接，可以直接跳转到订阅流的主页，而不是 XML 页面。</figcaption>
+  <figcaption>一个视频，展示了在 elfeed.org 中点击订阅流链接，可以直接跳转到订阅流的主页，而不是 XML 页面。</figcaption>
 </figure>
 #+end_export
 
-实现这个功能，只需要在点击链接的时候，提取订阅流的域名，再跳转到域名就好了。
-
-~org-mode~ 中打开链接的方式是 ~org-open-at-point~ ，可以给这个方法 [[(advice-add)][添加]] 一个 [[https://protesilaos.com/emacs/emacs-lisp-elements#h:hooks-and-the-advice-mechanism][advice]]，
-如果 [[(in-elfeed-org-files)][当前是 elfeed-org 文件]]，并且链接是 [[(is-feed-link)][订阅流链接]]，则从中 [[(url-generic-parse-url)][解析域名]]，然后 [[(browse-url)][调用 browse-url]] 跳转访问。
+要实现这个功能，只需要在点击链接的时候，提取订阅流的域名，再跳转到域名就好了。
 
 #+begin_src emacs-lisp -r
   (defconst spike-leung/elfeed-org-files "~/.emacs.d/elfeed.org"
@@ -120,6 +111,9 @@ tag 可以被下一层级的 heading 集成，可以相对方便地归类订阅�
 
   (advice-add 'org-open-at-point :around #'spike-leung/org-open-rss-feed-as-site-in-elfeed-org-files) (ref:advice-add)
 #+end_src
+
+~org-mode~ 中打开链接的方式是 ~org-open-at-point~ ，可以给这个方法 [[(advice-add)][添加]] 一个 [[https://protesilaos.com/emacs/emacs-lisp-elements#h:hooks-and-the-advice-mechanism][advice]]，
+如果 [[(in-elfeed-org-files)][当前是 elfeed-org 文件]]，并且链接是 [[(is-feed-link)][订阅流链接]]，则从中 [[(url-generic-parse-url)][解析域名]]，然后 [[(browse-url)][调用 browse-url]] 跳转访问。
 
 -----
 
@@ -214,16 +208,16 @@ tag 可以被下一层级的 heading 集成，可以相对方便地归类订阅�
 #+end_details
 
 在 Emacs 中，可以通过 ~completing-read~ 来做这件事，给它传入一个选项列表，
-然后就可以在 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Minibuffer.html][Minibuffer]] 中选择选项，获取到这个选项的值，再基于这个值做后续的处理。
+然后在 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Minibuffer.html][Minibuffer]] 中选择选项，再基于选择的值做后续的处理。
 
 Emacs 里我安装了 [[https://github.com/minad/consult][minad/consult]]，它是一个基于 ~completing-read~ 的补全扩展，
 提供了很多方便的方法，可以理解为 ~completing-read~ 的增强版本。
 ~consult~ 提供了 ~consult--read~ ，和 ~completing-read~ 功能一样，但支持实时预览；
 ~consult--read~ 默认返回的是字符串，
 但有时我还要一些额外的信息，例如订阅流的 URL、订阅流的描述等，
-这时可以用 ~consult--multi~ ，返回一个 [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Property-Lists.html][plist]] (Property Lists)。
+字符串无法携带这些信息，这时可以用 ~consult--multi~ ，返回一个 [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Property-Lists.html][plist]] (Property Lists)。
 
-具体可以拆成几步：
+具体的实现可以拆成几步：
 1. 从 ~elfeed.org~ 中解析出所有的订阅流名字，作为选项列表
 2. 使用 ~consult--multi~ 中选择订阅流
 3. 实时预览选项
@@ -262,17 +256,19 @@ Emacs 里我安装了 [[https://github.com/minad/consult][minad/consult]]，它�
                (org-element-map (org-element-parse-buffer 'headline) 'headline
                  ;; 处理每一个 headline
                  (lambda (hl)
-                   ;; property 的值可以在这里找： https://orgmode.org/worg/dev/org-element-api.html
-                   ;; 限制 headline 的 level，只处理 headline level 大于等于 `level' 的 headline
+                   ;; 限制 headline 的 level，
+                   ;; 只处理 headline level 大于等于 `level' 的 headline
                    (when (or (null level) (>= (org-element-property :level hl) level))
-                     (let* ((raw-title (org-element-property :raw-value hl)) ; headline 原始数据
+                     ;; `:raw-value' 获取 headline 原始数据
+                     (let* ((raw-title (org-element-property :raw-value hl))
                             ;; 获取 title，对应订阅流的名字
                             (title (org-link-display-format raw-title))
                             (annotation (org-entry-get hl "description")) (ref:description)
                             ;; 解析订阅流的 URL
                             (feed-url (when (string-match org-link-bracket-re raw-title)
                                         (match-string 1 raw-title))))
-                       ;; 构建一个 plist 返回，其中 `:items' 是 `consult--multi' 要求的字段，是一个字符串列表
+                       ;; 构建一个 plist 返回，
+                       ;; 其中 `:items' 是 `consult--multi' 要求的字段，是一个字符串列表
                        (list :items (list title) :feed-url feed-url :annotation annotation))))
                  nil))))
      rmh-elfeed-org-files))
@@ -289,12 +285,6 @@ Emacs 里我安装了 [[https://github.com/minad/consult][minad/consult]]，它�
 #+end_example
 
 得到一个选项列表之后，就可以将列表丢给 ~consult--multi~ 处理。
-
-因为我的订阅流主要定义为 level 3 的 heading，所以我会 [[(headline-limit)][过滤大于等于 level 3 的 heading]]。
-然后将过滤后的选项列表，[[(candidates)][传给 consult--multi]]；
-[[(prompt)][:prompt]] 是提示文字；[[(state)][:state]] 传入一个用于预览操作的函数；
-[[(history)][:history]] 提供一个 symbol 用于存储输入历史；
-[[(annotate)][:annotate]] 传入一个函数，返回一个 string，用于给选项添加注释内容。
 
 #+begin_src emacs-lisp -r
   (defun spike-leung/consult-elfeed ()
@@ -320,9 +310,15 @@ Emacs 里我安装了 [[https://github.com/minad/consult][minad/consult]]，它�
         (pop-to-buffer "*elfeed-search*"))))
 #+end_src
 
+因为我的订阅流主要定义为 level 3 的 heading，所以我会 [[(headline-limit)][过滤大于等于 level 3 的 heading]]。
+然后将过滤后的选项列表，[[(candidates)][传给 consult--multi]]；
+[[(prompt)][:prompt]] 是提示文字；[[(state)][:state]] 传入一个用于预览操作的函数；
+[[(history)][:history]] 提供一个 symbol 用于存储输入历史；
+[[(annotate)][:annotate]] 传入一个函数，返回一个 string，用于给选项添加注释内容。
+
 预览功能通过 [[(state)][:state]] 传入一个 [[(elfeed-preview-state)][用于预览操作的函数]]，函数接收两个参数：
 
-- ~state~ 表示当前 ~consult--multi~ 的状态，状态分成 ~setup~ 、 ~preview~ 、 ~exit~ 、 ~return~ 四个阶段。
+- ~state~ 表示当前 ~consult--multi~ 的状态，共四个阶段： setup、preview、exit、return。
   #+begin_example
       1. 'setup nil         After entering the mb (minibuffer-setup-hook).
     ⎧ 2. 'preview CAND/nil  Preview candidate CAND or reset if CAND is nil.
@@ -371,29 +367,42 @@ Emacs 里我安装了 [[https://github.com/minad/consult][minad/consult]]，它�
 
 -----
 
-不知道上面的方法对你是否有用，如果有帮助那就太好了。
-
 上面的方法是我和 LLM (Large Language Model，大语言模型) 对话后写出来的，
-阅读和调整代码以及调试，折腾了几个小时（所以写得比较详细）。
+阅读和调整代码以及调试，折腾了几个小时（所以代码注释写得比较详细）。
 对于现在的 LLM 而言，我这是龟速了，
 不过我还是有所收获的，我知道了很多 Elisp 的 API，更熟悉 Elisp 的语法。
 
-在这个 LLM 的时代，学习 Elisp 、扩展 Emacs 变得容易了放多，
+在这个 LLM 的时代，学习 Elisp 、扩展 Emacs 变得容易了很多，
 通过 LLM 可以很快地获取到相关资料和代码例子。
 但如果是初学者，不能只将 LLM 生成的代码拿过来就用，
 还应该搞清楚代码是如何实现的，并从中学习。
-更好地做法是自己写，将 LLM 的代码作为参考。
-学习和成长是需要摩擦[fn:1]的，如果完全依赖 LLM 生成代码，
-依然什么都不懂，在碰到问题时，就没有修复问题的能力。
+学习和成长是需要摩擦[fn:1]的，
+如果完全依赖 LLM 生成代码，什么都不懂，在碰到问题时，就没有修复问题的能力了。
+
+#+begin_details
+#+html: <summary>一些调试的技巧</summary>
+
+- 面对一个问题不知道怎么处理，可以问 LLM 获取一些思路和方向
+- 如果要做的事情，在 Emacs 中见过类似的实现，
+  可以去看看（通过 ~describe-function~ 、 ~describe-key~ ）它们的实现逻辑，
+  抄过来改一下，或者用 [[https://protesilaos.com/emacs/emacs-lisp-elements#h:hooks-and-the-advice-mechanism][advice]] 去调整它们的行为
+- 有时看到一下 message，不知道哪里来的，
+  可以用 ~(setq debug-on-message "your message regexp")~ 调试
+- 利用 ~debug-on-entry~ 去调试一些函数
+- 利用 ~message~ 去打印日志，了解函数的运行和输出
+- 遇到不懂的语法可以问 LLM，也可以查一下内置的 Elisp Manual (~C-h R elisp~)
+#+end_details
 
 #+attr_html: :role note
 #+begin_section
 如果你打算入门 Emacs，可以看看： [[denote:20260126T182011][如何上手 Emacs]]
 #+end_section
 
+如果你有什么想法，你可以在 [[https://emacs-china.org/t/elfeed/31141][分享一些提升 elfeed 使用体验的方法]] 进行讨论，或者给我邮件 :)
+
 * Footnotes
 :PROPERTIES:
 :CUSTOM_ID: 524BB764-DAB8-4237-9483-0A5C8942FDDB
 :END:
 
-[fn:1] [[denote:20250803T191049::#9929A22A-4621-458E-824F-3699BA68B10D][推荐阅读：Zine#41 - My favourite German word by Daniele Procida]]
+[fn:1] 推荐阅读：[[denote:20250803T191049::#9929A22A-4621-458E-824F-3699BA68B10D][Zine#41 - My favourite German word by Daniele Procida]]
