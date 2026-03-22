@@ -362,6 +362,40 @@ Emacs 里我安装了 [[https://github.com/minad/consult][minad/consult]]，它�
            (elfeed-update-feed feed-url))))))
 #+end_src
 
+为了方便使用，可以将它绑定到 ~elfeed-search-mode-map~ 上：
+
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :custom
+    (elfeed-search-filter "@3-months-ago +unread +default")
+    :bind ((:map elfeed-search-mode-map
+                 ("f" . spike-leung/consult-elfeed))))
+#+end_src
+
+-----
+
+还可以添加一个切换已读 (~-unread~) /未读 (~+unread~) 的方法。
+
+#+begin_src emacs-lisp
+  (defun spike-leung/elfeed-toggle-unread ()
+    "Toggle elfeed unread status."
+    (interactive)
+    (if (string-match-p "+unread" elfeed-search-filter)
+        (elfeed-search-set-filter (string-replace "+unread" "-unread" elfeed-search-filter))
+      (elfeed-search-set-filter (string-replace "-unread" "+unread" elfeed-search-filter))))
+#+end_src
+
+绑定到 ~elfeed-search-mode-map~ 上：
+
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :custom
+    (elfeed-search-filter "@3-months-ago +unread +default")
+    :bind ((:map elfeed-search-mode-map
+                 ("t" . spike-leung/elfeed-toggle-unread)
+                 ("f" . spike-leung/consult-elfeed))))
+#+end_src
+
 -----
 
 上面的方法是我和 LLM (Large Language Model，大语言模型) 对话后写出来的，

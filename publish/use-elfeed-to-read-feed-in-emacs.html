@@ -448,6 +448,49 @@ See `</span><span class="org-doc"><span class="org-constant">consult--with-previ
 </code></pre>
 </div>
 
+<p>
+为了方便使用，可以将它绑定到 <code>elfeed-search-mode-map</code> 上：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">use-package</span> elfeed
+  <span class="org-builtin">:custom</span>
+  (elfeed-search-filter <span class="org-string">"@3-months-ago +unread +default"</span>)
+  <span class="org-builtin">:bind</span> ((<span class="org-builtin">:map</span> elfeed-search-mode-map
+               (<span class="org-string">"f"</span> . spike-leung/consult-elfeed))))
+</code></pre>
+</div>
+
+<hr>
+
+<p>
+还可以添加一个切换已读 (<code>-unread</code>) /未读 (<code>+unread</code>) 的方法。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/elfeed-toggle-unread</span> ()
+  <span class="org-doc">"Toggle elfeed unread status."</span>
+  (<span class="org-keyword">interactive</span>)
+  (<span class="org-keyword">if</span> (string-match-p <span class="org-string">"+unread"</span> elfeed-search-filter)
+      (elfeed-search-set-filter (string-replace <span class="org-string">"+unread"</span> <span class="org-string">"-unread"</span> elfeed-search-filter))
+    (elfeed-search-set-filter (string-replace <span class="org-string">"-unread"</span> <span class="org-string">"+unread"</span> elfeed-search-filter))))
+</code></pre>
+</div>
+
+<p>
+绑定到 <code>elfeed-search-mode-map</code> 上：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">use-package</span> elfeed
+  <span class="org-builtin">:custom</span>
+  (elfeed-search-filter <span class="org-string">"@3-months-ago +unread +default"</span>)
+  <span class="org-builtin">:bind</span> ((<span class="org-builtin">:map</span> elfeed-search-mode-map
+               (<span class="org-string">"t"</span> . spike-leung/elfeed-toggle-unread)
+               (<span class="org-string">"f"</span> . spike-leung/consult-elfeed))))
+</code></pre>
+</div>
+
 <hr>
 
 <p>
@@ -471,7 +514,7 @@ See `</span><span class="org-doc"><span class="org-constant">consult--with-previ
 </ul>
 </details>
 
-<section role="note" id="org3e6ae37">
+<section role="note" id="org84a74d8">
 <p>
 如果你打算入门 Emacs，可以看看： <a href="how-to-get-started-with-emacs.html">如何上手 Emacs</a>
 </p>
@@ -510,7 +553,7 @@ See `</span><span class="org-doc"><span class="org-constant">consult--with-previ
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2026-03-21 Sat 15:00</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-03-22 Sun 08:53</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-22 Sun 15:26</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
