@@ -308,7 +308,7 @@ backend."</span>
 此外，还需要利用 denote 提供的方法，将文件重命名成 denote 的命名格式。
 </p>
 
-<section role="note" id="orgad74735">
+<section role="note" id="orgef402fd">
 <p>
 Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如:
 </p>
@@ -336,7 +336,7 @@ Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如
 </div>
 <div id="outline-container-E566CAD6-D575-4D43-B989-F7BA96130DA2" class="outline-2">
 <h2 id="E566CAD6-D575-4D43-B989-F7BA96130DA2">org-publish</h2>
-<div class="outline-text-2" id="text-E566CAD6-D575-4D43-B989-F7BA96130DA2"><section role="note" id="org4c0c8f5">
+<div class="outline-text-2" id="text-E566CAD6-D575-4D43-B989-F7BA96130DA2"><section role="note" id="org5f3c31d">
 <p>
 关于如何使用 org-publish 发布博客，见 <a href="org-publish-blog.html">使用 org-publish 发布博客</a>，这里不再赘述。
 </p>
@@ -486,6 +486,128 @@ KEYWORD is case-insensitive."</span>
 </code></pre>
 </div>
 </details>
+
+<p>
+<a href="https://protesilaos.com/emacs/denote-org">Denote Org</a> 可以使用 dynamic blocks 插入 denote 链接，我现在的 sitemap（主页）是手工编写的，通过 dynamic blocks 插入对应的链接内容（你可以将首页 <code>index.html</code> 替换为 <code>index.org</code> 查看 org 文件）。
+</p>
+
+<p>
+有的文章我会设置 <code>#+subtitle</code> ，我需要 <code>denote</code> 插入链接的时候能够将 subtitle 也显示在链接里。这可以通过自定义 <code>denote-link-description-format</code> 实现。
+</p>
+
+<details>
+<summary>相关代码</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">use-package</span> denote
+  <span class="org-builtin">:custom</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20462;&#25913; `</span><span class="org-comment"><span class="org-constant">denote-link-description-format</span></span><span class="org-comment">' &#30340;&#36820;&#22238;&#65292;&#28155;&#21152; subtitle
+</span>  (denote-link-description-format #'spike-leung/denote-link-description-with-signature-and-title-and-subtitle)
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/denote-link-description-with-signature-and-title-and-subtitle</span> (file <span class="org-type">&amp;optional</span> file-type)
+    <span class="org-doc">"Return link description for FILE with FILE-TYPE.
+For backward compatibility, FILE-TYPE is an optional parameter.  If it
+is nil, then compute FILE-TYPE internally.
+
+- If the region is active, use it as the description.
+
+- If FILE has a signature, then format the description as a sequence of
+  the signature text and the title with two spaces between them.
+
+- If FILE does not have a signature, then use its title as the
+  description.
+
+- If FILE has subtitle, append subtitle
+
+- If none of the above works, return an empty string.
+
+This function is useful as the value of the user option
+`</span><span class="org-doc"><span class="org-constant">denote-link-description-format</span></span><span class="org-doc">' (which can optionally be bound to a
+function)."</span>
+    (<span class="org-keyword">let*</span> ((type (<span class="org-keyword">or</span> file-type (denote-filetype-heuristics file)))
+           (signature (denote-retrieve-filename-signature file))
+           (title (denote-retrieve-title-or-filename file type))
+           (region-text (denote--get-active-region-content))
+           (subtitle (spike-leung/my-denote--get-subtitle file)))
+      (<span class="org-keyword">cond</span>
+       (region-text region-text)
+       ((<span class="org-keyword">and</span> signature title) (format <span class="org-string">"%s  %s"</span> signature title))
+       ((<span class="org-keyword">and</span> title subtitle) (format <span class="org-string">"%s - %s"</span> title subtitle))
+       (title (format <span class="org-string">"%s"</span> title))
+       (signature (format <span class="org-string">"%s"</span> signature))
+       (t <span class="org-string">""</span>))))
+  )
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/my-denote--get-subtitle</span> (file)
+  <span class="org-doc">"Find #+subtitle in FILE and return its value.
+Return nil if not found or FILE does not exist."</span>
+  (<span class="org-keyword">when</span> (<span class="org-keyword">and</span> file (file-exists-p file))
+    (<span class="org-keyword">with-temp-buffer</span>
+      (insert-file-contents file)
+      (goto-char (point-min))
+      (<span class="org-keyword">when</span> (re-search-forward <span class="org-string">"^#\\+subtitle: </span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">(</span></span><span class="org-string">.*</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">)</span></span><span class="org-string">$"</span> nil t)
+      (string-trim (match-string-no-properties 1))))))
+</code></pre>
+</div>
+
+<p>
+完整的 <code>denote</code> 设置见 <a href="https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-denote.el">init-denote.el</a>。
+</p>
+
+<p>
+将 <code>index.org</code> 转换成 <code>index.html</code> 时，我还希望将 subtitle 从链接中移除，放到链接下面呈现。我是通过在导出之后，修改 HTML 内容实现的。
+</p>
+
+<p>
+我调整了生成 sitemap 的 <a href="#coderef-publishing-function" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-publishing-function');" onmouseout="CodeHighlightOff(this, 'coderef-publishing-function');">:publishing-function</a> 实现：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>  (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/setup-org-publish-project-alist</span> (<span class="org-type">&amp;rest</span> _args)
+    <span class="org-doc">"Setup `</span><span class="org-doc"><span class="org-constant">org-publish-project-alist</span></span><span class="org-doc">'."</span>
+    (message <span class="org-string">"setup org-publish-project-alist"</span>)
+    (<span class="org-keyword">setq</span> org-html-htmlize-output-type 'css)
+    (<span class="org-keyword">setq</span> org-publish-project-alist
+          `((<span class="org-string">"sitemap"</span>
+             <span class="org-builtin">:base-directory</span> <span class="org-string">"~/git/taxodium/posts"</span>
+             <span class="org-builtin">:base-extension</span> <span class="org-string">"org"</span>
+             <span class="org-builtin">:include</span> (<span class="org-string">"index.org"</span>)
+             <span class="org-builtin">:exclude</span> <span class="org-string">".*"</span>
+             <span class="org-builtin">:publishing-directory</span> ,spike-leung/org-publish-default-publishing-directory
+             <span class="org-builtin">:time-stamp-file</span> nil
+             <span class="org-builtin">:section-numbers</span> nil
+             <span class="org-builtin">:html-head</span> ,spike-leung/html-head-sitemap
+             <span class="org-builtin">:html-preamble</span> ,spike-leung/html-preamble-content
+             <span class="org-builtin">:html-postamble</span> ,spike-leung/html-postamble-sitemap
+<span id="coderef-publishing-function" class="coderef-off">             <span class="org-builtin">:publishing-function</span> spike-leung/org-html-publish-sitemap (publishing-function)</span>
+             <span class="org-builtin">:html-htmlize-output-type</span> css
+             <span class="org-builtin">:author</span> <span class="org-string">"Spike Leung"</span>
+             <span class="org-builtin">:email</span> <span class="org-string">"l-yanlei@hotmail.com"</span>))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/org-html-publish-sitemap</span> (plist filename pub-dir)
+  <span class="org-doc">"`</span><span class="org-doc"><span class="org-constant">org-publish</span></span><span class="org-doc">' `</span><span class="org-doc"><span class="org-constant">:publishing-function</span></span><span class="org-doc">' for sitemap.
+Add subtitle to links which has subtitle.
+See `</span><span class="org-doc"><span class="org-constant">org-html-publish-to-html</span></span><span class="org-doc">' for param PLIST,FILENAME,PUB-DIR."</span>
+  (<span class="org-keyword">let</span> ((output-filename (org-html-publish-to-html plist filename pub-dir)))
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36825;&#37324;&#24212;&#35813;&#29992; `</span><span class="org-comment"><span class="org-constant">with-temp-buffer</span></span><span class="org-comment">' &#32780;&#19981;&#35201;&#29992; `</span><span class="org-comment"><span class="org-constant">with-current-buffer</span></span><span class="org-comment">' &#21644; '`</span><span class="org-comment"><span class="org-constant">find-file-noselect</span></span><span class="org-comment">'
+</span>    <span class="org-comment-delimiter">;; </span><span class="org-comment">see: https://emacs.stackexchange.com/questions/2868/whats-wrong-with-find-file-noselect
+</span>    (<span class="org-keyword">with-temp-buffer</span>
+      (insert-file-contents output-filename)
+      (goto-char (point-min))
+      (<span class="org-keyword">while</span> (re-search-forward
+              (<span class="org-keyword">rx</span> (group <span class="org-string">"&lt;a"</span> (*? anychar) <span class="org-string">"&gt;"</span> (*? anychar)) <span class="org-string">" - "</span> (group (*? anychar)) (group <span class="org-string">"&lt;/a&gt;"</span>))
+              nil t)
+        (<span class="org-keyword">let</span> ((subtitle (match-string 2)))
+          (replace-match (format <span class="org-string">"\\1\\3&lt;span class=\"sitemap-subtitle\"&gt;%s&lt;/span&gt;"</span> subtitle))))
+      (write-region (point-min) (point-max) output-filename))
+    output-filename))
+</code></pre>
+</div>
+
+<p>
+完整的 org-publish 实现见： <a href="https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-org-publish.el">init-org-publish.el</a>。
+</p>
+</details>
 </div>
 </div>
 <div id="outline-container-A4290C59-745D-4231-B018-55D52A571DDE" class="outline-2">
@@ -555,7 +677,7 @@ KEYWORD is case-insensitive."</span>
 好啦，博客构建就折腾到这，要开始多写内容了！
 </p>
 
-<section role="note" id="orgddb6da1">
+<section role="note" id="org980ec1c">
 <p>
 关于文章内容，你可以 Emacs China 中讨论：<a href="https://emacs-china.org/t/denote-org-publish/30027">结合 denote 和 org-publish 写博客</a>。
 </p>
@@ -597,7 +719,7 @@ KEYWORD is case-insensitive."</span>
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-08-28 Thu 18:40</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-02-12 Thu 15:25</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-22 Sun 21:23</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">

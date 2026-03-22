@@ -363,6 +363,117 @@ Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如
 #+end_src
 #+end_details
 
+[[https://protesilaos.com/emacs/denote-org][Denote Org]] 可以使用 dynamic blocks 插入 denote 链接，我现在的 sitemap（主页）是手工编写的，
+通过 dynamic blocks 插入对应的链接内容（你可以将首页 ~index.html~ 替换为 ~index.org~ 查看 org 文件）。
+
+有的文章我会设置 ~#+subtitle~ ，我需要 ~denote~ 插入链接的时候能够将 subtitle 也显示在链接里。
+这可以通过自定义 ~denote-link-description-format~ 实现。
+
+#+begin_details
+#+html: <summary>相关代码</summary>
+
+#+begin_src emacs-lisp
+  (use-package denote
+    :custom
+    ;; 修改 `denote-link-description-format' 的返回，添加 subtitle
+    (denote-link-description-format #'spike-leung/denote-link-description-with-signature-and-title-and-subtitle)
+    :config
+    (defun spike-leung/denote-link-description-with-signature-and-title-and-subtitle (file &optional file-type)
+      "Return link description for FILE with FILE-TYPE.
+  For backward compatibility, FILE-TYPE is an optional parameter.  If it
+  is nil, then compute FILE-TYPE internally.
+
+  - If the region is active, use it as the description.
+
+  - If FILE has a signature, then format the description as a sequence of
+    the signature text and the title with two spaces between them.
+
+  - If FILE does not have a signature, then use its title as the
+    description.
+
+  - If FILE has subtitle, append subtitle
+
+  - If none of the above works, return an empty string.
+
+  This function is useful as the value of the user option
+  `denote-link-description-format' (which can optionally be bound to a
+  function)."
+      (let* ((type (or file-type (denote-filetype-heuristics file)))
+             (signature (denote-retrieve-filename-signature file))
+             (title (denote-retrieve-title-or-filename file type))
+             (region-text (denote--get-active-region-content))
+             (subtitle (spike-leung/my-denote--get-subtitle file)))
+        (cond
+         (region-text region-text)
+         ((and signature title) (format "%s  %s" signature title))
+         ((and title subtitle) (format "%s - %s" title subtitle))
+         (title (format "%s" title))
+         (signature (format "%s" signature))
+         (t ""))))
+    )
+
+  (defun spike-leung/my-denote--get-subtitle (file)
+    "Find #+subtitle in FILE and return its value.
+  Return nil if not found or FILE does not exist."
+    (when (and file (file-exists-p file))
+      (with-temp-buffer
+        (insert-file-contents file)
+        (goto-char (point-min))
+        (when (re-search-forward "^#\\+subtitle: \\(.*\\)$" nil t)
+        (string-trim (match-string-no-properties 1))))))
+#+end_src
+
+完整的 ~denote~ 设置见 [[https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-denote.el][init-denote.el]]。
+
+将 ~index.org~ 转换成 ~index.html~ 时，我还希望将 subtitle 从链接中移除，放到链接下面呈现。
+我是通过在导出之后，修改 HTML 内容实现的。
+
+我调整了生成 sitemap 的 [[(publishing-function)][:publishing-function]] 实现：
+
+#+begin_src emacs-lisp
+  (defun spike-leung/setup-org-publish-project-alist (&rest _args)
+    "Setup `org-publish-project-alist'."
+    (message "setup org-publish-project-alist")
+    (setq org-html-htmlize-output-type 'css)
+    (setq org-publish-project-alist
+          `(("sitemap"
+             :base-directory "~/git/taxodium/posts"
+             :base-extension "org"
+             :include ("index.org")
+             :exclude ".*"
+             :publishing-directory ,spike-leung/org-publish-default-publishing-directory
+             :time-stamp-file nil
+             :section-numbers nil
+             :html-head ,spike-leung/html-head-sitemap
+             :html-preamble ,spike-leung/html-preamble-content
+             :html-postamble ,spike-leung/html-postamble-sitemap
+             :publishing-function spike-leung/org-html-publish-sitemap (ref:publishing-function)
+             :html-htmlize-output-type css
+             :author "Spike Leung"
+             :email "l-yanlei@hotmail.com"))))
+
+(defun spike-leung/org-html-publish-sitemap (plist filename pub-dir)
+  "`org-publish' `:publishing-function' for sitemap.
+Add subtitle to links which has subtitle.
+See `org-html-publish-to-html' for param PLIST,FILENAME,PUB-DIR."
+  (let ((output-filename (org-html-publish-to-html plist filename pub-dir)))
+    ;; 这里应该用 `with-temp-buffer' 而不要用 `with-current-buffer' 和 '`find-file-noselect'
+    ;; see: https://emacs.stackexchange.com/questions/2868/whats-wrong-with-find-file-noselect
+    (with-temp-buffer
+      (insert-file-contents output-filename)
+      (goto-char (point-min))
+      (while (re-search-forward
+              (rx (group "<a" (*? anychar) ">" (*? anychar)) " - " (group (*? anychar)) (group "</a>"))
+              nil t)
+        (let ((subtitle (match-string 2)))
+          (replace-match (format "\\1\\3<span class=\"sitemap-subtitle\">%s</span>" subtitle))))
+      (write-region (point-min) (point-max) output-filename))
+    output-filename))
+#+end_src
+
+完整的 org-publish 实现见： [[https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-org-publish.el][init-org-publish.el]]。
+#+end_details
+
 * Tips
 :PROPERTIES:
 :CUSTOM_ID: A4290C59-745D-4231-B018-55D52A571DDE
