@@ -21,16 +21,16 @@
 在 Emacs 中可以这样配置：
 
 #+begin_src emacs-lisp -r
-(defconst spike-leung/elfeed-org-files "~/.emacs.d/elfeed.org"
-  "My elfeed org files path.")
+  (defconst spike-leung/elfeed-org-files "~/.emacs.d/elfeed.org"
+    "My elfeed org files path.")
 
-(use-package elfeed
-  :config
-  (setq-default elfeed-search-filter "@3-months-ago +unread +default"))
+  (use-package elfeed
+    :custom
+    (elfeed-search-filter "@3-months-ago +unread +default"))
 
-(use-package elfeed-org
-  :hook ((after-init . elfeed-org)) (ref:after-init-hook)
-  :init (setq rmh-elfeed-org-files (list spike-leung/elfeed-org-files)))
+  (use-package elfeed-org
+    :hook ((after-init . elfeed-org)) (ref:after-init-hook)
+    :init (setq rmh-elfeed-org-files (list spike-leung/elfeed-org-files)))
 #+end_src
 
 如果使用 ~elfeed-org~ ，注意在执行 ~elfeed~ 前先执行 ~elfeed-org~ ，
@@ -165,27 +165,26 @@ tag 会被下一层级的 heading 继承，可以方便地归类订阅流。
   (defun spike-leung/elfeed-preview-state (state candidate)
     "Return consult state function for live `elfeed' preview.
   See `consult--with-preview' about STATE and CANDIDATE."
-    (unless (null candidate)
-      (let* ((cand (car candidate))
-             (metadata (cdr candidate))
-             (feed-url (plist-get metadata :feed-url)))
-        (pcase state
-          ('setup
-           (unless (get-buffer "*elfeed-search*")
-             (elfeed-apply-hooks-now)
-             (elfeed-org)
-             (elfeed)
-             (elfeed-search-clear-filter))
-           (display-buffer "*elfeed-search*" '(display-buffer-reuse-window)))
-          ('preview
-           (elfeed-search-clear-filter)
-           (when (and cand (get-buffer "*elfeed-search*"))
-             (unless (string-empty-p cand)
-               (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter " =" (string-replace " " "." cand))))))
-          ('return
-           (unless (string-empty-p cand)
-             (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter " =" (string-replace " " "." cand)))
-             (elfeed-update-feed feed-url)))))))
+    (let* ((cand (car candidate))
+           (metadata (cdr candidate))
+           (feed-url (plist-get metadata :feed-url)))
+      (pcase state
+        ('setup
+         (unless (get-buffer "*elfeed-search*")
+           (elfeed-apply-hooks-now)
+           (elfeed-org)
+           (elfeed)
+           (elfeed-search-clear-filter))
+         (display-buffer "*elfeed-search*" '(display-buffer-reuse-window)))
+        ('preview
+         (elfeed-search-clear-filter)
+         (when (and cand (get-buffer "*elfeed-search*"))
+           (unless (or (string-empty-p cand) (null cand))
+             (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter " =" (string-replace " " "." cand))))))
+        ('return
+         (unless (or (string-empty-p cand) (null cand))
+           (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter " =" (string-replace " " "." cand)))
+           (elfeed-update-feed feed-url))))))
 
   (defun spike-leung/consult-elfeed ()
     "Select feed from `rmh-elfeed-org-files' with live preview in `elfeed'."
@@ -335,35 +334,32 @@ Emacs 里我安装了 [[https://github.com/minad/consult][minad/consult]]，它�
 #+begin_src emacs-lisp -r
   (defun spike-leung/elfeed-preview-state (state candidate) (ref:elfeed-preview-state)
     "Return consult state function for live `elfeed' preview.
-        See `consult--with-preview' about STATE and CANDIDATE."
-    ;; `candidate' 可能为空 (nil)，此时不需要做处理，提前结束
-    (unless (null candidate)
-      ;; 获取 `candidate' 的信息，candidate 的结构是 '(name prop1 value1 prop2 value2...)
-      (let* ((cand (car candidate))
-             (metadata (cdr candidate))
-             (feed-url (plist-get metadata :feed-url)))
-        ;; switch case
-        (pcase state
-          ;; 初始化的时候调用 `elfeed' 相关的初始方法；重置过滤条件；打开 `elfeed' 的 buffer。
-          ('setup
-           (unless (get-buffer "*elfeed-search*")
-             (elfeed-apply-hooks-now)
-             (elfeed-org)
-             (elfeed)
-             (elfeed-search-clear-filter))
-           (display-buffer "*elfeed-search*" '(display-buffer-reuse-window)))
-          ;; 预览的时候，将订阅流的名字拼接到过滤条件上面，
-          ;; 这样就可以在切换订阅流名字时，应用不同过滤条件，查看对应的结果
-          ('preview
-           (elfeed-search-clear-filter)
-           (when (and cand (get-buffer "*elfeed-search*"))
-             (unless (string-empty-p cand)
-               (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter " =" (string-replace " " "." cand))))))
-          ;; 按下 return 确定选项后，把选择的过滤条件应用上去，同时获取选择的订阅流的 URL，执行一次拉取
-          ('return
-           (unless (string-empty-p cand)
-             (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter " =" (string-replace " " "." cand)))
-             (elfeed-update-feed feed-url)))))))
+  See `consult--with-preview' about STATE and CANDIDATE."
+    (let* ((cand (car candidate))
+           (metadata (cdr candidate))
+           (feed-url (plist-get metadata :feed-url)))
+      ;; switch case
+      (pcase state
+        ;; 初始化的时候调用 `elfeed' 相关的初始方法；重置过滤条件；打开 `elfeed' 的 buffer。
+        ('setup
+         (unless (get-buffer "*elfeed-search*")
+           (elfeed-apply-hooks-now)
+           (elfeed-org)
+           (elfeed)
+           (elfeed-search-clear-filter))
+         (display-buffer "*elfeed-search*" '(display-buffer-reuse-window)))
+        ;; 预览的时候，将订阅流的名字拼接到过滤条件上面，
+        ;; 这样就可以在切换订阅流名字时，应用不同过滤条件，查看对应的结果
+        ('preview
+         (elfeed-search-clear-filter)
+         (when (and cand (get-buffer "*elfeed-search*"))
+           (unless (or (string-empty-p cand) (null cand))
+             (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter " =" (string-replace " " "." cand))))))
+        ;; 按下 return 确定选项后，把选择的过滤条件应用上去，同时获取选择的订阅流的 URL，执行一次拉取
+        ('return
+         (unless (or (string-empty-p cand) (null cand))
+           (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter " =" (string-replace " " "." cand)))
+           (elfeed-update-feed feed-url))))))
 #+end_src
 
 -----
