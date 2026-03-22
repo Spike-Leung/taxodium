@@ -60,7 +60,7 @@
 Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/modus-themes">modus-themes</a> 和 <a href="https://github.com/protesilaos/ef-themes">ef-themes</a>，它们都是出自 <a href="https://github.com/protesilaos">protesilaos</a>。
 </p>
 
-<section role="note" id="orge73a88f">
+<section role="note" id="org887002e">
 <p>
 后续可能还会加入 <a href="https://github.com/protesilaos/doric-themes">doric-themes</a>，也是 Prot 的写的主题，这个主题的颜色比较单一，写作的时候用感觉不错。
 </p>
@@ -177,7 +177,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 へ(゜∇、°)へ へ(゜∇、°)へ
 </p>
 
-<section role="note" id="org68471b6">
+<section role="note" id="orge99a5d9">
 <p>
 说起来奇怪，如果是我自己主动切换的主题，可能切换后我马上就想换了。
 </p>
@@ -310,12 +310,22 @@ set of themes to either dark or light variants."</span>
 (<span class="org-keyword">defun</span> <span class="org-function-name">light</span>()
   <span class="org-doc">"Load random light themes."</span>
   (<span class="org-keyword">interactive</span>)
-  (spike-leung/themes-load-random 'light))
+  (<span class="org-keyword">setq</span> spike-leung/current-theme-background-mode 'light)
+  (spike-leung/themes-load-random 'light)
+  (modify-frame-parameters nil `((alpha . 100))))
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">dark</span>()
   <span class="org-doc">"Load random dark themes."</span>
   (<span class="org-keyword">interactive</span>)
-  (spike-leung/themes-load-random 'dark))
+  (<span class="org-keyword">setq</span> spike-leung/current-theme-background-mode 'dark)
+  (spike-leung/themes-load-random 'dark)
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#26263;&#33394;&#20027;&#39064;&#36866;&#24403;&#38477;&#20302;&#36879;&#26126;&#24230;&#65292;&#30475;&#36215;&#26469;&#26356;&#22909;&#30475;&#12290;&#19981;&#21516;&#30340;&#20027;&#39064;&#36866;&#21512;&#19981;&#21516;&#30340;&#36879;&#26126;&#24230;&#12290;
+</span>  (<span class="org-keyword">let</span> ((theme (format <span class="org-string">"%s"</span> custom-enabled-themes)))
+    (<span class="org-keyword">cond</span>
+     ((string-match-p (<span class="org-keyword">rx</span> (<span class="org-keyword">or</span> <span class="org-string">"modus-"</span> <span class="org-string">"ef-"</span>)) theme)
+      (modify-frame-parameters nil `((alpha . 80))))
+     ((string-match-p <span class="org-string">"doric-"</span> theme)
+      (modify-frame-parameters nil `((alpha . 95)))))))
 
 <span class="org-comment-delimiter">;; </span><span class="org-comment">&#35201;&#22312; desktop &#21152;&#36733;&#21518;&#20877;&#25191;&#34892;&#65292;&#36991;&#20813;&#34987; desktop &#35760;&#24405;&#30340;&#20027;&#39064;&#35206;&#30422;&#65292;&#23548;&#33268;&#28151;&#20081;
 </span>(add-hook 'desktop-after-read-hook #'spike-leung/themes-load-random)
@@ -391,7 +401,7 @@ set of themes to either dark or light variants."</span>
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2025-05-21 Wed 21:40</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-03-21 Sat 00:33</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-22 Sun 21:02</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
