@@ -28,6 +28,14 @@ const CONFIG = {
   orgPostsDir: path.join(__dirname, "..", "posts"),
   postsDir: path.join(__dirname, "..", "publish"),
   outputFile: path.join(__dirname, "..", "publish/rss.xml"),
+  postamble: `
+<hr>
+<p>
+感谢你的阅读！
+如果有什么想法，也欢迎<a href="mailto:l-yanlei@hotmail.com">邮件跟我交流</a>。
+下篇文章再见啦 :)
+</p>
+`
 };
 
 function parseDateString(dateStr) {
@@ -105,10 +113,6 @@ async function processPost(entry) {
     }
 
     const contentHtml = contentDiv.toString();
-    const plainText = contentDiv.textContent
-          .trim()
-          .replace(/\s+/g, " ")
-          .slice(0, 2000); // limit prompt size
 
     return {
       ...entry,
@@ -168,7 +172,7 @@ ${ALL_CATEGORIES.map((cat) => `  <category term="${cat.term}" label="${cat.label
     <updated>${entry.updated}</updated>
     <published>${entry.date}</published>
     ${entry.summary ? `<summary><![CDATA[${entry.summary}]]></summary>` : ""}
-    <content type="html" xml:lang="zh-CN" xml:base="${entryUrl}"><![CDATA[${entry.content}]]></content>
+    <content type="html" xml:lang="zh-CN" xml:base="${entryUrl}"><![CDATA[${entry.content}${CONFIG.postamble}]]></content>
   </entry>\n`;
   }
 
