@@ -398,7 +398,45 @@ Emacs 里我安装了 [[https://github.com/minad/consult][minad/consult]]，它�
 
 -----
 
-上面的方法是我和 LLM (Large Language Model，大语言模型) 对话后写出来的，
+利用 [[https://help.kagi.com/kagi/translate/#website-translation][Kagi Website Translate]]，可以在打开链接的时候，添加 ~translate.kagi.com/~ 作为前缀，
+这样就可以获得一个翻译后的页面了，对于阅读外文应该会有所帮助。
+
+#+begin_src emacs-lisp
+  (defun spike-leung/elfeed-search-browse-url-with-kagi-translate ()
+    "Visit the current entry in your browser using `browse-url'.
+  Prefix with 'translate.kagi.com' to browse with translated version. "
+    (interactive)
+    (let ((buffer (current-buffer))
+          (entries (elfeed-search-selected)))
+      (cl-loop for entry in entries
+               do (elfeed-untag entry 'unread)
+               when (elfeed-entry-link entry)
+               do (browse-url (format "https://translate.kagi.com/%s" it)))
+      ;; `browse-url' could have switched to another buffer if eww or another
+      ;; internal browser is used, but the remainder of the functions needs to
+      ;; run in the elfeed buffer.
+      (with-current-buffer buffer
+        (mapc #'elfeed-search-update-entry entries)
+        (unless (or elfeed-search-remain-on-entry (use-region-p))
+          (forward-line)))))
+#+end_src
+
+~elfeed~ 中绑定了 ~b~ (~elfeed-search-browse-url~) 在浏览器中打开文章链接，
+可以添加一个 ~B~ 快捷键用于打开翻译后的版本，这样想看原文就用 ~b~ 打开，想看翻译后的就用 ~B~ 打开。
+
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :custom
+    (elfeed-search-filter "@3-months-ago +unread +default")
+    :bind ((:map elfeed-search-mode-map
+                 ("t" . spike-leung/elfeed-toggle-unread)
+                 ("f" . spike-leung/consult-elfeed)
+                 ("B" . spike-leung/elfeed-search-browse-url-with-kagi-translate))))
+#+end_src
+
+-----
+
+上面部分方法是我和 LLM (Large Language Model，大语言模型) 对话后写出来的，
 阅读和调整代码以及调试，折腾了几个小时（所以代码注释写得比较详细）。
 对于现在的 LLM 而言，我这是龟速了，
 不过我还是有所收获的，我知道了很多 Elisp 的 API，更熟悉 Elisp 的语法。

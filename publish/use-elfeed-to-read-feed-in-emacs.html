@@ -494,7 +494,49 @@ See `</span><span class="org-doc"><span class="org-constant">consult--with-previ
 <hr>
 
 <p>
-上面的方法是我和 LLM (Large Language Model，大语言模型) 对话后写出来的，阅读和调整代码以及调试，折腾了几个小时（所以代码注释写得比较详细）。对于现在的 LLM 而言，我这是龟速了，不过我还是有所收获的，我知道了很多 Elisp 的 API，更熟悉 Elisp 的语法。
+利用 <a href="https://help.kagi.com/kagi/translate/#website-translation">Kagi Website Translate</a>，可以在打开链接的时候，添加 <code>translate.kagi.com/</code> 作为前缀，这样就可以获得一个翻译后的页面了，对于阅读外文应该会有所帮助。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/elfeed-search-browse-url-with-kagi-translate</span> ()
+  <span class="org-doc">"Visit the current entry in your browser using `</span><span class="org-doc"><span class="org-constant">browse-url</span></span><span class="org-doc">'.
+Prefix with '</span><span class="org-doc"><span class="org-constant">translate.kagi.com</span></span><span class="org-doc">' to browse with translated version. "</span>
+  (<span class="org-keyword">interactive</span>)
+  (<span class="org-keyword">let</span> ((buffer (current-buffer))
+        (entries (elfeed-search-selected)))
+    (<span class="org-keyword">cl-loop</span> for entry in entries
+             do (elfeed-untag entry 'unread)
+             when (elfeed-entry-link entry)
+             do (browse-url (format <span class="org-string">"https://translate.kagi.com/%s"</span> it)))
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">browse-url</span></span><span class="org-comment">' could have switched to another buffer if eww or another
+</span>    <span class="org-comment-delimiter">;; </span><span class="org-comment">internal browser is used, but the remainder of the functions needs to
+</span>    <span class="org-comment-delimiter">;; </span><span class="org-comment">run in the elfeed buffer.
+</span>    (<span class="org-keyword">with-current-buffer</span> buffer
+      (mapc #'elfeed-search-update-entry entries)
+      (<span class="org-keyword">unless</span> (<span class="org-keyword">or</span> elfeed-search-remain-on-entry (use-region-p))
+        (forward-line)))))
+</code></pre>
+</div>
+
+<p>
+<code>elfeed</code> 中绑定了 <code>b</code> (<code>elfeed-search-browse-url</code>) 在浏览器中打开文章链接，可以添加一个 <code>B</code> 快捷键用于打开翻译后的版本，这样想看原文就用 <code>b</code> 打开，想看翻译后的就用 <code>B</code> 打开。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">use-package</span> elfeed
+  <span class="org-builtin">:custom</span>
+  (elfeed-search-filter <span class="org-string">"@3-months-ago +unread +default"</span>)
+  <span class="org-builtin">:bind</span> ((<span class="org-builtin">:map</span> elfeed-search-mode-map
+               (<span class="org-string">"t"</span> . spike-leung/elfeed-toggle-unread)
+               (<span class="org-string">"f"</span> . spike-leung/consult-elfeed)
+               (<span class="org-string">"B"</span> . spike-leung/elfeed-search-browse-url-with-kagi-translate))))
+</code></pre>
+</div>
+
+<hr>
+
+<p>
+上面部分方法是我和 LLM (Large Language Model，大语言模型) 对话后写出来的，阅读和调整代码以及调试，折腾了几个小时（所以代码注释写得比较详细）。对于现在的 LLM 而言，我这是龟速了，不过我还是有所收获的，我知道了很多 Elisp 的 API，更熟悉 Elisp 的语法。
 </p>
 
 <p>
@@ -514,7 +556,7 @@ See `</span><span class="org-doc"><span class="org-constant">consult--with-previ
 </ul>
 </details>
 
-<section role="note" id="org84a74d8">
+<section role="note" id="org18cc0f8">
 <p>
 如果你打算入门 Emacs，可以看看： <a href="how-to-get-started-with-emacs.html">如何上手 Emacs</a>
 </p>
@@ -553,7 +595,7 @@ See `</span><span class="org-doc"><span class="org-constant">consult--with-previ
 </details>
 <p class="author">作 者： <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a></p>
 <p class="date">创建于： <span class="dt-published">2026-03-21 Sat 15:00</span></p>
-<p class="date">修改于： <span class="dt-updated">2026-03-22 Sun 15:26</span></p>
+<p class="date">修改于： <span class="dt-updated">2026-03-24 Tue 15:54</span></p>
 <p class="license">许可证： <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名—非商业性使用—相同方式共享 4.0</a></p>
 <p class="support-me">支持我： <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a></p>
 <div class="h-card p-author" aria-hidden="true">
