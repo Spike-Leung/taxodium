@@ -68,10 +68,32 @@ function renderWebmentions(feedList = [], container) {
     aAuthor.className = "webmention-author"
     aAuthor.textContent = name || wmSourceUrl.host || "Unknown"
 
+    let textFragments
+    let quotes
+    if (entry.content && entry.content.html) {
+      const match = entry.content.html.match(/<a.*href=.*taxodium.ink[^>]*>([^<]*)<\/a>/)
+      if (match && match[1]) {
+        const matchText = match[1].trim()
+        const originalText = entry.content.text
+        const index = originalText.indexOf(matchText)
+
+        if (index !== -1) {
+          const offset = 100
+          const contextBefore = originalText.slice(Math.max(0, index - offset), index)
+          const contextAfter = originalText.slice(index + matchText.length, Math.min(index + matchText.length + offset, originalText.length))
+          quotes = `[...]${contextBefore}<mark>${matchText}</mark>${contextAfter}[...]`
+          const encodedMatch = encodeURIComponent(matchText)
+
+          textFragments = `#:~:text=${encodedMatch}`
+        }
+      }
+    }
+
     const aSource = document.createElement("a");
-    aSource.href = wmSourceUrl.href
+    aSource.href = wmSourceUrl.href + textFragments
     aSource.className = "webmention-source-url"
     aSource.textContent = entry.name || wmSourceUrl.href
+    aSource.rel = "noopener"
 
     const pSourceContainer = document.createElement("p")
     pSourceContainer.className ="webmention-source"
@@ -83,9 +105,9 @@ function renderWebmentions(feedList = [], container) {
     Array.from([imgAvatar, divSourceInfo]).forEach((child) => divAuthorContainer.appendChild(child))
 
     // content
-    const divContent = document.createElement("div");
+    const divContent = document.createElement("blockquote");
     divContent.className = "webmention-content"
-    divContent.innerHTML = DOMPurify.sanitize(entry.content?.html) || ""
+    divContent.innerHTML = DOMPurify.sanitize(quotes) || ""
 
     // meta info
     const divMeta = document.createElement("div");
