@@ -1,0 +1,181 @@
+#+title:      Kagi Translate 使用分享
+#+export_file_name: my-experience-with-kagi-translate
+#+date:       [2026-03-24 Tue 16:40]
+#+filetags:   :english:kagi:published:translate:
+#+identifier: 20260323T141944
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: Kagi Translate 使用分享，包括翻译、页面翻译、字典、插件、iOS App 的使用
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content
+#+html_head_extra: <link rel="stylesheet" href="/styles/image-enhance.css" />
+
+最近用 [[https://help.kagi.com/kagi/translate/][Kagi Translate]] 蛮多的，我觉得使用体验还不错，在这里分享一下。
+
+#+attr_html: :role note
+#+begin_section
+虽然 Kagi Translate 可以免费使用，但部分功能受限，
+畅快使用需要订阅 [[https://help.kagi.com/kagi/plans/plan-types.html#:~:text=unlimited%20access%20to%20Universal%20Summarizer%20and%20Kagi%20Translate%2C][Kagi Professional Plan]] ($10/month)。
+
+关于 Kagi，你可以看看我之前的文章： [[denote:20260201T142809][也许你想试试 Kagi？]]
+#+end_section
+
+[[https://translate.kagi.com][Kagi Translate]] 是一个集成了 LLM 的翻译服务，它提供了几个功能：
+
+- Text，输入文字翻译
+- Proofread，校对文本
+- Dictionary，词典
+- Document，翻译文档（TXT、PDF、JSON 等多个格式）
+- Website，翻译网站
+
+在 Text 页面你可以直接打开输入内容翻译：
+
+#+CAPTION: Kagi Translate Text 页面，将一段英文内容翻译成了中文
+[[file:images/my-experience-with-kagi-translate/text.webp]]
+
+页面上提供了几种替代的翻译作为参考；
+可以切换 Standard / Best 模式，Best 理论上翻译质量会更好，但耗时会更久；
+还给出了一些风格和语气上的建议。
+
+如果对翻译结果不满意，还可以跳转到 [[https://help.kagi.com/kagi/ai/assistant.html][Kagi Assistant]] 进一步对话。
+（不过翻译语言是中文的时候，这个快捷入口没有展示出来）
+
+只输入一个单词的时候，页面上会有详细的单词解释。
+
+#+CAPTION: Kagi Translate Text 页面，仅输入一个单词，在单词下列出了详细的解释
+[[file:images/my-experience-with-kagi-translate/text-word.webp]]
+
+Text 模式下还提供了一些选项，可以调整翻译风格，例如用文言风格、用更口语化的词语、
+针对读者的性别优化语言、提供进一步的背景信息优化翻译。
+
+#+CAPTION: Kagi Translate Text 页面的选项
+[[file:images/my-experience-with-kagi-translate/text-option.webp]]
+
+除了常见的语言，它甚至还可以翻译成克林贡语、精灵语，
+或者用 Z 世代、Linkin、Reddit 的语言习惯翻译（Just for fun）。
+
+#+CAPTION: Kagi Translate Text 页面，翻译语言设置成了克林贡语
+[[file:images/my-experience-with-kagi-translate/text-klingon.webp]]
+
+在 Proofread 页面可以输入文字，它会帮你检查语法错误，以及给出一些书写上的建议。
+
+#+CAPTION: Kagi Translate Proofread 页面
+[[file:images/my-experience-with-kagi-translate/proofread.webp]]
+
+在 Dictionary 页面可以翻译单词，会给出详细的信息，包括了解释、同义词、例句、词源。
+
+#+CAPTION: Kagi Translate Dictionary 页面
+[[file:images/my-experience-with-kagi-translate/dictionary.webp]]
+
+我比较喜欢的一个功能是它可以将信息导出到 [[https://apps.ankiweb.net/][Anki]]，这样就可以累积不认识的单词，有空的时候在 Anki 上复习。
+阅读英文文章的时候，我会利用 [[https://github.com/zen-browser/desktop][Zen 浏览器]] 的分屏功能，一边打开 Kagi Translate 页面，一边打开文章阅读，
+碰到不熟悉的单词就查一下，然后导出到 Anki 里，久而久之就可以形成自己的生词本
+（不过要经常去复习才真的有用）。
+略有不足的是，导出到 Anki 的内容不包含发音，有发音会更容易记忆单词。
+
+#+CAPTION: 左侧是Kagi Translate Dictionary 页面，打开了 Export to Anki 的弹窗；右侧是 Anki 的页面
+[[file:images/my-experience-with-kagi-translate/send-to-anki.webp]]
+
+#+attr_html: :style max-height: 50vh;
+#+CAPTION: Anki 的单词复习页面
+[[file:images/my-experience-with-kagi-translate/anki.webp]]
+
+Document 页面可以翻译文档，也可以上传文档进行 Proofread，解析完成后，还支持转换成其他格式。
+排版还可以，但速度一般。
+
+#+CAPTION: Kagi Translate Document 页面
+[[file:images/my-experience-with-kagi-translate/document.webp]]
+
+#+CAPTION: Kagi Translate Document 转换的 PDF 对比，
+#+CAPTION: 左边是原始英文 PDF 文件，右边是翻译后的中文 PDF 文件
+[[file:images/my-experience-with-kagi-translate/document-compare.webp]]
+
+Website 页面可以输入一个网址，翻译成对应的语言阅读。
+除了在页面上调用，还可以通过 URL、[[https://help.kagi.com/kagi/translate/#browser-bookmarklet][书签]] 调用。
+
+#+attr_html: :role note
+#+begin_section
+在需要翻译的 URL 前面，添加 ~translate.kagi.com/~ 就可以翻译这个页面了，
+例如 ~translate.kagi.com/example.com~ 。
+
+这个设计不错，域名也容易记忆。
+
+如果你在 Emacs 中用 Elfeed 阅读订阅流，还可以添加一个方法，
+在打开链接的时候添加 ~translate.kagi.com/~ 前缀，这样就能获得一个翻译后的页面了，
+具体方法见： [[denote:20260320T113000][在 Emacs 中用 Elfeed 阅读订阅流]]。
+#+end_section
+
+#+CAPTION: Kagi Translate Website 页面
+[[file:images/my-experience-with-kagi-translate/website.webp]]
+
+#+CAPTION: Kagi Translate Website 翻译结果
+[[file:images/my-experience-with-kagi-translate/website-demo.webp]]
+
+为了方便使用，可以安装 [[https://translate.kagi.com/extension][Kagi Translate 的浏览器插件]]，插件提供了 Text、Dictionary 和 Website 的功能，
+可以通过快捷键快速调用。
+
+#+CAPTION: Kagi Translate 插件翻译示例
+[[file:images/my-experience-with-kagi-translate/extension.webp]]
+
+如果你的系统是 iOS，还可以下载 Kagi Translate 的应用，[[https://help.kagi.com/kagi/translate/#ios-translate-default-app][将 iOS 默认的翻译替换成 Kagi Translate]]，
+比系统的翻译功能好用。
+
+#+attr_html: :role note
+#+begin_section
+也可以将默认翻译功能设置成其他翻译应用，都要比 iOS 自带的翻译功能好用。
+#+end_section
+
+#+attr_html: :style max-height: 50vh;
+#+CAPTION: Kagi Translate 替换了 iOS 默认的翻译功能，这是它的翻译结果
+[[file:images/my-experience-with-kagi-translate/translate-in-ios.webp]]
+
+应用上多了一个对话功能 (Conversation)，用于翻译人与人之间的对话，和其他语言的人沟通应该挺好用。
+我发现另一个使用场景是识别视频的文字内容，
+有时看动画，有的台词我很喜欢，但没有对应的日文，就可以用这个对话功能来识别。
+
+#+attr_html: :style max-height: 50vh;
+#+CAPTION: Kagi Translate 应用的 Conversation 页面
+[[file:images/my-experience-with-kagi-translate/conversation.webp]]
+
+可惜应用上无法将单词存入到 Anki 里。
+
+-----
+
+#+attr_html: :role note
+#+begin_section
+Kagi Translate 还在不断地迭代中，一些功能还处于 Alpha 或者 Beta 测试阶段，
+使用时可能会不稳定，但大体上不影响使用。
+#+end_section
+
+在使用 Kagi Translate 之前，我一直在用 [[https://immersivetranslate.com/en/][Immersive Translate]] 阅读英文网页，
+Immersive Translate 对我帮助很大，让我可以很快速地浏览英文网页，
+得益于 LLM 有大量的数据训练，翻译的质量也不错。
+（LLM 更多是直译，如果说人类翻译存在优势的话，那就是恰到好处的意译吧）。
+
+我大多数的使用场景下，Kagi Translate 是可以替代 Immersive Translate 的，翻译句子、单词上做得还更好。
+
+Immersive Translate Pro 版本按月订阅的话要 69 元一个月，
+而 Kagi Translate 是捆绑在 Kagi 的订阅里的，
+我目前一个月的订阅费用是 10 美元一个月，折合人民币也差不多是 70 元，
+但除了 Kagi Translate 之外，我还获得了优质的搜索功能、Kagi Assistant，
+相比之下 Kagi 划算多了，所以等 Immersive Translate 订阅到期我就不会再续费了。
+
+#+attr_html: :role note
+#+begin_section
+除了 Kagi Translate、Immersive Translate 之外，
+还有 [[https://github.com/mengxi-ream/read-frog][Read Frog]]，它是开源版本的沉浸式翻译，需要配置自己的 API key。
+#+end_section
+
+过分依赖翻译工具的问题是，打开英文网站总是习惯翻译后再看，很少再阅读英文，
+久而久之，本就一般的英文阅读能力就越来越差了，所以我决定开始多阅读原文，减少全文翻译的使用。
+
+全文翻译也存在缺点，有的网页精心布局过，尤其是一些交互式的网页，
+翻译之后往往会影响布局，不如原文的阅读体验好。
+
+小时候其实很多汉字都不认识，也是通过阅读、查字典慢慢扩大了词汇量，然后可以流畅阅读中文。
+我想英文阅读也是如此，尽可能多阅读英文原文，碰到不懂的单词用 Kagi Translate 查询，
+然后积累到 Anki 中定期复习，或许能逐渐提高英文阅读能力，有朝一日也可以非常流畅地阅读英文。
+
++提高英语阅读能力，就不需要付费订阅翻译插件，一个月能省掉几十块钱呢。+
