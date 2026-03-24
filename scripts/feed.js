@@ -32,8 +32,7 @@ const CONFIG = {
 <hr>
 <p>
 感谢你的阅读！
-如果有什么想法，也欢迎<a href="mailto:l-yanlei@hotmail.com">邮件跟我交流</a>。
-下篇文章再见啦 :)
+如果有什么想法，也欢迎 <a href="mailto:l-yanlei@hotmail.com">邮件跟我交流</a>。下篇文章再见啦 :)
 </p>
 `
 };
