@@ -83,7 +83,7 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 如果自己搭建的话，可以参照 [[https://www.w3.org/TR/webmention][Webmention 规范]] 实现；
 或者找现成的工具，你可以在 [[https://indieweb.org/Webmention][Webmention | IndieWeb]] 找到很多工具和服务。
 
-我目前实现很简单，接收依赖 webmention.io 提供的服务，需要自己编写一点 [[file:js/webmention.js][脚本]] 调用 API；
+我目前实现很简单，接收依赖 webmention.io 提供的服务，需要编写一点 [[file:js/webmention.js][脚本]] 调用 API；
 发送通过手动触发；麻烦一些的地方是给博客添加 [[https://microformats.org/wiki/Main_Page][microformats]] 。
 
 ** 作为接收方
@@ -125,7 +125,7 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 - 净化 (sanitize) 用户输入的内容。可以使用 [[https://github.com/cure53/DOMPurify][DOMPurify]] 处理。
 - 使用 [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP][Content Security Policy (CSP)]] 限制执行。[[https://www.netlify.com/blog/general-availability-content-security-policy-csp-nonce-integration/][Netlify 有插件支持]]，倒是方便了许多。
   要注意的是，当开启了 CSP，一些行内的脚本，
-  如写在元素上的 onclick、 onchange 等会被阻止执行，需要将他们挪动到 JS 文件里。
+  如写在元素上的 ~onclick~ 、 ~onchange~ 等会被阻止执行，需要将他们挪动到 JS 文件里。
 
 也可以期待一下 [[https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML][Element: setHTML() method]] 被广泛支持，
 它提供了一种 XSS 安全的方法用于插入 HTML 内容到页面中。
@@ -160,10 +160,10 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 可能是因为我使用 microformats 标记了内容，此时需要确保 microformats 解析后的内容中，包含对方的 URL。
 #+end_section
 
-最主要的标记是 [[https://microformats.org/wiki/h-card][h-card]] 和 [[https://microformats.org/wiki/h-entry][h-entry]]，h-card 标记@@html:<em>用户</em>@@信息；
-h-entry 标记@@html:<em>内容</em>@@信息，标记的部分会作为 Webmention 的内容呈现。
+最主要的标记是 [[https://microformats.org/wiki/h-card][h-card]] 和 [[https://microformats.org/wiki/h-entry][h-entry]]， ~h-card~ 标记@@html:<em>用户</em>@@信息；
+~h-entry~ 标记@@html:<em>内容</em>@@信息，标记的部分会作为 Webmention 的内容呈现。
 
-关于 h-card 和 h-entry 的作用，推荐看 [[https://aaronparecki.com/2018/06/30/11/your-first-webmention][Sending your First Webmention from Scratch]]，
+关于 ~h-card~ 和 ~h-entry~ 的作用，推荐看 [[https://aaronparecki.com/2018/06/30/11/your-first-webmention][Sending your First Webmention from Scratch]]，
 文章循序渐进地引导你添加相应的标记，并且有对应的示例，同时文章本身也可以用来测试 Webmention 的发送。
 
 microformats 这些标记，可以和 HTML 做类比，它也是有层级关系的，最终会解析成一个 JSON 的树形结构。
@@ -172,7 +172,7 @@ microformats 这些标记，可以和 HTML 做类比，它也是有层级关系�
 *关于 h-entry*
 
 [[https://microformats.org/wiki/h-entry#:~:text=the%20%22datetime%22%20property.-,what%20is%20the%20bare%20minimum%20list%20of%20required%20properties%20on%20an,a%20nested%20h%2Dcard%20with%20author%20details%20like%20name%2C%20photo%2C%20url.,-Examples%20in%20the][what is the bare minimum list of required properties on an h-entry]] 中回答道，
-没有任何 h-entry 的属性是强制要求的。
+没有任何 ~h-entry~ 的属性是强制要求的。
 
 但推荐至少包含：
 - [[https://microformats.org/wiki/h-entry#:~:text=e%2Dcontent%20%2D%20full%20content%20of%20the%20entry][e-content]] 标记文章内容，被标记的内容会作为 Webmention 的内容被发送
@@ -189,15 +189,15 @@ microformats 这些标记，可以和 HTML 做类比，它也是有层级关系�
 h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 - [[https://microformats.org/wiki/h-card#:~:text=p%2Dname%20%2D%20The%20full/formatted%20name%20of%20the%20person%20or%20organization][p-name]] 标记个人或组织的全称
 - [[https://microformats.org/wiki/h-card#:~:text=u%2Demail%20%2D%20email%20address][u-email]] 标记邮箱，一般标记在 mailto 链接上
-- [[https://microformats.org/wiki/h-card#:~:text=u%2Dlogo%20%2D%20a%20logo%20representing%20the%20person%20or%20organization%20(e.g.%20a%20face%20icon)][u-logo]] 标记你的 logo，一般标记在 =<img>= 标签上
-- [[https://microformats.org/wiki/h-card#:~:text=u%2Dphoto%20%2D%20a%20photo%20of%20the%20person%20or%20organization][u-photo]] 标记你的头像，一般标记在 =<img>= 标签上
+- [[https://microformats.org/wiki/h-card#:~:text=u%2Dlogo%20%2D%20a%20logo%20representing%20the%20person%20or%20organization%20(e.g.%20a%20face%20icon)][u-logo]] 标记你的 logo，一般标记在 ~<img>~ 标签上
+- [[https://microformats.org/wiki/h-card#:~:text=u%2Dphoto%20%2D%20a%20photo%20of%20the%20person%20or%20organization][u-photo]] 标记你的头像，一般标记在 ~<img>~ 标签上
 - [[https://microformats.org/wiki/h-card#:~:text=u%2Durl%20%2D%20home%20page%20or%20other%20URL%20representing%20the%20person%20or%20organization][u-url]] 标记你的主页，一般标记在一个链接上
 - [[https://microformats.org/wiki/h-card#:~:text=p%2Dnote%20%2D%20additional%20notes][p-note]] 标记额外信息，有人会用来写自我介绍
 
 除了这些，还有标记地址、性别、国籍、出生日期、工作等，感兴趣可以自行探索。
 
-h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
-*在这种场景下，h-entry 需要是 h-card 的父元素。*
+~h-card~ 可以结合 ~h-entry~ 的 ~p-author~ 用于标记文章的作者信息，
+*在这种场景下， ~h-entry~ 需要是 ~h-card~ 的父元素。*
 
 综上，一个相对完整的 microformats 标记是这样的：
 
@@ -206,7 +206,7 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
   <meta charset="utf-8">
   <title>Hello World</title>
   <body>
-    <div class="h-entry"> <!-- 注意 h-entry 是其他属性的父元素，包含了 h-card -->
+    <div class="~h-entry~"> <!-- 注意 ~h-entry~ 是其他属性的父元素，包含了 h-card -->
       <div class="p-author h-card"> <!-- 使用 h-card 结合 p-author 标记作者信息 -->
         <img src="https://aaronpk.com/images/aaronpk.jpg" class="u-photo" width="40">
         <a href="https://aaronpk.com/" class="u-url p-name">Aaron Parecki</a>
@@ -259,29 +259,42 @@ h-card 可以结合 h-entry 的 p-author 用于标记文章的作者信息，
 :CUSTOM_ID: 1A041E70-EA18-4ED8-9055-099F9CC42152
 :END:
 
-=u-in-reply-to= 用于标记 h-entry 中要回复的链接，应该结合 =e-content= 标记回应的内容。
+~u-in-reply-to~ 用于标记 ~h-entry~ 中要回复的链接，应该结合 ~e-content~ 标记回应的内容。
 
 如果只是引用了一些链接，并没有对于这些链接的回应，
-不需要用 =u-in-reply-to= 标记，直接发送 Webmention 就好了。
+不需要用 ~u-in-reply-to~ 标记，直接发送 Webmention 就好了。
 
 ** 关于 [[https://microformats.org/wiki/h-entry][h-entry]] 的使用
 :PROPERTIES:
 :CUSTOM_ID: 0EA3F8F1-CA64-48D1-BBF2-99216CC827A6
 :END:
 
-尽管可以设置多个 h-entry，但我觉得一篇文章一个 h-entry 就够了。
+尽管可以设置多个 ~h-entry~ ，但我觉得一篇文章一个 ~h-entry~ 就够了。
 
-原因是 h-entry 往往需要指定文章标题、作者、发布和更新时间、内容等，这和一篇文章的内容是刚好对应上的。
+原因是 ~h-entry~ 往往需要指定文章标题、作者、发布和更新时间、内容等，这和一篇文章的内容是刚好对应上的。
 
-如果标记多个 h-entry，比较难保证每个 h-entry 都有这些信息，尽管 [[https://microformats.org/wiki/h-entry#:~:text=the%20%22datetime%22%20property.-,what%20is%20the%20bare%20minimum%20list%20of%20required%20properties%20on%20an,a%20nested%20h%2Dcard%20with%20author%20details%20like%20name%2C%20photo%2C%20url.,-Examples%20in%20the][h-entry 不要求包含任一属性]]。
+如果标记多个 ~h-entry~ ，比较难保证每个 ~h-entry~ 都有这些信息，尽管 [[https://microformats.org/wiki/h-entry#:~:text=the%20%22datetime%22%20property.-,what%20is%20the%20bare%20minimum%20list%20of%20required%20properties%20on%20an,a%20nested%20h%2Dcard%20with%20author%20details%20like%20name%2C%20photo%2C%20url.,-Examples%20in%20the][h-entry 不要求包含任一属性]]。
 
 我的建议是：
 
-- h-entry 设置在包含文章内容、作者信息、发布日期等的父元素上
-- e-content 设置在包含整篇文章内容的元素上
+- ~h-entry~ 设置在包含文章内容、作者信息、发布日期等的父元素上
+- ~e-content~ 设置在包含整篇文章内容的元素上
 
   好处是，只要在文章中的链接都能被发现，不需要额外再标记什么。
-  缺点是，e-content 标记的内容可能太多，导致实际回复的部分被淹没其中。
+  缺点是， ~e-content~ 标记的内容可能太多，导致实际回复的部分被淹没其中。
+
+  #+attr_html: :role note
+  #+begin_section
+  因为文章中既包括自己的文章部分，也包括提及对方网站的部分，所以会导致提及内容被淹没。
+
+  一种做法是，单独为回复的内容写一篇文章，文章里都是回复的内容。
+  这些内容你可能不想放在主页，你可以放到某个路径下，例如 ~/webmentions~ ，或者 ~/reply~ ；
+  也可以放到一个子域名下。
+  参考：
+
+  - [[https://ink.v1sta.xyz/archives/227][回复：Ready, Steady, Go…?]]
+  - [[https://jar.geedea.pro/reply/][来往信件]]
+  #+end_section
 
 ** webmention.io 的 target 需要完全匹配
 :PROPERTIES:
