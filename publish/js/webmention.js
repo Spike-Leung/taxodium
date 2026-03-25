@@ -68,7 +68,7 @@ function renderWebmentions(feedList = [], container) {
     aAuthor.className = "webmention-author"
     aAuthor.textContent = name || wmSourceUrl.host || "Unknown"
 
-    let textFragments
+    let textFragments = ''
     let quotes
     if (entry.content && entry.content.html) {
       const match = entry.content.html.match(/<a.*href=.*taxodium.ink[^>]*>([^<]*)<\/a>/)
@@ -87,6 +87,11 @@ function renderWebmentions(feedList = [], container) {
           textFragments = `#:~:text=${encodedMatch}`
         }
       }
+    }
+
+    // fallback to full content
+    if (!quotes) {
+      quotes = entry?.content?.html || entry?.content?.text
     }
 
     const aSource = document.createElement("a");
