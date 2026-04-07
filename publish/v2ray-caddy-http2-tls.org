@@ -11,6 +11,22 @@
 #+options: ^:{}
 #+startup: content
 
+#+attr_html: :role note
+#+begin_section
+这篇教程我已经没有在用了，有的内容或许已经过时，
+但大体的搭建思路是类似的，教程里的很多链接也可以作为参考。
+
+另外你可以参考：
+
+- [[https://manateelazycat.github.io/2024/11/23/best-proxy/][最佳代理实践之 Nexitally (2024-11-23)]] by Andy Stewart
+
+  直接用机场，最方便，如果你不想折腾，只是想使用代理，可以考虑这个方案。
+
+- [[https://manateelazycat.github.io/2026/04/06/best-proxy/][最佳代理实践 (2026-4-6)]] by Andy Stewart
+
+  使用 [[https://github.com/chen08209/FlClash][chen08209/FlClash]] 自建的方案。
+#+end_section
+
 由于经常需要访问 GitHub 等外网，就需要有一个快速响应的代理。
 
 之前尝试过 v2ray 直连 、[[https://toutyrater.github.io/advanced/wss_and_web.html][WebSocket + TLS + Web]] 的方式。
@@ -19,11 +35,13 @@
 
 用了很长时间 WebSocket + TLS + Web 的组合，一直都比较稳定。
 
-周末时翻到一篇关于 [[https://guide.v2fly.org/advanced/h2.html][HTTP2]] 的搭建，有一个网站比较了 HTTP/1.1 和 HTTP2 的加载速度，发现 HTTP2 是真的很快，就想着重新部署一个代理，看是否有更好的体验。
+周末时翻到一篇关于 [[https://guide.v2fly.org/advanced/h2.html][HTTP2]] 的搭建，有一个网站比较了 HTTP/1.1 和 HTTP2 的加载速度，
+发现 HTTP2 是真的很快，就想着重新部署一个代理，看是否有更好的体验。
 
 由于换了服务器，现在不太确定是服务器影响还是 HTTP2 的影响，速度上要比之前的好一些。
 
-这篇博客主要记录 *V2ray + Caddy + HTTP2 + TLS* 的相关配置，其它具体细节请参考 [[https://guide.v2fly.org/][V2ray 新白话文教程]] 以及 [[https://www.v2fly.org/][官网]]。
+这篇博客主要记录 *V2ray + Caddy + HTTP2 + TLS* 的相关配置，
+其它具体细节请参考 [[https://guide.v2fly.org/][V2ray 新白话文教程]] 以及 [[https://www.v2fly.org/][官网]]。
 
 * 准备
 :PROPERTIES:
@@ -41,13 +59,16 @@
 :CUSTOM_ID: 9f73fe29-4ee2-4c05-b881-10a3e5c20f91
 :END:
 
-这次搭建主要是参考了 [[https://guide.v2fly.org/advanced/h2_tls_web.html][HTTP/2+TLS+WEB]] ，里头用到了 [[https://caddyserver.com/][Caddy ]]作为 Web 服务器，不过他用的是 Caddy1，而我用的是 Caddy2。
+这次搭建主要是参考了 [[https://guide.v2fly.org/advanced/h2_tls_web.html][HTTP/2+TLS+WEB]] ，里头用到了 [[https://caddyserver.com/][Caddy ]]作为 Web 服务器，
+不过他用的是 Caddy1，而我用的是 Caddy2。
 
 除了 Caddy，其实还能用 Nginx，Apache 去做 Web 服务器，不过 Caddy 相对来说使用上更简单方便。
 
-之前搭建 WebSocket + TLS + Web 的时候是用的 Nginx，为了实现 TLS，需要去 [[https://letsencrypt.org/][Let's Encrypt]] 申请证书，[[https://guide.v2fly.org/advanced/tls.html#%E6%B3%A8%E5%86%8C%E4%B8%80%E4%B8%AA%E5%9F%9F%E5%90%8D][这篇]] 教程里有介绍怎么申请。
+之前搭建 WebSocket + TLS + Web 的时候是用的 Nginx，为了实现 TLS，
+需要去 [[https://letsencrypt.org/][Let's Encrypt]] 申请证书，[[https://guide.v2fly.org/advanced/tls.html#%E6%B3%A8%E5%86%8C%E4%B8%80%E4%B8%AA%E5%9F%9F%E5%90%8D][这篇]] 教程里有介绍怎么申请。
 
-而 Caddy 默认是开启 HTTPS 的，当你配置了域名，他会自动帮你从 [[https://letsencrypt.org/][Let's Encrypt]] 申请证书，到期了自动帮你更新，所以省去了不少步骤。
+而 Caddy 默认是开启 HTTPS 的，当你配置了域名，他会自动帮你从 [[https://letsencrypt.org/][Let's Encrypt]] 申请证书，
+到期了自动帮你更新，所以省去了不少步骤。
 
 ** Tag 释义
 :PROPERTIES:
@@ -73,11 +94,13 @@
 
 可以从 [[https://www.vultr.com/][VULTR]] 购买，如果有更快，更稳定，价格不是很贵的提供商，欢迎留言推荐。
 
-搭建代理不需要很高的配置，买一个最低配置的 VPS 即可，考虑到 CentOS 不再维护，我安装的是 Ubuntu，总之找一个自己熟悉的 linux 操作系统即可。
+搭建代理不需要很高的配置，买一个最低配置的 VPS 即可，
+考虑到 CentOS 不再维护，我安装的是 Ubuntu，总之找一个自己熟悉的 linux 操作系统即可。
 
 Ubuntu 的一个好处是配置防火墙的指令 [[https://help.ubuntu.com/community/UFW][ufw]] 相对 CentOS 的 firewall-cmd 而言用起来比较简单。
 
-服务器部署好之后，可以将 443 和 80 端口打开，443 作为 Web 服务器的访问端口，80 是开放给 Let's Encrypt 注册的。
+服务器部署好之后，可以将 443 和 80 端口打开，
+443 作为 Web 服务器的访问端口，80 是开放给 Let's Encrypt 注册的。
 
 Ubuntu 的指令是：
 
@@ -337,10 +360,3 @@ Ubuntu 的指令是：
   journalctl -u caddy --no-pager | less +G
   journalctl -u v2ray --no-pager | less +G
 #+end_src
-
-* 其他教程
-:PROPERTIES:
-:CUSTOM_ID: abf74ba0-ce97-479e-86b7-6a1537c50981
-:END:
-
-- [[https://manateelazycat.github.io/2024/11/23/best-proxy/][最佳代理实践之 Nexitally (2024-11-23)]]

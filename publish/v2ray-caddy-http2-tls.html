@@ -76,10 +76,37 @@
 <li><a href="#980b9211-66ab-4038-8d91-e0d29a7a15ca">排障</a></li>
 </ul>
 </li>
-<li><a href="#abf74ba0-ce97-479e-86b7-6a1537c50981">其他教程</a></li>
 </ul>
 </div>
 </nav>
+<section role="note" id="org4e9ee8e">
+<p>
+这篇教程我已经没有在用了，有的内容或许已经过时，但大体的搭建思路是类似的，教程里的很多链接也可以作为参考。
+</p>
+
+<p>
+另外你可以参考：
+</p>
+
+<ul class="org-ul">
+<li><p>
+<a href="https://manateelazycat.github.io/2024/11/23/best-proxy/">最佳代理实践之 Nexitally (2024-11-23)</a> by Andy Stewart
+</p>
+
+<p>
+直接用机场，最方便，如果你不想折腾，只是想使用代理，可以考虑这个方案。
+</p></li>
+
+<li><p>
+<a href="https://manateelazycat.github.io/2026/04/06/best-proxy/">最佳代理实践 (2026-4-6)</a> by Andy Stewart
+</p>
+
+<p>
+使用 <a href="https://github.com/chen08209/FlClash">chen08209/FlClash</a> 自建的方案。
+</p></li>
+</ul>
+</section>
+
 <p>
 由于经常需要访问 GitHub 等外网，就需要有一个快速响应的代理。
 </p>
@@ -208,7 +235,8 @@ Ubuntu 的一个好处是配置防火墙的指令 <a href="https://help.ubuntu.c
 </p>
 
 <p>
-服务器部署好之后，可以将 443 和 80 端口打开，443 作为 Web 服务器的访问端口，80 是开放给 Let's Encrypt 注册的。
+服务器部署好之后，可以将 443 和 80 端口打开，
+443 作为 Web 服务器的访问端口，80 是开放给 Let's Encrypt 注册的。
 </p>
 
 <p>
@@ -216,10 +244,10 @@ Ubuntu 的指令是：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-shell"><code>ufw allow 443
+<pre class="src src-shell">ufw allow 443
 ufw allow 80
 ufw reload
-</code></pre>
+</pre>
 </div>
 </div>
 </div>
@@ -241,7 +269,7 @@ ufw reload
 </p>
 
 <div class="org-src-container">
-<pre class="src src-conf"><code><span class="org-comment-delimiter"># </span><span class="org-comment">&#20320;&#30340;&#22495;&#21517;
+<pre class="src src-conf"><span class="org-comment-delimiter"># </span><span class="org-comment">&#20320;&#30340;&#22495;&#21517;
 </span>&lt;domain&gt;
 <span class="org-comment-delimiter"># </span><span class="org-comment">[&#21487;&#36873;] &#37038;&#31665;&#65292;&#29992;&#20110;&#27880;&#20876;&#35777;&#20070;&#65292;&#21040;&#26399;&#26102;&#20250;&#26377;&#36890;&#30693;&#65292;
 </span>tls &lt;email&gt;
@@ -259,7 +287,7 @@ ufw reload
                 versions h2c 2
         }
 }
-</code></pre>
+</pre>
 </div>
 
 
@@ -268,7 +296,7 @@ ufw reload
 </p>
 
 <div class="org-src-container">
-<pre class="src src-shell"><code><span class="org-comment-delimiter"># </span><span class="org-comment">&#21551;&#21160; caddy &#26381;&#21153;
+<pre class="src src-shell"><span class="org-comment-delimiter"># </span><span class="org-comment">&#21551;&#21160; caddy &#26381;&#21153;
 </span>systemctl start caddy
 <span class="org-comment-delimiter"># </span><span class="org-comment">&#20572;&#27490;
 </span>systemctl stop caddy
@@ -280,7 +308,7 @@ ufw reload
 </span>systemctl reload caddy
 <span class="org-comment-delimiter"># </span><span class="org-comment">&#26597;&#30475; caddy &#36816;&#34892;&#26085;&#24535;
 </span>journalctl -u caddy --no-pager | less +G
-</code></pre>
+</pre>
 </div>
 </div>
 </div>
@@ -299,7 +327,7 @@ ufw reload
 <details>
 <summary>config.json</summary>
 <div class="org-src-container">
-<pre class="src src-json"><code>{
+<pre class="src src-json">{
   "log": {
     "loglevel": "warning"
   },
@@ -401,7 +429,7 @@ ufw reload
   }
 }
 
-</code></pre>
+</pre>
 </div>
 </details>
 </div>
@@ -428,7 +456,7 @@ ufw reload
 <summary>ClashX 配置</summary>
 
 <div class="org-src-container">
-<pre class="src src-yaml"><code><span class="org-comment">---</span>
+<pre class="src src-yaml"><span class="org-comment">---</span>
 <span class="org-comment-delimiter"># </span><span class="org-comment">https://github.com/Dreamacro/clash/wiki/configuration
 </span><span class="org-variable-name">port</span>: 7890
 <span class="org-variable-name">socks-port</span>: 7891
@@ -466,7 +494,7 @@ ufw reload
   - DST-PORT,80,DIRECT
   - SRC-PORT,7777,DIRECT
   - MATCH,proxy
-</code></pre>
+</pre>
 </div>
 </details>
 </div>
@@ -479,22 +507,15 @@ ufw reload
 </p>
 
 <div class="org-src-container">
-<pre class="src src-shell"><code><span class="org-comment-delimiter"># </span><span class="org-comment">&#26816;&#26597;&#36816;&#34892;&#29366;&#24577;
+<pre class="src src-shell"><span class="org-comment-delimiter"># </span><span class="org-comment">&#26816;&#26597;&#36816;&#34892;&#29366;&#24577;
 </span>systemctl status candy
 systemctl status v2ray
 <span class="org-comment-delimiter"># </span><span class="org-comment">&#26816;&#26597;&#36755;&#20986;&#30340;&#26085;&#24535;
 </span>journalctl -u caddy --no-pager | less +G
 journalctl -u v2ray --no-pager | less +G
-</code></pre>
+</pre>
 </div>
 </div>
-</div>
-</div>
-<div id="outline-container-abf74ba0-ce97-479e-86b7-6a1537c50981" class="outline-2">
-<h2 id="abf74ba0-ce97-479e-86b7-6a1537c50981">其他教程</h2>
-<div class="outline-text-2" id="text-abf74ba0-ce97-479e-86b7-6a1537c50981"><ul class="org-ul">
-<li><a href="https://manateelazycat.github.io/2024/11/23/best-proxy/">最佳代理实践之 Nexitally (2024-11-23)</a></li>
-</ul>
 </div>
 </div>
 </div>
@@ -518,7 +539,7 @@ journalctl -u v2ray --no-pager | less +G
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
 <p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
-<p>文章创建于 <span class="dt-published">2022-08-08 Mon 21:39</span>，更新于 <span class="dt-updated">2025-09-10 Wed 13:04</span>，</p>
+<p>文章创建于 <span class="dt-published">2022-08-08 Mon 21:39</span>，更新于 <span class="dt-updated">2026-04-07 Tue 12:12</span>，</p>
 <p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
 <p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
 </footer>
