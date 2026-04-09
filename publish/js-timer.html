@@ -11,9 +11,11 @@
 <meta name="color-scheme" content="light dark" />
 <script src="/js/color-scheme.js"></script>
 <link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<!--
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
 <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+-->
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
 <link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
@@ -151,7 +153,7 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <div id="outline-container-82e839e4-7bda-4599-a7b9-3d9eeceef12b" class="outline-3">
 <h3 id="82e839e4-7bda-4599-a7b9-3d9eeceef12b">对于长时间的同步任务</h3>
 <div class="outline-text-3" id="text-82e839e4-7bda-4599-a7b9-3d9eeceef12b"><div class="org-src-container">
-<pre class="src src-js"><code><span class="org-keyword">var</span> <span class="org-variable-name">fakeTimeIntensiveOperation</span> = <span class="org-keyword">function</span>() {
+<pre class="src src-js"><span class="org-keyword">var</span> <span class="org-variable-name">fakeTimeIntensiveOperation</span> = <span class="org-keyword">function</span>() {
   <span class="org-keyword">for</span> (<span class="org-keyword">var</span> <span class="org-variable-name">i</span> = 0; i&lt; Math.pow(10, 10); i++) {}
   <span class="org-keyword">let</span> <span class="org-variable-name">insideTimeTakingFunction</span>  = <span class="org-keyword">new</span> <span class="org-type">Date</span>().toLocaleTimeString();
   console.log(<span class="org-string">'insideTimeTakingFunction'</span>, insideTimeTakingFunction);
@@ -162,7 +164,7 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
   <span class="org-keyword">let</span> <span class="org-variable-name">insideSetInterval</span> = <span class="org-keyword">new</span> <span class="org-type">Date</span>().toLocaleTimeString();
   console.log(<span class="org-string">'insideSetInterval'</span>, insideSetInterval);
 }, 1000);
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -173,7 +175,7 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <div id="outline-container-6de052fe-4204-4e10-8196-fcbfbdb40a37" class="outline-3">
 <h3 id="6de052fe-4204-4e10-8196-fcbfbdb40a37">对于长时间的异步任务</h3>
 <div class="outline-text-3" id="text-6de052fe-4204-4e10-8196-fcbfbdb40a37"><div class="org-src-container">
-<pre class="src src-js"><code><span class="org-keyword">let</span> <span class="org-variable-name">counter</span> = 0;
+<pre class="src src-js"><span class="org-keyword">let</span> <span class="org-variable-name">counter</span> = 0;
 <span class="org-keyword">var</span> <span class="org-variable-name">fakeTimeIntensiveOperation</span> = <span class="org-keyword">function</span>() {
   setTimeout(() =&gt; {
     counter--;
@@ -187,7 +189,7 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
   console.log(<span class="org-string">'insideSetInterval'</span>, insideSetInterval);
   console.log(<span class="org-string">'counter'</span>, counter);
 }, 200);
-</code></pre>
+</pre>
 </div>
 <p>
 对于执行时间长的异步任务，例如接口请求，接口的响应可能需要很长时间，这就会造成大量请求的堆积。
@@ -202,13 +204,13 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 <div id="outline-container-46d047df-e0c6-47dd-821d-ca4b193e2771" class="outline-2">
 <h2 id="46d047df-e0c6-47dd-821d-ca4b193e2771">嵌套的 setTimeout</h2>
 <div class="outline-text-2" id="text-46d047df-e0c6-47dd-821d-ca4b193e2771"><div class="org-src-container">
-<pre class="src src-js"><code>(<span class="org-keyword">function</span> loop() {
+<pre class="src src-js">(<span class="org-keyword">function</span> loop() {
   setTimeout(<span class="org-keyword">function</span>() {
     <span class="org-comment-delimiter">// </span><span class="org-comment">your logic here
 </span>    loop();
   }, delay);
 })()
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -224,7 +226,7 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-js"><code><span class="org-keyword">let</span> <span class="org-variable-name">delay</span> = 5000;
+<pre class="src src-js"><span class="org-keyword">let</span> <span class="org-variable-name">delay</span> = 5000;
 
 <span class="org-keyword">let</span> <span class="org-variable-name">timerId</span> = setTimeout(<span class="org-keyword">function</span> request() {
   <span class="org-comment-delimiter">// </span><span class="org-comment">...&#21457;&#36865;&#35831;&#27714;...
@@ -237,7 +239,7 @@ A，B，C，D 并不是间隔 5s 就执行，而只是间隔 5s 被放入到队�
   timerId = setTimeout(request, delay);
 
 }, delay);
-</code></pre>
+</pre>
 </div>
 </div>
 </div>
@@ -373,12 +375,14 @@ smooth animations </a>- javascriptkit
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
+<!--
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/toc.js" defer></script>
 <script src="/js/backtop.js" defer></script>
+-->
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>
 <!--

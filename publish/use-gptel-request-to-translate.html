@@ -11,9 +11,11 @@
 <meta name="color-scheme" content="light dark" />
 <script src="/js/color-scheme.js"></script>
 <link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<!--
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
 <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+-->
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
 <link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
@@ -68,7 +70,7 @@
 Emacs 中的翻译的工具也不少，写这个函数只是分享一下 <code>gptel-request</code> 的一种实现。
 </p>
 
-<section role="note" id="orgcd53ee7">
+<section role="note" id="org77a1614">
 <p>
 一些 Emacs 的翻译配置：
 </p>
@@ -104,7 +106,7 @@ Emacs 中的翻译的工具也不少，写这个函数只是分享一下 <code>g
 <summary>spike-leung/translate-region</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/translate-region</span> (prompt)
+<pre class="src src-emacs-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/translate-region</span> (prompt)
   <span class="org-doc">"Translate the selected region (default to English) replace it.
 If no region is active, try to guess the sentence or paragraph at point.
 With prefix argument, PROMPT is used as the translation prompt."</span>
@@ -161,7 +163,7 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
                              (do-translate fallback-model))
                          (message <span class="org-string">"Translation failed with both models."</span>))))))))
           (do-translate primary-model))))))
-</code></pre>
+</pre>
 </div>
 </details>
 
@@ -184,13 +186,13 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 <summary>定义 preset</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defmacro</span> <span class="org-function-name">spike-leung/define-gptel-preset</span> (name <span class="org-type">&amp;rest</span> args)
+<pre class="src src-emacs-lisp">(<span class="org-keyword">defmacro</span> <span class="org-function-name">spike-leung/define-gptel-preset</span> (name <span class="org-type">&amp;rest</span> args)
   `(gptel-make-preset ,name
      <span class="org-builtin">:backend</span> <span class="org-string">"OpenRouter"</span>
      <span class="org-builtin">:model</span> 'google/gemini-3-flash-preview
      ,@args))
 
-(spike-leung/define-gptel-preset 'quote-format
+(<span class="org-keyword">spike-leung/define-gptel-preset</span> 'quote-format
                                  <span class="org-builtin">:description</span> <span class="org-string">"&#26684;&#24335;&#21270;&#24341;&#29992;"</span>
                                  <span class="org-builtin">:rewrite-message</span> <span class="org-string">"&#25353;&#29031;&#20197;&#19979;&#35201;&#27714;&#65292;&#26684;&#24335;&#21270;&#20869;&#23481;:
 - &#24403;&#23384;&#22312;&#33521;&#25991;&#21644;&#20013;&#25991;&#32763;&#35793;&#65292;&#31227;&#38500;&#33521;&#25991;
@@ -200,7 +202,7 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 - &#25991;&#26412;&#20013;&#30340;&#24341;&#21495;&#26367;&#25442;&#20026;&#30452;&#35282;&#24341;&#21495; &#12300;&#12301;&#12289;&#12302;&#12303;&#65292;&#22914;&#26524;&#24341;&#21495;&#37324;&#38754;&#36824;&#26377;&#24341;&#21495;&#65292;&#21017;&#37319;&#29992; &#12300;&#12302;&#12303;&#12301;&#30340;&#23884;&#22871;&#24418;&#24335;
 &#38656;&#35201;&#26684;&#24335;&#21270;&#20869;&#23481;&#65306;"</span>)
 
-(spike-leung/define-gptel-preset 'lyric-format
+(<span class="org-keyword">spike-leung/define-gptel-preset</span> 'lyric-format
                                  <span class="org-builtin">:description</span> <span class="org-string">"&#26684;&#24335;&#21270;&#27468;&#35789;"</span>
                                  <span class="org-builtin">:rewrite-message</span> <span class="org-string">"&#26684;&#24335;&#21270;&#27468;&#35789;&#65292;&#23558;&#21407;&#22987;&#27468;&#35789;&#21644;&#20013;&#25991;&#32763;&#35793;&#25286;&#20998;&#25104;&#20004;&#37096;&#20998;&#12290;
 &#23545;&#20110;&#21407;&#25991;&#27468;&#35789;&#65292;&#36755;&#20986;&#26684;&#24335;&#20026;&#65306;
@@ -215,11 +217,11 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 [&#32763;&#35793;]
 #+end_verse
 #+end_details"</span>)
-</code></pre>
+</pre>
 </div>
 </details>
 
-<section role="note" id="orgcf6a8fe">
+<section role="note" id="org6d31ff5">
 <p>
 在 preset 中 <code>:rewrite-message</code> 对应的是 <code>gptel-rewrite-message</code> 或者 <code>gptel--rewrite-message</code> ，你还可以定义很多参数，具体见 <a href="https://github.com/karthink/gptel?tab=readme-ov-file#option-presets">gptel - Option presets</a>。
 </p>
@@ -237,7 +239,7 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 <summary>spike-leung/gptel-rewrite-preset</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/gptel-rewrite-preset</span> ()
+<pre class="src src-emacs-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/gptel-rewrite-preset</span> ()
   <span class="org-doc">"Pick a preset from `</span><span class="org-doc"><span class="org-constant">gptel--known-presets</span></span><span class="org-doc">' and execute `</span><span class="org-doc"><span class="org-constant">gptel--suffix-rewrite</span></span><span class="org-doc">'."</span>
   (<span class="org-keyword">interactive</span>)
   <span class="org-comment-delimiter">;; </span><span class="org-comment">gptel--suffix-rewrite &#20381;&#36182; gptel-rewrite &#30340;&#21152;&#36733;
@@ -257,7 +259,7 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
     <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20351;&#29992; preset &#35843;&#29992; gptel-rewrite
 </span>    (<span class="org-keyword">gptel-with-preset</span> preset
       (gptel--suffix-rewrite))))
-</code></pre>
+</pre>
 </div>
 </details>
 
@@ -305,12 +307,14 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
+<!--
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/toc.js" defer></script>
 <script src="/js/backtop.js" defer></script>
+-->
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>
 <!--

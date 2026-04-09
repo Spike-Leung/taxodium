@@ -11,9 +11,11 @@
 <meta name="color-scheme" content="light dark" />
 <script src="/js/color-scheme.js"></script>
 <link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<!--
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
 <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+-->
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
 <link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
@@ -146,8 +148,8 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code>/(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]/
-</code></pre>
+<pre class="src src-typescript">/(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]/
+</pre>
 </div>
 
 <p>
@@ -185,7 +187,7 @@ Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicod
 <summary>什么是 Unicode character class escpae</summary>
 
 <p>
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape">Unicode character class escape: \p{...}, &para;{&hellip;}</a> 是 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_class_escape">Character class escape</a> 中的一种。
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape">Unicode character class escape: \p{...}, &para;{&#x2026;}</a> 是 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_class_escape">Character class escape</a> 中的一种。
 </p>
 
 <p>
@@ -222,7 +224,7 @@ Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicod
 </dl>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code>console.log(
+<pre class="src src-typescript">console.log(
   /\p{Emoji}/u.test('flowers'), // false :)
   /\p{Emoji}/u.test('flowers 🌼🌺🌸'), // true :)
   /\p{Emoji}/u.test('flowers 123'), // true :(
@@ -232,7 +234,7 @@ console.log(
   /\p{Extended_Pictographic}/u.test('flowers 🌼🌺🌸'), // true :)
   /\p{Extended_Pictographic}/u.test('flowers 123'), // false :)
 )
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -243,7 +245,7 @@ console.log(
 <code>/u</code> 可以匹配 👩、❤️、👨，但是无法匹配 👩‍❤️‍👨，此时需要用到 <code>/v</code> <sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>，它可以匹配 Unicode 序列。<sup><a id="fnr.3" class="footref" href="#fn.3" role="doc-backlink">3</a></sup>
 </p>
 
-<section role="note" id="org868caea">
+<section role="note" id="org31b118c">
 <p>
 按照字母顺序，v 在 u 的， <code>/v</code> 比 <code>/u</code> 更晚提出，它基本包含了 <code>/u</code> 的能力，是对 <code>/u</code> 的一次升级。
 </p>
@@ -314,7 +316,7 @@ console.log(
 概括来说，在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。而超出 65536 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
 </p>
 
-<section role="note" id="org997a64a">
+<section role="note" id="org5149288">
 <p>
 为什么 Unicode 要这么设计，参考 <a href="https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm">Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?</a>
 </p>
@@ -333,10 +335,10 @@ console.log(
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code>'🉐'.charAt(0) // '\uD83C'
+<pre class="src src-typescript">'🉐'.charAt(0) // '\uD83C'
 '🉐'.charAt(1) // '\uDE50'
 '🉐'.split("") // ['\uD83C', '\uDE50']
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -363,7 +365,7 @@ consisting of the single UTF-16 code unit at the given index.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code>'🉐'.charAt(0) // '\uD83C'
+<pre class="src src-typescript">'🉐'.charAt(0) // '\uD83C'
 '🉐'.charAt(1) // '\uDE50'
 
 'a'.charAt(0) // 'a'
@@ -371,7 +373,7 @@ consisting of the single UTF-16 code unit at the given index.
 
 'apple'.charAt(0) // 'a'
 'apple'.charAt(1) // 'p'
-</code></pre>
+</pre>
 </div></dd>
 
 <dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt">String.property.charCodeAt()</a></dt><dd><blockquote>
@@ -386,7 +388,7 @@ representing the UTF-16 code unit at the given index.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code>'🉐'.charCodeAt(0) // 55356
+<pre class="src src-typescript">'🉐'.charCodeAt(0) // 55356
 '🉐'.charCodeAt(1) // 56912
 
 'a'.charCodeAt(0) // 97
@@ -394,7 +396,7 @@ representing the UTF-16 code unit at the given index.
 
 'apple'.charCodeAt(0) // 97
 'apple'.charCodeAt(1) // 112
-</code></pre>
+</pre>
 </div></dd>
 
 <dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode">String.fromCharCode()</a></dt><dd><blockquote>
@@ -413,7 +415,7 @@ created from the specified sequence of UTF-16 code units.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code>'🉐'.charCodeAt(0) // 55356
+<pre class="src src-typescript">'🉐'.charCodeAt(0) // 55356
 '🉐'.charCodeAt(1) // 56912
 String.fromCharCode(55356, 56912) // '🉐'
 
@@ -423,7 +425,7 @@ String.fromCharCode(55356, 56912) // '🉐'
 'apple'.charCodeAt(3) // 108
 'apple'.charCodeAt(4) // 101
 String.fromCharCode(97, 112, 112, 108, 101) // 'apple'
-</code></pre>
+</pre>
 </div></dd>
 
 <dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/codePointAt">String.prototype.codePointAt()</a></dt><dd><blockquote>
@@ -443,7 +445,7 @@ Note that the index is still based on UTF-16 code units, not Unicode code points
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code>'🉐'.charCodeAt(0) // 55356
+<pre class="src src-typescript">'🉐'.charCodeAt(0) // 55356
 '🉐'.charCodeAt(1) // 56912
 
 '🉐'.codePointAt(0) // 127568
@@ -451,7 +453,7 @@ Note that the index is still based on UTF-16 code units, not Unicode code points
 // 对于下标 0，可以找到一个代理对，对应 Unicode code point，所以返回了 127568
 // 对于下标 1，由于只有低代理位，无法组成代理对，就返回低代理位对应的 Unicode Code Point
 '🉐'.codePointAt(1) // 56912
-</code></pre>
+</pre>
 </div></dd>
 
 <dt><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint">String.fromCodePoint()</a></dt><dd><blockquote>
@@ -470,7 +472,7 @@ The String.fromCodePoint() static method returns a string
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code>// fromCodePoint
+<pre class="src src-typescript">// fromCodePoint
 String.fromCodePoint(127568) // '🉐'
 String.fromCodePoint(55356, 56912) // '🉐'
 
@@ -481,7 +483,7 @@ String.fromCodePoint(55356, 56912) // '🉐'
 // Number.parseInt('f250', 16) -&gt; 62032
 String.fromCharCode(127568) // ''
 String.fromCharCode(55356, 56912) // '🉐'
-</code></pre>
+</pre>
 </div></dd>
 </dl>
 </details>
@@ -497,10 +499,10 @@ String.fromCharCode(55356, 56912) // '🉐'
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code>'a'.length // 1
+<pre class="src src-typescript">'a'.length // 1
 
 '🉐'.length // 2
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -569,12 +571,14 @@ String.fromCharCode(55356, 56912) // '🉐'
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
+<!--
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/toc.js" defer></script>
 <script src="/js/backtop.js" defer></script>
+-->
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>
 <!--

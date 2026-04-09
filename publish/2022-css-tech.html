@@ -11,9 +11,11 @@
 <meta name="color-scheme" content="light dark" />
 <script src="/js/color-scheme.js"></script>
 <link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<!--
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
 <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+-->
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
 <link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
@@ -340,22 +342,22 @@ selector name collisions.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-css"><code><span class="org-comment-delimiter">/* </span><span class="org-comment">container.module.css</span><span class="org-comment-delimiter"> */</span>
+<pre class="src src-css"><span class="org-comment-delimiter">/* </span><span class="org-comment">container.module.css</span><span class="org-comment-delimiter"> */</span>
 <span class="org-css-selector">.container</span> {
   <span class="org-css-property">margin</span>: 3rem auto;
   <span class="org-css-property">max-width</span>: 600px;
 }
-</code></pre>
+</pre>
 </div>
 <div class="org-src-container">
-<pre class="src src-js"><code><span class="org-keyword">import</span> React from <span class="org-string">"react"</span>
+<pre class="src src-js"><span class="org-keyword">import</span> React from <span class="org-string">"react"</span>
 <span class="org-keyword">import</span> * as containerStyles from <span class="org-string">"./container.module.css"</span>
 <span class="org-keyword">export</span> <span class="org-keyword">default</span> <span class="org-keyword">function</span> Container({ children }) {
   <span class="org-keyword">return</span> (
     &lt;<span class="org-function-name">section</span> <span class="org-variable-name">className</span>={containerStyles.container}&gt;{children}&lt;/<span class="org-function-name">section</span>&gt;
   )
 }
-</code></pre>
+</pre>
 </div>
 </div>
 </div>
@@ -367,7 +369,7 @@ Styled component 会生成一个带有样式的组件。
 
 <p>
 你可以用语义更好的名字作为组件，例如写个 Title 组件，替换原来的 &lt;h1
-style="&hellip;" className="&hellip;"&gt;, 语义化更好。
+style="&#x2026;" className="&#x2026;"&gt;, 语义化更好。
 </p>
 
 <p>
@@ -383,7 +385,7 @@ style="&hellip;" className="&hellip;"&gt;, 语义化更好。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-js"><code><span class="org-keyword">const</span> <span class="org-variable-name">Button</span> = styled.a<span class="org-string">`
+<pre class="src src-js"><span class="org-keyword">const</span> <span class="org-variable-name">Button</span> = styled.a<span class="org-string">`
   ${props =&gt; props.primary &amp;&amp; css`</span>
     background: white;
     color: black;
@@ -405,7 +407,7 @@ render(
     &lt;/Button&gt;
   &lt;/div&gt;
 )
-</code></pre>
+</pre>
 </div>
 </div>
 </div>
@@ -434,7 +436,7 @@ Emotion 语法看起来更灵活一些。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-js"><code><span class="org-keyword">import</span> { css, cx } from <span class="org-string">'@emotion/css'</span>
+<pre class="src src-js"><span class="org-keyword">import</span> { css, cx } from <span class="org-string">'@emotion/css'</span>
 
 <span class="org-keyword">const</span> <span class="org-variable-name">color</span> = <span class="org-string">'white'</span>
 
@@ -453,7 +455,7 @@ render(
     Hover to change color.
   &lt;/div&gt;
 )
-</code></pre>
+</pre>
 </div>
 </div>
 </div>
@@ -484,14 +486,14 @@ CSS 框架或者引擎，都算是原子化 CSS。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-css"><code><span class="org-css-selector">.mt-5</span> {
+<pre class="src src-css"><span class="org-css-selector">.mt-5</span> {
     <span class="org-css-property">margin-top</span>: 5px;
 }
 
 <span class="org-css-selector">.pt-10</span> {
     <span class="org-css-property">padding-top</span>: 10px;
 }
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -517,11 +519,11 @@ CSS 以满足使用的需求，到后面当定义的 CSS 满足了大部分的�
 定义原子化 CSS 多少有些麻烦，但目前存在很多工具，可以根据一些规则自动生成对应的 CSS，例如  <a href="https://github.com/unocss/unocss">UnoCSS</a> ：
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><code>rules: [
+<pre class="src src-js">rules: [
   [<span class="org-string">/^m-(\d+)$/</span>, ([, d]) =&gt; ({ margin: <span class="org-string">`${d / 4}rem`</span> })],
   [<span class="org-string">/^p-(\d+)$/</span>, match =&gt; ({ padding: <span class="org-string">`${match[1] / 4}rem`</span> })],
 ]
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -601,12 +603,14 @@ CSS 定义。当需要添加样式时，也可以很容易地想到对应的类�
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
+<!--
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/toc.js" defer></script>
 <script src="/js/backtop.js" defer></script>
+-->
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>
 <!--

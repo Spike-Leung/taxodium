@@ -11,9 +11,11 @@
 <meta name="color-scheme" content="light dark" />
 <script src="/js/color-scheme.js"></script>
 <link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<!--
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
 <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+-->
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
 <link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
@@ -141,7 +143,7 @@ fanyi 则是当作字典使用，碰到一两个单词不熟悉，就使用 fany
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">immersive-translate
+<pre class="src src-elisp"><span class="org-comment-delimiter">;;; </span><span class="org-comment">immersive-translate
 </span>(<span class="org-keyword">require</span> '<span class="org-constant">immersive-translate</span>)
 (add-hook 'elfeed-show-mode-hook #'immersive-translate-setup)
 <span class="org-comment-delimiter">;; </span><span class="org-comment">need to api key with user `apikey` in `.authinfo`
@@ -150,7 +152,7 @@ fanyi 则是当作字典使用，碰到一两个单词不熟悉，就使用 fany
       immersive-translate-chatgpt-model <span class="org-string">"google/gemini-2.5-flash"</span>
       immersive-translate-pending-message <span class="org-string">"(&#8790;&#7447;&#8790;&#3665;)"</span>
       immersive-translate-failed-message <span class="org-string">"(&#12388;&#1076;&#8834;) "</span>)
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -158,11 +160,11 @@ API Key 在 <code>~/.authinfo</code> 中配置，由于 emacs-immersive-translat
 </p>
 
 <div class="org-src-container">
-<pre class="src src-authinfo"><code><span class="org-variable-name">machine</span> <span class="org-builtin">openrouter.ai/api</span> <span class="org-comment-delimiter">login</span> <span class="org-keyword">apikey</span> <span class="org-comment-delimiter">password</span> <span class="org-doc">********************************</span>
-</code></pre>
+<pre class="src src-authinfo"><span class="org-variable-name">machine</span> <span class="org-builtin">openrouter.ai/api</span> <span class="org-comment-delimiter">login</span> <span class="org-keyword">apikey</span> <span class="org-comment-delimiter">password</span> <span class="org-doc">********************************</span>
+</pre>
 </div>
 
-<section role="note" id="org6a4c715">
+<section role="note" id="org8814000">
 <p>
 关于 .authinfo 你可以参考：
 </p>
@@ -186,7 +188,7 @@ gt.el 也是可以在 MELPA 上直接安装。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">@see: https://github.com/lorniu/gt.el
+<pre class="src src-elisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">@see: https://github.com/lorniu/gt.el
 </span>(maybe-require-package 'gt)
 (maybe-require-package 'plz)
 (<span class="org-keyword">with-eval-after-load</span> 'init-auth
@@ -202,7 +204,7 @@ gt.el 也是可以在 MELPA 上直接安装。
                                           <span class="org-builtin">:name</span> <span class="org-string">"gt-translator"</span>
                                           <span class="org-builtin">:window-config</span> '((display-buffer-at-bottom))
                                           <span class="org-builtin">:then</span> (<span class="org-keyword">lambda</span> (_) (pop-to-buffer <span class="org-string">"gt-translator"</span>)))))))
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -217,7 +219,7 @@ Source: <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/i
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">init-auth --- config for auth related -*- lexical-binding: t -*-
+<pre class="src src-elisp"><span class="org-comment-delimiter">;;; </span><span class="org-comment">init-auth --- config for auth related -*- lexical-binding: t -*-
 </span><span class="org-comment-delimiter">;;; </span><span class="org-comment">Commentary:
 </span><span class="org-comment-delimiter">;;; </span><span class="org-comment">Code:
 </span>(<span class="org-keyword">setq</span> epa-pinentry-mode 'loopback) <span class="org-comment-delimiter">;; </span><span class="org-comment">input pass in minibuffer
@@ -248,7 +250,7 @@ Source: <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/i
 
 (<span class="org-keyword">provide</span> '<span class="org-constant">init-auth</span>)
 <span class="org-comment-delimiter">;;; </span><span class="org-comment">init-auth.el ends here.</span>
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -282,7 +284,7 @@ gptel 就是当 LLM 用，需要翻译的时候就复制文字和它对话。此
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">keybindings
+<pre class="src src-elisp"><span class="org-comment-delimiter">;;; </span><span class="org-comment">keybindings
 </span>(<span class="org-keyword">defvar</span> <span class="org-variable-name">spike-leung/my-translate-keymap</span> (make-sparse-keymap)
   <span class="org-doc">"Keymap for translation commands."</span>)
 
@@ -294,7 +296,7 @@ gptel 就是当 LLM 用，需要翻译的时候就复制文字和它对话。此
 
 (<span class="org-keyword">with-eval-after-load</span> 'init-my-keybindings
   (define-key spike-leung/meta-o-keymap (kbd <span class="org-string">"t"</span>) spike-leung/my-translate-keymap))
-</code></pre>
+</pre>
 </div>
 </div>
 </div>
@@ -356,12 +358,14 @@ See:
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
+<!--
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/toc.js" defer></script>
 <script src="/js/backtop.js" defer></script>
+-->
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>
 <!--

@@ -11,9 +11,11 @@
 <meta name="color-scheme" content="light dark" />
 <script src="/js/color-scheme.js"></script>
 <link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<!--
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
 <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+-->
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
 <link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
@@ -110,7 +112,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><code><span class="org-comment-delimiter">/* </span><span class="org-comment">Initial Stack: array</span><span class="org-comment-delimiter"> */</span>
+<pre class="src src-c"><span class="org-comment-delimiter">/* </span><span class="org-comment">Initial Stack: array</span><span class="org-comment-delimiter"> */</span>
   <span class="org-function-name">lua_getglobal</span>(lua,<span class="org-string">"table"</span>);
   <span class="org-function-name">lua_pushstring</span>(lua,<span class="org-string">"sort"</span>);
   <span class="org-function-name">lua_gettable</span>(lua,-2);       <span class="org-comment-delimiter">/* </span><span class="org-comment">Stack: array, table, table.sort</span><span class="org-comment-delimiter"> */</span>
@@ -130,7 +132,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
       <span class="org-comment-delimiter">/* </span><span class="org-comment">Stack: array, table, table.sort, array, __redis__compare_helper</span><span class="org-comment-delimiter"> */</span>
       lua_call(lua,2,0);
   }
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -212,34 +214,34 @@ Writing code is sharing the experience of understanding the requirements/impleme
 使用具体含义的变量
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // &#24635;&#20215;&#26684;&#20013;&#20943;&#21435;&#25240;&#25187;
+<pre class="src src-diff"><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // &#24635;&#20215;&#26684;&#20013;&#20943;&#21435;&#25240;&#25187;
 </span><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> finalPrice = (numItems * itemPrice) - min(5, numItems) * itemPrice * 0.1;
 </span>
 <span class="org-diff-indicator-added">+</span><span class="org-diff-added"> price = numItems * itemPrice;
 </span><span class="org-diff-indicator-added">+</span><span class="org-diff-added"> discount = min(5, numItems) * itemPrice * 0.1;
 </span><span class="org-diff-indicator-added">+</span><span class="org-diff-added"> finalPrice = price - discount;
 </span>
-</code></pre>
+</pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> int width = ...; // Width in pixels.
+<pre class="src src-diff"><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> int width = ...; // Width in pixels.
 </span>
 <span class="org-diff-indicator-added">+</span><span class="org-diff-added"> int widthInPixels = ...;
 </span>
-</code></pre>
+</pre>
 </div>
 
 <p>
 使用函数封装，函数名揭示逻辑
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Filter offensive words.
+<pre class="src src-diff"><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Filter offensive words.
 </span><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> for (String word : words) { ... }
 </span>
 <span class="org-diff-indicator-added">+</span><span class="org-diff-added"> filterOffensiveWords(words);
 </span>
-</code></pre>
+</pre>
 </div></li>
 
 <li><p>
@@ -247,24 +249,24 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // height &#24635;&#26159;&#22823;&#20110; 0&#65292;&#25152;&#20197;&#36825;&#37324;&#19981;&#20250;&#20986;&#38169;
+<pre class="src src-diff"><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // height &#24635;&#26159;&#22823;&#20110; 0&#65292;&#25152;&#20197;&#36825;&#37324;&#19981;&#20250;&#20986;&#38169;
 </span><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> return width / height;
 </span>
 <span class="org-diff-indicator-added">+</span><span class="org-diff-added"> checkArgument(height &gt; 0);
 </span><span class="org-diff-indicator-added">+</span><span class="org-diff-added"> return width / height;
 </span>
-</code></pre>
+</pre>
 </div></li>
 
 <li><p>
 代码已经足够清楚，不需要重复描述
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Get all users.
+<pre class="src src-diff"><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Get all users.
 </span><span class="org-diff-context">userService.getAllUsers();
 </span><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Check if the name is empty.
 </span>if (name.isEmpty()) { ... }
-</code></pre>
+</pre>
 </div></li>
 </ul>
 </div>
@@ -276,32 +278,32 @@ Writing code is sharing the experience of understanding the requirements/impleme
 揭示你的意图：解释代码 <i>为什么</i> 要做某些事情（而不是做什么）。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><code><span class="org-comment-delimiter">// </span><span class="org-comment">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
-</code></pre>
+<pre class="src src-js"><span class="org-comment-delimiter">// </span><span class="org-comment">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
+</pre>
 </div></li>
 
 <li><p>
 保护未来善意的编辑人员不会错误地「修正」你的代码。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><code><span class="org-comment-delimiter">// </span><span class="org-comment">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
-</code></pre>
+<pre class="src src-js"><span class="org-comment-delimiter">// </span><span class="org-comment">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
+</pre>
 </div></li>
 
 <li><p>
 澄清：代码审查过程中出现的问题，或代码读者可能提出/困惑的问题。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><code><span class="org-comment-delimiter">// </span><span class="org-comment">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
-</code></pre>
+<pre class="src src-js"><span class="org-comment-delimiter">// </span><span class="org-comment">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
+</pre>
 </div></li>
 
 <li><p>
 解释你写不符合规范/要求的代码的理由
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><code>@SuppressWarnings(<span class="org-string">"unchecked"</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
-</code></pre>
+<pre class="src src-js">@SuppressWarnings(<span class="org-string">"unchecked"</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
+</pre>
 </div></li>
 </ul>
 </div>
@@ -322,7 +324,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 为什么注释用于解释代码做某些事情的原因，即使代码正在做的事情非常清楚。看代码虽然知道在做什么，但可能不知道为什么要这么做，而为什么注释可以补充这些背景。
 </p>
 
-<section role="note" id="orgca7ef4d">
+<section role="note" id="org1965887">
 <p>
 例如有的代码可能需要放在前面先执行，虽然那行代码确实写在前面，但对于其他人可能不知道为什么要放在前面先执行，而为什么注释就可以告诉他。
 </p>
@@ -334,7 +336,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 有时由于语言限制、设计问题，或者仅仅是由于系统中自然产生的复杂性，不可能将某个概念或界面集中在一块，因此代码中有些地方会告诉你要记住在代码的其他地方做事情。
 </p>
 
-<section role="note" id="orga2625dd">
+<section role="note" id="org89380d9">
 <p>
 例如有的逻辑分散在很多个文件，修改了一个地方，其他好几个地方也需要修改，
 checklist 可以提醒开发者需要留意修改的地方。
@@ -379,7 +381,7 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 如果你想保存一个函数或代码部分的旧版本，你的工作还没有完成，不能提交。要么确保新函数比过去的函数更好，要么就在本地开发环境中保留它，直到确定为止。
 </p>
 
-<section role="note" id="org20e4b9a">
+<section role="note" id="orgc93f4fd">
 <p>
 看代码有时会看到一些已经注释不用的代码，既没写为什么要注释掉，也没有删掉，会影响阅读正常代码逻辑，也不确定能不能删除，最后可能就变成一种债务了。
 </p>
@@ -475,12 +477,14 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
+<!--
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/toc.js" defer></script>
 <script src="/js/backtop.js" defer></script>
+-->
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>
 <!--

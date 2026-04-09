@@ -11,9 +11,11 @@
 <meta name="color-scheme" content="light dark" />
 <script src="/js/color-scheme.js"></script>
 <link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<!--
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
 <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+-->
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
 <link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
@@ -184,12 +186,12 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 </figure>
 
 <div class="org-src-container">
-<pre class="src src-html"><code>&lt;<span class="org-function-name">head</span>&gt;
+<pre class="src src-html">&lt;<span class="org-function-name">head</span>&gt;
   <span class="org-comment-delimiter">&lt;!-- </span><span class="org-comment">&#30465;&#30053;&#20854;&#20182;&#20869;&#23481;</span><span class="org-comment-delimiter"> --&gt;</span>
   &lt;<span class="org-function-name">link</span> <span class="org-variable-name">href</span>=<span class="org-string">"https://github.com/spike-leung"</span> <span class="org-variable-name">rel</span>=<span class="org-string">"me"</span>&gt;
   <span class="org-comment-delimiter">&lt;!-- </span><span class="org-comment">&#30465;&#30053;&#20854;&#20182;&#20869;&#23481;</span><span class="org-comment-delimiter"> --&gt;</span>
 &lt;/<span class="org-function-name">head</span>&gt;
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -200,7 +202,7 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 接下来按照 webmention.io 提供的 API 获取 Webmentions 的数量和内容，需要在页面上添加 HTML 元素，写 <a href="js/webmention.js">一些 JS 代码</a> 调用 API 渲染数据（也可以用 <a href="https://github.com/PlaidWeb/webmention.js">webmention.js</a>），再写点 CSS 优化一下样式。
 </p>
 
-<section role="note" id="org62cf355">
+<section role="note" id="orgc457eb5">
 <p>
 如果你打算渲染 Webmentions 返回的 HTML，需要注意 <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS">Cross-site scripting (XSS)</a> 攻击。
 </p>
@@ -250,7 +252,7 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 但是如果你想让你发送的内容更丰富一些，就需要通过 <a href="https://microformats.org/wiki/Main_Page">microformats</a> 标记网站信息，如用户名、头像、内容、你要提及的链接等，从而让 Webmention 解析展示。
 </p>
 
-<section role="note" id="orgb3b685d">
+<section role="note" id="org8f6738c">
 <p>
 按理说只要包含了对方链接，对方就能收到 Webmention。
 </p>
@@ -331,7 +333,7 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-html"><code>&lt;<span class="org-keyword">!doctype</span> html&gt;
+<pre class="src src-html">&lt;<span class="org-keyword">!doctype</span> html&gt;
 &lt;<span class="org-function-name">meta</span> <span class="org-variable-name">charset</span>=<span class="org-string">"utf-8"</span>&gt;
 &lt;<span class="org-function-name">title</span>&gt;<span class="org-underline"><span class="org-bold">Hello World</span></span>&lt;/<span class="org-function-name">title</span>&gt;
 &lt;<span class="org-function-name">body</span>&gt;
@@ -353,7 +355,7 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
     &lt;/<span class="org-function-name">p</span>&gt;
   &lt;/<span class="org-function-name">div</span>&gt;
 &lt;/<span class="org-function-name">body</span>&gt;
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -435,7 +437,7 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 好处是，只要在文章中的链接都能被发现，不需要额外再标记什么。缺点是， <code>e-content</code> 标记的内容可能太多，导致实际回复的部分被淹没其中。
 </p>
 
-<section role="note" id="org63598fb">
+<section role="note" id="org0e32909">
 <p>
 因为文章中既包括自己的文章部分，也包括提及对方网站的部分，所以会导致提及内容被淹没。
 </p>
@@ -462,7 +464,7 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 有的 webmention 的发送时的 URL 是 <code>https://domain/page.html#abc</code> ，通过 webmention.io 的 <a href="https://github.com/aaronpk/webmention.io?tab=readme-ov-file#api">API</a>，target 参数设置为 <code>https://domain/page.html</code> 是无法获取到数据的，需要将 target 设置为 <code>https://domain/page.html#abc</code> ，完全匹配才行，因为目前存储的就是完整的 URL。
 </p>
 
-<section role="note" id="orgd9786c9">
+<section role="note" id="org50e1073">
 <p>
 如果 target 是 <code>https://domain/page.html#abc</code> ，注意需要将 <code>#</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">转义</a> 成 <code>%23</code> 。
 </p>
@@ -550,12 +552,14 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
+<!--
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/toc.js" defer></script>
 <script src="/js/backtop.js" defer></script>
+-->
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>
 <!--

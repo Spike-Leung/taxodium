@@ -11,9 +11,11 @@
 <meta name="color-scheme" content="light dark" />
 <script src="/js/color-scheme.js"></script>
 <link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<!--
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
 <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
 <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+-->
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
 <link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
@@ -131,7 +133,7 @@ Emacs 是通过 <code>auth-source</code> 去实现身份验证的，一般将验
 <b>machine</b> 是服务器，可以是 DNS 名称或 IP 地址，对应 <code>auth-source-search</code> 中的 <code>:host</code> 。
 </p>
 
-<section role="note" id="org5cd63dc">
+<section role="note" id="orge6027b9">
 <p>
 <code>auth-source-search</code> 是 Emacs 中的一个函数，可以基于条件查询返回用 <code>auth-source</code> 定义的密钥。
 </p>
@@ -168,7 +170,7 @@ machine openrouter.ai/api login apikey password xxxx
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">get-deepseek-api-key</span> ()
+<pre class="src src-emacs-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">get-deepseek-api-key</span> ()
   <span class="org-doc">"Get deepseek api from .authinfo."</span>
   <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">auth-source-search</span></span><span class="org-comment">' &#36820;&#22238;&#30340;&#26159;&#19968;&#20010; list&#65292;&#37324;&#38754;&#21253;&#21547;&#22810;&#20010; pList&#65292;
 </span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36890;&#36807; `</span><span class="org-comment"><span class="org-constant">:host</span></span><span class="org-comment">'&#12289;`</span><span class="org-comment"><span class="org-constant">:user</span></span><span class="org-comment">'&#12289;`</span><span class="org-comment"><span class="org-constant">:requrie</span></span><span class="org-comment">' &#38480;&#21046;&#26597;&#35810;&#26465;&#20214;&#65292;&#19968;&#33324;&#21482;&#20250;&#36820;&#22238;&#19968;&#20010; pList
@@ -184,7 +186,7 @@ machine openrouter.ai/api login apikey password xxxx
         <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22914;&#26524;&#19981;&#26159;&#20989;&#25968;&#21017;&#30452;&#25509;&#36820;&#22238;
 </span>        secret)
     (<span class="org-warning">user-error</span> <span class="org-string">"No %s found in the auth source"</span> user)))
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -211,14 +213,14 @@ machine openrouter.ai/api login apikey password xxxx
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">&#30465;&#30053;&#20854;&#20182;&#20195;&#30721;
+<pre class="src src-lisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">&#30465;&#30053;&#20854;&#20182;&#20195;&#30721;
 </span>
 <span id="coderef-call-immersive-translate-api-key" class="coderef-off">(<span class="org-string">"Authorization"</span> . ,(concat <span class="org-string">"Bearer "</span> (immersive-translate-api-key</span>
 <span id="coderef-param-host" class="coderef-off">                                       immersive-translate-chatgpt-host</span>
 <span id="coderef-param-user" class="coderef-off">                                       <span class="org-string">"apikey"</span>))))))</span>
 
 <span class="org-comment-delimiter">;; </span><span class="org-comment">&#30465;&#30053;&#20854;&#20182;&#20195;&#30721;</span>
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -226,7 +228,7 @@ machine openrouter.ai/api login apikey password xxxx
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">immersive-translate-api-key</span> (host user)
+<pre class="src src-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">immersive-translate-api-key</span> (host user)
   <span class="org-doc">"Lookup api key in the auth source.
 
 By default, `</span><span class="org-doc"><span class="org-constant">immersive-translate-chatgpt-host</span></span><span class="org-doc">' is used as HOST
@@ -242,7 +244,7 @@ and \"apikey\" as USER in Chatgpt backend.
           (encode-coding-string (funcall secret) 'utf-8)
           secret)
     (user-error <span class="org-string">"No %s found in the auth source"</span> user)))
-</code></pre>
+</pre>
 </div>
 
 <p>
@@ -308,7 +310,7 @@ sub   rsa4096 2025-02-27 [E]
 <li><code>l-yanlei@hotmail.com</code> 是和这个 gpg 密钥关联的邮箱</li>
 </ul>
 
-<section role="note" id="orgf1113bc">
+<section role="note" id="org4b44c8d">
 <p>
 关于 GPG 密钥的更详细的解释，你可以看 <a href="https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/">Anatomy of a GPG Key</a>。
 </p>
@@ -345,7 +347,7 @@ sub   rsa4096 2025-02-27 [E]
 Emacs 内置的 EasyPG Assistant 可以帮你 <b>自动</b> 完成加密解密，当需要访问 gpg 加密文件的时候它就会启用，你不需要额外做什么。
 </p>
 
-<section role="note" id="org2edfd32">
+<section role="note" id="org3896130">
 <p>
 在 Emacs 中你可以通过 <code>C-h R epa</code> 查看 EasyPG Assistant 的文档。
 </p>
@@ -360,8 +362,8 @@ Emacs 内置的 EasyPG Assistant 可以帮你 <b>自动</b> 完成加密解密�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">setq</span> epa-pinentry-mode 'loopback) <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22312; minibuffer &#36755;&#20837;&#23494;&#30721;</span>
-</code></pre>
+<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> epa-pinentry-mode 'loopback) <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22312; minibuffer &#36755;&#20837;&#23494;&#30721;</span>
+</pre>
 </div>
 
 <p>
@@ -401,8 +403,8 @@ Emacs 内置的 EasyPG Assistant 可以帮你 <b>自动</b> 完成加密解密�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code>(auth-source-pass-enable)
-</code></pre>
+<pre class="src src-emacs-lisp">(auth-source-pass-enable)
+</pre>
 </div>
 </div>
 </div>
@@ -444,12 +446,14 @@ Emacs 内置的 EasyPG Assistant 可以帮你 <b>自动</b> 完成加密解密�
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
+<!--
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/toc.js" defer></script>
 <script src="/js/backtop.js" defer></script>
+-->
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>
 <!--
