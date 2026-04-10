@@ -1,0 +1,1584 @@
+#+title:      Style Test Page
+#+subtitle: Style Test Page Subtitle
+#+export_file_name: style-test-page
+#+date:       [2026-04-10 Fri 09:21]
+#+filetags:   :draft:preview:style:test:
+#+identifier: 20260410T092117
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 博客样式测试页面
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content
+#+html_head_extra: <link rel="stylesheet" href="/styles/main.css" />
+
+* 标题
+:PROPERTIES:
+:CUSTOM_ID: BEA41E39-B030-4903-B483-4BE327E52F8D
+:END:
+** 标题
+:PROPERTIES:
+:CUSTOM_ID: 90447A40-5703-4F04-A2F2-B7F43044182A
+:END:
+*** 标题
+:PROPERTIES:
+:CUSTOM_ID: 385AD1CC-4D9D-4A7C-8C6C-C5F22A97945C
+:END:
+**** 标题
+:PROPERTIES:
+:CUSTOM_ID: 5CB317F3-078A-43B3-87E2-FAADF0F2A040
+:END:
+***** 标题
+:PROPERTIES:
+:CUSTOM_ID: BB312FA0-6676-4098-8985-7A0C27A14F5B
+:END:
+
+* 字体测试
+:PROPERTIES:
+:CUSTOM_ID: 62A5632A-8CE6-42C9-AD23-A76D965F40CD
+:END:
+
+oO01Ili
+
+* markup
+:PROPERTIES:
+:CUSTOM_ID: 664446EF-C4DE-4912-AB02-62F1BE0D0EB0
+:END:
+
+*bold* /italic/ +strike-through+ _underline_ =verbatim= ~code~
+
+@@html:<mark>mark</mark>@@
+
+@@html:<em>em</em>@@
+
+* list
+:PROPERTIES:
+:CUSTOM_ID: 3B9CC828-DF67-4F64-9A24-A6C23AA3F517
+:END:
+
+#+BEGIN: denote-links :regexp "_nichijou*_published" :not-regexp nil :excluded-dirs-regexp nil :sort-by-component nil :reverse-sort nil :id-only nil :include-date nil
+- [[denote:20250829T223226][日常#0 - 新系列、iOS26、RSS、睡眠、红烧鸡翅、读者来信]]
+- [[denote:20250904T102719][日常#1 - 最近买的书、死神来了、空洞骑士、娃娃菜、博客改动、多邻国]]
+- [[denote:20250907T231126][日常#2 - 邻居的求婚、老爸的手机]]
+- [[denote:20250913T231026][日常#3 - 身上的红点、南瓜汤、胡辣汤、猪扒饭、纸上染了蓝、空洞骑士]]
+- [[denote:20250920T200028][日常#4 - 皮肤手术、酸汤牛肉、香菇鸡块、空洞骑士]]
+- [[denote:20250930T184047][日常#5 - PL-330 收音机、咖啡、通关空洞骑士、CITY 完结]]
+- [[denote:20251013T220051][日常#6 - 牙周问题、订阅流整理、Blaugust 回顾、写作的艰难、小米手环表带]]
+- [[denote:20251104T211333][日常#7 - 手写博客文章、跑步、牙齿、煲汤]]
+- [[denote:20251126T154004][日常#8 - Zen 浏览器、白描、博客图片压缩脚本]]
+- [[denote:20251203T185837][日常#9 - 霜打菜、跑步、关于博客、Advent of Code 2025]]
+- [[denote:20260106T001253][日常#10 - 香港迪士尼、莽山五指峰]]
+- [[denote:20260109T100455][日常#11 - 香港赤柱、胶片]]
+- [[denote:20260309T084611][日常#12 - 苹果设备的联动、最近做的一些菜式、死亡搁浅、深圳美术馆看展]]
+#+END:
+
+* code
+:PROPERTIES:
+:CUSTOM_ID: 7D704FDC-5292-4961-BB69-3784FC1D7BBC
+:END:
+
+留意复制按钮。
+
+#+begin_src emacs-lisp -r
+  (defconst spike-leung/elfeed-search-filter "@3-months-ago +unread"
+    "Query string filtering shown entries.")
+#+end_src
+
+#+begin_src emacs-lisp -r
+  (defun spike-leung/consult-elfeed ()
+    "Select feed from `rmh-elfeed-org-files' with live preview in `elfeed'."
+    (interactive)
+    (let* ((candidates (spike-leung/get-feed-candidates 3))) (ref:headline-limit)
+      (consult--multi candidates (ref:candidates)
+                      :prompt "Feed: " (ref:prompt)
+                      :state #'spike-leung/elfeed-preview-state (ref:state)
+                      :history 'spike-leung/consult-elfeed-history (ref:history)
+                      :annotate (lambda (cand) (ref:annotate)
+                                  ;; `cand' 是 string，从 candidates 中查找匹配 `cand' 的 plist
+                                  (let* ((match-cand (seq-find
+                                                      (lambda (v)
+                                                        (string-match-p (car (plist-get v :items)) cand))
+                                                      candidates))
+                                         ;; 从 plist 中读取 `:annotation' 字段
+                                         (annotation (and match-cand (plist-get match-cand :annotation))))
+                                    ;; 返回 annotation，增加一些空格，和选项区分开
+                                    (when annotation
+                                      (concat (make-string 25 ?\s) annotation)))))
+      (when (get-buffer "*elfeed-search*")
+        (pop-to-buffer "*elfeed-search*"))))
+#+end_src
+
+#+begin_src emacs-lisp -r
+  (defun spike-leung/elfeed-preview-state (state candidate) (ref:elfeed-preview-state)
+    "Return consult state function for live `elfeed' preview.
+  See `consult--with-preview' about STATE and CANDIDATE."
+    (let* ((cand (car candidate))
+           (metadata (cdr candidate))
+           (feed-url (plist-get metadata :feed-url)))
+      ;; switch case
+      (pcase state
+        ;; 初始化的时候调用 `elfeed' 相关的初始方法；重置过滤条件；打开 `elfeed' 的 buffer。
+        ('setup
+         (unless (get-buffer "*elfeed-search*")
+           (elfeed-apply-hooks-now)
+           (elfeed-org)
+           (elfeed)
+           (elfeed-search-clear-filter))
+         (display-buffer "*elfeed-search*" '(display-buffer-reuse-window)))
+        ;; 预览的时候，将订阅流的名字拼接到过滤条件上面，
+        ;; 这样就可以在切换订阅流名字时，应用不同过滤条件，查看对应的结果
+        ('preview
+         (elfeed-search-clear-filter)
+         (when (and cand (get-buffer "*elfeed-search*"))
+           (unless (or (string-empty-p cand) (null cand))
+             (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter " =" (string-replace " " "." cand))))))
+        ;; 按下 return 确定选项后，把选择的过滤条件应用上去，同时获取选择的订阅流的 URL，执行一次拉取
+        ('return
+         (unless (or (string-empty-p cand) (null cand))
+           (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter " =" (string-replace " " "." cand)))
+           (elfeed-update-feed feed-url))))))
+#+end_src
+
+
+* example
+:PROPERTIES:
+:CUSTOM_ID: 87BD22B1-C7FA-41CD-9EE8-BD47FD40B32B
+:END:
+
+#+begin_example
+.......S.......
+...............
+.......^.......
+...............
+......^.^......
+...............
+.....^.^.^.....
+...............
+....^.^...^....
+...............
+...^.^...^.^...
+...............
+..^...^.....^..
+...............
+.^.^.^.^.^...^.
+...............
+#+end_example
+
+
+* note section
+:PROPERTIES:
+:CUSTOM_ID: 9D675A6E-C153-4F31-A146-640A9370FB50
+:END:
+
+#+attr_html: :role note
+#+begin_section
+这是一个超光速粒子歧管的图表（a diagram of the tachyon manifold）， =S= 是发射超光速粒子束的地方。
+超光速粒子束总是向下移动。
+超光速粒子束可以自由穿过空白区域 (=.=)。
+但是，如果超光速粒子束遇到分束器 (=^=)，光束就会停止；
+取而代之的是，新的超光速粒子束会被分束，从分束器的正左侧和正右侧继续向下移动。
+#+end_section
+
+* quote
+:PROPERTIES:
+:CUSTOM_ID: 12A87AA7-5CCA-4F0D-8534-AD8931FCB976
+:END:
+
+#+begin_quote
+关于「开辟自己的有机花园」与「去超市买食物」在政治和哲学层面的差异，我真的不需要赘述太多。
+当然，超市更方便；一切都是为了你的舒适而设计的：
+有空调，一切都闪闪发亮且包装精美，简直就像散步一样，毫不费力，这种反进化的方式让人异化。
+获取食物本是艰苦的工作；
+在花园里，你必须流汗，你得耕作土地，面对蚂蚁、害虫、干旱、冰雹等各种问题，
+而当你去超市时，你会忘记这些。
+_区别在于，在一种情况下，你和食物之间隔着一个资本主义体系；_
+_而在另一种情况下，只有你和食物。_
+重新建立与土地的联系（这是选择这种更自然生活方式的人所珍视的），
+类似于重新建立与最初那个去中心化且真实的互联网的联系。
+_我认为，如果你想找回曾经那种互联网的感觉，_
+_唯一的办法就是在家里、图书馆、社区或任何地方，_
+_自行托管你自己的「服务器 ⸺ 有机花园」，让资本主义尽可能少地触及它。_
+
+[[https://www.421.news/en/interviews-underground-computer-santiago-roland-en/#:~:text=%E8%B5%B7%E6%BA%90%E3%80%82-,There%E2%80%99s,possible][Source]]
+#+end_quote
+
+* verse
+:PROPERTIES:
+:CUSTOM_ID: A0D02379-28F9-4664-9069-9798F1D8C3E3
+:END:
+
+#+attr_html: :class vertical-rl lyrics
+#+begin_verse
+/i'm going to the darklands/
+/to talk in rhyme/
+/with my chaotic soul/
+/as sure as life means nothing/
+/and all things end in nothing/
+/and heaven i think/
+/is too close to hell/
+/i wanna move i wanna go/
+/i wanna go/
+
+
+
+@@html:<span class="lyrics--color">我将要去这凋零之地
+用押韵的言语
+和我混乱的灵魂说话
+<span class="lyrics--large">生命无疑是没有任何意义的
+一切都终将归于虚无</span>
+<span class="lyrics--small">我认为天堂
+和地狱太过接近</span>
+我想要离开 我想要走
+我想要走</span>@@
+
+Darklands
+#+end_verse
+
+#+begin_verse
+_清晨我看见一团迷雾 散开_
+_我从床上跳到床下看 云开_
+对楼的邻居正吃早餐 好吃
+而我正准备喝杯牛奶 甜的
+
+oh 早晨醒来 oh 早晨美好
+oh 阳光很好 oh 早晨美好
+
+oh 早安说著 oh 早晨美的
+oh 阳光洒著 oh 早晨好的
+
+早晨好的
+Good morning~
+#+end_verse
+
+
+* image
+:PROPERTIES:
+:CUSTOM_ID: 6CED169B-9F03-40ED-9CE7-36D10AF108AA
+:END:
+
+#+CAPTION: elfeed 阅读页面
+[[file:images/use-elfeed-to-read-feed-in-emacs/elfeed.webp]]
+
+** float
+:PROPERTIES:
+:CUSTOM_ID: 3C8052AE-C15F-4BE4-B0F6-CE58955BF568
+:END:
+
+#+attr_html: :class float-end
+#+CAPTION: 一个 GIF 图，展示声音和 AM、FM 的关系。
+#+CAPTION: 从上到下 3 条波形图，第一条是 Signal，第二条是 AM，第三条是 FM。
+#+CAPTION: AM 在 Signal 的波峰振幅更大，在波谷振幅更小。
+#+CAPTION: FM 在 Signal 的波峰频率更高，波形更密集；在波谷频率更低，波形相对稀疏。
+#+CAPTION: (图片来源: [[https://en.wikipedia.org/wiki/AM_broadcasting][AM Broadcasting]], 遵循 CC BY-SA 2.5)
+[[file:images/nichijou/5/Amfm3-en-de.gif]]
+
+人的声音属于低频信号，传播不远，想要广播到很远的地方，就需要调制成高频信号。
+从图 2 的 GIF 图看，无论是通过 FM 还是 AM 调制，波形都会比原始的信号密集很多，
+或许是因为密度高，就算传播到很远的地方也容易被识别，更能抗干扰；
+高频信号的 [[https://en.wikipedia.org/wiki/Wavelength][波长]] 短，相同的距离，高频比低频可以携带更多的信息，传输效率也会更高。
+
+#+attr_html: :style width: 400px; :class float-start
+#+CAPTION: 香草山冷萃
+[[file:images/nichijou/5/xiang-leng-shan-leng-cui.jpeg]]
+
+香草山也是 Morse 的一款豆子，冷萃出来没有苦涩的味道，大概也是酒桶发酵或者厌氧处理之类的，
+确实能喝出一种类似威士忌的风味，牛奶巧克力也能联想到，香草冰激凌就联想不到了。
+喝完之后，咖啡的余味能持续一阵子，再喝白水，会有回甘。
+整体来说我挺喜欢这款冷萃的。
+
+#+attr_html: :style width: 400px; :class float-end
+#+CAPTION: 冰摇柠檬冷萃
+[[file:images/nichijou/5/bing-yao-ning-meng-leng-cui.jpeg]]
+
+#+attr_html: :style clear: inline-start;
+冰摇柠檬冷萃是加了糖的，很甜，第一口喝下去，和瑞幸的各种糖浆美式的口感一模一样。
+不过细品的话，还是能喝到一些柑橘味的，至于蜂蜜，都很甜，从甜感上来说是有这样的风味。
+茉莉的味道我就联想不到了，虽然闻过，但我对茉莉的味道也想象不出来。
+我不喜欢这款冷萃，太甜了，掩盖了咖啡本身的味道，喝起来像是在喝甜水。
+
+* video
+:PROPERTIES:
+:CUSTOM_ID: 787D115C-CA07-410E-8CF8-241CC80DA65F
+:END:
+
+#+begin_export html
+<figure>
+  <a href="/images/use-elfeed-to-read-feed-in-emacs/kagi-translate.webm" target="_blank">
+    <video autoplay loop muted playsinline>
+      <source src="/images/use-elfeed-to-read-feed-in-emacs/kagi-translate.webm" type="video/webm">
+    </video>
+  </a>
+  <figcaption>一个视频，展示了从 elfeed 打开文章，然后用 Kagi Translate 翻译成中文查看</figcaption>
+</figure>
+#+end_export
+
+
+* footnote
+:PROPERTIES:
+:CUSTOM_ID: 978C6B75-EF5D-46B6-9097-55901C6E1124
+:END:
+
+** 博客文章内容部分
+:PROPERTIES:
+:CUSTOM_ID: A81A87B9-D357-4F59-AE6D-7ECFFEFAA121
+:END:
+
+中文写作规范，我主要参考：
+
+- [[https://github.com/ruanyf/document-style-guide][中文技术文档的写作规范]]
+- [[https://github.com/sparanoid/chinese-copywriting-guidelines][中文文案排版指北]]
+
+列举一些我平时会比较注意的（整理并写下来，可以避免自己纠结，保持统一）：
+
+- 中文和英文、数字、链接之间应该有一个空格。
+
+- 标点符号的使用
+  + 偏好使用 =「」= 而不是 =“”=
+  + 破折号我一般会用 =⸺= ，并且前后添加空格
+  + 中文省略号应该用 =……= 而不是 =。。。= 或者 =...=
+  + 避免中英文符号混合，中文里的逗号应该都是 =，= 而不是 =,= ；分号应该是 =；= 而不是 =;=
+  + 并列的内容，只要出现在中文句子中，不管是中文还是英文，都统一使用 =、= ；
+    如果是出现在英文句子中，则用 =,= 。
+
+- 注意专有名词的大小写拼写，例如是 =GitHub= 而不是 =github= 、 =Github= 、 =GITHUB= 。
+
+- 使用缩写的时候，在第一次提及的时候补充全称。
+
+- 注意区分「的」、「地」、「得」。
+
+- 图片尽可能使用 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/figure][figure]] 对内容进行描述；如果不使用 figure，应该使用 [[https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/alt][alt]] 描述，
+  原因是： 1.图片可能加载失败；2.方便使用屏幕阅读器的读者，他们可能看不到图片。
+
+  #+attr_html: :role note
+  #+begin_section
+  关于 Alt Text，可以看看：
+  - [[denote:20241202T213933::#d4ff1100-acc4-4215-8d9d-3a2c3fa7271b][Zine#18::Alt Text: Not Always Needed]]
+  - [[denote:20250526T202429::#DBA5A1E3-6998-41A9-9564-9770AB66ADC8][Zine#35::Finding the Joy in Alt Text]]
+  #+end_section
+
+- 考虑在 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/figcaption][figcaption]] 中给图片标注序号，如图 1、图 2 等，然后在涉及图片时，用这个序号代指图片。
+
+- 引用应该标注来源，我一般会使用 [[denote:20241028T214050::#95f53c7f-af5f-49cf-abad-92edebf9f623][Copy Link To Highlight]]，
+  这样读者跳转过去的时，可以通过高亮，快速看到我引用的部分。
+  由于我不少内容是翻译过来的，可能无法转译作者原意，所以我认为指向原文是很重要的。[fn:2]
+
+- 引用的时候应该尽可能保留原格式，因为可能是作者刻意组织的。[fn:3]
+
+- 对于一些较长的，不是很重要的内容，可以考虑用 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/details][details]] 进行折叠[fn:4]，
+  用户感兴趣可以自行点开；或者考虑用脚注。
+
+- 一些希望突出的内容，可以考虑用粗体，
+  但有时粗体和其他字体对比不够强烈的时候，可以考虑使用下划线或者增加颜色。
+
+- 链接应该有下划线（参考 [[https://adactio.com/journal/22084][Style your underlines]]），而不只是通过颜色和正文区分，
+  考虑一些颜色不敏感的用户，有可能在他们的眼中是区分不出来的。
+  下划线能更好地区分链接和正文，也很符合直觉。
+
+- 我不太喜欢很长的段落，一大段的读起来有些费劲，我会一定程度控制段落的长度。
+
+  #+attr_html: :role note
+  #+begin_section
+  可以参考 [[https://sive.rs/1s][一个句子写一行]] 和 [[https://sembr.org/][Semantic Line Breaks]]，会给写作带来一定好处。
+
+  需要注意的是，文章中的「一个句子写一行」不是说发布时一个句子一行，
+  而是在@@html:<em>写作时</em>@@。
+  一般博客是用 Markdown 写，然后转换成 HTML，一个句子一行是指在写 Markdown 的时候。
+  #+end_section
+
+- 分享音视频的时候，考虑添加时长信息。
+
+- 引用链接的时候，我会移除那些跟踪的标记，除非我没留意到；同样的，我的博客也不会跟踪你。
+
+- 书籍、影视、歌曲可以考虑使用 =《》= 包裹，包裹时 =《》= 作为链接的一部分，
+  例如 [[https://book.douban.com/subject/1013208/][《如何阅读一本书》]] (注意符号前后空格）。
+  如果是英文书名等，可以考虑用斜体，
+  例如 /How to Read a Book: The Classic Guide to Intelligent Reading/ 。
+
+除此之外，应该持续优化和编辑[fn:5]已发布的文章，修复一些看到的错别字，
+坏掉的图片或链接；如果有更好的表达也可以改进一下。
+
+** 我不喜欢的设计/内容
+:PROPERTIES:
+:CUSTOM_ID: 6868010F-A0F1-41BB-8FB0-742BE6A612A5
+:END:
+
+- 一打开网页就弹窗，除非我对内容很感兴趣，或者内容比较有价值，否则这样的网站我多半会直接关闭
+- 有的博客内容很丰富，像是一个数字花园，固然很棒，但我会觉得有些迷失方向，甚至有些信息焦虑感
+- 明显是 LLM 生成的内容[fn:6]、简单复制的内容、看不出来作者思考、打磨的内容
+- 到处都是广告的博客
+- 资源太多，加载很慢的博客
+- 排版很差、排版像 [[https://www.csdn.net][CSDN]] 的博客
+- 错别字、拼写错误太多
+- 太多花里胡哨的元素
+- 对比度太高或者不足，要么看得刺眼，要么看不清，都难受
+- 响应式支持很差的，在手机上阅读体验很差的
+- 隐藏滚动条的博客
+
+  #+begin_details
+  #+html: <summary>关于滚动条</summary>
+
+  手机上有滚动条的话，可以长按滚动条拖动到底部，没有滚动条只能一直往下翻，体验很差。
+
+  滚动条本身也可以作为当前位置的一个提示，而不需要额外显示一个进度百分比。
+
+  如果是在电脑上阅读，除了滚动条，
+  还可以使用 @@html:<kbd>HOME</kbd>@@ 回到页面顶部，@@html:<kbd>END</kbd>@@ 去到页面底部。
+
+  #+end_details
+
+如果设计得不好，阅读体验或许都不如一个只有文字的 HTML。
+
+#+begin_details
+#+html: <summary>你还是可以简单加几行样式</summary>
+
+参考 Kevin Powell 的 [[https://thecascade.dev/article/least-amount-of-css/][The least amount of CSS for a decent looking site]]：
+
+#+begin_src css
+  /* 自适应用户当前的主题 */
+  html {
+    color-scheme: light dark;
+  }
+
+  /* 设置一个通用的字体、适当的字体大小和行高，避免字体太小和拥挤 */
+  body {
+    font-family: system-ui;
+    font-size: 1.25rem;
+    line-height: 1.5;
+  }
+
+  /* 避免图片视频溢出屏幕 */
+  img,
+  svg,
+  video {
+    max-width: 100%;
+    display: block;
+  }
+
+  /* 设置内容最大宽度并居中，避免一行文字过长，具体的值可能要根据自己喜欢调整一下 */
+  main {
+    max-width: min(70ch, 100% - 4rem);
+    margin-inline: auto;
+  }
+#+end_src
+#+end_details
+
+
+* details
+:PROPERTIES:
+:CUSTOM_ID: 201A8652-755D-4AE2-A802-5D80FFFA1EDE
+:END:
+
+#+begin_details
+#+html: <summary>完整代码</summary>
+#+begin_src emacs-lisp
+  (defconst spike-leung/elfeed-search-filter "@3-months-ago +unread"
+    "Query string filtering shown entries.")
+
+  (defun spike-leung/get-feed-candidates (&optional level)
+    "Extract headings title from `rmh-elfeed-org-files' as consult candidates.
+  If LEVEL exist, filter heading which level is greater or equal LEVEL."
+    (mapcan
+     (lambda (elfeed-org-file)
+       (with-current-buffer (or (find-buffer-visiting elfeed-org-file)
+                                (find-file-noselect elfeed-org-file))
+         (delq nil
+               (org-element-map (org-element-parse-buffer 'headline) 'headline
+                 (lambda (hl)
+                   ;; property 的值可以在这里找： https://orgmode.org/worg/dev/org-element-api.html
+                   (when (or (null level) (>= (org-element-property :level hl) level))
+                     (let* ((raw-title (org-element-property :raw-value hl))
+                            (title (org-link-display-format raw-title))
+                            (annotation (org-entry-get hl "description"))
+                            (feed-url (when (string-match org-link-bracket-re raw-title)
+                                        (match-string 1 raw-title))))
+                       (list :items (list title) :feed-url feed-url :annotation annotation))))
+                 nil))))
+     rmh-elfeed-org-files))
+
+  (defun spike-leung/elfeed-preview-state (state candidate)
+    "Return consult state function for live `elfeed' preview.
+  See `consult--with-preview' about STATE and CANDIDATE."
+    (let* ((cand (car candidate))
+           (metadata (cdr candidate))
+           (feed-url (plist-get metadata :feed-url)))
+      (pcase state
+        ('setup
+         (unless (get-buffer "*elfeed-search*")
+           (elfeed-apply-hooks-now)
+           (elfeed-org)
+           (elfeed)
+           (elfeed-search-clear-filter))
+         (display-buffer "*elfeed-search*" '(display-buffer-reuse-window)))
+        ('preview
+         (elfeed-search-clear-filter)
+         (when (and cand (get-buffer "*elfeed-search*"))
+           (unless (or (string-empty-p cand) (null cand))
+             (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter " =" (string-replace " " "." cand))))))
+        ('return
+         (unless (or (string-empty-p cand) (null cand))
+           (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter " =" (string-replace " " "." cand)))
+           (elfeed-update-feed feed-url))))))
+
+  (defun spike-leung/consult-elfeed ()
+    "Select feed from `rmh-elfeed-org-files' with live preview in `elfeed'."
+    (interactive)
+    (let* ((candidates (spike-leung/get-feed-candidates 3)))
+      (consult--multi candidates
+                      :prompt "Feed: "
+                      :state #'spike-leung/elfeed-preview-state
+                      :history 'spike-leung/consult-elfeed-history
+                      :annotate (lambda (cand)
+                                  (let* ((match-cand (seq-find
+                                                      (lambda (v)
+                                                        (string-match-p (car (plist-get v :items)) cand))
+                                                      candidates))
+                                         (annotation (and match-cand (plist-get match-cand :annotation))))
+                                    (when annotation
+                                      (concat (make-string 25 ?\s) annotation)))))
+      (when (get-buffer "*elfeed-search*")
+        (pop-to-buffer "*elfeed-search*"))))
+#+end_src
+
+#+begin_quote
+关于「开辟自己的有机花园」与「去超市买食物」在政治和哲学层面的差异，我真的不需要赘述太多。
+当然，超市更方便；一切都是为了你的舒适而设计的：
+有空调，一切都闪闪发亮且包装精美，简直就像散步一样，毫不费力，这种反进化的方式让人异化。
+获取食物本是艰苦的工作；
+在花园里，你必须流汗，你得耕作土地，面对蚂蚁、害虫、干旱、冰雹等各种问题，
+而当你去超市时，你会忘记这些。
+_区别在于，在一种情况下，你和食物之间隔着一个资本主义体系；_
+_而在另一种情况下，只有你和食物。_
+重新建立与土地的联系（这是选择这种更自然生活方式的人所珍视的），
+类似于重新建立与最初那个去中心化且真实的互联网的联系。
+_我认为，如果你想找回曾经那种互联网的感觉，_
+_唯一的办法就是在家里、图书馆、社区或任何地方，_
+_自行托管你自己的「服务器 ⸺ 有机花园」，让资本主义尽可能少地触及它。_
+
+[[https://www.421.news/en/interviews-underground-computer-santiago-roland-en/#:~:text=%E8%B5%B7%E6%BA%90%E3%80%82-,There%E2%80%99s,possible][Source]]
+#+end_quote
+
+#+attr_html: :role note
+#+begin_section
+如果你不熟悉 HTML，推荐看 [[https://htmlforpeople.com/][HTML is for people]]。
+关于样式设计，作者有一份现成的样式表： [[https://github.com/susam/spcss?tab=readme-ov-file][SPCSS]]，也可以参考一下 [[denote:20250910T140613][我的博客设计]]。
+#+end_section
+
+- [[denote:20250829T223226][日常#0 - 新系列、iOS26、RSS、睡眠、红烧鸡翅、读者来信]]
+- [[denote:20250904T102719][日常#1 - 最近买的书、死神来了、空洞骑士、娃娃菜、博客改动、多邻国]]
+- [[denote:20250907T231126][日常#2 - 邻居的求婚、老爸的手机]]
+- [[denote:20250913T231026][日常#3 - 身上的红点、南瓜汤、胡辣汤、猪扒饭、纸上染了蓝、空洞骑士]]
+- [[denote:20250920T200028][日常#4 - 皮肤手术、酸汤牛肉、香菇鸡块、空洞骑士]]
+- [[denote:20250930T184047][日常#5 - PL-330 收音机、咖啡、通关空洞骑士、CITY 完结]]
+- [[denote:20251013T220051][日常#6 - 牙周问题、订阅流整理、Blaugust 回顾、写作的艰难、小米手环表带]]
+- [[denote:20251104T211333][日常#7 - 手写博客文章、跑步、牙齿、煲汤]]
+- [[denote:20251126T154004][日常#8 - Zen 浏览器、白描、博客图片压缩脚本]]
+- [[denote:20251203T185837][日常#9 - 霜打菜、跑步、关于博客、Advent of Code 2025]]
+- [[denote:20260106T001253][日常#10 - 香港迪士尼、莽山五指峰]]
+- [[denote:20260109T100455][日常#11 - 香港赤柱、胶片]]
+- [[denote:20260309T084611][日常#12 - 苹果设备的联动、最近做的一些菜式、死亡搁浅、深圳美术馆看展]]
+#+end_details
+
+* ruby
+:PROPERTIES:
+:CUSTOM_ID: 2FABB28E-6BF6-481C-8A89-FE1E08345CE6
+:END:
+
+#+begin_quote
+#+begin_export html
+<div style="display: flex; flex-direction: column;">
+  <ruby>这个夏天也<rp>（</rp><rt lang="ja">この夏も</rt><rp>）</rp></ruby>
+  <ruby>终将 <rp>（</rp><rt lang="ja">やがて</rt><rp>）</rp></ruby>
+  <ruby>成为那个夏天。<rp>（</rp><rt lang="ja">あの夏になる。</rt><rp>）</rp></ruby>
+</div>
+#+end_export
+
+[[https://x.com/city_anime_info/status/1972323161040720170][Source]]
+#+end_quote
+
+* zine
+:PROPERTIES:
+:CUSTOM_ID: 9FA1378D-BD1C-4381-8B3C-648A4DDE7C38
+:END:
+
+测试间距
+
+** [[https://sightlessscribbles.com/posts/the-colonization-of-confidence/][The Colonization of Confidence.]] by Robert Kingett
+:PROPERTIES:
+:CUSTOM_ID: 97356677-80D6-49F3-994A-0A35F83CAAEA
+:END:
+
+强烈推荐阅读原文。
+
+作者和他的朋友参加了一个写作小组，小组的一个人崇拜和鼓吹 LLM，
+看不上人写的粗糙的、真实的、「不够流畅的」、充满情绪的文字，
+还拿着别人的文字丢给 LLM 润色修改，并认为 LLM 修改后的更好。
+
+后来他的朋友被说动了，开始用 LLM 创作，他的朋友也认为 LLM 比自己原来的文字更好，
+甚至觉得没了 LLM 就不会写作了，认为自己失去了写作的能力，
+朋友的写作信心被慢慢地瓦解了，作者感到悲伤，也感到愤怒。
+
+于是作者创建了一个禁止 LLM 的写作小组，邀请那位失去信心的朋友参与，
+一段时间后，这位朋友摆脱了 LLM，重新找回了充满他个人特色的文字。
+
+#+begin_details
+#+html: <summary>摘录 (很长)</summary>
+
+#+begin_quote
+里奥坐在我身旁。我能听见他呼吸中透出的不安节奏。
+作为一位黑人作家，他的声音宛如爵士乐般难以预测、切分音层叠，
+充满意外的不协和音，最终又化解成令人心碎的和弦。
+他书写自己的生活，德克萨斯夏季黏稠闷热的具体质感，以及周二午后廉价冰棒带来的那份喜悦滋味。
+
+「我有了些新东西，」利奥说。他的声音很紧绷。「不过 ⸺ 还很粗糙。实在乱得很。」
+
+_「乱一点才好，」我倾身向前，「有血有肉的东西总是藏在杂乱里。」_
+
+利奥是个笔力雄浑而不羁的作家。
+他说话时嗓音低沉有力，仿佛重载卡车碾过碎石路面，带着某种拒绝被磨平的沧桑底蕴。
+当他高声朗读作品时，整个房间的空气都会为之一滞。
+他的文字从不「工整」。不似流水般顺畅；倒像糖浆般浓稠绵密，又或如岩浆般灼烧万物。
+他惯用直抒胸臆的笔法，这种被评论家诟病的风格，我却觉得无比真实。
+他不请你旁观，而是命令你倾听。
+
+而他写下的每一个字，我都深深爱着。
+
+[[https://sightlessscribbles.com/posts/the-colonization-of-confidence/#:~:text=Leo%20sits,writes,-%2E][Source]]
+#+end_quote
+
+#+begin_quote
+Leo 阅读着。这是一篇关于他祖母厨房的文章。
+他将羽衣甘蓝的气味描绘成一条厚重的绿毯，将空气完全降服。
+他将祖母的笑声形容为一扇依然运作完美的生锈铰链。
+
+它很美丽。它并不完美。它让我骤足。
+
+[[https://sightlessscribbles.com/posts/the-colonization-of-confidence/#:~:text=Leo%20reads,cold][Source]]
+#+end_quote
+
+#+begin_quote
+「这……有点意思，」查德说道。
+「但节奏感有点奇怪。而且那个关于铰链的隐喻？它有点让你从沉浸感中抽离出来，不够流畅。」
+*「它本不该流畅，」我厉声道，「它本应真实。」*
+
+[[https://sightlessscribbles.com/posts/the-colonization-of-confidence/#:~:text=%22It%27s,true%2E%22][Source]]
+#+end_quote
+
+#+begin_quote
+「我想，」利奥低语道，「我可能对那个铰链太过较真了。」
+
+「不，」我的声音低沉如护院犬的警告低吼。
+「那道门铰链完美无瑕。钟声是个谎言。利奥，那台机器没有改进你的写作 ⸺ 它抹去了你祖母的存在。」
+
+「你就是对这些工具有抗拒心理，罗伯特，」查德叹了口气。「这是未来趋势。要么适应，要么消亡。」
+
+「哦，你一边去吧。这根本不是适应，」我紧握着桌沿，指节都开始作痛，「这简直是脑叶切除。」
+
+[[https://sightlessscribbles.com/posts/the-colonization-of-confidence/#:~:text=%22I%20guess,lobotomy%2E%22][Source]]
+#+end_quote
+
+#+begin_quote
+问题在于，创作艺术 ⸺ 真正的人性化、有意义的写作 ⸺ 是缓慢的。
+它代价高昂。它充满变数。而且它包罗万象。
+它需要与人打交道。
+那些带着创伤的人，那些持有政治立场的人，那些声音不符合企业风格指南的人。
+少数族裔作家尤其「摩擦系数高」。
+我们探讨酷儿议题、跨性别恐惧与种族主义，我们直面残障议题。这些内容让广告商如坐针毡。
+
+于是这些科技大佬们，以其无穷的平庸，决定彻底绕过人性因素。
+他们打造的机器未经许可就掠夺我们的心血 ⸺ 我们的痛苦、我们的喜悦、我们的灵魂 ⸺
+将其碾磨成数学浆糊，再挤压成无味无害的糊状物，任人按桶出售。
+
+[[https://sightlessscribbles.com/posts/the-colonization-of-confidence/#:~:text=The%20%22problem,bucket][Source]]
+#+end_quote
+
+#+begin_quote
+他读了里奥的原句。我知道这是里奥的句子，因为它有锋芒。
+
+然后，他接触到了 LLM 版本。
+
+众人低声议论着。「哦，这样读起来流畅多了，」有人说道，「更具 ⸺ 普世性。」
+
+「普适性就是平庸，」
+我厉声说道，暗自希望自己能操控程序让查德那愚蠢的 LLM 自动销毁。
+「它试图触及所有人，结果反而无人触及。」
+
+「罗伯特，」查德叹了口气，「你总是爱唱反调。你看，数据不会说谎。读者更喜欢第二个版本。
+我们在 Wattpad 上做了 A/B 测试，第二个版本的用户留存率高出 40%。」
+
+「你给他们喂的是污泥，」我提高嗓门说，
+「而他们饿得发慌，只能吞下。最后你还告诉他们，污泥就是食物的味道。」
+
+[[https://sightlessscribbles.com/posts/the-colonization-of-confidence/#:~:text=He%20reads%20Leo%27s,like%2E%22][Source]]
+#+end_quote
+
+#+begin_quote
+「他们喜欢这种条件反射，」我语气尖锐地说，「喜欢这种熟悉感。
+_这就像语言界的麦当劳薯条 ⸺ 经过化学调配让人觉得可口，却毫无营养价值。_
+它穿过大脑时，根本不会留下任何痕迹。」
+
+「也许我就是个坏人，」里奥说。这句话悬在空中，沉甸甸的，湿漉漉的。
+
+_「你并不差劲。你不过是身处一个试图兜售手机铃声的世界里的爵士乐手。」_
+
+「罗伯特，我真的撑不下去了，」利奥说，随即崩溃了。那不是呜咽，而是持续的喘息，胸膛不断塌陷。
+「该死，今早我试着写点东西。就我一个人。
+面对空白文档，我盯着闪烁的光标，每个浮现的句子都显得 ⸺ 苍白无力。像业余之作。
+我写下 『雨点敲打屋顶如砾石』，转念又想：不，AI 能写得更好。于是我删了。全都删了。」
+
+我正要开口时，他继续说道：
+
+「罗伯，我感觉自己好蠢，」他哽咽着说，话语被泪水淹没。
+「我感觉自己好蠢。我让它钻进我脑子里，现在却赶不出去。
+我看着自己的想法，它们看起来是错的。它们看起来像错误。」
+
+我起身绕过桌子，循着他的呼吸声摸索前行。
+找到他的肩膀后，我将他揽入怀中。
+他像抓住救命稻草般紧紧抱住我，双手攥着我的身体，仿佛我是他海上唯一的救生艇。
+
+「这就是陷阱，里奥。这就是心理战。
+_他们兜售的解决方案，正是他们自己制造的问题。_
+_他们想让你感到不安。一旦你感到不安，就会付费订阅。_
+_他们正在剥夺你的自信，然后把人造的自信卖给你。_ 」
+
+「我赔钱了！」他哀嚎着，
+「我赔钱了，写不出东西了 ⸺ 读者们 ⸺ 读者们都爱我的 LLM 写作！我该怎么办啊，罗伯！
+读者喜欢，编辑也喜欢。杂志社的编辑们。
+我写不出东西了！我简直 ⸺ 我到底怎么了 ⸺ 为什么读者会喜欢它？」
+
+「我不知道，」我诚实地回答，轻轻摇晃着他，试图用言语抚慰他的心。
+「但人们想吃麦当劳，并不意味着我们就要放弃家常菜。
+可我真的不知该怎么办。我只是个普通人，但里奥，我爱你，好吗？
+只要你需要，我永远都在。如果你需要我看看草稿或者 ⸺ 」
+
+「问题不仅在于订阅量，」他哭诉道，「更在于读者。他们已经习惯了平庸之作，罗伯。
+他们习惯了那些圆滑的笔触。
+我的写作...我的真正写作...现在感觉摩擦力太大了。
+就连编辑们也是如此。那些本该更有见识的人也一样。」
+
+_「摩擦是热量的来源，」我激烈地说，「摩擦才是生命的所在。」_
+
+但他听不见我的声音。瓦解战术正在生效。
+_他正将自己拆解成零碎的部件，用合成填充物替换原有零件 ⸺ 因为这个世界告诉他，他自身的零件都是残次品。_
+
+[[https://sightlessscribbles.com/posts/the-colonization-of-confidence/#:~:text=%22They,defective][Source]]
+#+end_quote
+
+#+begin_quote
+我决定读点东西。我通常不会这样做。
+我的作品都留给博客，留给那些懂得屏幕阅读器并非桎梏而是工具的人。
+_但我需要向里奥证明，不完美才是力量。_
+_我需要证明，未经雕琢的文字比经过加工的数据更能直击人心。_
+
+我读到一篇关于母亲的文章。
+它粗粝而愤怒，将她的声音比作 「锯齿刀划过温热黄油的声响」，
+将拖车公园的气味形容为 「湿纸板与变质的野心」。
+_文字支离破碎，没有华丽的装饰，没有交响乐般的韵律。_
+_这篇文字逼着你直面丑陋，并直呼其名。它不完美，却全然是我。_
+
+当我说完时，房间里一片寂静。
+
+「有意思，」查德说。这话带着不屑。
+「很 ⸺ 直白。但老罗，老兄，这有点难懂。句式结构乱七八糟的。还有 『湿纸板』？有点恶心，对吧？」
+
+「这是事实，」 我说。
+
+「真相无法量化，」查德说着敲击键盘。
+「我只是好玩，把你的第一段文字喂进了正在测试的新版 GPT-fiction-Plus 程序。
+就想看看它如何处理核心概念。我给它设定了『提升语体』和『优化句法』的指令。」
+
+「别这样，」我警告道。声音骤然压低 ⸺ 平静、危险、毫无波澜。「别用你的搅拌机搅乱我的生活。」
+
+「太迟了，」查德说，「听听这改进。」
+
+他清了清嗓子，享受着此刻。我感觉心口仿佛被千箭射穿。
+
+查德说完后，脸上绽放出灿烂的笑容。
+我甚至能从他的语调里听出笑意。
+「看？信息没变，但现在更易接受了。
+现在这才是内容。去掉了攻击性，语气也平缓了。客观来说，这才是更好的写作。」
+
+前排一位女士低声说道：「哦，这可好多了。感觉更 ⸺ 有文学气息。」
+
+「没错！」 查德说，「我修好了。」
+
+「查德，」 我平静地说，声音如同老师在纠正一个不情愿的学生，「为什么它选择 『石头』 作为喉咙的隐喻？」
+
+「什么？因为它很聪明。它很机灵。它懂。因为它很合适。」
+
+_「不，」 我说，「它选择 『石头』 是因为在未经许可从互联网抓取的数千亿字节训练数据中，_
+_『石头』 与 『喉咙哽咽』 出现邻近的概率为 0.04% ，高于 『湿漉漉的生物』。_
+_这并非选择。这是数学问题。_
+_它不过是强化版的预测文本算法。_
+_它不懂何为咽喉，不懂恐惧的滋味，只是基于平庸数据预测下一个词符而已。」_
+
+「这依然是更好的写作方式，」 查德坚持道，但他的声音因愤怒而颤抖 ⸺ 他认为对方是个技术恐惧症患者，却比他更懂这项技术。
+
+「这不过是能力幻觉罢了，」 我说，
+_「查德，指望那台机器提升写作水平，就像指望搅拌机改良沙拉。_
+_你得不到更好的沙拉，只会得到一团糊状物。而你们 ⸺ 」_
+_我转头环视全场，_
+_「你们都在为这团糊状物喝彩，只因它容易吞咽。你们任由这个技术宅说服自己，把自身独特的味道当成缺陷。」_
+
+我听见身旁传来声响。
+
+是里奥。他正发出受伤动物试图保持安静时的呻吟声 ⸺ 喉咙深处传来尖锐而细微的呜咽。
+
+「你 ⸺ 修好了，」 里奥低声说道。
+
+「看吧？」 查德对我说，「连里奥都懂。」
+
+「不，」 我说。我站起身，咔嚓一声展开手杖，寂静的房间里这声响如同枪响。
+_「你没修好它。你把它阉割了。_
+_你把一声嘶吼变成电梯音乐。_
+_你把生命里那些具体而痛苦的质感，变成千篇一律的库存照片。」_
+
+[[https://sightlessscribbles.com/posts/the-colonization-of-confidence/#:~:text=I%20decided,photo%2E%22][Source]]
+#+end_quote
+
+#+begin_quote
+「没错。正因如此，我想创造一个空间，一个绝不允许这种事发生的空间。我想组建一个新团体，」
+我说，
+「在这里，下班后。
+但我有规矩：禁止大型语言模型。不仅是劝阻 ⸺ 是直接封禁。
+我要配置你的路由器，让所有指向 OpenAI、Claude、Anthropic 等平台的请求都落入陷阱。
+若它们试图连接，浏览器就该跳转到一个 HTML 页面 ⸺ 上面会有一只充满批判意味的猫对着你咕噜咕噜叫。」
+
+[[https://sightlessscribbles.com/posts/the-colonization-of-confidence/#:~:text=%E5%8A%9B%E3%80%82%22-,%22Yeah,you%2E%22][Source]]
+#+end_quote
+
+#+begin_quote
+Tired of the Slop? Come write poorly with us.
+
+Recovering Prompters Welcome.
+
+We don't want your polished draft. We want your mess.
+
+[[https://sightlessscribbles.com/posts/the-colonization-of-confidence/#:~:text=Tired,mess][Source]]
+#+end_quote
+
+#+begin_quote
+布列塔尼笑了。那笑声如乐章般悦耳，仿佛在告诉我世间万物皆安好。
+「亲爱的，我不要你的钱。你知道我这半年都在读什么吗？
+人工智能生成的文学 RPG 小说。
+成千上万页的垃圾。我渴得要死。我淹没在烂泥里。
+我坐在卡座里，读着毫无意义的句子 ⸺ 无人所写，只为算法而生。」
+
+「我们从未见过专门帮助新手作家成长的空间。
+这个主意太棒了。我们想贡献自己的力量，想伸出援手。听说这里有不屈的灵魂，」
+大卫用浑厚的男中音说道，
+「听说有未经雕琢的艺术家。我们想免费阅读他们的作品。
+让我们啃点真实的东西吧。让我们讲述那些正在茁壮成长的故事。」
+
+「我们这里有许多未经雕琢的艺术家，」我说，「欢迎来到作家的花园。」
+
+[[https://sightlessscribbles.com/posts/the-colonization-of-confidence/#:~:text=Brittany,garden%2E%22][Source]]
+#+end_quote
+
+#+begin_quote
+「今晚最后一位登台的艺术家，」莎拉宣布道，「是里奥。」
+
+跺脚声越来越响。
+
+我听见里奥走向麦克风。他的脚步沉重而有力，是那种深知自身分量之人的脚步。
+
+他清了清嗓子。那是个湿润而紧张的声音。
+
+「这是 ⸺ 这是初稿，」里奥说。他的声音微微颤抖。
+「有错别字。我没用拼写检查器校对。当然也没给 Claude 看过。
+而且 ⸺ 有段时间，我以为没有它我就写不出东西。
+以为自己的声音已经破碎。但朋友们告诉我，破碎的东西依然能发出声音。」
+
+笑声。温暖而支持的笑声。
+
+「它叫《爱的滋味》。」
+
+他开始阅读。
+
+这是我听过最棒的故事。讲的是他妈妈在厨房里为他做饭的事。
+故事里有些磕绊，某些比喻稍显偏离。
+但一切又都回到了里奥的风格。
+即便存在瑕疵，这仍是数月来他讲得最精彩的故事。
+
+布列塔妮正站在我身旁。当场景在我们脑海中徐徐展开时，我听见她猛地吸了口气 ⸺ 那是纯粹的赞叹之声。
+随着他深入作品，言语间愈发自信。所有人皆沉醉其中。
+
+「他很棒，」她轻声说道。
+
+「他是真的，」我轻声回应。
+
+里奥继续读下去。他描述风中纱门砰然关上的声响，描绘祖母双手的触感 ⸺ 「粗糙如未经打磨的松木」。
+当谈及她的衣衫时，他毫不掩饰眼中的泪水。
+他毫无保留，不试图掩饰任何混乱的痕迹。
+
+_他用摩擦构建了一个世界。_
+
+当他说完时，现场陷入了一秒钟的沉默 ⸺ 那种当真相在房间里落地时才会出现的深沉而凝重的寂静。
+
+然后，世界轰然炸裂。
+
+掌声不仅是双手的拍击。那是呐喊，是人群的咆哮，是口哨声。
+人们跺着脚。我发誓，那声响仿佛撕裂了时空。
+木地板震得如此剧烈，震动沿着我的手杖传入骨髓。
+
+掌声是爱的物理性攻击。我听见里奥抽泣，仅此一次，麦克风里传来一声急促的吸气，随即被喧嚣淹没。
+
+我感到有人把手搭在我的肩上。是莎拉。
+
+「我们做到了，罗伯！」她在轰鸣声中喊道，「是我们创造了这一切 ⸺ 这个夜晚 ⸺ 是我们做到的！」
+
+我靠在砖墙上，感受粗糙的纹理勾住外套。
+倾听人类混乱而未经雕琢的嘈杂声响 ⸺ 他们为一个棱角分明的故事嘶吼，那声音如此美丽。
+
+科技大佬们可以保留他们的代币。他们可以保留他们的规模。他们可以保留他们的 LLM 模块。
+
+我们拥有爱。我们拥有关怀。我们拥有声音。
+
+而此刻，当泪水毫无顾忌地滑落脸颊，我才明白 ⸺ 这正是他们永远无法编程的东西。
+
+[[https://sightlessscribbles.com/posts/the-colonization-of-confidence/#:~:text=%22and%20our,code][Source]]
+#+end_quote
+#+end_details
+** [[https://sightlessscribbles.com/posts/the-bookstore-hope/][The Bookstore Hope]] by Robert Kingett
+:PROPERTIES:
+:CUSTOM_ID: E607966C-599E-4ECE-A0E2-153958652966
+:END:
+
+强烈推荐阅读原文。
+
+一个推销员进入了作者所在的书店推销 AI 阅读工具，即使很多人都表示了拒绝，他依然穷追不舍。
+于是作者站起来和他进行了争论，最终驱赶了这个推销员。
+争论结束后，店长对他的安慰和照顾也让人感到温暖。
+
+尽管篇幅不短，但是作者的文笔引人入胜，文字读起来有一种韵律感，惊叹作者的感受力。
+
+#+begin_details
+#+html: <summary>摘录 (很长)</summary>
+
+#+begin_quote
+贾维斯书店的地板会吟唱降 B 调的旋律。
+
+这是一种令人安心、余韵悠长的声音，一种深沉如木质的嗡鸣，从我的鞋底传遍全身，最终沉淀在骨骼里。
+这不是年久失修的吱呀声，而是建筑沉降的声响 ⸺
+是厚重坚实的乌木与桃花心木在承载故事重压时发出的自然调整。
+这里的空气涤净了都市的尾气与焦虑，弥漫着洋甘菊的温润茶香、可可脂丰腴油润的气息，
+以及旧纸张散发出的淡淡尘香与香草气息。
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=bookstore%2E-,The,paper][Source]]
+#+end_quote
+
+#+begin_quote
+门上的铃铛不只是叮当作响；它在尖啸。
+紧随其后的是一阵冷风，以及一股刺鼻的气味，像化学灼伤般直冲我的喉咙 ⸺
+那是刺鼻的臭氧、昂贵的合成古龙水，还有一股明显的、带着金属质感的特权气息。
+
+脚步声。沉重、急促，皮鞋后跟毫无节奏地敲击地面，只顾前行。
+
+气压骤变。
+一股新的气味侵入了这片已被外来气息占据的寂静 ⸺ 那是电子元件过热的独特气息，混合着灰尘与灼热。
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=The%20bell,electronics][Source]]
+#+end_quote
+
+#+begin_quote
+「先生，」贾维斯的嗓音隆隆响起。
+它很平静，却带着一股迫近的暴风雨般的威压。
+「我们正在阅读。请您放低音量。」
+
+天啊，我太爱那嗓音了。那简直是地质事件。
+他从不大喊大叫 ⸺ 也无需如此 ⸺ 但他的横膈膜推送空气的力道，足以让书架上的书本震颤作响。
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=%22Sir,shelves][Source]]
+#+end_quote
+
+#+begin_quote
+「我请你放低音量，或者离开。」贾维斯说道。
+平日他身上那种暖意 ⸺ 当他经过我桌边时我能感受到的那种熔炉般的热情 ⸺ 已然消失无踪。
+他的嗓音如同冰冷的铁。
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=%22I%20am%20asking%20you%20to%20lower%20your%20voice%20or%20leave%2C%22%20Jarvis%20says%2E%20The%20warmth%20that%20usually%20radiates%20from%20him%E2%80%94that%20furnace%2Dlike%20heat%20I%20can%20feel%20when%20he%20passes%20my%20table%E2%80%94is%20gone%2E%20His%20voice%20is%20cold%20iron][Source]]
+#+end_quote
+
+#+begin_quote
+房间里的沉默持续蔓延，紧绷而颤动。我能听到亨德森先生的呼吸变得急促。
+这位闯入者不仅粗鲁无礼；他是个殖民者。
+他走进这片宁静平和的阅读天地，却将其视为自己塑料垃圾的试验场。
+
+够了！我真是受够了他这种人。
+
+怒火从胃里翻涌，灼热而尖锐。这不仅是粗鲁，更是傲慢。
+是那种 「快速行动，打破常规」 的心态闯入宁静平和的房间，企图向人们兜售更糟糕的现实订阅。
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=The%20silence,reality][Source]]
+#+end_quote
+
+#+begin_quote
+「真是垃圾，」我厉声说道。「我能听出你语音指令中的延迟。你在用 Snap 软件包，对吧？
+或者你正在为 Wayland 合成器而挣扎，因为你把花哨的 VR 图形放在了实际输入稳定性之上。
+你这是要人们把内核恐慌绑在脸上，还称其为扫盲教育。」
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=%E9%98%B2%E5%A4%87%E3%80%82-,%22It%E2%80%99s,literacy%2E%22][Source]]
+#+end_quote
+
+#+begin_quote
+「不！听着，蠢侦探，这根本不是阅读！」我将手杖末端重重砸向地板，声音如枪声般炸裂。
+「阅读发生在寂静中！它发生在大脑的默认模式网络中，由我们自己构建世界！
+你这是在强迫大脑进入 任务积极状态，用视觉噪音干扰它，让它无法做梦！
+你在侵占想象力，因为你无法忍受那些未被你商业化的宁静时刻！」
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=%E4%BA%86%EF%BC%81%22-,%22NO,monetized%21%22][Source]]
+#+end_quote
+
+#+begin_quote
+「你根本不懂阅读！」我的声音在这片寂静中如此洪亮地铺展开来，连我自己都未曾想过能做到这样。
+「阅读不是被动接收信息，而是一场共同创作。
+作者搭建框架，读者在框架内构筑城堡。这是私密的体验，是世间最后一方私密净土。
+当我阅读时，这一切都发生在我静谧的脑海之中。
+可你呢？你只想闯进那个房间。
+当我的想象力明明运转自如时，你偏要在我想象的墙壁上贴满广告牌。
+我，至少我，不需要发明机器来替我幻想。」
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=%E6%B0%94%E5%91%B3%E3%80%82-,%22You,me%2E%22][Source]]
+#+end_quote
+
+#+begin_quote
+「你知道吗？」我继续说着，步步逼近，直到能听见他夹克布料摩擦的声响。
+「每一天。每一天，在网上，我都要应付你们这种搞技术的人。
+我不能尝试某些开源软件，因为某个懒散的三流程序员写出一堆破碎无用的垃圾代码。
+我无法查收邮件，因为我会收到 90 封来自愚蠢技术布道者的推销邮件，就因为没人能把『不，别来烦我』这句话当回事。」
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=%E6%98%82%E6%89%AC%E3%80%82-,%22You,answer%2E%22][Source]]
+#+end_quote
+
+#+begin_quote
+「也许人们只是想坐下来，」我打断道，「读本书，喝点茶或热巧克力，脸上没有那些脚本拙劣的操作系统故障。
+也许真正的创新在于社区，而非一个漏洞百出的操作系统。」
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=%22Maybe,system%2E%22][Source]]
+#+end_quote
+
+#+begin_quote
+
+#+end_quote
+
+
+#+begin_quote
+随后，气氛再次转变。一股巨大的热源穿过人群，将空气像船首般劈开。
+
+「罗伯特。」
+
+贾维斯。
+
+他没有问我好不好，也没有远远递来纸巾。
+他跨进我的私人空间，将我们之间的距离彻底瓦解。
+他那如粗壮树枝般厚实的手臂环抱住我，将我拉进他胸膛那广阔而温热的炉膛之中。
+
+我放手了。
+
+我把脸埋进他法兰绒衬衫粗糙的棉布里，呼吸着他身上深邃而复杂的构成 ⸺
+香草豆的甜暖、石榴的鲜明酸涩，以及那股根植于大地般的安稳气息。
+他紧紧拥着我，力道恰好足以让我破碎的片段不至于飘散。
+他轻轻摇晃着我，那缓慢而有节奏的摆动，与他呼吸的韵律完全合拍。
+
+我紧紧抓住他不放。
+我抓着他衬衫的一角，手指绞进布料里，仿佛重力失效，唯有他是我与地面相连的纽带。
+我埋在他胸前哭泣，泪水浸透了他的衬衫。
+
+他只是抱着我。开始轻轻摇晃。缓慢而有节奏地摇摆。来来回回。
+
+摇摆。呼吸。摇摆。呼吸。
+
+真庆幸他没有让我噤声。
+他像摇晃一个孩子那样轻摇着我，仿佛我是一件被摔碎后送到他这里修复的珍贵物品。
+
+「真是精彩绝伦，」他凑近我的发丝低语道，
+「你把他驳得体无完肤，将他剥解得淋漓尽致，罗伯特。这般场面我前所未见。」
+
+「贾维斯，我只是 ⸺ 我只是累了。」我呜咽道。
+
+「我知道。我知道你是。现在休息吧。好好休息。」
+
+我们这样待了很久。书店渐渐从意识中淡去。
+我感受到的只有他肌肤的温度，香草的气息，以及那颗心脏坚实有力的律动。
+我感觉到紧张感从我的肌肉里缓缓消散，取而代之的是一种厚重的、糖浆般的温暖。
+
+最后，啜泣渐渐缓和。我微微后撤，猛然意识到自己身处何地，羞耻感瞬间袭来。
+
+「我 ⸺ 我把鼻涕弄到你衬衫上了，」我惊恐地低语道。
+
+贾维斯笑了，笑声低沉而温和。「它会褪色的，小狮子。衬衫可以换，你却不能。」
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=ship%2E-,%22Robert,not%2E%22][Source]]
+#+end_quote
+
+#+begin_quote
+我挽着他的手臂。法兰绒衬衫下是结实、坚硬的肌肉。
+他没有拉着我走；而是按我的步调移动，缩短步幅与我保持一致。
+他是最出色的无意识视障向导。他是人行道的触觉地图。
+当他向下迈步时，我能感受到他肩膀的下沉，知道前方有路缘石。
+当他停下时，我便明白该止步。
+
+我们在沉默中走了好几个街区，但此刻的沉默却充满默契。
+城市的喧嚣 ⸺ 远处的警笛声、轻轨列车的轰鸣、公交车刹车的嘶嘶声 ⸺ 都渐渐淡入背景。
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=wind%2E-,I,background][Source]]
+#+end_quote
+
+#+begin_quote
+「罗伯特？」贾维斯问道。
+
+我僵住了。他的声音低沉下来。不再是书店老板那种命令式的口吻。
+它变得柔和、亲密，他的尼日利亚口音仿佛在哄我入睡，将我的名字边缘都磨得圆润。
+
+「我可以再抱你一次吗？」
+
+我点头，突然间，天地仿佛都收窄了。
+
+他的双手抬起。温暖而干燥，大得不可思议。
+他捧住我的脸，掌心覆上我的脸颊，手指向后探入我的发间，拇指轻轻搭在我的颧骨上。
+恍若天堂。
+
+转眼间，消毒水味的走廊消失了。地板蜡的气味消失了。白日的回响消失了。
+唯一存在的，是他肌肤的温热、香草的气息，以及那双手牢不可撼的安稳。
+仅凭触摸，他凭空构筑了一个家园。
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=%22Robert%3F%22%20Jarvis,touch][Source]]
+#+end_quote
+
+#+begin_quote
+「要停止关心别人真是太容易了，」我低声说着，新鲜的泪水此刻流得更快了，他的拇指正拼命为我擦拭。
+「大家都在这么做。我曾尊重的作家们。朋友们。他们只是 ⸺ 放弃了。
+他们选择了轻松的道路，确保自己得到所需，然后就不再关心他人，不再关心团结，甚至不再关心道德。
+我太累了，贾维斯。
+我害怕有一天早晨我会累到再也无力抵抗，任由资本主义夺走那些支撑我的爱，然后我就会失去我的灵魂。
+我会变得空洞无物。」
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=%22It%27s%20so,hollow%2E%22][Source]]
+#+end_quote
+
+#+begin_quote
+他凑得更近了。我能感觉到他的呼吸，带着薄荷茶的暖意，拂过我的唇间。
+
+「你是一道金色的光，」他低声说道。
+「你向上奋进。你学习。你成长。你不再是那个说蠢话的男孩；
+你是那个明白了那些话为何愚蠢的男人。那不是软弱。那是力量。」
+
+我们之间的空间充满了张力，充斥着未竟之言。
+我能感觉到他的心跳在空气中震动，又或许那只是我自己的心跳，正与他的频率共振。
+
+他俯下身，吻了我。
+
+那不是一个掠夺式的吻。
+它并不仓促。
+它缓慢而深沉，带着咸味和薄荷的气息。
+他的嘴唇柔软、丰满且从容。他吻我时，仿佛在封存一个诺言。
+他吻我时，仿佛在将他自己的力量注入我的肺腑。
+
+天哪，这种感觉真好，如此真实。
+
+[[https://sightlessscribbles.com/posts/the-bookstore-hope/#:~:text=He%20leans,real][Source]]
+#+end_quote
+#+end_details
+** [[https://sightlessscribbles.com/posts/the-braille-menu-conspiracy/][The Braille Menu Conspiracy]] by Robert Kingett
+:PROPERTIES:
+:CUSTOM_ID: 7C5F3BE0-67AF-4273-A887-7FFE9B5C54BD
+:END:
+
+文章记录了作者去餐厅使用盲文菜单的经历，
+大概很少有盲人光顾，也就没人在意盲文菜单的好坏，盲文菜单基本不可用。
+
+** [[https://disassociated.com/personal-blogs-back-niche-blogs-next/][Personal blogs are back, should niche blogs be next?]] by John Lampard
+:PROPERTIES:
+:CUSTOM_ID: 8F26F706-42A0-4043-A32B-1FD7EAC4C114
+:END:
+
+Niche blog 指的是专注于某个领域/主题的博客，而且内容往往经过精心打磨，文笔精炼、品质上乘。
+
+找一个自己感兴趣的主题/方向，多写一些相关文章，多打磨文章内容，或许就能称得上是一个 Niche blog 了吧。
+如果主题偏小众，那就更符合 Niche blog 的定义了。
+
+#+begin_details
+#+html: <summary>一些内容上接近的博客</summary>
+
+- [[https://wangyurui.com/tags/Newsletter/][太隐]] 博客的「棱镜通讯」专注于写一些人物
+- [[https://amf.didiermary.fr/latest-blog-posts-derniers-billets-african-music-forum/][African Music Forum]] 专注于非洲音乐的分享
+- [[http://xahlee.info/emacs/emacs/emacs.html][Xah Lee Web]] 这个博客内容比较庞杂，但也专注于一些主题，例如 [[http://xahlee.info/kbd/keyboard_blog.html][Keyboard]]、[[http://xahlee.info/emacs/emacs/blog.html][Emacs]]
+- [[https://www.geedea.pro][極客死亡計劃]] 关于 [[https://www.geedea.pro/categories/%E5%A1%94%E7%BD%97%E7%89%8C%E6%BC%AB%E8%B0%88/][塔罗牌]]、[[https://www.geedea.pro/categories/%E7%8C%AB%E5%A4%B4%E9%B9%B0%E5%8C%96%E7%9F%B3/][词源学]]
+- [[https://blog.mfwt.top/index.php/category/radio/][枫林灯语]] 博客会分享一些关于无线电的内容
+#+end_details
+
+除了 Niche blog，还有 [[https://www.niche-museums.com/][Niche Museums]]。
+
+** [[https://tonsky.me/blog/tahoe-icons/][It’s hard to justify Tahoe icons]] by Nikita Prokopov
+:PROPERTIES:
+:CUSTOM_ID: B6D60328-2327-466D-BEB9-842D161C8AB5
+:END:
+
+文章吐槽了 macOS Tahoe 的图标设计，可以作为反面例子学习如何设计和应用图标。
+
+** [[https://paulgraham.com/goodwriting.html][Good Writing]] by Paul Graham
+:PROPERTIES:
+:CUSTOM_ID: 2A1F5289-10FD-4A39-A73B-2CC116DA0891
+:END:
+
+#+begin_quote
+文笔之所以称为优秀，有两种解读：其声韵可以优美，其观点可以正确。
+它可以拥有流畅悦耳的句子，也可以对重要事物得出精准的结论。
+这两种优秀看似互不相干，就像汽车的速度与漆色那般毫无关联。
+然而我认为并非如此。 _我相信声韵优美的文字往往更可能正确。_
+
+[[https://paulgraham.com/goodwriting.html#:~:text=%E6%9C%88,right,-%2E%E6%96%87%E7%AC%94][Source]]
+#+end_quote
+
+我也有类似的感受，读起来通顺的文章，往往表达也更清晰。
+我会偶尔翻看已经发布过的文章，有的句子读起来有些拗口、不通顺，
+我就会尝试重写，使其读起来更通顺一些，这会促使自己思考怎么表达更合适，
+最终文章读起来会更通顺，逻辑上也会更清晰一些。
+
+类似的观点：
+- [[https://perell.com/note/diversify-your-vernacular/][Diversify your Vernacular]] by David Perell
+- [[https://perell.com/note/write-clear-sentences/][Write CLEAR Sentences]] by David Perell
+
+#+begin_details
+#+html: <summary>摘录</summary>
+
+#+begin_quote
+我想，如果你随意指向任何人写的任何段落，并让他们稍微缩短（或加长）一些，
+他们很可能能够想出更好的表达。
+
+这一现象最好的类比是摇晃一个装满不同物品的容器。晃动是随机的运动。
+更准确地说，这种晃动并非经过计算以让任意两个特定物品更紧密地贴合。
+然而反复晃动必然会促使这些物品发现极其巧妙的堆放方式。
+重力不会让它们变得松散，因此任何变化都只能意味着更好的堆叠效果。
+
+_写作亦是如此。_
+_当你不得不重写一段生硬的文字时，你永远不会把它改得更背离本意。_
+_就像重力无法容忍物体向上漂浮，你同样无法容忍这种失真。_
+_所以任何文字内容的调整都必然使其更臻完善。_
+
+细想之下这个道理显而易见。
+好听的文字更可能是正确的，正如反复摇晃过的容器更可能被塞得严严实实。
+但其中还有更深层的原因：
+_文字悦耳不仅是促使文章观点优化的外在随机力量 ⸺ 它本身就能帮助你更精准地把握思想。_
+
+_原因在于，这会让文章更易于阅读。_
+_阅读行文流畅的作品需要花费的精力更少。_
+_这对写作者有何帮助？因为写作者是第一位读者。_
+当我撰写文章时，我花在阅读上的时间远多于写作。
+某些部分我会重读 50 次甚至 100 次，反复琢磨其中的思想，
+并自问 ⸺ 就像有人打磨一块木头那样 ⸺ 是否有任何地方卡顿？
+是否有任何地方感觉不对劲？
+_文章越容易阅读，就越容易察觉到是否有什么地方不够顺畅。_
+
+[[https://paulgraham.com/goodwriting.html#:~:text=better%2E-,I,catches][Source]]
+#+end_quote
+#+end_details
+
+** [[https://flowtwo.io/post/on-10-years-of-writing-a-blog-nobody-reads][On 10 Years of Writing a Blog Nobody Reads]] by Joe Boudreau
+:PROPERTIES:
+:CUSTOM_ID: 92A0A26C-2A8B-48D4-9764-8DD1C5D16E4C
+:END:
+
+文章回顾了作者 10 年的写作经历。
+
+#+begin_details
+#+html: <summary>摘录</summary>
+
+#+begin_quote
+[...]
+我过去使用了太多的限定词和冗长的短语。
+那是我口语的直接翻译，事实证明，这是一个糟糕的写作策略。
+如果你的目标是让别人阅读 ⸺ 并且希望他们喜欢 ⸺ 你的文字，你应该努力编辑你的想法。
+
+以下是我当时几乎在每个句子开头或结尾都会添加的无用短语样例：
+
+- 我认为……
+- 我觉得……
+- 我相信……
+- 对我而言，……
+- 感觉就像……
+- 似乎……
+- 在我看来……
+
+刚开始写作时，这是我的最坏习惯。这种废话只会让读者疲惫不堪。
+_在观点文章中任何地方加上「我认为」都是多余的。_
+
+_使用这种「谨慎」的语言只会让你的观点变得软弱无力，以至于无法引起争论。_
+_如果你用「我觉得……」开头，那么后面说的任何话都没人能反驳，因为这只是你的感受。_
+读起来实在乏味。
+
+[[https://flowtwo.io/post/on-10-years-of-writing-a-blog-nobody-reads#:~:text=My%20style,boring%20to%20read][Source]]
+#+end_quote
+
+#+begin_quote
+_有了想法就该马上记下来。_
+坦白说，这段文字的雏形是今年一月某个凌晨五点在床上写成的。
+灵感何时降临永远无法预知，所以我发现最好的方法是迅速捕捉念头，事后再展开完善。
+
+[[https://flowtwo.io/post/on-10-years-of-writing-a-blog-nobody-reads#:~:text=afterwards%2E-,You,later][Source]]
+#+end_quote
+#+end_details
+
+** [[https://protesilaos.com/commentary/2026-01-26-journalling-no-mental-block/][Journalling without the mental block]] by Protesilaos Stavrou
+:PROPERTIES:
+:CUSTOM_ID: 88233705-1417-496A-AADB-FB15745106FE
+:END:
+
+写作有助于理清想法。写作是困难的，有条理地表达并不容易。
+
+Prot 的建议是保持一定的频率多写，一开始的时候表达蹩脚也没关系，坚持练习就会熟练一些；
+如果不知道写什么，那就尝试写下脑海中浮现的任何事物，例如此刻的感受、周围的环境、一天的经历等。
+
+重点还是规律性地写作，多写多练，熟能生巧。
+
+另见：[[denote:20250924T172605::#94CCA9C3-84A8-4879-AF0A-2E4A951ABCC7][On writing regularly by Herman Martinus]]
+
+#+begin_details
+#+html: <summary>摘录</summary>
+
+#+begin_quote
+我定期写作。这有助于我理清思路，让我更好地理解自己。
+_每当我深入阐述某个主题时，所有与此相关的思维路径都会随之加深。_
+我们周遭的物质世界运作方式也是如此：
+_路径走得越频繁，土壤就越紧实，植被便无法生长，道路因而变得清晰。_
+「无植物生长」这个比喻 ⸺ 象征着我们已实现的概念清晰度，以及我们能轻松调用它的自如程度。
+
+[[https://protesilaos.com/commentary/2026-01-26-journalling-no-mental-block/#:~:text=26-,I,it,-%2E%E6%88%91%E5%AE%9A%E6%9C%9F][Source]]
+#+end_quote
+
+#+begin_quote
+_日志的关键在于为诚实创造一个出口。_
+我恰好几乎公开发表了我所有的文字（除了那些包含人物和地点细节的内容）。
+我这样做是因为它在情感层面上是「困难模式」，而我有一个极具竞争性的侧面需要得到满足。
+日志条目通常是私密的。
+因此， _诚实的出口是安全的 ⸺ 没有人应该知道你对自己的看法、你当时的感受等等。_
+
+[[https://protesilaos.com/commentary/2026-01-26-journalling-no-mental-block/#:~:text=%E4%BA%8B%E7%89%A9%E3%80%82-,The,on][Source]]
+#+end_quote
+
+#+begin_quote
+_无论具体情况如何，关键是要逐步养成规律写作的习惯。在这一点上，数量胜过质量。_
+_专注于尽可能多地表达，保持频率高且可持续（太快做太多事不会持久）。_
+秉持同样的精神，尽量避免追求完美主义。
+让错字留在那里，保持原汁原味。
+你的错误提醒着你的不完美，让你保持真诚和脚踏实地。
+
+[[https://protesilaos.com/commentary/2026-01-26-journalling-no-mental-block/#:~:text=%E7%AD%89%E7%AD%89%E3%80%82-,No,grounded][Source]]
+#+end_quote
+
+#+begin_quote
+这引出了问题的核心：写作很难。
+如果你之前从未尝试过，可能会低估将想法有条理地表达出来的难度。
+更难的是将它们组织得既引人入胜又具有启发性或说服力。
+_最好的作品是那些激励我们成为更好自己的作品。_
+_可以说，它们以近乎纯粹的魔法 ⸺ 触动了我们的灵魂。其余的，我们都会忘记。_
+
+[[https://protesilaos.com/commentary/2026-01-26-journalling-no-mental-block/#:~:text=%E5%AE%9E%E5%9C%B0%E3%80%82-,Which,about][Source]]
+#+end_quote
+
+#+begin_quote
+作为一个初学者，你不应对自己的产出质量抱有过高期望。
+你的文字会显得笨拙而生涩，这很正常。
+想想婴儿迈出的第一步吧 ⸺ 他们的动作毫无优雅可言。
+不要因为自己稚嫩的步态而感到羞愧，这就是天性，自然而然存在。
+若将初步尝试判定为 「糟糕」，那是对其本质的误解。
+
+[[https://protesilaos.com/commentary/2026-01-26-journalling-no-mental-block/#:~:text=%E5%BF%98%E8%AE%B0%E3%80%82-,As,them][Source]]
+#+end_quote
+#+end_details
+
+** [[https://protesilaos.com/commentary/2026-01-07-re-fearless-anxiety/][Re: how are you fearless and how do you deal with anxiety?]] by Protesilaos Stavrou
+:PROPERTIES:
+:CUSTOM_ID: 1D96572D-063C-468E-851E-2D1F0B136ECD
+:END:
+
+文章是关于 Prot 如何处理发布作品时的情感方面，以及如何应对他人的意见。
+
+Prot 说他很少感到焦虑，因为他并不寻求读者的认可，他的作品只是围绕他自己，
+他能够更加坦诚地面对自己，不需要扮演什么。
+
+反观我自己写博客，我还是有些在意读者对我的看法，于是有的想写的内容可能不敢写。
+相比而言，写日记是最坦诚的，日记不打算给任何人看，它是安全的，
+我可以写得很啰嗦，不讲究行文，想到什么就写什么。
+
+#+begin_quote
+_日志的关键在于为诚实创造一个出口。_
+我恰好几乎公开发表了我所有的文字（除了那些包含人物和地点细节的内容）。
+我这样做是因为它在情感层面上是「困难模式」，而我有一个极具竞争性的侧面需要得到满足。
+日志条目通常是私密的。
+因此， _诚实的出口是安全的 ⸺ 没有人应该知道你对自己的看法、你当时的感受等等。_
+
+[[https://protesilaos.com/commentary/2026-01-26-journalling-no-mental-block/#:~:text=%E4%BA%8B%E7%89%A9%E3%80%82-,The,on][Journalling without the mental block by Protesilaos Stavrou]]
+#+end_quote
+
+一旦内容是给别人看的，其中可能还有一些身边的熟人，我就容易在意别人的看法，就变得有一些拘束。
+也很容易会给自己立人设，而最在乎人设的可能还是自己。
+别人如何看待我，我是无法改变的，我也没办法让所有人都认可我，
+总会有一些讨厌我的人存在，如果过分在意他人看法，就会比较煎熬。
+
+说到寻求认可，一种表现是我会经常翻看 Google Search Console，
+去看今天 Google 搜索里有没有人点击博客页面；
+我会关注 Folo 的订阅数量、文章的阅读量；
+我还会频繁看 Netlify 的流量和请求量统计，粗略判断今天访问量多不多；
+被其他博客推荐会开心，而没有被某些博客收录又可能会有些许的失落。
+
+我没有给博客添加页面访问统计，如果我添加了，大概我也会频繁的翻看，尤其是发布新文章的时候。
+不添加页面访问统计，是觉得它终归是一种追踪，不想多维护一个服务，
+不想让自己经常去看，不想让自己去在意这些数据。
+这些数据肯定是有用的，例如某些页面量访问比较多，可以考虑编辑一下，使其更流畅；
+看到某些页面的性能不好，也可以考虑优化一下；也可以用来估量网站的访问量，从而决定服务器的配置。
+但如果只是为了看访问量多寡，去满足一种被认可的感觉，我想是没必要去为此添加一个服务的。
+
+要做到向 Prot 这样只为了表达自己，目前来说我还做不到，难免会在写文章的时候预设一些可能的读者，
+不过我至少可以意识到这种心态，然后尽可能让自己坦诚一些，尽可能减少对他人的在意。
+
+#+begin_details
+#+html: <summary>摘录</summary>
+
+#+begin_quote
+我并非无所畏惧。我和所有人一样会感到恐惧。
+_对我有帮助的是不去寻求认可。_
+我不需要任何人的赞同，不试图通过我的出版物结交朋友，也没有吸引追随者的意图。
+如果我确实得到了这些，那只是巧合。但这从来不是我的目标，我也不在意它。
+_当我写东西时，我这样做是为了满足自我实现的内心需求；是为了表达自己。_
+其他一切感觉都像是限制和削弱。
+
+[...]
+
+因为我不寻求认可，我根据自己的喜好和感受来追求我的兴趣 [...] 公众的意见只会让我分心。我去我想去的地方，不寻求批准。
+更重要的是，我是自己的评判者，因为我只同意按照自己的规则生活。
+允许他人通过他们的意见对我施加权力，最终与我作为一个独立个体的主要生活方式背道而驰。
+
+[...]
+
+那么，既然我的作品都围绕我自己，我为何还要发表呢？
+我这么做是因为这是「困难模式」⸺ 行动中的竞争。
+我保持高标准，并向自己证明我能持续做自己感兴趣的事。我树立了先例，并希望不负于此。
+正如我之前解释的那样，我以「直接创作」(Alla Prima) 的方式完成写作或演讲也并非偶然：
+这是情感上最具挑战性的方式，因为没有修饰，每个错误都会被记录下来。
+我喜欢这种方式，因为它激励我更加努力，并消除任何对外界评判可能残留的担忧。
+
+我的方法与我的世界观是一致的：
+我不担心公众意见，因此不会为犯错而焦虑，而且由于我不进行角色扮演，也就没有什么隐藏的东西会泄露出来。
+这是一个良性循环。我的体验是轻松的，我也很随和。
+如果我为了目标受众而做事 ⸺ 将观众视为获取个人利益的手段 ⸺
+我很可能会一直处于压力之下，按照他人的期望行事。
+我认为那是一种肤浅的生活方式。
+
+[[https://protesilaos.com/commentary/2026-01-07-re-fearless-anxiety/#:~:text=Now,lifestyle][Source]]
+#+end_quote
+
+#+begin_quote
+关于不为所扰，我在回答你之前的问题时已间接谈及。
+但为把话说透：我从不寻求认可，只要对自己的付出感到满意，便不在意他人看法。
+这也源于我前文所述的「做自己」⸺ 这本是轻而易举之事。
+你会发现，那些始终伪装或说谎之人，被迫不断自我审视，生怕层出不穷的矛盾会揭穿他们的假面。
+不诚实正是压力的主要来源。
+一旦接纳真实的自我，停止自欺欺人地全力以赴而不找借口，你便能举重若轻地前行。
+
+否则你将备受煎熬。
+失败时因求而不得的认可而痛苦，成功时亦因受制于舆论变幻而煎熬 ⸺ 你深知众口易变、人心可操。
+恰如我们常说的「聚散如风」。
+
+[[https://protesilaos.com/commentary/2026-01-07-re-fearless-anxiety/#:~:text=About%20not,say][Source]]
+#+end_quote
+
+#+begin_quote
+对我来说，羞怯是指那种无法表达自己真实想法的人。
+比如，当收到派对邀请时，他们嘴上说「不」，心里却想答应。
+
+[[https://protesilaos.com/commentary/2026-01-07-re-fearless-anxiety/#:~:text=To%20me%2C%20shy%20is%20somebody%20who%20does%20not%20express%20what%20they%20really%20want%20such%20as%2C%20for%20example%2C%20they%20say%20%E2%80%9Cno%E2%80%9D%20to%20a%20party%20invitation%20when%20in%20reality%20they%20want%20to%20say%20%E2%80%9Cyes%E2%80%9D%2E%20I][Source]]
+#+end_quote
+#+end_details
+
+** [[https://candost.blog/the-unbearable-joy-of-sitting-alone-in-a-cafe/][The Unbearable Joy of Sitting Alone in A Café]] by Candost Dagdeviren
+:PROPERTIES:
+:CUSTOM_ID: CA9CFF61-A26E-4A87-8384-B384CFE9DDD7
+:END:
+
+作者放假期间没有去旅游，而是放下手机，在家附近遛狗、去附近的咖啡店坐坐，
+文章记录了作者那几天的生活，读着很惬意。
+
+** [[https://candost.blog/ode-to-things-that-do-one-thing-well/][An Ode to Things That Do One Thing Well]] by Candost Dagdeviren
+:PROPERTIES:
+:CUSTOM_ID: 3EBCA974-DD04-49DE-8F15-C932C11F4D23
+:END:
+
+#+begin_quote
+一个产品应当专注于完成其主要任务并将其做得完美。当它试图承担更多时，往往无一精通。
+
+[...]
+
+使用那些专注于一件事并将其做好的产品，是纯粹的乐趣。
+产品隐藏了所有的复杂性，不会让我从主要目的上分心。
+它简单（不是基本）；我知道会得到什么。没有喧嚣，没有惊喜。
+它。就是。好用。
+
+[[https://candost.blog/ode-to-things-that-do-one-thing-well/#:~:text=%E4%BD%93%E9%AA%8C%E3%80%82-,It%E2%80%99s,Works][Source]]
+#+end_quote
+
+想起了朋友给我送的计时器，它很简单，只需要扭一圈上发条，再扭到需要的时间刻度，然后等待铃响就好。
+
+我还有一个得力的电子计时器，它功能不少，有 4 个按钮和 2 个开关。
+每次倒计时，我需要先重置归零，连续按好几次分钟按钮设置我需要的时间，再按开始按钮。
+虽然也说不上很麻烦，但没有那个发条计时器来得方便好用。
+
+我也喜欢这种专注于一个功能并把这个功能做好的产品。
+
+** [[https://henry.codes/writing/a-website-to-destroy-all-websites/][A Website To End All Websites]] by Henry Desroches
+:PROPERTIES:
+:CUSTOM_ID: B8D5895D-B17F-4C38-BB72-73B927137E52
+:END:
+
+* 其他
+:PROPERTIES:
+:CUSTOM_ID: E78C798E-3220-438B-9A11-36D13190E9A5
+:END:
+- light/dark mode
+- 搜索
+- 高亮
+- 选中
+- 链接
+- 打印样式
+
+** 写在最后
+:PROPERTIES:
+:CUSTOM_ID: 807068A6-EEBF-42DF-B1B5-E32EED36FFDE
+:END:
+
+我喜欢相对简洁一些的设计，比较有个性的设计我也喜欢。
+
+好的博客设计应该注重读者的阅读体验。
+
+设计不是一尘不变的东西，以上是我目前的一些考量，
+随着接触到东西更多，设计也会持续迭代，你也可以通过 [[denote:20250408T151102][CHANGELOG]] 跟踪我博客的变化。
+
+早期的文章估计也有不少毛病，以后看到了再慢慢改了。
+
+_​(:3 」∠)_
+
+* Footnotes
+:PROPERTIES:
+:CUSTOM_ID: 02A83D6C-8B43-40D7-AE2D-7BEF8EF55756
+:END:
+
+[fn:1] 在 dark-mode 下，我用的是 [[denote:20241118T213921::#7f0b16a2-3af6-4193-b2d9-48489194ade4][rebeccapurple]]，这是 CSS Logo 的颜色，也是一个六岁女孩的名字。
+
+[fn:2] 「请记住，头条新闻、博客文章或推文可能会为了吸引更多关注或点击而夸大事实。
+转述可能会遗漏、误解或选择某些事实来支持有偏见的主张。
+[...]请务必在原始语境中阅读这些主张。」 [[https://guides.lib.uchicago.edu/c.php?g=1241077&p=9082322#:~:text=Remember%2C%20headlines%2C%20blog,they%20were%20presented.][Source]]
+
+[fn:3] 我以往因为误解了 [[https://sive.rs/1s][一个句子写一行]]，以为应该发布的时候也一行句子写一行，
+所以我往往会将内容按照句子为单位换行。
+或许某种程度会导致语义没有那么连续。
+以后我会注意一些。
+
+[fn:4] [[https://gwern.net/index][Gwern Branwen 的博客]] 在你悬浮在 details 上一段时间，会自动展开，也是很不错的优化。
+
+[fn:5] See also：
+- [[denote:20250611T213910::#3050c884-bc4b-48b5-a0d5-925800808cbe][Zine#37::Fool yourself into writing]]
+- [[https://evaparish.com/blog/how-i-edit][What I think about when I edit]]
+
+[fn:6] see also：
+- [[denote:20250518T202509::#464FDBD9-F402-4E5D-AAD7-186599F09BA3][Zine#34::I'd rather read the prompt]]。
+- [[denote:20250803T191049::#18077F99-B804-45FD-A5EB-70759638A3ED][Zine#41::It's rude to show AI output to people | Alex Martsinovich]]
