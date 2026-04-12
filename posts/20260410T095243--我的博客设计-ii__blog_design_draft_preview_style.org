@@ -17,8 +17,11 @@
 :PROPERTIES:
 :CUSTOM_ID: 935EFF1D-8943-49AB-B2D6-73B6D5210E66
 :END:
+** layer start
+:PROPERTIES:
+:CUSTOM_ID: 4946694D-2BC5-45D8-B5A9-4C03B115ED2F
+:END:
 
-@layer start
 #+begin_src css
   @layer base {
 #+end_src
@@ -530,44 +533,6 @@ a11y nav
   }
 #+end_src
 
-** 代码悬浮高亮
-:PROPERTIES:
-:CUSTOM_ID: C72F3DB7-7B97-4457-BACD-BA749BB22952
-:END:
-
-#+begin_src css
-  .code-highlighted {
-    transition: background-color .1s ease-in-out;
-    background-color: var(--color-bg-code-highlighted);
-    background-color: light-dark(var(--color-bg-code-highlighted), var(--dark-color-bg-code-highlighted));
-  }
-
-  a.coderef {
-    background: var(--color-bg-code);
-    background: light-dark(var(--color-bg-code), var(--dark-color-bg-code));
-    border-radius: 6px;
-    padding: 0.05em .2em;
-    color: var(--color-text);
-    color: light-dark(var(--color-text), var(--dark-color-text));
-    text-decoration: none;
-
-    &:visited {
-      color: var(--color-text);
-      color: light-dark(var(--color-text), var(--dark-color-text));
-    }
-
-    &:hover {
-      color: #fff;
-      background: var(--color-link);
-      background: light-dark(var(--color-link), var(--dark-color-link));
-
-      & code {
-        color: #fff;
-      }
-    }
-  }
-#+end_src
-
 ** 引用 blockquote、verse
 :PROPERTIES:
 :CUSTOM_ID: F2A3CB0A-8AF5-47B2-A136-2F018A33025E
@@ -889,180 +854,24 @@ figure
       text-align: end;
     }
 
-    & p {
-      margin-block: .25rem;
-    }
 
     footer {
       font-size: 0.8rem;
       color: var(--color-text-secondary);
       color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+
+      & p {
+        margin-block: .25rem;
+      }
     }
   }
 #+end_src
-** Webmentions
+
+** layer end
 :PROPERTIES:
-:CUSTOM_ID: 1192DE40-F723-4AC0-A747-CA77E443827F
+:CUSTOM_ID: 21157F8D-8B5D-4635-BA60-91A1C740D14C
 :END:
 
-#+begin_src css
-  .webmention-container {
-    & form {
-      display: grid;
-      grid-template-columns: max-content auto max-content;
-      gap: .8em;
-      align-items: center;
-
-      @media screen and (width <= 680px) {
-        grid-template-columns: 1fr;
-      }
-
-      & input {
-        border: 1px;
-        border-style: solid;
-        border-color: var(--color-border);
-        border-color: light-dark(var(--color-border), var(--dark-color-border));
-        border-radius: .2em;
-        padding: .3em;
-        font-size: 1em;
-
-        &::placeholder {
-          padding-inline-start: .5em;
-        }
-
-        &.button {
-          cursor: pointer;
-          padding: .2em .5em;
-          border-radius: .2em;
-
-          &:hover {
-            opacity: 0.8;
-          }
-        }
-
-        &[readonly] {
-          cursor: not-allowed;
-        }
-      }
-    }
-
-    & hr {
-      margin-block-end: 0em;
-    }
-
-    &:not(:has(.webmention-content-list li)) {
-      & hr {
-        display: none;
-      }
-    }
-
-  }
-
-  #postamble .webmention-tip {
-    margin: revert;
-    font-size: revert;
-  }
-  .webmention-tip {
-    color: var(--color-text-secondary);
-    color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
-  }
-
-  .webmention-content-list {
-    list-style: none;
-    padding-inline: 0;
-    display: flex;
-    flex-direction: column;
-
-    & blockquote {
-      margin: 0;
-    }
-
-    & .webmention-card {
-      padding-block: 1em;
-
-      &:not(:first-child) {
-        border-block-start: 2px dashed;
-        border-color: var(--color-border);
-        border-color: light-dark(var(--color-border), var(--dark-color-border));
-      }
-
-      &:first-child {
-        padding-block-start: 0;
-      }
-      &:last-child {
-        padding-block-end: 0;
-      }
-    }
-
-    & .webmention-content {
-      clear: both;
-      margin-block-start: 1em;
-
-      &:empty {
-        display: none;
-      }
-    }
-
-    @media screen and (width <= 400px) {
-      list-style: none;
-      padding-inline-start: 0;
-    }
-
-    .webmention-author-container {
-      font-size: 0.8em;
-      display: flex;
-      gap: 1em;
-    }
-
-    .webmention-source-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .webmention-source {
-      word-break: break-all;
-    }
-
-    .webmention-avatar {
-      object-fit: contain;
-      border-radius: 0.5em;
-      width: 4em;
-      align-self: start;
-
-      @media screen and (width <= 400px) {
-        width: 3em;
-      }
-    }
-
-    .webmention-author {
-      margin-inline-end: 1em;
-    }
-
-    .webmention-meta {
-      font-size: .8em;
-      margin-block-start: .5em;
-
-      @media screen and (width <= 400px) {
-        margin-block-start: 0;
-        font-size: .65em;
-      }
-    }
-
-    .webmention-date {
-      margin-block: 0;
-      color: var(--color-text-secondary);
-      color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
-      word-break: break-all;
-    }
-  }
-
-  .h-card[aria-hidden="true"] {
-    display: none;
-  }
-#+end_src
-
-@layer end
 #+begin_src css
   }
 #+end_src
@@ -1343,7 +1152,10 @@ figure
 :PROPERTIES:
 :CUSTOM_ID: 4ACD02AA-E4FA-44ED-85C8-26B2B3FE8F05
 :END:
-
+** layer start
+:PROPERTIES:
+:CUSTOM_ID: D888F157-70B3-42EE-BC57-74949A8BCE5D
+:END:
 #+begin_src css
   @layer function {
 #+end_src
@@ -1437,6 +1249,180 @@ figure
   }
 #+end_src
 
+** 代码悬浮高亮
+:PROPERTIES:
+:CUSTOM_ID: C72F3DB7-7B97-4457-BACD-BA749BB22952
+:END:
+
+#+begin_src css
+  .code-highlighted {
+    transition: background-color .1s ease-in-out;
+    background-color: var(--color-bg-code-highlighted);
+    background-color: light-dark(var(--color-bg-code-highlighted), var(--dark-color-bg-code-highlighted));
+  }
+
+  a.coderef {
+    background: var(--color-bg-code);
+    background: light-dark(var(--color-bg-code), var(--dark-color-bg-code));
+    border-radius: 6px;
+    padding: 0.05em .2em;
+    color: var(--color-text);
+    color: light-dark(var(--color-text), var(--dark-color-text));
+    text-decoration: none;
+
+    &:visited {
+      color: var(--color-text);
+      color: light-dark(var(--color-text), var(--dark-color-text));
+    }
+
+    &:hover {
+      color: #fff;
+      background: var(--color-link);
+      background: light-dark(var(--color-link), var(--dark-color-link));
+
+      & code {
+        color: #fff;
+      }
+    }
+  }
+#+end_src
+
+** Webmentions
+:PROPERTIES:
+:CUSTOM_ID: 1192DE40-F723-4AC0-A747-CA77E443827F
+:END:
+
+#+begin_src css
+  .webmention {
+    font-size: 0.9rem;
+    & form {
+      display: grid;
+      grid-template-columns: max-content auto max-content;
+      gap: .8rem
+      align-items: center;
+
+      @media screen and (width <= 680px) {
+        grid-template-columns: 1fr;
+      }
+
+      & input {
+        border: 1px;
+        border-style: solid;
+        border-color: var(--color-border);
+        border-color: light-dark(var(--color-border), var(--dark-color-border));
+        border-radius: .2rem
+        padding: .3rem
+        font-size: 1rem
+
+        &::placeholder {
+          padding-inline-start: .5rem
+        }
+
+        &.button {
+          cursor: pointer;
+          padding: .2rem .5rem
+          border-radius: .2rem
+
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+
+        &[readonly] {
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    &:not(:has(.webmention__list li)) {
+      & hr {
+        display: none;
+      }
+    }
+  }
+
+  .webmention__tip {
+    margin: revert;
+    font-size: revert;
+    color: var(--color-text-secondary);
+    color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  }
+
+  .webmention__list {
+    list-style: none;
+    padding-inline: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+
+    & blockquote {
+      padding-inline: 1rem;
+    }
+
+    @media screen and (width <= 400px) {
+      list-style: none;
+      padding-inline-start: 0;
+    }
+  }
+
+  .webmention__profile {
+    display: grid;
+    grid-template-columns: max-content auto;
+    grid-template-areas: "avatar author"
+    "avatar source";
+    column-gap: 1rem
+  }
+
+  .webmention__avatar {
+    object-fit: contain;
+    border-radius: 0.5rem
+    width: 4rem
+    align-self: start;
+    grid-area: avatar;
+
+    @media screen and (width <= 400px) {
+      width: 3rem
+    }
+  }
+
+  .webmention__author {
+    margin-inline-end: 1rem
+    grid-area: author;
+  }
+
+
+  .webmention__source {
+    word-break: break-all;
+    grid-area: source;
+    margin: 0;
+    align-self: end;
+  }
+
+  .webmention__content {
+    clear: both;
+    margin-block-start: 1rem
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .webmention__date {
+    margin-block: 0;
+    color: var(--color-text-secondary);
+    color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+    word-break: break-all;
+  }
+
+  .h-card[aria-hidden="true"] {
+    display: none;
+  }
+#+end_src
+
+** layer end
+:PROPERTIES:
+:CUSTOM_ID: BE51F5C8-0D27-4827-8D02-7C4B81BCC7E7
+:END:
 #+begin_src css
  }
 #+end_src
@@ -1659,17 +1645,17 @@ figure
   }
 #+end_src
 
-* @layer album
+* album
 :PROPERTIES:
 :CUSTOM_ID: D270D656-FD61-400B-9291-52E1B8D9C8AA
 :END:
 
-* @layer album-wall
+* album-wall
 :PROPERTIES:
 :CUSTOM_ID: 26F69F54-3037-47C2-B23F-2BDE97F58BB8
 :END:
 
-* @layer 88x31
+* 88x31
 :PROPERTIES:
 :CUSTOM_ID: 0FAFBA7D-583A-46D0-A986-4AF16B6C6F56
 :END:

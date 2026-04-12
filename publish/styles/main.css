@@ -673,6 +673,8 @@ section[role="note"] {
   }
 }
 
+}
+
 @layer print {
   @media print {
     html {
@@ -1012,11 +1014,12 @@ a.coderef {
   }
 }
 
-.webmention-container {
+.webmention {
+  font-size: 0.9rem;
   & form {
     display: grid;
     grid-template-columns: max-content auto max-content;
-    gap: .8em;
+    gap: .8rem
     align-items: center;
 
     @media screen and (width <= 680px) {
@@ -1028,18 +1031,18 @@ a.coderef {
       border-style: solid;
       border-color: var(--color-border);
       border-color: light-dark(var(--color-border), var(--dark-color-border));
-      border-radius: .2em;
-      padding: .3em;
-      font-size: 1em;
+      border-radius: .2rem
+      padding: .3rem
+      font-size: 1rem
 
       &::placeholder {
-        padding-inline-start: .5em;
+        padding-inline-start: .5rem
       }
 
       &.button {
         cursor: pointer;
-        padding: .2em .5em;
-        border-radius: .2em;
+        padding: .2rem .5rem
+        border-radius: .2rem
 
         &:hover {
           opacity: 0.8;
@@ -1052,117 +1055,88 @@ a.coderef {
     }
   }
 
-  &:not(:has(.webmention-content-list li)) {
+  &:not(:has(.webmention__list li)) {
     & hr {
       display: none;
     }
   }
-
 }
 
-#postamble .webmention-tip {
+.webmention__tip {
   margin: revert;
   font-size: revert;
-}
-.webmention-tip {
   color: var(--color-text-secondary);
   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
 }
 
-.webmention-content-list {
+.webmention__list {
   list-style: none;
   padding-inline: 0;
   display: flex;
   flex-direction: column;
+  gap: 2.5rem;
 
   & blockquote {
-    margin: 0;
-  }
-
-  & .webmention-card {
-    padding-block: 1em;
-
-    &:not(:first-child) {
-      border-block-start: 2px dashed;
-      border-color: var(--color-border);
-      border-color: light-dark(var(--color-border), var(--dark-color-border));
-    }
-
-    &:first-child {
-      padding-block-start: 0;
-    }
-    &:last-child {
-      padding-block-end: 0;
-    }
-  }
-
-  & .webmention-content {
-    clear: both;
-    margin-block-start: 1em;
-
-    &:empty {
-      display: none;
-    }
+    padding-inline: 1rem;
   }
 
   @media screen and (width <= 400px) {
     list-style: none;
     padding-inline-start: 0;
   }
+}
 
-  .webmention-author-container {
-    font-size: 0.8em;
-    display: flex;
-    gap: 1em;
+.webmention__profile {
+  display: grid;
+  grid-template-columns: max-content auto;
+  grid-template-areas: "avatar author"
+  "avatar source";
+  column-gap: 1rem
+}
+
+.webmention__avatar {
+  object-fit: contain;
+  border-radius: 0.5rem
+  width: 4rem
+  align-self: start;
+  grid-area: avatar;
+
+  @media screen and (width <= 400px) {
+    width: 3rem
   }
+}
 
-  .webmention-source-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.webmention__author {
+  margin-inline-end: 1rem
+  grid-area: author;
+}
+
+
+.webmention__source {
+  word-break: break-all;
+  grid-area: source;
+  margin: 0;
+  align-self: end;
+}
+
+.webmention__content {
+  clear: both;
+  margin-block-start: 1rem
+
+  &:empty {
+    display: none;
   }
+}
 
-  .webmention-source {
-    word-break: break-all;
-  }
-
-  .webmention-avatar {
-    object-fit: contain;
-    border-radius: 0.5em;
-    width: 4em;
-    align-self: start;
-
-    @media screen and (width <= 400px) {
-      width: 3em;
-    }
-  }
-
-  .webmention-author {
-    margin-inline-end: 1em;
-  }
-
-  .webmention-meta {
-    font-size: .8em;
-    margin-block-start: .5em;
-
-    @media screen and (width <= 400px) {
-      margin-block-start: 0;
-      font-size: .65em;
-    }
-  }
-
-  .webmention-date {
-    margin-block: 0;
-    color: var(--color-text-secondary);
-    color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
-    word-break: break-all;
-  }
+.webmention__date {
+  margin-block: 0;
+  color: var(--color-text-secondary);
+  color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  word-break: break-all;
 }
 
 .h-card[aria-hidden="true"] {
   display: none;
-}
-
 }
 
 }
