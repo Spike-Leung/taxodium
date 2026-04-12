@@ -1,6 +1,8 @@
 @layer base {
 
 :root {
+  --content-width: 85vw;
+
   --color-bg: #eee;
   --color-bg-secondary: #ffffffe6;
   --color-bg-src-block: oklch(from var(--color-bg) l c h / .5);
@@ -57,34 +59,35 @@
   --padding-inline-body: 10px;
   --padding-inline-list: 40px;
 
-  --nav-width: calc(100% / 5);
 }
 
 html {
   font-family: serif;
-  font-size: 18px;
+  font-size: 20px;
   -webkit-text-size-adjust: 100%;
 }
 
 @media screen and (width >= 70em) {
   html {
-    font-size: 20px;
+    font-size: 22px;
   }
 }
 
 body {
   display: flex;
   flex-direction: column;
-  max-width: 85vw;
+  max-width: var(--content-width);
   color: var(--color-text);
   color: light-dark(var(--color-text), var(--dark-color-text));
   line-height: 1.5;
   margin: 1rem auto;
   word-wrap: break-word;
   background-image: url("/images/background/xv.png");
+}
 
-  @media screen and (width >= 55rem) {
-    max-width: 50rem;
+@media screen and (width >= 55rem) {
+  :root {
+    --content-width: 50rem;;
   }
 }
 
@@ -128,6 +131,11 @@ body {
     margin: 0;
     align-items: center;
   }
+
+  a:visited {
+    color: var(--color-link);
+  color: light-dark(var(--color-link), var(--dark-color-link));
+  }
 }
 
 .a11y-nav {
@@ -162,12 +170,18 @@ body {
   }
 }
 
+.title {
+  max-width: fit-content;
+  margin-inline: auto;
+}
+
 .subtitle {
   color: var(--color-text-secondary);
   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
   font-size: 1.2rem;
   margin-block-start: 0;
   margin-block-end: 1.5rem;
+  text-align: center;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -355,7 +369,7 @@ hr {
   height: 1px;
   border: 0;
   border-top: 1px solid #ccc;
-  margin: 1rem 0;
+  margin: 2.5rem 0;
   padding: 0;
   border-color: var(--color-border);
   border-color: light-dark(var(--color-border), var(--dark-color-border));
@@ -383,7 +397,7 @@ kbd {
 pre {
   background: var(--color-bg-src-block);
   background: light-dark(var(--color-bg-src-block), var(--dark-color-bg-src-block));
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   margin: 1em 0;
   padding: 1rem;
   white-space: pre-wrap;
@@ -1087,9 +1101,8 @@ blockquote.single {
   height: 2rem;
   z-index: 1;
   cursor: pointer;
-  font-size: var(--font-size);
   padding: 0.5rem;
-  border: 1px;
+  border: 2px;
   border-style: solid;
   border-color: var(--color-border);
   border-color: light-dark(var(--color-border), var(--dark-color-border));
@@ -1125,44 +1138,34 @@ blockquote.single {
   opacity: 1;
 }
 
-}
-
 .org-src-container {
-  margin: 0.5rem 0;
   display: grid;
-  grid-tremplate-areas: "code copy-btn";
-  grid-tremplate-columns: 1fr max-content;
+  grid-template-columns: auto;
+  grid-template-areas: "copy-btn"
+                       "code";
 
-  @media screen and (width <= 400px) {
-    grid-tremplate-columns: auto;
-    grid-tremplate-areas: "copy-btn"
-                         "code";
-    gap: .5rem;
+  &:has(.code-copy-btn) {
+    pre {
+      margin-block-start: .25rem;
+    }
   }
 }
 
 .code-copy-btn {
   grid-area: copy-btn;
-  padding-block: .5rem;
-  padding-inline: 0;
   cursor: pointer;
-  border: none;
-  transition: color 0.25s ease-in-out;
-  background: unset;
-  border-block-end: 2px dashed;
+  max-width: fit-content;
   border-color: var(--color-border);
   border-color: light-dark(var(--color-border), var(--dark-color-border));
-  border-radius: 0;
-  writing-mode: vertical-rl;
-  line-height: 1;
-  font-weight: bold;
-
-  @media screen and (width <= 400px) {
-    writing-mode: horizontal-tb;
-  }
+  border-radius: .5rem;
+  font-size: 1rem;
+  justify-self: end;
 
   &:hover {
-    color: var(--color-link);
-    color: light-dark(var(--color-link), var(--dark-color-link));
+    background: var(--color-link);
+    background: light-dark(var(--color-link), var(--dark-color-link));
+    color: #fff;
   }
+}
+
 }
