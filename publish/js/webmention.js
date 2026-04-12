@@ -5,7 +5,7 @@ async function loadWebmentionCount() {
       `https://webmention.io/api/count?target=${target}`,
     );
     const { count = 0 } = await response.json();
-    document.querySelector(".webmention-count").innerText = `(${count})`;
+    document.querySelector(".webmention__count").innerText = `(${count})`;
   } catch (err) {
     console.error(err);
   }
@@ -19,8 +19,8 @@ async function loadWebmentionContent() {
     );
     const feed = await response.json();
     const feedList = feed?.children?.filter((c) => c["wm-target"].indexOf(target) !== -1)
-    document.querySelector(".webmention-count").innerText = `(${feedList.length})`;
-    const container = document.querySelector(".webmention-content-list");
+    document.querySelector(".webmention__count").innerText = `(${feedList.length})`;
+    const container = document.querySelector(".webmention__list");
     renderWebmentions(feedList, container);
   } catch (err) {
     console.error(err);
@@ -50,22 +50,20 @@ function renderWebmentions(feedList = [], container) {
     li.className = "webmention-card"
 
     // author info
-    const divAuthorContainer = document.createElement("div");
-    divAuthorContainer.className = "webmention-author-container"
-    const divSourceInfo = document.createElement("div");
-    divSourceInfo.className = "webmention-source-info"
+    const divProfile = document.createElement("div");
+    divProfile.className = "webmention__profile"
 
     const { name, url, photo } = entry.author || {}
 
     const imgAvatar = document.createElement("img");
-    imgAvatar.className = "webmention-avatar"
+    imgAvatar.className = "webmention__avatar"
     imgAvatar.src = photo || "/images/common/no-profile-photo.png"
 
     const wmSourceUrl = new URL(entry["wm-source"])
 
     const aAuthor = document.createElement("a");
     aAuthor.href = url || wmSourceUrl.origin
-    aAuthor.className = "webmention-author"
+    aAuthor.className = "webmention__author"
     aAuthor.textContent = name || wmSourceUrl.host || "Unknown"
 
     let textFragments = ''
@@ -96,39 +94,30 @@ function renderWebmentions(feedList = [], container) {
 
     const aSource = document.createElement("a");
     aSource.href = wmSourceUrl.href + textFragments
-    aSource.className = "webmention-source-url"
     aSource.textContent = entry.name || wmSourceUrl.href
     aSource.rel = "noopener"
 
-    const pSourceContainer = document.createElement("p")
-    pSourceContainer.className ="webmention-source"
-    pSourceContainer.innerText = "原文："
-    pSourceContainer.appendChild(aSource)
+    const pSource = document.createElement("p")
+    pSource.className ="webmention__source"
+    pSource.innerText = "原文："
+    pSource.appendChild(aSource)
 
-    Array.from([aAuthor, pSourceContainer]).forEach((child) => divSourceInfo.appendChild(child))
-
-    Array.from([imgAvatar, divSourceInfo]).forEach((child) => divAuthorContainer.appendChild(child))
+    Array.from([imgAvatar, aAuthor, pSource]).forEach((child) => divProfile.appendChild(child))
 
     // content
     const divContent = document.createElement("blockquote");
-    divContent.className = "webmention-content"
+    divContent.className = "webmention__content"
     divContent.innerHTML = DOMPurify.sanitize(quotes) || ""
 
-    // meta info
-    const divMeta = document.createElement("div");
-    divMeta.className = "webmention-meta"
-
-    const pReceived = document.createElement("p");
-
-    pReceived.textContent = new Intl.DateTimeFormat("zh-CN", {
+    const pReceivedDate = document.createElement("p");
+    pReceivedDate.textContent = new Intl.DateTimeFormat("zh-CN", {
       dateStyle: "full",
       timeStyle: "long",
       timeZone: "Asia/Shanghai",
     }).format(new Date(entry["wm-received"]))
-    pReceived.className = "webmention-date"
+    pReceivedDate.className = "webmention__date"
 
-    Array.from([pReceived]).forEach((child) => divMeta.appendChild(child))
-    Array.from([divAuthorContainer, divContent, divMeta]).forEach((child) => li.appendChild(child))
+    Array.from([divProfile, divContent, pReceivedDate]).forEach((child) => li.appendChild(child))
     frag.appendChild(li);
   }
 
@@ -137,7 +126,7 @@ function renderWebmentions(feedList = [], container) {
 
 function initFormTargetUrl() {
   const target = getTargetUrl();
-  document.querySelector(".webmention-container form input[name='target']").value = target;
+  document.querySelector(".webmention form input[name='target']").value = target;
 }
 
 document.addEventListener("DOMContentLoaded", function () {

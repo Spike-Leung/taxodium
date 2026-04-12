@@ -73,7 +73,6 @@
 <li><a href="#7811ED62-0E49-45C0-8AF8-204F2DF42D38">hr</a></li>
 <li><a href="#45775AA6-D112-4577-80D0-0A8A4EB89667">kbd</a></li>
 <li><a href="#62319479-F5AC-4892-8000-A1D6EF36D8C2">代码块</a></li>
-<li><a href="#C72F3DB7-7B97-4457-BACD-BA749BB22952">代码悬浮高亮</a></li>
 <li><a href="#F2A3CB0A-8AF5-47B2-A136-2F018A33025E">引用 blockquote、verse</a></li>
 <li><a href="#4E72607B-B28C-44B8-8164-44E3604F285C">details</a></li>
 <li><a href="#40392256-99E3-4FAF-8678-EFFB02EC7AAD">iframe</a></li>
@@ -84,7 +83,6 @@
 <li><a href="#43218EEA-C620-4C80-A797-90F713B14C19">note section</a></li>
 <li><a href="#965930BE-3620-480B-8104-9421FFFFB49D">footnote</a></li>
 <li><a href="#876DC8AD-47C0-4D9C-B57F-3EB112EBFB8D">postamble</a></li>
-<li><a href="#1192DE40-F723-4AC0-A747-CA77E443827F">Webmentions</a></li>
 </ul>
 </li>
 <li><a href="#BA23E238-5F66-42D2-A57E-1B6CD80EE4B3">@layer print</a></li>
@@ -98,8 +96,12 @@
 </li>
 <li><a href="#4ACD02AA-E4FA-44ED-85C8-26B2B3FE8F05">@layer function</a>
 <ul>
+<li><a href="#D888F157-70B3-42EE-BC57-74949A8BCE5D">layer start</a></li>
 <li><a href="#38D83091-6FBD-4CD4-B998-22AE7EA7BD40">back-to-top</a></li>
 <li><a href="#E488BE09-2A89-4644-AC17-5E87A3BD025B">代码复制按钮样式 &amp; 布局</a></li>
+<li><a href="#C72F3DB7-7B97-4457-BACD-BA749BB22952">代码悬浮高亮</a></li>
+<li><a href="#1192DE40-F723-4AC0-A747-CA77E443827F">Webmentions</a></li>
+<li><a href="#BE51F5C8-0D27-4827-8D02-7C4B81BCC7E7">layer end</a></li>
 </ul>
 </li>
 <li><a href="#17B3662C-F7CA-4A2F-B469-FDDEC42CA39B">index</a></li>
@@ -127,6 +129,8 @@
 
 <div class="org-src-container">
 <pre class="src src-css"><span class="org-css-selector">:root</span> {
+  <span class="org-variable-name">--content-width</span>: 85vw;
+
   <span class="org-variable-name">--color-bg</span>: <span class="custom-28">#eee</span>;
   <span class="org-variable-name">--color-bg-secondary</span>: <span class="custom-27">#ffffffe6</span>;
   <span class="org-variable-name">--color-bg-src-block</span>: oklch(from var(<span class="org-variable-name">--color-bg</span>) l c h / .5);
@@ -183,7 +187,6 @@
   <span class="org-variable-name">--padding-inline-body</span>: 10px;
   <span class="org-variable-name">--padding-inline-list</span>: 40px;
 
-  <span class="org-variable-name">--nav-width</span>: calc(100% / 5);
 }
 </pre>
 </div>
@@ -217,16 +220,18 @@
 <pre class="src src-css"><span class="org-css-selector">body</span> {
   <span class="org-css-property">display</span>: flex;
   <span class="org-css-property">flex-direction</span>: column;
-  <span class="org-css-property">max-width</span>: 85vw;
+  <span class="org-css-property">max-width</span>: var(<span class="org-variable-name">--content-width</span>);
   <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
   <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
   <span class="org-css-property">line-height</span>: 1.5;
   <span class="org-css-property">margin</span>: 1rem auto;
   <span class="org-css-property">word-wrap</span>: break-word;
   <span class="org-css-property">background-image</span>: url(<span class="org-string">"/images/background/xv.png"</span>);
+}
 
-  <span class="org-builtin">@media</span> screen and (width &gt;= 55rem) {
-    <span class="org-css-property">max-width</span>: 50rem;
+<span class="org-builtin">@media</span> screen and (width &gt;= 55rem) {
+  <span class="org-css-selector">:root</span> {
+    <span class="org-variable-name">--content-width</span>: 50rem;;
   }
 }
 </pre>
@@ -285,6 +290,11 @@
     <span class="org-css-property">padding</span>: 0;
     <span class="org-css-property">margin</span>: 0;
     <span class="org-css-property">align-items</span>: center;
+  }
+
+  <span class="org-css-selector">a:visited</span> {
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-link</span>);
+    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
   }
 }
 </pre>
@@ -614,7 +624,7 @@ h5</span> {
 <pre class="src src-css"><span class="org-css-selector">pre</span> {
   <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-bg-src-block</span>);
   <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-bg-src-block</span>), var(<span class="org-variable-name">--dark-color-bg-src-block</span>));
-  <span class="org-css-property">font-size</span>: 0.8rem;
+  <span class="org-css-property">font-size</span>: 0.75rem;
   <span class="org-css-property">margin</span>: 1em 0;
   <span class="org-css-property">padding</span>: 1rem;
   <span class="org-css-property">white-space</span>: pre-wrap;
@@ -624,43 +634,6 @@ h5</span> {
   <span class="org-css-property">border-block</span>: 5px solid;
   <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
   <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
-}
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-C72F3DB7-7B97-4457-BACD-BA749BB22952" class="outline-3">
-<h3 id="C72F3DB7-7B97-4457-BACD-BA749BB22952">代码悬浮高亮</h3>
-<div class="outline-text-3" id="text-C72F3DB7-7B97-4457-BACD-BA749BB22952"><div class="org-src-container">
-<pre class="src src-css"><span class="org-css-selector">.code-highlighted</span> {
-  <span class="org-css-property">transition</span>: background-color .1s ease-in-out;
-  <span class="org-css-property">background-color</span>: var(<span class="org-variable-name">--color-bg-code-highlighted</span>);
-  <span class="org-css-property">background-color</span>: light-dark(var(<span class="org-variable-name">--color-bg-code-highlighted</span>), var(<span class="org-variable-name">--dark-color-bg-code-highlighted</span>));
-}
-
-<span class="org-css-selector">a.coderef</span> {
-  <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-bg-code</span>);
-  <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-bg-code</span>), var(<span class="org-variable-name">--dark-color-bg-code</span>));
-  <span class="org-css-property">border-radius</span>: 6px;
-  <span class="org-css-property">padding</span>: 0.05em .2em;
-  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
-  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
-  <span class="org-css-property">text-decoration</span>: none;
-
-  &amp;:visited {
-    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
-    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
-  }
-
-  &amp;:hover {
-    <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
-    <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-link</span>);
-    <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
-
-    &amp; code {
-      <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
-    }
-  }
 }
 </pre>
 </div>
@@ -985,185 +958,17 @@ tfoot</span> {
     <span class="org-css-property">text-align</span>: end;
   }
 
-  &amp; p {
-    <span class="org-css-property">margin-block</span>: .25rem;
-  }
 
   <span class="org-css-selector">footer</span> {
     <span class="org-css-property">font-size</span>: 0.8rem;
     <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
     <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
+
+    &amp; p {
+      <span class="org-css-property">margin-block</span>: .25rem;
+    }
   }
 }
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-1192DE40-F723-4AC0-A747-CA77E443827F" class="outline-3">
-<h3 id="1192DE40-F723-4AC0-A747-CA77E443827F">Webmentions</h3>
-<div class="outline-text-3" id="text-1192DE40-F723-4AC0-A747-CA77E443827F"><div class="org-src-container">
-<pre class="src src-css"><span class="org-css-selector">.webmention-container</span> {
-  &amp; form {
-    <span class="org-css-property">display</span>: grid;
-    <span class="org-css-property">grid-template-columns</span>: max-content auto max-content;
-    <span class="org-css-property">gap</span>: .8em;
-    <span class="org-css-property">align-items</span>: center;
-
-    <span class="org-builtin">@media</span> screen and (width &lt;= 680px) {
-      <span class="org-css-property">grid-template-columns</span>: 1fr;
-    }
-
-    &amp; input {
-      <span class="org-css-property">border</span>: 1px;
-      <span class="org-css-property">border-style</span>: solid;
-      <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
-      <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
-      <span class="org-css-property">border-radius</span>: .2em;
-      <span class="org-css-property">padding</span>: .3em;
-      <span class="org-css-property">font-size</span>: 1em;
-
-      &amp;::placeholder {
-        <span class="org-css-property">padding-inline-start</span>: .5em;
-      }
-
-      &amp;.button {
-        <span class="org-css-property">cursor</span>: pointer;
-        <span class="org-css-property">padding</span>: .2em .5em;
-        <span class="org-css-property">border-radius</span>: .2em;
-
-        &amp;:hover {
-          <span class="org-css-property">opacity</span>: 0.8;
-        }
-      }
-
-      &amp;[readonly] {
-        <span class="org-css-property">cursor</span>: not-allowed;
-      }
-    }
-  }
-
-  &amp; hr {
-    <span class="org-css-property">margin-block-end</span>: 0em;
-  }
-
-  &amp;:not(:has(.webmention-content-list li)) {
-    &amp; hr {
-      <span class="org-css-property">display</span>: none;
-    }
-  }
-
-}
-
-<span class="org-css-selector">#postamble .webmention-tip</span> {
-  <span class="org-css-property">margin</span>: revert;
-  <span class="org-css-property">font-size</span>: revert;
-}
-<span class="org-css-selector">.webmention-tip</span> {
-  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
-  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
-}
-
-<span class="org-css-selector">.webmention-content-list</span> {
-  <span class="org-css-property">list-style</span>: none;
-  <span class="org-css-property">padding-inline</span>: 0;
-  <span class="org-css-property">display</span>: flex;
-  <span class="org-css-property">flex-direction</span>: column;
-
-  &amp; blockquote {
-    <span class="org-css-property">margin</span>: 0;
-  }
-
-  &amp; .webmention-card {
-    <span class="org-css-property">padding-block</span>: 1em;
-
-    &amp;:not(:first-child) {
-      <span class="org-css-property">border-block-start</span>: 2px dashed;
-      <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
-      <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
-    }
-
-    &amp;:first-child {
-      <span class="org-css-property">padding-block-start</span>: 0;
-    }
-    &amp;:last-child {
-      <span class="org-css-property">padding-block-end</span>: 0;
-    }
-  }
-
-  &amp; .webmention-content {
-    <span class="org-css-property">clear</span>: both;
-    <span class="org-css-property">margin-block-start</span>: 1em;
-
-    &amp;:empty {
-      <span class="org-css-property">display</span>: none;
-    }
-  }
-
-  <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
-    <span class="org-css-property">list-style</span>: none;
-    <span class="org-css-property">padding-inline-start</span>: 0;
-  }
-
-  <span class="org-css-selector">.webmention-author-container</span> {
-    <span class="org-css-property">font-size</span>: 0.8em;
-    <span class="org-css-property">display</span>: flex;
-    <span class="org-css-property">gap</span>: 1em;
-  }
-
-  <span class="org-css-selector">.webmention-source-info</span> {
-    <span class="org-css-property">display</span>: flex;
-    <span class="org-css-property">flex-direction</span>: column;
-    <span class="org-css-property">justify-content</span>: space-between;
-  }
-
-  <span class="org-css-selector">.webmention-source</span> {
-    <span class="org-css-property">word-break</span>: break-all;
-  }
-
-  <span class="org-css-selector">.webmention-avatar</span> {
-    <span class="org-css-property">object-fit</span>: contain;
-    <span class="org-css-property">border-radius</span>: 0.5em;
-    <span class="org-css-property">width</span>: 4em;
-    <span class="org-css-property">align-self</span>: start;
-
-    <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
-      <span class="org-css-property">width</span>: 3em;
-    }
-  }
-
-  <span class="org-css-selector">.webmention-author</span> {
-    <span class="org-css-property">margin-inline-end</span>: 1em;
-  }
-
-  <span class="org-css-selector">.webmention-meta</span> {
-    <span class="org-css-property">font-size</span>: .8em;
-    <span class="org-css-property">margin-block-start</span>: .5em;
-
-    <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
-      <span class="org-css-property">margin-block-start</span>: 0;
-      <span class="org-css-property">font-size</span>: .65em;
-    }
-  }
-
-  <span class="org-css-selector">.webmention-date</span> {
-    <span class="org-css-property">margin-block</span>: 0;
-    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
-    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
-    <span class="org-css-property">word-break</span>: break-all;
-  }
-}
-
-<span class="org-css-selector">.h-card[aria-hidden=</span><span class="org-string">"true"</span><span class="org-css-selector">]</span> {
-  <span class="org-css-property">display</span>: none;
-}
-</pre>
-</div>
-
-<p>
-@layer end
-</p>
-<div class="org-src-container">
-<pre class="src src-css">}
 </pre>
 </div>
 </div>
@@ -1441,9 +1246,13 @@ blockquote.indent-paragraph</span> {
 </div>
 <div id="outline-container-4ACD02AA-E4FA-44ED-85C8-26B2B3FE8F05" class="outline-2">
 <h2 id="4ACD02AA-E4FA-44ED-85C8-26B2B3FE8F05">@layer function</h2>
-<div class="outline-text-2" id="text-4ACD02AA-E4FA-44ED-85C8-26B2B3FE8F05"><div class="org-src-container">
+<div class="outline-text-2" id="text-4ACD02AA-E4FA-44ED-85C8-26B2B3FE8F05"></div>
+<div id="outline-container-D888F157-70B3-42EE-BC57-74949A8BCE5D" class="outline-3">
+<h3 id="D888F157-70B3-42EE-BC57-74949A8BCE5D">layer start</h3>
+<div class="outline-text-3" id="text-D888F157-70B3-42EE-BC57-74949A8BCE5D"><div class="org-src-container">
 <pre class="src src-css"><span class="org-builtin">@layer</span> function {
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-38D83091-6FBD-4CD4-B998-22AE7EA7BD40" class="outline-3">
@@ -1457,9 +1266,8 @@ blockquote.indent-paragraph</span> {
   <span class="org-css-property">height</span>: 2rem;
   <span class="org-css-property">z-index</span>: 1;
   <span class="org-css-property">cursor</span>: pointer;
-  <span class="org-css-property">font-size</span>: var(<span class="org-variable-name">--font-size</span>);
   <span class="org-css-property">padding</span>: 0.5rem;
-  <span class="org-css-property">border</span>: 1px;
+  <span class="org-css-property">border</span>: 2px;
   <span class="org-css-property">border-style</span>: solid;
   <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
   <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
@@ -1496,11 +1304,6 @@ blockquote.indent-paragraph</span> {
 }
 </pre>
 </div>
-
-<div class="org-src-container">
-<pre class="src src-css">}
-</pre>
-</div>
 </div>
 </div>
 <div id="outline-container-E488BE09-2A89-4644-AC17-5E87A3BD025B" class="outline-3">
@@ -1526,15 +1329,223 @@ blockquote.indent-paragraph</span> {
   <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
   <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
   <span class="org-css-property">border-radius</span>: .5rem;
-  <span class="org-css-property">font-weight</span>: 700;
   <span class="org-css-property">font-size</span>: 1rem;
   <span class="org-css-property">justify-self</span>: end;
 
   &amp;:hover {
-    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-link</span>);
-    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
+    <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-link</span>);
+    <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
+    <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
   }
 }
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-C72F3DB7-7B97-4457-BACD-BA749BB22952" class="outline-3">
+<h3 id="C72F3DB7-7B97-4457-BACD-BA749BB22952">代码悬浮高亮</h3>
+<div class="outline-text-3" id="text-C72F3DB7-7B97-4457-BACD-BA749BB22952"><div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.code-highlighted</span> {
+  <span class="org-css-property">transition</span>: background-color .1s ease-in-out;
+  <span class="org-css-property">background-color</span>: var(<span class="org-variable-name">--color-bg-code-highlighted</span>);
+  <span class="org-css-property">background-color</span>: light-dark(var(<span class="org-variable-name">--color-bg-code-highlighted</span>), var(<span class="org-variable-name">--dark-color-bg-code-highlighted</span>));
+}
+
+<span class="org-css-selector">a.coderef</span> {
+  <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-bg-code</span>);
+  <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-bg-code</span>), var(<span class="org-variable-name">--dark-color-bg-code</span>));
+  <span class="org-css-property">border-radius</span>: 6px;
+  <span class="org-css-property">padding</span>: 0.05em .2em;
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+  <span class="org-css-property">text-decoration</span>: none;
+
+  &amp;:visited {
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+  }
+
+  &amp;:hover {
+    <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+    <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-link</span>);
+    <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
+
+    &amp; code {
+      <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-1192DE40-F723-4AC0-A747-CA77E443827F" class="outline-3">
+<h3 id="1192DE40-F723-4AC0-A747-CA77E443827F">Webmentions</h3>
+<div class="outline-text-3" id="text-1192DE40-F723-4AC0-A747-CA77E443827F"><div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.webmention</span> {
+  &amp; form {
+    <span class="org-css-property">display</span>: grid;
+    <span class="org-css-property">grid-template-columns</span>: max-content auto max-content;
+    <span class="org-css-property">gap</span>: .8em;
+    <span class="org-css-property">align-items</span>: center;
+
+    <span class="org-builtin">@media</span> screen and (width &lt;= 680px) {
+      <span class="org-css-property">grid-template-columns</span>: 1fr;
+    }
+
+    &amp; input {
+      <span class="org-css-property">border</span>: 1px;
+      <span class="org-css-property">border-style</span>: solid;
+      <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
+      <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+      <span class="org-css-property">border-radius</span>: .2em;
+      <span class="org-css-property">padding</span>: .3em;
+      <span class="org-css-property">font-size</span>: 1em;
+
+      &amp;::placeholder {
+        <span class="org-css-property">padding-inline-start</span>: .5em;
+      }
+
+      &amp;.button {
+        <span class="org-css-property">cursor</span>: pointer;
+        <span class="org-css-property">padding</span>: .2em .5em;
+        <span class="org-css-property">border-radius</span>: .2em;
+
+        &amp;:hover {
+          <span class="org-css-property">opacity</span>: 0.8;
+        }
+      }
+
+      &amp;[readonly] {
+        <span class="org-css-property">cursor</span>: not-allowed;
+      }
+    }
+  }
+
+  &amp;:not(:has(.webmention-content-list li)) {
+    &amp; hr {
+      <span class="org-css-property">display</span>: none;
+    }
+  }
+
+}
+
+<span class="org-css-selector">.webmention__tip</span> {
+  <span class="org-css-property">margin</span>: revert;
+  <span class="org-css-property">font-size</span>: revert;
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
+}
+
+<span class="org-css-selector">.webmention__list</span> {
+  <span class="org-css-property">list-style</span>: none;
+  <span class="org-css-property">padding-inline</span>: 0;
+  <span class="org-css-property">display</span>: flex;
+  <span class="org-css-property">flex-direction</span>: column;
+
+  &amp; blockquote {
+    <span class="org-css-property">margin</span>: 0;
+  }
+
+  &amp; .webmention-card {
+    <span class="org-css-property">padding-block</span>: 1em;
+
+    &amp;:not(:first-child) {
+      <span class="org-css-property">border-block-start</span>: 2px dashed;
+      <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
+      <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+    }
+
+    &amp;:first-child {
+      <span class="org-css-property">padding-block-start</span>: 0;
+    }
+    &amp;:last-child {
+      <span class="org-css-property">padding-block-end</span>: 0;
+    }
+  }
+
+  &amp; .webmention-content {
+    <span class="org-css-property">clear</span>: both;
+    <span class="org-css-property">margin-block-start</span>: 1em;
+
+    &amp;:empty {
+      <span class="org-css-property">display</span>: none;
+    }
+  }
+
+  <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
+    <span class="org-css-property">list-style</span>: none;
+    <span class="org-css-property">padding-inline-start</span>: 0;
+  }
+
+  <span class="org-css-selector">.webmention-author-container</span> {
+    <span class="org-css-property">font-size</span>: 0.8em;
+    <span class="org-css-property">display</span>: flex;
+    <span class="org-css-property">gap</span>: 1em;
+  }
+
+  <span class="org-css-selector">.webmention-source-info</span> {
+    <span class="org-css-property">display</span>: flex;
+    <span class="org-css-property">flex-direction</span>: column;
+    <span class="org-css-property">justify-content</span>: space-between;
+  }
+
+  <span class="org-css-selector">.webmention-source</span> {
+    <span class="org-css-property">word-break</span>: break-all;
+  }
+
+  <span class="org-css-selector">.webmention-avatar</span> {
+    <span class="org-css-property">object-fit</span>: contain;
+    <span class="org-css-property">border-radius</span>: 0.5em;
+    <span class="org-css-property">width</span>: 4em;
+    <span class="org-css-property">align-self</span>: start;
+
+    <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
+      <span class="org-css-property">width</span>: 3em;
+    }
+  }
+
+  <span class="org-css-selector">.webmention-author</span> {
+    <span class="org-css-property">margin-inline-end</span>: 1em;
+  }
+
+  <span class="org-css-selector">.webmention-meta</span> {
+    <span class="org-css-property">font-size</span>: .8em;
+    <span class="org-css-property">margin-block-start</span>: .5em;
+
+    <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
+      <span class="org-css-property">margin-block-start</span>: 0;
+      <span class="org-css-property">font-size</span>: .65em;
+    }
+  }
+
+  <span class="org-css-selector">.webmention-date</span> {
+    <span class="org-css-property">margin-block</span>: 0;
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
+    <span class="org-css-property">word-break</span>: break-all;
+  }
+}
+
+<span class="org-css-selector">.h-card[aria-hidden=</span><span class="org-string">"true"</span><span class="org-css-selector">]</span> {
+  <span class="org-css-property">display</span>: none;
+}
+</pre>
+</div>
+
+<p>
+@layer end
+</p>
+<div class="org-src-container">
+<pre class="src src-css">}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-BE51F5C8-0D27-4827-8D02-7C4B81BCC7E7" class="outline-3">
+<h3 id="BE51F5C8-0D27-4827-8D02-7C4B81BCC7E7">layer end</h3>
+<div class="outline-text-3" id="text-BE51F5C8-0D27-4827-8D02-7C4B81BCC7E7"><div class="org-src-container">
+<pre class="src src-css">}
 </pre>
 </div>
 </div>
@@ -1554,6 +1565,10 @@ blockquote.indent-paragraph</span> {
   <span class="org-css-property">width</span>: 100%;
 }
 
+<span class="org-css-selector">body,blockquote,.verse</span> {
+  <span class="org-css-property">font-family</span>: <span class="org-string">"Special Elite"</span>, <span class="org-string">"Huiwen-mincho"</span>, var(<span class="org-variable-name">--font-family</span>);
+}
+
 <span class="org-css-selector">.org-ul</span> {
   <span class="org-css-property">padding-inline-start</span>: 0;
   <span class="org-css-property">counter-reset</span>: step;
@@ -1562,10 +1577,10 @@ blockquote.indent-paragraph</span> {
 }
 
 <span class="org-css-selector">.org-ul li</span> {
-  <span class="org-css-property">counter-incrrement</span>: step;
+  <span class="org-css-property">counter-increment</span>: step;
   <span class="org-css-property">display</span>: grid;
-  <span class="org-css-property">grid-tremplate-columns</span>: auto max-content;
-  <span class="org-css-property">grid-tremplate-areas</span>: <span class="org-string">"chapter page"</span>;
+  <span class="org-css-property">grid-template-columns</span>: auto max-content;
+  <span class="org-css-property">grid-template-areas</span>: <span class="org-string">"chapter page"</span>;
   <span class="org-css-property">gap</span>: 0 .5rem;
   <span class="org-css-property">margin-block</span>: 0.5rem;
 
@@ -1596,7 +1611,7 @@ blockquote.indent-paragraph</span> {
   }
 }
 
-<span class="org-css-selector">.sitremap-subtitle</span> {
+<span class="org-css-selector">.sitemap-subtitle</span> {
   <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
   <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
   <span class="org-css-property">font-size</span>: 0.85rem;
@@ -1633,7 +1648,6 @@ blockquote.indent-paragraph</span> {
     <span class="org-css-property">padding-inline-start</span>: 0;
   }
 }
-
 <span class="org-css-selector">.quick-access</span> {
   <span class="org-css-property">text-align</span>: center;
   <span class="org-css-property">line-height</span>: 1;
@@ -1768,9 +1782,9 @@ blockquote.indent-paragraph</span> {
 </div>
 <div id="postamble" class="status">
 
-<details class="webmention-container js-required">
-<summary>Webmentions <span class="webmention-count">(加载中...)</span></summary>
-<p class="webmention-tip">
+<details class="webmention js-required">
+<summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
+<p class="webmention__tip">
 如果你想回应这篇文章，可以在你的文章或社交媒体帖子中链接这篇文章，然后提交你的 URL，你的回应随后会显示在此页面上。
 (<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
 </p>
@@ -1781,12 +1795,12 @@ blockquote.indent-paragraph</span> {
 <input type="submit" class="button" value="提交"/>
 </form>
 <hr></hr>
-<ul class="webmention-content-list"></ul>
+<ul class="webmention__list"></ul>
 </details>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
 <p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
-<p>文章创建于 <span class="dt-published">2026-04-10 Fri 09:52</span>，更新于 <span class="dt-updated">2026-04-10 Fri 23:17</span>，</p>
+<p>文章创建于 <span class="dt-published">2026-04-10 Fri 09:52</span>，更新于 <span class="dt-updated">2026-04-12 Sun 15:48</span>，</p>
 <p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
 <p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
 </footer>
