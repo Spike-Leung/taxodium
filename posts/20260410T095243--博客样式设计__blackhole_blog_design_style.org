@@ -798,12 +798,19 @@ select {
 :PROPERTIES:
 :CUSTOM_ID: 489D5491-DD21-4746-9153-5F1B303EACBA
 :END:
-
-org-publish 渲染的 HTML，在嵌套 list 的时候，有的内容会用 <p> 包裹，导致某个 <li> 的边距过大。
-针对这个情况，重置 <p> 的边距。
+给 ~<li>~ 增加一些边距，避免过分拥挤。
 
 #+begin_src css
-  :is(ol,ul) li > p:first-child {
+  :where(ol,ul) li {
+    margin-block: .2rem;
+  }
+#+end_src
+
+org-publish 渲染的 HTML，在嵌套 list 的时候，有的内容会用 ~<p>~ 包裹，导致某个 ~<li>~ 的边距过大。
+针对这个情况，重置 ~<p>~ 的边距。
+
+#+begin_src css
+  :where(ol,ul) li > p:first-child {
     margin-block: 0;
   }
 #+end_src
@@ -812,7 +819,7 @@ org-publish 渲染的 HTML，在嵌套 list 的时候，有的内容会用 <p> �
 
 #+begin_src css
   @media screen and (width <= 400px) {
-    :is(ol,ul) {
+    :where(ol,ul) {
       padding-inline-start: 1rem;
 
       & li > details,
@@ -827,6 +834,7 @@ org-publish 渲染的 HTML，在嵌套 list 的时候，有的内容会用 <p> �
     }
   }
 #+end_src
+
 *** footnote
 :PROPERTIES:
 :CUSTOM_ID: 965930BE-3620-480B-8104-9421FFFFB49D
