@@ -1,0 +1,2538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>博客样式设计</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="以文学编程的形式阐述样式设计" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <!--
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  -->
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">博客样式设计</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#17B3662C-F7CA-4A2F-B469-FDDEC42CA39B">main.css</a>
+<ul>
+<li><a href="#935EFF1D-8943-49AB-B2D6-73B6D5210E66">@layer base</a>
+<ul>
+<li><a href="#4946694D-2BC5-45D8-B5A9-4C03B115ED2F">layer start</a></li>
+<li><a href="#76B11972-527A-4B54-BCF7-90C0AF167044">变量</a></li>
+<li><a href="#C0CF20B3-28F3-4A65-8E98-8F5C458D6541">基础设置 html / body</a></li>
+<li><a href="#70161B53-755C-4890-976D-335BE328AD2C">导航栏</a></li>
+<li><a href="#A79F4F50-D523-439D-BB67-E532CC533E82">skip nav</a></li>
+<li><a href="#26EB618B-94BD-4252-AD54-2F830B122280">title &amp; subtitle</a></li>
+<li><a href="#99508F97-0E63-444F-82EF-D9514E4C2F5D">heading</a></li>
+<li><a href="#4D0E8EA8-BC50-4DE1-8149-A697370D9712">图片/视频</a></li>
+<li><a href="#CBB452FA-9ED4-4A5C-BAD9-F7C91BC3A426">链接</a></li>
+<li><a href="#41157D00-9294-4EAD-8950-123C77412B16">段落</a></li>
+<li><a href="#BDC822A9-DAB1-4B0A-A9B0-49D03B4816F9">markup</a></li>
+<li><a href="#7811ED62-0E49-45C0-8AF8-204F2DF42D38">hr</a></li>
+<li><a href="#45775AA6-D112-4577-80D0-0A8A4EB89667">kbd</a></li>
+<li><a href="#D5AD2696-9557-438A-9DE7-AD2349168FCA">ruby</a></li>
+<li><a href="#62319479-F5AC-4892-8000-A1D6EF36D8C2">代码块</a></li>
+<li><a href="#F2A3CB0A-8AF5-47B2-A136-2F018A33025E">引用 blockquote、verse</a></li>
+<li><a href="#1071EC3E-4237-4644-8CF5-700EA92A0D13">figure</a></li>
+<li><a href="#4E72607B-B28C-44B8-8164-44E3604F285C">details</a></li>
+<li><a href="#40392256-99E3-4FAF-8678-EFFB02EC7AAD">iframe</a></li>
+<li><a href="#B44FCBCA-1FB6-492F-8E75-56D70FA7040B">select</a></li>
+<li><a href="#07D7F022-3503-4DEE-9F36-F507EC0A9169">button</a></li>
+<li><a href="#D418F764-38A7-4147-A8E0-5529F2FBAF2C">table</a></li>
+<li><a href="#489D5491-DD21-4746-9153-5F1B303EACBA">list</a></li>
+<li><a href="#965930BE-3620-480B-8104-9421FFFFB49D">footnote</a></li>
+<li><a href="#876DC8AD-47C0-4D9C-B57F-3EB112EBFB8D">postamble</a></li>
+<li><a href="#21157F8D-8B5D-4635-BA60-91A1C740D14C">layer end</a></li>
+</ul>
+</li>
+<li><a href="#BA23E238-5F66-42D2-A57E-1B6CD80EE4B3">@layer print</a></li>
+<li><a href="#4ACD02AA-E4FA-44ED-85C8-26B2B3FE8F05">@layer function</a>
+<ul>
+<li><a href="#D888F157-70B3-42EE-BC57-74949A8BCE5D">layer start</a></li>
+<li><a href="#38D83091-6FBD-4CD4-B998-22AE7EA7BD40">back-to-top</a></li>
+<li><a href="#6754D336-893C-48F6-B05B-317D9BC7AD37">代码高亮</a></li>
+<li><a href="#E488BE09-2A89-4644-AC17-5E87A3BD025B">代码复制按钮</a></li>
+<li><a href="#C72F3DB7-7B97-4457-BACD-BA749BB22952">代码悬浮高亮</a></li>
+<li><a href="#1192DE40-F723-4AC0-A747-CA77E443827F">Webmentions</a></li>
+<li><a href="#09A0A008-F690-48C1-8992-D59E7A4162B2">:focus-visible</a></li>
+<li><a href="#5D79C4AC-30FF-46F3-B2D7-4887F1BF91EB">heading-enhanced</a></li>
+<li><a href="#43218EEA-C620-4C80-A797-90F713B14C19">note section</a></li>
+<li><a href="#BE51F5C8-0D27-4827-8D02-7C4B81BCC7E7">layer end</a></li>
+</ul>
+</li>
+<li><a href="#AD067FC2-7D45-445A-8B61-4A86E5923C23">@layer special</a>
+<ul>
+<li><a href="#A46EF67A-B267-419A-AFFA-8D9D0798E952">layer start</a></li>
+<li><a href="#F7E477A7-203A-4AFA-9B8F-5C8A46CACF00">emacs mark</a></li>
+<li><a href="#EC925295-1B78-4457-B659-2B8217F14FAA">retro theme</a></li>
+<li><a href="#CA4C7D5C-610C-455C-A7E9-051490D3F342">image-list</a></li>
+<li><a href="#2BFC37AF-7951-4233-A8A4-385070F0007B">blockquote/verse</a></li>
+<li><a href="#8E8B1775-6975-47A9-ACFB-B7844D246C0D">.hidden-link</a></li>
+<li><a href="#93423AF8-637B-4039-8E80-6C494EB6559A">inline image</a></li>
+<li><a href="#24A4E944-B866-43FE-A65B-662995690909">float image</a></li>
+<li><a href="#46F43A86-8D54-4CD8-903E-07290B903A93">layer end</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#17B3662C-F7CA-4A2F-B469-FDDEC42CA39B">index.css</a>
+<ul>
+<li><a href="#DA5A6350-73E4-49BC-AB4F-0A83F6FB8446">标题</a></li>
+<li><a href="#5858EA17-11C8-4E2D-8AC6-59ED6F1B7E25">快捷入口</a></li>
+<li><a href="#7A3FB831-265B-4A88-AEAF-E5E01A881119">列表</a></li>
+</ul>
+</li>
+<li><a href="#D270D656-FD61-400B-9291-52E1B8D9C8AA">album.css</a>
+<ul>
+<li><a href="#BCE45058-1141-4766-8C83-2C5FFD33D7D4">lyrics</a></li>
+</ul>
+</li>
+<li><a href="#26F69F54-3037-47C2-B23F-2BDE97F58BB8">album-wall.css</a></li>
+<li><a href="#0FAFBA7D-583A-46D0-A986-4AF16B6C6F56">88-31-button.css</a></li>
+<li><a href="#28F57E2E-3187-4D36-A918-8D43423EEE9F">image-enhance.css</a></li>
+<li><a href="#88EC4E99-5F6A-4F55-A283-56F5226A1D21">text-indent.css</a></li>
+</ul>
+</div>
+</nav>
+<p>
+之前参加了 <a href="css-naked-day-2026.html">CSS Naked Day 2026</a>，发现博客不需要什么样式其实也能看，少去了一些字体和 JS，加载还更快一些。想着或许可以趁着每年 CSS Naked Day 期间将博客样式重写一次，减少一些不必要的样式，让博客更轻量一些。有个说法是，日本的伊势神宫会每隔 20 年重建一次，目的是为了让每一代的工匠都有修建的经验，不至于丢失修建的能力。每年翻修一下博客样式，也能让自己更清楚需要什么。
+</p>
+
+<p>
+大体的设计还是基于 <a href="my-blog-design.html">我的博客设计</a>，相比上个版本而言，移除了字体，暂时只用系统自带的字体，这样博客可以少加载些资源。另外移除了 <a href="use-pagefind-to-search-blog.html">pagefind</a> 提供的搜索功能以及 <a href="https://github.com/goblindegook/littlefoot">littlefoot</a> 的脚注增强功能，一个考虑是最近的供应链攻击比较多，这两个都是外部的 JS，不受我控制（虽然我可以下载下来，避免它们更新），而且也不是必不可少的功能，还是少加载一些 JS 吧。不过由于 Webmention 需要渲染 HTML 内容，还是保留了一个 <code>purify.min.js</code> 的外部 JS 依赖。剩下的一些 JS 都是我自己编写的，都比较简短，也在我的控制下。
+</p>
+
+<p>
+这次重写，使用了 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@layer">@layer</a> 去分类样式，也尝试用 <a href="11.html#5d75b436-2b28-4216-9b3d-79e177927b78">文学编程</a> 的形式去描述设计，尝试尝试新东西。这个文档应该会持续迭代，样式会基于这份文档生成。
+</p>
+<div id="outline-container-17B3662C-F7CA-4A2F-B469-FDDEC42CA39B" class="outline-2">
+<h2 id="17B3662C-F7CA-4A2F-B469-FDDEC42CA39B">main.css</h2>
+<div class="outline-text-2" id="text-17B3662C-F7CA-4A2F-B469-FDDEC42CA39B"></div>
+<div id="outline-container-935EFF1D-8943-49AB-B2D6-73B6D5210E66" class="outline-3">
+<h3 id="935EFF1D-8943-49AB-B2D6-73B6D5210E66">@layer base</h3>
+<div class="outline-text-3" id="text-935EFF1D-8943-49AB-B2D6-73B6D5210E66"></div>
+<div id="outline-container-4946694D-2BC5-45D8-B5A9-4C03B115ED2F" class="outline-4">
+<h4 id="4946694D-2BC5-45D8-B5A9-4C03B115ED2F">layer start</h4>
+<div class="outline-text-4" id="text-4946694D-2BC5-45D8-B5A9-4C03B115ED2F"><div class="org-src-container">
+<pre class="src src-css"><span class="org-builtin">@layer</span> base {
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-76B11972-527A-4B54-BCF7-90C0AF167044" class="outline-4">
+<h4 id="76B11972-527A-4B54-BCF7-90C0AF167044">变量</h4>
+<div class="outline-text-4" id="text-76B11972-527A-4B54-BCF7-90C0AF167044"><p>
+首先定义一些 CSS 变量，主要是颜色相关的。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">:root</span> {
+  <span class="org-variable-name">--color-taxodium-purple</span>: <span class="custom-21">#7c7cd1</span>;
+  <span class="org-variable-name">--color-taxodium-yellow</span>: <span class="custom-20">#bd8c42</span>;
+  <span class="org-variable-name">--color-bg</span>: <span class="custom-19">#eee</span>;
+  <span class="org-variable-name">--color-bg-secondary</span>: <span class="custom-18">#ffffffe6</span>;
+  <span class="org-variable-name">--color-bg-src-block</span>: oklch(from var(<span class="org-variable-name">--color-bg</span>) l c h / 0.5);
+  <span class="org-variable-name">--color-text</span>: <span class="custom-17">#2e2e2e</span>;
+  <span class="org-variable-name">--color-text-secondary</span>: <span class="custom-16">#787878</span>;
+  <span class="org-variable-name">--color-border</span>: <span class="custom-15">#ddd</span>;
+  <span class="org-variable-name">--color-link</span>: var(<span class="org-variable-name">--color-taxodium-purple</span>);
+  <span class="org-variable-name">--color-link-visited</span>: var(<span class="org-variable-name">--color-taxodium-yellow</span>);
+  <span class="org-variable-name">--color-border-table</span>: <span class="custom-14">#777</span>;
+  <span class="org-variable-name">--color-bg-table</span>: <span class="custom-15">#ddd</span>;
+  <span class="org-variable-name">--color-box-shadow</span>: <span class="custom-13">rgba(0, 0, 0, 0.3)</span>;
+  <span class="org-variable-name">--color-todo</span>: <span class="custom-12">#ff5f59</span>;
+  <span class="org-variable-name">--color-lyrics</span>: <span class="custom-11">#7c0100</span>;
+  <span class="org-variable-name">--color-code</span>: <span class="custom-10">#8f0075</span>;
+  <span class="org-variable-name">--color-bg-code</span>: <span class="custom-15">#ddd</span>;
+  <span class="org-variable-name">--color-bg-code-highlighted</span>: oklch(0 0 0 / 0.1);
+  <span class="org-variable-name">--color-fucus-visible-outline</span>: oklch(from var(<span class="org-variable-name">--color-link</span>) l c h / 0.8);
+
+  <span class="org-variable-name">--dark-color-bg</span>: <span class="custom-9">#232323</span>;
+  <span class="org-variable-name">--dark-color-bg-secondary</span>: <span class="custom-8">#1e1e1e</span>;
+  <span class="org-variable-name">--dark-color-bg-src-block</span>: oklch(from var(<span class="org-variable-name">--dark-color-bg</span>) l c h / 0.7);
+  <span class="org-variable-name">--dark-color-text</span>: <span class="custom-7">aliceblue</span>;
+  <span class="org-variable-name">--dark-color-text-secondary</span>: <span class="custom-6">#b8b8b8</span>;
+  <span class="org-variable-name">--dark-color-border</span>: <span class="custom-5">#595959</span>;
+  <span class="org-variable-name">--dark-color-link</span>: oklch(from var(<span class="org-variable-name">--color-link</span>) .75 c h);
+  <span class="org-variable-name">--dark-color-link-visited</span>: var(<span class="org-variable-name">--color-link-visited</span>);
+  <span class="org-variable-name">--dark-color-border-table</span>: <span class="custom-4">#7d7d7d</span>;
+  <span class="org-variable-name">--dark-color-bg-table</span>: <span class="custom-8">#1e1e1e</span>;
+  <span class="org-variable-name">--dark-color-box-shadow</span>: <span class="custom-18">rgba(255, 255, 255, 0.3)</span>;
+  <span class="org-variable-name">--dark-color-todo</span>: <span class="custom-3">#ff5f5f</span>;
+  <span class="org-variable-name">--dark-color-lyrics</span>: <span class="custom-2">#e95632</span>;
+  <span class="org-variable-name">--dark-color-code</span>: <span class="custom-1">#f78fe7</span>;
+  <span class="org-variable-name">--dark-color-bg-code</span>: <span class="custom">#474747</span>;
+  <span class="org-variable-name">--dark-color-bg-code-highlighted</span>: oklch(1 0 0 / 0.3);
+  <span class="org-variable-name">--dark-color-fucus-visible-outline</span>: oklch(from var(<span class="org-variable-name">--dark-color-link</span>) l c h / 0.8);
+
+  <span class="org-variable-name">--table-border</span>: 2px solid var(<span class="org-variable-name">--color-text</span>);
+  <span class="org-variable-name">--table-cell-border</span>: 1px solid var(<span class="org-variable-name">--color-border</span>);
+
+  <span class="org-variable-name">--content-width</span>: 90vw;
+  <span class="org-variable-name">--half-content-margin</span>: calc((100vw - var(<span class="org-variable-name">--content-width</span>)) / 2);
+  <span class="org-comment-delimiter">/* </span><span class="org-comment">footnote &#25968;&#23383;&#30340;&#28857;&#20987;&#33539;&#22260;</span><span class="org-comment-delimiter"> */</span>
+  <span class="org-variable-name">--extra-active-area-size</span>: -0.8em;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-C0CF20B3-28F3-4A65-8E98-8F5C458D6541" class="outline-4">
+<h4 id="C0CF20B3-28F3-4A65-8E98-8F5C458D6541">基础设置 html / body</h4>
+<div class="outline-text-4" id="text-C0CF20B3-28F3-4A65-8E98-8F5C458D6541"><p>
+定义 <code>&lt;html&gt;</code> 的样式，指定字体、字号，后面基于 <code>&lt;html&gt;</code> 字体大小，使用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-size#rems">rem</a> 作为长度单位。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">html</span> {
+  <span class="org-css-property">font-family</span>: system-ui;
+  <span class="org-css-property">font-size</span>: 20px;
+  <span class="org-css-proprietary-property">-webkit-text-size-adjust</span>: 100%;
+}
+
+<span class="org-builtin">@media</span> screen and (width &gt;= 70em) {
+  <span class="org-css-selector">html</span> {
+    <span class="org-css-property">font-size</span>: 22px;
+  }
+}
+</pre>
+</div>
+
+<p>
+在手机上， <code>&lt;body&gt;</code> 占据整个屏幕 (100vw)，只留些许的 padding 和屏幕边缘保留一些距离，因为手机屏幕本来就小，还要留一些边距 (margin) 的话，留给内容的空间就更少了。
+</p>
+
+<p>
+在大屏上 (width &gt;= 55rem)，限制最大宽度，避免一行内容太长，需要频繁左右来回看。设置左右边距 (margin-inline) 为 auto，使得 <code>&lt;body&gt;</code> 居中，而不是靠左，这样就不用侧着头看；居中也不会让一侧留白太多。
+</p>
+
+<p>
+除此之外，设置页面整体的字体颜色；1.5 的行高，避免行之间过于拥挤；设置 <code>word-wrap</code> 使得较长的连续文字能够换行，不至于产生横向滚动条。
+</p>
+
+<p>
+另外在还设置了一个背景图片，使得背景不那么单调乏味。背景图会自动基于明暗模式适配。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">body</span> {
+  <span class="org-css-property">max-width</span>: var(<span class="org-variable-name">--content-width</span>);
+  <span class="org-css-property">margin</span>: 1rem auto;
+  <span class="org-css-property">line-height</span>: 1.5;
+  <span class="org-css-property">word-wrap</span>: break-word;
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+  <span class="org-css-property">background-image</span>: url(<span class="org-string">"/images/background/xv.png"</span>);
+
+  <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
+    <span class="org-css-property">margin-inline</span>: 0;
+    <span class="org-css-property">padding-inline</span>: .5rem;
+    <span class="org-css-property">max-width</span>: 100vw;
+  }
+}
+
+<span class="org-builtin">@media</span> screen and (width &gt;= 55rem) {
+  <span class="org-css-selector">:root</span> {
+    <span class="org-variable-name">--content-width</span>: 45rem;
+  }
+}
+</pre>
+</div>
+
+<p>
+在页面之间切换时，添加 view-transition 的效果，我希望切换看起来平缓一些，所以设置了较长的动画时间。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-builtin">@view-transition</span> {
+  <span class="org-css-property">navigation</span>: auto;
+}
+
+::view-transition-group(root) {
+  <span class="org-css-property">animation-duration</span>: 0.6s;
+}
+
+<span class="org-comment-delimiter">/**</span><span class="org-comment">
+ * @see: https://www.a11yproject.com/posts/understanding-vestibular-disorders/
+</span><span class="org-comment-delimiter"> */</span>
+<span class="org-builtin">@media</span> (prefers-reduced-motion: reduce) {
+  <span class="org-builtin">@view-transition</span> {
+    <span class="org-css-property">navigation</span>: none;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-70161B53-755C-4890-976D-335BE328AD2C" class="outline-4">
+<h4 id="70161B53-755C-4890-976D-335BE328AD2C">导航栏</h4>
+<div class="outline-text-4" id="text-70161B53-755C-4890-976D-335BE328AD2C"><p>
+导航栏内容不多，简单布局能够放下就行。需要处理一下手机屏幕下空间不足的问题，主题切换下拉框会移动到导航栏下方。
+</p>
+
+<p>
+导航的链接不需要 <code>:visited</code> 颜色标记，固定成链接本身的颜色。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">#preamble nav</span> {
+  <span class="org-css-property">display</span>: grid;
+  <span class="org-css-property">grid-template-columns</span>: auto max-content;
+  <span class="org-css-property">gap</span>: 2px;
+
+  <span class="org-builtin">@media</span> screen and (width &lt;= 350px) {
+    <span class="org-css-property">grid-template-columns</span>: 1fr;
+    <span class="org-css-property">justify-items</span>: start;
+  }
+
+  &amp; ul {
+    <span class="org-css-property">display</span>: grid;
+    <span class="org-css-property">gap</span>: 8px;
+    <span class="org-css-property">grid-template-columns</span>: repeat(3, max-content);
+    <span class="org-css-property">list-style</span>: none;
+    <span class="org-css-property">padding</span>: 0;
+    <span class="org-css-property">margin</span>: 0;
+    <span class="org-css-property">align-items</span>: center;
+  }
+
+  <span class="org-css-selector">a:visited</span> {
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-link</span>);
+    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
+
+    &amp;:hover {
+      <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+      <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-link</span>);
+      <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
+    }
+  }
+}
+</pre>
+</div>
+
+<p>
+主题下拉框样式，<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/field-sizing">field-sizing</a> 可以让下拉框基于内容长度自适应宽度。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">#lightdark</span> {
+  <span class="org-css-property">text-align</span>: center;
+  <span class="org-css-property">field-sizing</span>: content;
+  <span class="org-css-property">max-width</span>: 100%;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-A79F4F50-D523-439D-BB67-E532CC533E82" class="outline-4">
+<h4 id="A79F4F50-D523-439D-BB67-E532CC533E82">skip nav</h4>
+<div class="outline-text-4" id="text-A79F4F50-D523-439D-BB67-E532CC533E82"><p>
+处理 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/main#skip_navigation">Skip navigation</a> 的样式，默认是隐藏的，只要在 focus 时才显示。样式实现参考了 <a href="https://www.stefanjudis.com/">Stefan Judis 的博客</a>。
+</p>
+
+<p>
+其中 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@starting-style">@starting-style</a> 用于设置元素加载前的样式初始值，这里设置的目的是在页面切换，发生 view transition 的时候，先隐藏 <code>.a11y-nav</code> 元素，避免出现一个收起的动画。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.a11y-nav</span> {
+  <span class="org-css-property">position</span>: relative;
+  <span class="org-css-property">list-style</span>: none;
+  <span class="org-css-property">z-index</span>: 5;
+  <span class="org-css-property">margin</span>: 0;
+
+  &amp; a {
+    <span class="org-css-property">width</span>: max-content;
+    <span class="org-css-property">position</span>: absolute;
+    <span class="org-css-property">left</span>: 0;
+    <span class="org-css-property">right</span>: 0;
+    <span class="org-css-property">top</span>: 0;
+    <span class="org-css-property">margin</span>: 0 auto;
+    <span class="org-css-property">padding</span>: 0.5rem;
+    <span class="org-css-property">background-color</span>: var(<span class="org-variable-name">--color-bg-secondary</span>);
+    <span class="org-css-property">background-color</span>: light-dark(
+      var(<span class="org-variable-name">--color-bg-secondary</span>),
+      var(<span class="org-variable-name">--dark-color-bg-secondary</span>)
+    );
+    <span class="org-css-property">font-weight</span>: 600;
+    <span class="org-comment-delimiter">/* </span><span class="org-comment">hide the link</span><span class="org-comment-delimiter"> */</span>
+    <span class="org-css-property">transform</span>: translateY(-90px);
+
+    <span class="org-builtin">@starting-style</span> {
+      <span class="org-css-property">transform</span>: translateY(-90px);
+      <span class="org-css-property">opacity</span>: 0;
+    }
+
+    &amp;:focus {
+      <span class="org-css-property">transition</span>: transform 0.375s ease-in-out;
+      <span class="org-css-property">transform</span>: translateY(-50%);
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-26EB618B-94BD-4252-AD54-2F830B122280" class="outline-4">
+<h4 id="26EB618B-94BD-4252-AD54-2F830B122280">title &amp; subtitle</h4>
+<div class="outline-text-4" id="text-26EB618B-94BD-4252-AD54-2F830B122280"><p>
+标题居中，子标题字体降低一些，颜色变淡一些，从而和主标题区分。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.title</span> {
+  <span class="org-css-property">max-width</span>: fit-content;
+  <span class="org-css-property">margin-inline</span>: auto;
+}
+
+<span class="org-css-selector">.subtitle</span> {
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
+  <span class="org-css-property">font-size</span>: 1.2rem;
+  <span class="org-css-property">margin-block-start</span>: 0;
+  <span class="org-css-property">margin-block-end</span>: 1.5rem;
+  <span class="org-css-property">text-align</span>: center;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-99508F97-0E63-444F-82EF-D9514E4C2F5D" class="outline-4">
+<h4 id="99508F97-0E63-444F-82EF-D9514E4C2F5D">heading</h4>
+<div class="outline-text-4" id="text-99508F97-0E63-444F-82EF-D9514E4C2F5D"><p>
+设置标题的字号，默认都加粗。因为标题本身字体就很大，行高太大，就会有很多多余的空白，所以将行高降低为 1.2。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">h1,
+h2,
+h3,
+h4,
+h5,
+h6</span> {
+  <span class="org-css-property">line-height</span>: 1.2;
+  <span class="org-css-property">font-weight</span>: 700;
+  <span class="org-css-property">padding</span>: 0;
+  <span class="org-css-property">margin-block-end</span>: 0.5rem;
+}
+
+<span class="org-css-selector">h1</span> {
+  <span class="org-css-property">font-size</span>: 2.25rem;
+}
+
+<span class="org-css-selector">h2</span> {
+  <span class="org-css-property">font-size</span>: 1.85rem;
+}
+
+<span class="org-css-selector">h3</span> {
+  <span class="org-css-property">font-size</span>: 1.65rem;
+}
+
+<span class="org-css-selector">h4,
+h5</span> {
+  <span class="org-css-property">font-size</span>: 1.45rem;
+}
+
+<span class="org-css-selector">h6</span> {
+  <span class="org-css-property">font-size</span>: 1rem;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-4D0E8EA8-BC50-4DE1-8149-A697370D9712" class="outline-4">
+<h4 id="4D0E8EA8-BC50-4DE1-8149-A697370D9712">图片/视频</h4>
+<div class="outline-text-4" id="text-4D0E8EA8-BC50-4DE1-8149-A697370D9712"><p>
+限制图片宽度，避免溢出，让图片在限定宽度內显示全。对于暗色主题下，降低图片的亮度，避免刺眼，尤其是有大片白色的图片。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">img,
+video</span> {
+  <span class="org-css-property">max-width</span>: 100%;
+  <span class="org-css-property">object-fit</span>: contain;
+}
+
+<span class="org-css-selector">img</span> {
+  <span class="org-builtin">@media</span> (prefers-color-scheme: dark) {
+    <span class="org-css-property">filter</span>: brightness(0.85) contrast(1.05);
+  }
+}
+
+<span class="org-css-selector">.dark img</span> {
+  <span class="org-css-property">filter</span>: brightness(0.85) contrast(1.05);
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-CBB452FA-9ED4-4A5C-BAD9-F7C91BC3A426" class="outline-4">
+<h4 id="CBB452FA-9ED4-4A5C-BAD9-F7C91BC3A426">链接</h4>
+<div class="outline-text-4" id="text-CBB452FA-9ED4-4A5C-BAD9-F7C91BC3A426"><p>
+设置链接的颜色、hover、visited 时的颜色。
+</p>
+
+<p>
+hover 样式只在电脑屏幕上启用，因为手机本身不支持 hover，如果开启了 hover 样式，会在页面滚动时不小心触发 hover 样式，显得有些凌乱。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">a</span> {
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-link</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
+  <span class="org-css-property">text-underline-offset</span>: 5px;
+  <span class="org-css-property">text-decoration-style</span>: solid;
+  <span class="org-css-property">text-decoration-thickness</span>: 2px;
+
+  &amp;:has(&gt; img) {
+    &amp;:hover {
+      <span class="org-css-property">background</span>: none;
+    }
+  }
+
+  <span class="org-builtin">@media</span> (pointer: fine) and (hover: hover) {
+    &amp;:hover {
+      <span class="org-css-property">text-decoration</span>: none;
+      <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-link</span>);
+      <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
+      <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+
+      &amp; code {
+        <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+      }
+    }
+  }
+
+  &amp;:visited {
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-link-visited</span>);
+    <span class="org-css-property">color</span>: light-dark(
+      var(<span class="org-variable-name">--color-link-visited</span>),
+      var(<span class="org-variable-name">--dark-color-link-visited</span>)
+    );
+
+    <span class="org-builtin">@media</span> (pointer: fine) and (hover: hover) {
+      &amp;:hover {
+        <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-link-visited</span>);
+        <span class="org-css-property">background</span>: light-dark(
+          var(<span class="org-variable-name">--color-link-visited</span>),
+          var(<span class="org-variable-name">--dark-color-link-visited</span>)
+        );
+        <span class="org-css-property">text-decoration</span>: none;
+        <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+      }
+    }
+  }
+
+  <span class="org-comment-delimiter">/* </span><span class="org-comment">make safari :visited hover works</span><span class="org-comment-delimiter"> */</span>
+  <span class="org-builtin">@media</span> (pointer: fine) and (hover: hover) {
+    &amp;:visited:hover,
+    &amp;:visited:hover {
+      <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-link-visited</span>);
+      <span class="org-css-property">background</span>: light-dark(
+        var(<span class="org-variable-name">--color-link-visited</span>),
+        var(<span class="org-variable-name">--dark-color-link-visited</span>)
+      );
+      <span class="org-css-property">text-decoration</span>: none;
+      <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-41157D00-9294-4EAD-8950-123C77412B16" class="outline-4">
+<h4 id="41157D00-9294-4EAD-8950-123C77412B16">段落</h4>
+<div class="outline-text-4" id="text-41157D00-9294-4EAD-8950-123C77412B16"><p>
+设置一个较大的，明显大于行高的间距，使得段落之间区分明显。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">p</span> {
+  <span class="org-css-property">margin</span>: 1.25rem 0;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-BDC822A9-DAB1-4B0A-A9B0-49D03B4816F9" class="outline-4">
+<h4 id="BDC822A9-DAB1-4B0A-A9B0-49D03B4816F9">markup</h4>
+<div class="outline-text-4" id="text-BDC822A9-DAB1-4B0A-A9B0-49D03B4816F9"><p>
+一些常用标记的样式。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">code</span> {
+  <span class="org-css-property">font-size</span>: 0.85rem;
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-code</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-code</span>), var(<span class="org-variable-name">--dark-color-code</span>));
+}
+
+<span class="org-css-selector">em</span> {
+  <span class="org-css-property">text-emphasis</span>: <span class="org-string">"\23f6"</span>;
+  <span class="org-css-property">text-emphasis-position</span>: under;
+  <span class="org-css-property">font-style</span>: unset;
+}
+
+<span class="org-css-selector">b</span> {
+  <span class="org-css-property">font-weight</span>: 700;
+}
+
+<span class="org-css-selector">.underline</span> {
+  <span class="org-css-property">text-decoration-color</span>: var(<span class="org-variable-name">--color-border</span>);
+  <span class="org-css-property">text-decoration-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+  <span class="org-css-property">text-decoration-line</span>: underline;
+  <span class="org-css-property">text-decoration-style</span>: wavy;
+  <span class="org-css-property">text-underline-offset</span>: 4px;
+  <span class="org-css-property">text-decoration-thickness</span>: 2px;
+}
+
+<span class="org-css-selector">del</span> {
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
+  <span class="org-css-property">opacity</span>: 0.65;
+}
+
+<span class="org-css-selector">dt</span> {
+  <span class="org-css-property">font-weight</span>: 700;
+}
+
+<span class="org-css-selector">dd + dt</span> {
+  <span class="org-css-property">margin-top</span>: 1rem;
+}
+
+<span class="org-css-selector">dd</span> {
+  <span class="org-css-property">margin-inline-start</span>: 1.5rem;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-7811ED62-0E49-45C0-8AF8-204F2DF42D38" class="outline-4">
+<h4 id="7811ED62-0E49-45C0-8AF8-204F2DF42D38">hr</h4>
+<div class="outline-text-4" id="text-7811ED62-0E49-45C0-8AF8-204F2DF42D38"><p>
+分割线样式，将分割线设置为 <code>* * *</code> 而不是一根直线，主要是因为页面上有不少的线条，例如 blockquote、代码块、note，太多线条会让内容看起来比较乱。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">hr</span> {
+  <span class="org-css-property">display</span>: block;
+  <span class="org-css-property">border</span>: 0;
+  <span class="org-css-property">margin</span>: 2.5rem 0;
+  <span class="org-css-property">padding</span>: 0;
+  <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
+  <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+  <span class="org-css-property">text-align</span>: center;
+
+  &amp;::before {
+    <span class="org-css-property">content</span>: <span class="org-string">"* * *"</span>;
+    <span class="org-css-property">text-align</span>: center;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-45775AA6-D112-4577-80D0-0A8A4EB89667" class="outline-4">
+<h4 id="45775AA6-D112-4577-80D0-0A8A4EB89667">kbd</h4>
+<div class="outline-text-4" id="text-45775AA6-D112-4577-80D0-0A8A4EB89667"><div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">kbd</span> {
+  <span class="org-css-property">background-color</span>: var(<span class="org-variable-name">--color-bg</span>);
+  <span class="org-css-property">background-color</span>: light-dark(var(<span class="org-variable-name">--color-bg</span>), var(<span class="org-variable-name">--dark-color-bg</span>));
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+  <span class="org-css-property">border</span>: 1px solid;
+  <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
+  <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+  <span class="org-css-property">border-radius</span>: 0.25rem;
+  <span class="org-css-property">box-shadow</span>: 1px 2px 2px var(<span class="org-variable-name">--color-box-shadow</span>);
+  <span class="org-css-property">box-shadow</span>: 1px 2px 2px light-dark(var(<span class="org-variable-name">--color-box-shadow</span>), var(<span class="org-variable-name">--dark-color-box-shadow</span>));
+  <span class="org-css-property">display</span>: inline-block;
+  <span class="org-css-property">font-weight</span>: bold;
+  <span class="org-css-property">padding</span>: 0.2rem 0.25rem 0.1rem;
+  <span class="org-css-property">line-height</span>: 1;
+  <span class="org-css-property">white-space</span>: nowrap;
+  <span class="org-css-property">font-size</span>: 0.85rem;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-D5AD2696-9557-438A-9DE7-AD2349168FCA" class="outline-4">
+<h4 id="D5AD2696-9557-438A-9DE7-AD2349168FCA">ruby</h4>
+<div class="outline-text-4" id="text-D5AD2696-9557-438A-9DE7-AD2349168FCA"><p>
+适当放大 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/rt">&lt;rt&gt;</a> 的字号，增加间距。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">rt</span> {
+  <span class="org-css-property">font-size</span>: 0.65rem;
+  <span class="org-css-property">margin-block-end</span>: 0.1rem;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-62319479-F5AC-4892-8000-A1D6EF36D8C2" class="outline-4">
+<h4 id="62319479-F5AC-4892-8000-A1D6EF36D8C2">代码块</h4>
+<div class="outline-text-4" id="text-62319479-F5AC-4892-8000-A1D6EF36D8C2"><p>
+参考了 <a href="https://protesilaos.com/">Protesilaos Stavrou</a> 的样式 。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">pre</span> {
+  <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-bg-src-block</span>);
+  <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-bg-src-block</span>), var(<span class="org-variable-name">--dark-color-bg-src-block</span>));
+  <span class="org-css-property">font-size</span>: 0.75rem;
+  <span class="org-css-property">margin</span>: 1em 0;
+  <span class="org-css-property">padding</span>: 1rem;
+  <span class="org-css-property">white-space</span>: pre-wrap;
+  <span class="org-css-property">overflow-x</span>: auto;
+  <span class="org-css-property">word-break</span>: normal;
+  <span class="org-css-property">word-wrap</span>: inherit;
+  <span class="org-css-property">border-block</span>: 5px solid;
+  <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
+  <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-F2A3CB0A-8AF5-47B2-A136-2F018A33025E" class="outline-4">
+<h4 id="F2A3CB0A-8AF5-47B2-A136-2F018A33025E">引用 blockquote、verse</h4>
+<div class="outline-text-4" id="text-F2A3CB0A-8AF5-47B2-A136-2F018A33025E"><p>
+blockquote 和 verse 样式都是一样的，左侧有边框，颜色比正文淡一些，正文区分开。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.verse,
+blockquote</span> {
+  <span class="org-css-property">margin</span>: 1rem 0;
+  <span class="org-css-property">padding</span>: 0 0.5rem;
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
+  <span class="org-css-property">border-inline-start</span>: 4px solid var(<span class="org-variable-name">--color-border</span>);
+  <span class="org-css-property">border-inline-start</span>: 4px solid light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+}
+
+<span class="org-css-selector">.verse + .verse,
+blockquote + blockquote</span> {
+  <span class="org-css-property">margin-block-start</span>: 2em;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-1071EC3E-4237-4644-8CF5-700EA92A0D13" class="outline-4">
+<h4 id="1071EC3E-4237-4644-8CF5-700EA92A0D13">figure</h4>
+<div class="outline-text-4" id="text-1071EC3E-4237-4644-8CF5-700EA92A0D13"><p>
+移除 figure 的左右边距，使得 figure 能够占满 body 的宽度，让图片显示得更大一些。
+</p>
+
+<p>
+figcaption 字号减小，颜色变淡，和正文区分。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">figure</span> {
+  <span class="org-css-property">margin-inline</span>: 0;
+}
+
+<span class="org-css-selector">figcaption</span> {
+  <span class="org-css-property">font-size</span>: 0.85em;
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-4E72607B-B28C-44B8-8164-44E3604F285C" class="outline-4">
+<h4 id="4E72607B-B28C-44B8-8164-44E3604F285C">details</h4>
+<div class="outline-text-4" id="text-4E72607B-B28C-44B8-8164-44E3604F285C"><p>
+details 添加 border，便于在内容很多的时候，能够知道哪些内容是属于 details 的。
+</p>
+
+<p>
+summary 的 marker 换成一只指向的手，比黑漆漆的三角形好看点。感兴趣可以看看 <a href="32.html#6b76efce-1b21-480b-9692-ec8df6252950">Zine#32::The Secret History of the Manicule, the Little Hand that’s Everywhere</a>。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">details</span> {
+  <span class="org-css-property">padding</span>: 0.5rem 1rem;
+  <span class="org-css-property">border-radius</span>: 1rem;
+  <span class="org-css-property">border</span>: 2px solid var(<span class="org-variable-name">--color-border</span>);
+  <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+  <span class="org-css-property">margin-block</span>: 1rem;
+
+  <span class="org-css-selector">summary</span> {
+    <span class="org-css-property">cursor</span>: pointer;
+
+    &amp;::marker,
+    <span class="org-css-selector">:is(::-webkit-details-marker)</span> {
+      <span class="org-css-property">content</span>: <span class="org-string">"&#9758;  "</span>;
+    }
+  }
+
+  &amp;[open] summary::marker,
+  &amp;[open] summary::-webkit-details-marker {
+    <span class="org-css-property">content</span>: <span class="org-string">"&#9759;  "</span>;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-40392256-99E3-4FAF-8678-EFFB02EC7AAD" class="outline-4">
+<h4 id="40392256-99E3-4FAF-8678-EFFB02EC7AAD">iframe</h4>
+<div class="outline-text-4" id="text-40392256-99E3-4FAF-8678-EFFB02EC7AAD"><p>
+iframe 一般我会用来展示一些 HTML 示例，添加边框使其和内容区分开。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">iframe</span> {
+  <span class="org-css-property">width</span>: 100%;
+  <span class="org-css-property">min-height</span>: 350px;
+  <span class="org-css-property">border</span>: 2px dotted var(<span class="org-variable-name">--color-border</span>);
+  <span class="org-css-property">border</span>: 2px dotted light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-B44FCBCA-1FB6-492F-8E75-56D70FA7040B" class="outline-4">
+<h4 id="B44FCBCA-1FB6-492F-8E75-56D70FA7040B">select</h4>
+<div class="outline-text-4" id="text-B44FCBCA-1FB6-492F-8E75-56D70FA7040B"><p>
+博客下拉框很少，主要就是导航栏的主题下拉框。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">select</span> {
+  <span class="org-css-property">font-size</span>: 0.85rem;
+  <span class="org-css-property">padding</span>: 4px;
+  <span class="org-css-property">border-radius</span>: 0.25rem;
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-07D7F022-3503-4DEE-9F36-F507EC0A9169" class="outline-4">
+<h4 id="07D7F022-3503-4DEE-9F36-F507EC0A9169">button</h4>
+<div class="outline-text-4" id="text-07D7F022-3503-4DEE-9F36-F507EC0A9169"><p>
+给按钮的点击添加一个效果，使得点击这个动作更明显。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">button</span> {
+  <span class="org-css-property">border-radius</span>: 0.25rem;
+  <span class="org-css-property">padding</span>: 0.25rem;
+  <span class="org-css-property">cursor</span>: pointer;
+
+  &amp;:active {
+    <span class="org-css-property">transform</span>: scale(0.97);
+  }
+}
+
+<span class="org-css-selector">input.button:active</span> {
+  <span class="org-css-property">transform</span>: scale(0.97);
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-D418F764-38A7-4147-A8E0-5529F2FBAF2C" class="outline-4">
+<h4 id="D418F764-38A7-4147-A8E0-5529F2FBAF2C">table</h4>
+<div class="outline-text-4" id="text-D418F764-38A7-4147-A8E0-5529F2FBAF2C"><p>
+参考了 <a href="https://piccalil.li/blog/styling-tables-the-modern-css-way/">Styling Tables the Modern CSS Way</a>。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">table</span> {
+  <span class="org-css-property">border-block-start</span>: var(<span class="org-variable-name">--table-border</span>);
+  <span class="org-css-property">border-block-end</span>: var(<span class="org-variable-name">--table-border</span>);
+  <span class="org-css-property">border-collapse</span>: collapse;
+  <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border-table</span>);
+  <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border-table</span>), var(<span class="org-variable-name">--dark-color-border-table</span>));
+  <span class="org-css-property">text-align</span>: start;
+  <span class="org-css-property">caption-side</span>: bottom;
+  <span class="org-css-property">word-break</span>: normal;
+}
+
+<span class="org-css-selector">.table-wrapper</span> {
+  <span class="org-css-property">overflow</span>: auto;
+  <span class="org-css-property">margin-block</span>: 1rem;
+}
+
+<span class="org-comment-delimiter">/* </span><span class="org-comment">override org publish default style</span><span class="org-comment-delimiter"> */</span>
+<span class="org-css-selector">table th.org-left</span> {
+  <span class="org-css-property">text-align</span>: start;
+}
+
+<span class="org-css-selector">thead</span> {
+  <span class="org-css-property">border-block-end</span>: var(<span class="org-variable-name">--table-border</span>);
+  <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border-table</span>);
+  <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border-table</span>), var(<span class="org-variable-name">--dark-color-border-table</span>));
+  <span class="org-css-property">white-space</span>: nowrap;
+}
+
+<span class="org-css-selector">thead,
+tfoot</span> {
+  <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-bg-table</span>);
+  <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-bg-table</span>), var(<span class="org-variable-name">--dark-color-bg-table</span>));
+}
+
+<span class="org-css-selector">tbody tr:nth-child(even)</span> {
+  <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-bg-table</span>);
+  <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-bg-table</span>), var(<span class="org-variable-name">--dark-color-bg-table</span>));
+  <span class="org-css-property">background</span>: light-dark(color-mix(in srgb, var(<span class="org-variable-name">--color-bg-table</span>), transparent 60%), color-mix(in srgb, var(<span class="org-variable-name">--dark-color-bg-table</span>), transparent 60%));
+}
+
+<span class="org-css-selector">table tr</span> {
+  <span class="org-css-property">border-block-start</span>: var(<span class="org-variable-name">--table-cell-border</span>);
+  <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
+  <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+}
+
+<span class="org-css-selector">thead th</span> {
+  <span class="org-css-property">vertical-align</span>: bottom;
+}
+
+<span class="org-css-selector">td,
+th</span> {
+  <span class="org-css-property">padding</span>: 0.3rem 1rem;
+  <span class="org-css-property">vertical-align</span>: baseline;
+
+  <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
+    <span class="org-css-property">padding</span>: 0.3rem 0.6rem;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-489D5491-DD21-4746-9153-5F1B303EACBA" class="outline-4">
+<h4 id="489D5491-DD21-4746-9153-5F1B303EACBA">list</h4>
+<div class="outline-text-4" id="text-489D5491-DD21-4746-9153-5F1B303EACBA"><p>
+org-publish 渲染的 HTML，在嵌套 list 的时候，有的内容会用 &lt;p&gt; 包裹，导致某个 &lt;li&gt; 的边距过大。针对这个情况，重置 &lt;p&gt; 的边距。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">:is(ol,ul) li &gt; p:first-child</span> {
+  <span class="org-css-property">margin-block</span>: 0;
+}
+</pre>
+</div>
+
+<p>
+在手机屏幕下，减少列表和列表內元素的边距，使得在手机屏幕上可以呈现更多内容。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
+  <span class="org-css-selector">:is(ol,ul)</span> {
+    <span class="org-css-property">padding-inline-start</span>: 1rem;
+
+    &amp; li &gt; details,
+    &amp; li &gt; :is(pre.example, .org-src-container) {
+      <span class="org-css-property">margin-block</span>: 1rem;
+      <span class="org-css-property">margin-inline-start</span>: -1rem;
+    }
+  }
+
+  <span class="org-css-selector">.dl dd</span> {
+    <span class="org-css-property">margin-inline-start</span>: 1rem;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-965930BE-3620-480B-8104-9421FFFFB49D" class="outline-4">
+<h4 id="965930BE-3620-480B-8104-9421FFFFB49D">footnote</h4>
+<div class="outline-text-4" id="text-965930BE-3620-480B-8104-9421FFFFB49D"><p>
+覆盖 org-publish 默认的样式，让 footnote 的序号和内容在同一行。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">#text-footnotes</span> {
+  <span class="org-css-property">margin-block-start</span>: 1.25rem;
+}
+
+<span class="org-css-selector">.footdef</span> {
+  <span class="org-css-property">display</span>: grid;
+  <span class="org-css-property">grid-template-columns</span>: max-content auto;
+  <span class="org-css-property">gap</span>: 0.5em;
+  <span class="org-css-property">font-size</span>: 0.9em;
+}
+
+<span class="org-css-selector">[role=</span><span class="org-string">"doc-footnote"</span><span class="org-css-selector">] *:nth-child(1)</span> {
+  <span class="org-css-property">margin-block-start</span>: 0;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-876DC8AD-47C0-4D9C-B57F-3EB112EBFB8D" class="outline-4">
+<h4 id="876DC8AD-47C0-4D9C-B57F-3EB112EBFB8D">postamble</h4>
+<div class="outline-text-4" id="text-876DC8AD-47C0-4D9C-B57F-3EB112EBFB8D"><p>
+底部内容样式，设置了一个分割线，内容可以自定义，偶尔换换。
+</p>
+
+<p>
+页脚的内容因为比较次要，减少字号，淡化一些，重置 <code>&lt;p&gt;</code> 的间距。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">#postamble</span> {
+  <span class="org-css-property">margin-block-start</span>: 1em;
+
+  &amp;::before {
+    <span class="org-comment-delimiter">/* </span><span class="org-comment">content: 'EASY COME, EASY GO ...';</span><span class="org-comment-delimiter"> */</span>
+    <span class="org-css-property">content</span>: <span class="org-string">"&#12388;&#12389;&#12367; To Be Continued"</span>;
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-border</span>);
+    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+    <span class="org-css-property">display</span>: block;
+    <span class="org-css-property">text-align</span>: end;
+  }
+
+  <span class="org-css-selector">footer</span> {
+    <span class="org-css-property">font-size</span>: 0.85rem;
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
+
+    &amp; p {
+      <span class="org-css-property">margin-block</span>: 0.25rem;
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-21157F8D-8B5D-4635-BA60-91A1C740D14C" class="outline-4">
+<h4 id="21157F8D-8B5D-4635-BA60-91A1C740D14C">layer end</h4>
+<div class="outline-text-4" id="text-21157F8D-8B5D-4635-BA60-91A1C740D14C"><div class="org-src-container">
+<pre class="src src-css">}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-BA23E238-5F66-42D2-A57E-1B6CD80EE4B3" class="outline-3">
+<h3 id="BA23E238-5F66-42D2-A57E-1B6CD80EE4B3">@layer print</h3>
+<div class="outline-text-3" id="text-BA23E238-5F66-42D2-A57E-1B6CD80EE4B3"><p>
+打印时，将字号适当缩小，让内容占满窗口，使得一页纸可以放下更多内容；将链接显示出来；隐藏对打印无用的内容。
+</p>
+
+<p>
+更多可以参考 <a href="about-html-print.html">关于页面打印</a>。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-builtin">@layer</span> print {
+  <span class="org-builtin">@media</span> print {
+    <span class="org-css-selector">html</span> {
+      <span class="org-css-property">font-size</span>: 16px;
+    }
+
+    <span class="org-css-selector">body</span> {
+      <span class="org-css-property">background-image</span>: none;
+      <span class="org-css-property">margin</span>: 0;
+      <span class="org-css-property">max-width</span>: 100vw;
+    }
+
+    <span class="org-css-selector">#preamble,
+    #postamble,
+    #back-to-top,
+    .code-copy-btn</span>
+    {
+      <span class="org-css-property">display</span>: none;
+    }
+
+    <span class="org-css-selector">a::after</span> {
+      <span class="org-css-property">word-break</span>: break-all;
+      <span class="org-css-property">content</span>: <span class="org-string">" ("</span> attr(href) <span class="org-string">")"</span>;
+    }
+
+    <span class="org-comment-delimiter">/* </span><span class="org-comment">&#37096;&#20998;&#38142;&#25509;&#24847;&#20041;&#19981;&#22823;&#65292;&#19981;&#38656;&#35201;&#23637;&#31034;&#20986;&#26469;</span><span class="org-comment-delimiter"> */</span>
+    <span class="org-css-property">a</span>:where(.footref, .footnum)::after,
+    <span class="org-css-selector">#table-of-contents a::after</span> {
+      <span class="org-css-property">content</span>: <span class="org-string">""</span>;
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-4ACD02AA-E4FA-44ED-85C8-26B2B3FE8F05" class="outline-3">
+<h3 id="4ACD02AA-E4FA-44ED-85C8-26B2B3FE8F05">@layer function</h3>
+<div class="outline-text-3" id="text-4ACD02AA-E4FA-44ED-85C8-26B2B3FE8F05"></div>
+<div id="outline-container-D888F157-70B3-42EE-BC57-74949A8BCE5D" class="outline-4">
+<h4 id="D888F157-70B3-42EE-BC57-74949A8BCE5D">layer start</h4>
+<div class="outline-text-4" id="text-D888F157-70B3-42EE-BC57-74949A8BCE5D"><div class="org-src-container">
+<pre class="src src-css"><span class="org-builtin">@layer</span> function {
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-38D83091-6FBD-4CD4-B998-22AE7EA7BD40" class="outline-4">
+<h4 id="38D83091-6FBD-4CD4-B998-22AE7EA7BD40">back-to-top</h4>
+<div class="outline-text-4" id="text-38D83091-6FBD-4CD4-B998-22AE7EA7BD40"><p>
+Back to top 按钮样式。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">#back-to-top</span> {
+  <span class="org-css-property">position</span>: fixed;
+  <span class="org-css-property">bottom</span>: 1rem;
+  <span class="org-css-property">right</span>: 1rem;
+  <span class="org-css-property">width</span>: 2rem;
+  <span class="org-css-property">height</span>: 2rem;
+  <span class="org-css-property">z-index</span>: 1;
+  <span class="org-css-property">cursor</span>: pointer;
+  <span class="org-css-property">padding</span>: 0.5rem;
+  <span class="org-css-property">border</span>: 2px;
+  <span class="org-css-property">border-style</span>: solid;
+  <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
+  <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+  <span class="org-css-property">background-color</span>: var(<span class="org-variable-name">--color-bg</span>);
+  <span class="org-css-property">background-color</span>: light-dark(var(<span class="org-variable-name">--color-bg</span>), var(<span class="org-variable-name">--dark-color-bg</span>));
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+  <span class="org-css-property">border-radius</span>: 0.25rem;
+  <span class="org-css-property">opacity</span>: 0;
+  <span class="org-css-property">visibility</span>: hidden;
+  <span class="org-css-property">transition</span>: opacity 0.25s ease-in-out, visibility 0.5s;
+}
+
+<span class="org-builtin">@media</span> screen and (width &gt;= 1200px) {
+  <span class="org-css-selector">#back-to-top</span> {
+    <span class="org-css-property">right</span>: calc(var(<span class="org-variable-name">--half-content-margin</span>) - 4rem);
+  }
+}
+
+<span class="org-css-selector">#back-to-top svg</span> {
+  <span class="org-css-property">display</span>: block;
+  <span class="org-css-property">width</span>: 100%;
+  <span class="org-css-property">height</span>: 100%;
+  <span class="org-css-property">fill</span>: currentColor;
+}
+
+<span class="org-css-selector">#back-to-top.show</span> {
+  <span class="org-css-property">opacity</span>: 0.4;
+  <span class="org-css-property">visibility</span>: visible;
+}
+
+<span class="org-css-selector">#back-to-top.show:hover</span> {
+  <span class="org-css-property">opacity</span>: 1;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-6754D336-893C-48F6-B05B-317D9BC7AD37" class="outline-4">
+<h4 id="6754D336-893C-48F6-B05B-317D9BC7AD37">代码高亮</h4>
+<div class="outline-text-4" id="text-6754D336-893C-48F6-B05B-317D9BC7AD37"><p>
+参考了 <a href="https://piccalil.li/blog/styling-tables-the-modern-css-way/">Styling Tables the Modern CSS Way</a>，仅高亮几种关键字的颜色。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.org-comment</span> {
+  <span class="org-css-property">color</span>: <span class="custom-23">#7f0000</span>;
+  <span class="org-css-property">color</span>: light-dark(<span class="custom-23">#7f0000</span>, <span class="custom-22">#c0a38a</span>);
+  <span class="org-css-property">font-style</span>: italic;
+}
+<span class="org-css-selector">.org-comment-delimiter</span> {
+  <span class="org-css-property">color</span>: <span class="custom-23">#7f0000</span>;
+  <span class="org-css-property">color</span>: light-dark(<span class="custom-23">#7f0000</span>, <span class="custom-22">#c0a38a</span>);
+  <span class="org-css-property">font-style</span>: italic;
+}
+<span class="org-css-selector">.org-diff-added</span> {
+  <span class="org-css-property">color</span>: <span class="custom-21">#005000</span>;
+  <span class="org-css-property">color</span>: light-dark(<span class="custom-21">#005000</span>, <span class="custom-20">#a0e0a0</span>);
+  <span class="org-css-property">background-color</span>: <span class="custom-19">#c3ebc1</span>;
+  <span class="org-css-property">background-color</span>: light-dark(<span class="custom-19">#c3ebc1</span>, <span class="custom-18">#00371f</span>);
+}
+<span class="org-css-selector">.org-diff-indicator-added</span> {
+  <span class="org-css-property">color</span>: <span class="custom-17">#006700</span>;
+  <span class="org-css-property">color</span>: light-dark(<span class="custom-17">#006700</span>, <span class="custom-16">#279c40</span>);
+  <span class="org-css-property">background-color</span>: <span class="custom-19">#c3ebc1</span>;
+  <span class="org-css-property">background-color</span>: light-dark(<span class="custom-19">#c3ebc1</span>, <span class="custom-18">#00371f</span>);
+}
+<span class="org-css-selector">.org-diff-indicator-removed</span> {
+  <span class="org-css-property">color</span>: <span class="custom-15">#aa2222</span>;
+  <span class="org-css-property">color</span>: light-dark(<span class="custom-15">#aa2222</span>, <span class="custom-14">#f36649</span>);
+  <span class="org-css-property">background-color</span>: <span class="custom-13">#f4d0cf</span>;
+  <span class="org-css-property">background-color</span>: light-dark(<span class="custom-13">#f4d0cf</span>, <span class="custom-12">#450f1f</span>);
+}
+<span class="org-css-selector">.org-diff-removed</span> {
+  <span class="org-css-property">color</span>: <span class="custom-11">#8f1313</span>;
+  <span class="org-css-property">color</span>: light-dark(<span class="custom-11">#8f1313</span>, <span class="custom-10">#ffbfbf</span>);
+  <span class="org-css-property">background-color</span>: <span class="custom-13">#f4d0cf</span>;
+  <span class="org-css-property">background-color</span>: light-dark(<span class="custom-13">#f4d0cf</span>, <span class="custom-12">#450f1f</span>);
+}
+<span class="org-css-selector">.org-doc</span> {
+  <span class="org-css-property">color</span>: <span class="custom-9">#304463</span>;
+  <span class="org-css-property">color</span>: light-dark(<span class="custom-9">#304463</span>, <span class="custom-8">#8aa0df</span>);
+  <span class="org-css-property">font-style</span>: italic;
+}
+<span class="org-css-selector">.org-function-name</span> {
+  <span class="org-css-property">color</span>: <span class="custom-7">#602938</span>;
+  <span class="org-css-property">color</span>: light-dark(<span class="custom-7">#602938</span>, <span class="custom-6">#35afbf</span>);
+}
+<span class="org-css-selector">.org-number</span> {
+  <span class="org-css-property">color</span>: <span class="custom-5">#000000</span>;
+  <span class="org-css-property">color</span>: light-dark(<span class="custom-5">#000000</span>, <span class="custom-4">#b8c6d5</span>);
+}
+<span class="org-css-selector">.org-string</span> {
+  <span class="org-css-property">color</span>: <span class="custom-3">#00598b</span>;
+  <span class="org-css-property">color</span>: light-dark(<span class="custom-3">#00598b</span>, <span class="custom-2">#df9080</span>);
+}
+<span class="org-css-selector">.org-variable-name</span> {
+  <span class="org-css-property">color</span>: <span class="custom-1">#00603f</span>;
+  <span class="org-css-property">color</span>: light-dark(<span class="custom-1">#00603f</span>, <span class="custom">#6a9fff</span>);
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-E488BE09-2A89-4644-AC17-5E87A3BD025B" class="outline-4">
+<h4 id="E488BE09-2A89-4644-AC17-5E87A3BD025B">代码复制按钮</h4>
+<div class="outline-text-4" id="text-E488BE09-2A89-4644-AC17-5E87A3BD025B"><p>
+<a href="js/code-enhanced.js">code-enhanced.js</a> 会在代码块附近添加一个复制按钮，用于复制代码块的内容。按钮放置在右上角，始终展示。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.org-src-container</span> {
+  <span class="org-css-property">display</span>: grid;
+  <span class="org-css-property">grid-template-columns</span>: auto;
+  <span class="org-css-property">grid-template-areas</span>:
+    <span class="org-string">"copy-btn"</span>
+    <span class="org-string">"code"</span>;
+
+  &amp;:has(.code-copy-btn) {
+    <span class="org-css-selector">pre</span> {
+      <span class="org-css-property">margin-block-start</span>: 0.25rem;
+    }
+  }
+}
+
+<span class="org-css-selector">.code-copy-btn</span> {
+  <span class="org-css-property">grid-area</span>: copy-btn;
+  <span class="org-css-property">cursor</span>: pointer;
+  <span class="org-css-property">max-width</span>: fit-content;
+  <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
+  <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+  <span class="org-css-property">border-radius</span>: 0.5rem;
+  <span class="org-css-property">font-size</span>: 1rem;
+  <span class="org-css-property">justify-self</span>: end;
+
+  &amp;:hover {
+    <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-link</span>);
+    <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
+    <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-C72F3DB7-7B97-4457-BACD-BA749BB22952" class="outline-4">
+<h4 id="C72F3DB7-7B97-4457-BACD-BA749BB22952">代码悬浮高亮</h4>
+<div class="outline-text-4" id="text-C72F3DB7-7B97-4457-BACD-BA749BB22952"><p>
+org-publish 支持标记代码行，并能够通过链接指向代码行，使其高亮。
+</p>
+
+<p>
+高亮逻辑由 <a href="file:///Users/spike/git/taxodium/publish/js/code-highlighted.js">code-highlighted.js</a> 实现，会添加 <code>.code-highlighted</code> 类。
+</p>
+
+<p>
+交互见： <a href="use-elfeed-to-read-feed-in-emacs.html">在 Emacs 中用 Elfeed 阅读订阅流</a>。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.code-highlighted</span> {
+  <span class="org-css-property">transition</span>: background-color 0.1s ease-in-out;
+  <span class="org-css-property">background-color</span>: var(<span class="org-variable-name">--color-bg-code-highlighted</span>);
+  <span class="org-css-property">background-color</span>: light-dark(var(<span class="org-variable-name">--color-bg-code-highlighted</span>), var(<span class="org-variable-name">--dark-color-bg-code-highlighted</span>));
+}
+
+<span class="org-css-selector">a.coderef</span> {
+  <span class="org-css-property">font-size</span>: 0.85rem;
+  <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-bg-code</span>);
+  <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-bg-code</span>), var(<span class="org-variable-name">--dark-color-bg-code</span>));
+  <span class="org-css-property">border-radius</span>: 6px;
+  <span class="org-css-property">padding</span>: 0.05rem 0.2rem;
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+  <span class="org-css-property">text-decoration</span>: none;
+
+  &amp;:visited {
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+  }
+
+  &amp;:hover {
+    <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+    <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-link</span>);
+    <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
+
+    &amp; code {
+      <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-1192DE40-F723-4AC0-A747-CA77E443827F" class="outline-4">
+<h4 id="1192DE40-F723-4AC0-A747-CA77E443827F">Webmentions</h4>
+<div class="outline-text-4" id="text-1192DE40-F723-4AC0-A747-CA77E443827F"><p>
+<a href="add-webmention-to-blog.html">webmention</a> 相关样式。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.webmention</span> {
+  <span class="org-css-property">font-size</span>: 0.9rem;
+
+  &amp; form {
+    <span class="org-css-property">display</span>: grid;
+    <span class="org-css-property">grid-template-columns</span>: max-content auto max-content;
+    <span class="org-css-property">gap</span>: 0.5em;
+    <span class="org-css-property">align-items</span>: center;
+
+    <span class="org-builtin">@media</span> screen and (width &lt;= 680px) {
+      <span class="org-css-property">grid-template-columns</span>: 1fr;
+    }
+
+    &amp; input {
+      <span class="org-css-property">border</span>: 1px;
+      <span class="org-css-property">border-style</span>: solid;
+      <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
+      <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+      <span class="org-css-property">border-radius</span>: 0.2rem;
+      <span class="org-css-property">padding</span>: 0.3rem;
+      <span class="org-css-property">font-size</span>: 1em;
+
+      &amp;::placeholder {
+        <span class="org-css-property">padding-inline-start</span>: 0.5rem;
+      }
+
+      &amp;.button {
+        <span class="org-css-property">cursor</span>: pointer;
+        <span class="org-css-property">padding</span>: 0.2rem 0.5rem;
+        <span class="org-css-property">border-radius</span>: 0.2rem;
+
+        &amp;:hover {
+          <span class="org-css-property">opacity</span>: 0.8;
+        }
+      }
+
+      &amp;[readonly] {
+        <span class="org-css-property">cursor</span>: not-allowed;
+      }
+    }
+  }
+
+  &amp;:not(:has(.webmention__list li)) {
+    &amp; hr {
+      <span class="org-css-property">display</span>: none;
+    }
+  }
+}
+
+<span class="org-css-selector">.webmention__tip</span> {
+  <span class="org-css-property">margin</span>: revert;
+  <span class="org-css-property">font-size</span>: revert;
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+  <span class="org-css-property">color</span>: light-dark(
+    var(<span class="org-variable-name">--color-text-secondary</span>),
+    var(<span class="org-variable-name">--dark-color-text-secondary</span>)
+  );
+}
+
+<span class="org-css-selector">.webmention__list</span> {
+  <span class="org-css-property">list-style</span>: none;
+  <span class="org-css-property">padding-inline</span>: 0;
+  <span class="org-css-property">display</span>: flex;
+  <span class="org-css-property">flex-direction</span>: column;
+  <span class="org-css-property">margin-block</span>: 0;
+  <span class="org-css-property">gap</span>: 2.5rem;
+
+  &amp; blockquote {
+    <span class="org-css-property">padding-inline</span>: 1rem;
+  }
+
+  <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
+    <span class="org-css-property">list-style</span>: none;
+    <span class="org-css-property">padding-inline-start</span>: 0;
+  }
+}
+
+<span class="org-css-selector">.webmention__profile</span> {
+  <span class="org-css-property">display</span>: grid;
+  <span class="org-css-property">grid-template-columns</span>: max-content auto;
+  <span class="org-css-property">grid-template-areas</span>:
+    <span class="org-string">"avatar author"</span>
+    <span class="org-string">"avatar source"</span>;
+  <span class="org-css-property">column-gap</span>: 1rem;
+}
+
+<span class="org-css-selector">.webmention__avatar</span> {
+  <span class="org-css-property">object-fit</span>: contain;
+  <span class="org-css-property">border-radius</span>: 0.5rem;
+  <span class="org-css-property">width</span>: 3.5rem;
+  <span class="org-css-property">align-self</span>: start;
+  <span class="org-css-property">grid-area</span>: avatar;
+
+  <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
+    <span class="org-css-property">width</span>: 2.5rem;
+  }
+}
+
+<span class="org-css-selector">.webmention__author</span> {
+  <span class="org-css-property">margin-inline-end</span>: 1rem;
+  <span class="org-css-property">grid-area</span>: author;
+}
+
+<span class="org-css-selector">.webmention__source</span> {
+  <span class="org-css-property">word-break</span>: break-all;
+  <span class="org-css-property">grid-area</span>: source;
+  <span class="org-css-property">margin</span>: 0;
+  <span class="org-css-property">align-self</span>: end;
+}
+
+<span class="org-css-selector">.webmention__content</span> {
+  <span class="org-css-property">clear</span>: both;
+  <span class="org-css-property">margin-block-start</span>: 1rem;
+
+  &amp;:empty {
+    <span class="org-css-property">display</span>: none;
+  }
+}
+
+<span class="org-css-selector">.webmention__date</span> {
+  <span class="org-css-property">margin-block</span>: 0;
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+  <span class="org-css-property">color</span>: light-dark(
+    var(<span class="org-variable-name">--color-text-secondary</span>),
+    var(<span class="org-variable-name">--dark-color-text-secondary</span>)
+  );
+  <span class="org-css-property">word-break</span>: break-all;
+}
+
+<span class="org-css-selector">.h-card[aria-hidden=</span><span class="org-string">"true"</span><span class="org-css-selector">]</span> {
+  <span class="org-css-property">display</span>: none;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-09A0A008-F690-48C1-8992-D59E7A4162B2" class="outline-4">
+<h4 id="09A0A008-F690-48C1-8992-D59E7A4162B2">:focus-visible</h4>
+<div class="outline-text-4" id="text-09A0A008-F690-48C1-8992-D59E7A4162B2"><p>
+使用 tab 聚焦到可点击元素时的样式，增加了动画，使得被聚焦的元素更明显。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-comment-delimiter">/** </span><span class="org-comment">:focus-visible is a neat pseudo-class that only applies focus styles when users navigate with the keyboard.</span><span class="org-comment-delimiter"> */</span>
+*:focus-visible {
+  <span class="org-css-property">outline-color</span>: var(<span class="org-variable-name">--color-fucus-visible-outline</span>);
+  <span class="org-css-property">outline-color</span>: light-dark(var(<span class="org-variable-name">--color-fucus-visible-outline</span>), var(<span class="org-variable-name">--dark-color-fucus-visible-outline</span>));
+  <span class="org-css-property">outline-style</span>: solid;
+  <span class="org-css-property">outline-offset</span>: .25rem;
+  <span class="org-css-property">outline-width</span>: .2rem;
+  <span class="org-css-property">border-radius</span>: .1rem;
+}
+
+<span class="org-builtin">@media</span> (prefers-reduced-motion: no-preference) {
+  *:focus-visible {
+    <span class="org-css-property">animation</span>: outline-bounce .5s;
+  }
+}
+
+<span class="org-builtin">@keyframes</span> outline-bounce {
+  <span class="org-css-selector">0%</span> { <span class="org-css-property">outline-offset</span>: .25rem }
+  <span class="org-css-selector">50%</span> { <span class="org-css-property">outline-offset</span>: .5rem }
+  <span class="org-css-selector">100%</span> { <span class="org-css-property">outline-offset</span>: .25rem }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-5D79C4AC-30FF-46F3-B2D7-4887F1BF91EB" class="outline-4">
+<h4 id="5D79C4AC-30FF-46F3-B2D7-4887F1BF91EB">heading-enhanced</h4>
+<div class="outline-text-4" id="text-5D79C4AC-30FF-46F3-B2D7-4887F1BF91EB"><p>
+<a href="js/heading-enhanced.js">heading-enhanced.js</a> 使得 heading 可点击，因此给 heading 添加了相关样式。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">h1,
+h2,
+h3,
+h4,
+h5,
+h6</span> {
+  &amp;:not(h1):hover {
+    <span class="org-css-property">cursor</span>: pointer;
+    <span class="org-css-property">text-decoration</span>: underline;
+    <span class="org-css-property">text-underline-offset</span>: .5rem;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-43218EEA-C620-4C80-A797-90F713B14C19" class="outline-4">
+<h4 id="43218EEA-C620-4C80-A797-90F713B14C19">note section</h4>
+<div class="outline-text-4" id="text-43218EEA-C620-4C80-A797-90F713B14C19"><p>
+note section 一般用于一些补充内容，设置一个特殊的样式，使其正文区分。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">section[role=</span><span class="org-string">"note"</span><span class="org-css-selector">]</span> {
+  <span class="org-css-property">border</span>: 2px dashed;
+  <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
+  <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
+  <span class="org-css-property">padding-inline</span>: 1rem;
+  <span class="org-css-property">margin-block</span>: 1rem;
+  <span class="org-css-property">border-radius</span>: 0.5rem;
+  <span class="org-css-property">position</span>: relative;
+
+  &amp;::before {
+    <span class="org-comment-delimiter">/* </span><span class="org-comment">&#9999; &#30340; Unicode \270F, \FE0E &#26159;&#25991;&#26412;&#21464;&#20307;&#36873;&#25321;&#22120;&#65292;&#36873;&#25321;&#32431;&#25991;&#26412;&#24418;&#24335;&#23637;&#31034;</span><span class="org-comment-delimiter"> */</span>
+    <span class="org-css-property">content</span>: <span class="org-string">"\270F\FE0E"</span>;
+    <span class="org-css-property">position</span>: absolute;
+    <span class="org-css-property">font-size</span>: 2rem;
+    <span class="org-css-property">inset-block-start</span>: -1rem;
+    <span class="org-css-property">inset-inline-start</span>: 0;
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-border</span>);
+    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+    <span class="org-css-property">transform</span>: rotate(135deg);
+  }
+
+  &amp; + section[role=<span class="org-string">"note"</span>] {
+    <span class="org-css-property">margin-block-start</span>: 1rem;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-BE51F5C8-0D27-4827-8D02-7C4B81BCC7E7" class="outline-4">
+<h4 id="BE51F5C8-0D27-4827-8D02-7C4B81BCC7E7">layer end</h4>
+<div class="outline-text-4" id="text-BE51F5C8-0D27-4827-8D02-7C4B81BCC7E7"><div class="org-src-container">
+<pre class="src src-css">}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-AD067FC2-7D45-445A-8B61-4A86E5923C23" class="outline-3">
+<h3 id="AD067FC2-7D45-445A-8B61-4A86E5923C23">@layer special</h3>
+<div class="outline-text-3" id="text-AD067FC2-7D45-445A-8B61-4A86E5923C23"></div>
+<div id="outline-container-A46EF67A-B267-419A-AFFA-8D9D0798E952" class="outline-4">
+<h4 id="A46EF67A-B267-419A-AFFA-8D9D0798E952">layer start</h4>
+<div class="outline-text-4" id="text-A46EF67A-B267-419A-AFFA-8D9D0798E952"><div class="org-src-container">
+<pre class="src src-css"><span class="org-builtin">@layer</span> special {
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-F7E477A7-203A-4AFA-9B8F-5C8A46CACF00" class="outline-4">
+<h4 id="F7E477A7-203A-4AFA-9B8F-5C8A46CACF00">emacs mark</h4>
+<div class="outline-text-4" id="text-F7E477A7-203A-4AFA-9B8F-5C8A46CACF00"><p>
+主要用在 <a href="emacs-elevator-pitch-2025-08.html">Emacs Elevator Pitch - Only Emacs can save your soul</a>。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">mark.emacs</span> {
+  <span class="org-css-property">background</span>: linear-gradient(to right bottom, <span class="custom-2">#8482c7</span>, <span class="custom-1">#943dc1</span>);
+  <span class="org-css-property">box-shadow</span>: 1px 2px 2px var(<span class="org-variable-name">--color-box-shadow</span>);
+  <span class="org-css-property">box-shadow</span>: 1px 2px 2px light-dark(var(<span class="org-variable-name">--color-box-shadow</span>), var(<span class="org-variable-name">--dark-color-box-shadow</span>));
+  <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+  <span class="org-css-property">border-radius</span>: 5px;
+  <span class="org-css-property">padding</span>: 0px 4px;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-EC925295-1B78-4457-B659-2B8217F14FAA" class="outline-4">
+<h4 id="EC925295-1B78-4457-B659-2B8217F14FAA">retro theme</h4>
+<div class="outline-text-4" id="text-EC925295-1B78-4457-B659-2B8217F14FAA"><p>
+样式借鉴了 <a href="https://seated.ro/">rohit</a>。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-comment-delimiter">/* </span><span class="org-comment">scan-line, retro style</span><span class="org-comment-delimiter"> */</span>
+<span class="org-comment-delimiter">/* </span><span class="org-comment">inspire from https://seated.ro/blog/tinkering-a-lost-art</span><span class="org-comment-delimiter"> */</span>
+<span class="org-css-property">body</span>:where(.dark-retro)::after {
+  <span class="org-css-property">content</span>: <span class="org-string">""</span>;
+  <span class="org-css-property">position</span>: fixed;
+  <span class="org-css-property">top</span>: 0;
+  <span class="org-css-property">left</span>: 0;
+  <span class="org-css-property">bottom</span>: 0;
+  <span class="org-css-property">right</span>: 0;
+  <span class="org-css-property">background-repeat</span>: repeat;
+  <span class="org-css-property">background-attachment</span>: fixed;
+  <span class="org-css-property">pointer-events</span>: none;
+  <span class="org-css-property">z-index</span>: 3;
+}
+
+<span class="org-css-selector">body.dark-retro::after</span> {
+  <span class="org-variable-name">--scan-line-width</span>: 1px;
+  <span class="org-css-property">background-image</span>: linear-gradient(oklch(0 0 0 / .8) var(<span class="org-variable-name">--scan-line-width</span>), transparent var(<span class="org-variable-name">--scan-line-width</span>));
+  <span class="org-css-property">background-size</span>: calc(2 * var(<span class="org-variable-name">--scan-line-width</span>)) calc(2 * var(<span class="org-variable-name">--scan-line-width</span>));
+
+  <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
+    <span class="org-variable-name">--scan-line-width</span>: .7px;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-CA4C7D5C-610C-455C-A7E9-051490D3F342" class="outline-4">
+<h4 id="CA4C7D5C-610C-455C-A7E9-051490D3F342">image-list</h4>
+<div class="outline-text-4" id="text-CA4C7D5C-610C-455C-A7E9-051490D3F342"><p>
+目前用于 <a href="nichijou-12.html">日常#12 - 苹果设备的联动、最近做的一些菜式、死亡搁浅、深圳美术馆看展</a>。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-comment-delimiter">/* </span><span class="org-comment">&#21482;&#25903;&#25345;&#20840;&#37096;&#37117;&#26159; &lt;figure&gt; &#25110;&#32773;&#20840;&#37096;&#37117;&#26159; &lt;a&gt;</span><span class="org-comment-delimiter"> */</span>
+<span class="org-css-selector">.image-list</span> {
+  <span class="org-css-property">display</span>: flex;
+  <span class="org-css-property">justify-content</span>: center;
+  <span class="org-css-property">gap</span>: 1em;
+  <span class="org-css-property">flex-wrap</span>: wrap;
+  <span class="org-css-property">overflow</span>: auto;
+  <span class="org-css-property">max-height</span>: 65vh;
+  <span class="org-css-property">border</span>: 2px dashed;
+  <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
+  <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
+  <span class="org-css-property">padding</span>: 1em;
+  <span class="org-css-property">margin-block</span>: 1em;
+  <span class="org-css-property">border-radius</span>: .5em;
+
+  &amp; a {
+    <span class="org-css-property">height</span>: auto;
+  }
+
+  &amp; figure {
+    <span class="org-css-property">margin</span>: 0;
+  }
+
+  &amp; img {
+    <span class="org-css-property">max-height</span>: 50vh;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-2BFC37AF-7951-4233-A8A4-385070F0007B" class="outline-4">
+<h4 id="2BFC37AF-7951-4233-A8A4-385070F0007B">blockquote/verse</h4>
+<div class="outline-text-4" id="text-2BFC37AF-7951-4233-A8A4-385070F0007B"></div>
+<ul class="org-ul">
+<li><a id="AB6F0CFB-5F68-4475-AB67-3A090A5E5D46"></a>.vertical-rl<br>
+<div class="outline-text-5" id="text-AB6F0CFB-5F68-4475-AB67-3A090A5E5D46"><p>
+有的 blockquote/verse 文字是纵向的，针对它们调整间距等样式。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">blockquote.vertical-rl,
+p.verse.vertical-rl</span> {
+  <span class="org-css-property">writing-mode</span>: vertical-rl;
+  <span class="org-css-property">padding</span>: 0;
+  <span class="org-css-property">border</span>: none;
+  <span class="org-css-property">padding-block-start</span>: 0.5rem;
+  <span class="org-css-property">font-size</span>: 0.9rem;
+  <span class="org-css-property">width</span>: 100%;
+  <span class="org-css-property">max-width</span>: 100%;
+  <span class="org-css-property">overflow</span>: auto;
+  <span class="org-css-property">container-type</span>: scroll-state;
+  <span class="org-css-property">container-name</span>: vertical-rl;
+  <span class="org-css-property">position</span>: relative;
+
+  <span class="org-css-selector">.footref</span> {
+    <span class="org-css-property">writing-mode</span>: initial;
+  }
+
+  <span class="org-builtin">@media</span> screen and (width &gt;= 580px) {
+    &amp;.center {
+      <span class="org-css-property">align-content</span>: center;
+    }
+  }
+}
+
+<span class="org-builtin">@container</span> vertical-rl scroll-state(scrollable: block-end) {
+  <span class="org-css-selector">p.verse.vertical-rl::after</span> {
+    <span class="org-css-property">content</span>: <span class="org-string">"&#9759;"</span>;
+    <span class="org-css-property">position</span>: absolute;
+    <span class="org-css-property">inset-block-end</span>: 0;
+    <span class="org-css-property">inset-inline-end</span>: 0;
+    <span class="org-css-property">font-size</span>: 1.2rem;
+  }
+}
+</pre>
+</div>
+</div>
+</li>
+<li><a id="C10C4CF6-C443-4C28-9591-E65752A942B8"></a>.indent-paragraph<br>
+<div class="outline-text-5" id="text-C10C4CF6-C443-4C28-9591-E65752A942B8"><p>
+带有 <code>.indent-paragraph</code> 的内容，段落首行缩紧 2 个字。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">details.indent-paragraph p,
+blockquote.indent-paragraph</span>
+{
+  <span class="org-css-property">text-indent</span>: 2rem;
+}
+</pre>
+</div>
+</div>
+</li>
+<li><a id="E4612FEC-9498-426F-913F-E08FC1836F4F"></a>.single<br>
+<div class="outline-text-5" id="text-E4612FEC-9498-426F-913F-E08FC1836F4F"><p>
+带有 <code>.single</code> 的引用，会使用引号包裹起来。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">blockquote.single</span> {
+  <span class="org-css-property">border</span>: none;
+  <span class="org-css-property">position</span>: relative;
+  <span class="org-css-property">margin-block</span>: 2rem;
+
+  &amp;::before,
+  &amp;::after {
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-border</span>);
+    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+    <span class="org-css-property">font-size</span>: 4rem;
+    <span class="org-css-property">position</span>: absolute;
+  }
+
+  &amp;::before {
+    <span class="org-css-property">content</span>: <span class="org-string">"&#8220;"</span>;
+    <span class="org-css-property">top</span>: 0.2rem;
+    <span class="org-css-property">left</span>: -0.1rem;
+    <span class="org-css-property">line-height</span>: 0.2rem;
+  }
+
+  &amp;::after {
+    <span class="org-css-property">content</span>: <span class="org-string">"&#8221;"</span>;
+    <span class="org-css-property">right</span>: -0.1rem;
+    <span class="org-css-property">bottom</span>: -0.6rem;
+    <span class="org-css-property">line-height</span>: 0.2rem;
+  }
+}
+</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div id="outline-container-8E8B1775-6975-47A9-ACFB-B7844D246C0D" class="outline-4">
+<h4 id="8E8B1775-6975-47A9-ACFB-B7844D246C0D">.hidden-link</h4>
+<div class="outline-text-4" id="text-8E8B1775-6975-47A9-ACFB-B7844D246C0D"><p>
+有的彩蛋链接，为了避免暴露，将链接颜色改成和正文颜色一样。静待有缘人发现 :P
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.hidden-link a</span> {
+  <span class="org-css-property">text-decoration</span>: none;
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+
+  &amp;:hover {
+    <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+  }
+
+  &amp;:visited {
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-93423AF8-637B-4039-8E80-6C494EB6559A" class="outline-4">
+<h4 id="93423AF8-637B-4039-8E80-6C494EB6559A">inline image</h4>
+<div class="outline-text-4" id="text-93423AF8-637B-4039-8E80-6C494EB6559A"><p>
+行内图片，和文字一样大的图片，很少用到。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">img.inline-image</span> {
+  <span class="org-css-property">width</span>: 1rem;
+  <span class="org-css-property">height</span>: 1rem;
+  <span class="org-css-property">vertical-align</span>: -3.5px;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-24A4E944-B866-43FE-A65B-662995690909" class="outline-4">
+<h4 id="24A4E944-B866-43FE-A65B-662995690909">float image</h4>
+<div class="outline-text-4" id="text-24A4E944-B866-43FE-A65B-662995690909"><p>
+添加 <code>.float-start</code> 或 <code>.float-end</code> 可以让图片浮动，图片会占据一半的内容空间。当屏幕较小时，取消浮动，让图片显示得更大一些。
+</p>
+
+<p>
+例如：
+</p>
+<ul class="org-ul">
+<li><a href="nichijou-5.html">日常#5 - PL-330 收音机、咖啡、通关空洞骑士、CITY 完结</a></li>
+<li><a href="nichijou-10.html">日常#10 - 香港迪士尼、莽山五指峰</a></li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">figure</span> {
+  &amp;:has(.float-start) {
+    <span class="org-css-property">float</span>: inline-start;
+    <span class="org-css-property">margin-block</span>: 0;
+    <span class="org-css-property">margin-inline-end</span>: 1rem;
+    <span class="org-css-property">max-width</span>: 50%;
+  }
+
+  &amp;:has(.float-end) {
+    <span class="org-css-property">float</span>: inline-end;
+    <span class="org-css-property">margin-block</span>: 0;
+    <span class="org-css-property">margin-inline-start</span>: 1rem;
+    <span class="org-css-property">max-width</span>: 50%;
+  }
+
+  &amp;:has(.center) {
+    <span class="org-css-property">text-align</span>: center;
+  }
+
+  <span class="org-builtin">@media</span> screen and (width &lt;= 765px) {
+    &amp;:has(:is(.float-start, .float-end)) {
+      <span class="org-css-property">float</span>: none;
+      <span class="org-css-property">margin-inline</span>: 0;
+      <span class="org-css-property">margin-block</span>: 1rem;
+      <span class="org-css-property">max-width</span>: fit-content;
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-46F43A86-8D54-4CD8-903E-07290B903A93" class="outline-4">
+<h4 id="46F43A86-8D54-4CD8-903E-07290B903A93">layer end</h4>
+<div class="outline-text-4" id="text-46F43A86-8D54-4CD8-903E-07290B903A93"><div class="org-src-container">
+<pre class="src src-css">}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-17B3662C-F7CA-4A2F-B469-FDDEC42CA39B" class="outline-2">
+<h2 id="17B3662C-F7CA-4A2F-B469-FDDEC42CA39B">index.css</h2>
+<div class="outline-text-2" id="text-17B3662C-F7CA-4A2F-B469-FDDEC42CA39B"><p>
+首页的样式。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-builtin">@import</span> <span class="org-string">"./88-31-button.css"</span>;
+</pre>
+</div>
+</div>
+<div id="outline-container-DA5A6350-73E4-49BC-AB4F-0A83F6FB8446" class="outline-3">
+<h3 id="DA5A6350-73E4-49BC-AB4F-0A83F6FB8446">标题</h3>
+<div class="outline-text-3" id="text-DA5A6350-73E4-49BC-AB4F-0A83F6FB8446"><div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">header</span> {
+  &amp; h1 {
+    <span class="org-css-property">transition</span>: text-shadow 0.25s ease-in-out, color 0.25s ease-in-out;
+    &amp;:hover {
+      <span class="org-css-property">color</span>: transparent;
+      <span class="org-css-property">text-shadow</span>: var(<span class="org-variable-name">--color-taxodium-purple</span>) -5px -5px 2.5px,
+                   var(<span class="org-variable-name">--color-taxodium-yellow</span>) 10px 10px 5px;
+    }
+  }
+}
+
+<span class="org-css-selector">h2</span> {
+  <span class="org-css-property">text-align</span>: center;
+  <span class="org-css-property">width</span>: 100%;
+}
+
+<span class="org-comment-delimiter">/* </span><span class="org-comment">&#25991;&#31456;&#26631;&#39064;&#30340;&#23376;&#26631;&#39064;</span><span class="org-comment-delimiter"> */</span>
+<span class="org-css-selector">.sitemap-subtitle</span> {
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
+  <span class="org-css-property">font-size</span>: 0.85rem;
+}
+
+<span class="org-comment-delimiter">/* </span><span class="org-comment">&#26631;&#39064;&#19979;&#30340;&#19968;&#21477;&#35805;</span><span class="org-comment-delimiter"> */</span>
+<span class="org-css-selector">header + p</span> {
+  <span class="org-css-property">text-align</span>: center;
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
+}
+
+<span class="org-comment-delimiter">/* </span><span class="org-comment">&#31227;&#38500; postamble &#30340;&#20869;&#23481;</span><span class="org-comment-delimiter"> */</span>
+<span class="org-css-selector">#postamble::before</span> {
+  <span class="org-css-property">display</span>: none;
+}
+
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-5858EA17-11C8-4E2D-8AC6-59ED6F1B7E25" class="outline-3">
+<h3 id="5858EA17-11C8-4E2D-8AC6-59ED6F1B7E25">快捷入口</h3>
+<div class="outline-text-3" id="text-5858EA17-11C8-4E2D-8AC6-59ED6F1B7E25"><div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.quick-access</span> {
+  <span class="org-css-property">text-align</span>: center;
+  <span class="org-css-property">line-height</span>: 1;
+
+  <span class="org-css-selector">a</span> {
+    <span class="org-css-property">text-decoration</span>: none;
+    <span class="org-css-property">position</span>: relative;
+    <span class="org-css-property">display</span>: inline-block;
+    <span class="org-css-property">transition</span>: transform 0.2s;
+
+    &amp;:active {
+      <span class="org-css-property">transform</span>: scale(0.9);
+    }
+
+    &amp;.anime {
+      <span class="org-css-property">filter</span>: grayscale(1) brightness(0.75);
+      <span class="org-css-property">transition</span>: all 0.8s;
+    }
+
+    &amp;.black-hole {
+      <span class="org-css-property">padding-inline</span>: 0.3rem;
+      <span class="org-css-property">cursor</span>: none;
+    }
+
+    &amp;:hover {
+      <span class="org-css-property">background</span>: unset;
+
+      &amp;.changelog {
+        <span class="org-css-property">transform-origin</span>: center bottom;
+        <span class="org-css-property">animation</span>: jelly 0.7s;
+      }
+
+      &amp;.music-rank {
+        <span class="org-css-property">animation</span>: infinite play-cd 1s linear;
+        <span class="org-css-property">transform-origin</span>: 48% 45%;
+      }
+
+      &amp;.black-hole {
+        <span class="org-css-property">cursor</span>: none;
+
+        &amp;::before {
+          <span class="org-css-property">cursor</span>: none;
+        }
+      }
+
+      &amp;.anime {
+        <span class="org-css-property">filter</span>: grayscale(0) brightness(120%);
+      }
+
+      &amp;.tools {
+        <span class="org-css-property">transform-origin</span>: center center;
+        <span class="org-css-property">animation</span>: infinite heat-hammer 0.8s linear;
+      }
+    }
+
+    <span class="org-comment-delimiter">/* </span><span class="org-comment">&#25193;&#22823; icon &#30340; hover &#33539;&#22260;</span><span class="org-comment-delimiter"> */</span>
+    &amp;::before {
+      <span class="org-css-property">content</span>: <span class="org-string">""</span>;
+      <span class="org-css-property">position</span>: absolute;
+      <span class="org-css-property">top</span>: var(<span class="org-variable-name">--extra-active-area-size</span>);
+      <span class="org-css-property">left</span>: var(<span class="org-variable-name">--extra-active-area-size</span>);
+      <span class="org-css-property">right</span>: var(<span class="org-variable-name">--extra-active-area-size</span>);
+      <span class="org-css-property">bottom</span>: var(<span class="org-variable-name">--extra-active-area-size</span>);
+      <span class="org-css-property">cursor</span>: pointer;
+    }
+
+    &amp;::after {
+      <span class="org-css-property">display</span>: none <span class="org-builtin">!important</span>;
+    }
+  }
+}
+
+<span class="org-builtin">@keyframes</span> jelly {
+  <span class="org-css-selector">0%</span> {
+    <span class="org-css-property">transform</span>: scale(1, 1);
+  }
+  <span class="org-css-selector">30%</span> {
+    <span class="org-css-property">transform</span>: scale(1.25, 0.75);
+  }
+  <span class="org-css-selector">40%</span> {
+    <span class="org-css-property">transform</span>: scale(0.75, 1.25);
+  }
+  <span class="org-css-selector">50%</span> {
+    <span class="org-css-property">transform</span>: scale(1.15, 0.85);
+  }
+  <span class="org-css-selector">65%</span> {
+    <span class="org-css-property">transform</span>: scale(0.95, 1.05);
+  }
+  <span class="org-css-selector">75%</span> {
+    <span class="org-css-property">transform</span>: scale(1.05, 0.95);
+  }
+  <span class="org-css-selector">100%</span> {
+    <span class="org-css-property">transform</span>: scale(1, 1);
+  }
+}
+
+<span class="org-builtin">@keyframes</span> play-cd {
+  <span class="org-css-selector">0%</span> {
+    <span class="org-css-property">transform</span>: rotate(0);
+  }
+  <span class="org-css-selector">100%</span> {
+    <span class="org-css-property">transform</span>: rotate(360deg);
+  }
+}
+
+<span class="org-builtin">@keyframes</span> heat-hammer {
+  <span class="org-css-selector">0%</span> {
+    <span class="org-css-property">transform</span>: rotateZ(-25deg);
+  }
+  <span class="org-css-selector">100%</span> {
+    <span class="org-css-property">transform</span>: rotateZ(15deg);
+  }
+}
+
+<span class="org-builtin">@keyframes</span> unroll {
+  <span class="org-css-selector">0%</span> {
+    <span class="org-css-property">clip-path</span>: inset(0 0 100% 0);
+    <span class="org-css-property">opacity</span>: 0;
+  }
+  <span class="org-css-selector">100%</span> {
+    <span class="org-css-property">clip-path</span>: inset(0 0 0 0);
+    <span class="org-css-property">opacity</span>: 1;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-7A3FB831-265B-4A88-AEAF-E5E01A881119" class="outline-3">
+<h3 id="7A3FB831-265B-4A88-AEAF-E5E01A881119">列表</h3>
+<div class="outline-text-3" id="text-7A3FB831-265B-4A88-AEAF-E5E01A881119"><p>
+实现类似书籍目录的样式。
+</p>
+
+<p>
+页码实现可以参考 <a href="14.html#f8cb500a-1a67-4283-a81b-8681a14f05a1">Zine#14::Responsive TOC leader lines with CSS</a>。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">#content ul</span> {
+  <span class="org-css-property">padding-inline-start</span>: 0;
+  <span class="org-css-property">counter-reset</span>: step;
+  <span class="org-css-property">counter-set</span>: step -1;
+  <span class="org-css-property">transition</span>: background 0.25s ease-in-out;
+
+  <span class="org-css-selector">li</span> {
+    <span class="org-css-property">counter-increment</span>: step;
+    <span class="org-css-property">display</span>: grid;
+    <span class="org-css-property">grid-template-columns</span>: auto max-content;
+    <span class="org-css-property">grid-template-areas</span>: <span class="org-string">"chapter page"</span>;
+    <span class="org-css-property">gap</span>: 0 0.5rem;
+    <span class="org-css-property">margin-block</span>: 0.5rem;
+
+    &amp;::after {
+      <span class="org-css-property">grid-area</span>: page;
+      <span class="org-css-property">content</span>: counter(step);
+      <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-border</span>);
+      <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+      <span class="org-css-property">font-size</span>: 1.2rem;
+      <span class="org-css-property">text-align</span>: end;
+    }
+
+    &amp; a {
+      <span class="org-css-property">grid-area</span>: chapter;
+      <span class="org-css-property">overflow</span>: hidden;
+      <span class="org-css-property">position</span>: relative;
+
+      &amp;::after {
+        <span class="org-css-property">position</span>: absolute;
+        <span class="org-css-property">content</span>: <span class="org-string">" . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "</span>
+                 <span class="org-string">". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "</span>
+                 <span class="org-string">". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "</span>;
+        <span class="org-css-property">text-align</span>: end;
+        <span class="org-css-property">padding-left</span>: 0.5rem;
+        <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-border</span>);
+        <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+      }
+    }
+
+    <span class="org-css-selector">.timestamp</span> {
+      <span class="org-css-property">display</span>: none;
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-D270D656-FD61-400B-9291-52E1B8D9C8AA" class="outline-2">
+<h2 id="D270D656-FD61-400B-9291-52E1B8D9C8AA">album.css</h2>
+<div class="outline-text-2" id="text-D270D656-FD61-400B-9291-52E1B8D9C8AA"><p>
+专辑分享页面的特殊样式。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.figure-number</span> {
+  <span class="org-css-property">display</span>: none;
+}
+
+<span class="org-css-selector">#postamble::before</span> {
+  <span class="org-css-property">content</span>: <span class="org-string">"take a sad song and make it better"</span>;
+
+  <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
+    <span class="org-css-property">font-size</span>: 0.8rem;
+  }
+}
+
+<span class="org-css-selector">p.verse</span> {
+  <span class="org-css-property">border</span>: none;
+  <span class="org-css-property">padding</span>: 0;
+}
+
+<span class="org-css-selector">:is(.footpara, .sidenote-content) p.verse</span> {
+  <span class="org-css-property">padding</span>: 0;
+}
+
+<span class="org-css-selector">.sidenote</span> {
+  <span class="org-css-property">font-size</span>: 0.95rem;
+}
+
+<span class="org-css-selector">img[src*=</span><span class="org-string">"images\/album"</span><span class="org-css-selector">]</span> {
+  <span class="org-css-property">border-radius</span>: 10px;
+
+  <span class="org-builtin">@media</span> (prefers-color-scheme: light) {
+    <span class="org-css-property">box-shadow</span>: 5px 2px 5px var(<span class="org-variable-name">--color-box-shadow</span>);
+  }
+
+  <span class="org-builtin">@media</span> (prefers-color-scheme: dark) {
+    <span class="org-css-property">box-shadow</span>: 0 0 10px var(<span class="org-variable-name">--dark-color-box-shadow</span>);
+  }
+}
+
+<span class="org-css-selector">.light img[src*=</span><span class="org-string">"images\/album"</span><span class="org-css-selector">]</span> {
+  <span class="org-css-property">box-shadow</span>: 5px 2px 5px var(<span class="org-variable-name">--color-box-shadow</span>);
+}
+
+<span class="org-css-selector">.dark img[src*=</span><span class="org-string">"images\/album"</span><span class="org-css-selector">]</span> {
+  <span class="org-css-property">box-shadow</span>: 0 0 10px var(<span class="org-variable-name">--dark-color-box-shadow</span>);
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-BCE45058-1141-4766-8C83-2C5FFD33D7D4" class="outline-3">
+<h3 id="BCE45058-1141-4766-8C83-2C5FFD33D7D4">lyrics</h3>
+<div class="outline-text-3" id="text-BCE45058-1141-4766-8C83-2C5FFD33D7D4"><p>
+一些特殊歌词样式。
+</p>
+
+<p>
+见：
+</p>
+<ul class="org-ul">
+<li><a href="album-5.html">Album#5 - Darklands</a></li>
+<li><a href="album-17.html">Album#17 - 哈雷妈妈</a></li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.lyrics</span> {
+  &amp; i {
+    <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+    <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+  }
+}
+
+<span class="org-css-selector">.lyrics--cute i</span> {
+  <span class="org-css-property">font-family</span>: Schoolbell, var(<span class="org-variable-name">--font-family</span>);
+}
+
+<span class="org-css-selector">.lyrics--color</span> {
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-lyrics</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-lyrics</span>), var(<span class="org-variable-name">--dark-color-lyrics</span>));
+}
+
+<span class="org-css-selector">.lyrics--small</span> {
+  <span class="org-css-property">font-size</span>: 0.8rem;
+}
+
+<span class="org-css-selector">.lyrics--large</span> {
+  <span class="org-css-property">font-size</span>: 1.2rem;
+}
+
+<span class="org-css-selector">.lyrics--huge</span> {
+  <span class="org-css-property">font-size</span>: 1.5rem;
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-26F69F54-3037-47C2-B23F-2BDE97F58BB8" class="outline-2">
+<h2 id="26F69F54-3037-47C2-B23F-2BDE97F58BB8">album-wall.css</h2>
+<div class="outline-text-2" id="text-26F69F54-3037-47C2-B23F-2BDE97F58BB8"><p>
+<a href="album-wall.html">Album Wall</a> 页面的特殊样式。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.figure-number</span> {
+  <span class="org-css-property">display</span>: none;
+}
+
+<span class="org-css-selector">.filter</span> {
+  <span class="org-css-property">text-align</span>: center;
+  <span class="org-css-property">align-items</span>: center;
+  <span class="org-css-property">justify-content</span>: center;
+  <span class="org-css-property">display</span>: flex;
+  <span class="org-css-property">gap</span>: 0.2rem;
+
+  &amp; label,
+  <span class="org-css-selector">input</span> {
+    <span class="org-css-property">cursor</span>: pointer;
+  }
+}
+
+#content:has(#filter-shared:checked) figure:has(a[href*=<span class="org-string">"images\/album"</span>]) {
+  <span class="org-css-property">display</span>: none;
+}
+
+<span class="org-css-selector">.album-wall</span> {
+  <span class="org-css-property">display</span>: grid;
+  <span class="org-css-property">grid-template-columns</span>: repeat(auto-fill, calc(20px * 14));
+  <span class="org-css-property">gap</span>: 0 1.5rem;
+  <span class="org-css-property">justify-content</span>: center;
+  <span class="org-css-property">width</span>: 99vw;
+  <span class="org-css-property">position</span>: relative;
+  <span class="org-css-property">left</span>: 50%;
+  <span class="org-css-property">right</span>: 50%;
+  <span class="org-css-property">margin-left</span>: -49.5vw;
+  <span class="org-css-property">margin-right</span>: -49.5vw;
+
+  <span class="org-builtin">@media</span> screen and (width &lt;= 1920px) {
+    <span class="org-css-property">grid-template-columns</span>: repeat(auto-fill, calc(20px * 12));
+  }
+
+  <span class="org-builtin">@media</span> screen and (width &lt;= 800px) {
+    <span class="org-css-property">grid-template-columns</span>: repeat(auto-fill, calc(20px * 10));
+  }
+
+  <span class="org-builtin">@media</span> screen and (width &lt;= 650px) {
+    <span class="org-css-property">grid-template-columns</span>: repeat(2, calc(20px * 8));
+    <span class="org-css-property">gap</span>: 1rem 0.5rem;
+    <span class="org-css-property">width</span>: 100%;
+    <span class="org-css-property">left</span>: 0;
+    <span class="org-css-property">right</span>: 0;
+    <span class="org-css-property">margin</span>: 0;
+  }
+
+  <span class="org-builtin">@media</span> (pointer: fine) and (hover: hover) {
+    &amp; figure {
+      &amp;:hover {
+        <span class="org-css-property">transform</span>: rotate(0);
+        <span class="org-css-property">z-index</span>: 1;
+        <span class="org-css-property">filter</span>: grayscale(0) blur(0);
+
+        &amp; figcaption {
+          <span class="org-css-property">opacity</span>: 1;
+          <span class="org-css-property">transform</span>: translateY(0);
+        }
+      }
+    }
+  }
+
+  <span class="org-css-selector">p</span> {
+    <span class="org-css-property">display</span>: none;
+  }
+
+  &amp; figure {
+    <span class="org-css-property">margin</span>: 0;
+    <span class="org-css-property">position</span>: relative;
+    <span class="org-css-property">transform</span>: perspective(500px) rotateX(5deg) rotateY(-5deg) rotateZ(1deg);
+    <span class="org-css-property">transition</span>:
+      transform 0.25s ease-in-out,
+      opacity 0.8s ease-in-out,
+      filter 1.5s ease-in-out,
+      display 0.25s allow-discrete ease-in-out;
+    <span class="org-css-property">transform-origin</span>: center bottom;
+    <span class="org-css-property">filter</span>: grayscale(0.95) blur(0.55px);
+
+    &amp; figcaption {
+      <span class="org-css-property">transition</span>:
+        transform 0.25s ease-in-out,
+        opacity 0.25s ease-in-out;
+      <span class="org-css-property">transition-delay</span>: 0.5s;
+      <span class="org-css-property">opacity</span>: 0;
+      <span class="org-css-property">transform</span>: translateY(-25%);
+    }
+
+    <span class="org-builtin">@starting-style</span> {
+      <span class="org-css-property">opacity</span>: 0;
+    }
+
+    <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
+      <span class="org-css-property">transform</span>: unset;
+      <span class="org-css-property">filter</span>: grayscale(0) blur(0);
+
+      &amp; figcaption {
+        <span class="org-css-property">opacity</span>: 1;
+        <span class="org-css-property">transform</span>: none;
+      }
+    }
+  }
+
+  &amp; img {
+    <span class="org-css-property">object-fit</span>: cover;
+    <span class="org-css-property">aspect-ratio</span>: 1;
+    <span class="org-css-property">width</span>: 100%;
+    <span class="org-css-property">box-shadow</span>: -5px 5px 5px var(<span class="org-variable-name">--color-box-shadow</span>) <span class="org-builtin">!important</span>;
+    <span class="org-css-property">border-radius</span>: 3px;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-0FAFBA7D-583A-46D0-A986-4AF16B6C6F56" class="outline-2">
+<h2 id="0FAFBA7D-583A-46D0-A986-4AF16B6C6F56">88-31-button.css</h2>
+<div class="outline-text-2" id="text-0FAFBA7D-583A-46D0-A986-4AF16B6C6F56"><p>
+88x31 按钮的特殊样式，在页面按需引用。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.buttons-container</span> {
+  <span class="org-css-property">display</span>: flex;
+  <span class="org-css-property">flex-wrap</span>: wrap;
+  <span class="org-css-property">justify-content</span>: center;
+  <span class="org-css-property">gap</span>: 0.5em;
+
+  <span class="org-css-selector">figure</span> {
+    <span class="org-css-property">margin</span>: 0;
+    <span class="org-css-property">width</span>: fit-content;
+    <span class="org-css-property">display</span>: inline-block;
+    <span class="org-css-property">max-width</span>: 88px;
+    <span class="org-css-property">max-height</span>: 31px;
+
+    <span class="org-css-selector">img</span> {
+      <span class="org-css-property">max-width</span>: 88px;
+      <span class="org-css-property">max-height</span>: 31px;
+    }
+  }
+
+  <span class="org-css-selector">a::after,
+  a::before</span> {
+    <span class="org-css-property">display</span>: none <span class="org-builtin">!important</span>;
+  }
+
+  <span class="org-css-selector">p</span> {
+    <span class="org-css-property">display</span>: inline-flex;
+    <span class="org-css-property">width</span>: 88px;
+    <span class="org-css-property">height</span>: 31px;
+    <span class="org-css-property">border</span>: 2px dashed;
+    <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
+    <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
+    <span class="org-css-property">font-size</span>: 0.5em;
+    <span class="org-css-property">white-space</span>: nowrap;
+    <span class="org-css-property">margin</span>: 0;
+    <span class="org-css-property">align-items</span>: center;
+    <span class="org-css-property">justify-content</span>: center;
+    <span class="org-css-property">box-sizing</span>: border-box;
+
+    &amp;:hover {
+      <span class="org-css-property">background</span>: var(<span class="org-variable-name">--color-link</span>);
+      <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
+
+      <span class="org-css-selector">a</span> {
+        <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+      }
+    }
+
+    <span class="org-css-selector">a</span> {
+      <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+      <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+      <span class="org-css-property">text-decoration</span>: none;
+
+      &amp;:hover {
+        <span class="org-css-property">background</span>: none;
+      }
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-28F57E2E-3187-4D36-A918-8D43423EEE9F" class="outline-2">
+<h2 id="28F57E2E-3187-4D36-A918-8D43423EEE9F">image-enhance.css</h2>
+<div class="outline-text-2" id="text-28F57E2E-3187-4D36-A918-8D43423EEE9F"><p>
+图片增强样式：
+</p>
+
+<ul class="org-ul">
+<li>隐藏 figure-number</li>
+<li>图片增加圆角和阴影</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.figure-number</span> {
+  <span class="org-css-property">display</span>: none
+}
+
+<span class="org-css-selector">img</span> {
+  <span class="org-css-property">border-radius</span>: 10px;
+
+  <span class="org-builtin">@media</span> (prefers-color-scheme: light) {
+    <span class="org-css-property">box-shadow</span>: 5px 5px 8px var(<span class="org-variable-name">--color-box-shadow</span>);
+  }
+
+  <span class="org-builtin">@media</span> (prefers-color-scheme: dark) {
+    <span class="org-css-property">box-shadow</span>: 0 0 10px var(<span class="org-variable-name">--dark-color-box-shadow</span>);
+  }
+}
+
+<span class="org-css-selector">.light img</span> {
+  <span class="org-css-property">box-shadow</span>: 5px 5px 8px var(<span class="org-variable-name">--color-box-shadow</span>);
+}
+
+<span class="org-css-selector">.dark img</span> {
+  <span class="org-css-property">box-shadow</span>: 0 0 10px var(<span class="org-variable-name">--dark-color-box-shadow</span>);
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-88EC4E99-5F6A-4F55-A283-56F5226A1D21" class="outline-2">
+<h2 id="88EC4E99-5F6A-4F55-A283-56F5226A1D21">text-indent.css</h2>
+<div class="outline-text-2" id="text-88EC4E99-5F6A-4F55-A283-56F5226A1D21"><p>
+对于大量文字为主的文章，可以考虑首行缩进，通过引入额外样式实现。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">#content p</span> {
+  <span class="org-css-property">text-indent</span>: 2em;
+}
+
+<span class="org-css-selector">#content :where(blockquote,[role=note],.sidenote-content,.footpara) p</span> {
+  <span class="org-css-property">text-indent</span>: 0em;
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention js-required">
+<summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回应这篇文章，可以在你的文章或社交媒体帖子中链接这篇文章，然后提交你的 URL，你的回应随后会显示在此页面上。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章或帖子的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention__list"></ul>
+</details>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
+<p>文章创建于 <span class="dt-published">2026-04-10 Fri 09:52</span>，更新于 <span class="dt-updated">2026-04-13 Mon 15:23</span>，</p>
+<p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
+<p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
+</footer>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<!--
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+-->
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
