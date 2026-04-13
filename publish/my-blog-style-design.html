@@ -96,6 +96,7 @@
 <li><a href="#09A0A008-F690-48C1-8992-D59E7A4162B2">:focus-visible</a></li>
 <li><a href="#5D79C4AC-30FF-46F3-B2D7-4887F1BF91EB">heading-enhanced</a></li>
 <li><a href="#43218EEA-C620-4C80-A797-90F713B14C19">note section</a></li>
+<li><a href="#585909F9-2A7D-4CCD-8A8B-0AB5270E3398">sidenote</a></li>
 <li><a href="#BE51F5C8-0D27-4827-8D02-7C4B81BCC7E7">layer end</a></li>
 </ul>
 </li>
@@ -374,37 +375,28 @@
 
 <div class="org-src-container">
 <pre class="src src-css"><span class="org-css-selector">.a11y-nav</span> {
-  <span class="org-css-property">position</span>: relative;
-  <span class="org-css-property">list-style</span>: none;
+  <span class="org-css-property">width</span>: max-content;
+  <span class="org-css-property">position</span>: fixed;
+  <span class="org-css-property">left</span>: 0;
+  <span class="org-css-property">right</span>: 0;
+  <span class="org-css-property">top</span>: 0;
+  <span class="org-css-property">margin</span>: 0 auto;
+  <span class="org-css-property">padding</span>: 0.5rem;
   <span class="org-css-property">z-index</span>: 5;
-  <span class="org-css-property">margin</span>: 0;
+  <span class="org-css-property">background-color</span>: var(<span class="org-variable-name">--color-bg-secondary</span>);
+  <span class="org-css-property">background-color</span>: light-dark(var(<span class="org-variable-name">--color-bg-secondary</span>), var(<span class="org-variable-name">--dark-color-bg-secondary</span>));
+  <span class="org-css-property">font-weight</span>: 600;
+  <span class="org-comment-delimiter">/* </span><span class="org-comment">hide the link</span><span class="org-comment-delimiter"> */</span>
+  <span class="org-css-property">transform</span>: translateY(-60px);
 
-  &amp; a {
-    <span class="org-css-property">width</span>: max-content;
-    <span class="org-css-property">position</span>: absolute;
-    <span class="org-css-property">left</span>: 0;
-    <span class="org-css-property">right</span>: 0;
-    <span class="org-css-property">top</span>: 0;
-    <span class="org-css-property">margin</span>: 0 auto;
-    <span class="org-css-property">padding</span>: 0.5rem;
-    <span class="org-css-property">background-color</span>: var(<span class="org-variable-name">--color-bg-secondary</span>);
-    <span class="org-css-property">background-color</span>: light-dark(
-      var(<span class="org-variable-name">--color-bg-secondary</span>),
-      var(<span class="org-variable-name">--dark-color-bg-secondary</span>)
-    );
-    <span class="org-css-property">font-weight</span>: 600;
-    <span class="org-comment-delimiter">/* </span><span class="org-comment">hide the link</span><span class="org-comment-delimiter"> */</span>
-    <span class="org-css-property">transform</span>: translateY(-90px);
+  <span class="org-builtin">@starting-style</span> {
+    <span class="org-css-property">transform</span>: translateY(-60px);
+    <span class="org-css-property">opacity</span>: 0;
+  }
 
-    <span class="org-builtin">@starting-style</span> {
-      <span class="org-css-property">transform</span>: translateY(-90px);
-      <span class="org-css-property">opacity</span>: 0;
-    }
-
-    &amp;:focus {
-      <span class="org-css-property">transition</span>: transform 0.375s ease-in-out;
-      <span class="org-css-property">transform</span>: translateY(-50%);
-    }
+  &amp;:focus {
+    <span class="org-css-property">transition</span>: transform 0.375s ease-in-out;
+    <span class="org-css-property">transform</span>: translateY(0);
   }
 }
 </pre>
@@ -1564,6 +1556,100 @@ note section 一般用于一些补充内容，设置一个特殊的样式，使�
 </div>
 </div>
 </div>
+<div id="outline-container-585909F9-2A7D-4CCD-8A8B-0AB5270E3398" class="outline-4">
+<h4 id="585909F9-2A7D-4CCD-8A8B-0AB5270E3398">sidenote</h4>
+<div class="outline-text-4" id="text-585909F9-2A7D-4CCD-8A8B-0AB5270E3398"><p>
+footnote 增强。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-builtin">@media</span> (max-width: 1500px) {
+  <span class="org-css-selector">.sidenote-container, .sidenote</span> {
+    <span class="org-css-property">display</span>: none <span class="org-builtin">!important</span>;
+  }
+}
+
+<span class="org-css-selector">.sidenote-container</span> {
+  <span class="org-css-property">position</span>: absolute;
+  <span class="org-css-property">top</span>: 0;
+  <span class="org-css-property">left</span>: 0;
+  <span class="org-css-property">right</span>: 0;
+  <span class="org-css-property">pointer-events</span>: none;
+  <span class="org-css-property">z-index</span>: 1;
+}
+
+<span class="org-css-selector">.sidenote</span> {
+  <span class="org-comment-delimiter">/* </span><span class="org-comment">&#23631;&#24149;&#23485;&#24230;&#20943;&#21435;&#20869;&#23481;&#23485;&#24230;&#21518;&#65292;&#21097;&#20313; margin &#30340;&#19968;&#21322;&#29992;&#20110;&#23637;&#31034; sidenote, &#23485;&#24230;&#20943;&#23569; 1em &#36991;&#20813;&#20869;&#23481;&#28322;&#20986;&#21040;&#21491;&#20391;&#65292;&#23548;&#33268;&#27178;&#21521;&#28378;&#21160;&#26465;</span><span class="org-comment-delimiter"> */</span>
+  <span class="org-css-property">width</span>: calc(var(<span class="org-variable-name">--half-content-margin</span>) - 1em);
+  <span class="org-css-property">max-width</span>: 500px;
+  <span class="org-css-property">font-size</span>: 0.8em;
+  <span class="org-css-property">pointer-events</span>: auto;
+  <span class="org-css-property">display</span>: grid;
+  <span class="org-css-property">grid-template-columns</span>: min-content 1fr;
+  <span class="org-css-property">gap</span>: 0.2em;
+  <span class="org-css-property">transition</span>: opacity .25s ease-in-out;
+  <span class="org-css-property">opacity</span>: 0.65;
+  <span class="org-css-property">align-items</span>: start;
+
+  &amp;:hover {
+    <span class="org-css-property">opacity</span>: 1;
+  }
+}
+
+<span class="org-css-selector">.sidenote-num</span> {
+  <span class="org-css-property">display</span>: inline-block;
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-link</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
+  <span class="org-css-property">cursor</span>: pointer;
+  <span class="org-css-property">transition</span>: color 0.25s ease-in-out;
+  <span class="org-css-property">margin-inline-end</span>: .5em;
+  <span class="org-css-property">white-space</span>: nowrap;
+}
+
+<span class="org-css-selector">.sidenote-content</span> {
+  <span class="org-css-property">min-width</span>: 0;
+}
+
+<span class="org-css-selector">#content a[role=</span><span class="org-string">"doc-backlink"</span><span class="org-css-selector">],
+.sidenote-num</span> {
+  <span class="org-css-property">position</span>: relative;
+
+  &amp;::before {
+    <span class="org-css-property">content</span>: <span class="org-string">''</span>;
+    <span class="org-css-property">position</span>: absolute;
+    <span class="org-css-property">top</span>: var(<span class="org-variable-name">--extra-active-area-size</span>);
+    <span class="org-css-property">left</span>: var(<span class="org-variable-name">--extra-active-area-size</span>);
+    <span class="org-css-property">right</span>: var(<span class="org-variable-name">--extra-active-area-size</span>);
+    <span class="org-css-property">bottom</span>: var(<span class="org-variable-name">--extra-active-area-size</span>);
+    <span class="org-css-property">cursor</span>: pointer;
+  }
+
+  &amp;:hover&amp;::before {
+    <span class="org-css-property">border</span>: 3px solid;
+    <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-box-shadow</span>);
+    <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-box-shadow</span>), var(<span class="org-variable-name">--dark-color-box-shadow</span>));
+    <span class="org-css-property">border-radius</span>: 5px;
+  }
+}
+
+<span class="org-css-selector">.sidenote-num:hover,
+.sidenote-ref-highlight,
+.sidenote-ref-highlight a[role=</span><span class="org-string">"doc-backlink"</span><span class="org-css-selector">]</span> {
+  &amp;::before {
+    <span class="org-css-property">border</span>: 3px solid;
+    <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-box-shadow</span>);
+    <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-box-shadow</span>), var(<span class="org-variable-name">--dark-color-box-shadow</span>));
+    <span class="org-css-property">border-radius</span>: 5px;
+  }
+}
+
+<span class="org-css-selector">.sidenote-content *:nth-child(1)</span> {
+  <span class="org-css-property">margin-block-start</span>: 0;
+}
+</pre>
+</div>
+</div>
+</div>
 <div id="outline-container-BE51F5C8-0D27-4827-8D02-7C4B81BCC7E7" class="outline-4">
 <h4 id="BE51F5C8-0D27-4827-8D02-7C4B81BCC7E7">layer end</h4>
 <div class="outline-text-4" id="text-BE51F5C8-0D27-4827-8D02-7C4B81BCC7E7"><div class="org-src-container">
@@ -2374,11 +2460,6 @@ blockquote.indent-paragraph</span>
     }
   }
 
-  <span class="org-css-selector">a::after,
-  a::before</span> {
-    <span class="org-css-property">display</span>: none <span class="org-builtin">!important</span>;
-  }
-
   <span class="org-css-selector">p</span> {
     <span class="org-css-property">display</span>: inline-flex;
     <span class="org-css-property">width</span>: 88px;
@@ -2495,7 +2576,7 @@ blockquote.indent-paragraph</span>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
 <p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
-<p>文章创建于 <span class="dt-published">2026-04-10 Fri 09:52</span>，更新于 <span class="dt-updated">2026-04-13 Mon 15:23</span>，</p>
+<p>文章创建于 <span class="dt-published">2026-04-10 Fri 09:52</span>，更新于 <span class="dt-updated">2026-04-13 Mon 15:49</span>，</p>
 <p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
 <p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
 </footer>
