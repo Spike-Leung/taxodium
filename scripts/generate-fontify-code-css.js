@@ -56,23 +56,23 @@ function generate(light, dark) {
     const d = dark[sel] || { properties: {} };
     const props = [...new Set([...Object.keys(l.properties), ...Object.keys(d.properties)])];
 
-    let block = `${sel}{`;
+    let block = `${sel} {\n`;
 
     props.forEach(prop => {
       const lv = l.properties[prop] || '', dv = d.properties[prop] || '';
       const isColor = /color|background|border|outline/.test(prop);
 
       if (isColor && lv && dv) {
-        block += `${prop}:${lv};${prop}:light-dark(${lv},${dv});`;
+        block += `  ${prop}:${lv};\n  ${prop}:light-dark(${lv},${dv});\n`;
       } else if (lv) {
-        block += `${prop}:${lv};`;
+        block += `  ${prop}:${lv};\n`;
       } else if (dv) {
-        block += `${prop}:${dv};`;
+        block += `  ${prop}:${dv};\n`;
       }
     });
 
-    return block + '}';
-  }).join('');
+    return block + '}\n';
+  }).join('\n');
 }
 
 const light = parseCSS(fs.readFileSync(LightThemeFilePath, 'utf8'));

@@ -1,7 +1,14 @@
 @import "./88-31-button.css";
 
-:root {
-  --bg-fai-chun: lch(from #fc1f0d 25% 100% h / 70%);
+header {
+  & h1 {
+    transition: text-shadow 0.25s ease-in-out, color 0.25s ease-in-out;
+    &:hover {
+      color: transparent;
+      text-shadow: var(--color-taxodium-purple) -5px -5px 2.5px,
+                   var(--color-taxodium-yellow) 10px 10px 5px;
+    }
+  }
 }
 
 h2 {
@@ -9,201 +16,192 @@ h2 {
   width: 100%;
 }
 
-body,blockquote,.verse {
-  font-family: "Special Elite", "Huiwen-mincho", var(--font-family);
-}
-
-.org-ul {
-  padding-inline-start: 0;
-  counter-reset: step;
-  counter-set: step -1;
-  transition: background .25s ease-in-out;
-}
-
-.org-ul li {
-  counter-increment: step;
-  display: grid;
-  grid-template-columns: auto max-content;
-  grid-template-areas: "chapter page";
-  gap: 0 .5rem;
-  margin-block: 0.5rem;
-
-  &::after {
-    grid-area: page;
-    content:  counter(step);
-    color: var(--color-border);
-    color: light-dark(var(--color-border), var(--dark-color-border));
-    font-size: 1.2rem;
-    text-align: end;
-  }
-
-  & a {
-    grid-area: chapter;
-    overflow: hidden;
-    position: relative;
-
-    &::after {
-      position: absolute;
-      content: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "
-               ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "
-               ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ";
-      text-align: end;
-      padding-left: .5rem;
-      color: var(--color-border);
-      color: light-dark(var(--color-border), var(--dark-color-border));
-    }
-  }
-}
-
+/* 文章标题的子标题 */
 .sitemap-subtitle {
   color: var(--color-text-secondary);
   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
   font-size: 0.85rem;
 }
 
-.org-ul li .timestamp {
-  display: none;
-}
-
+/* 标题下的一句话 */
 header + p {
   text-align: center;
   color: var(--color-text-secondary);
   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
 }
 
-header  {
-  & h1{
-    transition: text-shadow .25s ease-in-out;
-    &:hover {
-      text-shadow: rgb(124 124 209) -3px -3px 3px, var(--color-link-visited) 4px 4px 4px;
-    }
-  }
-}
-
-
-#postamble#postamble::before {
+/* 移除 postamble 的内容 */
+#postamble::before {
   display: none;
 }
 
-
-@media screen and (max-width: 400px) {
-  #table-of-contents ul,
-  #content :is(.org-ul) {
-    padding-inline-start: 0;
-  }
-}
 .quick-access {
   text-align: center;
   line-height: 1;
-  font-family: Arial;
-}
 
-.quotes {
-  position: relative;
+  a {
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    transition: transform 0.2s;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: var(--extra-active-area-size);
-    left: var(--extra-active-area-size);
-    right: var(--extra-active-area-size);
-    bottom: var(--extra-active-area-size);
-    cursor: pointer;
-  }
-}
-
-.quotes:hover a {
-  animation: unroll 1s;
-}
-
-.quick-access a {
-  text-decoration: none;
-  position: relative;
-  display: inline-block;
-  transition: transform 0.2s;
-
-  &:active {
-    transform: scale(0.9);
-  }
-
-  &.anime {
-    filter: grayscale(1) brightness(0.75);
-    transition: all .8s;
-  }
-
-  &.black-hole {
-    padding-inline: .3rem;
-    cursor: none;
-  }
-
-  &:hover {
-    background: unset;
-
-    &.changelog {
-      transform-origin: center bottom;
-      animation: jelly .7s;
-    }
-
-    &.music-rank {
-      animation: infinite play-cd 1s linear;
-      transform-origin: 48% 45%;
-    }
-
-    &.black-hole {
-      cursor: none;
-
-      &::before {
-        cursor: none;
-      }
+    &:active {
+      transform: scale(0.9);
     }
 
     &.anime {
-      filter: grayscale(0) brightness(120%);
+      filter: grayscale(1) brightness(0.75);
+      transition: all 0.8s;
     }
 
-    &.tools {
-      transform-origin: center center;
-      animation: infinite heat-hammer .8s linear;
+    &.black-hole {
+      padding-inline: 0.3rem;
+      cursor: none;
     }
-  }
 
-  /* 扩大 icon 的 hover 范围 */
-  &::before {
-    content: '';
-    position: absolute;
-    top: var(--extra-active-area-size);
-    left: var(--extra-active-area-size);
-    right: var(--extra-active-area-size);
-    bottom: var(--extra-active-area-size);
-    cursor: pointer;
-  }
+    &:hover {
+      background: unset;
 
-  &::after {
-    display: none!important;
+      &.changelog {
+        transform-origin: center bottom;
+        animation: jelly 0.7s;
+      }
+
+      &.music-rank {
+        animation: infinite play-cd 1s linear;
+        transform-origin: 48% 45%;
+      }
+
+      &.black-hole {
+        cursor: none;
+
+        &::before {
+          cursor: none;
+        }
+      }
+
+      &.anime {
+        filter: grayscale(0) brightness(120%);
+      }
+
+      &.tools {
+        transform-origin: center center;
+        animation: infinite heat-hammer 0.8s linear;
+      }
+    }
+
+    /* 扩大 icon 的 hover 范围 */
+    &::before {
+      content: "";
+      position: absolute;
+      top: var(--extra-active-area-size);
+      left: var(--extra-active-area-size);
+      right: var(--extra-active-area-size);
+      bottom: var(--extra-active-area-size);
+      cursor: pointer;
+    }
+
+    &::after {
+      display: none !important;
+    }
   }
 }
 
 @keyframes jelly {
-  0% { transform: scale(1, 1); }
-  30% { transform: scale(1.25, 0.75); }
-  40% { transform: scale(0.75, 1.25); }
-  50% { transform: scale(1.15, 0.85); }
-  65% { transform: scale(0.95, 1.05); }
-  75% { transform: scale(1.05, 0.95); }
-  100% { transform: scale(1, 1); }
+  0% {
+    transform: scale(1, 1);
+  }
+  30% {
+    transform: scale(1.25, 0.75);
+  }
+  40% {
+    transform: scale(0.75, 1.25);
+  }
+  50% {
+    transform: scale(1.15, 0.85);
+  }
+  65% {
+    transform: scale(0.95, 1.05);
+  }
+  75% {
+    transform: scale(1.05, 0.95);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
 }
 
 @keyframes play-cd {
-  0% { transform: rotate(0); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes heat-hammer {
-  0% { transform: rotateZ(-25deg); }
-  100% { transform: rotateZ(15deg); }
+  0% {
+    transform: rotateZ(-25deg);
+  }
+  100% {
+    transform: rotateZ(15deg);
+  }
 }
 
 @keyframes unroll {
-  0% { clip-path: inset(0 0 100% 0); opacity: 0; }
-  100% { clip-path: inset(0 0 0 0); opacity: 1; }
+  0% {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+#content ul {
+  padding-inline-start: 0;
+  counter-reset: step;
+  counter-set: step -1;
+  transition: background 0.25s ease-in-out;
+
+  li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: auto max-content;
+    grid-template-areas: "chapter page";
+    gap: 0 0.5rem;
+    margin-block: 0.5rem;
+
+    &::after {
+      grid-area: page;
+      content: counter(step);
+      color: var(--color-border);
+      color: light-dark(var(--color-border), var(--dark-color-border));
+      font-size: 1.2rem;
+      text-align: end;
+    }
+
+    & a {
+      grid-area: chapter;
+      overflow: hidden;
+      position: relative;
+
+      &::after {
+        position: absolute;
+        content: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "
+                 ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "
+                 ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ";
+        text-align: end;
+        padding-left: 0.5rem;
+        color: var(--color-border);
+        color: light-dark(var(--color-border), var(--dark-color-border));
+      }
+    }
+
+    .timestamp {
+      display: none;
+    }
+  }
 }
