@@ -112,17 +112,17 @@
 定义 ~<html>~ 的样式，指定字体、字号，后面基于 ~<html>~ 字体大小，使用 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-size#rems][rem]] 作为长度单位。
 
 #+begin_src css
-html {
-  font-family: system-ui;
-  font-size: 20px;
-  -webkit-text-size-adjust: 100%;
-}
-
-@media screen and (width >= 70em) {
   html {
-    font-size: 22px;
+    font-family: system-ui;
+    font-size: 20px;
+    -webkit-text-size-adjust: 100%;
   }
-}
+
+  @media screen and (width >= 70em) {
+    html {
+      font-size: 22px;
+    }
+  }
 #+end_src
 
 在手机上， ~<body>~ 占据整个屏幕 (100vw)，只留些许的 padding 和屏幕边缘保留一些距离，
@@ -140,12 +140,13 @@ html {
 #+begin_src css
   body {
     max-width: var(--content-width);
-    margin: 1rem auto;
+    margin: .5rem auto;
     line-height: 1.5;
     word-wrap: break-word;
     color: var(--color-text);
     color: light-dark(var(--color-text), var(--dark-color-text));
     background-image: url("/images/background/xv.png");
+    background-attachment: fixed;
 
     @media screen and (width <= 400px) {
       margin-inline: 0;
@@ -694,7 +695,7 @@ iframe {
 
 #+begin_src css
 select {
-  font-size: 0.85rem;
+  font-size: 1rem;
   padding: 4px;
   border-radius: 0.25rem;
   color: var(--color-text);
