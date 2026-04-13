@@ -11,80 +11,15 @@ const SIDENOTE_NUM_CLASS = 'sidenote-num';
 const SIDENOTE_CONTENT_CLASS = 'sidenote-content';
 const SIDENOTE_REF_HIGHLIGHT_CLASS = 'sidenote-ref-highlight';
 
-/**
- * Dynamically load a CSS file if not already loaded.
- */
-function loadCSS(href) {
-  if (document.querySelector(`link[href="${href}"]`)) return;
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = href;
-  document.head.appendChild(link);
-}
-
-/**
- * Dynamically load a JS file if not already loaded, returns a Promise.
- */
-function loadJS(src) {
-  return new Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${src}"]`)) {
-      resolve();
-      return;
-    }
-    const script = document.createElement('script');
-    script.src = src;
-    script.type = 'application/javascript';
-    script.defer = true;
-    script.onload = resolve;
-    script.onerror = reject;
-    document.body.appendChild(script);
-  });
-}
-
-let littlefootInstance = null;
-let littlefootLoaded = false;
-
-async function ensureLittlefootMounted() {
-  if (!littlefootLoaded) {
-    loadCSS('https://unpkg.com/littlefoot/dist/littlefoot.css');
-    await loadJS('https://unpkg.com/littlefoot/dist/littlefoot.js');
-    littlefootLoaded = true;
-  }
-  if (!window.littlefoot) return;
-  if (!littlefootInstance) {
-    littlefootInstance = window.littlefoot.littlefoot({
-      anchorPattern: /#(fn|footnote|note)[:\-\._\d]/gi,
-      footnoteSelector: 'div',
-      buttonTemplate: `<button
-  aria-label="查看脚注"
-  class="littlefoot__button"
-  id="<% reference %>"
-  title="查看脚注"
-/>
-*
-</button>`
-    });
-  }
-}
-
-function unmountLittlefoot() {
-  if (littlefootInstance && littlefootInstance.unmount) {
-    littlefootInstance.unmount();
-    littlefootInstance = null;
-  }
-}
-
 function isSidenoteVisible() {
   return window.matchMedia('(min-width: 1500px)').matches;
 }
 
 function handleFootnoteMode() {
   if (isSidenoteVisible()) {
-    unmountLittlefoot();
     mountSidenotes();
   } else {
     unmountSidenotes();
-    ensureLittlefootMounted();
   }
 }
 
@@ -218,17 +153,6 @@ function mountSidenotes() {
 
       sidenote.style.paddingInlineStart = padding;
       sidenote.style.left = '100%';
-
-      // 将 sidenote 分布到内容的两边
-      // 右边
-      // if (idx % 2 === 1) {
-      //   sidenote.style.paddingInlineStart = padding;
-      //   sidenote.style.left = '100%';
-      // } else { // 左边
-      //   sidenote.style.justifyContent = 'flex-end';
-      //   sidenote.style.left = `${-1 * sidenote.getBoundingClientRect().width}px`;
-      //   sidenote.style.paddingInlineEnd = padding;
-      // }
 
       // 避免 sidenote 重叠
       if (prevSidenote && prevSidenote.style.display !== 'none') {
