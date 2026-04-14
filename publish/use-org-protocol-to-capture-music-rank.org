@@ -14,7 +14,6 @@
 🎵 鞋底子 + 十八岁 (Outro) - 夏之禹 / 地磁卡
 
 在整理 Blaugust Feed 的时候，看到 Matt 的 [[https://mtwb.blog/music/][Now Playing]] 页面，里面罗列了他的 Top 10 Tracks。
-
 感觉蛮有趣的，于是我也模仿做了一个 [[denote:20250928T170716][听歌排行]] 页面。
 
 我主要使用网易云音乐听歌，它本身就有听歌排行，我要做的就是拉取下来，格式化后记录到博客文章中。
@@ -22,7 +21,7 @@
 主要用到 [[denote:20250831T162749][Emacs]]、[[https://orgmode.org/worg/org-contrib/org-protocol.html][org-protocol.el]]、[[https://www.tampermonkey.net/index.php][Tampermonkey]]。
 
 #+begin_details
-#+html: <summary>关于 org-protocal</summary>
+#+html: <summary>关于 org-protocol</summary>
 
 org-protocol 是一种自定义 URL 方案（ =org-protocol://= ），用于在 Emacs 中触发操作。
 
@@ -34,12 +33,12 @@ macOS 上集成 org-protocol 可以参考 [[https://github.com/xuchunyang/setup-
 流程是这样的：
 1. 登录 [[https://music.163.com/#][网页版的网易云音乐]]，跳转到听歌排行页面。[fn:1]
 2. 使用 [[https://www.tampermonkey.net/index.php][Tampermonkey]] 写点 [[https://gist.github.com/Spike-Leung/19986df42333b6419b2eadaa73526d7b][脚本]] 解析排行页面的元素，然后格式化成自己需要的格式。
-   （可以借助 [[https://en.wikipedia.org/wiki/Vibe_coding][vibe coding]]）
-3. 把格式化后的数据保存到博客文章，我的博客是用 Emacs 和 org-mode 写的，
-   可以利用 [[https://orgmode.org/worg/org-contrib/org-protocol.html][org-protocol.el]] 和 org-mode 的 [[https://orgmode.org/manual/Capture.html][capture]] 功能，捕获并写入到我指定的文件里。
+   （可以借助 Vibe Coding）
+3. 把格式化后的数据保存到博客文章，
+   结合 [[https://orgmode.org/worg/org-contrib/org-protocol.html][org-protocol.el]] 和 org-mode 的 [[https://orgmode.org/manual/Capture.html][capture]] 功能，捕获并写入到我指定的文件里。
 
     #+begin_details
-    #+html: <summary>capture 模版</summary>
+    #+html: <summary>org-mode capture 模版</summary>
 
     #+begin_src emacs-lisp
       ("m" "Music Rank" entry
@@ -59,12 +58,7 @@ macOS 上集成 org-protocol 可以参考 [[https://github.com/xuchunyang/setup-
 
     #+attr_html: :role note
     #+begin_section
-
-    对博客搭建感兴趣可以看看：
-    - [[denote:20240927T214034][使用 org-publish 发布博客]]
-    - [[denote:20250828T184037][结合 denote 和 org-publish 写博客]]
-
-    关于 capture 的使用，推荐看看 [[https://www.zmonster.me/2018/02/28/org-mode-capture.html][强大的 Org mode(4): 使用 capture 功能快速记录]]。
+    关于 org-mode capture 的使用，可以看看 [[https://www.zmonster.me/2018/02/28/org-mode-capture.html][强大的 Org mode(4): 使用 capture 功能快速记录]]。
     #+end_section
 
 或许你不用 Emacs，但获取数据的方法是类似的，只是如何保存你需要考虑一下。
