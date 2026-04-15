@@ -58,17 +58,12 @@
 </div>
 </nav>
 <p>
-接口返回的是图片的二进制，是一个 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Blob">Blob</a> 对象。
-</p>
-
-<p>
-用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img">&lt;img&gt;</a> 展示的时候，要设置对应的 src，此时需要将返回的 Blob 转换成
-img 的 src。
+接口返回的是图片的二进制，一个 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Blob">Blob</a> 对象。用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img">&lt;img&gt;</a> 展示时，需要将返回的 Blob 转换成一个 URL，才可以放到 img 的 src 使用。
 </p>
 <div id="outline-container-36902248-cd47-4f03-b5e2-4ba66cc47248" class="outline-2">
 <h2 id="36902248-cd47-4f03-b5e2-4ba66cc47248"><a href="https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL">URL.createObjectURL()</a></h2>
 <div class="outline-text-2" id="text-36902248-cd47-4f03-b5e2-4ba66cc47248"><p>
-使用 URL.createObjectURL() 可以将返回的 Blob 转换成一个 URL。
+使用 <code>URL.createObjectURL()</code> 可以将返回的 Blob 转换成一个 URL。
 </p>
 
 <div class="org-src-container">
@@ -84,19 +79,14 @@ fetch(imageURL).then((res) =&gt; {
 </div>
 
 <p>
-需要注意的是每次调用都会生成一个新的 URL，哪怕是同一个图片。当文档
-(document) unloaded 时，这些生成的 URLs 才会被销毁。
+需要注意的是每次调用都会生成一个新的 URL，哪怕是同一个图片。当文档 unloaded 时，这些生成的 URL 才会被销毁。为了避免 URL 被大量创建造成内存问题，最好在不需要这些 URL 的时候用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/URL/revokeObjectURL">URL.revokeObjectURL()</a> 将 URL 释放。
 </p>
-
-<p>
-为了避免 URLs 被大量创建造成内存问题，最好在不需要这些 URL 的时候用<a href="https://developer.mozilla.org/en-US/docs/Web/API/URL/revokeObjectURL">URL.revokeObjectURL()</a> 将 URL 释放。
-</p>
-
 
 
 <figure>
-<a href="./images/display-blob-as-image/createObjectURL.png"><img src="./images/display-blob-as-image/createObjectURL.png" alt="createObjectURL.png"></a>
+<a href="images/display-blob-as-image/createObjectURL.webp"><img src="images/display-blob-as-image/createObjectURL.webp" alt="createObjectURL.webp"></a>
 
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>使用 createObjectURL 生成的图片效果。&lt;img&gt; src 是一个 blob: 开头的 URL。</figcaption>
 </figure>
 </div>
 </div>
@@ -108,9 +98,7 @@ fetch(imageURL).then((res) =&gt; {
 
 <blockquote>
 <p>
-readAsDataURL 方法会读取指定的 Blob 或 File 对象。读取操作完成的时候，
-readyState 会变成已完成 DONE，并触发 loadend 事件，同时
-result 属性将包含一个data:URL 格式的字符串（base64 编码）以表示所读取文件的内容。
+<code>readAsDataURL</code> 方法会读取指定的 <code>Blob</code> 或 <code>File</code> 对象。读取操作完成的时候， <code>readyState</code> 会变成已完成 <code>DONE</code> ，并触发 <code>loadend</code> 事件，同时 result 属性将包含一个 <code>data:URL</code> 格式的字符串（base64 编码）以表示所读取文件的内容。
 </p>
 </blockquote>
 
@@ -136,9 +124,11 @@ fetch(imageURL).then((res) =&gt; {
 </pre>
 </div>
 
-<figure>
-<a href="./images/display-blob-as-image/FileReader.png"><img src="./images/display-blob-as-image/FileReader.png" alt="FileReader.png"></a>
 
+<figure>
+<a href="images/display-blob-as-image/FileReader.webp"><img src="images/display-blob-as-image/FileReader.webp" alt="FileReader.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>使用 FileReader 生成的图片效果。&lt;img&gt; src 是一个 data:image/jpeg 开头的 URL。</figcaption>
 </figure>
 </div>
 </div>
@@ -163,7 +153,7 @@ fetch(imageURL).then((res) =&gt; {
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
 <p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
-<p>文章创建于 <span class="dt-published">2022-08-09 Tue 14:35</span>，更新于 <span class="dt-updated">2026-03-21 Sat 11:44</span>，</p>
+<p>文章创建于 <span class="dt-published">2022-08-09 Tue 14:35</span>，更新于 <span class="dt-updated">2026-04-15 Wed 10:00</span>，</p>
 <p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
 <p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
 </footer>

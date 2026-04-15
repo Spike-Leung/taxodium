@@ -11,16 +11,15 @@
 #+options: ^:{}
 #+startup: content
 
-接口返回的是图片的二进制，是一个 [[https://developer.mozilla.org/en-US/docs/Web/API/Blob][Blob]] 对象。
-
-用 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img][<img>]] 展示的时候，要设置对应的 src，此时需要将返回的 Blob 转换成
-img 的 src。
+接口返回的是图片的二进制，一个 [[https://developer.mozilla.org/en-US/docs/Web/API/Blob][Blob]] 对象。
+用 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img][<img>]] 展示时，需要将返回的 Blob 转换成一个 URL，才可以放到 img 的 src 使用。
 
 * [[https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL][URL.createObjectURL()]]
 :PROPERTIES:
 :CUSTOM_ID: 36902248-cd47-4f03-b5e2-4ba66cc47248
 :END:
-使用 URL.createObjectURL() 可以将返回的 Blob 转换成一个 URL。
+
+使用 ~URL.createObjectURL()~ 可以将返回的 Blob 转换成一个 URL。
 
 #+begin_src js
   const imageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&s"
@@ -33,26 +32,25 @@ img 的 src。
   })
 #+end_src
 
-需要注意的是每次调用都会生成一个新的 URL，哪怕是同一个图片。当文档
-(document) unloaded 时，这些生成的 URLs 才会被销毁。
+需要注意的是每次调用都会生成一个新的 URL，哪怕是同一个图片。
+当文档 unloaded 时，这些生成的 URL 才会被销毁。
+为了避免 URL 被大量创建造成内存问题，
+最好在不需要这些 URL 的时候用 [[https://developer.mozilla.org/en-US/docs/Web/API/URL/revokeObjectURL][URL.revokeObjectURL()]] 将 URL 释放。
 
-为了避免 URLs 被大量创建造成内存问题，最好在不需要这些 URL 的时候用
-[[https://developer.mozilla.org/en-US/docs/Web/API/URL/revokeObjectURL][URL.revokeObjectURL()]] 将 URL 释放。
-
-
-[[file:./images/display-blob-as-image/createObjectURL.png]]
+#+CAPTION: 使用 createObjectURL 生成的图片效果。<img> src 是一个 blob: 开头的 URL。
+[[file:images/display-blob-as-image/createObjectURL.webp]]
 
 * [[https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL][FileReader.readAsDataURL()]]
 :PROPERTIES:
 :CUSTOM_ID: 24ea02ab-9950-4d79-9e81-eaddc4b225ff
 :END:
-  另一种方法是通过 [[https://developer.mozilla.org/en-US/docs/Web/API/FileReader][FileReader]] 的 API，将返回的 Blob 转换成 [[https://developer.mozilla.org/en-US/docs/Glossary/Base64][Base64]] 显示。
+
+另一种方法是通过 [[https://developer.mozilla.org/en-US/docs/Web/API/FileReader][FileReader]] 的 API，将返回的 Blob 转换成 [[https://developer.mozilla.org/en-US/docs/Glossary/Base64][Base64]] 显示。
 
   #+begin_quote
-  readAsDataURL 方法会读取指定的 Blob 或 File 对象。读取操作完成的时候，
-  readyState 会变成已完成 DONE，并触发 loadend 事件，同时
-  result 属性将包含一个data:URL 格式的字符串（base64 编码）以表示所读
-  取文件的内容。
+~readAsDataURL~ 方法会读取指定的 ~Blob~ 或 ~File~ 对象。
+读取操作完成的时候， ~readyState~ 会变成已完成 ~DONE~ ，并触发 ~loadend~ 事件，
+同时 result 属性将包含一个 ~data:URL~ 格式的字符串（base64 编码）以表示所读取文件的内容。
   #+end_quote
 
 #+begin_src js
@@ -75,4 +73,6 @@ img 的 src。
     document.querySelector("#img").src = await blob2Base64(blob)
   })
   #+end_src
-  [[file:./images/display-blob-as-image/FileReader.png]]
+
+#+CAPTION: 使用 FileReader 生成的图片效果。<img> src 是一个 data:image/jpeg 开头的 URL。
+[[file:images/display-blob-as-image/FileReader.webp]]
