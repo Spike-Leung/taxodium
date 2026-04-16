@@ -442,7 +442,7 @@ hover 样式只在电脑屏幕上启用，因为手机本身不支持 hover，
   }
 #+end_src
 
-*** 段落
+*** 段落 paragraph
 :PROPERTIES:
 :CUSTOM_ID: 41157D00-9294-4EAD-8950-123C77412B16
 :END:
@@ -450,9 +450,17 @@ hover 样式只在电脑屏幕上启用，因为手机本身不支持 hover，
 设置一个较大的，明显大于行高的间距，使得段落之间区分明显。
 
 #+begin_src css
-p {
-  margin: 1.25rem 0;
-}
+  p {
+    margin: 1.25rem 0;
+  }
+#+end_src
+
+org publish 有时会生成一些空白的 ~<p>~ ，没啥用，将他们都隐藏。
+
+#+begin_src css
+  p:empty {
+    display: none;
+  }
 #+end_src
 
 *** markup
@@ -2093,6 +2101,34 @@ img.inline-image {
 
   .dark img[src*="images\/album"] {
     box-shadow: 0 0 10px var(--dark-color-box-shadow);
+  }
+#+end_src
+
+** lucida
+:PROPERTIES:
+:CUSTOM_ID: 675E312C-934C-4ADB-A0DE-D62A7718E796
+:END:
+
+Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figure，
+导致增加了上下边距，这些边距是不必要的。
+
+#+begin_src css
+  details figure:has(a[href*="lucida"]) {
+    margin-block: 0;
+  }
+#+end_src
+
+另外还需要处理多个图标的情况，增加一个类按需使用。
+
+#+begin_src css
+  .album-lucida {
+    display: flex;
+    gap: .5rem;
+
+    /* 移除 org publish 生成的多余的 <p> */
+    & p {
+      display: none;
+    }
   }
 #+end_src
 
