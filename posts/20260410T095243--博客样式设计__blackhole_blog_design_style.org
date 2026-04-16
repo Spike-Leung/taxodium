@@ -654,6 +654,9 @@ details 添加 border，便于在内容很多的时候，能够知道哪些内�
 summary 的 marker 换成一只指向的手，比黑漆漆的三角形好看点。
 感兴趣可以看看 [[denote:20250506T202535::#6b76efce-1b21-480b-9692-ec8df6252950][Zine#32::The Secret History of the Manicule, the Little Hand that’s Everywhere]]。
 
+在支持 hover 的屏幕上（排除手机、平板），降低 details 的透明度，
+从而和正文区分开，也避免 details 的边框显得凌乱，在 hover / 打开时恢复透明度。
+
 #+begin_src css
   details {
     padding: 0.5rem 1rem;
@@ -661,6 +664,15 @@ summary 的 marker 换成一只指向的手，比黑漆漆的三角形好看点�
     border: 2px solid var(--color-border);
     border-color: light-dark(var(--color-border), var(--dark-color-border));
     margin-block: 1rem;
+
+    @media (pointer: fine) and (hover: hover) {
+      opacity: 0.65;
+      transition: opacity .25s ease-in-out;
+
+      &:hover,&[open] {
+        opacity: 1;
+      }
+    }
 
     summary {
       cursor: pointer;

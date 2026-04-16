@@ -800,6 +800,10 @@ details 添加 border，便于在内容很多的时候，能够知道哪些内�
 summary 的 marker 换成一只指向的手，比黑漆漆的三角形好看点。感兴趣可以看看 <a href="32.html#6b76efce-1b21-480b-9692-ec8df6252950">Zine#32::The Secret History of the Manicule, the Little Hand that’s Everywhere</a>。
 </p>
 
+<p>
+在支持 hover 的屏幕上（排除手机、平板），降低 details 的透明度，从而和正文区分开，也避免 details 的边框显得凌乱，在 hover / 打开时恢复透明度。
+</p>
+
 <div class="org-src-container">
 <pre class="src src-css"><span class="org-css-selector">details</span> {
   <span class="org-css-property">padding</span>: 0.5rem 1rem;
@@ -807,6 +811,15 @@ summary 的 marker 换成一只指向的手，比黑漆漆的三角形好看点�
   <span class="org-css-property">border</span>: 2px solid var(<span class="org-variable-name">--color-border</span>);
   <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
   <span class="org-css-property">margin-block</span>: 1rem;
+
+  <span class="org-builtin">@media</span> (pointer: fine) and (hover: hover) {
+    <span class="org-css-property">opacity</span>: 0.65;
+    <span class="org-css-property">transition</span>: opacity .25s ease-in-out;
+
+    &amp;:hover,&amp;[open] {
+      <span class="org-css-property">opacity</span>: 1;
+    }
+  }
 
   <span class="org-css-selector">summary</span> {
     <span class="org-css-property">cursor</span>: pointer;
@@ -2595,7 +2608,7 @@ blockquote.indent-paragraph</span>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
 <p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
-<p>文章创建于 <span class="dt-published">2026-04-10 Fri 09:52</span>，更新于 <span class="dt-updated">2026-04-16 Thu 17:57</span>，</p>
+<p>文章创建于 <span class="dt-published">2026-04-10 Fri 09:52</span>，更新于 <span class="dt-updated">2026-04-16 Thu 21:47</span>，</p>
 <p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
 <p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
 </footer>
