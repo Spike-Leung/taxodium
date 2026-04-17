@@ -103,13 +103,7 @@ This file is in BETA. Please test and contribute to the discussion:
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="color-scheme" content="light dark" />
         <title><xsl:value-of select="atom:feed/atom:title"/></title>
-        <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Regular/result.css" />
-        <link rel="stylesheet" href="/fonts/LXGWWenKai/LXGWWenKai-Medium/result.css" />
-        <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Regular-102a.woff2" as="font" type="font/woff2" />
-        <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Bold-102a.woff2" as="font" type="font/woff2" />
-        <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-Italic-102a.woff2" as="font" type="font/woff2" />
-        <link rel="preload" href="/fonts/Atkinson-Hyperlegible/Atkinson-Hyperlegible-BoldItalic-102a.woff2" as="font" type="font/woff2" />
-        <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
+        <link rel="stylesheet" href="/styles/main.css" type="text/css"/>
         <style type="text/css">
           details p {
             white-space: pre-line;
@@ -118,6 +112,9 @@ This file is in BETA. Please test and contribute to the discussion:
             display: flex;
             align-items: center;
             gap: 0.5em;
+          }
+          h3 {
+            font-size: 1.2rem;
           }
           h1 svg {
             width: 1.2em;
@@ -177,7 +174,6 @@ This file is in BETA. Please test and contribute to the discussion:
               <xsl:value-of select="atom:feed/atom:title"/>
             </h1>
             <p>That the powerful play goes on, and you may contribute a verse.</p>
-            <!-- <p><xsl:value-of select="atom:feed/atom:subtitle | atom:feed/atom:description"/></p> -->
             <a>
               <xsl:attribute name="href">
                 <xsl:value-of select="atom:feed/atom:link[@rel='alternate']/@href"/>
@@ -186,7 +182,6 @@ This file is in BETA. Please test and contribute to the discussion:
             </a>
           </header>
           <h2>最近更新</h2>
-          <!-- <mark class="tip">摘要使用 LLM 生成，仅供参考。</mark> -->
           <xsl:apply-templates select="atom:feed/atom:entry" />
         </div>
       </body>
@@ -208,10 +203,6 @@ This file is in BETA. Please test and contribute to the discussion:
           <xsl:with-param name="date" select="atom:updated"/>
         </xsl:call-template>
       </small>
-      <!-- <details style="margin-top: 0.5em;"> -->
-      <!--   <summary>摘要</summary> -->
-      <!--   <p><xsl:value-of select="atom:summary"/></p> -->
-      <!-- </details> -->
     </div>
   </xsl:template>
 </xsl:stylesheet>
