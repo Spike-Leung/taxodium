@@ -267,6 +267,10 @@ _自行托管你自己的「服务器 ⸺ 有机花园」，让资本主义尽�
 
 可以看看大家的「理想的日常」。
 
+** [[https://idiallo.com/blog/how-do-we-get-developers-to-read-the-docs][How Do We Get Developers to Read the Docs]] by Ibrahim Diallo
+:PROPERTIES:
+:CUSTOM_ID: 5A7EC738-9E07-46A7-80D5-8C5F22540505
+:END:
 ** Others
 :PROPERTIES:
 :CUSTOM_ID: E05514AF-CCEA-4FA2-B831-7D11C85FD7CB
@@ -374,6 +378,15 @@ OBSOLETE SOUNDS 是正在消失的声音和已经灭绝的声音的集合。
 例如可以听到操作 Sony Walkman 的声音、冰川融化的声音。
 
 除了 OBSOLETE SOUNDS，导航上还有很多可以探索的内容。
+
+** [[https://jack.cab/blog/every-firefox-extension][Installing every* Firefox extension]] by JACK.CAB
+:PROPERTIES:
+:CUSTOM_ID: A3FDB4AE-0135-4337-9949-13890B8BF879
+:END:
+
+作者安装了（几乎）所有 Firefox 插件，并对插件进行了一系列的分析。
+
+博客首页设计得也蛮有趣的。
 
 * Tutorial | Resource
 :PROPERTIES:
@@ -585,6 +598,120 @@ _这不在于做了一次选择就一劳永逸，而在于持续的学习，以�
 而有些事情会消耗影响力，不同的事情需要的额度不同，
 只有当你的储蓄额度足以支持你的花费时，你才能影响别人。
 相反，如果储蓄额度为零，甚至负债，你可能还会受到很多阻碍。
+
+** [[https://polypane.app/blog/the-intl-api-the-best-browser-api-youre-not-using][The Intl API: The best browser API you're not using]]
+:PROPERTIES:
+:CUSTOM_ID: 9827E5B9-1240-4AB1-8CD6-2455AC78E724
+:END:
+
+Intl API 使用介绍。
+
+** [[https://engineering.squarespace.com/blog/2026/how-to-use-standard-html-video-and-audio-lazy-loading-on-the-web-today][How To Use Standard HTML Video & Audio Lazy-Loading on the Web Today]] by Scott Jehl
+:PROPERTIES:
+:CUSTOM_ID: 7591D93C-2E3E-48DD-BA4C-50CA05B232BC
+:END:
+
+文章介绍了 ~loading="lazy"~ 的作用。
+
+在 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video#loading][<video>]] 或 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/audio#loading][<audio>]] 上添加 ~loading="lazy"~ ，可以让资源延迟加载，
+当资源满足一些条件，例如出现在视口 (viewport) 时才加载，
+一方面可以让页面加载更快（因为减少了需要加载的资源），
+一方面也可以节省流量（例如读者没有滚动到需要加载资源的地方）。
+
+~loading="lazy"~ 也使用于 ~<img>~ 、 ~<iframe>~ ，合理利用可以让页面性能更好。
+
+** [[https://www.inngest.com/blog/hanging-promises-for-control-flow][You can't cancel a JavaScript promise (except sometimes you can)]] by Aaron Harper
+:PROPERTIES:
+:CUSTOM_ID: 350EAB29-4F86-42FC-B2D9-7910A3C1B657
+:END:
+
+#+begin_quote
+返回一个 _永远不会 resolve 的 Promise_ ，await 它，然后让垃圾回收器清理掉这个挂起的函数。
+没有异常，没有 try/catch ，没有特殊的返回值。函数就这样停止了。
+
+这就是 Inngest TypeScript SDK _中断异步工作流函数_ 的方式。
+#+end_quote
+
+** [[https://piechowski.io/post/git-commands-before-reading-code][The Git Commands I Run Before Reading Any Code]] by Ally Piechowski
+:PROPERTIES:
+:CUSTOM_ID: 76BE1C01-F20E-43B3-AE01-A87CB12A4D0E
+:END:
+
+作者分享了 5 个他在阅读代码前会执行的 Git 命令，挺实用的。
+
+1. ~git log --format=format: --name-only --since="1 year ago" | sort | uniq -c | sort -nr | head -20~
+
+  找到过去一年，改动最频繁的 20 个文件。
+
+  如果发现一个没人愿意负责的文件出现了高频变动，那你就知道这里大概是有个坑了，可能积累了大量的负债。
+
+2. ~git log -i -E --grep="fix|bug|broken" --name-only --format='' | sort | uniq -c | sort -nr | head -20~
+
+   和第 1 条命令类似，但过滤了包含 bug 相关关键字的提交。
+
+   如果第 1 条命令和第 2 条命令得到的文件有重合，那说明那个文件风险很高，一直在修补，但从未消停。
+
+3. ~git shortlog -sn --no-merges~
+
+  按提交次数排名的每一位贡献者。
+
+  #+begin_quote
+  每一位贡献者按提交次数排名。
+  如果某个人占了 60% 或更多，那就是你的 ⸺ 「公交因素」（bus factor）。
+  如果他们在六个月前离职了，那就是一场危机。
+  如果总提交记录中的头号贡献者没有出现在最近 6 个月的时间窗口内（ ~git shortlog -sn --no-merges --since="6 months ago"~ ），
+  我会立即向客户指出这一点。
+
+  我还会观察尾部数据。
+  如果有 30 位贡献者，但去年只有 3 位活跃，说明构建这个系统的人并不是现在维护它的人。
+
+  [[https://piechowski.io/post/git-commands-before-reading-code/?ck_subscriber_id=3312975854#:~:text=merges-,Every,it,-%2E][Source]]
+  #+end_quote
+
+4. ~git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c~
+
+   按月统计的代码提交次数，看看项目是否正在消亡。
+
+   #+begin_quote
+   稳定的节奏是健康的。
+   但如果单月提交次数下降了一半，那意味着什么？通常是有人离职了。
+   如果曲线在 6 到 12 个月内持续下滑，说明团队正在失去动力。
+   周期性的峰值后紧跟着沉寂的月份，意味着团队是在分批发布，而不是持续交付。
+
+   [[https://piechowski.io/post/git-commands-before-reading-code/?ck_subscriber_id=3312975854#:~:text=c-,Commit,continuously][Source]]
+   #+end_quote
+
+5. ~git log --oneline --since="1 year ago" | grep -iE 'revert|hotfix|emergency|rollback'~
+
+  回滚和热修复的频率。
+
+  #+begin_quote
+  一年几次是正常的。
+  每隔几周就出现一次回滚，意味着团队不信任其部署流程。
+  这是更深层次问题的证据：
+  不可靠的测试、缺失的分段环境（staging），或者部署流水线导致回滚操作异常困难。
+  零次也是一种信号：要么是团队非常稳定，要么是根本没人写描述性的提交信息。
+
+  [[https://piechowski.io/post/git-commands-before-reading-code/?ck_subscriber_id=3312975854#:~:text=Revert%20and,messages][Source]]
+  #+end_quote
+
+  除了这些命令外，如果是从 zip 包获取的 Git 仓库，
+  最好检查一下 ~.git/config~ ，看看有没有奇怪的配置，
+  例如 ~core.fsmonitor~ 可以让你在执行 git 命令的时候，执行任意指定的程序；
+  也可以检查一下依赖项，看看有没有奇怪的依赖。
+
+** [[https://lynnandtonic.com/thoughts/entries/how-i-remember-link-and-image-markdown-syntax/][How I remember link and image Markdown syntax]] by Lynn Fisher
+:PROPERTIES:
+:CUSTOM_ID: 11855C65-8BF8-4269-AE3A-8AC3F75BA8BD
+:END:
+
+作者分享了她是如何记忆 Markdown 的链接和图片链接语法的：
+
+利用谐音：「Put the path in parentheses.」既然链接在括号里，那描述文字自然就只能在方括号里了。
+而拍照的时候，往往会大喊一声「茄子！ (Cheese!)」，所以图片就在前面补一个 ~!~ 就好了。
+
+那是先写方括号还是括号呢，
+我想到「方括号」里「括号」两个字是在「方」的后面，所以应该先写方括号，再写括号。
 
 * AI Related
 :PROPERTIES:
@@ -824,7 +951,9 @@ _以及系统的「手感」如何。_
 - [[https://github.com/OneKeyHQ/app-monorepo/tree/x/.skillshare/skills][app-monorepo/skills]]
 - [[https://github.com/garrytan/gstack][garrytan/gstack]]
 - [[https://github.com/obra/superpowers][obra/superpowers]]
-- [[https://github.com/tw93/waza][tw39/waza]]
+- [[https://github.com/tw93/waza][tw39/waza]] 作者还分享了 [[https://weekly.tw93.fun/posts/265/][他的设计思路]]。
+- [[https://github.com/JuliusBrussee/caveman][caveman]] 精简 prompt，减少 token 消耗的 skills
+
 ** Tools
 :PROPERTIES:
 :CUSTOM_ID: D4330D33-919B-4BE8-BF9C-8CE51A5FDF9C
@@ -937,6 +1066,24 @@ _以及系统的「手感」如何。_
 
   一款「Vibe Designing」工具，可以和 Cursor、Claude Code 等集成，
   可以生成设计图、输出对应代码，也提供 MCP 集成。
+
+- [[https://github.com/chenglou/pretext][Pretext]]
+
+  用于多行文本测量与布局的纯 JavaScript/TypeScript 库。
+
+  Demo: [[https://chenglou.me/pretext/]]
+
+  酷～
+
+- [[https://github.com/wesbos/JSON-Alexander][JSON Alexander]]
+
+  又一个查看 JSON 的浏览器插件。
+
+- [[https://github.com/darula-hpp/shimmer-from-structure][darula-hpp/shimmer-from-structure]]
+
+  一个可以感知结构的骨架屏生成库，可在运行时镜像渲染出的 UI。无需重复编写布局。
+
+  另见： [[https://neciudan.dev/lets-build-dynamic-shimmer-skeletons][Build your own shimmer skeleton that never goes out of sync]] by Neciu Dan
 
 * Emacs
 :PROPERTIES:
