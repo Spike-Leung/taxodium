@@ -36,7 +36,6 @@
 :END:
 
 要求输入框能输入除了特殊表情外的任意字符。
-
 我的理解就是将 Emoji 排除掉，通过 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp][RegExp]] 匹配 Emoji 判断是否存在特殊表情。
 
 * 解决过程
@@ -47,9 +46,7 @@
 :END:
 
 对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道 Emoji 和 Unicode 相关，
-但怎么用正则描述它呢？
-
-所以我的第一步是 Google，得到一个这样的正则：
+但怎么用正则描述它呢？ 我的第一步是 Google，得到一个这样的正则：
 
 #+begin_src typescript
     /(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]/
@@ -63,12 +60,10 @@
 
 上面的正则表达式应该是表示的是一个 Unicode 范围，
 部分 Emoji (🉐)没匹配上，说明这个范围小了，没有囊括所有的 Emoji。
-
 那么 Emoji 的 Unicode 范围是多少？能否穷举呢？
 
 Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicode，
 是没办法用一个固定的范围去表达所有的 Emoji。
-
 于是又搜索了一下，StackOverflow 有一个 [[https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript][回答]]，里面提到了用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape][Unicode character class escape]] 进行匹配，
 即:
 - ~/\p{Emoji}/u~
@@ -116,12 +111,9 @@ Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicod
   )
 #+end_src
 
-=/u= [fn:1]只能匹配单个 Unicode，
-但是 [[https://emojipedia.org/emoji-sequence][有的表情]] 是由多个 Unicode 组成的，
+[[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode][/u]] 只能匹配单个 Unicode，但是 [[https://emojipedia.org/emoji-sequence][有的表情]] 是由多个 Unicode 组成的，
 例如 [[https://emojipedia.org/couple-with-heart-woman-man][👩‍❤️‍👨]] 是由 👩、[[https://emojipedia.org/zero-width-joiner][ZWJ]]、❤️、[[https://emojipedia.org/zero-width-joiner][ZWJ]]、👨 一起组合得到的。
-
-=/u= 可以匹配 👩、❤️、👨，但是无法匹配 👩‍❤️‍👨，
-此时需要用到 =/v= [fn:2]，它可以匹配 Unicode 序列。[fn:3]
+=/u= 可以匹配 👩、❤️、👨，但是无法匹配 👩‍❤️‍👨，此时需要用到 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicodeSets][/v]] ，它可以匹配 Unicode 序列。[fn:1]
 
 #+attr_html: :role note
 #+begin_section
@@ -159,21 +151,17 @@ Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicod
 
 现在，已经知道怎么匹配 Emoji 了，
 但是为什么一开始找到的正则 ~/(\ud83c[\udf00-\udfff].../u~ 无法匹配 🉐 呢？
-
 为此，首先需要知道 🉐 在 JS 中到底是什么。
 
 在 JavaScript 中，String 是用 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters][UTF-16]] (16-bit Unicode Transformation Format) 编码的，
 它以 16 位去表示一个字符（code unit），最多可以表示 65536 (0x0000 - 0xFFFF) 个字符。
-
 这 65536 个字符中包含了大部分常用字符，例如字母，数字，拉丁字符，以及一些东亚文字字符。
 但是后来发现 65536 并不足以表达所有字符，16 位不够，那就需要增加 Unicode 去表达更多字符。
 
 实现的方法就是定义@@html:<em>代理对</em>@@(Surrogates pairs), 代理对由 20 位组成。
-
 规定前 10 位作为@@html:<em>高代理位</em>@@ (high-surrogate)，取值范围是 0xD800 - 0xDBFF。
 后 10 位为@@html:<em>低代理位</em>@@ (low-surrogate)，取值范围是 0xDC00 - 0xDFFF。
 高代理位和低代理位组成代理对 。
-
 由于有 20 位的长度，因此可以表达 1048576 个字符，可以在原来 65536 个字符之上，再增加 1048576 个字符。
 
 概括来说，在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。
@@ -189,7 +177,6 @@ Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicod
 #+end_section
 
 现在已经知道 Emoji 是通过代理对表示的，那么 🉐 的代理对是什么呢？
-
 可以通过 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charAt][String.prototype.chartAt()]] 或 [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split][String.prototype.split()]] 获得。
 
 #+begin_src typescript
@@ -198,8 +185,7 @@ Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicod
   '🉐'.split("") // ['\uD83C', '\uDE50']
 #+end_src
 
-所以 🉐 的高代理是 ~\uD83C~ ，低代理是 ~\uDE50~ 。
-
+🉐 的高代理是 ~\uD83C~ ，低代理是 ~\uDE50~ 。
 和 =(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]=
 对比可以发现，正则的范围不包括 ~\uD83C\uDE50~ ，所以匹配不到 🉐。
 
@@ -360,11 +346,7 @@ Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicod
 
 * Footnotes
 :PROPERTIES:
-:CUSTOM_ID: B4EF6DB9-820B-4D1E-B841-61A6F1E1091A
+:CUSTOM_ID: 22B8ECE3-A827-4A40-9434-9CA09CBF8B1B
 :END:
 
-[fn:1] [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode][RegExp.prototype.unicode]]
-
-[fn:2] [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicodeSets][RegExp.prototype.unicodeSets]]
-
-[fn:3] 感谢 [[https://github.com/JunQu][JunQu]] 指出 [[https://github.com/Spike-Leung/taxodium/discussions/9][问题]]。
+[fn:1] 感谢 [[https://github.com/JunQu][JunQu]] 指出 [[https://github.com/Spike-Leung/taxodium/discussions/9][问题]]。
