@@ -46,6 +46,20 @@
   --half-content-margin: calc((100vw - var(--content-width)) / 2);
   /* footnote 数字的点击范围 */
   --extra-active-area-size: -0.8em;
+
+  /* Scale ratios based on musical intervals */
+  --scale-minor-second: 1.067;
+  --scale-major-second: 1.125;
+  --scale-minor-third: 1.2;
+  --scale-major-third: 1.25;
+  --scale-perfect-fourth: 1.333;
+  --scale-augmented-fourth: 1.414;
+  --scale-perfect-fifth: 1.5;
+  --scale-golden-ratio: 1.618;
+  /* Active scale - change this to switch globally */
+  --typographic-scale: var(--scale-major-second);
+  /* Base heading size */
+  --heading-base-size: 1rem;
 }
 
 html {
@@ -80,6 +94,7 @@ body {
 @media screen and (width >= 55rem) {
   :root {
     --content-width: 45rem;
+    --typographic-scale: var(--scale-minor-third);
   }
 }
 
@@ -188,27 +203,31 @@ h6 {
   font-weight: 700;
   padding: 0;
   margin-block-end: 0.5rem;
+  font-size: calc(var(--heading-base-size) * pow(var(--typographic-scale), var(--heading-level)));
 }
 
 h1 {
-  font-size: 2.25rem;
+  --heading-level: 5;
 }
 
 h2 {
-  font-size: 1.85rem;
+  --heading-level: 4;
 }
 
 h3 {
-  font-size: 1.65rem;
+  --heading-level: 3;
 }
 
-h4,
+h4 {
+  --heading-level: 2;
+}
+
 h5 {
-  font-size: 1.45rem;
+  --heading-level: 1;
 }
 
 h6 {
-  font-size: 1rem;
+  --heading-level: 0;
 }
 
 img,
