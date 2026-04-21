@@ -271,6 +271,68 @@ _自行托管你自己的「服务器 ⸺ 有机花园」，让资本主义尽�
 :PROPERTIES:
 :CUSTOM_ID: 5A7EC738-9E07-46A7-80D5-8C5F22540505
 :END:
+
+写文档的时候很容易写成大而全，信息太多会导致主线脉络不清晰，过多信息和信息不足，效果是一样的。
+
+这篇文章主要是关于 API 文档的，API 文档主要面向两类读者，一类是 API 的使用者，一类是 API 的维护者。
+对于使用者来说，他只需要知道怎么用，他不太关心背后的细节；
+对于维护者，他会关心更多为什么，希望尽可能多地了解 API 的设计细节，从而避免出错。
+两者对于文档的需求是不同的，使用者期望的是清晰简洁的文档，快速知道 API 的作用、需要什么参数、用例；
+维护者则期望更多技术细节，API 是怎么设计的、如何变迁的、为什么需要某个参数。
+一个糟糕的文档是企图平等地服务于这两类读者，结果就是，对于使用者来说不够简洁，不能快速浏览；
+对于维护者来说又不够深入和严谨。
+
+作者认为，对于使用者，最好的文档首先是 API 本身，保持 API 的一致性，遵循清晰且可重复的模式，
+让用户可以推断 API 的使用。
+例如如果存在一个这样的 API ~/users/orders/1234/cancel~ ，
+如果设计的好的话，用户可以推断，可能也存在一个 ~/users/orders/1234/update~ API。
+其次，在写文档的时候要保持克制，不要阐述过多的细节，
+用户不需要知道你为了兼容旧版本的 API 做了什么，你只要告诉他「兼容旧版本」就足够了。
+作者的这句话我觉得讲得很精辟：
+_「就像你不会为了解释每一行代码而写注释一样，文档也不会从过多的信息中获益。([[https://idiallo.com/blog/how-do-we-get-developers-to-read-the-docs#:~:text=The%20same%20way%20you%20don%27t%20write%20a%20comment%20to%20explain%20every%20line%20of%20code%2C%20a%20documentation%20doesn%27t%20benefit%20from%20too%20much%20information][Source]])」_
+
+作者的建议是将额外信息@@html:<em>折叠</em>@@起来 (例如利用 ~<details>~)，
+这样文档可以保持简洁，让使用者得以快速浏览获取信息；
+对于维护者，他们可以展开折叠部分，了解更多细节。
+而在文章组织上，也采取由浅入深的结构，先解释是什么，接着是怎么用，最后才是为什么，
+而「为什么」这个部分还可以折叠起来。
+作者又来了一个精辟的比喻：
+
+#+begin_quote
+把这想象成一个设计良好的错误信息。
+一条好的错误信息会用通俗易懂的语言告诉你出了什么问题。
+一条极佳的错误信息还会包含可展开的堆栈跟踪，但它不会先向你展示堆栈跟踪。
+
+你的文档也承担着同样的工作。
+先给人们他们正在寻找的答案，然后为那些愿意深挖的人提供深度内容。
+
+[[https://idiallo.com/blog/how-do-we-get-developers-to-read-the-docs#:~:text=Think%20of,dig][Source]]
+#+end_quote
+
+另外考虑将给维护者看的内容拆分到别的文档里，通过拆分，可以保持使用者文档的简洁，
+而在编写维护者文档时也可以写得很深入，不用去考虑初学者。
+
+#+begin_quote
+文档的目标不是完整性。
+完整性是你写给自己的，为了让自己觉得完成了工作。
+_文档的目标是在正确的时刻，将正确的信息传递到正确的人的脑海中。_
+
+[[https://idiallo.com/blog/how-do-we-get-developers-to-read-the-docs#:~:text=The%20goal,moment][Source]]
+#+end_quote
+
+以我自己为例，我之前写过一篇关于 Emoji 正则匹配的文章，你可以对比一下前后两个版本：
+
+- 2024 年 10 月 13 日归档版本：[[https://web.archive.org/web/20241013094934/https://taxodium.ink/emoji-regexp.html][Emoji 正则匹配]]
+- 当前版本：[[https://taxodium.ink/emoji-regexp.html][Emoji 正则匹配]]
+
+在归档版本，关于「Unicode character class escpae」、一些 String 的相关方法是直接呈现在正文的，
+看起来内容很多，但会显得比较杂乱。
+这些属于补充信息，在当前版本里我就放到了 ~<details>~ 里，读者感兴趣可以自己点开看，减少一些干扰。
+另外如果有人点进这篇文章，大概率是希望直接得到一个答案，
+而不是看我一顿分析，所以我在文章开头就给出了答案，
+如果读者只需要一个答案就可以关闭页面走人了，
+如果愿意了解背后的细节就可以继续往下看。
+
 ** Others
 :PROPERTIES:
 :CUSTOM_ID: E05514AF-CCEA-4FA2-B831-7D11C85FD7CB
@@ -388,6 +450,16 @@ OBSOLETE SOUNDS 是正在消失的声音和已经灭绝的声音的集合。
 
 博客首页设计得也蛮有趣的。
 
+** [[https://madcss.com][MadCSS]]
+:PROPERTIES:
+:CUSTOM_ID: 85577336-D5C0-47D4-885D-89507C3F8347
+:END:
+
+MadCSS 是一场比赛，这次参加的有 16 位开发者，举办方会给出基础的 HTML 和目标 UI，
+选手只能使用 CSS 和 HTML，2 分钟构思、15 分钟实现，最后谁的实现和目标 UI 最接近谁就获胜。
+
+决赛视频： [[https://www.youtube.com/watch?v=7rOUgT7HK5k][One Last Battle]] (16:59) by Syntax
+
 * Tutorial | Resource
 :PROPERTIES:
 :CUSTOM_ID: 33B996FF-ED6B-41BE-A3E2-F00709AA858E
@@ -481,6 +553,13 @@ Project N.O.M.A.D. (Node for Offline Media, Archives, and Data) 是一个独立�
 :END:
 
 作者学习新领域技术的方法，可以借鉴。
+
+** [[https://allsvgicons.com/][All SVG Icons]]
+:PROPERTIES:
+:CUSTOM_ID: DAF42119-D366-404A-94FD-4B332EA979B1
+:END:
+
+Search 250k+ Free SVG icons.
 
 * Code Related
 :PROPERTIES:
@@ -713,6 +792,13 @@ Intl API 使用介绍。
 那是先写方括号还是括号呢，
 我想到「方括号」里「括号」两个字是在「方」的后面，所以应该先写方括号，再写括号。
 
+** [[https://piccalil.li/blog/an-in-depth-guide-to-customising-lists-with-css/][An in-depth guide to customising lists with CSS]] by Richard Rutter
+:PROPERTIES:
+:CUSTOM_ID: 5A5B324E-8B62-42E2-9CCF-4B5B11AC7FA0
+:END:
+
+一篇关于 list 样式的教程。
+
 * AI Related
 :PROPERTIES:
 :CUSTOM_ID: EFE393AC-7E9D-406A-BAB5-608B86069FFE
@@ -941,6 +1027,35 @@ _以及系统的「手感」如何。_
 
 文章对比了几个场景下 git 和 jj 的差异，凸显了 jj 本地开发的优势，也分享了作者的一个 jj 相关的 skill。
 
+** [[https://addyosmani.com/blog/comprehension-debt/?ck_subscriber_id=3312975854][Comprehension Debt - the hidden cost of AI generated code.]] by Addy Osmani
+:PROPERTIES:
+:CUSTOM_ID: 470A3A7F-323C-4C70-BC01-ABD404C33358
+:END:
+
+#+begin_quote
+理解债（Comprehension debt）是指由于过度依赖 AI 和自动化，而对人类智力和记忆造成的隐性成本。
+
+[...]
+
+理解债是指系统中的代码总量与人类对其真正理解程度之间日益扩大的差距。
+
+[[https://addyosmani.com/blog/comprehension-debt/?ck_subscriber_id=3312975854#:~:text=2026-,Comprehension,understands%2E][Source]]
+#+end_quote
+
+#+begin_quote
+AI 带来的改变是成本（大幅降低）、速度（大幅提高）以及人际管理开销（基本归零）。
+而始终不变的，是需要具备深厚系统背景的人，来对代码库的实际运行逻辑及其背后的原因保持连贯的理解。
+
+[[https://addyosmani.com/blog/comprehension-debt/?ck_subscriber_id=3312975854#:~:text=%E7%83%9F%E6%B6%88%E4%BA%91%E6%95%A3%E3%80%82-,What,why][Source]]
+#+end_quote
+
+#+begin_quote
+降低代码生成的成本，并不意味着可以廉价地跳过理解过程。
+理解代码本身就是工作的核心。
+
+[[https://addyosmani.com/blog/comprehension-debt/?ck_subscriber_id=3312975854#:~:text=Making%20code%20cheap%20to%20generate%20doesn%E2%80%99t%20make%20understanding%20cheap%20to%20skip%2E%20The%20comprehension%20work%20is%20the%20job][Source]]
+#+end_quote
+
 ** Skills
 :PROPERTIES:
 :CUSTOM_ID: 495CBC43-62A7-4379-B5AE-29485A717CCA
@@ -962,6 +1077,7 @@ _以及系统的「手感」如何。_
 - [[https://github.com/jarrodwatts/claude-hud][Claude HUD]] 一个 Claude Code 插件，用于展示 Claude Code 的使用信息，如上下文用量、启用的工具、进度等。
 - [[https://github.com/VoltAgent/awesome-design-md][Awesome DESIGN.md]] 这个仓库收集了很多 DESIGN.md，可以丢给 Agent 指导它设计页面。
 - [[https://github.com/NousResearch/hermes-agent][Hermes Agent]] 一个会自我学习、改进的 Agent。
+- [[https://github.com/thedotmack/claude-mem][thedotmack/claude-mem]] 一个 Claude Code 插件，自动压缩上下文作为后续的上下文，保持项目上下文的连续性。
 * Tool | Library
 :PROPERTIES:
 :CUSTOM_ID: 81906811-5256-41FE-BF0D-9349411B1C76
@@ -1085,6 +1201,10 @@ _以及系统的「手感」如何。_
 
   另见： [[https://neciudan.dev/lets-build-dynamic-shimmer-skeletons][Build your own shimmer skeleton that never goes out of sync]] by Neciu Dan
 
+- [[https://pv.pixjam.cn/][PV Tool]]
+
+ 日式 PV Visual 生成工具。
+
 * Emacs
 :PROPERTIES:
 :CUSTOM_ID: F2236126-8527-4651-867D-9E4D11347135
@@ -1116,6 +1236,10 @@ _以及系统的「手感」如何。_
   文章分享了作者对 [[https://orgmode.org/manual/Extracting-Source-Code.html][org-mode tangle]] 的使用。
 
   另见： [[https://protesilaos.com/codelog/2025-01-26-emacs-organise-init/][Emacs: organise your init file (outline-minor-mode or Org literate config)]]
+
+- [[https://github.com/0WD0/majutsu][0WD0/majutsu]]
+
+  Majutsu! Magit for jujutsu.
 
 * 一些话 | 摘抄
 :PROPERTIES:
@@ -1335,6 +1459,24 @@ _它完全违背了人类历史 ⸺ 无论技术水平如何，更方便的东�
 - [[https://www.bilibili.com/video/BV18o9nBVEUq][告别土味，十分钟让你的视频从拉到夯！]] (12:09) by 小鹿Lawrence
 
   关于字体、花字的使用。
+- [[https://www.bilibili.com/video/BV1XbdeBdERM/][周耀辉词作深度盘点：他把「爱」写成了问题，把「人」写成了答案。]] (44:15) by 礼崩乐好
+- [[https://www.bilibili.com/video/BV1PGDqBqEQ1][震撼首发!把 15 位最夯的音乐人关在同一个房间!会发生什么?丨第五届 HMA 特别现场]] (18:05) by HOPICO
+
+  很棒的现场，很棒的音乐，重新认识了 Sophy，声音真好听。
+
+- [[https://www.bilibili.com/video/BV1p8dYBTEaq][是他拿下了华语年度专辑!丨第五届 HMA 颁奖典礼]] (1:00:10) by HOPICO
+- [[https://www.bilibili.com/video/BV1M54y1z71y][【4K】迈克尔·杰克逊《Bad》完整版 1987 AI 修复高清收藏版]] (18:06) by KG-Area21
+
+  即将打起来的时候，MJ 竟然开始跳舞，对面三人组看 MJ 他们有点看傻子的感觉，也是有些搞笑。
+
+  不过 MJ 的舞蹈实在是太酷啦！总能吸引人一直看下去。
+
+  BTW，最近 [[https://movie.douban.com/subject/35948919/][迈克尔·杰克逊：巨星之路 Michael (2026)]] 要上映了，可以去看看。
+- [[https://www.youtube.com/watch?v=d75ov4HvRrM][Yoko Kanno & SEATBELTS - TANK! Extended [Official Music Video]​]] (7:21) by Yoko Kanno / 菅野よう子
+
+  精彩！让人享受！
+- [[https://www.bilibili.com/video/BV1AQDZBhEW3][听音乐，广度和深度哪个更重要？]] (02:54) by GOATFANS
+- [[https://www.bilibili.com/video/BV1k9d1BuEN4][真的有人听完这10首歌，还不爱 Prince 吗？]] (36:06) by GOATFANS
 
 ** 播客
 :PROPERTIES:
