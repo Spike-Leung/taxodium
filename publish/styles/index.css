@@ -160,6 +160,82 @@ header + p {
   }
 }
 
+.kaomoji-writing {
+  text-align: center;
+}
+
+.kaomoji-writing__dash {
+  position: relative;
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+  color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block-end: -.3rem;
+    transform: rotateX(-45deg);
+    animation: infinite moving-dash 5s alternate;
+  }
+}
+
+.kaomoji-writing__pen {
+  display: inline-block;
+  animation: infinite writing 1s;
+}
+
+.kaomoji-writing__eye {
+  display: inline-block;
+  animation: infinite blink 3s alternate;
+}
+
+@keyframes moving-dash {
+  0% {
+    content: '..';
+  }
+
+  25% {
+    content: '...';
+  }
+
+  100% {
+    content: '.....'
+  }
+}
+
+@keyframes writing {
+  0% {
+    transform: rotate(-5deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 1;
+  }
+
+  94.99% {
+    opacity: 1;
+  }
+
+  95% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 #content ul {
   padding-inline-start: 0;
   counter-reset: step;

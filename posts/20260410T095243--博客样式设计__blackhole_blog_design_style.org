@@ -2086,6 +2086,89 @@ figure 需要添加一些下边距，避免图片和下方文字贴合过近。
   }
 #+end_src
 
+** kaomoji-writing
+:PROPERTIES:
+:CUSTOM_ID: 2B70A142-43B9-47D8-83DF-DB188A152335
+:END:
+
+#+begin_src css
+  .kaomoji-writing {
+    text-align: center;
+  }
+
+  .kaomoji-writing__dash {
+    position: relative;
+    white-space: nowrap;
+    color: var(--color-text-secondary);
+    color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset-inline-end: 0;
+      inset-block-end: -.3rem;
+      transform: rotateX(-45deg);
+      animation: infinite moving-dash 5s alternate;
+    }
+  }
+
+  .kaomoji-writing__pen {
+    display: inline-block;
+    animation: infinite writing 1s;
+  }
+
+  .kaomoji-writing__eye {
+    display: inline-block;
+    animation: infinite blink 3s alternate;
+  }
+
+  @keyframes moving-dash {
+    0% {
+      content: '..';
+    }
+
+    25% {
+      content: '...';
+    }
+
+    100% {
+      content: '.....'
+    }
+  }
+
+  @keyframes writing {
+    0% {
+      transform: rotate(-5deg);
+    }
+
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  @keyframes blink {
+    0% {
+      opacity: 0;
+    }
+
+    5% {
+      opacity: 1;
+    }
+
+    94.99% {
+      opacity: 1;
+    }
+
+    95% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+#+end_src
+
 ** 列表
 :PROPERTIES:
 :CUSTOM_ID: 7A3FB831-265B-4A88-AEAF-E5E01A881119
