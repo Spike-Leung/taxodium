@@ -57,6 +57,7 @@
 #+begin_src css
   :root {
     --color-taxodium-purple: #7c7cd1;
+    --dark-color-taxodium-purple: oklch(from var(--color-taxodium-purple) .75 c h);
     --color-taxodium-yellow: #bd8c42;
     --color-bg: #eee;
     --color-bg-secondary: #ffffffe6;
@@ -123,13 +124,17 @@
 :CUSTOM_ID: C0CF20B3-28F3-4A65-8E98-8F5C458D6541
 :END:
 
-定义 ~<html>~ 的样式，指定字体、字号，后面基于 ~<html>~ 字体大小，使用 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-size#rems][rem]] 作为长度单位。
+定义 ~<html>~ 的样式：
+- 指定字体、字号、后面基于 ~<html>~ 字体大小，使用 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-size#rems][rem]] 作为长度单位
+- 设置滚动条颜色
 
 #+begin_src css
   html {
     font-family: system-ui, sans-serif;
     font-size: 20px;
     -webkit-text-size-adjust: 100%;
+    scrollbar-color: var(--color-taxodium-purple) transparent;
+    scrollbar-color: light-dark(var(--color-taxodium-purple), var(--dark-color-taxodium-purple)) transparent;
   }
 
   @media screen and (width >= 70em) {
