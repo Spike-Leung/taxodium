@@ -798,11 +798,22 @@ select {
 
 给按钮的点击添加一个效果，使得点击这个动作更明显。
 
+按钮颜色使用主色，按钮整体是偏长方形的。
+
 #+begin_src css
+  input.button,
   button {
     border-radius: 0.25rem;
     padding: 0.25rem;
     cursor: pointer;
+    background: var(--color-taxodium-purple);
+    color: var(--dark-color-text);
+    padding: .2rem .5rem;
+    border: 0;
+
+    &:hover {
+      background: oklch(from var(--color-taxodium-purple) .7 c h) ;
+    }
 
     &:active {
       transform: scale(0.97);
@@ -946,6 +957,11 @@ org-publish 渲染的 HTML，在嵌套 list 的时候，有的内容会用 ~<p>~
 
     input {
       font-size: 1rem;
+      border: 1px;
+      border-style: solid;
+      border-color: var(--color-border);
+      border-color: light-dark(var(--color-border), var(--dark-color-border));
+      border-radius: 0.2rem;
     }
 
     button {
