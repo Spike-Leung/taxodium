@@ -1717,6 +1717,9 @@ footnote 增强。
 设置 [[https://modern-css.com/preventing-scroll-chaining-without-javascript/][overscroll-behavior: contain]] 可以避免列表滚动到底部后滚动页面，
 这样可以保证元素不会因为页面滚动而滚动离开视口。
 
+给图片设置 ~vertical-align: top~ 可以让图片脱离行内元素的 baseline，从而避免图片下方出现空白。
+具体见： [[https://polypane.app/blog/understanding-the-fundamentals-of-css-layout/#lines-and-baselines][Understanding the fundamentals of CSS Layout]]。
+
 #+begin_src css
   /* 只支持全部都是 <figure> 或者全部都是 <a> */
   .image-list {
@@ -1736,16 +1739,14 @@ footnote 增强。
     border-radius: .5em;
     overscroll-behavior: contain;
 
-    & a {
-      height: auto;
-    }
-
     & figure {
       margin: 0;
     }
 
     & img {
       max-height: 50vh;
+      /* 让图片脱离 baseline，图片下方有多余的空白 */
+      vertical-align: top;
     }
   }
 #+end_src
