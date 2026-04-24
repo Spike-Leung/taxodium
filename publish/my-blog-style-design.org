@@ -377,7 +377,7 @@ h1: 1rem × 1.25⁵ = 3.052rem
     line-height: 1.2;
     font-weight: 700;
     padding: 0;
-    margin-block-end: 0.5rem;
+    margin-block: 1.25em 0.5rem;
     font-size: calc(var(--heading-base-size) * pow(var(--typographic-scale), var(--heading-level)));
   }
 
@@ -940,6 +940,24 @@ org-publish 渲染的 HTML，在嵌套 list 的时候，有的内容会用 ~<p>~
     .dl dd {
       margin-inline-start: 1rem;
     }
+  }
+#+end_src
+
+处理一些特殊情况，当 list 下可能同时在 ~<p>~ 和 ~<ul>~ ，或者只有 ~<p>~ ，但是两者在间距表现上有差异，
+下面的样式是使得两者表现一致。
+
+#+begin_src css
+  li:has(> p):has(> ul) ul:last-child {
+    margin-block-end: 1.25rem;
+  }
+#+end_src
+
+让 ~<li>~ 下的段落紧凑一些，不然有的 ~<li>~ 下有内容，有的没有，格子的间距不同，看起来比较别扭。
+~<li>~ 下不适合写太多内容。
+
+#+begin_src css
+  li p {
+    margin-block: .5rem;
   }
 #+end_src
 

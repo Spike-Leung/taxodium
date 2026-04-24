@@ -534,7 +534,7 @@ h6</span> {
   <span class="org-css-property">line-height</span>: 1.2;
   <span class="org-css-property">font-weight</span>: 700;
   <span class="org-css-property">padding</span>: 0;
-  <span class="org-css-property">margin-block-end</span>: 0.5rem;
+  <span class="org-css-property">margin-block</span>: 1.25em 0.5rem;
   <span class="org-css-property">font-size</span>: calc(var(<span class="org-variable-name">--heading-base-size</span>) * pow(var(<span class="org-variable-name">--typographic-scale</span>), var(<span class="org-variable-name">--heading-level</span>)));
 }
 
@@ -1129,6 +1129,28 @@ org-publish 渲染的 HTML，在嵌套 list 的时候，有的内容会用 <code
   <span class="org-css-selector">.dl dd</span> {
     <span class="org-css-property">margin-inline-start</span>: 1rem;
   }
+}
+</pre>
+</div>
+
+<p>
+处理一些特殊情况，当 list 下可能同时在 <code>&lt;p&gt;</code> 和 <code>&lt;ul&gt;</code> ，或者只有 <code>&lt;p&gt;</code> ，但是两者在间距表现上有差异，下面的样式是使得两者表现一致。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-property">li</span>:has(&gt; p):has(&gt; ul) ul:last-child {
+  <span class="org-css-property">margin-block-end</span>: 1.25rem;
+}
+</pre>
+</div>
+
+<p>
+让 <code>&lt;li&gt;</code> 下的段落紧凑一些，不然有的 <code>&lt;li&gt;</code> 下有内容，有的没有，格子的间距不同，看起来比较别扭。<code>&lt;li&gt;</code> 下不适合写太多内容。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">li p</span> {
+  <span class="org-css-property">margin-block</span>: .5rem;
 }
 </pre>
 </div>
@@ -2900,7 +2922,7 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
 <p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
-<p>文章创建于 <span class="dt-published">2026-04-10 Fri 09:52</span>，更新于 <span class="dt-updated">2026-04-24 Fri 11:04</span>，</p>
+<p>文章创建于 <span class="dt-published">2026-04-10 Fri 09:52</span>，更新于 <span class="dt-updated">2026-04-24 Fri 17:14</span>，</p>
 <p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
 <p>如果你偏好纯文本，你可以将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>，这样你就会获得文章的原始 org 文件。</p>
 <p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
