@@ -94,7 +94,6 @@
 
     @media screen and (width <= 400px) {
       transform: unset;
-      filter: grayscale(0) sepia(0) blur(0);
 
       & figcaption {
         opacity: 1;
@@ -109,5 +108,60 @@
     width: 100%;
     box-shadow: -5px 5px 5px var(--color-box-shadow) !important;
     border-radius: 3px;
+  }
+}
+
+.album-wall {
+  @media screen and (width <= 400px) {
+    & figure:nth-child(even) {
+      animation: album-reveal-even;
+      animation-timeline: view();
+      animation-fill-mode: both;
+      animation-range-start: entry 5%;
+      animation-range-end: contain 15%;
+    }
+
+    & figure:nth-child(odd) {
+      animation: album-reveal-odd;
+      animation-timeline: view();
+      animation-fill-mode: both;
+      animation-range-start: entry 10%;
+      animation-range-end: contain 15%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .album-wall.album-wall figure  {
+    filter: grayscale(0) sepia(0) blur(0);
+    animation: none;
+  }
+}
+
+@keyframes album-reveal-even {
+  0% {
+    filter: grayscale(0.95) sepia(.05) blur(2px);
+    transform: translateY(2.5rem) translateX(-.5rem);
+    opacity: 0.25;
+  }
+
+  100% {
+    filter: grayscale(0) sepia(0) blur(0);
+    transform: unset;
+    opacity: 1;
+  }
+}
+
+@keyframes album-reveal-odd {
+  0% {
+    filter: grayscale(0.95) sepia(.05) blur(2px);
+    transform: translateY(4rem) translateX(.5rem);
+    opacity: 0.25;
+  }
+
+  100% {
+    filter: grayscale(0) sepia(0) blur(0);
+    transform: unset;
+    opacity: 1;
   }
 }

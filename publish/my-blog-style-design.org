@@ -2439,119 +2439,191 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
 [[denote:20251031T215229][Album Wall]] 页面的特殊样式。
 
 #+begin_src css
-.figure-number {
-  display: none;
-}
-
-.filter {
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  gap: 0.2rem;
-
-  & label,
-  input {
-    cursor: pointer;
-  }
-}
-
-#content:has(#filter-shared:checked) figure:has(a[href*="images\/album"]) {
-  display: none;
-}
-
-.album-wall {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, calc(20px * 14));
-  gap: 0 1.5rem;
-  justify-content: center;
-  width: 99vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -49.5vw;
-  margin-right: -49.5vw;
-
-  @media screen and (width <= 1920px) {
-    grid-template-columns: repeat(auto-fill, calc(20px * 12));
-  }
-
-  @media screen and (width <= 800px) {
-    grid-template-columns: repeat(auto-fill, calc(20px * 10));
-  }
-
-  @media screen and (width <= 650px) {
-    grid-template-columns: repeat(2, calc(20px * 8));
-    gap: 1rem 0.5rem;
-    width: 100%;
-    left: 0;
-    right: 0;
-    margin: 0;
-  }
-
-  @media (pointer: fine) and (hover: hover) {
-    & figure {
-      &:hover {
-        transform: rotate(0);
-        z-index: 1;
-        filter: grayscale(0) sepia(0) blur(0);
-
-        & figcaption {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-    }
-  }
-
-  p {
+  .figure-number {
     display: none;
   }
 
-  & figure {
-    margin: 0;
-    position: relative;
-    transform: perspective(500px) rotateX(5deg) rotateY(-5deg) rotateZ(1deg);
-    transition:
-      transform 0.25s ease-in-out,
-      opacity 0.8s ease-in-out,
-      filter 1.5s ease-in-out,
-      display 0.25s allow-discrete ease-in-out;
-    transform-origin: center bottom;
-    filter: grayscale(0.95) sepia(.05) blur(.55px);
+  .filter {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    gap: 0.2rem;
 
-    & figcaption {
+    & label,
+    input {
+      cursor: pointer;
+    }
+  }
+
+  #content:has(#filter-shared:checked) figure:has(a[href*="images\/album"]) {
+    display: none;
+  }
+
+  .album-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, calc(20px * 14));
+    gap: 0 1.5rem;
+    justify-content: center;
+    width: 99vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -49.5vw;
+    margin-right: -49.5vw;
+
+    @media screen and (width <= 1920px) {
+      grid-template-columns: repeat(auto-fill, calc(20px * 12));
+    }
+
+    @media screen and (width <= 800px) {
+      grid-template-columns: repeat(auto-fill, calc(20px * 10));
+    }
+
+    @media screen and (width <= 650px) {
+      grid-template-columns: repeat(2, calc(20px * 8));
+      gap: 1rem 0.5rem;
+      width: 100%;
+      left: 0;
+      right: 0;
+      margin: 0;
+    }
+
+    @media (pointer: fine) and (hover: hover) {
+      & figure {
+        &:hover {
+          transform: rotate(0);
+          z-index: 1;
+          filter: grayscale(0) sepia(0) blur(0);
+
+          & figcaption {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      }
+    }
+
+    p {
+      display: none;
+    }
+
+    & figure {
+      margin: 0;
+      position: relative;
+      transform: perspective(500px) rotateX(5deg) rotateY(-5deg) rotateZ(1deg);
       transition:
         transform 0.25s ease-in-out,
-        opacity 0.25s ease-in-out;
-      transition-delay: 0.5s;
-      opacity: 0;
-      transform: translateY(-25%);
-    }
-
-    @starting-style {
-      opacity: 0;
-    }
-
-    @media screen and (width <= 400px) {
-      transform: unset;
-      filter: grayscale(0) sepia(0) blur(0);
+        opacity 0.8s ease-in-out,
+        filter 1.5s ease-in-out,
+        display 0.25s allow-discrete ease-in-out;
+      transform-origin: center bottom;
+      filter: grayscale(0.95) sepia(.05) blur(.55px);
 
       & figcaption {
-        opacity: 1;
-        transform: none;
+        transition:
+          transform 0.25s ease-in-out,
+          opacity 0.25s ease-in-out;
+        transition-delay: 0.5s;
+        opacity: 0;
+        transform: translateY(-25%);
+      }
+
+      @starting-style {
+        opacity: 0;
+      }
+
+      @media screen and (width <= 400px) {
+        transform: unset;
+
+        & figcaption {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    }
+
+    & img {
+      object-fit: cover;
+      aspect-ratio: 1;
+      width: 100%;
+      box-shadow: -5px 5px 5px var(--color-box-shadow) !important;
+      border-radius: 3px;
+    }
+  }
+
+
+#+end_src
+
+** animation
+:PROPERTIES:
+:CUSTOM_ID: 88470668-2C68-49BF-B533-5E6E0019E612
+:END:
+
+关于 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-timeline][animation-timeline CSS property]] ，推薦看 Josh W Comeau 的 [[https://www.joshwcomeau.com/animation/scroll-driven-animations/][Scroll-Driven Animations]]，
+目前 Firefox 還不支持 ~animation-timeline~ 。
+
+注意添加 ~@media (prefers-reduced-motion: reduce)~ 基于用戶配置关閉動画。
+
+- ~animation-timeline: view();~ 让元素基于 viewport 控制動画
+- ~animation-range-start~ 和 ~animation-range-end~ 控制動画执行区間，見 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/timeline-range-name#exit][<timeline-range-name> CSS type]]
+- ~animation-fill-mode: both;~ 让動画結束后保持状态
+
+#+begin_src css
+  .album-wall {
+    @media screen and (width <= 400px) {
+      & figure:nth-child(even) {
+        animation: album-reveal-even;
+        animation-timeline: view();
+        animation-fill-mode: both;
+        animation-range-start: entry 5%;
+        animation-range-end: contain 15%;
+      }
+
+      & figure:nth-child(odd) {
+        animation: album-reveal-odd;
+        animation-timeline: view();
+        animation-fill-mode: both;
+        animation-range-start: entry 10%;
+        animation-range-end: contain 15%;
       }
     }
   }
 
-  & img {
-    object-fit: cover;
-    aspect-ratio: 1;
-    width: 100%;
-    box-shadow: -5px 5px 5px var(--color-box-shadow) !important;
-    border-radius: 3px;
+  @media (prefers-reduced-motion: reduce) {
+    .album-wall.album-wall figure  {
+      filter: grayscale(0) sepia(0) blur(0);
+      animation: none;
+    }
   }
-}
+
+  @keyframes album-reveal-even {
+    0% {
+      filter: grayscale(0.95) sepia(.05) blur(2px);
+      transform: translateY(2.5rem) translateX(-.5rem);
+      opacity: 0.25;
+    }
+
+    100% {
+      filter: grayscale(0) sepia(0) blur(0);
+      transform: unset;
+      opacity: 1;
+    }
+  }
+
+  @keyframes album-reveal-odd {
+    0% {
+      filter: grayscale(0.95) sepia(.05) blur(2px);
+      transform: translateY(4rem) translateX(.5rem);
+      opacity: 0.25;
+    }
+
+    100% {
+      filter: grayscale(0) sepia(0) blur(0);
+      transform: unset;
+      opacity: 1;
+    }
+  }
 #+end_src
 
 * 88-31-button.css

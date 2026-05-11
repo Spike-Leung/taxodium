@@ -137,7 +137,11 @@
 <li><a href="#BCE45058-1141-4766-8C83-2C5FFD33D7D4">lyrics</a></li>
 </ul>
 </li>
-<li><a href="#26F69F54-3037-47C2-B23F-2BDE97F58BB8">album-wall.css</a></li>
+<li><a href="#26F69F54-3037-47C2-B23F-2BDE97F58BB8">album-wall.css</a>
+<ul>
+<li><a href="#88470668-2C68-49BF-B533-5E6E0019E612">animation</a></li>
+</ul>
+</li>
 <li><a href="#0FAFBA7D-583A-46D0-A986-4AF16B6C6F56">88-31-button.css</a></li>
 <li><a href="#28F57E2E-3187-4D36-A918-8D43423EEE9F">image-enhance.css</a></li>
 <li><a href="#88EC4E99-5F6A-4F55-A283-56F5226A1D21">text-indent.css</a></li>
@@ -2782,7 +2786,6 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
 
     <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
       <span class="org-css-property">transform</span>: unset;
-      <span class="org-css-property">filter</span>: grayscale(0) sepia(0) blur(0);
 
       &amp; figcaption {
         <span class="org-css-property">opacity</span>: 1;
@@ -2799,7 +2802,84 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
     <span class="org-css-property">border-radius</span>: 3px;
   }
 }
+
+
 </pre>
+</div>
+</div>
+<div id="outline-container-88470668-2C68-49BF-B533-5E6E0019E612" class="outline-3">
+<h3 id="88470668-2C68-49BF-B533-5E6E0019E612">animation</h3>
+<div class="outline-text-3" id="text-88470668-2C68-49BF-B533-5E6E0019E612"><p>
+关于 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-timeline">animation-timeline CSS property</a> ，推薦看 Josh W Comeau 的 <a href="https://www.joshwcomeau.com/animation/scroll-driven-animations/">Scroll-Driven Animations</a>，目前 Firefox 還不支持 <code>animation-timeline</code> 。
+</p>
+
+<p>
+注意添加 <code>@media (prefers-reduced-motion: reduce)</code> 基于用戶配置关閉動画。
+</p>
+
+<ul class="org-ul">
+<li><code>animation-timeline: view();</code> 让元素基于 viewport 控制動画</li>
+<li><code>animation-range-start</code> 和 <code>animation-range-end</code> 控制動画执行区間，見 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/timeline-range-name#exit">&lt;timeline-range-name&gt; CSS type</a></li>
+<li><code>animation-fill-mode: both;</code> 让動画結束后保持状态</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.album-wall</span> {
+  <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
+    &amp; figure:nth-child(even) {
+      <span class="org-css-property">animation</span>: album-reveal-even;
+      <span class="org-css-property">animation-timeline</span>: view();
+      <span class="org-css-property">animation-fill-mode</span>: both;
+      <span class="org-css-property">animation-range-start</span>: entry 5%;
+      <span class="org-css-property">animation-range-end</span>: contain 15%;
+    }
+
+    &amp; figure:nth-child(odd) {
+      <span class="org-css-property">animation</span>: album-reveal-odd;
+      <span class="org-css-property">animation-timeline</span>: view();
+      <span class="org-css-property">animation-fill-mode</span>: both;
+      <span class="org-css-property">animation-range-start</span>: entry 10%;
+      <span class="org-css-property">animation-range-end</span>: contain 15%;
+    }
+  }
+}
+
+<span class="org-builtin">@media</span> (prefers-reduced-motion: reduce) {
+  <span class="org-css-selector">.album-wall.album-wall figure</span>  {
+    <span class="org-css-property">filter</span>: grayscale(0) sepia(0) blur(0);
+    <span class="org-css-property">animation</span>: none;
+  }
+}
+
+<span class="org-builtin">@keyframes</span> album-reveal-even {
+  <span class="org-css-selector">0%</span> {
+    <span class="org-css-property">filter</span>: grayscale(0.95) sepia(.05) blur(2px);
+    <span class="org-css-property">transform</span>: translateY(2.5rem) translateX(-.5rem);
+    <span class="org-css-property">opacity</span>: 0.25;
+  }
+
+  <span class="org-css-selector">100%</span> {
+    <span class="org-css-property">filter</span>: grayscale(0) sepia(0) blur(0);
+    <span class="org-css-property">transform</span>: unset;
+    <span class="org-css-property">opacity</span>: 1;
+  }
+}
+
+<span class="org-builtin">@keyframes</span> album-reveal-odd {
+  <span class="org-css-selector">0%</span> {
+    <span class="org-css-property">filter</span>: grayscale(0.95) sepia(.05) blur(2px);
+    <span class="org-css-property">transform</span>: translateY(4rem) translateX(.5rem);
+    <span class="org-css-property">opacity</span>: 0.25;
+  }
+
+  <span class="org-css-selector">100%</span> {
+    <span class="org-css-property">filter</span>: grayscale(0) sepia(0) blur(0);
+    <span class="org-css-property">transform</span>: unset;
+    <span class="org-css-property">opacity</span>: 1;
+  }
+}
+</pre>
+</div>
 </div>
 </div>
 </div>
@@ -2945,7 +3025,7 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
 <p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
-<p>文章创建于 <span class="dt-published">2026-04-10 Fri 09:52</span>，更新于 <span class="dt-updated">2026-05-11 Mon 08:13</span>，</p>
+<p>文章创建于 <span class="dt-published">2026-04-10 Fri 09:52</span>，更新于 <span class="dt-updated">2026-05-11 Mon 19:32</span>，</p>
 <p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
 <p>如果你偏好纯文本，你可以将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>，这样你就会获得文章的原始 org 文件。</p>
 <p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
