@@ -69,6 +69,7 @@
     <label for="snow-toggle" class="snow-icon"></label>
   </span>
   -->
+  <img src="/images/common/favicon/translate.kagi.com.ico" id="kagi-translate" class="js-required" />
   <select id="lightdark" class="js-required">
     <option value="auto">Auto</option>
     <option value="light">Light</option>
@@ -130,7 +131,7 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript">/(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]/
+<pre class="src src-typescript"><span class="org-string">/(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]/</span>
 </pre>
 </div>
 
@@ -198,16 +199,16 @@ Emoji 是持续增加的，每增加一个 Emoji 就增加一个对应的 Unicod
 </dl>
 
 <div class="org-src-container">
-<pre class="src src-typescript">console.log(
-  /\p{Emoji}/u.test('flowers'), // false :)
-  /\p{Emoji}/u.test('flowers 🌼🌺🌸'), // true :)
-  /\p{Emoji}/u.test('flowers 123'), // true :(
-)
-console.log(
-  /\p{Extended_Pictographic}/u.test('flowers'), // false :)
-  /\p{Extended_Pictographic}/u.test('flowers 🌼🌺🌸'), // true :)
-  /\p{Extended_Pictographic}/u.test('flowers 123'), // false :)
-)
+<pre class="src src-typescript"><span class="org-type">console</span>.<span class="org-function-call">log</span>(
+  <span class="org-string">/\p{Emoji}/</span>u.<span class="org-function-call">test</span>(<span class="org-string">'flowers'</span>), <span class="org-comment-delimiter">// </span><span class="org-comment">false :)
+</span>  <span class="org-string">/\p{Emoji}/</span>u.<span class="org-function-call">test</span>(<span class="org-string">'flowers &#127804;&#127802;&#127800;'</span>), <span class="org-comment-delimiter">// </span><span class="org-comment">true :)
+</span>  <span class="org-string">/\p{Emoji}/</span>u.<span class="org-function-call">test</span>(<span class="org-string">'flowers 123'</span>), <span class="org-comment-delimiter">// </span><span class="org-comment">true :(
+</span>)
+<span class="org-type">console</span>.<span class="org-function-call">log</span>(
+  <span class="org-string">/\p{Extended_Pictographic}/</span>u.<span class="org-function-call">test</span>(<span class="org-string">'flowers'</span>), <span class="org-comment-delimiter">// </span><span class="org-comment">false :)
+</span>  <span class="org-string">/\p{Extended_Pictographic}/</span>u.<span class="org-function-call">test</span>(<span class="org-string">'flowers &#127804;&#127802;&#127800;'</span>), <span class="org-comment-delimiter">// </span><span class="org-comment">true :)
+</span>  <span class="org-string">/\p{Extended_Pictographic}/</span>u.<span class="org-function-call">test</span>(<span class="org-string">'flowers 123'</span>), <span class="org-comment-delimiter">// </span><span class="org-comment">false :)
+</span>)
 </pre>
 </div>
 
@@ -215,7 +216,7 @@ console.log(
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode">/u</a> 只能匹配单个 Unicode，但是 <a href="https://emojipedia.org/emoji-sequence">有的表情</a> 是由多个 Unicode 组成的，例如 <a href="https://emojipedia.org/couple-with-heart-woman-man">👩‍❤️‍👨</a> 是由 👩、<a href="https://emojipedia.org/zero-width-joiner">ZWJ</a>、❤️、<a href="https://emojipedia.org/zero-width-joiner">ZWJ</a>、👨 一起组合得到的。<code>/u</code> 可以匹配 👩、❤️、👨，但是无法匹配 👩‍❤️‍👨，此时需要用到 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicodeSets">/v</a> ，它可以匹配 Unicode 序列。<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
 </p>
 
-<section role="note" id="orgf234d41">
+<section role="note" id="org546ed11">
 <p>
 按照字母顺序，v 在 u 的， <code>/v</code> 比 <code>/u</code> 更晚提出，它基本包含了 <code>/u</code> 的能力，是对 <code>/u</code> 的一次升级。
 </p>
@@ -270,7 +271,7 @@ console.log(
 概括来说，在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。而超出 65536 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
 </p>
 
-<section role="note" id="org77f19cd">
+<section role="note" id="org9948ce9">
 <p>
 为什么 Unicode 要这么设计，参考 <a href="https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm">Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?</a>
 </p>
@@ -285,9 +286,9 @@ console.log(
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript">'🉐'.charAt(0) // '\uD83C'
-'🉐'.charAt(1) // '\uDE50'
-'🉐'.split("") // ['\uD83C', '\uDE50']
+<pre class="src src-typescript"><span class="org-string">'&#127568;'</span>.<span class="org-function-call">charAt</span>(0) <span class="org-comment-delimiter">// </span><span class="org-comment">'\uD83C'
+</span><span class="org-string">'&#127568;'</span>.<span class="org-function-call">charAt</span>(1) <span class="org-comment-delimiter">// </span><span class="org-comment">'\uDE50'
+</span><span class="org-string">'&#127568;'</span>.<span class="org-function-call">split</span>(<span class="org-string">""</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">['\uD83C', '\uDE50']</span>
 </pre>
 </div>
 
@@ -311,14 +312,14 @@ consisting of the single UTF-16 code unit at the given index.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript">'🉐'.charAt(0) // '\uD83C'
-'🉐'.charAt(1) // '\uDE50'
-
-'a'.charAt(0) // 'a'
-'a'.charAt(1) // ''
-
-'apple'.charAt(0) // 'a'
-'apple'.charAt(1) // 'p'
+<pre class="src src-typescript"><span class="org-string">'&#127568;'</span>.<span class="org-function-call">charAt</span>(0) <span class="org-comment-delimiter">// </span><span class="org-comment">'\uD83C'
+</span><span class="org-string">'&#127568;'</span>.<span class="org-function-call">charAt</span>(1) <span class="org-comment-delimiter">// </span><span class="org-comment">'\uDE50'
+</span>
+<span class="org-string">'a'</span>.<span class="org-function-call">charAt</span>(0) <span class="org-comment-delimiter">// </span><span class="org-comment">'a'
+</span><span class="org-string">'a'</span>.<span class="org-function-call">charAt</span>(1) <span class="org-comment-delimiter">// </span><span class="org-comment">''
+</span>
+<span class="org-string">'apple'</span>.<span class="org-function-call">charAt</span>(0) <span class="org-comment-delimiter">// </span><span class="org-comment">'a'
+</span><span class="org-string">'apple'</span>.<span class="org-function-call">charAt</span>(1) <span class="org-comment-delimiter">// </span><span class="org-comment">'p'</span>
 </pre>
 </div></dd>
 
@@ -334,14 +335,14 @@ representing the UTF-16 code unit at the given index.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript">'🉐'.charCodeAt(0) // 55356
-'🉐'.charCodeAt(1) // 56912
-
-'a'.charCodeAt(0) // 97
-'a'.charCodeAt(1) // NaN
-
-'apple'.charCodeAt(0) // 97
-'apple'.charCodeAt(1) // 112
+<pre class="src src-typescript"><span class="org-string">'&#127568;'</span>.<span class="org-function-call">charCodeAt</span>(0) <span class="org-comment-delimiter">// </span><span class="org-comment">55356
+</span><span class="org-string">'&#127568;'</span>.<span class="org-function-call">charCodeAt</span>(1) <span class="org-comment-delimiter">// </span><span class="org-comment">56912
+</span>
+<span class="org-string">'a'</span>.<span class="org-function-call">charCodeAt</span>(0) <span class="org-comment-delimiter">// </span><span class="org-comment">97
+</span><span class="org-string">'a'</span>.<span class="org-function-call">charCodeAt</span>(1) <span class="org-comment-delimiter">// </span><span class="org-variable-name">NaN</span><span class="org-comment">
+</span>
+<span class="org-string">'apple'</span>.<span class="org-function-call">charCodeAt</span>(0) <span class="org-comment-delimiter">// </span><span class="org-comment">97
+</span><span class="org-string">'apple'</span>.<span class="org-function-call">charCodeAt</span>(1) <span class="org-comment-delimiter">// </span><span class="org-comment">112</span>
 </pre>
 </div></dd>
 
@@ -361,16 +362,16 @@ created from the specified sequence of UTF-16 code units.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript">'🉐'.charCodeAt(0) // 55356
-'🉐'.charCodeAt(1) // 56912
-String.fromCharCode(55356, 56912) // '🉐'
-
-'apple'.charCodeAt(0) // 97
-'apple'.charCodeAt(1) // 112
-'apple'.charCodeAt(2) // 112
-'apple'.charCodeAt(3) // 108
-'apple'.charCodeAt(4) // 101
-String.fromCharCode(97, 112, 112, 108, 101) // 'apple'
+<pre class="src src-typescript"><span class="org-string">'&#127568;'</span>.<span class="org-function-call">charCodeAt</span>(0) <span class="org-comment-delimiter">// </span><span class="org-comment">55356
+</span><span class="org-string">'&#127568;'</span>.<span class="org-function-call">charCodeAt</span>(1) <span class="org-comment-delimiter">// </span><span class="org-comment">56912
+</span>String.<span class="org-function-call">fromCharCode</span>(55356, 56912) <span class="org-comment-delimiter">// </span><span class="org-comment">'&#127568;'
+</span>
+<span class="org-string">'apple'</span>.<span class="org-function-call">charCodeAt</span>(0) <span class="org-comment-delimiter">// </span><span class="org-comment">97
+</span><span class="org-string">'apple'</span>.<span class="org-function-call">charCodeAt</span>(1) <span class="org-comment-delimiter">// </span><span class="org-comment">112
+</span><span class="org-string">'apple'</span>.<span class="org-function-call">charCodeAt</span>(2) <span class="org-comment-delimiter">// </span><span class="org-comment">112
+</span><span class="org-string">'apple'</span>.<span class="org-function-call">charCodeAt</span>(3) <span class="org-comment-delimiter">// </span><span class="org-comment">108
+</span><span class="org-string">'apple'</span>.<span class="org-function-call">charCodeAt</span>(4) <span class="org-comment-delimiter">// </span><span class="org-comment">101
+</span>String.<span class="org-function-call">fromCharCode</span>(97, 112, 112, 108, 101) <span class="org-comment-delimiter">// </span><span class="org-comment">'apple'</span>
 </pre>
 </div></dd>
 
@@ -391,14 +392,14 @@ Note that the index is still based on UTF-16 code units, not Unicode code points
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript">'🉐'.charCodeAt(0) // 55356
-'🉐'.charCodeAt(1) // 56912
-
-'🉐'.codePointAt(0) // 127568
-// 需要注意的是，下标是基于 UTF-16 计算的，🉐 是由两个 UTF-16 组成的
-// 对于下标 0，可以找到一个代理对，对应 Unicode code point，所以返回了 127568
-// 对于下标 1，由于只有低代理位，无法组成代理对，就返回低代理位对应的 Unicode Code Point
-'🉐'.codePointAt(1) // 56912
+<pre class="src src-typescript"><span class="org-string">'&#127568;'</span>.<span class="org-function-call">charCodeAt</span>(0) <span class="org-comment-delimiter">// </span><span class="org-comment">55356
+</span><span class="org-string">'&#127568;'</span>.<span class="org-function-call">charCodeAt</span>(1) <span class="org-comment-delimiter">// </span><span class="org-comment">56912
+</span>
+<span class="org-string">'&#127568;'</span>.<span class="org-function-call">codePointAt</span>(0) <span class="org-comment-delimiter">// </span><span class="org-comment">127568
+</span><span class="org-comment-delimiter">// </span><span class="org-comment">&#38656;&#35201;&#27880;&#24847;&#30340;&#26159;&#65292;&#19979;&#26631;&#26159;&#22522;&#20110; UTF-16 &#35745;&#31639;&#30340;&#65292;&#127568; &#26159;&#30001;&#20004;&#20010; UTF-16 &#32452;&#25104;&#30340;
+</span><span class="org-comment-delimiter">// </span><span class="org-comment">&#23545;&#20110;&#19979;&#26631; 0&#65292;&#21487;&#20197;&#25214;&#21040;&#19968;&#20010;&#20195;&#29702;&#23545;&#65292;&#23545;&#24212; Unicode code point&#65292;&#25152;&#20197;&#36820;&#22238;&#20102; 127568
+</span><span class="org-comment-delimiter">// </span><span class="org-comment">&#23545;&#20110;&#19979;&#26631; 1&#65292;&#30001;&#20110;&#21482;&#26377;&#20302;&#20195;&#29702;&#20301;&#65292;&#26080;&#27861;&#32452;&#25104;&#20195;&#29702;&#23545;&#65292;&#23601;&#36820;&#22238;&#20302;&#20195;&#29702;&#20301;&#23545;&#24212;&#30340; Unicode Code Point
+</span><span class="org-string">'&#127568;'</span>.<span class="org-function-call">codePointAt</span>(1) <span class="org-comment-delimiter">// </span><span class="org-comment">56912</span>
 </pre>
 </div></dd>
 
@@ -418,17 +419,17 @@ The String.fromCodePoint() static method returns a string
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript">// fromCodePoint
-String.fromCodePoint(127568) // '🉐'
-String.fromCodePoint(55356, 56912) // '🉐'
-
-// fromCharCode
-// fromCharCode 只能处理 0-65535 之间的数字，对于超过 65535 的数字，则截断到最后的 16 位数字
-// 等同于 String.fromCharCode(62032)
-// Number(127568).toString(16) -&gt; '1f250' -&gt; 截取最后的 16 位，即 f250
-// Number.parseInt('f250', 16) -&gt; 62032
-String.fromCharCode(127568) // ''
-String.fromCharCode(55356, 56912) // '🉐'
+<pre class="src src-typescript"><span class="org-comment-delimiter">// </span><span class="org-comment">fromCodePoint
+</span>String.<span class="org-function-call">fromCodePoint</span>(127568) <span class="org-comment-delimiter">// </span><span class="org-comment">'&#127568;'
+</span>String.<span class="org-function-call">fromCodePoint</span>(55356, 56912) <span class="org-comment-delimiter">// </span><span class="org-comment">'&#127568;'
+</span>
+<span class="org-comment-delimiter">// </span><span class="org-comment">fromCharCode
+</span><span class="org-comment-delimiter">// </span><span class="org-comment">fromCharCode &#21482;&#33021;&#22788;&#29702; 0-65535 &#20043;&#38388;&#30340;&#25968;&#23383;&#65292;&#23545;&#20110;&#36229;&#36807; 65535 &#30340;&#25968;&#23383;&#65292;&#21017;&#25130;&#26029;&#21040;&#26368;&#21518;&#30340; 16 &#20301;&#25968;&#23383;
+</span><span class="org-comment-delimiter">// </span><span class="org-comment">&#31561;&#21516;&#20110; String.</span><span class="org-function-call">fromCharCode</span><span class="org-comment">(62032)
+</span><span class="org-comment-delimiter">// </span><span class="org-comment">Number(127568).</span><span class="org-function-call">toString</span><span class="org-comment">(16) -&gt; '1f250' -&gt; &#25130;&#21462;&#26368;&#21518;&#30340; 16 &#20301;&#65292;&#21363; </span><span class="org-variable-name">f250</span><span class="org-comment">
+</span><span class="org-comment-delimiter">// </span><span class="org-comment">Number.</span><span class="org-function-call">parseInt</span><span class="org-comment">('f250', 16) -&gt; 62032
+</span>String.<span class="org-function-call">fromCharCode</span>(127568) <span class="org-comment-delimiter">// </span><span class="org-comment">'&#62032;'
+</span>String.<span class="org-function-call">fromCharCode</span>(55356, 56912) <span class="org-comment-delimiter">// </span><span class="org-comment">'&#127568;'</span>
 </pre>
 </div></dd>
 </dl>
@@ -445,9 +446,9 @@ String.fromCharCode(55356, 56912) // '🉐'
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript">'a'.length // 1
-
-'🉐'.length // 2
+<pre class="src src-typescript"><span class="org-string">'a'</span>.length <span class="org-comment-delimiter">// </span><span class="org-comment">1
+</span>
+<span class="org-string">'&#127568;'</span>.length <span class="org-comment-delimiter">// </span><span class="org-comment">2</span>
 </pre>
 </div>
 
@@ -499,7 +500,7 @@ String.fromCharCode(55356, 56912) // '🉐'
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
 <p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
-<p>文章创建于 <span class="dt-published">2024-05-09 Thu 10:15</span>，更新于 <span class="dt-updated">2026-04-21 Tue 11:34</span>，</p>
+<p>文章创建于 <span class="dt-published">2024-05-09 Thu 10:15</span>，更新于 <span class="dt-updated">2026-04-21 Tue 23:28</span>，</p>
 <p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
 <p>如果你偏好纯文本，你可以将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>，这样你就会获得文章的原始 org 文件。</p>
 <p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
@@ -517,6 +518,7 @@ String.fromCharCode(55356, 56912) // '🉐'
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>
+<script src="/js/translate.js" defer></script>
 <!--
 <script src="/js/snow-fall.js" defer type="module"></script>
 <snow-fall></snow-fall>

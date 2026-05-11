@@ -37,6 +37,7 @@
     <label for="snow-toggle" class="snow-icon"></label>
   </span>
   -->
+  <img src="/images/common/favicon/translate.kagi.com.ico" id="kagi-translate" class="js-required" />
   <select id="lightdark" class="js-required">
     <option value="auto">Auto</option>
     <option value="light">Light</option>
@@ -361,13 +362,13 @@ There still are no "repository wide" guidelines, except two:
 这里虽然 import 的是 <code>json</code> 文件，但里面可能是 JS 代码。
 </p>
 <div class="org-src-container">
-<pre class="src src-typescript">// This looks safe, but could be dangerous
-import config from './config.json';
+<pre class="src src-typescript"><span class="org-comment-delimiter">// </span><span class="org-comment">This looks safe, but could be dangerous
+</span><span class="org-keyword">import</span> config <span class="org-keyword">from</span> <span class="org-string">'./config.json'</span>;
 
-// The server could respond with executable code:
-export default (function(){
-  // Unexpected code execution
-})();
+<span class="org-comment-delimiter">// </span><span class="org-comment">The server could respond with executable code:
+</span><span class="org-keyword">export</span> <span class="org-keyword">default</span> (<span class="org-keyword">function</span>(){
+  <span class="org-comment-delimiter">// </span><span class="org-comment">Unexpected code execution
+</span>})();
 </pre>
 </div>
 
@@ -375,15 +376,15 @@ export default (function(){
 通过 import attributes 确保一定是 <code>json</code> 内容。
 </p>
 <div class="org-src-container">
-<pre class="src src-typescript">// Explicitly require JSON
-import config from './config.json' with { type: "json" };
+<pre class="src src-typescript"><span class="org-comment-delimiter">// </span><span class="org-comment">Explicitly require JSON
+</span><span class="org-keyword">import</span> config <span class="org-keyword">from</span> <span class="org-string">'./config.json'</span> with { <span class="org-default">type</span>: <span class="org-string">"json"</span> };
 
-// Or specify JavaScript
-import module from './module.js' with { type: "javascript" };
+<span class="org-comment-delimiter">// </span><span class="org-comment">Or specify JavaScript
+</span><span class="org-keyword">import</span> <span class="org-keyword">module</span> <span class="org-keyword">from</span> <span class="org-string">'./module.js'</span> with { <span class="org-default">type</span>: <span class="org-string">"javascript"</span> };
 
-// Works with dynamic imports too
-const data = await import('./config.json', {
-  with: { type: "json" }
+<span class="org-comment-delimiter">// </span><span class="org-comment">Works with dynamic imports too
+</span><span class="org-keyword">const</span> <span class="org-variable-name">data</span> = <span class="org-keyword">await</span> <span class="org-keyword">import</span>(<span class="org-string">'./config.json'</span>, {
+  with: { <span class="org-default">type</span>: <span class="org-string">"json"</span> }
 });
 </pre>
 </div>
@@ -852,7 +853,7 @@ on your screen
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
 <p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
-<p>文章创建于 <span class="dt-published">2024-11-18 Mon 21:39</span>，更新于 <span class="dt-updated">2026-03-17 Tue 09:32</span>，</p>
+<p>文章创建于 <span class="dt-published">2024-11-18 Mon 21:39</span>，更新于 <span class="dt-updated">2026-04-21 Tue 23:28</span>，</p>
 <p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
 <p>如果你偏好纯文本，你可以将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>，这样你就会获得文章的原始 org 文件。</p>
 <p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
@@ -870,6 +871,7 @@ on your screen
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>
+<script src="/js/translate.js" defer></script>
 <!--
 <script src="/js/snow-fall.js" defer type="module"></script>
 <snow-fall></snow-fall>
