@@ -144,6 +144,7 @@
     function positionSidenotes() {
       let lastBottomRight = 0;
       let lastBottomLeft = 0;
+      const refs = Array.from(document.querySelectorAll('sup > a.footref'));
       refs.forEach(function(ref, idx) {
         const sidenote = sidenoteContainer.querySelector(`.${SIDENOTE_CLASS}[data-ref-index="${idx}"]`);
         const prevSidenote = sidenoteContainer.querySelector(`.${SIDENOTE_CLASS}[data-ref-index="${idx - 1}"]`);
