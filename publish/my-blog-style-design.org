@@ -227,37 +227,34 @@
 导航的链接不需要 ~:visited~ 颜色标记，固定成链接本身的颜色。
 
 #+begin_src css
-#preamble nav {
-  display: grid;
-  grid-template-columns: auto max-content max-content;
-  gap: 2px;
+  #preamble nav {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
 
-  @media screen and (width <= 350px) {
-    grid-template-columns: 1fr;
-    justify-items: start;
-  }
+    & ul {
+      flex-grow: 1;
+      display: flex;
+      min-width: 150px;
+      white-space: nowrap;
+      gap: .5rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      align-items: center;
+    }
 
-  & ul {
-    display: grid;
-    gap: 8px;
-    grid-template-columns: repeat(3, max-content);
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    align-items: center;
-  }
+    a:visited {
+      color: var(--color-link);
+      color: light-dark(var(--color-link), var(--dark-color-link));
 
-  a:visited {
-    color: var(--color-link);
-    color: light-dark(var(--color-link), var(--dark-color-link));
-
-    &:hover {
-      color: #fff;
-      background: var(--color-link);
-      background: light-dark(var(--color-link), var(--dark-color-link));
+      &:hover {
+        color: #fff;
+        background: var(--color-link);
+        background: light-dark(var(--color-link), var(--dark-color-link));
+      }
     }
   }
-}
 #+end_src
 
 *** translate button
@@ -270,7 +267,6 @@
     width: 1.5rem;
     max-width: 1.5rem;
     cursor: pointer;
-    margin-inline-end: .5rem;
     opacity: 0.8;
     align-self: center;
 
