@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
       if (window.matchMedia("(max-width: 768px)").matches) {
         idleTimer = setTimeout(() => {
           backToTopButton.classList.remove("show");
-        }, 2000);
+        }, 1000);
       }
     } else {
       backToTopButton.classList.remove("show");
