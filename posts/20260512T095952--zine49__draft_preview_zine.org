@@ -621,6 +621,7 @@ _一种终结感。任务 = 已完成。_
 
   [[https://thienantran.com/talking-to-35-strangers-at-the-gym/#:~:text=And%20being%20in%20an%20awkward%20situation%20is%20actually%20not%20that%20bad%2E%20It%20sucks%20in%20the%20moment%2C%20but%20then%20you%20just%20take%20a%20few%20minutes%20to%20calm%20down%20and%20then%20you%20move%20on%20with%20your%20life%2E%20You%E2%80%99re%20ok][Source]]
   #+end_quote
+
 - [[https://tastecooking.com/i-want-to-live-like-costco-people/][I Want to Live Like Costco People]] by Jordan Michelman
 
   #+begin_quote
@@ -630,6 +631,8 @@ _一种终结感。任务 = 已完成。_
 
   [[https://tastecooking.com/i-want-to-live-like-costco-people/#:~:text=Every%20phase,child%2E][Source]]
   #+end_quote
+
+- [[https://zhangke.space/%E6%8B%8D%E6%91%84%E4%B8%80%E6%AC%A1%E5%BD%97%E6%98%9F/][拍摄一次彗星]] by 张可
 
 * Cool Bit
 :PROPERTIES:
@@ -725,6 +728,14 @@ _一种终结感。任务 = 已完成。_
 
   使用 git 和 email 发送 patch。
 
+- [[https://designsurface.dev/cascade][Cascade]]
+
+  一套用于頁面设计的 icon，包括对齐、字号、边距等相关的 icon。
+
+- [[https://www.thenodebook.com/][NODEBOOK]]
+
+  Master the Node.Js Internals.
+
 * Code Related
 :PROPERTIES:
 :CUSTOM_ID: 15020A76-7E91-40AD-A880-7C4BC1192495
@@ -745,6 +756,35 @@ _一种终结感。任务 = 已完成。_
 
 我在 [[denote:20251031T215229][Album Wall]] 頁面应用了這个特性，在手機上可以看到效果 (Firefor 還不支持)，滾動頁面時可以留意一下。
 相関代碼見 [[denote:20260410T095243::#88470668-2C68-49BF-B533-5E6E0019E612][博客样式设计::animation]]。
+
+** [[https://css-tip.com/speed-control/][Control the Speed of Infinite Animations]] by Temani Afif
+:PROPERTIES:
+:CUSTOM_ID: 5CF9446F-E83B-4D27-AC5F-AA62189463A3
+:END:
+
+‌[[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-composition][animation-composition]] 指定了当多个动画同时影响同一个属性时使用的复合操作，
+可以实現有趣的效果，例如在鼠标悬浮時加速動画。
+
+** [[https://csswizardry.com/2026/05/better-browser-caching-with-no-vary-search/][Better Browser Caching with No-Vary-Search]] by Harry Roberts
+:PROPERTIES:
+:CUSTOM_ID: D6FB2491-8902-480B-8F55-C2B5D8956AB9
+:END:
+
+URL 参数不同不会触发頁面的緩存，例如:
+
+- ~?colour=red~
+- ~?colour=blue~
+
+应该返回不同的頁面。但有的参数是和返回內容无关的，例如：
+
+- ~?utm_source=google~
+- ~?utm_source=chatgpt~
+
+它們返回的頁面是一樣的，本來应该可以返回缓存，但因为参数不同而无法用缓存。
+而新提出的 [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/No-Vary-Search][No-Vary-Search header]] 可以解决这个問題。
+对于上面的 ~utm_source~ ，
+设置 ~No-Vary-Search: params=("utm_source")~ 的 HTTP Response Header，
+就可以让浏览器忽略 ~utm_source~ 的参数差异，复用缓存。
 
 ** Others
 :PROPERTIES:
@@ -789,6 +829,38 @@ _一种终结感。任务 = 已完成。_
 
   [[https://en.liujiacai.net/2026/05/16/bun-rust-port/#:~:text=A%20system%20no,environments][Source]]
   #+end_quote
+- [[https://tannerlinsley.com/posts/projecting-react][Projecting React]] by Tanner Linsley
+
+  [[https://tanstack.com/start/latest][TanStack Start]] 的作者嫌 React 太臃肿了，花天時間用 LLM 做了 [[https://github.com/TanStack/redact][TanStack/redact]] ⸺
+  React 的另一种逻辑方案，具有 100% 的 API 兼容性，但实现更简单，从而带来更小的包体积和更好的性能。
+
+  #+begin_quote
+  我反复想到的一个比喻是 Linux 发行版。
+
+  当人们使用「分叉（fork）」这个词时，有时会暗示存在一个「真正的」Linux，但实际上并没有。
+  只有一个内核， 然后有数百个发行版将该内核投影成其用户想要的任何形态 ⸺
+  Debian、Arch、Alpine、NixOS，或者运行在你路由器上的任何系统。
+  没有人认为 Arch 的存在会伤害 Linux，这才是关键所在。
+
+  歌曲的混音版也是同样的道理。
+  有一首原曲，然后有衍生编曲，有时人们反而更喜欢衍生版本。
+  这并没有剥夺原曲的任何东西，只是增加了原曲的可能性。
+
+  _我认为未来几年的 Web 开发会比任何人预期的更像发行版和混音版。_
+  人们将围绕他们实际使用的功能，构建他们所依赖的库的专属投影，
+  其中少数会像 vinext 那样作为公共产品发布。
+  大多数则不会，这也没关系，
+  因为当重新生成代码的成本很低时，底层的思想才是最重要的，而它们的任何一种表达形式都只是众多选项之一。
+
+  [[https://tannerlinsley.com/posts/projecting-react#:~:text=years-,The,many][Source]]
+  #+end_quote
+
+  这个观点和 [[https://sockpuppet.org/blog/2026/05/12/emacsification/][The Emacsification of Software]] by Thomas and Erin 相近。
+- [[https://neciudan.dev/whats-new-in-javascript][What's actually new in JavaScript (and what's coming next)]] by Neciu Dan
+- [[https://www.nicbarker.com/virtual-scrolling][Virtual Scrolling]]
+
+  虛拟滾動的可視化，很直观。
+
 * AI Related
 :PROPERTIES:
 :CUSTOM_ID: 597130A7-465D-47E2-9149-98A27CF2116C
@@ -799,38 +871,7 @@ _一种终结感。任务 = 已完成。_
 
 #+TOC: headlines 2 local
 #+end_details
-
-** Skills
-:PROPERTIES:
-:CUSTOM_ID: 1FD7DA65-6EE0-4735-AD37-ED6C23F2CC0A
-:END:
-- [[https://github.com/forrestchang/andrej-karpathy-skills][forrestchang/andrej-karpathy-skills]]
-
-  A single CLAUDE.md file to improve Claude Code behavior,
-  derived from Andrej Karpathy's observations on LLM coding pitfalls.
-
-** Tools
-:PROPERTIES:
-:CUSTOM_ID: 6D724D90-F047-46A6-A096-710D649386A7
-:END:
-- [[https://github.com/multica-ai/multica][multica-ai/multica]]
-
-  The open-source managed agents platform.
-  Turn coding agents into real teammates — assign tasks, track progress, compound skills.
-
-- [[https://github.com/nexu-io/open-design][nexu-io/open-design]]
-
-  Local-first, open-source alternative to Anthropic's Claude Design.
-
-- [[https://github.com/vercel-labs/agent-browser][vercel-labs/agent-browser]]
-
-  Browser automation CLI for AI agents
-
-- [[https://github.com/comfy-org/ComfyUI][Comfy-Org/ComfyUI]]
-
-  The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface.
-
-** Others
+** Article
 :PROPERTIES:
 :CUSTOM_ID: FBB13132-0806-4D2F-AC1D-A68E651B7607
 :END:
@@ -922,6 +963,88 @@ _一种终结感。任务 = 已完成。_
   GEO 是 Generative engine optimization，即生成式引擎优化，让 LLM 在搜信息時更容易檢索到你的內容。
   文章分享了一些相関經驗。
 
+- [[https://www.terezatizkova.com/writing/software-abundance][Software is becoming marketing]] by Tereza Tizkova
+
+  #+begin_quote
+  *如果你是一名软件工程师：*
+  欢迎来到非技术人员多年来一直在经历的世界。
+  _准备好迎接那些经验不如你的人对你指手画脚、评估你的工作并质疑你的决定吧。_
+  你的选择是：
+  _要么成为绝对的最强者，_
+  _要么将过硬的技术能力与其他能力结合起来……比如设计、分发、品牌或行业专业知识。_
+  _最糟糕的处境是仅仅精通软件开发而别无长处。_
+
+  *如果你不是软件工程师：*
+  你现在也可以构建产品了。
+  _但编写代码从来都不是最难的部分，最难的是品味、分发渠道以及创造出人们真正想要的东西。_
+  这一点从未改变。
+
+  [[https://www.terezatizkova.com/writing/software-abundance#:~:text=If%20you%20are,changed][Source]]
+  #+end_quote
+
+- [[https://www.langchain.com/blog/the-anatomy-of-an-agent-harness][The Anatomy of an Agent Harness]]
+
+  Agent = Model + Harness (智能體 = 大模型 + 框架)
+
+  Harness 負責补充 Model 缺失的能力。If you're not the model, you're the harness.
+
+  文章总結了 Harness 主要做的事。
+
+- [[https://larsfaye.com/articles/agentic-coding-is-a-trap][Agentic Coding is a Trap]] by Lars Faye
+
+  #+begin_quote
+  _您所表达的往往并非您真正想表达的意思_ ，而大语言模型会用假设（或幻觉）来填补歧义，
+  这导致了：更多的审查、更多的代理修订、消耗更多的 Token，以及与创作内容之间更多的脱节。
+  反之，即便您写出了有史以来最漂亮、无歧义且结构完美的提示词，LLM 仍可能输出一个凭空捏造的方法，
+  因为它本质上是一个「预测下一个 Token」的引擎，而不是编译器。
+  _您不能指望用概率系统取代确定性系统后还能实现零歧义。_
+
+  [[https://larsfaye.com/articles/agentic-coding-is-a-trap?ck_subscriber_id=3312975854#:~:text=What%20you,ambiguity,-%2E][Source]]
+  #+end_quote
+
+  #+begin_quote
+  - 我从不生成超过我单次能审阅的代码量。
+    如果内容过多无法审阅，我会放慢速度并拆分任务，在必要时手动重构，以确保对最终结果有全面的理解。
+  - 我从不要求大语言模型或智能体去实现我从未做过或无法独立完成的事情，
+    除非纯粹是为了学习或教程目的（且通常在完成后会将其丢弃）。
+
+  [[https://larsfaye.com/articles/agentic-coding-is-a-trap?ck_subscriber_id=3312975854#:~:text=I%20never,afterwards%29%2E][Source]]
+  #+end_quote
+
+** Skills
+:PROPERTIES:
+:CUSTOM_ID: 1FD7DA65-6EE0-4735-AD37-ED6C23F2CC0A
+:END:
+- [[https://github.com/forrestchang/andrej-karpathy-skills][forrestchang/andrej-karpathy-skills]]
+
+  A single CLAUDE.md file to improve Claude Code behavior,
+  derived from Andrej Karpathy's observations on LLM coding pitfalls.
+
+- [[https://github.com/nicobailon/visual-explainer][nicobailon/visual-explainer]]
+
+  一个将复杂的终端输出转换为格式化好的 HTML 页面的 Skill。
+
+** Tools
+:PROPERTIES:
+:CUSTOM_ID: 6D724D90-F047-46A6-A096-710D649386A7
+:END:
+- [[https://github.com/multica-ai/multica][multica-ai/multica]]
+
+  The open-source managed agents platform.
+  Turn coding agents into real teammates — assign tasks, track progress, compound skills.
+
+- [[https://github.com/nexu-io/open-design][nexu-io/open-design]]
+
+  Local-first, open-source alternative to Anthropic's Claude Design.
+
+- [[https://github.com/vercel-labs/agent-browser][vercel-labs/agent-browser]]
+
+  Browser automation CLI for AI agents
+
+- [[https://github.com/comfy-org/ComfyUI][Comfy-Org/ComfyUI]]
+
+  The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface.
+
 * Tool | Library
 :PROPERTIES:
 :CUSTOM_ID: E1859D10-790C-4716-BD1A-EF16EA270592
@@ -935,7 +1058,46 @@ _一种终结感。任务 = 已完成。_
 
 - [[https://github.com/csstools/sanitize.css][csstools/sanitize.css]]
 
-  A best-practices CSS foundation
+  A best-practices CSS foundation.
+
+- [[https://animejs.com/][anime.js]]
+
+  JavaScript 動画引擎，首頁動画挺酷的。
+
+- [[https://www.npmjs.com/package/web-features-cli?activeTab=readme][web-features-cli]]
+
+  一款用于查找 Web 平台特性的命令行工具。
+  可以直接在终端中按关键词搜索、检查 Baseline 状态、查找 MDN 文档、规范、浏览器漏洞、调查结果等。
+
+- [[https://franktisellano.github.io/datatype/][datatype]]
+
+  可以渲染图表的字體。
+
+- [[https://github.com/html-to-text/node-html-to-text][html-to-text/node-html-to-text]]
+
+  HTML to text converter.
+
+- [[https://pnpm.io/blog/releases/11.0][pnpm 11.0]]
+
+  pnpm 发布 11.0 了，默认设置 [[https://pnpm.io/settings#minimumreleaseage][minimumReleaseAge]] 为 1 天
+   (另见：[[denote:20260312T105039::#4A5532FC-BA44-4734-8297-0688E97BB79F][Zine#48::We should all be using dependency cooldowns by William Woodruff]])；
+  新增了原生的发布流 (~pnpm publish~, ~login~ ...)。
+
+- [[https://github.com/vercel-labs/portless][vercel-labs/portless]]
+
+  portless 可以让 ~localhost:3000~ 变成 ~myapp.localhost~ (或其他名字)。[[https://portless.sh/why][Why?]]
+
+- [[https://github.com/codse/animata][Animata]]
+
+  一些封裝了動画的 React 組件，是一个动画和效果的集合，可以借鉴实現。
+
+- [[https://github.com/opentypejs/opentype.js][opentype.js]]
+
+  Read and write OpenType fonts using JavaScript.
+
+- [[https://trees.software][@pierre/trees]]
+
+  An open source file tree rendering library. 文件树渲染库，功能丰富。
 
 * Emacs
 :PROPERTIES:
