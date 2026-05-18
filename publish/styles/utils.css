@@ -1,0 +1,151 @@
+@layer utils {
+
+.hidden-link a {
+  text-decoration: none;
+  color: var(--color-text);
+  color: light-dark(var(--color-text), var(--dark-color-text));
+
+  &:hover {
+    color: #fff;
+  }
+
+  &:visited {
+    color: var(--color-text);
+    color: light-dark(var(--color-text), var(--dark-color-text));
+  }
+}
+
+img.inline-image {
+  width: 1rem;
+  height: 1rem;
+  vertical-align: -3.5px;
+}
+
+.lyrics {
+  & i {
+    color: var(--color-text);
+    color: light-dark(var(--color-text), var(--dark-color-text));
+  }
+}
+
+.lyrics--cute i {
+  font-family: Schoolbell, var(--font-family);
+}
+
+.lyrics--color {
+  color: var(--color-lyrics);
+  color: light-dark(var(--color-lyrics), var(--dark-color-lyrics));
+}
+
+.lyrics--small {
+  font-size: 0.8rem;
+}
+
+.lyrics--large {
+  font-size: 1.2rem;
+}
+
+.lyrics--huge {
+  font-size: 1.5rem;
+}
+
+/* 只支持全部都是 <figure> 或者全部都是 <a> */
+.image-list {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  flex-wrap: wrap;
+  overflow: auto;
+  max-height: 65vh;
+  border: 2px dashed;
+  border-color: var(--color-border);
+  border-color: light-dark(var(--color-border), var(--dark-color-border));
+  color: var(--color-text-secondary);
+  color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  padding: 1em;
+  margin-block: 1em;
+  border-radius: .5em;
+  overscroll-behavior: contain;
+
+  & figure {
+    margin: 0;
+  }
+
+  & img {
+    max-height: 50vh;
+    /* 让图片脱离 baseline，图片下方有多余的空白 */
+    vertical-align: top;
+  }
+}
+
+mark.emacs {
+  background: linear-gradient(to right bottom, #8482c7, #943dc1);
+  box-shadow: 1px 2px 2px var(--color-box-shadow);
+  box-shadow: 1px 2px 2px light-dark(var(--color-box-shadow), var(--dark-color-box-shadow));
+  color: #fff;
+  border-radius: 5px;
+  padding: 0px 4px;
+}
+
+blockquote.vertical-rl,
+p.verse.vertical-rl {
+  writing-mode: vertical-rl;
+  padding: 0;
+  border: none;
+  padding-block-start: 0.5rem;
+  font-size: 0.9rem;
+  width: 100%;
+  max-width: 100%;
+  overflow: auto;
+  container-type: scroll-state;
+  container-name: vertical-rl;
+  position: relative;
+
+  .footref {
+    writing-mode: initial;
+  }
+
+  @media screen and (width >= 580px) {
+    &.center {
+      align-content: center;
+    }
+  }
+}
+
+@container vertical-rl scroll-state(scrollable: block-end) {
+  p.verse.vertical-rl::after {
+    content: "☟";
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-end: 0;
+    font-size: 1.2rem;
+  }
+}
+
+.lyric-card {
+  position: relative;
+  overflow: auto;
+
+  figure {
+    margin: 0;
+
+    img {
+      display: block;
+    }
+  }
+
+  p.verse {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    height: 100%;
+    margin: 0;
+    border: 0;
+    border-radius: 10px;
+    overflow: auto;
+    scrollbar-width: none;
+    padding: 1rem;
+  }
+}
+
+}

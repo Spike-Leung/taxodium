@@ -1184,15 +1184,6 @@ section[role="note"].banner {
 
 @layer special {
 
-mark.emacs {
-  background: linear-gradient(to right bottom, #8482c7, #943dc1);
-  box-shadow: 1px 2px 2px var(--color-box-shadow);
-  box-shadow: 1px 2px 2px light-dark(var(--color-box-shadow), var(--dark-color-box-shadow));
-  color: #fff;
-  border-radius: 5px;
-  padding: 0px 4px;
-}
-
 /* scan-line, retro style */
 /* inspire from https://seated.ro/blog/tinkering-a-lost-art */
 body:where(.dark-retro)::after {
@@ -1216,6 +1207,59 @@ body.dark-retro::after {
   @media screen and (width <= 400px) {
     --scan-line-width: .7px;
   }
+}
+
+}
+
+@layer utils {
+
+.hidden-link a {
+  text-decoration: none;
+  color: var(--color-text);
+  color: light-dark(var(--color-text), var(--dark-color-text));
+
+  &:hover {
+    color: #fff;
+  }
+
+  &:visited {
+    color: var(--color-text);
+    color: light-dark(var(--color-text), var(--dark-color-text));
+  }
+}
+
+img.inline-image {
+  width: 1rem;
+  height: 1rem;
+  vertical-align: -3.5px;
+}
+
+.lyrics {
+  & i {
+    color: var(--color-text);
+    color: light-dark(var(--color-text), var(--dark-color-text));
+  }
+}
+
+.lyrics--cute i {
+  font-family: Schoolbell, var(--font-family);
+}
+
+.lyrics--color {
+  color: var(--color-lyrics);
+  color: light-dark(var(--color-lyrics), var(--dark-color-lyrics));
+}
+
+.lyrics--small {
+  font-size: 0.8rem;
+}
+
+.lyrics--large {
+  font-size: 1.2rem;
+}
+
+.lyrics--huge {
+  font-size: 1.5rem;
 }
 
 /* 只支持全部都是 <figure> 或者全部都是 <a> */
@@ -1244,6 +1288,78 @@ body.dark-retro::after {
     max-height: 50vh;
     /* 让图片脱离 baseline，图片下方有多余的空白 */
     vertical-align: top;
+  }
+}
+
+mark.emacs {
+  background: linear-gradient(to right bottom, #8482c7, #943dc1);
+  box-shadow: 1px 2px 2px var(--color-box-shadow);
+  box-shadow: 1px 2px 2px light-dark(var(--color-box-shadow), var(--dark-color-box-shadow));
+  color: #fff;
+  border-radius: 5px;
+  padding: 0px 4px;
+}
+
+.lyric-card {
+  position: relative;
+  overflow: auto;
+
+  figure {
+    margin: 0;
+
+    img {
+      display: block;
+    }
+  }
+
+  p.verse {
+    box-sizing: border-box;
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    height: 100%;
+    margin: 0;
+    border: 0;
+    border-radius: 10px;
+    overflow: auto;
+    scrollbar-width: none;
+    padding: 1rem;
+  }
+}
+
+}
+
+details.indent-paragraph p,
+blockquote.indent-paragraph
+{
+  text-indent: 2rem;
+}
+
+:where(.verse,blockquote).single {
+  border: none;
+  position: relative;
+  margin-block: 2rem;
+
+  &::before,
+  &::after {
+    color: var(--color-border);
+    color: light-dark(var(--color-border), var(--dark-color-border));
+    font-size: 4rem;
+    position: absolute;
+  }
+
+  &::before {
+    content: "“";
+    top: 0.2rem;
+    left: -0.1rem;
+    line-height: 0.2rem;
+  }
+
+  &::after {
+    content: "”";
+    right: -0.1rem;
+    bottom: -0.6rem;
+    line-height: 0.2rem;
   }
 }
 
@@ -1282,61 +1398,6 @@ p.verse.vertical-rl {
   }
 }
 
-details.indent-paragraph p,
-blockquote.indent-paragraph
-{
-  text-indent: 2rem;
-}
-
-:where(.verse,blockquote).single {
-  border: none;
-  position: relative;
-  margin-block: 2rem;
-
-  &::before,
-  &::after {
-    color: var(--color-border);
-    color: light-dark(var(--color-border), var(--dark-color-border));
-    font-size: 4rem;
-    position: absolute;
-  }
-
-  &::before {
-    content: "“";
-    top: 0.2rem;
-    left: -0.1rem;
-    line-height: 0.2rem;
-  }
-
-  &::after {
-    content: "”";
-    right: -0.1rem;
-    bottom: -0.6rem;
-    line-height: 0.2rem;
-  }
-}
-
-.hidden-link a {
-  text-decoration: none;
-  color: var(--color-text);
-  color: light-dark(var(--color-text), var(--dark-color-text));
-
-  &:hover {
-    color: #fff;
-  }
-
-  &:visited {
-    color: var(--color-text);
-    color: light-dark(var(--color-text), var(--dark-color-text));
-  }
-}
-
-img.inline-image {
-  width: 1rem;
-  height: 1rem;
-  vertical-align: -3.5px;
-}
-
 figure {
   &:has(.float-start) {
     float: inline-start;
@@ -1366,34 +1427,4 @@ figure {
       max-width: fit-content;
     }
   }
-}
-
-.lyrics {
-  & i {
-    color: var(--color-text);
-    color: light-dark(var(--color-text), var(--dark-color-text));
-  }
-}
-
-.lyrics--cute i {
-  font-family: Schoolbell, var(--font-family);
-}
-
-.lyrics--color {
-  color: var(--color-lyrics);
-  color: light-dark(var(--color-lyrics), var(--dark-color-lyrics));
-}
-
-.lyrics--small {
-  font-size: 0.8rem;
-}
-
-.lyrics--large {
-  font-size: 1.2rem;
-}
-
-.lyrics--huge {
-  font-size: 1.5rem;
-}
-
 }

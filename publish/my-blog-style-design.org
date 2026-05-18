@@ -1723,24 +1723,6 @@ footnote 增强。
   @layer special {
 #+end_src
 
-*** emacs mark
-:PROPERTIES:
-:CUSTOM_ID: F7E477A7-203A-4AFA-9B8F-5C8A46CACF00
-:END:
-
-主要用在 [[denote:20250831T162749][Emacs Elevator Pitch - Only Emacs can save your soul]]。
-
-#+begin_src css
-  mark.emacs {
-    background: linear-gradient(to right bottom, #8482c7, #943dc1);
-    box-shadow: 1px 2px 2px var(--color-box-shadow);
-    box-shadow: 1px 2px 2px light-dark(var(--color-box-shadow), var(--dark-color-box-shadow));
-    color: #fff;
-    border-radius: 5px;
-    padding: 0px 4px;
-  }
-#+end_src
-
 *** retro theme
 :PROPERTIES:
 :CUSTOM_ID: EC925295-1B78-4457-B659-2B8217F14FAA
@@ -1772,6 +1754,104 @@ footnote 增强。
     @media screen and (width <= 400px) {
       --scan-line-width: .7px;
     }
+  }
+#+end_src
+
+*** layer end
+:PROPERTIES:
+:CUSTOM_ID: 46F43A86-8D54-4CD8-903E-07290B903A93
+:END:
+#+begin_src css
+  }
+#+end_src
+
+** @layer utils
+:PROPERTIES:
+:CUSTOM_ID: 9A62E8AC-A6FF-4742-B0D0-E2967F9943F5
+:END:
+*** layer start
+:PROPERTIES:
+:CUSTOM_ID: A482E4A3-AA77-45A4-8E0F-8A92207BBE39
+:END:
+
+#+begin_src css
+@layer utils {
+#+end_src
+*** .hidden-link
+:PROPERTIES:
+:CUSTOM_ID: 8E8B1775-6975-47A9-ACFB-B7844D246C0D
+:END:
+
+有的彩蛋链接，为了避免暴露，将链接颜色改成和正文颜色一样。静待有缘人发现 :P
+
+#+begin_src css
+.hidden-link a {
+  text-decoration: none;
+  color: var(--color-text);
+  color: light-dark(var(--color-text), var(--dark-color-text));
+
+  &:hover {
+    color: #fff;
+  }
+
+  &:visited {
+    color: var(--color-text);
+    color: light-dark(var(--color-text), var(--dark-color-text));
+  }
+}
+#+end_src
+*** inline image
+:PROPERTIES:
+:CUSTOM_ID: 93423AF8-637B-4039-8E80-6C494EB6559A
+:END:
+
+行内图片，和文字一样大的图片，很少用到。
+
+#+begin_src css
+img.inline-image {
+  width: 1rem;
+  height: 1rem;
+  vertical-align: -3.5px;
+}
+#+end_src
+*** lyrics
+:PROPERTIES:
+:CUSTOM_ID: BCE45058-1141-4766-8C83-2C5FFD33D7D4
+:END:
+
+一些特殊歌词样式。
+
+见：
+- [[denote:20251016T130015][Album#5 - Darklands]]
+- [[denote:20251224T153322][Album#17 - 哈雷妈妈]]
+
+#+begin_src css
+  .lyrics {
+    & i {
+      color: var(--color-text);
+      color: light-dark(var(--color-text), var(--dark-color-text));
+    }
+  }
+
+  .lyrics--cute i {
+    font-family: Schoolbell, var(--font-family);
+  }
+
+  .lyrics--color {
+    color: var(--color-lyrics);
+    color: light-dark(var(--color-lyrics), var(--dark-color-lyrics));
+  }
+
+  .lyrics--small {
+    font-size: 0.8rem;
+  }
+
+  .lyrics--large {
+    font-size: 1.2rem;
+  }
+
+  .lyrics--huge {
+    font-size: 1.5rem;
   }
 #+end_src
 
@@ -1819,54 +1899,69 @@ footnote 增强。
   }
 #+end_src
 
-*** blockquote/verse
+*** emacs mark
 :PROPERTIES:
-:CUSTOM_ID: 2BFC37AF-7951-4233-A8A4-385070F0007B
-:END:
-**** .vertical-rl
-:PROPERTIES:
-:CUSTOM_ID: AB6F0CFB-5F68-4475-AB67-3A090A5E5D46
+:CUSTOM_ID: F7E477A7-203A-4AFA-9B8F-5C8A46CACF00
 :END:
 
-有的 blockquote/verse 文字是纵向的，针对它们调整间距等样式。
+主要用在 [[denote:20250831T162749][Emacs Elevator Pitch - Only Emacs can save your soul]]。
 
 #+begin_src css
-  blockquote.vertical-rl,
-  p.verse.vertical-rl {
-    writing-mode: vertical-rl;
-    padding: 0;
-    border: none;
-    padding-block-start: 0.5rem;
-    font-size: 0.9rem;
-    width: 100%;
-    max-width: 100%;
-    overflow: auto;
-    container-type: scroll-state;
-    container-name: vertical-rl;
+  mark.emacs {
+    background: linear-gradient(to right bottom, #8482c7, #943dc1);
+    box-shadow: 1px 2px 2px var(--color-box-shadow);
+    box-shadow: 1px 2px 2px light-dark(var(--color-box-shadow), var(--dark-color-box-shadow));
+    color: #fff;
+    border-radius: 5px;
+    padding: 0px 4px;
+  }
+#+end_src
+*** .lyric-card
+:PROPERTIES:
+:CUSTOM_ID: 19DAAC11-DCAD-4DAE-BAC2-4599E9045B1A
+:END:
+
+#+begin_src css
+  .lyric-card {
     position: relative;
+    overflow: auto;
 
-    .footref {
-      writing-mode: initial;
-    }
+    figure {
+      margin: 0;
 
-    @media screen and (width >= 580px) {
-      &.center {
-        align-content: center;
+      img {
+        display: block;
       }
     }
-  }
 
-  @container vertical-rl scroll-state(scrollable: block-end) {
-    p.verse.vertical-rl::after {
-      content: "☟";
+    p.verse {
+      box-sizing: border-box;
       position: absolute;
-      inset-block-end: 0;
-      inset-inline-end: 0;
-      font-size: 1.2rem;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      height: 100%;
+      margin: 0;
+      border: 0;
+      border-radius: 10px;
+      overflow: auto;
+      scrollbar-width: none;
+      padding: 1rem;
     }
   }
 #+end_src
 
+*** layer end
+:PROPERTIES:
+:CUSTOM_ID: 6CF751ED-E949-451C-83AA-42FB6A36E3AA
+:END:
+
+#+begin_src css
+}
+#+end_src
+*** blockquote/verse
+:PROPERTIES:
+:CUSTOM_ID: 2BFC37AF-7951-4233-A8A4-385070F0007B
+:END:
 **** .indent-paragraph
 :PROPERTIES:
 :CUSTOM_ID: C10C4CF6-C443-4C28-9591-E65752A942B8
@@ -1919,42 +2014,48 @@ footnote 增强。
   }
 #+end_src
 
-*** .hidden-link
+**** .vertical-rl
 :PROPERTIES:
-:CUSTOM_ID: 8E8B1775-6975-47A9-ACFB-B7844D246C0D
+:CUSTOM_ID: AB6F0CFB-5F68-4475-AB67-3A090A5E5D46
 :END:
 
-有的彩蛋链接，为了避免暴露，将链接颜色改成和正文颜色一样。静待有缘人发现 :P
+有的 blockquote/verse 文字是纵向的，针对它们调整间距等样式。
 
 #+begin_src css
-.hidden-link a {
-  text-decoration: none;
-  color: var(--color-text);
-  color: light-dark(var(--color-text), var(--dark-color-text));
+  blockquote.vertical-rl,
+  p.verse.vertical-rl {
+    writing-mode: vertical-rl;
+    padding: 0;
+    border: none;
+    padding-block-start: 0.5rem;
+    font-size: 0.9rem;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    container-type: scroll-state;
+    container-name: vertical-rl;
+    position: relative;
 
-  &:hover {
-    color: #fff;
+    .footref {
+      writing-mode: initial;
+    }
+
+    @media screen and (width >= 580px) {
+      &.center {
+        align-content: center;
+      }
+    }
   }
 
-  &:visited {
-    color: var(--color-text);
-    color: light-dark(var(--color-text), var(--dark-color-text));
+  @container vertical-rl scroll-state(scrollable: block-end) {
+    p.verse.vertical-rl::after {
+      content: "☟";
+      position: absolute;
+      inset-block-end: 0;
+      inset-inline-end: 0;
+      font-size: 1.2rem;
+    }
   }
-}
-#+end_src
-*** inline image
-:PROPERTIES:
-:CUSTOM_ID: 93423AF8-637B-4039-8E80-6C494EB6559A
-:END:
-
-行内图片，和文字一样大的图片，很少用到。
-
-#+begin_src css
-img.inline-image {
-  width: 1rem;
-  height: 1rem;
-  vertical-align: -3.5px;
-}
 #+end_src
 
 *** float image
@@ -2003,56 +2104,6 @@ figure 需要添加一些下边距，避免图片和下方文字贴合过近。
     }
   }
 #+end_src
-*** lyrics
-:PROPERTIES:
-:CUSTOM_ID: BCE45058-1141-4766-8C83-2C5FFD33D7D4
-:END:
-
-一些特殊歌词样式。
-
-见：
-- [[denote:20251016T130015][Album#5 - Darklands]]
-- [[denote:20251224T153322][Album#17 - 哈雷妈妈]]
-
-#+begin_src css
-  .lyrics {
-    & i {
-      color: var(--color-text);
-      color: light-dark(var(--color-text), var(--dark-color-text));
-    }
-  }
-
-  .lyrics--cute i {
-    font-family: Schoolbell, var(--font-family);
-  }
-
-  .lyrics--color {
-    color: var(--color-lyrics);
-    color: light-dark(var(--color-lyrics), var(--dark-color-lyrics));
-  }
-
-  .lyrics--small {
-    font-size: 0.8rem;
-  }
-
-  .lyrics--large {
-    font-size: 1.2rem;
-  }
-
-  .lyrics--huge {
-    font-size: 1.5rem;
-  }
-#+end_src
-
-
-*** layer end
-:PROPERTIES:
-:CUSTOM_ID: 46F43A86-8D54-4CD8-903E-07290B903A93
-:END:
-#+begin_src css
-  }
-#+end_src
-
 * index.css
 :PROPERTIES:
 :CUSTOM_ID: 17B3662C-F7CA-4A2F-B469-FDDEC42CA39B
