@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TIL: 移除图片下方多余的空白</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="Today I Learn: 图片下方為什么有多余的空白，以及解决辦法" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <!--
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  -->
+  <img src="/images/common/favicon/translate.kagi.com.ico"
+id="kagi-translate" class="js-required"
+title="使用 Kagi Translate 翻译"/ role="button"
+tabindex="0"
+alt="Translate with Kagi"
+ >
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">TIL: 移除图片下方多余的空白</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#89097B21-70E8-4653-AFC9-32864F19C964">問題和原因</a></li>
+<li><a href="#F57AD9B7-119A-46A5-AADC-483F5C603B57">解决方案</a></li>
+<li><a href="#8226EC82-1A04-4B7A-AEB4-1EEC04A6AB07">Bonus: 制作一个歌詞卡片</a></li>
+<li><a href="#5AACDA71-EAA6-4FB0-B26B-0E600AF7081E">推荐閱讀</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-89097B21-70E8-4653-AFC9-32864F19C964" class="outline-2">
+<h2 id="89097B21-70E8-4653-AFC9-32864F19C964">問題和原因</h2>
+<div class="outline-text-2" id="text-89097B21-70E8-4653-AFC9-32864F19C964"><div class="org-src-container">
+<pre class="src src-html">&lt;<span class="org-function-name">div</span> <span class="org-variable-name">style</span>=<span class="org-string">"border: 2px solid;"</span>&gt;
+  &lt;<span class="org-function-name">img</span> <span class="org-variable-name">src</span>=<span class="org-string">"/images/album/20251226T172918--&#26790;&#24819;&#23478;-the-dreamer__20241018_khalilfong_albumwall_image_&#26041;&#22823;&#21516;.webp"</span> /&gt;
+&lt;/<span class="org-function-name">div</span>&gt;
+</pre>
+</div>
+
+<div style="border: 2px solid;">
+  <img src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+</div>
+
+<p>
+留意上面的图片， <code>div</code> 里只有一个 <code>img</code> 元素，但 <code>img</code> 没有占滿 <code>div</code> ，在 <code>img</code> 下面还空了些許高度。
+</p>
+
+<p>
+這是因為 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img#:~:text=%3Cimg%3E%20is%20a%20replaced%20element%3B%20it%20has%20a%20display%20value%20of%20inline%20by%20default%2C">img 是行內元素</a>，行內元素的特性是：
+</p>
+
+<ul class="org-ul">
+<li>行内元素按行布局</li>
+<li>每行都有一个基线 (<a href="https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Typography">baseline</a>)</li>
+<li>基线由字体决定</li>
+<li><b>默认情况下，所有行内元素都与基线对齐</b></li>
+</ul>
+
+
+<figure>
+<a href="images/til-remove-extra-empty-area-from-img/baseline-of-inlinebox.webp"><img src="images/til-remove-extra-empty-area-from-img/baseline-of-inlinebox.webp" alt="baseline-of-inlinebox.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>行內元素布局示例。文字拆成了兩行。 文字本身也是行內元素，默认情况下，与基线对齐（文字底部蓝色的线就是当前的基线）。</figcaption>
+</figure>
+
+<p>
+从上面的图可以看到，行内元素默认与基线对齐，而基线和行的底部还留有一些空間，這个空間是留给像是 g、j、p、y 等笔划会延展到基线下的字符的。
+</p>
+
+<p>
+图片也是行內元素，<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img#:~:text=%3Cimg%3E%20has%20no%20baseline%2C%20so%20when%20images%20are%20used%20in%20an%20inline%20formatting%20context%20with%20vertical%2Dalign%3A%20baseline%2C%20the%20bottom%20of%20the%20image%20will%20be%20placed%20on%20the%20text%20baseline">自身没有基线，默认与文字的基线對齐</a>，也就同樣在基线下保留一些空間。
+</p>
+</div>
+</div>
+<div id="outline-container-F57AD9B7-119A-46A5-AADC-483F5C603B57" class="outline-2">
+<h2 id="F57AD9B7-119A-46A5-AADC-483F5C603B57">解决方案</h2>
+<div class="outline-text-2" id="text-F57AD9B7-119A-46A5-AADC-483F5C603B57"><p>
+在当前场景下我并不想要這点多余的空白，可以通過以下方法解决：
+</p>
+
+<p>
+<b>1.將图片設為 <code>display: block;</code> ，变成块级元素，不再是行內元素，也就不受基线影响</b>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span class="org-function-name">div</span> <span class="org-variable-name">style</span>=<span class="org-string">"border: 2px solid;"</span>&gt;
+  &lt;<span class="org-function-name">img</span> <span class="org-variable-name">style</span>=<span class="org-string">"display:block;"</span> <span class="org-variable-name">src</span>=<span class="org-string">"/images/album/20251226T172918--&#26790;&#24819;&#23478;-the-dreamer__20241018_khalilfong_albumwall_image_&#26041;&#22823;&#21516;.webp"</span> /&gt;
+&lt;/<span class="org-function-name">div</span>&gt;
+</pre>
+</div>
+
+<div style="border: 2px solid;">
+  <img style="display:block;" src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+</div>
+
+<hr>
+
+<p>
+<b>2.給图片容器設置 <code>line-height: 0;</code> ，行高為 0，基线底部也不存在高度</b>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span class="org-function-name">div</span> <span class="org-variable-name">style</span>=<span class="org-string">"border: 2px solid; line-height: 0;"</span>&gt;
+  &lt;<span class="org-function-name">img</span> <span class="org-variable-name">src</span>=<span class="org-string">"/images/album/20251226T172918--&#26790;&#24819;&#23478;-the-dreamer__20241018_khalilfong_albumwall_image_&#26041;&#22823;&#21516;.webp"</span> /&gt;
+&lt;/<span class="org-function-name">div</span>&gt;
+</pre>
+</div>
+
+<div style="border: 2px solid;line-height:0;">
+  <img src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+</div>
+
+<hr>
+
+<p>
+<b>3.給图片設置 <code>vertical-align: top; /​* or bottom *​/</code> ，不和基线对齐，和行的上下边䧘对齐</b>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span class="org-function-name">div</span> <span class="org-variable-name">style</span>=<span class="org-string">"border: 2px solid;"</span>&gt;
+  &lt;<span class="org-function-name">img</span> <span class="org-variable-name">style</span>=<span class="org-string">"vertical-align: top;"</span> <span class="org-variable-name">src</span>=<span class="org-string">"/images/album/20251226T172918--&#26790;&#24819;&#23478;-the-dreamer__20241018_khalilfong_albumwall_image_&#26041;&#22823;&#21516;.webp"</span> /&gt;
+&lt;/<span class="org-function-name">div</span>&gt;
+</pre>
+</div>
+
+<div style="border: 2px solid;">
+  <img style="vertical-align: top;" src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+</div>
+
+<p>
+你可以基于使用场景选择合适的方案，我一般会用 <code>vertical-align: top;</code> ，应该是其中副作用最小的。
+</p>
+</div>
+</div>
+<div id="outline-container-8226EC82-1A04-4B7A-AEB4-1EEC04A6AB07" class="outline-2">
+<h2 id="8226EC82-1A04-4B7A-AEB4-1EEC04A6AB07">Bonus: 制作一个歌詞卡片</h2>
+<div class="outline-text-2" id="text-8226EC82-1A04-4B7A-AEB4-1EEC04A6AB07"><style>
+@scope (.card) {
+  :scope {
+    position: relative;
+    border-radius: 10px;
+
+    .cover {
+      vertical-align: top;
+    }
+
+    .lyrics {
+      box-sizing: border-box;
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      /* 让歌詞和封面等高，超出則滾動歌詞 */
+      height: 100%;
+      overflow: auto;
+      margin: 0;
+      border: 0;
+      border-radius: 10px;
+      /* 顏色要基于封面調整 */
+      color: #328c7c;
+      /* 增加一个半透明背景可以让歌詞清晰一些的同時也好看 */
+      background: linear-gradient(to left, transparent, oklch(from #d4da98 l c h / .8));
+      /* 隐藏滾動条，好看些 */
+      scrollbar-width: none;
+      padding-block: 2rem;
+      padding-inline: 1rem;
+      /* 給上下边缘遮罩，模糊上下边缘 */
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 20%,
+        black 80%,
+        transparent 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 20%,
+        black 80%,
+        transparent 100%
+      );
+    }
+  }
+}
+</style>
+<div class="card">
+
+  <img class="cover" src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+  <p class="lyrics">
+    I framed your picture on my wall<br/>
+    说过的话 美丽的夏 都过完了<br/>
+    I didn’t know that I would fall<br/>
+    都忘了吧 说不需挂 回忆放下<br/>
+    生活里种种的平凡<br/>
+    现实总会让人心烦<br/>
+    话语中常会带 许多的批判<br/>
+    往往脱口而出的交流带来遗憾<br/>
+    Well it’s useless to say<br/>
+    Anymore<br/>
+    It’s ok<br/>
+    Anyway<br/>
+    You’ll give up<br/>
+    I’ll let down<br/>
+    That’s the way it should go<br/>
+    Oh my love I could want you to stay<br/>
+    But the truth’s telling me<br/>
+    That there’s nothing here left to say<br/>
+    I framed your picture on my wall<br/>
+    说过的话 美丽的夏 都过完了<br/>
+    I didn’t know that I would fall<br/>
+    都忘了吧 说不需挂 回忆放下<br/>
+    没有最完美的选择<br/>
+    缘份自有它的原则<br/>
+    恋爱的对话中 有多少决策<br/>
+    做好了决定 狠心 但总算有解了<br/>
+    Well it’s useless to say<br/>
+    Anymore<br/>
+    It’s ok<br/>
+    Anyway<br/>
+    You’ll give up<br/>
+    I’ll let down<br/>
+    That’s the way it should go<br/>
+    Oh my love I could want you to stay<br/>
+    But the truth’s telling me<br/>
+    That there’s nothing here left to say<br/>
+    I think we’ve said it all<br/>
+    I think we’ve said it…all…all<br/>
+    Doo doo doo doo doo doo<br/>
+    Well it’s useless to say<br/>
+    Anymore<br/>
+    It’s ok<br/>
+    Anyway<br/>
+    You’ll give up<br/>
+    I’ll let down<br/>
+    That’s the way it should go<br/>
+    Oh my love I could want you to stay<br/>
+    But the truth’s telling me<br/>
+    That there’s nothing here left to<br/>
+  </p>
+</div>
+
+<details>
+<summary>实現代碼</summary>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span class="org-function-name">div</span> <span class="org-variable-name">class</span>=<span class="org-string">"card"</span>&gt;
+  &lt;<span class="org-function-name">img</span> <span class="org-variable-name">class</span>=<span class="org-string">"cover"</span> <span class="org-variable-name">src</span>=<span class="org-string">"/images/album/20251226T172918--&#26790;&#24819;&#23478;-the-dreamer__20241018_khalilfong_albumwall_image_&#26041;&#22823;&#21516;.webp"</span> /&gt;
+  &lt;<span class="org-function-name">p</span> <span class="org-variable-name">class</span>=<span class="org-string">"lyrics"</span>&gt;
+    I framed your picture on my wall&lt;<span class="org-function-name">br</span>/&gt;
+    &#35828;&#36807;&#30340;&#35805; &#32654;&#20029;&#30340;&#22799; &#37117;&#36807;&#23436;&#20102;&lt;<span class="org-function-name">br</span>/&gt;
+    I didn&#8217;t know that I would fall&lt;<span class="org-function-name">br</span>/&gt;
+    &#37117;&#24536;&#20102;&#21543; &#35828;&#19981;&#38656;&#25346; &#22238;&#24518;&#25918;&#19979;&lt;<span class="org-function-name">br</span>/&gt;
+    &#29983;&#27963;&#37324;&#31181;&#31181;&#30340;&#24179;&#20961;&lt;<span class="org-function-name">br</span>/&gt;
+    &#29616;&#23454;&#24635;&#20250;&#35753;&#20154;&#24515;&#28902;&lt;<span class="org-function-name">br</span>/&gt;
+    &#35805;&#35821;&#20013;&#24120;&#20250;&#24102; &#35768;&#22810;&#30340;&#25209;&#21028;&lt;<span class="org-function-name">br</span>/&gt;
+    &#24448;&#24448;&#33073;&#21475;&#32780;&#20986;&#30340;&#20132;&#27969;&#24102;&#26469;&#36951;&#25022;&lt;<span class="org-function-name">br</span>/&gt;
+    Well it&#8217;s useless to say&lt;<span class="org-function-name">br</span>/&gt;
+    Anymore&lt;<span class="org-function-name">br</span>/&gt;
+    It&#8217;s ok&lt;<span class="org-function-name">br</span>/&gt;
+    Anyway&lt;<span class="org-function-name">br</span>/&gt;
+    You&#8217;ll give up&lt;<span class="org-function-name">br</span>/&gt;
+    I&#8217;ll let down&lt;<span class="org-function-name">br</span>/&gt;
+    That&#8217;s the way it should go&lt;<span class="org-function-name">br</span>/&gt;
+    Oh my love I could want you to stay&lt;<span class="org-function-name">br</span>/&gt;
+    But the truth&#8217;s telling me&lt;<span class="org-function-name">br</span>/&gt;
+    That there&#8217;s nothing here left to say&lt;<span class="org-function-name">br</span>/&gt;
+    I framed your picture on my wall&lt;<span class="org-function-name">br</span>/&gt;
+    &#35828;&#36807;&#30340;&#35805; &#32654;&#20029;&#30340;&#22799; &#37117;&#36807;&#23436;&#20102;&lt;<span class="org-function-name">br</span>/&gt;
+    I didn&#8217;t know that I would fall&lt;<span class="org-function-name">br</span>/&gt;
+    &#37117;&#24536;&#20102;&#21543; &#35828;&#19981;&#38656;&#25346; &#22238;&#24518;&#25918;&#19979;&lt;<span class="org-function-name">br</span>/&gt;
+    &#27809;&#26377;&#26368;&#23436;&#32654;&#30340;&#36873;&#25321;&lt;<span class="org-function-name">br</span>/&gt;
+    &#32536;&#20221;&#33258;&#26377;&#23427;&#30340;&#21407;&#21017;&lt;<span class="org-function-name">br</span>/&gt;
+    &#24651;&#29233;&#30340;&#23545;&#35805;&#20013; &#26377;&#22810;&#23569;&#20915;&#31574;&lt;<span class="org-function-name">br</span>/&gt;
+    &#20570;&#22909;&#20102;&#20915;&#23450; &#29408;&#24515; &#20294;&#24635;&#31639;&#26377;&#35299;&#20102;&lt;<span class="org-function-name">br</span>/&gt;
+    Well it&#8217;s useless to say&lt;<span class="org-function-name">br</span>/&gt;
+    Anymore&lt;<span class="org-function-name">br</span>/&gt;
+    It&#8217;s ok&lt;<span class="org-function-name">br</span>/&gt;
+    Anyway&lt;<span class="org-function-name">br</span>/&gt;
+    You&#8217;ll give up&lt;<span class="org-function-name">br</span>/&gt;
+    I&#8217;ll let down&lt;<span class="org-function-name">br</span>/&gt;
+    That&#8217;s the way it should go&lt;<span class="org-function-name">br</span>/&gt;
+    Oh my love I could want you to stay&lt;<span class="org-function-name">br</span>/&gt;
+    But the truth&#8217;s telling me&lt;<span class="org-function-name">br</span>/&gt;
+    That there&#8217;s nothing here left to say&lt;<span class="org-function-name">br</span>/&gt;
+    I think we&#8217;ve said it all&lt;<span class="org-function-name">br</span>/&gt;
+    I think we&#8217;ve said it&#8230;all&#8230;all&lt;<span class="org-function-name">br</span>/&gt;
+    Doo doo doo doo doo doo&lt;<span class="org-function-name">br</span>/&gt;
+    Well it&#8217;s useless to say&lt;<span class="org-function-name">br</span>/&gt;
+    Anymore&lt;<span class="org-function-name">br</span>/&gt;
+    It&#8217;s ok&lt;<span class="org-function-name">br</span>/&gt;
+    Anyway&lt;<span class="org-function-name">br</span>/&gt;
+    You&#8217;ll give up&lt;<span class="org-function-name">br</span>/&gt;
+    I&#8217;ll let down&lt;<span class="org-function-name">br</span>/&gt;
+    That&#8217;s the way it should go&lt;<span class="org-function-name">br</span>/&gt;
+    Oh my love I could want you to stay&lt;<span class="org-function-name">br</span>/&gt;
+    But the truth&#8217;s telling me&lt;<span class="org-function-name">br</span>/&gt;
+    That there&#8217;s nothing here left to&lt;<span class="org-function-name">br</span>/&gt;
+  &lt;/<span class="org-function-name">p</span>&gt;
+&lt;/<span class="org-function-name">div</span>&gt;
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-css-selector">.card</span> {
+  <span class="org-css-property">position</span>: relative;
+  <span class="org-css-property">border-radius</span>: 10px;
+
+  <span class="org-css-selector">.cover</span> {
+    <span class="org-css-property">vertical-align</span>: top;
+  }
+
+  <span class="org-css-selector">.lyrics</span> {
+    <span class="org-css-property">box-sizing</span>: border-box;
+    <span class="org-css-property">position</span>: absolute;
+    <span class="org-css-property">inset-block-start</span>: 0;
+    <span class="org-css-property">inset-inline-start</span>: 0;
+    <span class="org-comment-delimiter">/* </span><span class="org-comment">&#35753;&#27468;&#35422;&#21644;&#23553;&#38754;&#31561;&#39640;&#65292;&#36229;&#20986;&#21063;&#28414;&#21205;&#27468;&#35422;</span><span class="org-comment-delimiter"> */</span>
+    <span class="org-css-property">height</span>: 100%;
+    <span class="org-css-property">overflow</span>: auto;
+    <span class="org-css-property">margin</span>: 0;
+    <span class="org-css-property">border</span>: 0;
+    <span class="org-css-property">border-radius</span>: 10px;
+    <span class="org-comment-delimiter">/* </span><span class="org-comment">&#38991;&#33394;&#35201;&#22522;&#20110;&#23553;&#38754;&#35519;&#25972;</span><span class="org-comment-delimiter"> */</span>
+    <span class="org-css-property">color</span>: <span class="custom-2">#328c7c</span>;
+    <span class="org-comment-delimiter">/* </span><span class="org-comment">&#22686;&#21152;&#19968;&#20010;&#21322;&#36879;&#26126;&#32972;&#26223;&#21487;&#20197;&#35753;&#27468;&#35422;&#28165;&#26224;&#19968;&#20123;&#30340;&#21516;&#26178;&#20063;&#22909;&#30475;</span><span class="org-comment-delimiter"> */</span>
+    <span class="org-css-property">background</span>: linear-gradient(to left, transparent, oklch(from <span class="custom-1">#d4da98</span> l c h / .8));
+    <span class="org-comment-delimiter">/* </span><span class="org-comment">&#38544;&#34255;&#28414;&#21205;&#26465;&#65292;&#22909;&#30475;&#20123;</span><span class="org-comment-delimiter"> */</span>
+    <span class="org-css-property">scrollbar-width</span>: none;
+    <span class="org-css-property">padding-block</span>: 2rem;
+    <span class="org-css-property">padding-inline</span>: 1rem;
+    <span class="org-comment-delimiter">/* </span><span class="org-comment">&#32102;&#19978;&#19979;&#36793;&#32536;&#36974;&#32617;&#65292;&#27169;&#31946;&#19978;&#19979;&#36793;&#32536;</span><span class="org-comment-delimiter"> */</span>
+    <span class="org-css-property">mask-image</span>: linear-gradient(
+      to bottom,
+      transparent 0%,
+      <span class="custom">black</span> 20%,
+      <span class="custom">black</span> 80,
+      transparent 100%
+    );
+    <span class="org-css-proprietary-property">-webkit-mask-image</span>: linear-gradient(
+      to bottom,
+      transparent 0%,
+      <span class="custom">black</span> 20%,
+      <span class="custom">black</span> 80%,
+      transparent 100%
+    );
+  }
+}
+</pre>
+</div>
+</details>
+</div>
+</div>
+<div id="outline-container-5AACDA71-EAA6-4FB0-B26B-0E600AF7081E" class="outline-2">
+<h2 id="5AACDA71-EAA6-4FB0-B26B-0E600AF7081E">推荐閱讀</h2>
+<div class="outline-text-2" id="text-5AACDA71-EAA6-4FB0-B26B-0E600AF7081E"><ul class="org-ul">
+<li><a href="https://polypane.app/blog/understanding-the-fundamentals-of-css-layout/#how-inline-boxes-work">Understanding the fundamentals of CSS Layout / How inline boxes work</a> by Polypane</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention js-required">
+<summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回应这篇文章，可以在你的文章或社交媒体帖子中链接这篇文章，然后提交你的 URL，你的回应随后会显示在此页面上。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章或帖子的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention__list"></ul>
+</details>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
+<p>文章创建于 <span class="dt-published">2026-05-19 Tue 16:00</span>，更新于 <span class="dt-updated">2026-05-19 Tue 16:07</span>，</p>
+<p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
+<p>如果你偏好纯文本，你可以将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>，这样你就会获得文章的原始 org 文件。</p>
+<p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
+</footer>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<script src="/js/translate.js" defer></script>
+<!--
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+-->
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

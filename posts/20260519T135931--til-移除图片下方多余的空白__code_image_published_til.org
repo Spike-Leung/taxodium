@@ -1,0 +1,328 @@
+#+title:      TIL: 移除图片下方多余的空白
+#+export_file_name: til-remove-extra-empty-area-from-img
+#+date:       [2026-05-19 Tue 16:00]
+#+filetags:   :code:image:published:til:
+#+identifier: 20260519T135931
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: Today I Learn: 图片下方為什么有多余的空白，以及解决辦法
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content
+
+* 問題和原因
+:PROPERTIES:
+:CUSTOM_ID: 89097B21-70E8-4653-AFC9-32864F19C964
+:END:
+
+#+begin_src html
+  <div style="border: 2px solid;">
+    <img src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+  </div>
+#+end_src
+
+#+begin_export html
+  <div style="border: 2px solid;">
+    <img src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+  </div>
+#+end_export
+
+留意上面的图片， ~div~ 里只有一个 ~img~ 元素，但 ~img~ 没有占滿 ~div~ ，在 ~img~ 下面还空了些許高度。
+
+這是因為 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img#:~:text=%3Cimg%3E%20is%20a%20replaced%20element%3B%20it%20has%20a%20display%20value%20of%20inline%20by%20default%2C][img 是行內元素]]，行內元素的特性是：
+
+- 行内元素按行布局
+- 每行都有一个基线 ([[https://developer.mozilla.org/en-US/docs/Glossary/Baseline/Typography][baseline]])
+- 基线由字体决定
+- *默认情况下，所有行内元素都与基线对齐*
+
+#+CAPTION: 行內元素布局示例。文字拆成了兩行。
+#+CAPTION: 文字本身也是行內元素，默认情况下，与基线对齐（文字底部蓝色的线就是当前的基线）。
+[[file:images/til-remove-extra-empty-area-from-img/baseline-of-inlinebox.webp]]
+
+从上面的图可以看到，行内元素默认与基线对齐，而基线和行的底部还留有一些空間，
+這个空間是留给像是 g、j、p、y 等笔划会延展到基线下的字符的。
+
+图片也是行內元素，[[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img#:~:text=%3Cimg%3E%20has%20no%20baseline%2C%20so%20when%20images%20are%20used%20in%20an%20inline%20formatting%20context%20with%20vertical%2Dalign%3A%20baseline%2C%20the%20bottom%20of%20the%20image%20will%20be%20placed%20on%20the%20text%20baseline][自身没有基线，默认与文字的基线對齐]]，也就同樣在基线下保留一些空間。
+
+* 解决方案
+:PROPERTIES:
+:CUSTOM_ID: F57AD9B7-119A-46A5-AADC-483F5C603B57
+:END:
+
+在当前场景下我并不想要這点多余的空白，可以通過以下方法解决：
+
+*1.將图片設為 ~display: block;~ ，变成块级元素，不再是行內元素，也就不受基线影响*
+
+#+begin_src html
+  <div style="border: 2px solid;">
+    <img style="display:block;" src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+  </div>
+#+end_src
+
+#+begin_export html
+  <div style="border: 2px solid;">
+    <img style="display:block;" src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+  </div>
+#+end_export
+
+-----
+
+*2.給图片容器設置 ~line-height: 0;~ ，行高為 0，基线底部也不存在高度*
+
+#+begin_src html
+  <div style="border: 2px solid; line-height: 0;">
+    <img src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+  </div>
+#+end_src
+
+#+begin_export html
+  <div style="border: 2px solid;line-height:0;">
+    <img src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+  </div>
+#+end_export
+
+-----
+
+*3.給图片設置 ~vertical-align: top; /​* or bottom *​/~ ，不和基线对齐，和行的上下边䧘对齐*
+
+#+begin_src html :exports both
+  <div style="border: 2px solid;">
+    <img style="vertical-align: top;" src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+  </div>
+#+end_src
+
+#+begin_export html
+  <div style="border: 2px solid;">
+    <img style="vertical-align: top;" src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+  </div>
+#+end_export
+
+你可以基于使用场景选择合适的方案，我一般会用 ~vertical-align: top;~ ，应该是其中副作用最小的。
+
+* Bonus: 制作一个歌詞卡片
+:PROPERTIES:
+:CUSTOM_ID: 8226EC82-1A04-4B7A-AEB4-1EEC04A6AB07
+:END:
+
+#+begin_export html
+<style>
+@scope (.card) {
+  :scope {
+    position: relative;
+    border-radius: 10px;
+
+    .cover {
+      vertical-align: top;
+    }
+
+    .lyrics {
+      box-sizing: border-box;
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      /* 让歌詞和封面等高，超出則滾動歌詞 */
+      height: 100%;
+      overflow: auto;
+      margin: 0;
+      border: 0;
+      border-radius: 10px;
+      /* 顏色要基于封面調整 */
+      color: #328c7c;
+      /* 增加一个半透明背景可以让歌詞清晰一些的同時也好看 */
+      background: linear-gradient(to left, transparent, oklch(from #d4da98 l c h / .8));
+      /* 隐藏滾動条，好看些 */
+      scrollbar-width: none;
+      padding-block: 2rem;
+      padding-inline: 1rem;
+      /* 給上下边缘遮罩，模糊上下边缘 */
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 20%,
+        black 80%,
+        transparent 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 20%,
+        black 80%,
+        transparent 100%
+      );
+    }
+  }
+}
+</style>
+<div class="card">
+
+  <img class="cover" src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+  <p class="lyrics">
+    I framed your picture on my wall<br/>
+    说过的话 美丽的夏 都过完了<br/>
+    I didn’t know that I would fall<br/>
+    都忘了吧 说不需挂 回忆放下<br/>
+    生活里种种的平凡<br/>
+    现实总会让人心烦<br/>
+    话语中常会带 许多的批判<br/>
+    往往脱口而出的交流带来遗憾<br/>
+    Well it’s useless to say<br/>
+    Anymore<br/>
+    It’s ok<br/>
+    Anyway<br/>
+    You’ll give up<br/>
+    I’ll let down<br/>
+    That’s the way it should go<br/>
+    Oh my love I could want you to stay<br/>
+    But the truth’s telling me<br/>
+    That there’s nothing here left to say<br/>
+    I framed your picture on my wall<br/>
+    说过的话 美丽的夏 都过完了<br/>
+    I didn’t know that I would fall<br/>
+    都忘了吧 说不需挂 回忆放下<br/>
+    没有最完美的选择<br/>
+    缘份自有它的原则<br/>
+    恋爱的对话中 有多少决策<br/>
+    做好了决定 狠心 但总算有解了<br/>
+    Well it’s useless to say<br/>
+    Anymore<br/>
+    It’s ok<br/>
+    Anyway<br/>
+    You’ll give up<br/>
+    I’ll let down<br/>
+    That’s the way it should go<br/>
+    Oh my love I could want you to stay<br/>
+    But the truth’s telling me<br/>
+    That there’s nothing here left to say<br/>
+    I think we’ve said it all<br/>
+    I think we’ve said it…all…all<br/>
+    Doo doo doo doo doo doo<br/>
+    Well it’s useless to say<br/>
+    Anymore<br/>
+    It’s ok<br/>
+    Anyway<br/>
+    You’ll give up<br/>
+    I’ll let down<br/>
+    That’s the way it should go<br/>
+    Oh my love I could want you to stay<br/>
+    But the truth’s telling me<br/>
+    That there’s nothing here left to<br/>
+  </p>
+</div>
+#+end_export
+
+#+begin_details
+#+html: <summary>实現代碼</summary>
+
+#+begin_src html
+  <div class="card">
+    <img class="cover" src="/images/album/20251226T172918--梦想家-the-dreamer__20241018_khalilfong_albumwall_image_方大同.webp" />
+    <p class="lyrics">
+      I framed your picture on my wall<br/>
+      说过的话 美丽的夏 都过完了<br/>
+      I didn’t know that I would fall<br/>
+      都忘了吧 说不需挂 回忆放下<br/>
+      生活里种种的平凡<br/>
+      现实总会让人心烦<br/>
+      话语中常会带 许多的批判<br/>
+      往往脱口而出的交流带来遗憾<br/>
+      Well it’s useless to say<br/>
+      Anymore<br/>
+      It’s ok<br/>
+      Anyway<br/>
+      You’ll give up<br/>
+      I’ll let down<br/>
+      That’s the way it should go<br/>
+      Oh my love I could want you to stay<br/>
+      But the truth’s telling me<br/>
+      That there’s nothing here left to say<br/>
+      I framed your picture on my wall<br/>
+      说过的话 美丽的夏 都过完了<br/>
+      I didn’t know that I would fall<br/>
+      都忘了吧 说不需挂 回忆放下<br/>
+      没有最完美的选择<br/>
+      缘份自有它的原则<br/>
+      恋爱的对话中 有多少决策<br/>
+      做好了决定 狠心 但总算有解了<br/>
+      Well it’s useless to say<br/>
+      Anymore<br/>
+      It’s ok<br/>
+      Anyway<br/>
+      You’ll give up<br/>
+      I’ll let down<br/>
+      That’s the way it should go<br/>
+      Oh my love I could want you to stay<br/>
+      But the truth’s telling me<br/>
+      That there’s nothing here left to say<br/>
+      I think we’ve said it all<br/>
+      I think we’ve said it…all…all<br/>
+      Doo doo doo doo doo doo<br/>
+      Well it’s useless to say<br/>
+      Anymore<br/>
+      It’s ok<br/>
+      Anyway<br/>
+      You’ll give up<br/>
+      I’ll let down<br/>
+      That’s the way it should go<br/>
+      Oh my love I could want you to stay<br/>
+      But the truth’s telling me<br/>
+      That there’s nothing here left to<br/>
+    </p>
+  </div>
+#+end_src
+
+#+begin_src css
+  .card {
+    position: relative;
+    border-radius: 10px;
+
+    .cover {
+      vertical-align: top;
+    }
+
+    .lyrics {
+      box-sizing: border-box;
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      /* 让歌詞和封面等高，超出則滾動歌詞 */
+      height: 100%;
+      overflow: auto;
+      margin: 0;
+      border: 0;
+      border-radius: 10px;
+      /* 顏色要基于封面調整 */
+      color: #328c7c;
+      /* 增加一个半透明背景可以让歌詞清晰一些的同時也好看 */
+      background: linear-gradient(to left, transparent, oklch(from #d4da98 l c h / .8));
+      /* 隐藏滾動条，好看些 */
+      scrollbar-width: none;
+      padding-block: 2rem;
+      padding-inline: 1rem;
+      /* 給上下边缘遮罩，模糊上下边缘 */
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 20%,
+        black 80,
+        transparent 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 20%,
+        black 80%,
+        transparent 100%
+      );
+    }
+  }
+#+end_src
+#+end_details
+
+* 推荐閱讀
+:PROPERTIES:
+:CUSTOM_ID: 5AACDA71-EAA6-4FB0-B26B-0E600AF7081E
+:END:
+
+- [[https://polypane.app/blog/understanding-the-fundamentals-of-css-layout/#how-inline-boxes-work][Understanding the fundamentals of CSS Layout / How inline boxes work]] by Polypane
