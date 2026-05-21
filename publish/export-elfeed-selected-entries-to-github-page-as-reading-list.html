@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>导出 Elfeed 选中条目到 GitHub Page 作为 Reading List</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="导出 Elfeed 选中条目到 GitHub Page 作为 Reading List，便于手机查看" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<script src="/js/color-scheme.js"></script>
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <!--
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  -->
+  <img src="/images/common/favicon/translate.kagi.com.ico"
+id="kagi-translate" class="js-required"
+title="使用 Kagi Translate 翻译"/ role="button"
+tabindex="0"
+alt="Translate with Kagi"
+ >
+  <select id="lightdark" class="js-required">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">导出 Elfeed 选中条目到 GitHub Page 作为 Reading List</h1>
+</header><p>
+我之前一直用 <a href="https://github.com/emacs-elfeed/elfeed">elfeed</a> 阅读订阅流，我挺满意 elfeed 的功能的，唯一的不足是手机上用不了 (懒得折腾将 Emacs 运行在 iPhone 上)。后来我安装 <a href="https://netnewswire.com/">NetNewsWire</a> 用一段时间，NetNewsWire 用着不错，但也存在一些问题：
+</p>
+
+<ul class="org-ul">
+<li>我的订阅流是用一个 <code>elfeed.org</code> 文件维护的，纯文本编辑非常方便，比各种 UI 点击方便得多。但每次更新后，我都需要重新导入到 NetNewsWire 中，但只能新增缺少的，不会移除 <code>elfeed.org</code> 中没有的。如果我想完全替换成 <code>elfeed.org</code> 中的内容，我就得新建一个 NetNewsWire 用户分组，但这样又会造成已读标记重置。</li>
+<li>NetNewsWire 中过滤搜索不如 elfeed 来得方便。</li>
+<li>NetNewsWire 中星标多个文章后，不方便一次性导出。</li>
+<li>容易陷入「流」的陷阱中，总是没事打开看看有没有更新。手机更容易访问，也更容易沉迷。习惯用 NetNewsWire 后也减少了我使用 elfeed 的频率，导致 elfeed 中留着很多看过了但未标记已读的条目。</li>
+</ul>
+
+<p>
+最近 elfeed 更新了 <a href="https://github.com/emacs-elfeed/elfeed/blob/main/NEWS.org">很多新功能</a>，更好的分组视图、遍历的搜索过滤方法……于是我又回到了 elfeed 里，同时把 NetNewsWire 卸载了，避免没事总想着打开看看，问题是我在手机上又没法阅读订阅流了。（我知道可以自建类似 <a href="https://www.freshrss.org/">FreshRSS</a> 的服务，随时可以用浏览器访问，只是我懒得去维护一个服务器，FreshRSS 之类的工具，维护订阅流也不如纯文本方便。）
+</p>
+
+<p>
+<a href="49.html#FF319C35-80BD-4CA6-931E-A102E10B4009">Zine#49::Going back to the morning newspaper model by Chandru</a> 里提到，作者会把订阅的内容每天导出成一份 HTML 当作报纸阅读。将订阅流变成数量有限的一份 HTML 报纸，避免了「流」的无尽感以及因此带来的焦虑感，我也想尝试一下是否有用。
+</p>
+
+<p>
+于是花了点时间，写了段 Elisp 函数，通过在 ​<code>*elfeed-search​*</code> 中选中想阅读的条目，然后将它们导出一个 HTML 文件，推送到 GitHub Page 上阅读（或者任何 Web 服务器）。
+</p>
+
+<details>
+<summary>Elisp 函数</summary>
+
+<p>
+函数主要做的事情：
+</p>
+<ul class="org-ul">
+<li>获取选中的 elfeed 条目</li>
+<li>遍历所有条目，生成 org mode 的链接</li>
+<li>将所有连接放到一个临时 buffer 中，导出 HTML 文件到指定位置</li>
+<li>提交并推送到 GitHub</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/elfeed-reading-list</span> ()
+  <span class="org-doc">"Generate selected Elfeed entries as reading list. Auto push to git."</span>
+  (<span class="org-keyword">interactive</span> nil elfeed-search-mode)
+  (<span class="org-keyword">let*</span> ((repo-dir (expand-file-name <span class="org-string">"~/git/reading-list"</span>))
+         (entries (elfeed-search-selected))
+         (links (mapcar
+                 (<span class="org-keyword">lambda</span> (entry)
+                   (<span class="org-keyword">let</span> ((link (elfeed-entry-link entry))
+                         (title (elfeed-entry-title entry))
+                         (feed-name (elfeed-feed-title (elfeed-entry-feed entry))))
+                     (format <span class="org-string">"%s (%s)"</span> (org-link-make-string link title) feed-name)))
+                 entries)))
+    (<span class="org-keyword">if</span> (null links)
+        (<span class="org-warning">user-error</span> <span class="org-string">"No entries selected."</span>)
+      (<span class="org-keyword">with-temp-buffer</span>
+        (goto-char (point-min))
+        (insert (format <span class="org-string">"#+title: Reading list\n"</span>))
+        (insert <span class="org-string">"#+html_head_extra: &lt;link rel=\"stylesheet\" href=\"./main.css\" /&gt;\n"</span>)
+        (<span class="org-keyword">dolist</span> (link links)
+          (insert (format <span class="org-string">"- %s\n"</span> link)))
+        (insert <span class="org-string">"\n"</span>)
+        (org-mode)
+        (<span class="org-keyword">let</span> ((org-html-postamble nil))
+          (org-export-to-file 'html <span class="org-string">"~/git/reading-list/index.html"</span>)))
+      (message <span class="org-string">"Add %d entries to index.html."</span> (length links)))
+    (<span class="org-keyword">let</span> ((default-directory repo-dir))
+      (<span class="org-keyword">unless</span> (file-directory-p (expand-file-name <span class="org-string">".git"</span> repo-dir))
+        (<span class="org-warning">user-error</span> <span class="org-string">"Not a git repository: %s"</span> repo-dir))
+      (shell-command <span class="org-string">"git add index.html"</span>)
+      (<span class="org-keyword">let</span> ((status (shell-command-to-string <span class="org-string">"git status --porcelain index.html"</span>)))
+        (<span class="org-keyword">if</span> (string-empty-p status)
+            (message <span class="org-string">"No changes to commit."</span>)
+          (<span class="org-keyword">let</span> ((commit-msg <span class="org-string">":memo: update reading list"</span>))
+            (shell-command (format <span class="org-string">"git commit -m \"%s\""</span> commit-msg))
+            (message <span class="org-string">"Pushing to origin..."</span>)
+            (<span class="org-keyword">if</span> (= 0 (shell-command <span class="org-string">"git push"</span> nil nil))
+                (message <span class="org-string">"Add %d entries and pushed to origin."</span> (length links))
+              (message <span class="org-string">"Add %d entries but push failed."</span> (length links)))))))
+    (message <span class="org-string">"Add %d entries and exported to index.html."</span> (length links))))
+</pre>
+</div>
+</details>
+
+<p>
+<a href="https://github.com/Spike-Leung/reading-list">reading-list</a> 很简单，一个 <code>index.html</code> 容纳所有导出的链接，一个 <code>main.css</code> 添加一些简单的样式，然后配置一下 GitHub Page 就行。
+</p>
+
+<p>
+这样我就可以继续快乐地用 Elfeed 管理订阅流，保持单一的数据源，既能在电脑上使用 Elfeed 阅读，出门了也能有一份链接列表可以看。我本来也更倾向去原网站阅读，所以一份简单的链接列表对我来说就足够了。我会使用一段时间看看效果，如果你想看看生成的 HTML 页面：
+</p>
+
+<p>
+☞ <a href="https://spike-leung.github.io/reading-list/">Reading list</a>
+</p>
+</div>
+<div id="postamble" class="status">
+
+<details class="webmention js-required">
+<summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回应这篇文章，可以在你的文章或社交媒体帖子中链接这篇文章，然后提交你的 URL，你的回应随后会显示在此页面上。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章或帖子的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention__list"></ul>
+</details>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
+<p>文章创建于 <span class="dt-published">2026-05-21 Thu 23:50</span>，更新于 <span class="dt-updated">2026-05-21 Thu 23:55</span>，</p>
+<p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
+<p>如果你偏好纯文本，你可以将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>，这样你就会获得文章的原始 org 文件。</p>
+<p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
+</footer>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/heading-enhanced.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<script src="/js/translate.js" defer></script>
+<!--
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+-->
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
