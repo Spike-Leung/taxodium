@@ -13,7 +13,7 @@
 
 我之前一直用 [[https://github.com/emacs-elfeed/elfeed][elfeed]] 阅读订阅流，我挺满意 elfeed 的功能的，
 唯一的不足是手机上用不了 (懒得折腾将 Emacs 运行在 iPhone 上)。
-后来我安装 [[https://netnewswire.com/][NetNewsWire]] 用一段时间，NetNewsWire 用着不错，但也存在一些问题：
+后来我安装 [[https://netnewswire.com/][NetNewsWire]] 用了一段时间，还不错，但也存在一些问题：
 
 - 我的订阅流是用一个 ~elfeed.org~ 文件维护的，纯文本编辑非常方便，比各种 UI 点击方便得多。
   但每次更新后，我都需要重新导入到 NetNewsWire 中，
@@ -26,7 +26,7 @@
   手机更容易访问，也更容易沉迷。
   习惯用 NetNewsWire 后也减少了我使用 elfeed 的频率，导致 elfeed 中留着很多看过了但未标记已读的条目。
 
-最近 elfeed 更新了 [[https://github.com/emacs-elfeed/elfeed/blob/main/NEWS.org][很多新功能]]，更好的分组视图、遍历的搜索过滤方法……
+最近 elfeed 更新了 [[https://github.com/emacs-elfeed/elfeed/blob/main/NEWS.org][很多新功能]]，更好的分组视图、便利的搜索过滤方法……
 于是我又回到了 elfeed 里，同时把 NetNewsWire 卸载了，避免没事总想着打开看看，
 问题是我在手机上又没法阅读订阅流了。
 （我知道可以自建类似 [[https://www.freshrss.org/][FreshRSS]] 的服务，随时可以用浏览器访问，
@@ -41,7 +41,7 @@
 然后将它们导出一个 HTML 文件，推送到 GitHub Page 上阅读（或者任何 Web 服务器）。
 
 #+begin_details
-#+html: <summary>Elisp 函数</summary>
+#+html: <summary>spike-leung/elfeed-reading-list</summary>
 
 函数主要做的事情：
 - 获取选中的 elfeed 条目
@@ -49,25 +49,28 @@
 - 将所有连接放到一个临时 buffer 中，导出 HTML 文件到指定位置
 - 提交并推送到 GitHub
 
+另外我还添加了 [[denote:20260323T141944][Kagi Translate]] 跳转链接，默认翻译成中文。
+
 #+begin_src emacs-lisp
   (defun spike-leung/elfeed-reading-list ()
     "Generate selected Elfeed entries as reading list. Auto push to git."
     (interactive nil elfeed-search-mode)
     (let* ((repo-dir (expand-file-name "~/git/reading-list"))
            (entries (elfeed-search-selected))
-           (links (mapcar
-                   (lambda (entry)
-                     (let ((link (elfeed-entry-link entry))
-                           (title (elfeed-entry-title entry))
-                           (feed-name (elfeed-feed-title (elfeed-entry-feed entry))))
-                       (format "%s (%s)" (org-link-make-string link title) feed-name)))
-                   entries)))
+           (links (mapcar (lambda (entry)
+                            (let* ((link (elfeed-entry-link entry))
+                                   (title (elfeed-entry-title entry))
+                                   (feed-name (elfeed-feed-title (elfeed-entry-feed entry)))
+                                   (kagi-translate-link (format "[[https://translate.kagi.com/%s?to=zh_cn][🌐]]" link)))
+                              (format "%s (%s) %s " (org-link-make-string link title) feed-name kagi-translate-link)))
+                          entries)))
       (if (null links)
           (user-error "No entries selected.")
         (with-temp-buffer
           (goto-char (point-min))
           (insert (format "#+title: Reading list\n"))
           (insert "#+html_head_extra: <link rel=\"stylesheet\" href=\"./main.css\" />\n")
+          (insert "[[https://translate.kagi.com/https://spike-leung.github.io/reading-list/index.html?to=zh_cn][Kagi Translate This Page]]\n")
           (dolist (link links)
             (insert (format "- %s\n" link)))
           (insert "\n")
@@ -97,7 +100,7 @@
 
 这样我就可以继续快乐地用 Elfeed 管理订阅流，保持单一的数据源，
 既能在电脑上使用 Elfeed 阅读，出门了也能有一份链接列表可以看。
-我本来也更倾向去原网站阅读，所以一份简单的链接列表对我来说就足够了。
+我本来也倾向于去原网站阅读，所以一份简单的链接列表对我来说就足够了。
 我会使用一段时间看看效果，如果你想看看生成的 HTML 页面：
 
 ☞ [[https://spike-leung.github.io/reading-list/][Reading list]]

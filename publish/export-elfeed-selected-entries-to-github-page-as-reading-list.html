@@ -55,7 +55,7 @@ alt="Translate with Kagi"
 <header>
 <h1 class="title p-name">导出 Elfeed 选中条目到 GitHub Page 作为 Reading List</h1>
 </header><p>
-我之前一直用 <a href="https://github.com/emacs-elfeed/elfeed">elfeed</a> 阅读订阅流，我挺满意 elfeed 的功能的，唯一的不足是手机上用不了 (懒得折腾将 Emacs 运行在 iPhone 上)。后来我安装 <a href="https://netnewswire.com/">NetNewsWire</a> 用一段时间，NetNewsWire 用着不错，但也存在一些问题：
+我之前一直用 <a href="https://github.com/emacs-elfeed/elfeed">elfeed</a> 阅读订阅流，我挺满意 elfeed 的功能的，唯一的不足是手机上用不了 (懒得折腾将 Emacs 运行在 iPhone 上)。后来我安装 <a href="https://netnewswire.com/">NetNewsWire</a> 用了一段时间，还不错，但也存在一些问题：
 </p>
 
 <ul class="org-ul">
@@ -66,7 +66,7 @@ alt="Translate with Kagi"
 </ul>
 
 <p>
-最近 elfeed 更新了 <a href="https://github.com/emacs-elfeed/elfeed/blob/main/NEWS.org">很多新功能</a>，更好的分组视图、遍历的搜索过滤方法……于是我又回到了 elfeed 里，同时把 NetNewsWire 卸载了，避免没事总想着打开看看，问题是我在手机上又没法阅读订阅流了。（我知道可以自建类似 <a href="https://www.freshrss.org/">FreshRSS</a> 的服务，随时可以用浏览器访问，只是我懒得去维护一个服务器，FreshRSS 之类的工具，维护订阅流也不如纯文本方便。）
+最近 elfeed 更新了 <a href="https://github.com/emacs-elfeed/elfeed/blob/main/NEWS.org">很多新功能</a>，更好的分组视图、便利的搜索过滤方法……于是我又回到了 elfeed 里，同时把 NetNewsWire 卸载了，避免没事总想着打开看看，问题是我在手机上又没法阅读订阅流了。（我知道可以自建类似 <a href="https://www.freshrss.org/">FreshRSS</a> 的服务，随时可以用浏览器访问，只是我懒得去维护一个服务器，FreshRSS 之类的工具，维护订阅流也不如纯文本方便。）
 </p>
 
 <p>
@@ -78,7 +78,7 @@ alt="Translate with Kagi"
 </p>
 
 <details>
-<summary>Elisp 函数</summary>
+<summary>spike-leung/elfeed-reading-list</summary>
 
 <p>
 函数主要做的事情：
@@ -90,25 +90,30 @@ alt="Translate with Kagi"
 <li>提交并推送到 GitHub</li>
 </ul>
 
+<p>
+另外我还添加了 <a href="my-experience-with-kagi-translate.html">Kagi Translate</a> 跳转链接，默认翻译成中文。
+</p>
+
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/elfeed-reading-list</span> ()
   <span class="org-doc">"Generate selected Elfeed entries as reading list. Auto push to git."</span>
   (<span class="org-keyword">interactive</span> nil elfeed-search-mode)
   (<span class="org-keyword">let*</span> ((repo-dir (expand-file-name <span class="org-string">"~/git/reading-list"</span>))
          (entries (elfeed-search-selected))
-         (links (mapcar
-                 (<span class="org-keyword">lambda</span> (entry)
-                   (<span class="org-keyword">let</span> ((link (elfeed-entry-link entry))
-                         (title (elfeed-entry-title entry))
-                         (feed-name (elfeed-feed-title (elfeed-entry-feed entry))))
-                     (format <span class="org-string">"%s (%s)"</span> (org-link-make-string link title) feed-name)))
-                 entries)))
+         (links (mapcar (<span class="org-keyword">lambda</span> (entry)
+                          (<span class="org-keyword">let*</span> ((link (elfeed-entry-link entry))
+                                 (title (elfeed-entry-title entry))
+                                 (feed-name (elfeed-feed-title (elfeed-entry-feed entry)))
+                                 (kagi-translate-link (format <span class="org-string">"[[https://translate.kagi.com/%s?to=zh_cn][&#127760;]]"</span> link)))
+                            (format <span class="org-string">"%s (%s) %s "</span> (org-link-make-string link title) feed-name kagi-translate-link)))
+                        entries)))
     (<span class="org-keyword">if</span> (null links)
         (<span class="org-warning">user-error</span> <span class="org-string">"No entries selected."</span>)
       (<span class="org-keyword">with-temp-buffer</span>
         (goto-char (point-min))
         (insert (format <span class="org-string">"#+title: Reading list\n"</span>))
         (insert <span class="org-string">"#+html_head_extra: &lt;link rel=\"stylesheet\" href=\"./main.css\" /&gt;\n"</span>)
+        (insert <span class="org-string">"[[https://translate.kagi.com/https://spike-leung.github.io/reading-list/index.html?to=zh_cn][Kagi Translate This Page]]\n"</span>)
         (<span class="org-keyword">dolist</span> (link links)
           (insert (format <span class="org-string">"- %s\n"</span> link)))
         (insert <span class="org-string">"\n"</span>)
@@ -139,7 +144,7 @@ alt="Translate with Kagi"
 </p>
 
 <p>
-这样我就可以继续快乐地用 Elfeed 管理订阅流，保持单一的数据源，既能在电脑上使用 Elfeed 阅读，出门了也能有一份链接列表可以看。我本来也更倾向去原网站阅读，所以一份简单的链接列表对我来说就足够了。我会使用一段时间看看效果，如果你想看看生成的 HTML 页面：
+这样我就可以继续快乐地用 Elfeed 管理订阅流，保持单一的数据源，既能在电脑上使用 Elfeed 阅读，出门了也能有一份链接列表可以看。我本来也倾向于去原网站阅读，所以一份简单的链接列表对我来说就足够了。我会使用一段时间看看效果，如果你想看看生成的 HTML 页面：
 </p>
 
 <p>
@@ -166,7 +171,7 @@ alt="Translate with Kagi"
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
 <p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
-<p>文章创建于 <span class="dt-published">2026-05-21 Thu 23:50</span>，更新于 <span class="dt-updated">2026-05-21 Thu 23:55</span>，</p>
+<p>文章创建于 <span class="dt-published">2026-05-21 Thu 23:50</span>，更新于 <span class="dt-updated">2026-05-22 Fri 02:11</span>，</p>
 <p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
 <p>如果你偏好纯文本，你可以将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>，这样你就会获得文章的原始 org 文件。</p>
 <p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
