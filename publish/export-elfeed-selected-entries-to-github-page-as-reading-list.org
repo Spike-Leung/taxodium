@@ -49,35 +49,36 @@
 - 将所有连接放到一个临时 buffer 中，导出 HTML 文件到指定位置
 - 提交并推送到 GitHub
 
-另外我还添加了 [[denote:20260323T141944][Kagi Translate]] 跳转链接，默认翻译成中文。
+更新：
+- 添加了 [[denote:20260323T141944][Kagi Translate]]
+- 添加紅心功能
 
 #+begin_src emacs-lisp
   (defun spike-leung/elfeed-reading-list ()
     "Generate selected Elfeed entries as reading list. Auto push to git."
     (interactive nil elfeed-search-mode)
-    (let* ((repo-dir (expand-file-name "~/git/reading-list"))
-           (entries (elfeed-search-selected))
-           (links (mapcar (lambda (entry)
-                            (let* ((link (elfeed-entry-link entry))
-                                   (title (elfeed-entry-title entry))
-                                   (feed-name (elfeed-feed-title (elfeed-entry-feed entry)))
-                                   (kagi-translate-link (format "[[https://translate.kagi.com/%s?to=zh_cn][🌐]]" link)))
-                              (format "%s (%s) %s " (org-link-make-string link title) feed-name kagi-translate-link)))
-                          entries)))
-      (if (null links)
-          (user-error "No entries selected.")
-        (with-temp-buffer
-          (goto-char (point-min))
-          (insert (format "#+title: Reading list\n"))
-          (insert "#+html_head_extra: <link rel=\"stylesheet\" href=\"./main.css\" />\n")
-          (insert "[[https://translate.kagi.com/https://spike-leung.github.io/reading-list/index.html?to=zh_cn][Kagi Translate This Page]]\n")
-          (dolist (link links)
-            (insert (format "- %s\n" link)))
-          (insert "\n")
-          (org-mode)
-          (let ((org-html-postamble nil))
-            (org-export-to-file 'html "~/git/reading-list/index.html")))
-        (message "Add %d entries to index.html." (length links)))
+    (let ((repo-dir (expand-file-name "~/git/reading-list"))
+          (entries (elfeed-search-selected)))
+      (with-temp-buffer
+        (goto-char (point-min))
+        (insert (format "#+title: Reading list\n"))
+        (insert "#+html_head_extra: <link rel=\"stylesheet\" href=\"./main.css\" />\n")
+        (insert "#+html_head_extra: <script defer src=\"./main.js\"></script>\n")
+        (insert "@@html:<div class=\"action\">@@")
+        (insert "[[https://translate.kagi.com/https://spike-leung.github.io/reading-list/index.html?to=zh_cn&kt_quality=best][Translate]]")
+        (insert "@@html:<span><input type=\"checkbox\" id=\"like\"/><label for=\"like\" class=\"like-label\"></label></span>@@")
+        (insert "@@html:</div>@@")
+        (insert "\n\n")
+        (dolist (entry entries)
+          (let* ((link (elfeed-entry-link entry))
+                 (title (elfeed-entry-title entry))
+                 (like-button (format "@@html:<span class=\"like-button\" data-id=\"%s\"></span>@@" link)))
+            (insert (format "- %s %s" (org-link-make-string link title) like-button)))
+          (insert "\n"))
+        (org-mode)
+        (let ((org-html-postamble nil))
+          (org-export-to-file 'html "~/git/reading-list/index.html")))
+      (message "Entries export to index.html")
       (let ((default-directory repo-dir))
         (unless (file-directory-p (expand-file-name ".git" repo-dir))
           (user-error "Not a git repository: %s" repo-dir))
@@ -89,9 +90,9 @@
               (shell-command (format "git commit -m \"%s\"" commit-msg))
               (message "Pushing to origin...")
               (if (= 0 (shell-command "git push" nil nil))
-                  (message "Add %d entries and pushed to origin." (length links))
-                (message "Add %d entries but push failed." (length links)))))))
-      (message "Add %d entries and exported to index.html." (length links))))
+                  (message "Add entries and pushed to origin.")
+                (message "Add entries but push failed."))))))
+      (message "Add entries and exported to index.html.")))
 #+end_src
 #+end_details
 

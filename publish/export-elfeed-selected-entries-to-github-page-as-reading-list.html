@@ -91,36 +91,39 @@ alt="Translate with Kagi"
 </ul>
 
 <p>
-另外我还添加了 <a href="my-experience-with-kagi-translate.html">Kagi Translate</a> 跳转链接，默认翻译成中文。
+更新：
 </p>
+<ul class="org-ul">
+<li>添加了 <a href="my-experience-with-kagi-translate.html">Kagi Translate</a></li>
+<li>添加紅心功能</li>
+</ul>
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/elfeed-reading-list</span> ()
   <span class="org-doc">"Generate selected Elfeed entries as reading list. Auto push to git."</span>
   (<span class="org-keyword">interactive</span> nil elfeed-search-mode)
-  (<span class="org-keyword">let*</span> ((repo-dir (expand-file-name <span class="org-string">"~/git/reading-list"</span>))
-         (entries (elfeed-search-selected))
-         (links (mapcar (<span class="org-keyword">lambda</span> (entry)
-                          (<span class="org-keyword">let*</span> ((link (elfeed-entry-link entry))
-                                 (title (elfeed-entry-title entry))
-                                 (feed-name (elfeed-feed-title (elfeed-entry-feed entry)))
-                                 (kagi-translate-link (format <span class="org-string">"[[https://translate.kagi.com/%s?to=zh_cn][&#127760;]]"</span> link)))
-                            (format <span class="org-string">"%s (%s) %s "</span> (org-link-make-string link title) feed-name kagi-translate-link)))
-                        entries)))
-    (<span class="org-keyword">if</span> (null links)
-        (<span class="org-warning">user-error</span> <span class="org-string">"No entries selected."</span>)
-      (<span class="org-keyword">with-temp-buffer</span>
-        (goto-char (point-min))
-        (insert (format <span class="org-string">"#+title: Reading list\n"</span>))
-        (insert <span class="org-string">"#+html_head_extra: &lt;link rel=\"stylesheet\" href=\"./main.css\" /&gt;\n"</span>)
-        (insert <span class="org-string">"[[https://translate.kagi.com/https://spike-leung.github.io/reading-list/index.html?to=zh_cn][Kagi Translate This Page]]\n"</span>)
-        (<span class="org-keyword">dolist</span> (link links)
-          (insert (format <span class="org-string">"- %s\n"</span> link)))
-        (insert <span class="org-string">"\n"</span>)
-        (org-mode)
-        (<span class="org-keyword">let</span> ((org-html-postamble nil))
-          (org-export-to-file 'html <span class="org-string">"~/git/reading-list/index.html"</span>)))
-      (message <span class="org-string">"Add %d entries to index.html."</span> (length links)))
+  (<span class="org-keyword">let</span> ((repo-dir (expand-file-name <span class="org-string">"~/git/reading-list"</span>))
+        (entries (elfeed-search-selected)))
+    (<span class="org-keyword">with-temp-buffer</span>
+      (goto-char (point-min))
+      (insert (format <span class="org-string">"#+title: Reading list\n"</span>))
+      (insert <span class="org-string">"#+html_head_extra: &lt;link rel=\"stylesheet\" href=\"./main.css\" /&gt;\n"</span>)
+      (insert <span class="org-string">"#+html_head_extra: &lt;script defer src=\"./main.js\"&gt;&lt;/script&gt;\n"</span>)
+      (insert <span class="org-string">"@@html:&lt;div class=\"action\"&gt;@@"</span>)
+      (insert <span class="org-string">"[[https://translate.kagi.com/https://spike-leung.github.io/reading-list/index.html?to=zh_cn&amp;kt_quality=best][Translate]]"</span>)
+      (insert <span class="org-string">"@@html:&lt;span&gt;&lt;input type=\"checkbox\" id=\"like\"/&gt;&lt;label for=\"like\" class=\"like-label\"&gt;&lt;/label&gt;&lt;/span&gt;@@"</span>)
+      (insert <span class="org-string">"@@html:&lt;/div&gt;@@"</span>)
+      (insert <span class="org-string">"\n\n"</span>)
+      (<span class="org-keyword">dolist</span> (entry entries)
+        (<span class="org-keyword">let*</span> ((link (elfeed-entry-link entry))
+               (title (elfeed-entry-title entry))
+               (like-button (format <span class="org-string">"@@html:&lt;span class=\"like-button\" data-id=\"%s\"&gt;&lt;/span&gt;@@"</span> link)))
+          (insert (format <span class="org-string">"- %s %s"</span> (org-link-make-string link title) like-button)))
+        (insert <span class="org-string">"\n"</span>))
+      (org-mode)
+      (<span class="org-keyword">let</span> ((org-html-postamble nil))
+        (org-export-to-file 'html <span class="org-string">"~/git/reading-list/index.html"</span>)))
+    (message <span class="org-string">"Entries export to index.html"</span>)
     (<span class="org-keyword">let</span> ((default-directory repo-dir))
       (<span class="org-keyword">unless</span> (file-directory-p (expand-file-name <span class="org-string">".git"</span> repo-dir))
         (<span class="org-warning">user-error</span> <span class="org-string">"Not a git repository: %s"</span> repo-dir))
@@ -132,9 +135,9 @@ alt="Translate with Kagi"
             (shell-command (format <span class="org-string">"git commit -m \"%s\""</span> commit-msg))
             (message <span class="org-string">"Pushing to origin..."</span>)
             (<span class="org-keyword">if</span> (= 0 (shell-command <span class="org-string">"git push"</span> nil nil))
-                (message <span class="org-string">"Add %d entries and pushed to origin."</span> (length links))
-              (message <span class="org-string">"Add %d entries but push failed."</span> (length links)))))))
-    (message <span class="org-string">"Add %d entries and exported to index.html."</span> (length links))))
+                (message <span class="org-string">"Add entries and pushed to origin."</span>)
+              (message <span class="org-string">"Add entries but push failed."</span>))))))
+    (message <span class="org-string">"Add entries and exported to index.html."</span>)))
 </pre>
 </div>
 </details>
@@ -171,7 +174,7 @@ alt="Translate with Kagi"
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
 <p>如果你有什么想法，可以给 <a href="mailto:l-yanlei@hotmail.com">Spike Leung</a> 发送 <a href="https://useplaintext.email">纯文本</a> 邮件。</p>
-<p>文章创建于 <span class="dt-published">2026-05-21 Thu 23:50</span>，更新于 <span class="dt-updated">2026-05-22 Fri 02:11</span>，</p>
+<p>文章创建于 <span class="dt-published">2026-05-21 Thu 23:50</span>，更新于 <span class="dt-updated">2026-05-23 Sat 23:31</span>，</p>
 <p>遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>。</p>
 <p>如果你偏好纯文本，你可以将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>，这样你就会获得文章的原始 org 文件。</p>
 <p>如果文章对你有帮助，可以 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持。</p>
