@@ -460,21 +460,25 @@ h1: 1rem × 1.25⁵ = 3.052rem
 对于暗色主题下，降低图片的亮度，避免刺眼，尤其是有大片白色的图片。
 
 #+begin_src css
-img,
-video {
-  max-width: 100%;
-  object-fit: contain;
-}
+  img,
+  video {
+    max-width: 100%;
+    object-fit: contain;
+  }
 
-img {
-  @media (prefers-color-scheme: dark) {
+  img {
+    @media (prefers-color-scheme: dark) {
+      filter: brightness(0.85) contrast(1.05);
+    }
+  }
+
+  .dark img {
     filter: brightness(0.85) contrast(1.05);
   }
-}
 
-.dark img {
-  filter: brightness(0.85) contrast(1.05);
-}
+  .light img {
+    filter: none;
+  }
 #+end_src
 
 *** 链接
