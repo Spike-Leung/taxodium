@@ -2303,6 +2303,38 @@ figure 需要添加一些下边距，避免图片和下方文字贴合过近。
       opacity: 1;
     }
   }
+
+  .light.light {
+    .kaomoji-writing {
+      display: none;
+    }
+
+    .kaomoji-sleeping {
+      display: block;
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    .kaomoji-writing {
+      display: none;
+    }
+  }
+
+  .dark.dark {
+    .kaomoji-sleeping {
+      display: none;
+    }
+
+    .kaomoji-writing {
+      display: block;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .kaomoji-sleeping {
+      display: none;
+    }
+  }
 #+end_src
 
 ** kaomoji-writing
@@ -2399,6 +2431,76 @@ figure 需要添加一些下边距，避免图片和下方文字贴合过近。
 
     100% {
       opacity: 1;
+    }
+  }
+#+end_src
+
+** kaomoji-sleeping
+:PROPERTIES:
+:CUSTOM_ID: 2B70A142-43B9-47D8-83DF-DB188A152335
+:END:
+
+给最近发布标题下面的颜文字设置一点动画，写字、眨眼，可爱吗？ (≖ᴗ≖๑)
+
+#+begin_src css
+  .kaomoji-sleeping {
+    width: fit-content;
+    margin-inline: auto;
+    position: relative;
+    inset-inline-end: 1rem;
+  }
+
+  .kaomoji-sleeping__zzz {
+    position: relative;
+    white-space: nowrap;
+    color: var(--color-text-secondary);
+    color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset-block-start: -.5rem;
+      inset-inline-start: .5rem;
+      animation: infinite moving-zzz 5s;
+      transform: rotateZ(-5deg);
+      transform-origin: bottom left;
+    }
+  }
+
+  .kaomoji-sleeping__hand {
+    display: inline-block;
+    animation: infinite moving-hand 1s alternate;
+  }
+
+  @keyframes moving-zzz {
+    0% {
+      content: '';
+    }
+
+    25% {
+      content: 'z';
+    }
+
+    50% {
+      content: 'z z';
+    }
+
+    85% {
+      content: 'z z Z'
+    }
+
+    100% {
+      content: '';
+    }
+  }
+
+  @keyframes moving-hand {
+    0% {
+      transform: rotate(-10deg);
+    }
+
+    100% {
+      transform: rotate(10deg);
     }
   }
 #+end_src
