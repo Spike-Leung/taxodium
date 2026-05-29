@@ -11,4 +11,10 @@ node ./scripts/feed.js
 # copy rss.xml to index.xml, use for https://www.v2ex.com/xna
 cp -f publish/rss.xml publish/index.xml
 
+# install minify: https://github.com/tdewolff/minify/tree/master
+go install github.com/tdewolff/minify/v2/cmd/minify@latest
+
+# minify publish
+minify -r -i publish
+
 set +x
