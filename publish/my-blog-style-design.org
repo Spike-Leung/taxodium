@@ -1076,28 +1076,34 @@ org-publish 渲染的 HTML，在嵌套 list 的时候，有的内容会用 ~<p>~
 页脚的内容因为比较次要，减少字号，淡化一些，重置 ~<p>~ 的间距。
 
 #+begin_src css
-#postamble {
-  margin-block-start: 1em;
+  #postamble {
+    margin-block-start: 1em;
 
-  &::before {
-    /* content: 'EASY COME, EASY GO ...'; */
-    content: "つづく To Be Continued";
-    color: var(--color-border);
-    color: light-dark(var(--color-border), var(--dark-color-border));
-    display: block;
-    text-align: end;
-  }
+    &::before {
+      /* content: 'EASY COME, EASY GO ...'; */
+      content: "つづく To Be Continued";
+      color: var(--color-border);
+      color: light-dark(var(--color-border), var(--dark-color-border));
+      display: block;
+      text-align: end;
+    }
 
-  footer {
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
-    color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+    footer {
+      --footer-font-size: 14px;
+      font-size: var(--footer-font-size);
+      color: var(--color-text-secondary);
+      color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+      text-wrap: pretty;
 
-    & p {
-      margin-block: 0.25rem;
+      code {
+        font-size: var(--footer-font-size);
+      }
+
+      & p {
+        margin-block: 0.1rem;
+      }
     }
   }
-}
 #+end_src
 
 *** layer end
