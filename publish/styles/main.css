@@ -51,7 +51,7 @@
   --content-width: 90vw;
   --half-content-margin: calc((100vw - var(--content-width)) / 2);
   /* footnote 数字的点击范围 */
-  --extra-active-area-size: -0.8em;
+  --extra-active-area-size: -0.6em;
 
   /* Scale ratios based on musical intervals */
   --scale-minor-second: 1.067;
@@ -1112,7 +1112,7 @@ section[role="note"].banner {
   }
 }
 
-@media (max-width: 1500px) {
+@media (width <= 1600px) {
   .sidenote-container, .sidenote {
     display: none !important;
   }
@@ -1132,16 +1132,18 @@ section[role="note"].banner {
     屏幕宽度减去内容宽度后，剩余 margin 的一半用于展示 sidenote,
     减去适量偏移量，避免出現横向滚动条，以及過於靠近邊緣
  */
-  width: calc(var(--half-content-margin) - 5rem);
+  width: max-content;
+  max-width: 25ch;
   font-size: 0.8rem;
   pointer-events: auto;
   display: grid;
   grid-template-columns: min-content 1fr;
   gap: 0.2em;
   transition: opacity .25s ease-in-out;
-  opacity: 0.65;
+  opacity: 0.15;
   align-items: start;
 
+  &:has(.sidenote-ref-highlight),
   &:hover {
     opacity: 1;
   }
@@ -1174,8 +1176,8 @@ section[role="note"].banner {
 
   &:hover&::before {
     border: 3px solid;
-    border-color: var(--color-box-shadow);
-    border-color: light-dark(var(--color-box-shadow), var(--dark-color-box-shadow));
+    border-color: var(--color-taxodium-purple);
+    border-color: light-dark(var(--color-taxodium-purple), var(--dark-color-taxodium-purple));
     border-radius: 5px;
   }
 }
@@ -1185,9 +1187,10 @@ section[role="note"].banner {
 .sidenote-ref-highlight a[role="doc-backlink"] {
   &::before {
     border: 3px solid;
-    border-color: var(--color-box-shadow);
-    border-color: light-dark(var(--color-box-shadow), var(--dark-color-box-shadow));
+    border-color: var(--color-taxodium-purple);
+    border-color: light-dark(var(--color-taxodium-purple), var(--dark-color-taxodium-purple));
     border-radius: 5px;
+    opacity: 0.8;
   }
 }
 
