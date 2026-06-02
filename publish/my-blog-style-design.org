@@ -1644,9 +1644,12 @@ footnote 增强。
   }
 
   .sidenote {
-    /* 屏幕宽度减去内容宽度后，剩余 margin 的一半用于展示 sidenote, 宽度减少 1em 避免内容溢出到右侧，导致横向滚动条 */
-    width: calc(var(--half-content-margin) - 1rem);
-    font-size: 0.8em;
+    /*
+      屏幕宽度减去内容宽度后，剩余 margin 的一半用于展示 sidenote,
+      减去适量偏移量，避免出現横向滚动条，以及過於靠近邊緣
+   ,*/
+    width: calc(var(--half-content-margin) - 5rem);
+    font-size: 0.8rem;
     pointer-events: auto;
     display: grid;
     grid-template-columns: min-content 1fr;
@@ -2590,14 +2593,6 @@ figure 需要添加一些下边距，避免图片和下方文字贴合过近。
   p.verse {
     border: none;
     padding: 0;
-  }
-
-  :is(.footpara, .sidenote-content) p.verse {
-    padding: 0;
-  }
-
-  .sidenote {
-    font-size: 0.95rem;
   }
 
   img[src*="images\/album"] {
