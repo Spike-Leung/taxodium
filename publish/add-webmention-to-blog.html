@@ -198,7 +198,7 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 接下来按照 webmention.io 提供的 API 获取 Webmentions 的数量和内容，需要在页面上添加 HTML 元素，写 <a href="js/webmention.js">一些 JS 代码</a> 调用 API 渲染数据（也可以用 <a href="https://github.com/PlaidWeb/webmention.js">webmention.js</a>），再写点 CSS 优化一下样式。
 </p>
 
-<section role="note" id="org8593366">
+<section role="note" id="org23bde54">
 <p>
 如果你打算渲染 Webmentions 返回的 HTML，需要注意 <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS">Cross-site scripting (XSS)</a> 攻击。
 </p>
@@ -248,7 +248,7 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 但是如果你想让你发送的内容更丰富一些，就需要通过 <a href="https://microformats.org/wiki/Main_Page">microformats</a> 标记网站信息，如用户名、头像、内容、你要提及的链接等，从而让 Webmention 解析展示。
 </p>
 
-<section role="note" id="org6a9e454">
+<section role="note" id="orgc3232d5">
 <p>
 按理说只要包含了对方链接，对方就能收到 Webmention。
 </p>
@@ -446,7 +446,7 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 好处是，只要在文章中的链接都能被发现，不需要额外再标记什么。缺点是， <code>e-content</code> 标记的内容可能太多，导致实际回复的部分被淹没其中。
 </p>
 
-<section role="note" id="org88acd9e">
+<section role="note" id="org7286fb3">
 <p>
 因为文章中既包括自己的文章部分，也包括提及对方网站的部分，所以会导致提及内容被淹没。
 </p>
@@ -473,14 +473,14 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 有的 webmention 的发送时的 URL 是 <code>https://domain/page.html#abc</code> ，通过 webmention.io 的 <a href="https://github.com/aaronpk/webmention.io?tab=readme-ov-file#api">API</a>，target 参数设置为 <code>https://domain/page.html</code> 是无法获取到数据的，需要将 target 设置为 <code>https://domain/page.html#abc</code> ，完全匹配才行，因为目前存储的就是完整的 URL。
 </p>
 
-<section role="note" id="org3a19449">
+<section role="note" id="org312f36c">
 <p>
 如果 target 是 <code>https://domain/page.html#abc</code> ，注意需要将 <code>#</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">转义</a> 成 <code>%23</code> 。
 </p>
 </section>
 
 <p>
-<del>我目前的处理方法是用 <a href="https://github.com/aaronpk/webmention.io?tab=readme-ov-file#find-all-links-to-your-domain">基于域名获取所有数据的 API</a> 先获取所有的数据，然后基于页面的 URL 进行过滤。</del>我會从 <a href="https://webmention.io/dashboard">Webmention Dashboard</a> 看 Webmention，如果存在帯 fragments 的 Webmention，我會將它記录󠄃下來，然後用 <a href="https://github.com/aaronpk/webmention.io#find-links-of-a-specific-type-to-a-specific-page">請求多個 target 的 API</a> 获取数据。
+我目前的处理方法是 <del>用 <a href="https://github.com/aaronpk/webmention.io?tab=readme-ov-file#find-all-links-to-your-domain">基于域名获取所有数据的 API</a> 先获取所有的数据，然后基于页面的 URL 进行过滤。</del>用 <a href="https://github.com/aaronpk/webmention.io#find-links-of-a-specific-type-to-a-specific-page">請求多個 target 的 API</a> 同時請求頁面的 URL 和帯有 fragments 的 URL，手動維护帯有 fragments 的 URL。
 </p>
 
 <details>
@@ -582,7 +582,7 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 </details>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2025-09-25 Thu 21:24">2025-09-25 Thu 21:24</time>，更新于 <time class="dt-updated" datetime="2026-06-03 Wed 14:01">2026-06-03 Wed 14:01</time>，</p>
+<p>文章创建于 <time class="dt-published" datetime="2025-09-25 Thu 21:24">2025-09-25 Thu 21:24</time>，更新于 <time class="dt-updated" datetime="2026-06-03 Wed 18:21">2026-06-03 Wed 18:21</time>，</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
 <p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
 <p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 给博客添加 Webmention &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
