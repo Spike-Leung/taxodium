@@ -6,9 +6,9 @@
   async function loadWebmentionContent() {
     try {
       const target = getTargetUrl();
-      const targetsWithFragments = TargetFragments[target] ? TargetFragments[target].map((hash) => `${target}${encodeURIComponent(hash)}`) : []
+      const targetsWithFragments = TargetFragments[target] ? TargetFragments[target].map((hash) => `${target}${hash}`) : []
       const allTarget = [target, ...targetsWithFragments];
-      const searchParams = allTarget.map((t) => `target[]=${t}`).join("&")
+      const searchParams = allTarget.map((t) => `target[]=${encodeURIComponent(t)}`).join("&")
       const response = await fetch(`https://webmention.io/api/mentions.jf2?${searchParams}`,);
       const feed = await response.json();
       const feedList = feed?.children?.filter((c) => c["wm-target"].indexOf(target) !== -1)
