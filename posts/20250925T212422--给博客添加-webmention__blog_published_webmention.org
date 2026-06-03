@@ -240,6 +240,13 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 :PROPERTIES:
 :CUSTOM_ID: D2EB3BEC-396F-43D6-BA15-A89E38A671F8
 :END:
+
+#+begin_details
+#+html: <summary>目录󠄃</summary>
+
+#+TOC: headlines 2 local
+#+end_details
+
 ** 常见问题
 :PROPERTIES:
 :CUSTOM_ID: CBA7F3BB-8611-485A-8D54-6FF423A95CB0
@@ -312,7 +319,38 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 如果 target 是 =https://domain/page.html#abc= ，注意需要将 =#= [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent][转义]] 成 =%23= 。
 #+end_section
 
-我目前的处理方法是用 [[https://github.com/aaronpk/webmention.io?tab=readme-ov-file#find-all-links-to-your-domain][基于域名获取所有数据的 API]] 先获取所有的数据，然后基于页面的 URL 进行过滤。
++我目前的处理方法是用 [[https://github.com/aaronpk/webmention.io?tab=readme-ov-file#find-all-links-to-your-domain][基于域名获取所有数据的 API]] 先获取所有的数据，然后基于页面的 URL 进行过滤。+
+我會从 [[https://webmention.io/dashboard][Webmention Dashboard]] 看 Webmention，
+如果存在帯 fragments 的 Webmention，我會將它記录󠄃下來，然後用 [[https://github.com/aaronpk/webmention.io#find-links-of-a-specific-type-to-a-specific-page][請求多個 target 的 API]] 获取数据。
+
+#+begin_details
+#+html: <summary>相關代碼</summary>
+
+#+begin_src js
+  const TargetFragments = {
+    'https://taxodium.ink/43.html': ['#82F4E24E-345E-48C9-9A3B-567A81BC40A0']
+  }
+
+  async function loadWebmentionContent() {
+    try {
+      const target = getTargetUrl();
+      const targetsWithFragments = TargetFragments[target] ? TargetFragments[target].map((hash) => `${target}${encodeURIComponent(hash)}`) : []
+      const allTarget = [target, ...targetsWithFragments];
+      const searchParams = allTarget.map((t) => `target[]=${t}`).join("&")
+      const response = await fetch(`https://webmention.io/api/mentions.jf2?${searchParams}`,);
+      const feed = await response.json();
+      const feedList = feed?.children?.filter((c) => c["wm-target"].indexOf(target) !== -1)
+      document.querySelector(".webmention__count").innerText = `(${feedList.length})`;
+      const container = document.querySelector(".webmention__list");
+      renderWebmentions(feedList, container);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+#+end_src
+#+end_details
+
+虽然不优雅，但不用請求全量数据，很多頁面其實都没有 Webmention，這可以减少這些頁面需要加載的数据。
 
 ** 发送了 webmention 但是没有显示出来
 :PROPERTIES:
