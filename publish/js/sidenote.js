@@ -92,6 +92,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     handleFootnoteMode();
+    setTimeout(arrangeSidenotePosition, 100)
 
     let ticking = false;
     let debounceTimer;
