@@ -16,7 +16,9 @@
       const footnoteElement = document.querySelector(`.footdef:has(a[id*=${CSS.escape(footrefHash)}])`).cloneNode(true)
 
       const button = document.createElement('button')
-      button.innerText = footrefElement.innerText
+      // text variant of `ℹ`
+      button.innerText = '\u2139\uFE0E'
+      button.ariaLabel = "脚注信息"
       button.classList.add('sidenote-toggle-trigger')
       button.removeEventListener("click", toggleSidenote)
       button.addEventListener("click", toggleSidenote)
