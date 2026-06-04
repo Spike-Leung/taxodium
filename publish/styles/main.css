@@ -664,21 +664,6 @@ search {
   }
 }
 
-#text-footnotes {
-  margin-block-start: 1.25rem;
-}
-
-.footdef {
-  display: grid;
-  grid-template-columns: max-content auto;
-  gap: 0.5em;
-  font-size: 0.9em;
-}
-
-[role="doc-footnote"] *:nth-child(1) {
-  margin-block-start: 0;
-}
-
 #postamble {
   margin-block-start: 1em;
 
@@ -1112,56 +1097,62 @@ section[role="note"].banner {
   }
 }
 
-@media (width <= 1600px) {
-  .sidenote-container, .sidenote {
-    display: none !important;
-  }
+#text-footnotes {
+  margin-block-start: 1.25rem;
 }
 
-.sidenote-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  pointer-events: none;
-  z-index: 1;
+.footdef {
+  display: grid;
+  grid-template-columns: max-content auto;
+  gap: 0.5rem;
+}
+
+.footpara {
+  & *:first-child {
+    margin-block-start: 0;
+  }
 }
 
 .sidenote {
   /*
-    屏幕宽度减去内容宽度后，剩余 margin 的一半用于展示 sidenote,
-    减去适量偏移量，避免出現横向滚动条，以及過於靠近邊緣
+        屏幕宽度减去内容宽度后，剩余 margin 的一半用于展示 sidenote,
+        减去适量偏移量，避免出現横向滚动条，以及過於靠近邊緣
  */
+  --sidenote-max-width: 25ch;
   width: max-content;
-  max-width: 25ch;
+  max-width: var(--sidenote-max-width);
   font-size: 0.8rem;
   pointer-events: auto;
   display: grid;
-  grid-template-columns: min-content 1fr;
+  grid-template-columns: max-content 1fr;
   gap: 0.2em;
   transition: opacity .25s ease-in-out;
   opacity: 0.15;
   align-items: start;
+  color: var(--color-text-secondary);
+  color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  float: inline-start;
+  clear: inline-end;
+  &.inline-start {
+    float: inline-start;
+  }
+
+  &.inline-end {
+    float: inline-end;
+  }
 
   &:has(.sidenote-ref-highlight),
   &:hover {
     opacity: 1;
   }
+
+  & *:last-child {
+    margin-block-end: 0;
+  }
 }
 
-.sidenote-num {
-  display: inline-block;
-  cursor: pointer;
-  margin-inline-end: .5em;
-  white-space: nowrap;
-}
-
-.sidenote-content {
-  min-width: 0;
-}
-
-#content a[role="doc-backlink"],
-.sidenote-num {
+.sidenote-toggle-trigger,
+a[role="doc-backlink"] {
   position: relative;
 
   &::before {
@@ -1173,29 +1164,71 @@ section[role="note"].banner {
     bottom: var(--extra-active-area-size);
     cursor: pointer;
   }
+}
 
-  &:hover&::before {
-    border: 3px solid;
-    border-color: var(--color-taxodium-purple);
-    border-color: light-dark(var(--color-taxodium-purple), var(--dark-color-taxodium-purple));
-    border-radius: 5px;
+@media (pointer: fine) and (hover: hover) {
+  .sidenote-ref-highlight {
+    &::before {
+      border: 3px solid;
+      border-color: var(--color-taxodium-purple);
+      border-color: light-dark(var(--color-taxodium-purple), var(--dark-color-taxodium-purple));
+      border-radius: 5px;
+      opacity: 0.8;
+    }
+  }
+
+  .sidenote-toggle-trigger,
+  a[role="doc-backlink"] {
+    &:hover&::before {
+      border: 3px solid;
+      border-color: var(--color-taxodium-purple);
+      border-color: light-dark(var(--color-taxodium-purple), var(--dark-color-taxodium-purple));
+      border-radius: 5px;
+      opacity: 0.8;
+    }
   }
 }
 
-.sidenote-num:hover,
-.sidenote-ref-highlight,
-.sidenote-ref-highlight a[role="doc-backlink"] {
-  &::before {
-    border: 3px solid;
-    border-color: var(--color-taxodium-purple);
-    border-color: light-dark(var(--color-taxodium-purple), var(--dark-color-taxodium-purple));
-    border-radius: 5px;
-    opacity: 0.8;
-  }
+.sidenote-toggle-trigger {
+  vertical-align: super;
+  background: transparent;
+  color: var(--color-taxodium-purple);
+  color: light-dark(var(--color-taxodium-purple), var(--dark-color-taxodium-purple));
+  display: none;
+  padding: 0;
+  font-size: .8rem;
 }
 
-.sidenote-content *:nth-child(1) {
-  margin-block-start: 0;
+@media screen and (width <= 1620px) {
+  .sidenote.sidenote.sidenote {
+    clear: both;
+    margin-inline: 0;
+    margin-block: .5rem;
+    opacity: 1;
+    display: none;
+    width: 100%;
+    max-width: 100%;
+    grid-template-columns: auto;
+    gap: 0;
+    box-sizing: border-box;
+
+    & .footpara:last-child() {
+      margin-block-end: 0;
+    }
+  }
+
+  .sidenote-toggle-trigger {
+    display: inline-block;
+  }
+
+  [role="doc-backlink"] {
+    display: none;
+  }
+
+  /* fix safari quirks :( */
+  li:has(.sidenote) + li {
+    clear: both;
+  }
 }
 
 }
