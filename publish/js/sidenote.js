@@ -88,7 +88,7 @@
   }
 
   function highlightRefPair() {
-    const elements = document.querySelectorAll("a[role=doc-backlink]");
+    const elements = document.querySelectorAll("[data-footnote-id]");
     if (elements.length === 0) return;
 
     Array.from(elements).forEach((element) => {
@@ -102,25 +102,32 @@
   function highlight(event) {
     event.target.classList.add(SIDENOTE_REF_HIGHLIGHT_CLASS);
 
-    const footnoteId = event.target.dataset.footnoteId;
-    if (!footnoteId) return;
-
-    const sidenoteSupLink = document.querySelector(
-      `.${SIDENOTE_CLASS}[data-footnote-id="${CSS.escape(footnoteId)}"] sup a`,
-    );
-    if (sidenoteSupLink) sidenoteSupLink.classList.add(SIDENOTE_REF_HIGHLIGHT_CLASS);
+    const relatedTarget = findRelatedTarget(event);
+    if (relatedTarget)
+      relatedTarget.classList.add(SIDENOTE_REF_HIGHLIGHT_CLASS);
   }
 
   function cancelHighlight(event) {
     event.target.classList.remove(SIDENOTE_REF_HIGHLIGHT_CLASS);
 
-    const footnoteId = event.target.dataset.footnoteId;
-    if (!footnoteId) return;
+    const relatedTarget = findRelatedTarget(event);
+    if (relatedTarget)
+      relatedTarget.classList.remove(SIDENOTE_REF_HIGHLIGHT_CLASS);
+  }
 
-    const sidenoteSupLink = document.querySelector(
-      `.${SIDENOTE_CLASS}[data-footnote-id="${CSS.escape(footnoteId)}"] sup a`,
-    );
-    if (sidenoteSupLink) sidenoteSupLink.classList.remove(SIDENOTE_REF_HIGHLIGHT_CLASS);
+  function findRelatedTarget(event) {
+    const footnoteId = event.target.dataset.footnoteId;
+    if (!footnoteId) return null;
+
+    if (event.target.tagName === "A") {
+      // hover on sup, find sidenote
+      return document.querySelector(`.${SIDENOTE_CLASS}[data-footnote-id="${CSS.escape(footnoteId)}"]`);
+    } else {
+      // hover on sitenote, find sup
+      return document.querySelector(
+        `a[data-footnote-id=${CSS.escape(footnoteId)}]`,
+      );
+    }
   }
 
   function toggleSidenote(event) {
