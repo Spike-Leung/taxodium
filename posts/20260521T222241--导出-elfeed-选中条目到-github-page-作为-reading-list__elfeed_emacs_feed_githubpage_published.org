@@ -57,11 +57,13 @@
   (defun spike-leung/elfeed-reading-list ()
     "Generate selected Elfeed entries as reading list. Auto push to git."
     (interactive nil elfeed-search-mode)
-    (let ((repo-dir (expand-file-name "~/git/reading-list"))
-          (entries (elfeed-search-selected)))
+    (let ((repo-dir (expand-file-name "~/git/reading-list")) ;; repo-dir is a git repo that save expoted HTML
+          (entries (elfeed-search-selected))) ;; get all selected entries from elfeed
+      ;; create a temp-buffer to insert links
       (with-temp-buffer
         (goto-char (point-min))
         (insert (format "#+title: Reading list\n"))
+        (insert "#+options: html-postamble:nil\n")
         (insert "#+html_head_extra: <link rel=\"stylesheet\" href=\"./main.css\" />\n")
         (insert "#+html_head_extra: <script defer src=\"./main.js\"></script>\n")
         (insert "@@html:<div class=\"action\">@@")
@@ -69,6 +71,7 @@
         (insert "@@html:<span><input type=\"checkbox\" id=\"like\"/><label for=\"like\" class=\"like-label\"></label></span>@@")
         (insert "@@html:</div>@@")
         (insert "\n\n")
+        ;; traverse elfeed entries, generate org mode link
         (dolist (entry entries)
           (let* ((link (elfeed-entry-link entry))
                  (title (elfeed-entry-title entry))
@@ -77,10 +80,12 @@
           (insert "\n"))
         (insert "這是从 [[https://github.com/emacs-elfeed/elfeed][elfeed]] 导出的个人訂閱数据，仅方便个人使用。\n\n
   具体見： [[https://taxodium.ink/export-elfeed-selected-entries-to-github-page-as-reading-list.html][导出 Elfeed 选中条目到 GitHub Page 作为 Reading List]]。\n\n")
+        ;; enable org mode
         (org-mode)
-        (let ((org-html-postamble nil))
-          (org-export-to-file 'html "~/git/reading-list/index.html")))
+        ;; export to HTML
+        (org-export-to-file 'html "~/git/reading-list/index.html"))
       (message "Entries export to index.html")
+      ;; you can push the HTML manual, or add auto push process below.
       (let ((default-directory repo-dir))
         (unless (file-directory-p (expand-file-name ".git" repo-dir))
           (user-error "Not a git repository: %s" repo-dir))
