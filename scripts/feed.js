@@ -67,6 +67,9 @@ async function processPost(entry) {
     // Remove all <iframe> elements
     contentDiv.querySelectorAll("iframe").forEach((el) => el.remove());
 
+    // Remove .lyric-card, cause without style, lyric-card looks bad.
+    contentDiv.querySelectorAll(".lyric-card").forEach((el) => el.remove());
+
     // Remove not allowed style attributes from all elements
     const notAllowedStyles = ["view-transition-name", "word-break"];
     contentDiv.querySelectorAll("[style]").forEach((el) => {
