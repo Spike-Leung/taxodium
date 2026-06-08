@@ -58,7 +58,7 @@ alt="Translate with Kagi"
 我的博客是用 <code>org-publish</code> 生成的，后面我给博客添加了主题切换（见 <a href="setup-blog-color-scheme.html#0E86BEB5-D1F9-451D-8271-B63E836FE0A3">给博客添加 dark mode</a>）， 当时留下了一个问题 ⸺ <code>org-publish</code> 生成的代码高亮是内联在 HTML 标签里的，我没法通过 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark">light-dark</a> 去设置亮色/暗色主题下不同的颜色，只能选择一种代码高亮主题，要么是亮色，要么是暗色。
 </p>
 
-<section role="note" id="org23d7276">
+<section role="note" id="org73e12c9">
 <p>
 如果你好奇博客是如何用 <code>org-publish</code> 构建的：
 </p>
@@ -81,7 +81,7 @@ alt="Translate with Kagi"
 <summary>重置主题相关的代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/apply-theme-when-publish</span> (<span class="org-type">&amp;rest</span> args)
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/apply-theme-when-publish</span> (<span class="org-type">&amp;rest</span> args)
   <span class="org-doc">"Switch theme when do `</span><span class="org-doc"><span class="org-constant">org-publish</span></span><span class="org-doc">'.ARGS will pass to `</span><span class="org-doc"><span class="org-constant">org-publish</span></span><span class="org-doc">'."</span>
   (<span class="org-keyword">require</span> '<span class="org-constant">modus-themes</span>)
   (<span class="org-keyword">require</span> '<span class="org-constant">ef-themes</span>)
@@ -98,7 +98,7 @@ alt="Translate with Kagi"
 (advice-remove 'load-theme #'spike-leung/set-olivetti-fringe-face)
 (advice-add 'org-publish <span class="org-builtin">:around</span> #'spike-leung/apply-theme-when-publish)
 (advice-add 'load-theme <span class="org-builtin">:after</span> #'spike-leung/set-olivetti-fringe-face)
-</pre>
+</code></pre>
 </div>
 </details>
 
@@ -128,7 +128,7 @@ alt="Translate with Kagi"
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/setup-org-publish-project-alist</span> (<span class="org-type">&amp;rest</span> _args)
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/setup-org-publish-project-alist</span> (<span class="org-type">&amp;rest</span> _args)
   <span class="org-doc">"Setup `</span><span class="org-doc"><span class="org-constant">org-publish-project-alist</span></span><span class="org-doc">'."</span>
   (message <span class="org-string">"setup org-publish-project-alist"</span>)
 <span id="coderef-css" class="coderef-off">  (<span class="org-keyword">setq</span> org-html-htmlize-output-type 'css)</span>
@@ -147,7 +147,7 @@ alt="Translate with Kagi"
 
 (advice-remove 'org-publish #'spike-leung/org-publish-after-callback)
 <span id="coderef-after" class="coderef-off">(advice-add 'org-publish <span class="org-builtin">:after</span> #'spike-leung/org-publish-after-callback)</span>
-</pre>
+</code></pre>
 </div>
 </details>
 
@@ -159,7 +159,7 @@ alt="Translate with Kagi"
 <li>找一个喜欢的暗色主题，生成一份 <code>dark.txt</code></li>
 </ul>
 
-<section role="note" id="org8eb6631">
+<section role="note" id="orgd67b587">
 <p>
 <code>org-html-htmlize-generate-css</code> 生成的类名前缀可以通过 <code>org-html-htmlize-font-prefix</code> 修改，默认是 <code>org-。</code>
 </p>
@@ -217,7 +217,7 @@ You can copy and paste <b>the ones you need</b> into your CSS file.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">&#23450;&#20041;&#19968;&#20010;&#21464;&#37327;&#65292;&#23384;&#20648;&#24403;&#21069;&#20027;&#39064;&#30340; background-mode
+<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">&#23450;&#20041;&#19968;&#20010;&#21464;&#37327;&#65292;&#23384;&#20648;&#24403;&#21069;&#20027;&#39064;&#30340; background-mode
 </span>(<span class="org-keyword">defvar</span> <span class="org-variable-name">spike-leung/current-theme-background-mode</span> 'light
   <span class="org-doc">"Current theme's background-mode value&#65292;can be 'light or 'dark, default to 'light."</span>)
 
@@ -252,7 +252,7 @@ You can copy and paste <b>the ones you need</b> into your CSS file.
 </span><span class="org-comment-delimiter">;; </span><span class="org-comment">&#22312; `</span><span class="org-comment"><span class="org-constant">org-html-htmlize-generate-css</span></span><span class="org-comment">' &#23436;&#25104;&#20043;&#21518;&#25191;&#34892; `</span><span class="org-comment"><span class="org-constant">spike-leung/current-theme-background-mode</span></span><span class="org-comment">'
 </span>(advice-remove 'org-html-htmlize-generate-css #'spike-leung/save-org-html-htmlize-generate-css)
 (advice-add 'org-html-htmlize-generate-css <span class="org-builtin">:after</span> #'spike-leung/save-org-html-htmlize-generate-css)
-</pre>
+</code></pre>
 </div>
 </details>
 
@@ -268,7 +268,7 @@ You can copy and paste <b>the ones you need</b> into your CSS file.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-javascript"><span class="org-keyword">import</span> fs from <span class="org-string">"fs"</span>
+<pre class="src src-javascript"><code><span class="org-keyword">import</span> fs from <span class="org-string">"fs"</span>
 <span class="org-keyword">import</span> path from <span class="org-string">"path"</span>;
 <span class="org-keyword">import</span> { fileURLToPath } from <span class="org-string">"url"</span>;
 <span class="org-keyword">const</span> <span class="org-variable-name">__filename</span> = fileURLToPath(<span class="org-keyword">import</span>.meta.url);
@@ -335,7 +335,7 @@ You can copy and paste <b>the ones you need</b> into your CSS file.
 <span class="org-keyword">const</span> <span class="org-variable-name">dark</span> = parseCSS(fs.readFileSync(DarkThemeFilePath, <span class="org-string">'utf8'</span>));
 fs.writeFileSync(OutputFilePath, generate(light, dark));
 console.log(<span class="org-string">'Generated Finished'</span>);
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -389,7 +389,6 @@ Happy hacking - <a href="how-to-get-started-with-emacs.html">Emacs</a> ♥ you!
 </div>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
-<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/purify.min.js" defer></script>

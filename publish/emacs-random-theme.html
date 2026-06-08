@@ -58,7 +58,7 @@ alt="Translate with Kagi"
 Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/modus-themes">modus-themes</a> 和 <a href="https://github.com/protesilaos/ef-themes">ef-themes</a>，它们都是出自 <a href="https://github.com/protesilaos">protesilaos</a>。
 </p>
 
-<section role="note" id="org05cefb0">
+<section role="note" id="org49c80d3">
 <p>
 后续可能还会加入 <a href="https://github.com/protesilaos/doric-themes">doric-themes</a>，也是 Prot 的写的主题，这个主题的颜色比较单一，写作的时候用感觉不错。
 </p>
@@ -80,7 +80,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 <summary>主题切换相关 Elisp</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span class="org-keyword">defvar</span> <span class="org-variable-name">spike-leung/candidate-themes</span>
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defvar</span> <span class="org-variable-name">spike-leung/candidate-themes</span>
   '(modus-operandi
     modus-operandi-tinted
     modus-vivendi
@@ -144,7 +144,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
         (<span class="org-warning">error</span> (message <span class="org-string">"Error applying theme %s: %s"</span> theme err))))))
 
 (run-with-timer (* 15 60) (* 15 60) 'spike-leung/apply-random-theme)
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -175,7 +175,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 へ(゜∇、°)へ へ(゜∇、°)へ
 </p>
 
-<section role="note" id="orgcdec926">
+<section role="note" id="org216866e">
 <p>
 说起来奇怪，如果是我自己主动切换的主题，可能切换后我马上就想换了。
 </p>
@@ -199,7 +199,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 <summary>代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span class="org-keyword">use-package</span> modus-themes
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">use-package</span> modus-themes
   <span class="org-builtin">:ensure</span>
   <span class="org-builtin">:init</span>
   (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/modus-themes-load-based-on-time</span> ()
@@ -226,7 +226,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
     <span class="org-doc">"Toggle dark theme."</span>
     (<span class="org-keyword">interactive</span>)
     (modus-themes-load-random 'dark)))
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -252,7 +252,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 <summary>代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">theme
+<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">theme
 </span>(<span class="org-keyword">use-package</span> modus-themes
   <span class="org-builtin">:config</span>
   (<span class="org-keyword">setq</span> modus-themes-italic-constructs t
@@ -327,7 +327,7 @@ set of themes to either dark or light variants."</span>
 
 <span class="org-comment-delimiter">;; </span><span class="org-comment">&#35201;&#22312; desktop &#21152;&#36733;&#21518;&#20877;&#25191;&#34892;&#65292;&#36991;&#20813;&#34987; desktop &#35760;&#24405;&#30340;&#20027;&#39064;&#35206;&#30422;&#65292;&#23548;&#33268;&#28151;&#20081;
 </span>(add-hook 'desktop-after-read-hook #'spike-leung/themes-load-random)
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -343,7 +343,7 @@ set of themes to either dark or light variants."</span>
 <summary>代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">olivetti &#26159;&#19968;&#27454;&#25171;&#23383;&#26426;&#30340;&#21517;&#23383;&#65292;&#36825;&#20010;&#27169;&#24335;&#20250;&#27169;&#20223;&#25171;&#23383;&#26426;&#30340;&#32440;&#24352;&#22823;&#23567;&#65292;&#20889;&#20316;&#26102;&#29992;
+<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">olivetti &#26159;&#19968;&#27454;&#25171;&#23383;&#26426;&#30340;&#21517;&#23383;&#65292;&#36825;&#20010;&#27169;&#24335;&#20250;&#27169;&#20223;&#25171;&#23383;&#26426;&#30340;&#32440;&#24352;&#22823;&#23567;&#65292;&#20889;&#20316;&#26102;&#29992;
 </span>(<span class="org-keyword">use-package</span> olivetti
   <span class="org-builtin">:diminish</span>
   <span class="org-builtin">:custom</span>
@@ -363,7 +363,7 @@ set of themes to either dark or light variants."</span>
 
   (advice-remove 'spike-leung/themes-load-random #'spike-leung/set-olivetti-fringe-face)
   (advice-add 'spike-leung/themes-load-random <span class="org-builtin">:after</span> #'spike-leung/set-olivetti-fringe-face))
-</pre>
+</code></pre>
 </div>
 </details>
 
@@ -414,7 +414,6 @@ set of themes to either dark or light variants."</span>
 </div>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
-<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/purify.min.js" defer></script>

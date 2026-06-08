@@ -67,13 +67,13 @@ alt="Translate with Kagi"
 接口返回的是图片的二进制，一个 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Blob">Blob</a> 对象。用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img">&lt;img&gt;</a> 展示时，需要将返回的 Blob 转换成一个 URL，才可以放到 img 的 src 使用。
 </p>
 <div id="outline-container-36902248-cd47-4f03-b5e2-4ba66cc47248" class="outline-2">
-<h2 id="36902248-cd47-4f03-b5e2-4ba66cc47248"><a href="https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL">URL.createObjectURL()</a></h2>
+<h2 id="36902248-cd47-4f03-b5e2-4ba66cc47248"><a href="#36902248-cd47-4f03-b5e2-4ba66cc47248"><a href="https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL">URL.createObjectURL()</a></a></h2>
 <div class="outline-text-2" id="text-36902248-cd47-4f03-b5e2-4ba66cc47248"><p>
 使用 <code>URL.createObjectURL()</code> 可以将返回的 Blob 转换成一个 URL。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-js"><span class="org-keyword">const</span> <span class="org-variable-name">imageURL</span> = <span class="org-string">"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"</span>
+<pre class="src src-js"><code><span class="org-keyword">const</span> <span class="org-variable-name">imageURL</span> = <span class="org-string">"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"</span>
 
 fetch(imageURL).then((res) =&gt; {
   <span class="org-keyword">return</span> res.blob()
@@ -81,7 +81,7 @@ fetch(imageURL).then((res) =&gt; {
   <span class="org-keyword">const</span> <span class="org-variable-name">imageObjectURL</span> = URL.createObjectURL(blob);
   document.querySelector(<span class="org-string">"#img"</span>).src = imageObjectURL
 })
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -97,7 +97,7 @@ fetch(imageURL).then((res) =&gt; {
 </div>
 </div>
 <div id="outline-container-24ea02ab-9950-4d79-9e81-eaddc4b225ff" class="outline-2">
-<h2 id="24ea02ab-9950-4d79-9e81-eaddc4b225ff"><a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL">FileReader.readAsDataURL()</a></h2>
+<h2 id="24ea02ab-9950-4d79-9e81-eaddc4b225ff"><a href="#24ea02ab-9950-4d79-9e81-eaddc4b225ff"><a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL">FileReader.readAsDataURL()</a></a></h2>
 <div class="outline-text-2" id="text-24ea02ab-9950-4d79-9e81-eaddc4b225ff"><p>
 另一种方法是通过 <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader">FileReader</a> 的 API，将返回的 Blob 转换成 <a href="https://developer.mozilla.org/en-US/docs/Glossary/Base64">Base64</a> 显示。
 </p>
@@ -109,7 +109,7 @@ fetch(imageURL).then((res) =&gt; {
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-js"><span class="org-keyword">const</span> <span class="org-variable-name">imageURL</span> = <span class="org-string">"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"</span>
+<pre class="src src-js"><code><span class="org-keyword">const</span> <span class="org-variable-name">imageURL</span> = <span class="org-string">"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw0gWlEimLsPylCKAm95y1K27fCdzXEHGhXYTfEWXo&amp;s"</span>
 
 <span class="org-keyword">function</span> <span class="org-function-name">blob2Base64</span>(<span class="org-variable-name">blob</span>) {
   <span class="org-keyword">const</span> <span class="org-variable-name">reader</span> = <span class="org-keyword">new</span> <span class="org-type">FileReader</span>();
@@ -127,7 +127,7 @@ fetch(imageURL).then((res) =&gt; {
 }).then(<span class="org-keyword">async</span> (blob) =&gt; {
   document.querySelector(<span class="org-string">"#img"</span>).src = <span class="org-keyword">await</span> blob2Base64(blob)
 })
-</pre>
+</code></pre>
 </div>
 
 
@@ -173,7 +173,6 @@ fetch(imageURL).then((res) =&gt; {
 </div>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
-<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/purify.min.js" defer></script>

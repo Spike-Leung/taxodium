@@ -76,7 +76,7 @@ alt="Translate with Kagi"
 </ul>
 </div>
 </nav>
-<section role="note" id="org4ee3cd2">
+<section role="note" id="org6248ce6">
 <p>
 目前我己經不用 pagefind 了，原因是减少對 JS 的依赖，减少頁面需要加載的資源，現在主要利用搜索引擎搜索。文章的內容是我之前集成 pagefind 的經驗，如果你打算集成 pagefind，應該能給你提供一些参考。
 </p>
@@ -98,7 +98,7 @@ alt="Translate with Kagi"
 这周看到了一个开源项目 <a href="https://pagefind.app/">pagefind</a>，它可以对构建好的 HTML 进行索引和搜索，配置简单，开箱即用，没有额外的第三方服务，很符合我的需要。
 </p>
 <div id="outline-container-8146bd66-566b-49de-9e2b-796bc84fa98f" class="outline-2">
-<h2 id="8146bd66-566b-49de-9e2b-796bc84fa98f">关于 pagefind</h2>
+<h2 id="8146bd66-566b-49de-9e2b-796bc84fa98f"><a href="#8146bd66-566b-49de-9e2b-796bc84fa98f">关于 pagefind</a></h2>
 <div class="outline-text-2" id="text-8146bd66-566b-49de-9e2b-796bc84fa98f"><blockquote>
 <p>
 Pagefind 是一个完全 <b>静态</b> 的搜索库，其目标是在大型网站上运行良好，同时 <b>尽可能少地占用用户带宽</b> ，并且无需托管任何基础设施。
@@ -125,7 +125,7 @@ pagefind 的一些特点：
 </div>
 </div>
 <div id="outline-container-d0cb0641-caef-4bb1-8bd5-f55349aa923c" class="outline-2">
-<h2 id="d0cb0641-caef-4bb1-8bd5-f55349aa923c">配置 pagefind</h2>
+<h2 id="d0cb0641-caef-4bb1-8bd5-f55349aa923c"><a href="#d0cb0641-caef-4bb1-8bd5-f55349aa923c">配置 pagefind</a></h2>
 <div class="outline-text-2" id="text-d0cb0641-caef-4bb1-8bd5-f55349aa923c"><p>
 配置 pagefind 很简单，你只需要两步：
 </p>
@@ -136,7 +136,7 @@ pagefind 的一些特点：
 </ol>
 
 <div class="org-src-container">
-<pre class="src src-html">&lt;<span class="org-function-name">link</span> <span class="org-variable-name">href</span>=<span class="org-string">"/pagefind/pagefind-ui.css"</span> <span class="org-variable-name">rel</span>=<span class="org-string">"stylesheet"</span>&gt;
+<pre class="src src-html"><code>&lt;<span class="org-function-name">link</span> <span class="org-variable-name">href</span>=<span class="org-string">"/pagefind/pagefind-ui.css"</span> <span class="org-variable-name">rel</span>=<span class="org-string">"stylesheet"</span>&gt;
 &lt;<span class="org-function-name">script</span> <span class="org-variable-name">src</span>=<span class="org-string">"/pagefind/pagefind-ui.js"</span>&gt;&lt;/<span class="org-function-name">script</span>&gt;
 &lt;<span class="org-function-name">div</span> <span class="org-variable-name">id</span>=<span class="org-string">"search"</span>&gt;&lt;/<span class="org-function-name">div</span>&gt;
 &lt;<span class="org-function-name">script</span>&gt;
@@ -144,7 +144,7 @@ pagefind 的一些特点：
     new PagefindUI({ element: "#search", showSubResults: true });
   });
 &lt;/<span class="org-function-name">script</span>&gt;
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -156,13 +156,13 @@ pagefind 的一些特点：
 </p>
 </div>
 <div id="outline-container-8a7bf407-8909-44d5-ad65-75a4d48ba47a" class="outline-3">
-<h3 id="8a7bf407-8909-44d5-ad65-75a4d48ba47a">CI/CD 中添加索引指令</h3>
+<h3 id="8a7bf407-8909-44d5-ad65-75a4d48ba47a"><a href="#8a7bf407-8909-44d5-ad65-75a4d48ba47a">CI/CD 中添加索引指令</a></h3>
 <div class="outline-text-3" id="text-8a7bf407-8909-44d5-ad65-75a4d48ba47a"><p>
 我的博客<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>是部署在 <a href="https://www.netlify.com/">Netlify</a>，我只需要在构建的最后，添加 <a href="#coderef-pagefind-command" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-pagefind-command');" onmouseout="CodeHighlightOff(this, 'coderef-pagefind-command');">一行执行索引的指令</a> 就完成索引了。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span class="org-comment-delimiter">#</span><span class="org-comment">!/bin/</span><span class="org-keyword">bash</span><span class="org-comment">
+<pre class="src src-bash"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/bin/</span><span class="org-keyword">bash</span><span class="org-comment">
 </span>
 <span class="org-comment-delimiter"># </span><span class="org-comment">Enable command printing (debug mode)
 </span><span class="org-builtin">set</span> -x
@@ -177,7 +177,7 @@ pagefind 的一些特点：
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">Disable debug mode
 </span><span class="org-builtin">set</span> +x
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -194,13 +194,13 @@ pagefind 的一些特点：
 </div>
 </div>
 <div id="outline-container-23066128-897c-40cf-8243-04d8238d55cc" class="outline-3">
-<h3 id="23066128-897c-40cf-8243-04d8238d55cc">引用 pagefind 资源</h3>
+<h3 id="23066128-897c-40cf-8243-04d8238d55cc"><a href="#23066128-897c-40cf-8243-04d8238d55cc">引用 pagefind 资源</a></h3>
 <div class="outline-text-3" id="text-23066128-897c-40cf-8243-04d8238d55cc"><p>
 相比于在文章页面上添加搜索，我更倾向于一个独立的搜索页面，避免搜索结果影响文章页面的布局。单独一个页面，在我不需要的时候也可以轻易移除。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-html">&lt;<span class="org-keyword">!DOCTYPE</span> html&gt;
+<pre class="src src-html"><code>&lt;<span class="org-keyword">!DOCTYPE</span> html&gt;
 <span id="coderef-zh-cn" class="coderef-off">&lt;<span class="org-function-name">html</span> <span class="org-variable-name">lang</span>=<span class="org-string">"zh-CN"</span>&gt;</span>
   &lt;<span class="org-function-name">head</span>&gt;
     <span class="org-comment-delimiter">&lt;!-- </span><span class="org-comment">...</span><span class="org-comment-delimiter"> --&gt;</span>
@@ -222,7 +222,7 @@ pagefind 的一些特点：
     &lt;/<span class="org-function-name">script</span>&gt;
   &lt;/<span class="org-function-name">body</span>&gt;
 &lt;/<span class="org-function-name">html</span>&gt;
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -244,10 +244,10 @@ pagefind 的一些特点：
 </div>
 </div>
 <div id="outline-container-8935D410-6B99-439A-8D54-4AB6C1AFF33C" class="outline-2">
-<h2 id="8935D410-6B99-439A-8D54-4AB6C1AFF33C">自定义样式</h2>
+<h2 id="8935D410-6B99-439A-8D54-4AB6C1AFF33C"><a href="#8935D410-6B99-439A-8D54-4AB6C1AFF33C">自定义样式</a></h2>
 <div class="outline-text-2" id="text-8935D410-6B99-439A-8D54-4AB6C1AFF33C"></div>
 <div id="outline-container-0DE52050-E2B9-4DD9-91FE-E7369C07D394" class="outline-3">
-<h3 id="0DE52050-E2B9-4DD9-91FE-E7369C07D394">调整 excerpt 的样式</h3>
+<h3 id="0DE52050-E2B9-4DD9-91FE-E7369C07D394"><a href="#0DE52050-E2B9-4DD9-91FE-E7369C07D394">调整 excerpt 的样式</a></h3>
 <div class="outline-text-3" id="text-0DE52050-E2B9-4DD9-91FE-E7369C07D394"><p>
 参考 <a href="https://www.zolkos.com/2025/12/03/vanilla-css-is-all-you-need">Vanilla CSS is all you need</a>，可以给 <code>&lt;mark&gt;</code> 添加一个样式，看起来像是用记号笔圈起来一样。
 </p>
@@ -264,7 +264,7 @@ pagefind 的一些特点：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-javascript"><span class="org-keyword">new</span> <span class="org-type">PagefindUI</span>({
+<pre class="src src-javascript"><code><span class="org-keyword">new</span> <span class="org-type">PagefindUI</span>({
   element: <span class="org-string">"#search"</span>,
   showSubResults: <span class="org-constant">true</span>,
   showImages: <span class="org-constant">false</span>,
@@ -278,7 +278,7 @@ pagefind 的一些特点：
     <span class="org-keyword">return</span> result;
   }
 });
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -289,7 +289,7 @@ pagefind 的一些特点：
 <summary>样式</summary>
 
 <div class="org-src-container">
-<pre class="src src-css"><span class="org-builtin">@layer</span> components {
+<pre class="src src-css"><code><span class="org-builtin">@layer</span> components {
   <span class="org-css-selector">.circled-text</span> {
     <span class="org-variable-name">--circled-color</span>: oklch(var(<span class="org-variable-name">--lch-blue-dark</span>));
     <span class="org-variable-name">--circled-padding</span>: -0.5ch;
@@ -330,14 +330,14 @@ pagefind 的一些特点：
     }
   }
 }
-</pre>
+</code></pre>
 </div>
 </details>
 </div>
 </div>
 </div>
 <div id="outline-container-C5CBE53A-0D3E-475A-B2FC-607367583477" class="outline-2">
-<h2 id="C5CBE53A-0D3E-475A-B2FC-607367583477">一些建议</h2>
+<h2 id="C5CBE53A-0D3E-475A-B2FC-607367583477"><a href="#C5CBE53A-0D3E-475A-B2FC-607367583477">一些建议</a></h2>
 <div class="outline-text-2" id="text-C5CBE53A-0D3E-475A-B2FC-607367583477"><p>
 由于 pagefind 依赖 JS，但是用户可能禁用了 JS，或者某些原因导致 pagefind 的 JS 加载错误，此时搜索就失效了。针对这种场景，考虑添加一段文本，引导用户使用搜索引擎搜索：
 </p>
@@ -350,7 +350,7 @@ pagefind 的一些特点：
 </div>
 </div>
 <div id="outline-container-1f87fbcb-c481-404c-b4ac-97db76feb1ad" class="outline-2">
-<h2 id="1f87fbcb-c481-404c-b4ac-97db76feb1ad">写在最后</h2>
+<h2 id="1f87fbcb-c481-404c-b4ac-97db76feb1ad"><a href="#1f87fbcb-c481-404c-b4ac-97db76feb1ad">写在最后</a></h2>
 <div class="outline-text-2" id="text-1f87fbcb-c481-404c-b4ac-97db76feb1ad"><p>
 如果你还有更好的搜索服务，欢迎分享 (ﾟ∀。)
 </p>
@@ -409,7 +409,6 @@ pagefind 的一些特点：
 </div>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
-<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/purify.min.js" defer></script>

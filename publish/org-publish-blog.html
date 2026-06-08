@@ -84,7 +84,7 @@ alt="Translate with Kagi"
 </ul>
 </div>
 </nav>
-<section role="note" id="org6e9db99">
+<section role="note" id="org3c875c8">
 <p>
 另见：<a href="blog-with-denote-and-org-publish.html">结合 denote 和 org-publish 写博客</a>
 </p>
@@ -114,7 +114,7 @@ alt="Translate with Kagi"
 相关代码见 <a href="https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-org-publish.el">init-org-publish.el</a>。
 </p>
 <div id="outline-container-84028fac-1594-46e7-af48-35b2ce7b955f" class="outline-2">
-<h2 id="84028fac-1594-46e7-af48-35b2ce7b955f">动机</h2>
+<h2 id="84028fac-1594-46e7-af48-35b2ce7b955f"><a href="#84028fac-1594-46e7-af48-35b2ce7b955f">动机</a></h2>
 <div class="outline-text-2" id="text-84028fac-1594-46e7-af48-35b2ce7b955f"><p>
 在很早之前看过几篇文章：
 </p>
@@ -132,7 +132,7 @@ alt="Translate with Kagi"
 </div>
 </div>
 <div id="outline-container-3327ca5c-29c5-4e47-9794-c899dddb0c04" class="outline-2">
-<h2 id="3327ca5c-29c5-4e47-9794-c899dddb0c04">相比之前的变化</h2>
+<h2 id="3327ca5c-29c5-4e47-9794-c899dddb0c04"><a href="#3327ca5c-29c5-4e47-9794-c899dddb0c04">相比之前的变化</a></h2>
 <div class="outline-text-2" id="text-3327ca5c-29c5-4e47-9794-c899dddb0c04"><ul class="org-ul">
 <li>极大的简化了博客内容，没有主题，没有模板，只有博客内容的 org 文件、css 文件、字体、图片，以及最终转换出来的 HTML 文件</li>
 <li>博客的编写、构建只需要 Emacs 就能完成（以及 <a href="https://browsersync.io/">Browsersync</a> 用于本地查看构建的 HTML）</li>
@@ -147,7 +147,7 @@ alt="Translate with Kagi"
 </div>
 </div>
 <div id="outline-container-6c1456b6-fe60-46a6-bcc0-df51a55113ec" class="outline-2">
-<h2 id="6c1456b6-fe60-46a6-bcc0-df51a55113ec">org-publish 的使用</h2>
+<h2 id="6c1456b6-fe60-46a6-bcc0-df51a55113ec"><a href="#6c1456b6-fe60-46a6-bcc0-df51a55113ec">org-publish 的使用</a></h2>
 <div class="outline-text-2" id="text-6c1456b6-fe60-46a6-bcc0-df51a55113ec"><p>
 org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可以定义很多个任务，每个任务指定处理什么文件，怎么处理，处理之后放到什么地方。你可以单独地执行某个任务，也可以将任务串联起来执行。
 </p>
@@ -157,7 +157,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 </p>
 </div>
 <div id="outline-container-99379675-2E6F-43A2-B030-F4D0740A6F16" class="outline-3">
-<h3 id="99379675-2E6F-43A2-B030-F4D0740A6F16">构建后代码块的高亮</h3>
+<h3 id="99379675-2E6F-43A2-B030-F4D0740A6F16"><a href="#99379675-2E6F-43A2-B030-F4D0740A6F16">构建后代码块的高亮</a></h3>
 <div class="outline-text-3" id="text-99379675-2E6F-43A2-B030-F4D0740A6F16"><p>
 高亮的颜色是基于 Emacs 当前的主题的，而我的博客整体是亮色的，因此需要 Emacs 中也使用亮色的主题才能得到合适的高亮颜色。
 </p>
@@ -170,7 +170,7 @@ org-publish 的使用有点像 <a href="https://gulpjs.com/">gulp</a>，你可�
 <summary>代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">pin code block theme
+<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">pin code block theme
 </span>
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/apply-theme-when-publish</span> (<span class="org-type">&amp;rest</span> args)
   <span class="org-doc">"Switch theme when do `</span><span class="org-doc"><span class="org-constant">org-publish</span></span><span class="org-doc">'.
@@ -190,13 +190,13 @@ ARGS will pass to `</span><span class="org-doc"><span class="org-constant">org-p
 (advice-remove 'load-theme #'spike-leung/set-olivetti-fringe-face)
 (advice-add 'org-publish <span class="org-builtin">:around</span> #'spike-leung/apply-theme-when-publish)
 (advice-add 'load-theme <span class="org-builtin">:after</span> #'spike-leung/set-olivetti-fringe-face)
-</pre>
+</code></pre>
 </div>
 </details>
 </div>
 </div>
 <div id="outline-container-584B050A-A533-4758-9527-1A47C0FDD016" class="outline-3">
-<h3 id="584B050A-A533-4758-9527-1A47C0FDD016">RSS 的设置</h3>
+<h3 id="584B050A-A533-4758-9527-1A47C0FDD016"><a href="#584B050A-A533-4758-9527-1A47C0FDD016">RSS 的设置</a></h3>
 <div class="outline-text-3" id="text-584B050A-A533-4758-9527-1A47C0FDD016"><p>
 <a href="https://github.com/emacsmirror/ox-rss">ox-rss</a> 可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成 RSS。但是我需要的是把多个 org 文件生成为一个 RSS 文件。
 </p>
@@ -214,7 +214,7 @@ ARGS will pass to `</span><span class="org-doc"><span class="org-constant">org-p
 <li>检查一下是不是 <code>:exclude</code> 正则表达式写得有问题</li>
 </ul>
 
-<section role="note" id="orgc9a4c23">
+<section role="note" id="org2357797">
 <p>
 RSS 的生成已经换成了 NodeJS 脚本生成，效率更高一些，见 <a href="blog-update-2025-04-08.html">博客的一些更新</a>。
 </p>
@@ -226,7 +226,7 @@ RSS 的生成已经换成了 NodeJS 脚本生成，效率更高一些，见 <a h
 </div>
 </div>
 <div id="outline-container-113A0707-7DA9-456E-B234-9305DE6A7F63" class="outline-3">
-<h3 id="113A0707-7DA9-456E-B234-9305DE6A7F63">index 文件的设置</h3>
+<h3 id="113A0707-7DA9-456E-B234-9305DE6A7F63"><a href="#113A0707-7DA9-456E-B234-9305DE6A7F63">index 文件的设置</a></h3>
 <div class="outline-text-3" id="text-113A0707-7DA9-456E-B234-9305DE6A7F63"><p>
 设置 <code>:makeindex t</code> 可以生成 index 文件，需要在 org 文件中设置 <code>#+INDEX</code> keyword。
 </p>
@@ -241,16 +241,16 @@ RSS 的生成已经换成了 NodeJS 脚本生成，效率更高一些，见 <a h
 </div>
 </div>
 <div id="outline-container-A10ADDC9-61C4-42F2-B96E-0AF391ABE4CB" class="outline-3">
-<h3 id="A10ADDC9-61C4-42F2-B96E-0AF391ABE4CB"><code>#+date</code> 的设置</h3>
+<h3 id="A10ADDC9-61C4-42F2-B96E-0AF391ABE4CB"><a href="#A10ADDC9-61C4-42F2-B96E-0AF391ABE4CB"><code>#+date</code> 的设置</a></h3>
 <div class="outline-text-3" id="text-A10ADDC9-61C4-42F2-B96E-0AF391ABE4CB"><p>
 原来 Hugo 生成的日期 (<code>2023-05-31T13:38:39+08:00</code>) 在转换成 sitemap 的时候似乎不能识别，
 </p>
 
 <p>
-于是改成 org 的日期格式 (<span class="timestamp-wrapper"><span class="timestamp">&lt;2023-05-31 Wed&gt;</span></span>)，这样 sitemap 就能正常按照时间排序了。
+于是改成 org 的日期格式 (<span class="timestamp-wrapper"><time class="timestamp" datetime="2023-05-31">&lt;2023-05-31 Wed&gt;</time></span>)，这样 sitemap 就能正常按照时间排序了。
 </p>
 
-<section role="note" id="org28d94ea">
+<section role="note" id="org093d02e">
 <p>
 在 <a href="blog-with-denote-and-org-publish.html">结合 denote 和 org-publish 写博客</a> 中，已经改成了 denote 的 date 格式。
 </p>
@@ -258,7 +258,7 @@ RSS 的生成已经换成了 NodeJS 脚本生成，效率更高一些，见 <a h
 </div>
 </div>
 <div id="outline-container-AD8007C1-34D6-44E4-9A02-4140AC784494" class="outline-3">
-<h3 id="AD8007C1-34D6-44E4-9A02-4140AC784494">缓存问题</h3>
+<h3 id="AD8007C1-34D6-44E4-9A02-4140AC784494"><a href="#AD8007C1-34D6-44E4-9A02-4140AC784494">缓存问题</a></h3>
 <div class="outline-text-3" id="text-AD8007C1-34D6-44E4-9A02-4140AC784494"><p>
 执行 org-publish 之后，会在 <code>org-publish-timestamp-directory</code>指定的目录下生成缓存，有时调整了页眉页脚，可能需要清除缓存才能看到效果。
 </p>
@@ -269,20 +269,20 @@ RSS 的生成已经换成了 NodeJS 脚本生成，效率更高一些，见 <a h
 </div>
 </div>
 <div id="outline-container-D6910FB7-C21F-429D-827D-ABE6FA1D58B5" class="outline-3">
-<h3 id="D6910FB7-C21F-429D-827D-ABE6FA1D58B5"><code>:time-stamp-file nil</code></h3>
+<h3 id="D6910FB7-C21F-429D-827D-ABE6FA1D58B5"><a href="#D6910FB7-C21F-429D-827D-ABE6FA1D58B5"><code>:time-stamp-file nil</code></a></h3>
 <div class="outline-text-3" id="text-D6910FB7-C21F-429D-827D-ABE6FA1D58B5"><p>
 设置 <code>:time-stamp-file nil</code> 可以避免每次执行 org-publish 的时候都往 HTML 插入最新的时间戳，导致每次变更的文件很多。
 </p>
 </div>
 </div>
 <div id="outline-container-BAAE40CD-4F7C-4CC7-B9F6-36EC3B294332" class="outline-3">
-<h3 id="BAAE40CD-4F7C-4CC7-B9F6-36EC3B294332"><code>:html-head</code> ， <code>:html-preamble</code> ， <code>:html-postamble</code> 的复用</h3>
+<h3 id="BAAE40CD-4F7C-4CC7-B9F6-36EC3B294332"><a href="#BAAE40CD-4F7C-4CC7-B9F6-36EC3B294332"><code>:html-head</code> ， <code>:html-preamble</code> ， <code>:html-postamble</code> 的复用</a></h3>
 <div class="outline-text-3" id="text-BAAE40CD-4F7C-4CC7-B9F6-36EC3B294332"><p>
 最开始定义 <code>org-publish-project-alist</code> ， 我是这么写的，导致一直无法使用变量抽象一些公用的 string：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp">(<span class="org-keyword">defconst</span> <span class="org-variable-name">spike-leung/html-head</span> <span class="org-string">"
+<pre class="src src-elisp"><code>(<span class="org-keyword">defconst</span> <span class="org-variable-name">spike-leung/html-head</span> <span class="org-string">"
   &lt;link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/&gt;
   &lt;link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\"&gt;
   "</span>
@@ -295,7 +295,7 @@ RSS 的生成已经换成了 NodeJS 脚本生成，效率更高一些，见 <a h
          <span class="org-builtin">:html-head</span> ,spike-leung/html-head
          <span class="org-comment-delimiter">;; </span><span class="org-comment">... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
 </span>         )))
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -326,7 +326,7 @@ which are not self-evaluating objects, in a program.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff"><span class="org-diff-context">  (defconst spike-leung/html-head "
+<pre class="src src-diff"><code><span class="org-diff-context">  (defconst spike-leung/html-head "
     &lt;link rel=\"stylesheet\" href=\"../styles/style.css\" type=\"text/css\"/&gt;
     &lt;link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\"&gt;
     "
@@ -340,7 +340,7 @@ which are not self-evaluating objects, in a program.
            :html-head ,spike-leung/html-head
            ;; ... &#36824;&#26377;&#20854;&#20182;&#24456;&#22810;&#35774;&#32622;
 </span>           )))
-</pre>
+</code></pre>
 </div>
 
 <blockquote>
@@ -354,7 +354,7 @@ In the simplest case, it is identical to the special form quote
 </p>
 
 <p>
-&#x2026;
+&hellip;
 </p>
 
 <p>
@@ -376,7 +376,7 @@ The Emacs Lisp evaluator evaluates the argument of ‘,’, and puts the value i
 </div>
 </div>
 <div id="outline-container-9CC4FAD2-E5CE-4BA7-B60A-A8B1BB2E3CAC" class="outline-3">
-<h3 id="9CC4FAD2-E5CE-4BA7-B60A-A8B1BB2E3CAC">id 问题</h3>
+<h3 id="9CC4FAD2-E5CE-4BA7-B60A-A8B1BB2E3CAC"><a href="#9CC4FAD2-E5CE-4BA7-B60A-A8B1BB2E3CAC">id 问题</a></h3>
 <div class="outline-text-3" id="text-9CC4FAD2-E5CE-4BA7-B60A-A8B1BB2E3CAC"><p>
 org publish 的时候会给 heading、figure、details、pre 等元素生成 id，如果没有主动设置 id，则会使用 org-export 的默认 id 生成策略，生成一个形如 <code>org123456</code> 的 id。
 </p>
@@ -393,7 +393,7 @@ org publish 的时候会给 heading、figure、details、pre 等元素生成 id�
 具体的做法是每次保存 org 文件的时候，我都为 heading 生成 <code>CUSTOM_ID</code> 。
 </p>
 
-<section role="note" id="orgd77aac1">
+<section role="note" id="orga9b3dc6">
 <p>
 在 <a href="https://emacs-china.org/t/rx/30034">用 rx 写正则表达式，太舒服了！</a> 中，有人提到了其他方法，例如覆盖 <code>org-export-get-reference</code> 的实现。
 </p>
@@ -403,7 +403,7 @@ org publish 的时候会给 heading、figure、details、pre 等元素生成 id�
 <summary>相关代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/org-add-custom-id-to-headings-in-blog-files</span> ()
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/org-add-custom-id-to-headings-in-blog-files</span> ()
   <span class="org-doc">"Add a CUSTOM_ID property to all headings in the current buffer, if it does not already exist."</span>
   (<span class="org-keyword">interactive</span>)
   (org-map-entries
@@ -417,7 +417,7 @@ org publish 的时候会给 heading、figure、details、pre 等元素生成 id�
             (<span class="org-keyword">when</span> (<span class="org-keyword">and</span> buffer-file-name
                        (string-match <span class="org-string">"taxodium"</span> buffer-file-name)) <span class="org-comment-delimiter">;; </span><span class="org-comment">only apply to blog files
 </span>              (add-hook 'before-save-hook 'spike-leung/org-add-custom-id-to-headings-in-blog-files nil 'local))))
-</pre>
+</code></pre>
 </div>
 </details>
 
@@ -429,7 +429,7 @@ org publish 的时候会给 heading、figure、details、pre 等元素生成 id�
 <summary>相关代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/remove-unnessary-id-from-html</span> (text backend info)
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/remove-unnessary-id-from-html</span> (text backend info)
   <span class="org-doc">"Remove unnecessarily id attibute.
 These elements's ID will be remove: figure,details,pre ..."</span>
   (<span class="org-keyword">when</span> (org-export-derived-backend-p backend 'html)
@@ -450,14 +450,14 @@ These elements's ID will be remove: figure,details,pre ..."</span>
 (<span class="org-keyword">with-eval-after-load</span> 'ox
   (add-to-list 'org-export-filter-final-output-functions
                'spike-leung/remove-unnessary-id-from-html))
-</pre>
+</code></pre>
 </div>
 </details>
 </div>
 </div>
 </div>
 <div id="outline-container-7c8e8d68-1d39-4b29-bbf0-d2c235f93943" class="outline-2">
-<h2 id="7c8e8d68-1d39-4b29-bbf0-d2c235f93943">一些缺点</h2>
+<h2 id="7c8e8d68-1d39-4b29-bbf0-d2c235f93943"><a href="#7c8e8d68-1d39-4b29-bbf0-d2c235f93943">一些缺点</a></h2>
 <div class="outline-text-2" id="text-7c8e8d68-1d39-4b29-bbf0-d2c235f93943"><ul class="org-ul">
 <li>在执行 org-publish 时，如果内容多，可能会很慢，此时会阻塞 Emacs，不能做其他事情</li>
 <li>由于依赖 Emacs，<a href="https://www.netlify.com/">Netlify</a> 等平台上没有开箱即用的构建命令，集成 CI/CD 相对麻烦</li>
@@ -466,10 +466,10 @@ These elements's ID will be remove: figure,details,pre ..."</span>
 </div>
 </div>
 <div id="outline-container-91e2995e-e98c-48c0-8d06-e62f704cc3eb" class="outline-2">
-<h2 id="91e2995e-e98c-48c0-8d06-e62f704cc3eb">Tricks</h2>
+<h2 id="91e2995e-e98c-48c0-8d06-e62f704cc3eb"><a href="#91e2995e-e98c-48c0-8d06-e62f704cc3eb">Tricks</a></h2>
 <div class="outline-text-2" id="text-91e2995e-e98c-48c0-8d06-e62f704cc3eb"></div>
 <div id="outline-container-6ab69c9d-68fa-4fb3-881a-19c7923a2e65" class="outline-3">
-<h3 id="6ab69c9d-68fa-4fb3-881a-19c7923a2e65">Snippet</h3>
+<h3 id="6ab69c9d-68fa-4fb3-881a-19c7923a2e65"><a href="#6ab69c9d-68fa-4fb3-881a-19c7923a2e65">Snippet</a></h3>
 <div class="outline-text-3" id="text-6ab69c9d-68fa-4fb3-881a-19c7923a2e65"><p>
 为了方便，可以通过 <a href="https://github.com/joaotavora/yasnippet">YASnippet</a> 或其他方式，设置 org 文件共用内容。
 </p>
@@ -481,7 +481,7 @@ These elements's ID will be remove: figure,details,pre ..."</span>
 <details>
 <summary>weekly snippet</summary>
 <div class="org-src-container">
-<pre class="src src-elisp"># -*- mode: snippet -*-
+<pre class="src src-elisp"><code># -*- mode: snippet -*-
 # name: weekly
 # key: weekly
 # group: blog
@@ -508,21 +508,21 @@ $0
 * Tool | Library
 
 * Music
-</pre>
+</code></pre>
 </div>
 </details>
 </div>
 </div>
 <div id="outline-container-e54adc1f-1183-438d-90c6-6f5789edd6de" class="outline-3">
-<h3 id="e54adc1f-1183-438d-90c6-6f5789edd6de">内容的收起展开</h3>
+<h3 id="e54adc1f-1183-438d-90c6-6f5789edd6de"><a href="#e54adc1f-1183-438d-90c6-6f5789edd6de">内容的收起展开</a></h3>
 <div class="outline-text-3" id="text-e54adc1f-1183-438d-90c6-6f5789edd6de"><p>
 需要开启 <code>org-html-html5-fancy</code> (<a href="https://orgmode.org/manual/HTML-doctypes.html">13.9.3 HTML doctypes ¶</a>)，从而可以使用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details">&lt;details&gt;</a>
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp">(<span class="org-keyword">setq</span> org-html-html5-fancy t)
+<pre class="src src-elisp"><code>(<span class="org-keyword">setq</span> org-html-html5-fancy t)
 (<span class="org-keyword">setq</span> org-html-doctype <span class="org-string">"html5"</span>)
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -540,7 +540,7 @@ console.log('Hello world!')
 </div>
 </div>
 <div id="outline-container-aff9d448-171b-4528-bd68-86124edf11ce" class="outline-3">
-<h3 id="aff9d448-171b-4528-bd68-86124edf11ce">行内图片的插入</h3>
+<h3 id="aff9d448-171b-4528-bd68-86124edf11ce"><a href="#aff9d448-171b-4528-bd68-86124edf11ce">行内图片的插入</a></h3>
 <div class="outline-text-3" id="text-aff9d448-171b-4528-bd68-86124edf11ce"><p class="inline-image">
 如果你想在文字中间插入一张图片 <a href="./images/org-publish-blog/avatar.jpg"><img src="./images/org-publish-blog/avatar.jpg" alt="avatar.jpg" class="inline-image"></a>，同时你希望控制图片的大小，可以这样：
 </p>
@@ -556,19 +556,19 @@ console.log('Hello world!')
 </p>
 
 <div class="org-src-container">
-<pre class="src src-css"><span class="org-css-selector">img.inline-image</span> {
+<pre class="src src-css"><code><span class="org-css-selector">img.inline-image</span> {
   <span class="org-css-property">width</span>: 1em;
   <span class="org-css-property">height</span>: 1em;
   <span class="org-css-property">vertical-align</span>: -3.5px;
 }
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div id="outline-container-ac3d4dcc-6a00-4860-99b4-89905b893ab6" class="outline-2">
-<h2 id="ac3d4dcc-6a00-4860-99b4-89905b893ab6">Refs</h2>
-<div class="outline-text-2" id="text-ac3d4dcc-6a00-4860-99b4-89905b893ab6"><section role="note" id="org1abd828">
+<h2 id="ac3d4dcc-6a00-4860-99b4-89905b893ab6"><a href="#ac3d4dcc-6a00-4860-99b4-89905b893ab6">Refs</a></h2>
+<div class="outline-text-2" id="text-ac3d4dcc-6a00-4860-99b4-89905b893ab6"><section role="note" id="orge33b800">
 <p>
 文章可以在 Emacs China 上讨论：<a href="https://emacs-china.org/t/org-publish/28006">使用 org-publish 构建博客</a>。
 </p>
@@ -617,7 +617,6 @@ console.log('Hello world!')
 </div>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
-<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/purify.min.js" defer></script>

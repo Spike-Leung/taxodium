@@ -79,7 +79,7 @@ alt="Translate with Kagi"
 推荐去阅读一下原文，如果你有更好的文章，也欢迎分享 ヾ(<b>´∀ ˋ</b>)ﾉ
 </p>
 <div id="outline-container-DF7D524D-DC44-45F0-A9B0-950AC3EDD8C0" class="outline-2">
-<h2 id="DF7D524D-DC44-45F0-A9B0-950AC3EDD8C0">为什么需要写注释</h2>
+<h2 id="DF7D524D-DC44-45F0-A9B0-950AC3EDD8C0"><a href="#DF7D524D-DC44-45F0-A9B0-950AC3EDD8C0">为什么需要写注释</a></h2>
 <div class="outline-text-2" id="text-DF7D524D-DC44-45F0-A9B0-950AC3EDD8C0"><p>
 写代码是什么，不同的人有不同的答案，但有 <a href="https://zverok.space/blog/2024-10-06-poetry.html#:~:text=Taking%20the%20definition%20of%20writing%20from%20earlier%2C%20we%20can%20say%20that%20writing%20code%20is%20sharing%20the%20experience%20of%20understanding%20the%20requirements/implementation.">一个答案</a> 我很喜欢：
 </p>
@@ -108,11 +108,11 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <div class="org-src-container">
-<pre class="src src-c"><span class="org-comment-delimiter">/* </span><span class="org-comment">Initial Stack: array</span><span class="org-comment-delimiter"> */</span>
-  <span class="org-function-name">lua_getglobal</span>(lua,<span class="org-string">"table"</span>);
-  <span class="org-function-name">lua_pushstring</span>(lua,<span class="org-string">"sort"</span>);
-  <span class="org-function-name">lua_gettable</span>(lua,-2);       <span class="org-comment-delimiter">/* </span><span class="org-comment">Stack: array, table, table.sort</span><span class="org-comment-delimiter"> */</span>
-  <span class="org-function-name">lua_pushvalue</span>(lua,-3);      <span class="org-comment-delimiter">/* </span><span class="org-comment">Stack: array, table, table.sort, array</span><span class="org-comment-delimiter"> */</span>
+<pre class="src src-c"><code><span class="org-comment-delimiter">/* </span><span class="org-comment">Initial Stack: array</span><span class="org-comment-delimiter"> */</span>
+  <span class="org-function-name">lua_getglobal</span>(<span class="org-type">lua</span>,<span class="org-string">"table"</span>);
+  <span class="org-function-name">lua_pushstring</span>(<span class="org-type">lua</span>,<span class="org-string">"sort"</span>);
+  <span class="org-function-name">lua_gettable</span>(<span class="org-type">lua</span>,-2);       <span class="org-comment-delimiter">/* </span><span class="org-comment">Stack: array, table, table.sort</span><span class="org-comment-delimiter"> */</span>
+  <span class="org-function-name">lua_pushvalue</span>(<span class="org-type">lua</span>,-3);      <span class="org-comment-delimiter">/* </span><span class="org-comment">Stack: array, table, table.sort, array</span><span class="org-comment-delimiter"> */</span>
   <span class="org-keyword">if</span> (lua_pcall(lua,1,0,0)) {
       <span class="org-comment-delimiter">/* </span><span class="org-comment">Stack: array, table, error</span><span class="org-comment-delimiter"> */</span>
 
@@ -128,7 +128,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
       <span class="org-comment-delimiter">/* </span><span class="org-comment">Stack: array, table, table.sort, array, __redis__compare_helper</span><span class="org-comment-delimiter"> */</span>
       lua_call(lua,2,0);
   }
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -194,13 +194,13 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </div>
 </div>
 <div id="outline-container-DE1208E9-18B4-4EC5-B1C1-E47852F6ED34" class="outline-2">
-<h2 id="DE1208E9-18B4-4EC5-B1C1-E47852F6ED34">什么时候需要写注释</h2>
+<h2 id="DE1208E9-18B4-4EC5-B1C1-E47852F6ED34"><a href="#DE1208E9-18B4-4EC5-B1C1-E47852F6ED34">什么时候需要写注释</a></h2>
 <div class="outline-text-2" id="text-DE1208E9-18B4-4EC5-B1C1-E47852F6ED34"><p>
 <a href="https://testing.googleblog.com/2017/07/code-health-to-comment-or-not-to-comment.html">当代码不足以描述清楚逻辑的时候，就考虑补充注释</a>。
 </p>
 </div>
 <div id="outline-container-B97905F9-1CF3-4DB6-9849-45F3F25F4C4E" class="outline-3">
-<h3 id="B97905F9-1CF3-4DB6-9849-45F3F25F4C4E">一些不建议使用注释的场景</h3>
+<h3 id="B97905F9-1CF3-4DB6-9849-45F3F25F4C4E"><a href="#B97905F9-1CF3-4DB6-9849-45F3F25F4C4E">一些不建议使用注释的场景</a></h3>
 <div class="outline-text-3" id="text-B97905F9-1CF3-4DB6-9849-45F3F25F4C4E"><ul class="org-ul">
 <li><p>
 可以使用含义更具体的变量，函数描述代码逻辑，而不需要注释
@@ -210,34 +210,34 @@ Writing code is sharing the experience of understanding the requirements/impleme
 使用具体含义的变量
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // &#24635;&#20215;&#26684;&#20013;&#20943;&#21435;&#25240;&#25187;
+<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // &#24635;&#20215;&#26684;&#20013;&#20943;&#21435;&#25240;&#25187;
 </span><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> finalPrice = (numItems * itemPrice) - min(5, numItems) * itemPrice * 0.1;
 </span>
 <span class="org-diff-indicator-added">+</span><span class="org-diff-added"> price = numItems * itemPrice;
 </span><span class="org-diff-indicator-added">+</span><span class="org-diff-added"> discount = min(5, numItems) * itemPrice * 0.1;
 </span><span class="org-diff-indicator-added">+</span><span class="org-diff-added"> finalPrice = price - discount;
 </span>
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-diff"><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> int width = ...; // Width in pixels.
+<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> int width = ...; // Width in pixels.
 </span>
 <span class="org-diff-indicator-added">+</span><span class="org-diff-added"> int widthInPixels = ...;
 </span>
-</pre>
+</code></pre>
 </div>
 
 <p>
 使用函数封装，函数名揭示逻辑
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Filter offensive words.
+<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Filter offensive words.
 </span><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> for (String word : words) { ... }
 </span>
 <span class="org-diff-indicator-added">+</span><span class="org-diff-added"> filterOffensiveWords(words);
 </span>
-</pre>
+</code></pre>
 </div></li>
 
 <li><p>
@@ -245,68 +245,68 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff"><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // height &#24635;&#26159;&#22823;&#20110; 0&#65292;&#25152;&#20197;&#36825;&#37324;&#19981;&#20250;&#20986;&#38169;
+<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // height &#24635;&#26159;&#22823;&#20110; 0&#65292;&#25152;&#20197;&#36825;&#37324;&#19981;&#20250;&#20986;&#38169;
 </span><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> return width / height;
 </span>
 <span class="org-diff-indicator-added">+</span><span class="org-diff-added"> checkArgument(height &gt; 0);
 </span><span class="org-diff-indicator-added">+</span><span class="org-diff-added"> return width / height;
 </span>
-</pre>
+</code></pre>
 </div></li>
 
 <li><p>
 代码已经足够清楚，不需要重复描述
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Get all users.
+<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Get all users.
 </span><span class="org-diff-context">userService.getAllUsers();
 </span><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Check if the name is empty.
 </span>if (name.isEmpty()) { ... }
-</pre>
+</code></pre>
 </div></li>
 </ul>
 </div>
 </div>
 <div id="outline-container-542072F9-E79E-40E3-83E1-B4B4B799E8F4" class="outline-3">
-<h3 id="542072F9-E79E-40E3-83E1-B4B4B799E8F4">一些建议使用注释的场景</h3>
+<h3 id="542072F9-E79E-40E3-83E1-B4B4B799E8F4"><a href="#542072F9-E79E-40E3-83E1-B4B4B799E8F4">一些建议使用注释的场景</a></h3>
 <div class="outline-text-3" id="text-542072F9-E79E-40E3-83E1-B4B4B799E8F4"><ul class="org-ul">
 <li><p>
 揭示你的意图：解释代码 <i>为什么</i> 要做某些事情（而不是做什么）。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span class="org-comment-delimiter">// </span><span class="org-comment">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
-</pre>
+<pre class="src src-js"><code><span class="org-comment-delimiter">// </span><span class="org-comment">&#21482;&#35745;&#31639;&#19968;&#27425;&#65292;&#22240;&#20026;&#35745;&#31639;&#25104;&#26412;&#24456;&#39640;&#12290;</span>
+</code></pre>
 </div></li>
 
 <li><p>
 保护未来善意的编辑人员不会错误地「修正」你的代码。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span class="org-comment-delimiter">// </span><span class="org-comment">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
-</pre>
+<pre class="src src-js"><code><span class="org-comment-delimiter">// </span><span class="org-comment">&#21019;&#24314;&#19968;&#20010;&#26032;&#30340; Foo &#23454;&#20363;&#65292;&#22240;&#20026; Foo &#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;&#12290;</span>
+</code></pre>
 </div></li>
 
 <li><p>
 澄清：代码审查过程中出现的问题，或代码读者可能提出/困惑的问题。
 </p>
 <div class="org-src-container">
-<pre class="src src-js"><span class="org-comment-delimiter">// </span><span class="org-comment">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
-</pre>
+<pre class="src src-js"><code><span class="org-comment-delimiter">// </span><span class="org-comment">&#27880;&#24847;&#39034;&#24207;&#24456;&#37325;&#35201;&#65292;&#22240;&#20026;...</span>
+</code></pre>
 </div></li>
 
 <li><p>
 解释你写不符合规范/要求的代码的理由
 </p>
 <div class="org-src-container">
-<pre class="src src-js">@SuppressWarnings(<span class="org-string">"unchecked"</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
-</pre>
+<pre class="src src-js"><code>@SuppressWarnings(<span class="org-string">"unchecked"</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">&#24378;&#21046;&#36716;&#25442;&#26159;&#23433;&#20840;&#30340;&#65292;&#22240;&#20026;...</span>
+</code></pre>
 </div></li>
 </ul>
 </div>
 </div>
 </div>
 <div id="outline-container-81EA4493-998D-46F4-9D5D-078567BA08C1" class="outline-2">
-<h2 id="81EA4493-998D-46F4-9D5D-078567BA08C1">注释的分类</h2>
+<h2 id="81EA4493-998D-46F4-9D5D-078567BA08C1"><a href="#81EA4493-998D-46F4-9D5D-078567BA08C1">注释的分类</a></h2>
 <div class="outline-text-2" id="text-81EA4493-998D-46F4-9D5D-078567BA08C1"><p>
 <a href="https://github.com/antirez">antirez</a> 在他的博客 <a href="https://antirez.com/news/124">Writing system software: code comments.</a> 中对注释做了 9 个分类，里面还有大量的代码实例，推荐看看原文。
 </p>
@@ -320,7 +320,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 为什么注释用于解释代码做某些事情的原因，即使代码正在做的事情非常清楚。看代码虽然知道在做什么，但可能不知道为什么要这么做，而为什么注释可以补充这些背景。
 </p>
 
-<section role="note" id="orga0f0d2a">
+<section role="note" id="org26bef86">
 <p>
 例如有的代码可能需要放在前面先执行，虽然那行代码确实写在前面，但对于其他人可能不知道为什么要放在前面先执行，而为什么注释就可以告诉他。
 </p>
@@ -332,7 +332,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 有时由于语言限制、设计问题，或者仅仅是由于系统中自然产生的复杂性，不可能将某个概念或界面集中在一块，因此代码中有些地方会告诉你要记住在代码的其他地方做事情。
 </p>
 
-<section role="note" id="org6bd5b56">
+<section role="note" id="org79e3b5b">
 <p>
 例如有的逻辑分散在很多个文件，修改了一个地方，其他好几个地方也需要修改，
 checklist 可以提醒开发者需要留意修改的地方。
@@ -377,7 +377,7 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 如果你想保存一个函数或代码部分的旧版本，你的工作还没有完成，不能提交。要么确保新函数比过去的函数更好，要么就在本地开发环境中保留它，直到确定为止。
 </p>
 
-<section role="note" id="org9836e20">
+<section role="note" id="orgb2f7336">
 <p>
 看代码有时会看到一些已经注释不用的代码，既没写为什么要注释掉，也没有删掉，会影响阅读正常代码逻辑，也不确定能不能删除，最后可能就变成一种债务了。
 </p>
@@ -386,7 +386,7 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 </div>
 </div>
 <div id="outline-container-17D70924-12D3-4953-B63D-888E4678BEE9" class="outline-2">
-<h2 id="17D70924-12D3-4953-B63D-888E4678BEE9">注释和代码同等重要</h2>
+<h2 id="17D70924-12D3-4953-B63D-888E4678BEE9"><a href="#17D70924-12D3-4953-B63D-888E4678BEE9">注释和代码同等重要</a></h2>
 <div class="outline-text-2" id="text-17D70924-12D3-4953-B63D-888E4678BEE9"><p>
 常听到的说法是，注释会过时，如果不及时维护，注释反而成为了一种误导。解决的办法就是把注释和代码同等看待，同等重视。
 </p>
@@ -429,7 +429,7 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 </div>
 </div>
 <div id="outline-container-F3D95581-C754-4624-B72B-440D3870CA73" class="outline-2">
-<h2 id="F3D95581-C754-4624-B72B-440D3870CA73">Refs</h2>
+<h2 id="F3D95581-C754-4624-B72B-440D3870CA73"><a href="#F3D95581-C754-4624-B72B-440D3870CA73">Refs</a></h2>
 <div class="outline-text-2" id="text-F3D95581-C754-4624-B72B-440D3870CA73"><ul class="org-ul">
 <li><a href="https://testing.googleblog.com/2017/07/code-health-to-comment-or-not-to-comment.html">Code Health: To Comment or Not to Comment?</a> Google 的一篇文章，讲述什么时候适合写注释</li>
 <li><a href="https://blogs.oracle.com/javamagazine/post/java-comments-reduce-technical-debt">Reduce technical debt by valuing comments as much as code</a> 注释的重要性</li>
@@ -477,7 +477,6 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 </div>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
-<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/purify.min.js" defer></script>

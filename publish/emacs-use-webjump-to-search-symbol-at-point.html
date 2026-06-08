@@ -63,14 +63,14 @@ alt="Translate with Kagi"
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span class="org-keyword">setq</span> webjump-sites '((<span class="org-string">"Kagi"</span> . [simple-query <span class="org-string">"kagi.com"</span> <span class="org-string">"kagi.com/search?q="</span> <span class="org-string">""</span>])
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">setq</span> webjump-sites '((<span class="org-string">"Kagi"</span> . [simple-query <span class="org-string">"kagi.com"</span> <span class="org-string">"kagi.com/search?q="</span> <span class="org-string">""</span>])
                       (<span class="org-string">"Kagi Translate"</span> . [simple-query <span class="org-string">"translate.kagi.com"</span> <span class="org-string">"translate.kagi.com/?from=auto&amp;to=zh_cn&amp;text="</span> <span class="org-string">""</span>])
                       (<span class="org-string">"Wikipedia"</span> . [simple-query <span class="org-string">"wikipedia.org"</span> <span class="org-string">"wikipedia.org/wiki/"</span> <span class="org-string">""</span>])
                       (<span class="org-string">"Kagi(site:github.com)"</span> . [simple-query <span class="org-string">"kagi.com"</span> <span class="org-string">"kagi.com/search?q=site:github.com+"</span> <span class="org-string">""</span>])
                       (<span class="org-string">"Album"</span> . [simple-query <span class="org-string">"kagi.com"</span> <span class="org-string">"kagi.com/images?q="</span> <span class="org-string">"&amp;size=large"</span>])
                       (<span class="org-string">"MDN"</span> . [simple-query <span class="org-string">"developer.mozilla.org"</span> <span class="org-string">"developer.mozilla.org/en-US/search?q="</span> <span class="org-string">""</span>])
                       (<span class="org-string">"Haici"</span> . [simple-query <span class="org-string">"dict.cn"</span> <span class="org-string">"dict.cn/search?q="</span> <span class="org-string">""</span>])))
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -93,7 +93,7 @@ alt="Translate with Kagi"
 <summary>代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span class="org-keyword">use-package</span> webjump
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">use-package</span> webjump
   <span class="org-builtin">:bind</span> ((<span class="org-string">"C-M-?"</span> . spike-leung/webjump-symbol-at-point))
   <span class="org-builtin">:config</span>
   (<span class="org-keyword">setq</span> webjump-sites '((<span class="org-string">"Kagi"</span> . [simple-query <span class="org-string">"kagi.com"</span> <span class="org-string">"kagi.com/search?q="</span> <span class="org-string">""</span>])
@@ -126,7 +126,7 @@ alt="Translate with Kagi"
                     (<span class="org-keyword">cond</span> ((concat query-prefix (webjump-url-encode query) query-suffix))
                           (t (<span class="org-warning">error</span> <span class="org-string">"WebJump URL expression for \"%s\" invalid"</span>
                                     name))))))))
-</pre>
+</code></pre>
 </div>
 </details>
 
@@ -144,7 +144,7 @@ alt="Translate with Kagi"
 因为是针对 point 下的内容操作，所以很适合用 <a href="https://github.com/oantolin/embark">embark</a>，可以不用记忆额外的快捷键，更容易想起来用。
 </p>
 
-<section role="note" id="org448e24d">
+<section role="note" id="orgc876509">
 <p>
 embark 可以理解成 Emacs 里的右键菜单，在任何位置都可以调用 <code>embark-act</code> 唤起这个菜单，菜单中的内容是可以自己定制的，这样就可以快速进行一些操作。
 </p>
@@ -173,7 +173,7 @@ embark 会自动帮我选择 point 下的内容，可能是一个符号，可能
 <summary>webjump 部分</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span class="org-keyword">use-package</span> webjump
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">use-package</span> webjump
   <span class="org-builtin">:after</span> embark
   <span class="org-builtin">:defer</span> nil
   <span class="org-builtin">:config</span>
@@ -214,7 +214,7 @@ embark 会自动帮我选择 point 下的内容，可能是一个符号，可能
                     (<span class="org-keyword">cond</span> ((concat query-prefix (webjump-url-encode query) query-suffix))
                           (t (<span class="org-warning">error</span> <span class="org-string">"WebJump URL expression for \"%s\" invalid"</span>
                                     name))))))))
-</pre>
+</code></pre>
 </div>
 </details>
 
@@ -222,7 +222,7 @@ embark 会自动帮我选择 point 下的内容，可能是一个符号，可能
 <summary>embark 部分</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span class="org-keyword">use-package</span> embark
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">use-package</span> embark
   <span class="org-builtin">:bind</span>
   ((<span class="org-string">"C-."</span> . embark-act)
    (<span class="org-string">"M-."</span> . embark-dwim)
@@ -233,7 +233,7 @@ embark 会自动帮我选择 point 下的内容，可能是一个符号，可能
   <span class="org-builtin">:config</span>
   (keymap-set embark-general-map <span class="org-string">"W"</span> #'spike-leung/webjump-symbol-at-point)
   (keymap-set embark-region-map <span class="org-string">"W"</span> #'spike-leung/webjump-symbol-at-point))
-</pre>
+</code></pre>
 </div>
 </details>
 
@@ -275,7 +275,7 @@ webjump 和浏览器或者搜索引擎中的 Search Shortcuts 差不多, 可以�
 <ul class="org-ul">
 <li><code>site:</code> 可以搜索指定域名</li>
 <li><code>filetype:</code> 可以搜索指定的文件类型</li>
-<li>&#x2026;</li>
+<li>&hellip;</li>
 </ul>
 
 <p>
@@ -316,7 +316,6 @@ webjump 和浏览器或者搜索引擎中的 Search Shortcuts 差不多, 可以�
 </div>
 <script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
-<script src="/js/heading-enhanced.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
