@@ -159,9 +159,13 @@
       }
 
       clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        arrangeSidenotePosition();
-      }, 150);
+      debounceTimer = setTimeout(arrangeSidenotePosition, 150);
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target.nodeName === 'SUMMARY') {
+        setTimeout(arrangeSidenotePosition, 0)
+      }
     });
   });
 })();
