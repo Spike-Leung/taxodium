@@ -478,7 +478,7 @@ h1: 1rem × 1.25⁵ = 3.052rem
   }
 #+end_src
 
-*** 链接
+*** 链接 / link
 :PROPERTIES:
 :CUSTOM_ID: CBB452FA-9ED4-4A5C-BAD9-F7C91BC3A426
 :END:
@@ -542,6 +542,20 @@ hover 样式只在电脑屏幕上启用，因为手机本身不支持 hover，
   }
 #+end_src
 
+Heading 也是鏈接，但我希望顯示成字體顏色，從而和鏈接區分開。
+
+#+begin_src css
+  :where(h1,h2,h3,h4,h5,h6) a:not([href~=http]) {
+    color: var(--color-text);
+    color: light-dark(var(--color-text), var(--dark-color-text));
+
+    &:hover {
+      color: #fff;
+      background: light-dark(var(--color-link), var(--dark-color-link));
+    }
+  }
+#+end_src
+
 *** 段落 paragraph
 :PROPERTIES:
 :CUSTOM_ID: 41157D00-9294-4EAD-8950-123C77412B16
@@ -572,7 +586,6 @@ org publish 有时会生成一些空白的 ~<p>~ ，没啥用，将他们都隐�
 
 #+begin_src css
   code {
-    font-size: 0.85rem;
     color: var(--color-code);
     color: light-dark(var(--color-code), var(--dark-color-code));
   }

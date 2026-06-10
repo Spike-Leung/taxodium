@@ -71,7 +71,7 @@ viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" he
 <li><a href="#26EB618B-94BD-4252-AD54-2F830B122280">title &amp; subtitle</a></li>
 <li><a href="#99508F97-0E63-444F-82EF-D9514E4C2F5D">heading</a></li>
 <li><a href="#4D0E8EA8-BC50-4DE1-8149-A697370D9712">图片/视频</a></li>
-<li><a href="#CBB452FA-9ED4-4A5C-BAD9-F7C91BC3A426">链接</a></li>
+<li><a href="#CBB452FA-9ED4-4A5C-BAD9-F7C91BC3A426">链接 / link</a></li>
 <li><a href="#41157D00-9294-4EAD-8950-123C77412B16">段落 paragraph</a></li>
 <li><a href="#BDC822A9-DAB1-4B0A-A9B0-49D03B4816F9">markup</a></li>
 <li><a href="#7811ED62-0E49-45C0-8AF8-204F2DF42D38">hr</a></li>
@@ -657,7 +657,7 @@ video</span> {
 </div>
 </div>
 <div id="outline-container-CBB452FA-9ED4-4A5C-BAD9-F7C91BC3A426" class="outline-4">
-<h4 id="CBB452FA-9ED4-4A5C-BAD9-F7C91BC3A426"><a href="#CBB452FA-9ED4-4A5C-BAD9-F7C91BC3A426">链接</a></h4>
+<h4 id="CBB452FA-9ED4-4A5C-BAD9-F7C91BC3A426"><a href="#CBB452FA-9ED4-4A5C-BAD9-F7C91BC3A426">链接 / link</a></h4>
 <div class="outline-text-4" id="text-CBB452FA-9ED4-4A5C-BAD9-F7C91BC3A426"><p>
 设置链接的颜色、hover、visited 时的颜色。
 </p>
@@ -720,6 +720,23 @@ hover 样式只在电脑屏幕上启用，因为手机本身不支持 hover，�
 }
 </code></pre>
 </div>
+
+<p>
+Heading 也是鏈接，但我希望顯示成字體顏色，從而和鏈接區分開。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><code><span class="org-css-selector">:where(h1,h2,h3,h4,h5,h6) a:not([href~=http])</span> {
+  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+
+  &amp;:hover {
+    <span class="org-css-property">color</span>: <span class="custom">#fff</span>;
+    <span class="org-css-property">background</span>: light-dark(var(<span class="org-variable-name">--color-link</span>), var(<span class="org-variable-name">--dark-color-link</span>));
+  }
+}
+</code></pre>
+</div>
 </div>
 </div>
 <div id="outline-container-41157D00-9294-4EAD-8950-123C77412B16" class="outline-4">
@@ -755,7 +772,6 @@ org publish 有时会生成一些空白的 <code>&lt;p&gt;</code> ，没啥用�
 
 <div class="org-src-container">
 <pre class="src src-css"><code><span class="org-css-selector">code</span> {
-  <span class="org-css-property">font-size</span>: 0.85rem;
   <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-code</span>);
   <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-code</span>), var(<span class="org-variable-name">--dark-color-code</span>));
 }
@@ -3254,7 +3270,7 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
 </details>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2026-04-10 Fri 09:52">2026-04-10 Fri 09:52</time>，更新于 <time class="dt-updated" datetime="2026-06-09 Tue 04:22">2026-06-09 Tue 04:22</time>，</p>
+<p>文章创建于 <time class="dt-published" datetime="2026-04-10 Fri 09:52">2026-04-10 Fri 09:52</time>，更新于 <time class="dt-updated" datetime="2026-06-10 Wed 13:47">2026-06-10 Wed 13:47</time>，</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
 <p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
 <p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 博客样式设计 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
