@@ -12,9 +12,6 @@ node ./scripts/feed.js
 cp -f publish/rss.xml publish/index.xml
 
 # install minify: https://github.com/tdewolff/minify/tree/master
-go install github.com/tdewolff/minify/v2/cmd/minify@latest
-
-# minify publish
-minify -r -i publish
+go run github.com/tdewolff/minify/v2/cmd/minify@latest -r -i publish
 
 set +x
