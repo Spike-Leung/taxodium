@@ -16,7 +16,7 @@
 #+author: Spike Leung
 #+email: l-yanlei@hotmail.com
 #+options: ^:{}
-#+startup: content
+#+startup: content hideblocks
 \n"))))
 
 ((dired-mode . ((eval . (diredfl-mode -1)))))
