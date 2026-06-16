@@ -2844,6 +2844,137 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
   }
 #+end_src
 
+* album-rank.css
+:PROPERTIES:
+:header-args:CSS: :tangle "../publish/styles/album-rank.css"
+:CUSTOM_ID: C9E2D4DA-2469-4818-A9C6-03D36778FFE2
+:END:
+
+[[denote:20250928T170716][听歌排行]] 页面的特殊样式。
+
+#+begin_src css
+  .figure-number {
+    display: none;
+  }
+
+  .album-rank {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, calc(20px * 10));
+    gap: 1.5rem;
+    justify-content: space-around;
+
+    @media screen and (width <= 480px) {
+      grid-template-columns: repeat(2, calc(20px * 8));
+      gap: 1rem 0.5rem;
+      margin-block-start: .5rem;
+    }
+
+    p {
+      display: none;
+    }
+
+    & figure {
+      margin: 0;
+      transform-origin: center bottom;
+
+      &:nth-child(even) {
+        transform: rotateY(-2deg) rotateZ(-1deg);
+      }
+
+      &:nth-child(odd) {
+        transform: rotateY(2deg) rotateZ(1deg);
+      }
+
+      & figcaption {
+        color: var(--color-text-secondary);
+        color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+
+        & b {
+          color: var(--color-text);
+          color: light-dark(var(--color-text), var(--dark-color-text));
+        }
+      }
+    }
+
+    & img {
+      object-fit: cover;
+      aspect-ratio: 1;
+      width: 100%;
+      box-shadow: -5px 5px 5px var(--color-box-shadow) !important;
+      border-radius: 3px;
+    }
+  }
+#+end_src
+
+** animation
+:PROPERTIES:
+:CUSTOM_ID: 88470668-2C68-49BF-B533-5E6E0019E612
+:END:
+
+关于 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-timeline][animation-timeline CSS property]] ，推薦看 Josh W Comeau 的 [[https://www.joshwcomeau.com/animation/scroll-driven-animations/][Scroll-Driven Animations]]，
+目前 Firefox 還不支持 ~animation-timeline~ 。
+
+注意添加 ~@media (prefers-reduced-motion: reduce)~ 基于用戶配置关閉動画。
+
+- ~animation-timeline: view();~ 让元素基于 viewport 控制動画
+- ~animation-range-start~ 和 ~animation-range-end~ 控制動画执行区間，見 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/timeline-range-name#exit][<timeline-range-name> CSS type]]
+- ~animation-fill-mode: both;~ 让動画結束后保持状态
+
+動画謹慎用 ~filter~ ，可能会在手機上造成严重的性能問題。
+
+#+begin_src css
+  .album-wall {
+    @media screen and (width <= 400px) {
+      & figure:nth-child(even) {
+        animation: album-reveal-even;
+        animation-timeline: view();
+        animation-fill-mode: both;
+        animation-range-start: entry 5%;
+        animation-range-end: entry 80%;
+      }
+
+      & figure:nth-child(odd) {
+        animation: album-reveal-odd;
+        animation-timeline: view();
+        animation-fill-mode: both;
+        animation-range-start: entry 10%;
+        animation-range-end: entry 80%;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .album-wall.album-wall figure  {
+      filter: none;
+      animation: none;
+    }
+  }
+
+  @keyframes album-reveal-even {
+    0% {
+      transform: translateY(1rem);
+      opacity: 0;
+    }
+
+    100% {
+      transform: unset;
+      opacity: 1;
+    }
+  }
+
+  @keyframes album-reveal-odd {
+    0% {
+      transform: translateY(2rem);
+      opacity: 0;
+    }
+
+    100% {
+      transform: unset;
+      opacity: 1;
+    }
+  }
+#+end_src
+
 * 88-31-button.css
 :PROPERTIES:
 :CUSTOM_ID: 0FAFBA7D-583A-46D0-A986-4AF16B6C6F56

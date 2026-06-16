@@ -151,6 +151,11 @@
 <li><a href="#88470668-2C68-49BF-B533-5E6E0019E612">animation</a></li>
 </ul>
 </li>
+<li><a href="#C9E2D4DA-2469-4818-A9C6-03D36778FFE2">album-rank.css</a>
+<ul>
+<li><a href="#88470668-2C68-49BF-B533-5E6E0019E612">animation</a></li>
+</ul>
+</li>
 <li><a href="#0FAFBA7D-583A-46D0-A986-4AF16B6C6F56">88-31-button.css</a></li>
 <li><a href="#28F57E2E-3187-4D36-A918-8D43423EEE9F">image-enhance.css</a></li>
 <li><a href="#88EC4E99-5F6A-4F55-A283-56F5226A1D21">text-indent.css</a></li>
@@ -3113,6 +3118,143 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
 </div>
 </div>
 </div>
+<div id="outline-container-C9E2D4DA-2469-4818-A9C6-03D36778FFE2" class="outline-2">
+<h2 id="C9E2D4DA-2469-4818-A9C6-03D36778FFE2"><a href="#C9E2D4DA-2469-4818-A9C6-03D36778FFE2">album-rank.css</a></h2>
+<div class="outline-text-2" id="text-C9E2D4DA-2469-4818-A9C6-03D36778FFE2"><p>
+<a href="music-rank.html">听歌排行</a> 页面的特殊样式。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><code><span class="org-css-selector">.figure-number</span> {
+  <span class="org-css-property">display</span>: none;
+}
+
+<span class="org-css-selector">.album-rank</span> {
+  <span class="org-css-property">display</span>: grid;
+  <span class="org-css-property">grid-template-columns</span>: repeat(auto-fill, calc(20px * 10));
+  <span class="org-css-property">gap</span>: 1.5rem;
+  <span class="org-css-property">justify-content</span>: space-around;
+
+  <span class="org-builtin">@media</span> screen and (width &lt;= 480px) {
+    <span class="org-css-property">grid-template-columns</span>: repeat(2, calc(20px * 8));
+    <span class="org-css-property">gap</span>: 1rem 0.5rem;
+    <span class="org-css-property">margin-block-start</span>: .5rem;
+  }
+
+  <span class="org-css-selector">p</span> {
+    <span class="org-css-property">display</span>: none;
+  }
+
+  &amp; figure {
+    <span class="org-css-property">margin</span>: 0;
+    <span class="org-css-property">transform-origin</span>: center bottom;
+
+    &amp;:nth-child(even) {
+      <span class="org-css-property">transform</span>: rotateY(-2deg) rotateZ(-1deg);
+    }
+
+    &amp;:nth-child(odd) {
+      <span class="org-css-property">transform</span>: rotateY(2deg) rotateZ(1deg);
+    }
+
+    &amp; figcaption {
+      <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
+      <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
+
+      &amp; b {
+        <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text</span>);
+        <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text</span>), var(<span class="org-variable-name">--dark-color-text</span>));
+      }
+    }
+  }
+
+  &amp; img {
+    <span class="org-css-property">object-fit</span>: cover;
+    <span class="org-css-property">aspect-ratio</span>: 1;
+    <span class="org-css-property">width</span>: 100%;
+    <span class="org-css-property">box-shadow</span>: -5px 5px 5px var(<span class="org-variable-name">--color-box-shadow</span>) <span class="org-builtin">!important</span>;
+    <span class="org-css-property">border-radius</span>: 3px;
+  }
+}
+</code></pre>
+</div>
+</div>
+<div id="outline-container-88470668-2C68-49BF-B533-5E6E0019E612" class="outline-3">
+<h3 id="88470668-2C68-49BF-B533-5E6E0019E612"><a href="#88470668-2C68-49BF-B533-5E6E0019E612">animation</a></h3>
+<div class="outline-text-3" id="text-88470668-2C68-49BF-B533-5E6E0019E612"><p>
+关于 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-timeline">animation-timeline CSS property</a> ，推薦看 Josh W Comeau 的 <a href="https://www.joshwcomeau.com/animation/scroll-driven-animations/">Scroll-Driven Animations</a>，目前 Firefox 還不支持 <code>animation-timeline</code> 。
+</p>
+
+<p>
+注意添加 <code>@media (prefers-reduced-motion: reduce)</code> 基于用戶配置关閉動画。
+</p>
+
+<ul class="org-ul">
+<li><code>animation-timeline: view();</code> 让元素基于 viewport 控制動画</li>
+<li><code>animation-range-start</code> 和 <code>animation-range-end</code> 控制動画执行区間，見 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/timeline-range-name#exit">&lt;timeline-range-name&gt; CSS type</a></li>
+<li><code>animation-fill-mode: both;</code> 让動画結束后保持状态</li>
+</ul>
+
+<p>
+動画謹慎用 <code>filter</code> ，可能会在手機上造成严重的性能問題。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><code><span class="org-css-selector">.album-wall</span> {
+  <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
+    &amp; figure:nth-child(even) {
+      <span class="org-css-property">animation</span>: album-reveal-even;
+      <span class="org-css-property">animation-timeline</span>: view();
+      <span class="org-css-property">animation-fill-mode</span>: both;
+      <span class="org-css-property">animation-range-start</span>: entry 5%;
+      <span class="org-css-property">animation-range-end</span>: entry 80%;
+    }
+
+    &amp; figure:nth-child(odd) {
+      <span class="org-css-property">animation</span>: album-reveal-odd;
+      <span class="org-css-property">animation-timeline</span>: view();
+      <span class="org-css-property">animation-fill-mode</span>: both;
+      <span class="org-css-property">animation-range-start</span>: entry 10%;
+      <span class="org-css-property">animation-range-end</span>: entry 80%;
+    }
+  }
+}
+
+<span class="org-builtin">@media</span> (prefers-reduced-motion: reduce) {
+  <span class="org-css-selector">.album-wall.album-wall figure</span>  {
+    <span class="org-css-property">filter</span>: none;
+    <span class="org-css-property">animation</span>: none;
+  }
+}
+
+<span class="org-builtin">@keyframes</span> album-reveal-even {
+  <span class="org-css-selector">0%</span> {
+    <span class="org-css-property">transform</span>: translateY(1rem);
+    <span class="org-css-property">opacity</span>: 0;
+  }
+
+  <span class="org-css-selector">100%</span> {
+    <span class="org-css-property">transform</span>: unset;
+    <span class="org-css-property">opacity</span>: 1;
+  }
+}
+
+<span class="org-builtin">@keyframes</span> album-reveal-odd {
+  <span class="org-css-selector">0%</span> {
+    <span class="org-css-property">transform</span>: translateY(2rem);
+    <span class="org-css-property">opacity</span>: 0;
+  }
+
+  <span class="org-css-selector">100%</span> {
+    <span class="org-css-property">transform</span>: unset;
+    <span class="org-css-property">opacity</span>: 1;
+  }
+}
+</code></pre>
+</div>
+</div>
+</div>
+</div>
 <div id="outline-container-0FAFBA7D-583A-46D0-A986-4AF16B6C6F56" class="outline-2">
 <h2 id="0FAFBA7D-583A-46D0-A986-4AF16B6C6F56"><a href="#0FAFBA7D-583A-46D0-A986-4AF16B6C6F56">88-31-button.css</a></h2>
 <div class="outline-text-2" id="text-0FAFBA7D-583A-46D0-A986-4AF16B6C6F56"><p>
@@ -3247,7 +3389,7 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
 </details>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2026-04-10 Fri 09:52">2026-04-10 Fri 09:52</time>，更新于 <time class="dt-updated" datetime="2026-06-11 Thu 16:39">2026-06-11 Thu 16:39</time>，</p>
+<p>文章创建于 <time class="dt-published" datetime="2026-04-10 Fri 09:52">2026-04-10 Fri 09:52</time>，更新于 <time class="dt-updated" datetime="2026-06-16 Tue 10:41">2026-06-16 Tue 10:41</time>，</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
 <p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
 <p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 博客样式设计 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
