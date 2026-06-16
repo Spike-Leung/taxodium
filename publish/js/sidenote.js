@@ -4,7 +4,11 @@
 
   function handleFootnoteMode() {
     mountSidenotes();
-    document.querySelector("#footnotes").style.display = "none";
+
+    const footnotes = document.querySelector("#footnotes")
+    if (footnotes) {
+      footnotes.style.display = "none";
+    }
   }
 
   function mountSidenotes() {
