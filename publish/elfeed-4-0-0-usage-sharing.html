@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Elfeed 4.0.0 使用分享</title>
+<meta name="author" content="Spike Leung" />
+<meta name="description" content="Elfeed 是一個 Emacs 中的 RSS 訂閱/閱讀工具，分享一下它的使用" />
+<meta name="generator" content="Org Mode" />
+
+<meta name="color-scheme" content="light dark" />
+<link rel="preload" href="/styles/main.css" as="style" />
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="preload" href="/js/color-scheme.js" as="script"/>
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<script src="/js/color-scheme.js"></script>
+<link rel="stylesheet" href="/styles/image-enhance.css" />
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主页</a></li>
+    <li><a href="/subscribe.html">订阅</a></li>
+    <li><a href="/search.html">搜索</a></li>
+  </ul>
+  <!--
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  -->
+  <select id="lightdark" class="js-required" aria-label="切換明暗主題">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">Elfeed 4.0.0 使用分享</h1>
+</header><nav id="table-of-contents" role="doc-toc">
+<h2>&#30446;&#24405;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#EC4C73B4-22D3-4A20-9788-D816E6351EED">安装</a></li>
+<li><a href="#2225B3F1-19A7-4354-8977-DEA8B5318884">管理訂閱流</a></li>
+<li><a href="#6CB51B79-CFEA-4BAA-8DF9-45826432F3D8">閱讀</a></li>
+<li><a href="#9D8F4457-F34B-4120-8291-F1A76C4BBE31">搜索過濾</a></li>
+<li><a href="#590842DC-4C2F-4B86-B1B7-9F3701A7C8AF">其它</a></li>
+</ul>
+</div>
+</nav>
+
+<p>
+<a href="https://github.com/emacs-elfeed/elfeed/tree/main">Elfeed</a> 是一個 Emacs 里的 <a href="about-feeds.html">RSS</a> 閲讀器，關於 Elfeed 之前寫過一篇 <a href="use-elfeed-to-read-feed-in-emacs.html">在 Emacs 中用 Elfeed 阅读订阅流</a>，那篇文章没怎麼展示 Elfeed 的使用，更多還是在分享一些工具函数。前陣子 <a href="https://github.com/emacs-elfeed/elfeed/blob/main/NEWS.org#version-400-2026-06-06">Elfeed 也更新到了 4.0.0</a>，新增了很多方便的功能，我最近也用的很多，所以再分享一下它的使用，或許你會想嘗試一下它。
+</p>
+
+<p>
+為了更直觀了解，我录󠄃了個視頻，也可以看看：
+</p>
+
+<ul class="org-ul">
+<li>YouTube: <a href="https://youtu.be/HlEuXpG992A">Elfeed 4.0.0 使用分享</a></li>
+<li>Bilibili: <a href="https://www.bilibili.com/video/BV1bTjp6REtn/">Elfeed 4.0.0 使用分享</a></li>
+</ul>
+
+<p>
+有點囉嗦，推薦 1.5 倍速看。
+</p>
+
+<details>
+<summary>視頻濱示中的配置</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defconst</span> <span class="org-variable-name">*is-a-mac*</span> (eq system-type 'darwin))
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35774;&#32622; mac &#30340;&#24555;&#25463;&#38190;
+</span>(<span class="org-keyword">when</span> *is-a-mac*
+  (<span class="org-keyword">setq</span> mac-command-modifier 'meta
+      mac-option-modifier 'super))
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35373;&#32622;&#40664;&#35469;&#23383;&#39636;&#22823;&#23567;
+</span>(set-face-attribute 'default nil <span class="org-builtin">:height</span> 250)
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#28155;&#21152; package &#30340;&#19979;&#36617;&#20179;&#24235;&#65292;melpa &#19978;&#26377;&#26356;&#22810;&#30340;&#25844;&#23637;
+</span>(<span class="org-keyword">require</span> '<span class="org-constant">package</span>)
+(add-to-list 'package-archives '(<span class="org-string">"melpa"</span> . <span class="org-string">"https://melpa.org/packages/"</span>) t)
+(add-to-list 'package-unsigned-archives <span class="org-string">"melpa"</span>)
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35519;&#25972; elfeed &#25968;&#25454;&#24235;&#30340;&#30446;&#24405;&#917763;&#20301;&#32622;
+</span>(<span class="org-keyword">setq</span> elfeed-db-directory <span class="org-string">"~/Downloads/emacs-config/.elfeed"</span>)
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#28155;&#21152;&#35330;&#38321;&#27969;
+</span>(<span class="org-keyword">setq</span> elfeed-feeds
+      '((<span class="org-string">"https://taxodium.ink/rss.xml"</span> <span class="org-builtin">:title</span> <span class="org-string">"Taxodium"</span>  emacs zine)
+      (<span class="org-string">"https://kagi.com/api/v1/smallweb/feed/"</span> <span class="org-builtin">:title</span> <span class="org-string">"Kagi Small Web"</span> )
+      (<span class="org-string">"https://bf.zzxworld.com/feed.xml"</span> <span class="org-builtin">:title</span> <span class="org-string">"BlogFinder"</span> <span class="org-builtin">:no-update</span> t <span class="org-builtin">:fetch-link</span> t feeds )))
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35373;&#32622; *elfeed-search* &#38913;&#38754;&#30340;&#26178;&#38291;&#26684;&#24335;&#65292;&#26371;&#24433;&#21709;&#20998;&#32068;&#30340;&#23637;&#31034;
+</span>(<span class="org-keyword">setq</span> elfeed-search-separator-date-format <span class="org-string">"%Y-%m-%d"</span>)
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35373;&#32622;&#40664;&#35469;&#30340;&#36942;&#28670;&#26465;&#20214;
+</span>(<span class="org-keyword">setq-default</span> elfeed-search-filter <span class="org-string">"@1weeks +unread"</span>)
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#25289;&#21462;&#26032;&#26465;&#30446;&#26178;&#65292;&#23559;&#19968;&#20491;&#26376;&#21069;&#30340;&#33258;&#21205;&#27161;&#35352;&#28858;&#24049;&#35712;
+</span>(add-hook 'elfeed-new-entry-hook
+          (elfeed-make-tagger <span class="org-builtin">:before</span> <span class="org-string">"1 months ago"</span>
+                              <span class="org-builtin">:remove</span> 'unread))
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#38321;&#35712;&#26178;&#38283;&#21855; `</span><span class="org-comment"><span class="org-constant">olivetti-mode</span></span><span class="org-comment">'&#65292;&#35731;&#20839;&#23481;&#23621;&#20013;&#23637;&#31034;
+</span>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/preview-elfeed-with-olivetti</span> ()
+  <span class="org-doc">"Preview elfeed with `</span><span class="org-doc"><span class="org-constant">olivetti-mode</span></span><span class="org-doc">'."</span>
+  (olivetti-mode)
+  (olivetti-set-width 80)
+  (visual-line-mode))
+(add-hook 'elfeed-show-mode-hook #'spike-leung/preview-elfeed-with-olivetti)
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#22686;&#24375;&#33258;&#21205;&#35036;&#20840;
+</span>(<span class="org-keyword">use-package</span> vertico
+  <span class="org-builtin">:init</span>
+  (vertico-mode))
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#20801;&#35377;&#35036;&#20840;&#38364;&#37749;&#23383;&#26080;&#24207;
+</span>(<span class="org-keyword">use-package</span> orderless
+  <span class="org-builtin">:custom</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Configure a custom style dispatcher (see the Consult wiki)
+</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">(orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch))
+</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">(orderless-component-separator #'orderless-escapable-split-on-space)
+</span>  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-defaults nil) <span class="org-comment-delimiter">;; </span><span class="org-comment">Disable defaults, use our settings
+</span>  (completion-pcm-leading-wildcard t)) <span class="org-comment-delimiter">;; </span><span class="org-comment">Emacs 31: partial-completion behaves like substring
+</span>
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35731;&#35036;&#20840;&#39023;&#31034;&#27880;&#35299; (annotation)
+</span>(<span class="org-keyword">use-package</span> marginalia
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Bind `</span><span class="org-comment"><span class="org-constant">marginalia-cycle</span></span><span class="org-comment">' locally in the minibuffer.  To make the binding
+</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">available in the *Completions* buffer, add it to the
+</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">completion-list-mode-map</span></span><span class="org-comment">'.
+</span>  <span class="org-builtin">:bind</span> (<span class="org-builtin">:map</span> minibuffer-local-map
+              (<span class="org-string">"M-A"</span> . marginalia-cycle))
+
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">The :init section is always executed.
+</span>  <span class="org-builtin">:init</span>
+
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Marginalia must be activated in the :init section of use-package such that
+</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">the mode gets enabled right away. Note that this forces loading the
+</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">package.
+</span>  (marginalia-mode))
+
+(custom-set-variables
+ <span class="org-comment-delimiter">;; </span><span class="org-comment">custom-set-variables was added by Custom.
+</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">If you edit it by hand, you could mess it up, so be careful.
+</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">Your init file should contain only one such instance.
+</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">If there is more than one, they won't work right.
+</span> '(package-selected-packages '(elfeed marginalia olivetti orderless vertico)))
+(custom-set-faces
+ <span class="org-comment-delimiter">;; </span><span class="org-comment">custom-set-faces was added by Custom.
+</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">If you edit it by hand, you could mess it up, so be careful.
+</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">Your init file should contain only one such instance.
+</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">If there is more than one, they won't work right.
+</span> )
+</code></pre>
+</div>
+</details>
+<div id="outline-container-EC4C73B4-22D3-4A20-9788-D816E6351EED" class="outline-2">
+<h2 id="EC4C73B4-22D3-4A20-9788-D816E6351EED"><a href="#EC4C73B4-22D3-4A20-9788-D816E6351EED">安装</a></h2>
+<div class="outline-text-2" id="text-EC4C73B4-22D3-4A20-9788-D816E6351EED"><p>
+Elfeed 運行在 Emacs 中，關於 <a href="https://www.gnu.org/software/emacs/">Emacs 的安装</a><sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> 和使用這里就不贅述了，之前可以參考之前寫的 <a href="how-to-get-started-with-emacs.html">如何上手 Emacs</a>。我想說的是，Emacs 安装和簡单使用并不難，
+Emacs 也有圖形界面，也可以通過鼠標完成大部分常用操作，不必看到 Emacs 就望而止步。不過請至少閲讀一遍 Emacs tutorial，下面的安装我會假設你己經讀過一遍了。
+</p>
+
+<p>
+Elfeed 的安装參考 <a href="https://github.com/emacs-elfeed/elfeed/tree/main#prerequisites">Elfeed 的 README</a>，大致這几步:
+</p>
+
+<ul class="org-ul">
+<li>执行 <code>M-x package-install</code> ，輪入 <code>elfeed</code> 进行安装</li>
+<li><p>
+配置 Elfeed，可以寫在 <code>~/.emacs.d/init.el</code>
+</p>
+
+<section role="note" id="org92688ab">
+<p>
+Emacs 的配置一般寫在 <code>~/.emacs.d/init.el</code> ，取决於的操作系統路徑可能有差异。
+</p>
+</section>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">setq</span> elfeed-feeds
+      '(<span class="org-string">"https://taxodium.ink/rss.xml"</span>
+        <span class="org-string">"https://kagi.com/api/v1/smallweb/feed/"</span>))
+</code></pre>
+</div></li>
+<li>执行 <code>M-x load-file</code> ，輪入 <code>~/.emacs.d/init.el</code> ，讓 Emacs 加載 <code>init.el</code> 里的配置</li>
+</ul>
+
+<p>
+這樣就安装好了，之後可以执行 <code>M-x elfeed</code> 打開 Elfeed 閲讀，执行 <code>M-x elfeed-update</code> 拉取訂閱流获取更新
+(也可以在 Elfeed 的 buffer 按 <kbd>G</kbd> 触發)。
+</p>
+</div>
+</div>
+<div id="outline-container-2225B3F1-19A7-4354-8977-DEA8B5318884" class="outline-2">
+<h2 id="2225B3F1-19A7-4354-8977-DEA8B5318884"><a href="#2225B3F1-19A7-4354-8977-DEA8B5318884">管理訂閱流</a></h2>
+<div class="outline-text-2" id="text-2225B3F1-19A7-4354-8977-DEA8B5318884"><p>
+Elfeed 的訂閲流是在一個配置文件（例如 <code>init.el</code> ）中配置的， 格式如下：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">setq</span> elfeed-feeds
+      '((<span class="org-string">"https://taxodium.ink/rss.xml"</span> <span class="org-builtin">:title</span> <span class="org-string">"Taxodium"</span>)
+        (<span class="org-string">"https://protesilaos.com/master.xml"</span> <span class="org-builtin">:title</span> <span class="org-string">"Protesilaos"</span> emacs)
+        (<span class="org-string">"https://www.stefanjudis.com/rss.xml"</span> <span class="org-builtin">:title</span> <span class="org-string">"Stefan Judis"</span> weekly frontend)
+        (<span class="org-string">"https://bf.zzxworld.com/feed.xml"</span> <span class="org-builtin">:title</span> <span class="org-string">"BlogFinder"</span> <span class="org-builtin">:no-update</span> t <span class="org-builtin">:fetch-link</span> t feeds blog)
+        (<span class="org-string">"https://kagi.com/api/v1/smallweb/feed/"</span> <span class="org-builtin">:title</span> <span class="org-string">"Kagi Small Web"</span> <span class="org-builtin">:no-update</span> t <span class="org-builtin">:fetch-link</span> t feeds blog)))
+</code></pre>
+</div>
+
+<p>
+上面我添加了 5 条訂閱流，其中
+</p>
+<ul class="org-ul">
+<li><code>:title</code> 可以指定顯示的名称。</li>
+<li><p>
+<code>:no-update</code> 可以讓訂閱流默認不更新，需要手動去触發更新。有的訂閲流更新太多太頻繁，就可以讓它們默認不更新，什麼時候想看再用 <code>elfeed-update-feed</code> 手動触發更新。
+</p>
+
+<details>
+<summary>更好的補全</summary>
+<p>
+<code>elfeed-update-feed</code> 支持自動補全，但默認的補全不是很好用。建議安装 <a href="https://github.com/minad/vertico">minad/vertico</a> 、<a href="https://github.com/oantolin/orderless">oantolin/orderless</a>、<a href="https://github.com/minad/marginalia">minad/marginalia</a> 获得更好的補全。
+</p>
+</details></li>
+
+<li><code>:fetch-link</code> 有的訂閲流只包含原文鏈接，設置 <code>:fetch-link</code> 可以自動拉取鏈接內容。</li>
+
+<li>剩下的 <code>emacs</code> 、 <code>weekly</code> 等是標簽。
+(添加標簽後，执行 <code>M-x elfeed-apply-autotags-now</code> 可以更新己有条目的標簽)</li>
+</ul>
+
+<p>
+更多配置見 <a href="https://github.com/emacs-elfeed/elfeed/">Elfeed 的 README</a>。
+</p>
+
+<p>
+可以看到這就是一些有一定格式的文本，很容易編輯、搜索，所有用於文本的編輯技巧都能用上，例如多指針編輯、正則替換等，比許多圖形介面要方便的多。
+</p>
+
+<p>
+如果後面想換一個閱讀器，可以执行 <code>M-x elfeed-export-opml</code> 將所有訂閱流导出。
+</p>
+</div>
+</div>
+<div id="outline-container-6CB51B79-CFEA-4BAA-8DF9-45826432F3D8" class="outline-2">
+<h2 id="6CB51B79-CFEA-4BAA-8DF9-45826432F3D8"><a href="#6CB51B79-CFEA-4BAA-8DF9-45826432F3D8">閱讀</a></h2>
+<div class="outline-text-2" id="text-6CB51B79-CFEA-4BAA-8DF9-45826432F3D8"><p>
+执行 <code>M-x elfeed</code> 就可以打開 Elfeed 閱讀，在 Elfeed 的 buffer 按 <kbd>G</kbd> (<code>elfeed-update</code>) 触發更新
+(那些設置了 <code>:no-update t</code> 的訂閱流不會被触發)。
+</p>
+
+<p>
+默認視圖是按月份分組的。
+</p>
+
+
+<figure>
+<a href="images/elfeed-4-0-0-usage-sharing/elfeed-search-month-view.webp"><img src="images/elfeed-4-0-0-usage-sharing/elfeed-search-month-view.webp" alt="elfeed-search-month-view.webp" loading="lazy"></a>
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>elfeed 默認視圖，按月分組</figcaption>
+</figure>
+
+<p>
+我更傾向於按天分組，可以在 <code>init.el</code> 中添加配置，設置默認按天分組：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">setq</span> elfeed-search-separator-date-format <span class="org-string">"%Y-%m-%d"</span>)
+</code></pre>
+</div>
+
+
+<figure>
+<a href="images/elfeed-4-0-0-usage-sharing/elfeed-search-date-view.webp"><img src="images/elfeed-4-0-0-usage-sharing/elfeed-search-date-view.webp" alt="elfeed-search-date-view.webp" loading="lazy"></a>
+
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>elfeed 視圖，按天分組</figcaption>
+</figure>
+
+<p>
+按下 <code>o</code> (<code>elfeed-search-cycle-order</code>) 可以切換分組模式，默認在按日期分組和按訂閱流分組之間切換。
+</p>
+
+
+<figure>
+<a href="images/elfeed-4-0-0-usage-sharing/elfeed-search-feed-view.webp"><img src="images/elfeed-4-0-0-usage-sharing/elfeed-search-feed-view.webp" alt="elfeed-search-feed-view.webp" loading="lazy"></a>
+
+<figcaption><span class="figure-number">&#22270;3&nbsp; </span>elfeed 視圖，按訂閱流分組</figcaption>
+</figure>
+
+<p>
+在条目上，按下 <kbd>ENTER</kbd> (<code>elfeed-search-show-entry</code>) 可以查看条目的文章內容，它是通過解析 XML 呈現的，不會加載 JS、CSS，只顯示 HTML 的內容，可以說很簡陋，但它也更干净，没有太多干擾。
+</p>
+
+
+<figure>
+<a href="images/elfeed-4-0-0-usage-sharing/elfeed-show.webp"><img src="images/elfeed-4-0-0-usage-sharing/elfeed-show.webp" alt="elfeed-show.webp" loading="lazy"></a>
+
+<figcaption><span class="figure-number">&#22270;4&nbsp; </span>elfeed 閲讀視圖</figcaption>
+</figure>
+
+<p>
+在条目上按下：
+</p>
+
+<ul class="org-ul">
+<li><kbd>b</kbd> (<code>elfeed-search-browse-url</code>) 可以用默認瀏覧器打開条目。</li>
+<li><kbd>r</kbd> (<code>elfeed-search-untag-all-unread</code>) 可以標記己讀，</li>
+<li><kbd>u</kbd> (<code>elfeed-search-untag-all-unread</code>) 可以標記未讀。</li>
+</ul>
+
+<p>
+更多可以參考 <a href="https://github.com/emacs-elfeed/elfeed/tree/main#prerequisites:~:text=From%20the%20search%20buffer%20there%20are%20a%20number%20of%20ways%20to%20interact%20with%20entries%2E%20Entries%20are%20selected%20by%20placing%20the%20point%20over%20an%20entry%2E%20Multiple%20entries%20are%20selected%20at%20once%20by%20using%20an%20active%20region">README</a>，或者执行 <code>M-x describe-mode</code> 查看 <code>elfeed-search-mode</code> 的按鍵綁定。
+</p>
+
+
+<figure>
+<a href="images/elfeed-4-0-0-usage-sharing/elfeed-describe-mode.webp"><img src="images/elfeed-4-0-0-usage-sharing/elfeed-describe-mode.webp" alt="elfeed-describe-mode.webp" loading="lazy"></a>
+
+<figcaption><span class="figure-number">&#22270;5&nbsp; </span>使用 describe-mode 後列出的 Elfeed 相關的快捷鍵</figcaption>
+</figure>
+</div>
+</div>
+<div id="outline-container-9D8F4457-F34B-4120-8291-F1A76C4BBE31" class="outline-2">
+<h2 id="9D8F4457-F34B-4120-8291-F1A76C4BBE31"><a href="#9D8F4457-F34B-4120-8291-F1A76C4BBE31">搜索過濾</a></h2>
+<div class="outline-text-2" id="text-9D8F4457-F34B-4120-8291-F1A76C4BBE31"><p>
+在条目上按下：
+</p>
+
+<ul class="org-ul">
+<li><kbd>@</kbd> 可以基於条目的日期過濾，例如条目的日期是 2026-06-01，按下後就只顯示 2026-06-01 往後的条目。</li>
+
+<li><kbd>=</kbd> 可以基於条目的訂閱流過濾，例如条目属於 taxodium.ink，按下後就只顯示属於 taxodium.ink 的条目。</li>
+
+<li><kbd>~</kbd> 可以排除条目的訂閱流，例如条目属於 taxodium.ink，按下後就不會顯示属於 taxodium.ink 的条目。</li>
+</ul>
+
+<p>
+在 Elfeed 的 buffer (<code>*elfeed-search*</code>) 上，按下 <kbd>s</kbd> (<code>elfeed-search-live-filter</code>) 可以輸入過濾條件實時過濾，可以按照日期、訂閱流名称、条目名称、標簽 (支持自動補全) 過濾，也支持設置排除条件，具體語法可以參考 <a href="https://github.com/emacs-elfeed/elfeed/tree/main#filter-syntax">Filter Syntax</a>。
+</p>
+
+<p>
+4.0.0 還增加了 <a href="https://github.com/emacs-elfeed/elfeed/tree/main#tree-view">Tree View</a>，可以集中查看所有標簽，执行 <code>M-x elfeed-tree</code> 可以打開 Tree View 視圖。
+</p>
+
+
+<figure>
+<a href="images/elfeed-4-0-0-usage-sharing/elfeed-tree-view.webp"><img src="images/elfeed-4-0-0-usage-sharing/elfeed-tree-view.webp" alt="elfeed-tree-view.webp" loading="lazy"></a>
+
+<figcaption><span class="figure-number">&#22270;6&nbsp; </span>Elfeed Tree View</figcaption>
+</figure>
+
+<p>
+Tree View 的結构和標簽的位置有關：
+</p>
+
+<ul class="org-ul">
+<li><code>("https://yhetil.org/emacs-devel/new.atom" emacs lists)</code>
+emacs 會作為根節點，lists 是它下面的子節點。</li>
+<li><code>("https://yhetil.org/emacs-devel/new.atom" lists emacs)</code>
+lists 會作為根節點，emacs 是它下面的子節點。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-590842DC-4C2F-4B86-B1B7-9F3701A7C8AF" class="outline-2">
+<h2 id="590842DC-4C2F-4B86-B1B7-9F3701A7C8AF"><a href="#590842DC-4C2F-4B86-B1B7-9F3701A7C8AF">其它</a></h2>
+<div class="outline-text-2" id="text-590842DC-4C2F-4B86-B1B7-9F3701A7C8AF"><div id="text-table-of-contents-1" role="doc-toc">
+<ul>
+<li><a href="#5694A9D2-EF4C-4284-B0D9-0C899791E2E5">默認過濾条件</a></li>
+<li><a href="#78CAAABA-2E5D-44A9-BB86-C44130CDA72D">將某個時間之前的条目自動標記己讀</a></li>
+<li><a href="#0E23E4EB-40AB-40FB-B789-BCB8AFA7CA1E">在手機上閱讀</a></li>
+<li><a href="#D7C8F40F-71A1-4F0C-B6B1-99ECADA53C78">优化閱讀體驗</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-5694A9D2-EF4C-4284-B0D9-0C899791E2E5" class="outline-3">
+<h3 id="5694A9D2-EF4C-4284-B0D9-0C899791E2E5"><a href="#5694A9D2-EF4C-4284-B0D9-0C899791E2E5">默認過濾条件</a></h3>
+<div class="outline-text-3" id="text-5694A9D2-EF4C-4284-B0D9-0C899791E2E5"><p>
+默認過濾条件是 <code>@6months +unread</code> ，即近 6 個月未讀的条目，但我只想看最近一周，可以修改 <code>elfeed-search-filter</code> ：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">setq-default</span> elfeed-search-filter <span class="org-string">"@1weeks +unread"</span>)
+</code></pre>
+</div>
+
+<p>
+過濾條件語法參考 <a href="https://github.com/emacs-elfeed/elfeed/tree/main#filter-syntax">Filter Syntax</a>。
+</p>
+</div>
+</div>
+<div id="outline-container-78CAAABA-2E5D-44A9-BB86-C44130CDA72D" class="outline-3">
+<h3 id="78CAAABA-2E5D-44A9-BB86-C44130CDA72D"><a href="#78CAAABA-2E5D-44A9-BB86-C44130CDA72D">將某個時間之前的条目自動標記己讀</a></h3>
+<div class="outline-text-3" id="text-78CAAABA-2E5D-44A9-BB86-C44130CDA72D"><p>
+新增訂閱流時，我可能只是想看作者的後續更新，有的訂閱流可能塞进了所有文章，就會一下子出現大量未讀条目。
+</p>
+
+<p>
+我只想看最近一個月的，可以在拉取時讓 Elfeed 自動將一個月前的標記為己讀。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(add-hook 'elfeed-new-entry-hook
+          (elfeed-make-tagger <span class="org-builtin">:before</span> <span class="org-string">"1 months ago"</span>
+                              <span class="org-builtin">:remove</span> 'unread))
+</code></pre>
+</div>
+
+<p>
+更多見 <a href="https://github.com/emacs-elfeed/elfeed/tree/main#tag-hooks">Tag Hooks</a>。
+</p>
+</div>
+</div>
+<div id="outline-container-0E23E4EB-40AB-40FB-B789-BCB8AFA7CA1E" class="outline-3">
+<h3 id="0E23E4EB-40AB-40FB-B789-BCB8AFA7CA1E"><a href="#0E23E4EB-40AB-40FB-B789-BCB8AFA7CA1E">在手機上閱讀</a></h3>
+<div class="outline-text-3" id="text-0E23E4EB-40AB-40FB-B789-BCB8AFA7CA1E"><p>
+Elfeed 只能在 Emacs 中用，手機上沒装 Emacs 就用不了了。我的解决辦法是，先在電脑上打開 Elfeed，將想看的內空生成一份 HTML，放到一個 Web 服務器上供手機訪問。主要在無法用電脑時應付一下，更多時候我還是在電脑上閲讀。
+</p>
+
+<p>
+具體參考 <a href="export-elfeed-selected-entries-to-github-page-as-reading-list.html">导出 Elfeed 选中条目到 GitHub Page 作为 Reading List</a>。
+</p>
+</div>
+</div>
+<div id="outline-container-D7C8F40F-71A1-4F0C-B6B1-99ECADA53C78" class="outline-3">
+<h3 id="D7C8F40F-71A1-4F0C-B6B1-99ECADA53C78"><a href="#D7C8F40F-71A1-4F0C-B6B1-99ECADA53C78">优化閱讀體驗</a></h3>
+<div class="outline-text-3" id="text-D7C8F40F-71A1-4F0C-B6B1-99ECADA53C78"><p>
+我的顯示器比较寬，默認內容都在左側，閱讀起來不舒服。在閱讀時我會開啟󠄁 <a href="https://github.com/rnkn/olivetti">olivetti-mode</a> 讓內容居中。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/preview-elfeed-with-olivetti</span> ()
+  <span class="org-doc">"Preview elfeed with `</span><span class="org-doc"><span class="org-constant">olivetti-mode</span></span><span class="org-doc">'."</span>
+  (olivetti-mode)
+  (olivetti-set-width 80)
+  (visual-line-mode))
+(add-hook 'elfeed-show-mode-hook #'spike-leung/preview-elfeed-with-olivetti)
+</code></pre>
+</div>
+
+
+<figure>
+<a href="images/elfeed-4-0-0-usage-sharing/elfeed-show.webp"><img src="images/elfeed-4-0-0-usage-sharing/elfeed-show.webp" alt="elfeed-show.webp" loading="lazy"></a>
+
+<figcaption><span class="figure-number">&#22270;7&nbsp; </span>elfeed 閲讀視圖</figcaption>
+</figure>
+
+
+<figure>
+<a href="images/elfeed-4-0-0-usage-sharing/elfeed-show-olivetti.webp"><img src="images/elfeed-4-0-0-usage-sharing/elfeed-show-olivetti.webp" alt="elfeed-show-olivetti.webp" loading="lazy"></a>
+
+<figcaption><span class="figure-number">&#22270;8&nbsp; </span>elfeed 閲讀視圖，開啟了 olivetti-mode</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+macOS 也可以從這兩個地方下載：
+</p>
+<ul class="org-ul">
+<li><a href="https://emacsformacosx.com/">Emacs For Mac OS X</a></li>
+<li><a href="https://github.com/d12frosted/homebrew-emacs-plus">d12frosted/homebrew-emacs-plus</a></li>
+</ul></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+
+<details class="webmention js-required">
+<summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回应这篇文章，可以在你的文章或社交媒体帖子中链接这篇文章，然后提交你的 URL，你的回应随后会显示在此页面上。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章或帖子的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention__list"></ul>
+</details>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建于 <time class="dt-published" datetime="2026-06-20 Sat 20:50">2026-06-20 Sat 20:50</time>，更新于 <time class="dt-updated" datetime="2026-06-20 Sat 20:59">2026-06-20 Sat 20:59</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Elfeed 4.0.0 使用分享 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
+<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer>
+<div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<!--
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+-->
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

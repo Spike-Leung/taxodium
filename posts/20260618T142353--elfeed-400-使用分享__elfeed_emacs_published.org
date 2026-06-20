@@ -1,7 +1,7 @@
 #+title:      Elfeed 4.0.0 使用分享
 #+export_file_name: elfeed-4-0-0-usage-sharing
-#+date:       [2026-06-18 Thu 14:23]
-#+filetags:   :draft:elfeed:emacs:preview:
+#+date:       [2026-06-20 Sat 20:50]
+#+filetags:   :elfeed:emacs:published:
 #+identifier: 20260618T142353
 #+bind:       denote-directory "~/git/taxodium/posts"
 #+description: Elfeed 是一個 Emacs 中的 RSS 訂閱/閱讀工具，分享一下它的使用
@@ -18,6 +18,107 @@
 那篇文章没怎麼展示 Elfeed 的使用，更多還是在分享一些工具函数。
 前陣子 [[https://github.com/emacs-elfeed/elfeed/blob/main/NEWS.org#version-400-2026-06-06][Elfeed 也更新到了 4.0.0]]，新增了很多方便的功能，
 我最近也用的很多，所以再分享一下它的使用，或許你會想嘗試一下它。
+
+為了更直觀了解，我录󠄃了個視頻，也可以看看：
+
+- YouTube: [[https://youtu.be/HlEuXpG992A][Elfeed 4.0.0 使用分享]]
+- Bilibili: [[https://www.bilibili.com/video/BV1bTjp6REtn/][Elfeed 4.0.0 使用分享]]
+
+有點囉嗦，推薦 1.5 倍速看。
+
+#+begin_details
+#+html: <summary>視頻濱示中的配置</summary>
+
+#+begin_src emacs-lisp
+  (defconst *is-a-mac* (eq system-type 'darwin))
+
+  ;;; 设置 mac 的快捷键
+  (when *is-a-mac*
+    (setq mac-command-modifier 'meta
+        mac-option-modifier 'super))
+
+  ;;; 設置默認字體大小
+  (set-face-attribute 'default nil :height 250)
+
+  ;;; 添加 package 的下載仓庫，melpa 上有更多的擴展
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-unsigned-archives "melpa")
+
+  ;;; 調整 elfeed 数据庫的目录󠄃位置
+  (setq elfeed-db-directory "~/Downloads/emacs-config/.elfeed")
+
+  ;;; 添加訂閱流
+  (setq elfeed-feeds
+        '(("https://taxodium.ink/rss.xml" :title "Taxodium"  emacs zine)
+        ("https://kagi.com/api/v1/smallweb/feed/" :title "Kagi Small Web" )
+        ("https://bf.zzxworld.com/feed.xml" :title "BlogFinder" :no-update t :fetch-link t feeds )))
+
+  ;;; 設置 *elfeed-search* 頁面的時間格式，會影响分組的展示
+  (setq elfeed-search-separator-date-format "%Y-%m-%d")
+
+  ;;; 設置默認的過濾条件
+  (setq-default elfeed-search-filter "@1weeks +unread")
+
+  ;;; 拉取新条目時，將一個月前的自動標記為己讀
+  (add-hook 'elfeed-new-entry-hook
+            (elfeed-make-tagger :before "1 months ago"
+                                :remove 'unread))
+
+  ;;; 閱讀時開啟 `olivetti-mode'，讓內容居中展示
+  (defun spike-leung/preview-elfeed-with-olivetti ()
+    "Preview elfeed with `olivetti-mode'."
+    (olivetti-mode)
+    (olivetti-set-width 80)
+    (visual-line-mode))
+  (add-hook 'elfeed-show-mode-hook #'spike-leung/preview-elfeed-with-olivetti)
+
+  ;; 增強自動補全
+  (use-package vertico
+    :init
+    (vertico-mode))
+
+  ;; 允許補全關鍵字无序
+  (use-package orderless
+    :custom
+    ;; Configure a custom style dispatcher (see the Consult wiki)
+    ;; (orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch))
+    ;; (orderless-component-separator #'orderless-escapable-split-on-space)
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles partial-completion))))
+    (completion-category-defaults nil) ;; Disable defaults, use our settings
+    (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion behaves like substring
+
+  ;;; 讓補全顯示注解 (annotation)
+  (use-package marginalia
+    ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+    ;; available in the *Completions* buffer, add it to the
+    ;; `completion-list-mode-map'.
+    :bind (:map minibuffer-local-map
+                ("M-A" . marginalia-cycle))
+
+    ;; The :init section is always executed.
+    :init
+
+    ;; Marginalia must be activated in the :init section of use-package such that
+    ;; the mode gets enabled right away. Note that this forces loading the
+    ;; package.
+    (marginalia-mode))
+
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(package-selected-packages '(elfeed marginalia olivetti orderless vertico)))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   )
+#+end_src
+#+end_details
 
 * 安装
 :PROPERTIES:
@@ -42,8 +143,8 @@ Elfeed 的安装參考 [[https://github.com/emacs-elfeed/elfeed/tree/main#prereq
 
   #+begin_src emacs-lisp
     (setq elfeed-feeds
-          '("https://nullprogram.com/feed/"
-            "https://planet.emacslife.com/atom.xml"))
+          '("https://taxodium.ink/rss.xml"
+            "https://kagi.com/api/v1/smallweb/feed/"))
   #+end_src
 - 执行 ~M-x load-file~ ，輪入 =~/.emacs.d/init.el= ，讓 Emacs 加載 ~init.el~ 里的配置
 
@@ -70,9 +171,19 @@ Elfeed 的訂閲流是在一個配置文件（例如 =init.el= ）中配置的�
 上面我添加了 5 条訂閱流，其中
 - ~:title~ 可以指定顯示的名称。
 - ~:no-update~ 可以讓訂閱流默認不更新，需要手動去触發更新。
-  有的訂閲流更新太多太頻繁，就可以讓它們默認不更新，什麼時候想看再手動触發更新。
+  有的訂閲流更新太多太頻繁，就可以讓它們默認不更新，
+  什麼時候想看再用 ~elfeed-update-feed~ 手動触發更新。
+
+  #+begin_details
+  #+html: <summary>更好的補全</summary>
+  ~elfeed-update-feed~ 支持自動補全，但默認的補全不是很好用。
+  建議安装 [[https://github.com/minad/vertico][minad/vertico]] 、[[https://github.com/oantolin/orderless][oantolin/orderless]]、[[https://github.com/minad/marginalia][minad/marginalia]] 获得更好的補全。
+  #+end_details
+
 - ~:fetch-link~ 有的訂閲流只包含原文鏈接，設置 ~:fetch-link~ 可以自動拉取鏈接內容。
+
 - 剩下的 ~emacs~ 、 ~weekly~ 等是標簽。
+  (添加標簽後，执行 ~M-x elfeed-apply-autotags-now~ 可以更新己有条目的標簽)
 
 更多配置見 [[https://github.com/emacs-elfeed/elfeed/][Elfeed 的 README]]。
 
@@ -148,20 +259,10 @@ Elfeed 的訂閲流是在一個配置文件（例如 =init.el= ）中配置的�
 - @@html:<kbd>~</kbd>@@ 可以排除条目的訂閱流，
   例如条目属於 taxodium.ink，按下後就不會顯示属於 taxodium.ink 的条目。
 
-在 Elfeed 的 buffer (=*elfeed-search*=) 上，按下：
-- @@html:<kbd>f</kbd>@@ (~elfeed-update-feed~) 會出現自動補全，可以選擇一個訂閱流更新。
-  可以用來更新那些設置了 =:no-update t= 的訂閱流，或想看的訂閱流。
-
-  #+begin_details
-  #+html: <summary>更好的補全</summary>
-
-  建議安装 [[https://github.com/minad/vertico][minad/vertico]] 、[[https://github.com/oantolin/orderless][oantolin/orderless]]、[[https://github.com/minad/marginalia][minad/marginalia]] 获得更好的補全，
-  配置參考： [[https://github.com/Spike-Leung/Spikemacs/blob/e41d63ef241fb9f98bff6f6a5012ce51fce795c8/lisp/init-minibuffer.el#L63-L86][Spikemacs/lisp/init-minibuffer.el]]
-  #+end_details
-
-- @@html:<kbd>s</kbd>@@ (~elfeed-search-live-filter~) 可以輸入過濾條件實時過濾，
-  可以按照日期、訂閱流名称、条目名称、標簽 (支持自動補全) 過濾，
-  也支持設置排除条件，具體語法可以參考 [[https://github.com/emacs-elfeed/elfeed/tree/main#filter-syntax][Filter Syntax]]。
+在 Elfeed 的 buffer (=*elfeed-search*=) 上，
+按下 @@html:<kbd>s</kbd>@@ (~elfeed-search-live-filter~) 可以輸入過濾條件實時過濾，
+可以按照日期、訂閱流名称、条目名称、標簽 (支持自動補全) 過濾，
+也支持設置排除条件，具體語法可以參考 [[https://github.com/emacs-elfeed/elfeed/tree/main#filter-syntax][Filter Syntax]]。
 
 4.0.0 還增加了 [[https://github.com/emacs-elfeed/elfeed/tree/main#tree-view][Tree View]]，可以集中查看所有標簽，执行 ~M-x elfeed-tree~ 可以打開 Tree View 視圖。
 
@@ -171,8 +272,10 @@ Elfeed 的訂閲流是在一個配置文件（例如 =init.el= ）中配置的�
 
 Tree View 的結构和標簽的位置有關：
 
-- =("https://yhetil.org/emacs-devel/new.atom" emacs lists)= emacs 會作為根節點，lists 是它下面的子節點。
-- =("https://yhetil.org/emacs-devel/new.atom" lists emacs)= lists 會作為根節點，emacs 是它下面的子節點。
+- =("https://yhetil.org/emacs-devel/new.atom" emacs lists)=
+  emacs 會作為根節點，lists 是它下面的子節點。
+- =("https://yhetil.org/emacs-devel/new.atom" lists emacs)=
+  lists 會作為根節點，emacs 是它下面的子節點。
 
 * 其它
 :PROPERTIES:
@@ -190,7 +293,7 @@ Tree View 的結构和標簽的位置有關：
 但我只想看最近一周，可以修改 ~elfeed-search-filter~ ：
 
 #+begin_src emacs-lisp
-(setq elfeed-search-filter "@1weeks +unread")
+(setq-default elfeed-search-filter "@1weeks +unread")
 #+end_src
 
 過濾條件語法參考 [[https://github.com/emacs-elfeed/elfeed/tree/main#filter-syntax][Filter Syntax]]。
