@@ -45,13 +45,42 @@
     display: inline-block;
     line-height: 0;
     font-size: 0;
+    position: relative;
+
+    @media (pointer: fine) and (hover: hover) {
+      &:hover::after {
+        transform: translateX(25%);
+      }
+    }
+
+    &::after {
+      transition: transform 0.55s ease-in-out;
+      content: "";
+      display: inline-block;
+      width: 95%;
+      height: 95%;
+      background:
+        conic-gradient(
+          from 0deg at 50% 50%,
+          rgba(255, 255, 255, .1) 0deg,
+          rgba(255, 255, 255, .5) 60deg,
+          transparent 90deg
+        ),
+        linear-gradient(-135deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 35%),
+        repeating-radial-gradient(oklch(0 0 0) 0px, oklch(.4 0 0) 4px);
+      position: absolute;
+      inset-block-start: 5%;
+      inset-inline-start: 5%;
+      border-radius: 100%;
+      z-index: -1;
+    }
   }
 
   & img {
     object-fit: cover;
     aspect-ratio: 1;
     width: 100%;
-    box-shadow: -5px 5px 5px var(--color-box-shadow) !important;
+    box-shadow: 5px 5px 5px var(--color-box-shadow) !important;
     border-radius: 3px;
   }
 }
