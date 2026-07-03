@@ -2934,47 +2934,56 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
 
       @media (pointer: fine) and (hover: hover) {
         &:hover::after {
-          transform: translateX(25%);
+          transform: translateX(15%);
+          opacity: 1;
         }
-      }
 
-      &::after {
-        transition: transform 0.55s ease-in-out;
-        content: "";
-        display: inline-block;
-        width: 95%;
-        height: 95%;
-        background:
-          conic-gradient(
-            from 15deg at 50% 50%,
-            transparent 0deg,
-            oklch(1 0 0 / .2) 25deg,
-            oklch(1 0 0 / .35) 45deg,
-            oklch(1 0 0 / .2) 60deg,
-            transparent 80deg,
-            transparent 185deg,
-            oklch(1 0 0 / .2) 195deg,
-            oklch(1 0 0 / .35) 220deg,
-            oklch(1 0 0 / .2) 240deg,
-            transparent 260deg
-          ),
-          radial-gradient(
-            circle at 50% 50%,
-            oklch(1 0 0 / .8) 0%,
-            oklch(1 0 0 / .8) 10%,
-            transparent 10.1%,
-            transparent
-          ),
-          repeating-radial-gradient(oklch(0 0 0) 0px, oklch(.4 0 0) 4px);
-        position: absolute;
-        inset-block-start: 5%;
-        inset-inline-start: 5%;
-        border-radius: 100%;
-        z-index: -1;
+        &:hover img {
+          transform: translateX(-10%);
+        }
+
+        &::after {
+          transition:
+            transform .55s ease-in-out,
+            opacity .55s ease-in-out;
+          content: "";
+          display: inline-block;
+          width: 95%;
+          height: 95%;
+          opacity: 0;
+          background:
+            conic-gradient(
+              from 15deg at 50% 50%,
+              transparent 0deg,
+              oklch(1 0 0 / .2) 25deg,
+              oklch(1 0 0 / .35) 45deg,
+              oklch(1 0 0 / .2) 60deg,
+              transparent 80deg,
+              transparent 185deg,
+              oklch(1 0 0 / .2) 195deg,
+              oklch(1 0 0 / .35) 220deg,
+              oklch(1 0 0 / .2) 240deg,
+              transparent 260deg
+            ),
+            radial-gradient(
+              circle at 50% 50%,
+              oklch(1 0 0 / .8) 0%,
+              oklch(1 0 0 / .8) 10%,
+              transparent 10.1%,
+              transparent
+            ),
+            repeating-radial-gradient(oklch(0 0 0) 0px, oklch(.4 0 0) 4px);
+          position: absolute;
+          inset-block-start: 5%;
+          inset-inline-start: 5%;
+          border-radius: 100%;
+          z-index: -1;
+        }
       }
     }
 
     & img {
+      transition: transform 0.55s ease-in-out;
       object-fit: cover;
       aspect-ratio: 1;
       width: 100%;
