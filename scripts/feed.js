@@ -6,7 +6,6 @@ import pLimit from "p-limit";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const CONFIG = {
   feedTitle: "Taxodium",
   feedSubtitle:
