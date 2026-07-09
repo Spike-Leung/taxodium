@@ -1,0 +1,132 @@
+           __________________________________________________
+
+            导出 ELFEED 选中条目到 GITHUB PAGE 作为 READING
+                                  LIST
+
+                              Spike Leung
+           __________________________________________________
+
+
+                         [2026-05-21 Thu 23:50]
+
+
+Table of Contents
+_________________
+
+
+
+
+我之前一直用 [elfeed] 阅读订阅流，我挺满意 elfeed 的功能的，唯一的不足是
+手机上用不了 (懒得折腾将 Emacs 运行在 iPhone 上)。后来我安装
+[NetNewsWire] 用了一段时间，还不错，但也存在一些问题：
+
+- 我的订阅流是用一个 `elfeed.org' 文件维护的，纯文本编辑非常方便，比各种
+  UI 点击方便得多。但每次更新后，我都需要重新导入到 NetNewsWire 中，但只
+  能新增缺少的，不会移除 `elfeed.org' 中没有的。如果我想完全替换成
+  `elfeed.org' 中的内容，我就得新建一个 NetNewsWire 用户分组，但这样又会
+  造成已读标记重置。
+- NetNewsWire 中过滤搜索不如 elfeed 来得方便。
+- NetNewsWire 中星标多个文章后，不方便一次性导出。
+- 容易陷入「流」的陷阱中，总是没事打开看看有没有更新。手机更容易访问，也
+  更容易沉迷。习惯用 NetNewsWire 后也减少了我使用 elfeed 的频率，导致
+  elfeed 中留着很多看过了但未标记已读的条目。
+
+最近 elfeed 更新了 [很多新功能]，更好的分组视图、便利的搜索过滤方法…… 于
+是我又回到了 elfeed 里，同时把 NetNewsWire 卸载了，避免没事总想着打开看
+看，问题是我在手机上又没法阅读订阅流了。（我知道可以自建类似 [FreshRSS]
+的服务，随时可以用浏览器访问，只是我懒得去维护一个服务器，FreshRSS 之类
+的工具，维护订阅流也不如纯文本方便。）
+
+[Zine#49::Going back to the morning newspaper model by Chandru]
+<https://taxodium.ink/49.html#FF319C35-80BD-4CA6-931E-A102E10B4009> 里提
+到，作者会把订阅的内容每天导出成一份 HTML 当作报纸阅读。将订阅流变成数量
+有限的一份 HTML 报纸，避免了「流」的无尽感以及因此带来的焦虑感，我也想尝
+试一下是否有用。
+
+于是花了点时间，写了段 Elisp 函数，通过在 ​`*elfeed-search​*' 中选中想阅读
+的条目，然后将它们导出一个 HTML 文件，推送到 GitHub Page 上阅读（或者任
+何 Web 服务器）。
+
+函数主要做的事情：
+- 获取选中的 elfeed 条目
+- 遍历所有条目，生成 org mode 的链接
+- 将所有连接放到一个临时 buffer 中，导出 HTML 文件到指定位置
+- 提交并推送到 GitHub
+
+更新：
+- 添加了 [Kagi Translate]
+  <https://taxodium.ink/my-experience-with-kagi-translate.html>
+- 添加紅心功能
+
+,----
+| (defun spike-leung/elfeed-reading-list ()
+|   "Generate selected Elfeed entries as reading list. Auto push to git."
+|   (interactive nil elfeed-search-mode)
+|   (let ((repo-dir (expand-file-name "~/git/reading-list")) ;; repo-dir is a git repo that save expoted HTML
+|         (entries (elfeed-search-selected))) ;; get all selected entries from elfeed
+|     ;; create a temp-buffer to insert links
+|     (with-temp-buffer
+|       (goto-char (point-min))
+|       (insert (format "#+title: Reading list\n"))
+|       (insert "#+options: html-postamble:nil\n")
+|       (insert "#+html_head_extra: <link rel=\"stylesheet\" href=\"./main.css\" />\n")
+|       (insert "#+html_head_extra: <script defer src=\"./main.js\"></script>\n")
+|       (insert "@@html:<div class=\"action\">@@")
+|       (insert "[[https://translate.kagi.com/https://spike-leung.github.io/reading-list/index.html?to=zh_cn&kt_quality=best][Translate]]")
+|       (insert "@@html:<span><input type=\"checkbox\" id=\"like\"/><label for=\"like\" class=\"like-label\"></label></span>@@")
+|       (insert "@@html:</div>@@")
+|       (insert "\n\n")
+|       ;; traverse elfeed entries, generate org mode link
+|       (dolist (entry entries)
+|         (let* ((link (elfeed-entry-link entry))
+|                (title (elfeed-entry-title entry))
+|                (like-button (format "@@html:<span class=\"like-button\" data-id=\"%s\"></span>@@" link)))
+|           (insert (format "- %s %s" (org-link-make-string link title) like-button)))
+|         (insert "\n"))
+|       (insert "這是从 [[https://github.com/emacs-elfeed/elfeed][elfeed]] 导出的个人訂閱数据，仅方便个人使用。\n\n
+| 具体見： [[https://taxodium.ink/export-elfeed-selected-entries-to-github-page-as-reading-list.html][导出 Elfeed 选中条目到 GitHub Page 作为 Reading List]]。\n\n")
+|       ;; enable org mode
+|       (org-mode)
+|       ;; export to HTML
+|       (org-export-to-file 'html "~/git/reading-list/index.html"))
+|     (message "Entries export to index.html")
+|     ;; you can push the HTML manual, or add auto push process below.
+|     (let ((default-directory repo-dir))
+|       (unless (file-directory-p (expand-file-name ".git" repo-dir))
+|         (user-error "Not a git repository: %s" repo-dir))
+|       (shell-command "git add index.html")
+|       (let ((status (shell-command-to-string "git status --porcelain index.html")))
+|         (if (string-empty-p status)
+|             (message "No changes to commit.")
+|           (let ((commit-msg ":memo: update reading list"))
+|             (shell-command (format "git commit -m \"%s\"" commit-msg))
+|             (message "Sync with origin...")
+|             (shell-command "git pull" nil nil)
+|             (message "Pushing to origin...")
+|             (if (= 0 (shell-command "git push" nil nil))
+|                 (message "Add entries and pushed to origin.")
+|               (message "Add entries but push failed."))))))))
+`----
+
+[reading-list] 很简单，一个 `index.html' 容纳所有导出的链接，一个
+`main.css' 添加一些简单的样式，然后配置一下 GitHub Page 就行。
+
+这样我就可以继续快乐地用 Elfeed 管理订阅流，保持单一的数据源，既能在电脑
+上使用 Elfeed 阅读，出门了也能有一份链接列表可以看。我本来也倾向于去原网
+站阅读，所以一份简单的链接列表对我来说就足够了。我会使用一段时间看看效果，
+如果你想看看生成的 HTML 页面：
+
+☞ [Reading list]
+
+
+[elfeed] <https://github.com/emacs-elfeed/elfeed>
+
+[NetNewsWire] <https://netnewswire.com/>
+
+[很多新功能] <https://github.com/emacs-elfeed/elfeed/blob/main/NEWS.org>
+
+[FreshRSS] <https://www.freshrss.org/>
+
+[reading-list] <https://github.com/Spike-Leung/reading-list>
+
+[Reading list] <https://spike-leung.github.io/reading-list/>

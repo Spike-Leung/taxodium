@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>在 Emacs 中用 Elfeed 阅读订阅流</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="介绍如何用 elfeed 在 Emacs 里阅读订阅流，以及分享一些方便的 elfeed 方法" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="介绍如何用 elfeed 在 Emacs 里阅读订阅流，以及分享一些方便的 elfeed 方法">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -177,7 +177,7 @@ tag 会被下一层级的 heading 继承，可以方便地归类订阅流。
 
 <hr>
 
-<section role="note" id="org338e276">
+<section role="note" id="orgf26d4a8">
 <p>
 最新的 Elfeed (4.0.0) 实现了和我类似的功能，它可以在条目上使用 <kbd>=</kbd> 去过滤条目所属订阅流的全部内容。也可以用 <code>elfeed-update-feed</code> 找到感興趣的 feed 更新。如果 Elfeed 本身的功能已经满足需要，或许你并不需要下面这个功能。
 </p>
@@ -207,8 +207,8 @@ tag 会被下一层级的 heading 继承，可以方便地归类订阅流。
   <span class="org-doc">"Query string filtering shown entries."</span>)
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/get-feed-candidates</span> (<span class="org-type">&amp;optional</span> level)
-  <span class="org-doc">"Extract headings title from `</span><span class="org-doc"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-doc">' as consult candidates.
-If LEVEL exist, filter heading which level is greater or equal LEVEL."</span>
+  <span class="org-doc">"Extract headings title from `</span><span class="org-doc"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-doc">' as consult candidates.</span>
+<span class="org-doc">If LEVEL exist, filter heading which level is greater or equal LEVEL."</span>
   (mapcan
    (<span class="org-keyword">lambda</span> (elfeed-org-file)
      (<span class="org-keyword">with-current-buffer</span> (<span class="org-keyword">or</span> (find-buffer-visiting elfeed-org-file)
@@ -216,8 +216,8 @@ If LEVEL exist, filter heading which level is greater or equal LEVEL."</span>
        (delq nil
              (org-element-map (org-element-parse-buffer 'headline) 'headline
                (<span class="org-keyword">lambda</span> (hl)
-                 <span class="org-comment-delimiter">;; </span><span class="org-comment">property &#30340;&#20540;&#21487;&#20197;&#22312;&#36825;&#37324;&#25214;&#65306; https://orgmode.org/worg/dev/org-element-api.html
-</span>                 (<span class="org-keyword">when</span> (<span class="org-keyword">or</span> (null level) (&lt;= (org-element-property <span class="org-builtin">:level</span> hl) level))
+                 <span class="org-comment-delimiter">;; </span><span class="org-comment">property &#30340;&#20540;&#21487;&#20197;&#22312;&#36825;&#37324;&#25214;&#65306; https://orgmode.org/worg/dev/org-element-api.html</span>
+                 (<span class="org-keyword">when</span> (<span class="org-keyword">or</span> (null level) (&lt;= (org-element-property <span class="org-builtin">:level</span> hl) level))
                    (<span class="org-keyword">let*</span> ((raw-title (org-element-property <span class="org-builtin">:raw-value</span> hl))
                           (title (org-link-display-format raw-title))
                           (annotation (org-entry-get hl <span class="org-string">"description"</span>))
@@ -228,8 +228,8 @@ If LEVEL exist, filter heading which level is greater or equal LEVEL."</span>
    rmh-elfeed-org-files))
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/elfeed-preview-state</span> (state candidate)
-  <span class="org-doc">"return consult state function for live `</span><span class="org-doc"><span class="org-constant">elfeed</span></span><span class="org-doc">' preview.
-see `</span><span class="org-doc"><span class="org-constant">consult--with-preview</span></span><span class="org-doc">' about state and candidate."</span>
+  <span class="org-doc">"return consult state function for live `</span><span class="org-doc"><span class="org-constant">elfeed</span></span><span class="org-doc">' preview.</span>
+<span class="org-doc">see `</span><span class="org-doc"><span class="org-constant">consult--with-preview</span></span><span class="org-doc">' about state and candidate."</span>
   (<span class="org-keyword">let*</span> ((cand (car candidate))
          (metadata (cdr candidate))
          (feed-url (plist-get metadata <span class="org-builtin">:feed-url</span>)))
@@ -320,36 +320,36 @@ Emacs 里我安装了 <a href="https://github.com/minad/consult">minad/consult</
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/get-feed-candidates</span> (<span class="org-type">&amp;optional</span> level)
-  <span class="org-doc">"Extract headings title from `</span><span class="org-doc"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-doc">' as consult candidates.
-If LEVEL exist, filter heading which level is greater or equal LEVEL."</span>
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36941;&#21382; `</span><span class="org-comment"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-comment">'
-</span>  (mapcan
-   <span class="org-comment-delimiter">;; </span><span class="org-comment">&#23545; `</span><span class="org-comment"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-comment">' &#25991;&#20214;&#22788;&#29702;
-</span>   (<span class="org-keyword">lambda</span> (elfeed-org-file)
-     <span class="org-comment-delimiter">;; </span><span class="org-comment">&#35835;&#21462;&#25991;&#20214;&#20869;&#23481;&#65292;&#21152;&#36733;&#21040;&#19968;&#20010;&#20020;&#26102; buffer &#20013;
-</span>     (<span class="org-keyword">with-current-buffer</span> (<span class="org-keyword">or</span> (find-buffer-visiting elfeed-org-file)
+  <span class="org-doc">"Extract headings title from `</span><span class="org-doc"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-doc">' as consult candidates.</span>
+<span class="org-doc">If LEVEL exist, filter heading which level is greater or equal LEVEL."</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36941;&#21382; `</span><span class="org-comment"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-comment">'</span>
+  (mapcan
+   <span class="org-comment-delimiter">;; </span><span class="org-comment">&#23545; `</span><span class="org-comment"><span class="org-constant">rmh-elfeed-org-files</span></span><span class="org-comment">' &#25991;&#20214;&#22788;&#29702;</span>
+   (<span class="org-keyword">lambda</span> (elfeed-org-file)
+     <span class="org-comment-delimiter">;; </span><span class="org-comment">&#35835;&#21462;&#25991;&#20214;&#20869;&#23481;&#65292;&#21152;&#36733;&#21040;&#19968;&#20010;&#20020;&#26102; buffer &#20013;</span>
+     (<span class="org-keyword">with-current-buffer</span> (<span class="org-keyword">or</span> (find-buffer-visiting elfeed-org-file)
                               (find-file-noselect elfeed-org-file))
-       <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20174;&#36820;&#22238;&#30340;&#21015;&#34920;&#20013;&#31227;&#38500; nil
-</span>       (delq nil
-             <span class="org-comment-delimiter">;; </span><span class="org-comment">&#23558;&#29992; `</span><span class="org-comment"><span class="org-constant">org-element-parse-buffer</span></span><span class="org-comment">' &#22788;&#29702; buffer &#20869;&#23481;&#65292;&#36820;&#22238; headline
-</span>             <span class="org-comment-delimiter">;; </span><span class="org-comment">&#28982;&#21518;&#29992; `</span><span class="org-comment"><span class="org-constant">org-element-map</span></span><span class="org-comment">' &#36941;&#21382;&#25152;&#26377; headline
-</span>             (org-element-map (org-element-parse-buffer 'headline) 'headline
-               <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22788;&#29702;&#27599;&#19968;&#20010; headline
-</span>               (<span class="org-keyword">lambda</span> (hl)
-                 <span class="org-comment-delimiter">;; </span><span class="org-comment">&#38480;&#21046; headline &#30340; level&#65292;
-</span>                 <span class="org-comment-delimiter">;; </span><span class="org-comment">&#21482;&#22788;&#29702; headline level &#22823;&#20110;&#31561;&#20110; `</span><span class="org-comment"><span class="org-constant">level</span></span><span class="org-comment">' &#30340; headline
-</span>                 (<span class="org-keyword">when</span> (<span class="org-keyword">or</span> (null level) (&gt;= (org-element-property <span class="org-builtin">:level</span> hl) level))
-                   <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">:raw-value</span></span><span class="org-comment">' &#33719;&#21462; headline &#21407;&#22987;&#25968;&#25454;
-</span>                   (<span class="org-keyword">let*</span> ((raw-title (org-element-property <span class="org-builtin">:raw-value</span> hl))
-                          <span class="org-comment-delimiter">;; </span><span class="org-comment">&#33719;&#21462; title&#65292;&#23545;&#24212;&#35746;&#38405;&#27969;&#30340;&#21517;&#23383;
-</span>                          (title (org-link-display-format raw-title))
+       <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20174;&#36820;&#22238;&#30340;&#21015;&#34920;&#20013;&#31227;&#38500; nil</span>
+       (delq nil
+             <span class="org-comment-delimiter">;; </span><span class="org-comment">&#23558;&#29992; `</span><span class="org-comment"><span class="org-constant">org-element-parse-buffer</span></span><span class="org-comment">' &#22788;&#29702; buffer &#20869;&#23481;&#65292;&#36820;&#22238; headline</span>
+             <span class="org-comment-delimiter">;; </span><span class="org-comment">&#28982;&#21518;&#29992; `</span><span class="org-comment"><span class="org-constant">org-element-map</span></span><span class="org-comment">' &#36941;&#21382;&#25152;&#26377; headline</span>
+             (org-element-map (org-element-parse-buffer 'headline) 'headline
+               <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22788;&#29702;&#27599;&#19968;&#20010; headline</span>
+               (<span class="org-keyword">lambda</span> (hl)
+                 <span class="org-comment-delimiter">;; </span><span class="org-comment">&#38480;&#21046; headline &#30340; level&#65292;</span>
+                 <span class="org-comment-delimiter">;; </span><span class="org-comment">&#21482;&#22788;&#29702; headline level &#22823;&#20110;&#31561;&#20110; `</span><span class="org-comment"><span class="org-constant">level</span></span><span class="org-comment">' &#30340; headline</span>
+                 (<span class="org-keyword">when</span> (<span class="org-keyword">or</span> (null level) (&gt;= (org-element-property <span class="org-builtin">:level</span> hl) level))
+                   <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">:raw-value</span></span><span class="org-comment">' &#33719;&#21462; headline &#21407;&#22987;&#25968;&#25454;</span>
+                   (<span class="org-keyword">let*</span> ((raw-title (org-element-property <span class="org-builtin">:raw-value</span> hl))
+                          <span class="org-comment-delimiter">;; </span><span class="org-comment">&#33719;&#21462; title&#65292;&#23545;&#24212;&#35746;&#38405;&#27969;&#30340;&#21517;&#23383;</span>
+                          (title (org-link-display-format raw-title))
 <span id="coderef-description" class="coderef-off">                          (annotation (org-entry-get hl <span class="org-string">"description"</span>))</span>
-                          <span class="org-comment-delimiter">;; </span><span class="org-comment">&#35299;&#26512;&#35746;&#38405;&#27969;&#30340; URL
-</span>                          (feed-url (<span class="org-keyword">when</span> (string-match org-link-bracket-re raw-title)
+                          <span class="org-comment-delimiter">;; </span><span class="org-comment">&#35299;&#26512;&#35746;&#38405;&#27969;&#30340; URL</span>
+                          (feed-url (<span class="org-keyword">when</span> (string-match org-link-bracket-re raw-title)
                                       (match-string 1 raw-title))))
-                     <span class="org-comment-delimiter">;; </span><span class="org-comment">&#26500;&#24314;&#19968;&#20010; plist &#36820;&#22238;&#65292;
-</span>                     <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20854;&#20013; `</span><span class="org-comment"><span class="org-constant">:items</span></span><span class="org-comment">' &#26159; `</span><span class="org-comment"><span class="org-constant">consult--multi</span></span><span class="org-comment">' &#35201;&#27714;&#30340;&#23383;&#27573;&#65292;&#26159;&#19968;&#20010;&#23383;&#31526;&#20018;&#21015;&#34920;
-</span>                     (list <span class="org-builtin">:items</span> (list title) <span class="org-builtin">:feed-url</span> feed-url <span class="org-builtin">:annotation</span> annotation))))
+                     <span class="org-comment-delimiter">;; </span><span class="org-comment">&#26500;&#24314;&#19968;&#20010; plist &#36820;&#22238;&#65292;</span>
+                     <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20854;&#20013; `</span><span class="org-comment"><span class="org-constant">:items</span></span><span class="org-comment">' &#26159; `</span><span class="org-comment"><span class="org-constant">consult--multi</span></span><span class="org-comment">' &#35201;&#27714;&#30340;&#23383;&#27573;&#65292;&#26159;&#19968;&#20010;&#23383;&#31526;&#20018;&#21015;&#34920;</span>
+                     (list <span class="org-builtin">:items</span> (list title) <span class="org-builtin">:feed-url</span> feed-url <span class="org-builtin">:annotation</span> annotation))))
                nil))))
    rmh-elfeed-org-files))
 </code></pre>
@@ -399,15 +399,15 @@ If LEVEL exist, filter heading which level is greater or equal LEVEL."</span>
 <span id="coderef-state" class="coderef-off">                    <span class="org-builtin">:state</span> #'spike-leung/elfeed-preview-state</span>
 <span id="coderef-history" class="coderef-off">                    <span class="org-builtin">:history</span> 'spike-leung/consult-elfeed-history</span>
 <span id="coderef-annotate" class="coderef-off">                    <span class="org-builtin">:annotate</span> (<span class="org-keyword">lambda</span> (cand)</span>
-                                <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">cand</span></span><span class="org-comment">' &#26159; string&#65292;&#20174; candidates &#20013;&#26597;&#25214;&#21305;&#37197; `</span><span class="org-comment"><span class="org-constant">cand</span></span><span class="org-comment">' &#30340; plist
-</span>                                (<span class="org-keyword">let*</span> ((match-cand (seq-find
+                                <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">cand</span></span><span class="org-comment">' &#26159; string&#65292;&#20174; candidates &#20013;&#26597;&#25214;&#21305;&#37197; `</span><span class="org-comment"><span class="org-constant">cand</span></span><span class="org-comment">' &#30340; plist</span>
+                                (<span class="org-keyword">let*</span> ((match-cand (seq-find
                                                     (<span class="org-keyword">lambda</span> (v)
                                                       (string-match-p (car (plist-get v <span class="org-builtin">:items</span>)) cand))
                                                     candidates))
-                                       <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20174; plist &#20013;&#35835;&#21462; `</span><span class="org-comment"><span class="org-constant">:annotation</span></span><span class="org-comment">' &#23383;&#27573;
-</span>                                       (annotation (<span class="org-keyword">and</span> match-cand (plist-get match-cand <span class="org-builtin">:annotation</span>))))
-                                  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36820;&#22238; annotation&#65292;&#22686;&#21152;&#19968;&#20123;&#31354;&#26684;&#65292;&#21644;&#36873;&#39033;&#21306;&#20998;&#24320;
-</span>                                  (<span class="org-keyword">when</span> annotation
+                                       <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20174; plist &#20013;&#35835;&#21462; `</span><span class="org-comment"><span class="org-constant">:annotation</span></span><span class="org-comment">' &#23383;&#27573;</span>
+                                       (annotation (<span class="org-keyword">and</span> match-cand (plist-get match-cand <span class="org-builtin">:annotation</span>))))
+                                  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36820;&#22238; annotation&#65292;&#22686;&#21152;&#19968;&#20123;&#31354;&#26684;&#65292;&#21644;&#36873;&#39033;&#21306;&#20998;&#24320;</span>
+                                  (<span class="org-keyword">when</span> annotation
                                     (concat (make-string 25 ?\s) annotation)))))
     (<span class="org-keyword">when</span> (get-buffer <span class="org-string">"*elfeed-search*"</span>)
       (pop-to-buffer <span class="org-string">"*elfeed-search*"</span>))))
@@ -441,30 +441,30 @@ If LEVEL exist, filter heading which level is greater or equal LEVEL."</span>
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><code><span id="coderef-elfeed-preview-state" class="coderef-off">(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/elfeed-preview-state</span> (state candidate)</span>
-  <span class="org-doc">"Return consult state function for live `</span><span class="org-doc"><span class="org-constant">elfeed</span></span><span class="org-doc">' preview.
-See `</span><span class="org-doc"><span class="org-constant">consult--with-preview</span></span><span class="org-doc">' about STATE and CANDIDATE."</span>
+  <span class="org-doc">"Return consult state function for live `</span><span class="org-doc"><span class="org-constant">elfeed</span></span><span class="org-doc">' preview.</span>
+<span class="org-doc">See `</span><span class="org-doc"><span class="org-constant">consult--with-preview</span></span><span class="org-doc">' about STATE and CANDIDATE."</span>
   (<span class="org-keyword">let*</span> ((cand (car candidate))
          (metadata (cdr candidate))
          (feed-url (plist-get metadata <span class="org-builtin">:feed-url</span>)))
-    <span class="org-comment-delimiter">;; </span><span class="org-comment">switch case
-</span>    (<span class="org-keyword">pcase</span> state
-      <span class="org-comment-delimiter">;; </span><span class="org-comment">&#21021;&#22987;&#21270;&#30340;&#26102;&#20505;&#35843;&#29992; `</span><span class="org-comment"><span class="org-constant">elfeed</span></span><span class="org-comment">' &#30456;&#20851;&#30340;&#21021;&#22987;&#26041;&#27861;&#65307;&#37325;&#32622;&#36807;&#28388;&#26465;&#20214;&#65307;&#25171;&#24320; `</span><span class="org-comment"><span class="org-constant">elfeed</span></span><span class="org-comment">' &#30340; buffer&#12290;
-</span>      ('setup
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">switch case</span>
+    (<span class="org-keyword">pcase</span> state
+      <span class="org-comment-delimiter">;; </span><span class="org-comment">&#21021;&#22987;&#21270;&#30340;&#26102;&#20505;&#35843;&#29992; `</span><span class="org-comment"><span class="org-constant">elfeed</span></span><span class="org-comment">' &#30456;&#20851;&#30340;&#21021;&#22987;&#26041;&#27861;&#65307;&#37325;&#32622;&#36807;&#28388;&#26465;&#20214;&#65307;&#25171;&#24320; `</span><span class="org-comment"><span class="org-constant">elfeed</span></span><span class="org-comment">' &#30340; buffer&#12290;</span>
+      ('setup
        (<span class="org-keyword">unless</span> (get-buffer <span class="org-string">"*elfeed-search*"</span>)
          (elfeed-apply-hooks-now)
          (elfeed-org)
          (elfeed)
          (elfeed-search-clear-filter))
        (display-buffer <span class="org-string">"*elfeed-search*"</span> '(display-buffer-reuse-window)))
-      <span class="org-comment-delimiter">;; </span><span class="org-comment">&#39044;&#35272;&#30340;&#26102;&#20505;&#65292;&#23558;&#35746;&#38405;&#27969;&#30340;&#21517;&#23383;&#25340;&#25509;&#21040;&#36807;&#28388;&#26465;&#20214;&#19978;&#38754;&#65292;
-</span>      <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36825;&#26679;&#23601;&#21487;&#20197;&#22312;&#20999;&#25442;&#35746;&#38405;&#27969;&#21517;&#23383;&#26102;&#65292;&#24212;&#29992;&#19981;&#21516;&#36807;&#28388;&#26465;&#20214;&#65292;&#26597;&#30475;&#23545;&#24212;&#30340;&#32467;&#26524;
-</span>      ('preview
+      <span class="org-comment-delimiter">;; </span><span class="org-comment">&#39044;&#35272;&#30340;&#26102;&#20505;&#65292;&#23558;&#35746;&#38405;&#27969;&#30340;&#21517;&#23383;&#25340;&#25509;&#21040;&#36807;&#28388;&#26465;&#20214;&#19978;&#38754;&#65292;</span>
+      <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36825;&#26679;&#23601;&#21487;&#20197;&#22312;&#20999;&#25442;&#35746;&#38405;&#27969;&#21517;&#23383;&#26102;&#65292;&#24212;&#29992;&#19981;&#21516;&#36807;&#28388;&#26465;&#20214;&#65292;&#26597;&#30475;&#23545;&#24212;&#30340;&#32467;&#26524;</span>
+      ('preview
        (elfeed-search-clear-filter)
        (<span class="org-keyword">when</span> (<span class="org-keyword">and</span> cand (get-buffer <span class="org-string">"*elfeed-search*"</span>))
          (<span class="org-keyword">unless</span> (<span class="org-keyword">or</span> (string-empty-p cand) (null cand))
            (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter <span class="org-string">" ="</span> (string-replace <span class="org-string">" "</span> <span class="org-string">"."</span> cand))))))
-      <span class="org-comment-delimiter">;; </span><span class="org-comment">&#25353;&#19979; return &#30830;&#23450;&#36873;&#39033;&#21518;&#65292;&#25226;&#36873;&#25321;&#30340;&#36807;&#28388;&#26465;&#20214;&#24212;&#29992;&#19978;&#21435;&#65292;&#21516;&#26102;&#33719;&#21462;&#36873;&#25321;&#30340;&#35746;&#38405;&#27969;&#30340; URL&#65292;&#25191;&#34892;&#19968;&#27425;&#25289;&#21462;
-</span>      ('return
+      <span class="org-comment-delimiter">;; </span><span class="org-comment">&#25353;&#19979; return &#30830;&#23450;&#36873;&#39033;&#21518;&#65292;&#25226;&#36873;&#25321;&#30340;&#36807;&#28388;&#26465;&#20214;&#24212;&#29992;&#19978;&#21435;&#65292;&#21516;&#26102;&#33719;&#21462;&#36873;&#25321;&#30340;&#35746;&#38405;&#27969;&#30340; URL&#65292;&#25191;&#34892;&#19968;&#27425;&#25289;&#21462;</span>
+      ('return
        (<span class="org-keyword">unless</span> (<span class="org-keyword">or</span> (string-empty-p cand) (null cand))
          (elfeed-search-set-filter (concat spike-leung/elfeed-search-filter <span class="org-string">" ="</span> (string-replace <span class="org-string">" "</span> <span class="org-string">"."</span> cand)))
          (elfeed-update-feed feed-url))))))
@@ -531,8 +531,8 @@ See `</span><span class="org-doc"><span class="org-constant">consult--with-previ
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/elfeed-search-browse-url-with-kagi-translate</span> ()
-  <span class="org-doc">"Visit the current entry in your browser using `</span><span class="org-doc"><span class="org-constant">browse-url</span></span><span class="org-doc">'.
-Prefix with '</span><span class="org-doc"><span class="org-constant">translate.kagi.com</span></span><span class="org-doc">' to browse with translated version. "</span>
+  <span class="org-doc">"Visit the current entry in your browser using `</span><span class="org-doc"><span class="org-constant">browse-url</span></span><span class="org-doc">'.</span>
+<span class="org-doc">Prefix with '</span><span class="org-doc"><span class="org-constant">translate.kagi.com</span></span><span class="org-doc">' to browse with translated version. "</span>
   (<span class="org-keyword">interactive</span>)
   (<span class="org-keyword">let</span> ((buffer (current-buffer))
         (entries (elfeed-search-selected)))
@@ -540,10 +540,10 @@ Prefix with '</span><span class="org-doc"><span class="org-constant">translate.k
              do (elfeed-untag entry 'unread)
              when (elfeed-entry-link entry)
              do (browse-url (format <span class="org-string">"https://translate.kagi.com/%s"</span> it)))
-    <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">browse-url</span></span><span class="org-comment">' could have switched to another buffer if eww or another
-</span>    <span class="org-comment-delimiter">;; </span><span class="org-comment">internal browser is used, but the remainder of the functions needs to
-</span>    <span class="org-comment-delimiter">;; </span><span class="org-comment">run in the elfeed buffer.
-</span>    (<span class="org-keyword">with-current-buffer</span> buffer
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">browse-url</span></span><span class="org-comment">' could have switched to another buffer if eww or another</span>
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">internal browser is used, but the remainder of the functions needs to</span>
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">run in the elfeed buffer.</span>
+    (<span class="org-keyword">with-current-buffer</span> buffer
       (mapc #'elfeed-search-update-entry entries)
       (<span class="org-keyword">unless</span> (<span class="org-keyword">or</span> elfeed-search-remain-on-entry (use-region-p))
         (forward-line)))))
@@ -588,7 +588,7 @@ Prefix with '</span><span class="org-doc"><span class="org-constant">translate.k
 </ul>
 </details>
 
-<section role="note" id="org1b8520b">
+<section role="note" id="orga62f34e">
 <p>
 如果你打算入门 Emacs，可以看看： <a href="how-to-get-started-with-emacs.html">如何上手 Emacs</a>
 </p>
@@ -609,7 +609,6 @@ Prefix with '</span><span class="org-doc"><span class="org-constant">translate.k
 </div>
 </div></div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -624,23 +623,21 @@ Prefix with '</span><span class="org-doc"><span class="org-constant">translate.k
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2026-03-21 Sat 15:00">2026-03-21 Sat 15:00</time>，更新于 <time class="dt-updated" datetime="2026-06-11 Thu 18:45">2026-06-11 Thu 18:45</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 在 Emacs 中用 Elfeed 阅读订阅流 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-03-21 Sat 15:00">2026-03-21 Sat 15:00</time>，更新於 <time class="dt-updated" datetime="2026-06-11 Thu 18:45">2026-06-11 Thu 18:45</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 在 Emacs 中用 Elfeed 阅读订阅流 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/use-elfeed-to-read-feed-in-emacs.txt">純文本版本</a> 或 <a href="/use-elfeed-to-read-feed-in-emacs.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

@@ -1,0 +1,3315 @@
+                             ______________
+
+                              博客样式设计
+
+                              Spike Leung
+                             ______________
+
+
+                         [2026-04-10 Fri 09:52]
+
+
+Table of Contents
+_________________
+
+1. main.css
+.. 1. @layer base
+..... 1. layer start
+..... 2. Variable
+..... 3. html / body / font
+..... 4. 导航栏
+..... 5. theme select
+..... 6. skip nav
+..... 7. title & subtitle
+..... 8. heading
+..... 9. 图片/视频
+..... 10. 链接 / link
+..... 11. 段落 paragraph
+..... 12. markup
+..... 13. hr
+..... 14. kbd
+..... 15. ruby
+..... 16. 代码块
+..... 17. 引用 blockquote、verse
+..... 18. figure
+..... 19. details
+..... 20. iframe
+..... 21. select
+..... 22. button
+..... 23. table
+..... 24. list
+..... 25. search
+..... 26. postamble
+..... 27. layer end
+.. 2. @layer print
+.. 3. @layer function
+..... 1. layer start
+..... 2. back-to-top
+..... 3. 代码高亮
+..... 4. 代码复制按钮
+..... 5. 代码悬浮高亮
+..... 6. Webmentions
+..... 7. :focus-visible
+..... 8. note section
+..... 9. banner section
+..... 10. footnote & sidenote
+..... 11. layer end
+.. 4. @layer special
+..... 1. layer start
+..... 2. retro theme
+..... 3. layer end
+.. 5. @layer utils
+..... 1. layer start
+..... 2. .hidden-link
+..... 3. inline image
+..... 4. lyrics
+..... 5. image-list
+..... 6. emacs mark
+..... 7. .lyric-card
+..... 8. layer end
+..... 9. blockquote/verse
+........ 1. .indent-paragraph
+........ 2. .single
+........ 3. .vertical-rl
+..... 10. float image
+2. index.css
+.. 1. 标题
+.. 2. quick access
+.. 3. kaomoji-writing
+.. 4. kaomoji-sleeping
+.. 5. 列表
+.. 6. custom
+3. album.css
+.. 1. lucida
+4. album-wall.css
+.. 1. animation
+5. album-rank.css
+.. 1. animation
+6. 88-31-button.css
+7. image-enhance.css
+8. text-indent.css
+
+
+之前参加了 [CSS Naked Day 2026]
+<https://taxodium.ink/css-naked-day-2026.html>，发现博客不需要什么样式其
+实也能看，少去了一些字体和 JS，加载还更快一些。想着或许可以趁着每年 CSS
+Naked Day 期间将博客样式重写一次，减少一些不必要的样式，让博客更轻量一些。
+有个说法是，日本的伊势神宫会每隔 20 年重建一次，目的是为了让每一代的工匠
+都有修建的经验，不至于丢失修建的能力。每年翻修一下博客样式，也能让自己更
+清楚需要什么。
+
+大体的设计还是基于 [我的博客设计]
+<https://taxodium.ink/my-blog-design.html>，相比上个版本而言，移除了字体，
+暂时只用系统自带的字体，这样博客可以少加载些资源。另外移除了 [pagefind]
+<https://taxodium.ink/use-pagefind-to-search-blog.html> 提供的搜索功能以
+及 [littlefoot] 的脚注增强功能，一个考虑是最近的供应链攻击比较多，这两个
+都是外部的 JS，不受我控制（虽然我可以下载下来，避免它们更新），而且也不
+是必不可少的功能，还是少加载一些 JS 吧。不过由于 Webmention 需要渲染
+HTML 内容，还是保留了一个 `purify.min.js' 的外部 JS 依赖。剩下的一些 JS
+都是我自己编写的，都比较简短，也在我的控制下。
+
+这次重写，使用了 [@layer] 去分类样式，也尝试用 [文学编程]
+<https://taxodium.ink/11.html#5d75b436-2b28-4216-9b3d-79e177927b78> 的形
+式去描述设计，尝试尝试新东西。这个文档应该会持续迭代，样式会基于这份文档
+生成。
+
+
+[littlefoot] <https://github.com/goblindegook/littlefoot>
+
+[@layer]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@layer>
+
+
+1 main.css
+==========
+
+1.1 @layer base
+~~~~~~~~~~~~~~~
+
+1.1.1 layer start
+-----------------
+
+  ,----
+  | @layer base {
+  `----
+
+
+1.1.2 Variable
+--------------
+
+  首先定义一些 CSS 变量，主要是颜色相关的。
+
+  顏色参考：
+  - [APCA Contrast Calculator]
+  - [flexoki]
+
+  ,----
+  | :root {
+  |   --color-taxodium-purple: #7c7cd1;
+  |   --dark-color-taxodium-purple: oklch(from var(--color-taxodium-purple) calc(l + 0.08) 25% h);
+  |   --color-taxodium-yellow: #bd8c42;
+  |   --dark-color-taxodium-yellow: oklch(from var(--color-taxodium-yellow) calc(l + 0.01) 25% h);
+  |   --color-bg: #eee;
+  |   --color-bg-secondary: #ffffffe6;
+  |   --color-bg-src-block: oklch(from var(--color-bg) l c h / 0.5);
+  |   --color-text: #2e2e2e;
+  |   --color-text-secondary: #787878;
+  |   --color-border: #ddd;
+  |   --color-link: var(--color-taxodium-purple);
+  |   --color-link-visited: var(--color-taxodium-yellow);
+  |   --color-border-table: #777;
+  |   --color-bg-table: #ddd;
+  |   --color-box-shadow: rgba(0, 0, 0, 0.3);
+  |   --color-todo: #ff5f59;
+  |   --color-lyrics: #7c0100;
+  |   --color-code: #8f0075;
+  |   --color-bg-code: #ddd;
+  |   --color-bg-code-highlighted: oklch(0 0 0 / 0.1);
+  |   --color-fucus-visible-outline: oklch(from var(--color-link) l c h / 0.8);
+  |   --color-bg-mark: #FFEDAB;
+  | 
+  |   --dark-flexoki-base-200: #CECDC3;
+  |   --dark-flexoki-base-300: #B7B5AC;
+  | 
+  |   --dark-color-bg: #232323;
+  |   --dark-color-bg-secondary: #1e1e1e;
+  |   --dark-color-bg-src-block: oklch(from var(--dark-color-bg) l c h / 0.7);
+  |   --dark-color-text: var(--dark-flexoki-base-200);
+  |   --dark-color-text-secondary: var(--dark-flexoki-base-300);
+  |   --dark-color-border: #595959;
+  |   --dark-color-link: var(--dark-color-taxodium-purple);
+  |   --dark-color-link-visited: var(--dark-color-taxodium-yellow);
+  |   --dark-color-border-table: #7d7d7d;
+  |   --dark-color-bg-table: #1e1e1e;
+  |   --dark-color-box-shadow: rgba(255, 255, 255, 0.3);
+  |   --dark-color-todo: #ff5f5f;
+  |   --dark-color-lyrics: #e95632;
+  |   --dark-color-code: oklch(from #f78fe7 .7 25% h);
+  |   --dark-color-bg-code: #474747;
+  |   --dark-color-bg-code-highlighted: oklch(1 0 0 / 0.3);
+  |   --dark-color-fucus-visible-outline: oklch(from var(--dark-color-link) l c h / 0.8);
+  |   --dark-color-bg-mark: oklch(from var(--color-bg-mark) l c h / .8);
+  | 
+  |   --table-border: 2px solid var(--color-text);
+  |   --table-cell-border: 1px solid var(--color-border);
+  | 
+  |   --content-width: 90vw;
+  |   --half-content-margin: calc((100vw - var(--content-width)) / 2);
+  |   /* footnote 数字的点击范围 */
+  |   --extra-active-area-size: -0.6em;
+  | 
+  |   /* Scale ratios based on musical intervals */
+  |   --scale-minor-second: 1.067;
+  |   --scale-major-second: 1.125;
+  |   --scale-minor-third: 1.2;
+  |   --scale-major-third: 1.25;
+  |   --scale-perfect-fourth: 1.333;
+  |   --scale-augmented-fourth: 1.414;
+  |   --scale-perfect-fifth: 1.5;
+  |   --scale-golden-ratio: 1.618;
+  |   /* Active scale - change this to switch globally */
+  |   --typographic-scale: var(--scale-minor-third);
+  |   /* Base heading size */
+  |   --heading-base-size: 1rem;
+  | }
+  `----
+
+
+[APCA Contrast Calculator] <https://apcacontrast.com/>
+
+[flexoki] <https://github.com/kepano/flexoki>
+
+
+1.1.3 html / body / font
+------------------------
+
+  定义 `<html>' 的样式：
+  - 指定字体、字号、后面基于 `<html>' 字体大小，使用 [rem] 作为长度单位
+  - 设置滚动条颜色
+  - 设置 [scrollbar-gutter] 避免滚动条造成布局偏移
+  - `font-smoothing: antialiased;' 会让字體更精細，但可能会因為太細导致
+    有点看不清。
+
+  如果有的英文不好区分，可以考慮安装 [Atkinson Hyperlegible] 字體。
+
+  ,----
+  | html {
+  |   font-family: 'Atkinson Hyperlegible', sans-serif, system-ui;
+  |   font-size: 20px;
+  |   -webkit-text-size-adjust: 100%;
+  |   scrollbar-color: var(--color-taxodium-purple) var(--color-border);
+  |   scrollbar-color: light-dark(var(--color-taxodium-purple), var(--dark-color-taxodium-purple)) var(--color-border);
+  |   scrollbar-gutter: stable;
+  |   -webkit-font-smoothing: antialiased;
+  |   font-smoothing: antialiased;
+  | }
+  | 
+  | @media screen and (width >= 70em) {
+  |   html {
+  |     font-size: 22px;
+  |   }
+  | }
+  `----
+
+  在手机上， `<body>' 占据整个屏幕 (100vw)，只留些许的 padding 和屏幕边
+  缘保留一些距离，因为手机屏幕本来就小，还要留一些边距 (margin) 的话，留
+  给内容的空间就更少了。
+
+  在大屏上 (width >= 55rem)，限制最大宽度，避免一行内容太长，需要频繁左
+  右来回看。设置左右边距 (margin-inline) 为 auto，使得 `<body>' 居中，而
+  不是靠左，这样就不用侧着头看；居中也不会让一侧留白太多。
+
+  除此之外，设置页面整体的字体颜色；1.5 的行高，避免行之间过于拥挤；设置
+  `word-wrap' 使得较长的连续文字能够换行，不至于产生横向滚动条。
+
+  另外在还设置了一个背景图片，使得背景不那么单调乏味。我使用的背景图是半
+  透明的，会自动基于明暗模式适配。如果不是半透明的图片，需要在明暗模式设
+  置不同的图片。
+
+  ,----
+  | body {
+  |   max-width: var(--content-width);
+  |   margin: .5rem auto;
+  |   line-height: 1.5;
+  |   word-break: break-word;
+  |   color: var(--color-text);
+  |   color: light-dark(var(--color-text), var(--dark-color-text));
+  |   background-image: url("/images/background/xv.png");
+  |   background-attachment: fixed;
+  | 
+  |   @media screen and (width <= 400px) {
+  |     margin-inline: 0;
+  |     padding-inline: .5rem;
+  |     max-width: 100vw;
+  |   }
+  | }
+  | 
+  | @media screen and (width >= 55rem) {
+  |   :root {
+  |     --content-width: 45rem;
+  |     --typographic-scale: var(--scale-major-third);
+  |   }
+  | }
+  `----
+
+  在页面之间切换时，添加 view-transition 的效果，我希望切换看起来平缓一
+  些，所以设置了较长的动画时间。
+
+  ,----
+  | @view-transition {
+  |   navigation: auto;
+  | }
+  | 
+  | ::view-transition-group(root) {
+  |   animation-duration: 0.6s;
+  | }
+  | 
+  | /**
+  |  * @see: https://www.a11yproject.com/posts/understanding-vestibular-disorders/
+  |  */
+  | @media (prefers-reduced-motion: reduce) {
+  |   @view-transition {
+  |     navigation: none;
+  |   }
+  | }
+  `----
+
+
+[rem]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-size#rems>
+
+[scrollbar-gutter]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scrollbar-gutter>
+
+[Atkinson Hyperlegible] <https://www.brailleinstitute.org/freefont/>
+
+
+1.1.4 导航栏
+------------
+
+  导航栏内容不多，简单布局能够放下就行。需要处理一下手机屏幕下空间不足的
+  问题，主题切换下拉框会移动到导航栏下方。
+
+  导航的链接不需要 `:visited' 颜色标记，固定成链接本身的颜色。
+
+  ,----
+  | #preamble nav {
+  |   display: flex;
+  |   gap: .5rem;
+  |   flex-wrap: wrap;
+  | 
+  |   & ul {
+  |     flex-grow: 1;
+  |     display: flex;
+  |     min-width: 150px;
+  |     white-space: nowrap;
+  |     gap: .5rem;
+  |     list-style: none;
+  |     padding: 0;
+  |     margin: 0;
+  |     align-items: center;
+  | 
+  |     & li {
+  |       margin: 0;
+  |     }
+  |   }
+  | 
+  |   a:visited {
+  |     color: var(--color-link);
+  |     color: light-dark(var(--color-link), var(--dark-color-link));
+  | 
+  |     &:hover {
+  |       color: #fff;
+  |       background: var(--color-link);
+  |       background: light-dark(var(--color-link), var(--dark-color-link));
+  |     }
+  |   }
+  | }
+  `----
+
+
+1.1.5 theme select
+------------------
+
+  主题下拉框样式，[field-sizing] 可以让下拉框基于内容长度自适应宽度。
+
+  ,----
+  | #lightdark {
+  |   text-align: center;
+  |   field-sizing: content;
+  |   max-width: 100%;
+  | }
+  `----
+
+
+[field-sizing]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/field-sizing>
+
+
+1.1.6 skip nav
+--------------
+
+  处理 [Skip navigation] 的样式，默认是隐藏的，只要在 focus 时才显示。样
+  式实现参考了 [Stefan Judis 的博客]。
+
+  其中 [@starting-style] 用于设置元素加载前的样式初始值，这里设置的目的
+  是在页面切换，发生 view transition 的时候，先隐藏 `.a11y-nav' 元素，避
+  免出现一个收起的动画。
+
+  ,----
+  | .a11y-nav {
+  |   width: max-content;
+  |   position: fixed;
+  |   left: 0;
+  |   right: 0;
+  |   top: 0;
+  |   margin: 0 auto;
+  |   padding: 0.5rem;
+  |   z-index: 5;
+  |   background-color: var(--color-bg-secondary);
+  |   background-color: light-dark(var(--color-bg-secondary), var(--dark-color-bg-secondary));
+  |   font-weight: 600;
+  |   /* hide the link */
+  |   transform: translateY(-60px);
+  | 
+  |   @starting-style {
+  |     transform: translateY(-60px);
+  |     opacity: 0;
+  |   }
+  | 
+  |   &:focus {
+  |     transition: transform 0.375s ease-in-out;
+  |     transform: translateY(0);
+  |   }
+  | }
+  `----
+
+
+[Skip navigation]
+<https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/main#skip_navigation>
+
+[Stefan Judis 的博客] <https://www.stefanjudis.com/>
+
+[@starting-style]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@starting-style>
+
+
+1.1.7 title & subtitle
+----------------------
+
+  标题居中，子标题字体降低一些，颜色变淡一些，从而和主标题区分。
+
+  ,----
+  | .title {
+  |   max-width: fit-content;
+  |   margin-inline: auto;
+  | }
+  | 
+  | .subtitle {
+  |   color: var(--color-text-secondary);
+  |   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  |   font-size: 1.2rem;
+  |   margin-block-start: 0;
+  |   margin-block-end: 1.5rem;
+  |   text-align: center;
+  | }
+  `----
+
+
+1.1.8 heading
+-------------
+
+  设置标题的字号，默认都加粗。
+
+        排版比例使用的比例（大多）借鉴自音乐音程。这些比例创造了
+        「和谐」的比例感，因为它们基于同样的数学关系，而正是这些关
+        系让优秀的音乐听起来悦耳。
+
+        常用比例：
+
+        - 小三度 (1.200) - 细微
+        - 大三度 (1.250) - 均衡
+        - 纯四度 (1.333) - 略显张力
+        - 纯五度 (1.500) - 醒目
+        - 黄金比例 (1.618) - 非音程，但常用
+
+        这些比例是指数级的，而非线性的。每个标题级别都是在前一个级
+        别的基础上乘以比例，而不是相加。
+
+        以下是使用大三度比例 (1.25) 时，各标题级别的指数级增长情况：
+
+        ,----
+        | h6: 1rem × 1.25⁰ = 1rem
+        | h5: 1rem × 1.25¹ = 1.25rem
+        | h4: 1rem × 1.25² = 1.563rem
+        | h3: 1rem × 1.25³ = 1.953rem
+        | h2: 1rem × 1.25⁴ = 2.441rem
+        | h1: 1rem × 1.25⁵ = 3.052rem
+        `----
+
+        其模式为：基础大小 × 比例 ^ 指数。
+
+        这就是 [pow()] 发挥作用的地方。
+
+        [Building Typographic Scales in CSS with :heading(),
+        sibling-index(), and pow()]
+
+  因为标题本身字体就很大，行高太大，就会有很多多余的空白，所以将行高降低
+  为 1.2。
+
+  ,----
+  | h1,
+  | h2,
+  | h3,
+  | h4,
+  | h5,
+  | h6 {
+  |   line-height: 1.2;
+  |   font-weight: 700;
+  |   padding: 0;
+  |   margin-block: 1.5rem 0.5rem;
+  |   font-size: calc(var(--heading-base-size) * pow(var(--typographic-scale), var(--heading-level)));
+  | }
+  | 
+  | h1 {
+  |   --heading-level: 5;
+  | }
+  | 
+  | h2 {
+  |   --heading-level: 4;
+  | }
+  | 
+  | h3 {
+  |   --heading-level: 3;
+  | }
+  | 
+  | h4 {
+  |   --heading-level: 2;
+  | }
+  | 
+  | h5 {
+  |   --heading-level: 1;
+  | }
+  | 
+  | h6 {
+  |   --heading-level: 0;
+  | }
+  `----
+
+
+[pow()]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/pow>
+
+[Building Typographic Scales in CSS with :heading(), sibling-index(),
+and pow()]
+<https://www.alwaystwisted.com/articles/building-typographic-scales-with-headings-sibling-index-and-pow>
+
+
+1.1.9 图片/视频
+---------------
+
+  限制图片宽度，避免溢出，让图片在限定宽度內显示全。对于暗色主题下，降低
+  图片的亮度，避免刺眼，尤其是有大片白色的图片。
+
+  ,----
+  | img,
+  | video {
+  |   max-width: 100%;
+  |   object-fit: contain;
+  | }
+  | 
+  | img {
+  |   @media (prefers-color-scheme: dark) {
+  |     filter: brightness(0.85) contrast(1.05);
+  |   }
+  | }
+  | 
+  | .dark img {
+  |   filter: brightness(0.85) contrast(1.05);
+  | }
+  | 
+  | .light img {
+  |   filter: none;
+  | }
+  `----
+
+
+1.1.10 链接 / link
+------------------
+
+  设置链接的颜色、hover、visited 时的颜色。
+
+  hover 样式只在电脑屏幕上启用，因为手机本身不支持 hover，如果开启了
+  hover 样式，会在页面滚动时不小心触发 hover 样式，显得有些凌乱。
+
+  ,----
+  | a {
+  |   color: var(--color-link);
+  |   color: light-dark(var(--color-link), var(--dark-color-link));
+  |   text-underline-offset: 5px;
+  |   text-decoration-style: solid;
+  |   text-decoration-thickness: 2px;
+  | 
+  |   &:has(> img) {
+  |     &:hover {
+  |       background: none;
+  |     }
+  |   }
+  | 
+  |   @media (pointer: fine) and (hover: hover) {
+  |     &:hover {
+  |       text-decoration: none;
+  |       background: var(--color-link);
+  |       background: light-dark(var(--color-link), var(--dark-color-link));
+  |       color: #fff;
+  | 
+  |       & code {
+  |         color: #fff;
+  |       }
+  |     }
+  |   }
+  | 
+  |   &:visited {
+  |     color: var(--color-link-visited);
+  |     color: light-dark(var(--color-link-visited), var(--dark-color-link-visited));
+  | 
+  |     @media (pointer: fine) and (hover: hover) {
+  |       &:hover {
+  |         background: var(--color-link-visited);
+  |         background: light-dark(var(--color-link-visited), var(--dark-color-link-visited));
+  |         text-decoration: none;
+  |         color: #fff;
+  |       }
+  |     }
+  |   }
+  | 
+  |   /* make safari :visited hover works */
+  |   @media (pointer: fine) and (hover: hover) {
+  |     &:visited:hover,
+  |     &:visited:hover {
+  |       background: var(--color-link-visited);
+  |       background: light-dark(var(--color-link-visited), var(--dark-color-link-visited));
+  |       text-decoration: none;
+  |       color: #fff;
+  |     }
+  |   }
+  | }
+  `----
+
+  Heading 也是鏈接，但我希望顯示成字體顏色，從而和鏈接區分開。
+
+  ,----
+  | :where(h1,h2,h3,h4,h5,h6) a:not([href~=http]) {
+  |   color: var(--color-text);
+  |   color: light-dark(var(--color-text), var(--dark-color-text));
+  | 
+  |   &:hover {
+  |     color: #fff;
+  |     background: light-dark(var(--color-link), var(--dark-color-link));
+  |   }
+  | }
+  `----
+
+
+1.1.11 段落 paragraph
+---------------------
+
+  设置一个较大的，明显大于行高的间距，使得段落之间区分明显。
+
+  ,----
+  | p {
+  |   margin: 1.25rem 0;
+  | }
+  `----
+
+  org publish 有时会生成一些空白的 `<p>' ，没啥用，将他们都隐藏。
+
+  ,----
+  | p:empty {
+  |   display: none;
+  | }
+  `----
+
+
+1.1.12 markup
+-------------
+
+  一些常用标记的样式。
+
+  ,----
+  | code {
+  |   color: var(--color-code);
+  |   color: light-dark(var(--color-code), var(--dark-color-code));
+  | }
+  | 
+  | em {
+  |   text-emphasis: "\23f6";
+  |   text-emphasis-color: var(--color-text-secondary);
+  |   text-emphasis-color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  |   text-emphasis-position: under;
+  |   font-style: unset;
+  | }
+  | 
+  | b {
+  |   font-weight: 700;
+  | }
+  | 
+  | .underline {
+  |   text-decoration-color: var(--color-border);
+  |   text-decoration-color: light-dark(var(--color-border), var(--dark-color-border));
+  |   text-decoration-line: underline;
+  |   text-decoration-style: wavy;
+  |   text-underline-offset: 4px;
+  |   text-decoration-thickness: 2px;
+  | }
+  | 
+  | del {
+  |   color: var(--color-text-secondary);
+  |   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  |   opacity: 0.65;
+  | }
+  | 
+  | dt {
+  |   font-weight: 700;
+  | }
+  | 
+  | dd + dt {
+  |   margin-top: 1rem;
+  | }
+  | 
+  | dd {
+  |   margin-inline-start: 1.5rem;
+  | }
+  | 
+  | /* 使用更柔和的顏色 */
+  | mark {
+  |   background-color: var(--color-bg-mark);
+  |   background-color: light-dark(var(--color-bg-mark), var(--dark-color-bg-mark));
+  | }
+  `----
+
+
+1.1.13 hr
+---------
+
+  分割线样式，将分割线设置为 `§' 而不是一根直线，主要是因为页面上有不少
+  的线条，例如 blockquote、代码块、note，太多线条会让内容看起来比较乱。
+
+  ,----
+  | hr {
+  |   display: block;
+  |   border: 0;
+  |   margin: 2.5rem 0;
+  |   padding: 0;
+  |   border-color: var(--color-border);
+  |   border-color: light-dark(var(--color-border), var(--dark-color-border));
+  |   text-align: center;
+  | 
+  |   &::before {
+  |     content: "§";
+  |     text-align: center;
+  |   }
+  | }
+  `----
+
+
+1.1.14 kbd
+----------
+
+  ,----
+  | kbd {
+  |   background-color: var(--color-bg);
+  |   background-color: light-dark(var(--color-bg), var(--dark-color-bg));
+  |   color: var(--color-text);
+  |   color: light-dark(var(--color-text), var(--dark-color-text));
+  |   border: 1px solid;
+  |   border-color: var(--color-border);
+  |   border-color: light-dark(var(--color-border), var(--dark-color-border));
+  |   border-radius: 0.25rem;
+  |   box-shadow: 1px 2px 2px var(--color-box-shadow);
+  |   box-shadow: 1px 2px 2px light-dark(var(--color-box-shadow), var(--dark-color-box-shadow));
+  |   display: inline-block;
+  |   font-weight: bold;
+  |   padding: 0.2rem 0.25rem 0.1rem;
+  |   line-height: 1;
+  |   white-space: nowrap;
+  |   font-size: 0.85rem;
+  | }
+  `----
+
+
+1.1.15 ruby
+-----------
+
+  适当放大 [<rt>] 的字号。
+
+  ,----
+  | rt {
+  |   font-size: 0.65rem;
+  | }
+  `----
+
+
+[<rt>]
+<https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/rt>
+
+
+1.1.16 代码块
+-------------
+
+  参考了 [Protesilaos Stavrou] 的样式 。
+
+  ,----
+  | pre {
+  |   background: var(--color-bg-src-block);
+  |   background: light-dark(var(--color-bg-src-block), var(--dark-color-bg-src-block));
+  |   font-size: 0.75rem;
+  |   margin: 1em 0;
+  |   padding: 1rem;
+  |   white-space: pre-wrap;
+  |   overflow-x: auto;
+  |   word-break: normal;
+  |   word-wrap: inherit;
+  |   border-block: 5px solid;
+  |   border-color: var(--color-border);
+  |   border-color: light-dark(var(--color-border), var(--dark-color-border));
+  | }
+  `----
+
+
+[Protesilaos Stavrou] <https://protesilaos.com/>
+
+
+1.1.17 引用 blockquote、verse
+-----------------------------
+
+  blockquote 和 verse 样式都是一样的，左侧有边框，颜色比正文淡一些，正文
+  区分开。
+
+  ,----
+  | .verse,
+  | blockquote {
+  |   margin: 1rem 0;
+  |   padding: 0 0.5rem;
+  |   color: var(--color-text-secondary);
+  |   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  |   border-inline-start: 4px solid var(--color-border);
+  |   border-inline-start: 4px solid light-dark(var(--color-border), var(--dark-color-border));
+  | }
+  | 
+  | .verse + .verse,
+  | blockquote + blockquote {
+  |   margin-block-start: 2em;
+  | }
+  `----
+
+
+1.1.18 figure
+-------------
+
+  移除 figure 的左右边距，使得 figure 能够占满 body 的宽度，让图片显示得
+  更大一些。
+
+  figcaption 字号减小，颜色变淡，和正文区分。
+
+  ,----
+  | figure {
+  |   margin-inline: 0;
+  | }
+  | 
+  | figcaption {
+  |   font-size: 0.85em;
+  |   color: var(--color-text-secondary);
+  |   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  | }
+  `----
+
+
+1.1.19 details
+--------------
+
+  details 添加 border，便于在内容很多的时候，能够知道哪些内容是属于
+  details 的。
+
+  summary 的 marker 换成一只指向的手，比黑漆漆的三角形好看点。感兴趣可以
+  看看 [Zine#32::The Secret History of the Manicule, the Little Hand
+  that’s Everywhere]
+  <https://taxodium.ink/32.html#6b76efce-1b21-480b-9692-ec8df6252950>。
+
+  在支持 hover 的屏幕上（排除手机、平板），降低 details 的透明度，从而和
+  正文区分开，也避免 details 的边框显得凌乱，在 hover / 打开时恢复透明度。
+
+  ,----
+  | details {
+  |   padding: 0.5rem 1rem;
+  |   border-radius: 1rem;
+  |   border: 2px solid var(--color-border);
+  |   border-color: light-dark(var(--color-border), var(--dark-color-border));
+  |   margin-block: 1rem;
+  | 
+  |   @media (pointer: fine) and (hover: hover) {
+  |     opacity: 0.65;
+  |     transition: opacity .25s ease-in-out;
+  | 
+  |     &:hover,&[open] {
+  |       opacity: 1;
+  |     }
+  |   }
+  | 
+  |   summary {
+  |     cursor: pointer;
+  | 
+  |     &::marker,
+  |     :is(::-webkit-details-marker) {
+  |       content: "☞  ";
+  |     }
+  |   }
+  | 
+  |   &[open] summary::marker,
+  |   &[open] summary::-webkit-details-marker {
+  |     content: "☟  ";
+  |   }
+  | }
+  `----
+
+
+1.1.20 iframe
+-------------
+
+  iframe 一般我会用来展示一些 HTML 示例，添加边框使其和内容区分开。
+
+  ,----
+  | iframe {
+  |   width: 100%;
+  |   min-height: 350px;
+  |   border: 2px dotted var(--color-border);
+  |   border: 2px dotted light-dark(var(--color-border), var(--dark-color-border));
+  | }
+  `----
+
+
+1.1.21 select
+-------------
+
+  博客下拉框很少，主要就是导航栏的主题下拉框。
+
+  ,----
+  | select {
+  |   font-size: 1rem;
+  |   padding: 4px;
+  |   border-radius: 0.25rem;
+  |   color: var(--color-text);
+  |   color: light-dark(var(--color-text), var(--dark-color-text));
+  | }
+  `----
+
+
+1.1.22 button
+-------------
+
+  给按钮的点击添加一个效果，使得点击这个动作更明显。
+
+  按钮颜色使用主色，按钮整体是偏长方形的。
+
+  ,----
+  | input.button,
+  | button {
+  |   border-radius: 0.25rem;
+  |   padding: 0.25rem;
+  |   cursor: pointer;
+  |   background: var(--color-taxodium-purple);
+  |   background: light-dark(var(--color-taxodium-purple), var(--dark-color-taxodium-purple));
+  |   color: #fff;
+  |   color: light-dark(#fff, oklch(.95 0 0));
+  |   padding: .1rem .5rem .25rem;
+  |   border: 0;
+  | 
+  |   &:hover {
+  |     background: oklch(from var(--color-taxodium-purple) .7 c h);
+  |     background: light-dark(
+  |       oklch(from var(--color-taxodium-purple) .7 c h),
+  |       oklch(from var(--dark-color-taxodium-purple) .7 c h)
+  |     );
+  |   }
+  | 
+  |   &:active {
+  |     transform: scale(0.97);
+  |   }
+  | }
+  | 
+  | input.button:active {
+  |   transform: scale(0.97);
+  | }
+  `----
+
+
+1.1.23 table
+------------
+
+  参考了 [Styling Tables the Modern CSS Way]。
+
+  ,----
+  | table {
+  |   border-block-start: var(--table-border);
+  |   border-block-end: var(--table-border);
+  |   border-collapse: collapse;
+  |   border-color: var(--color-border-table);
+  |   border-color: light-dark(var(--color-border-table), var(--dark-color-border-table));
+  |   text-align: start;
+  |   caption-side: bottom;
+  |   word-break: normal;
+  | }
+  | 
+  | .table-wrapper {
+  |   overflow: auto;
+  |   margin-block: 1rem;
+  | }
+  | 
+  | /* override org publish default style */
+  | table th.org-left {
+  |   text-align: start;
+  | }
+  | 
+  | thead {
+  |   border-block-end: var(--table-border);
+  |   border-color: var(--color-border-table);
+  |   border-color: light-dark(var(--color-border-table), var(--dark-color-border-table));
+  |   white-space: nowrap;
+  | }
+  | 
+  | thead,
+  | tfoot {
+  |   background: var(--color-bg-table);
+  |   background: light-dark(var(--color-bg-table), var(--dark-color-bg-table));
+  | }
+  | 
+  | tbody tr:nth-child(even) {
+  |   background: var(--color-bg-table);
+  |   background: light-dark(var(--color-bg-table), var(--dark-color-bg-table));
+  |   background: light-dark(color-mix(in srgb, var(--color-bg-table), transparent 60%), color-mix(in srgb, var(--dark-color-bg-table), transparent 60%));
+  | }
+  | 
+  | table tr {
+  |   border-block-start: var(--table-cell-border);
+  |   border-color: var(--color-border);
+  |   border-color: light-dark(var(--color-border), var(--dark-color-border));
+  | }
+  | 
+  | thead th {
+  |   vertical-align: bottom;
+  | }
+  | 
+  | td,
+  | th {
+  |   padding: 0.3rem 1rem;
+  |   vertical-align: baseline;
+  | 
+  |   @media screen and (width <= 400px) {
+  |     padding: 0.3rem 0.6rem;
+  |   }
+  | }
+  `----
+
+
+[Styling Tables the Modern CSS Way]
+<https://piccalil.li/blog/styling-tables-the-modern-css-way/>
+
+
+1.1.24 list
+-----------
+
+  给 `<li>' 增加一些边距，避免过分拥挤；同时淡化 list marker 的颜色，降
+  低 list marker 的冲击感。
+
+  ,----
+  | :where(ol,ul) li {
+  |   margin-block: .5rem;
+  | 
+  |   &::marker {
+  |     color: var(--color-text-secondary);
+  |     color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  |   }
+  | }
+  `----
+
+  org-publish 渲染的 HTML，在嵌套 list 的时候，有的内容会用 `<p>' 包裹，
+  导致某个 `<li>' 的边距过大。针对这个情况，重置 `<p>' 的边距。
+
+  ,----
+  | :where(ol,ul) li > p:first-child {
+  |   margin-block: 0;
+  | }
+  `----
+
+  在手机屏幕下，减少列表和列表內元素的边距，使得在手机屏幕上可以呈现更多
+  内容。
+
+  ,----
+  | @media screen and (width <= 400px) {
+  |   :where(ol,ul) {
+  |     padding-inline-start: 1rem;
+  | 
+  |     & li > details,
+  |     & li > :is(pre.example, .org-src-container, section[role=note]) {
+  |       margin-block: 1rem;
+  |       margin-inline-start: -1rem;
+  |     }
+  |   }
+  | 
+  |   .dl dd {
+  |     margin-inline-start: 1rem;
+  |   }
+  | }
+  `----
+
+  处理一些特殊情况，当 list 下可能同时在 `<p>' 和 `<ul>' ，或者只有
+  `<p>' ，但是两者在间距表现上有差异，下面的样式是使得两者表现一致。
+
+  ,----
+  | li:has(> p):has(> ul) ul:last-child {
+  |   margin-block-end: 1.25rem;
+  | }
+  `----
+
+  让 `<li>' 下的段落紧凑一些，不然有的 `<li>' 下有内容，有的没有，格子的
+  间距不同，看起来比较别扭。`<li>' 下不适合写太多内容。
+
+  ,----
+  | li p {
+  |   margin-block: 1rem;
+  | }
+  `----
+
+
+1.1.25 search
+-------------
+
+  主要用于 [搜索] <https://taxodium.ink/search.html> 页面的搜索框。
+
+  ,----
+  | search {
+  |   form {
+  |     display: flex;
+  |     gap: .5rem;
+  |   }
+  | 
+  |   input {
+  |     font-size: 1rem;
+  |     border: 1px;
+  |     border-style: solid;
+  |     border-color: var(--color-border);
+  |     border-color: light-dark(var(--color-border), var(--dark-color-border));
+  |     border-radius: 0.2rem;
+  |   }
+  | 
+  |   button {
+  |     font-size: 1rem;
+  |   }
+  | }
+  `----
+
+
+1.1.26 postamble
+----------------
+
+  底部内容样式，设置了一个分割线，内容可以自定义，偶尔换换。
+
+  页脚的内容因为比较次要，减少字号，淡化一些，重置 `<p>' 的间距。
+
+  ,----
+  | #postamble {
+  |   margin-block-start: 1em;
+  | 
+  |   &::before {
+  |     /* content: 'EASY COME, EASY GO ...'; */
+  |     content: "つづく To Be Continued";
+  |     color: var(--color-border);
+  |     color: light-dark(var(--color-border), var(--dark-color-border));
+  |     display: block;
+  |     text-align: end;
+  |   }
+  | 
+  |   footer {
+  |     --footer-font-size: .8rem;
+  |     font-size: var(--footer-font-size);
+  |     color: var(--color-text-secondary);
+  |     color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  |     text-wrap: pretty;
+  | 
+  |     code {
+  |       font-size: var(--footer-font-size);
+  |     }
+  | 
+  |     & p {
+  |       margin-block: 0.1rem;
+  |     }
+  |   }
+  | }
+  `----
+
+
+1.1.27 layer end
+----------------
+
+  ,----
+  | }
+  `----
+
+
+1.2 @layer print
+~~~~~~~~~~~~~~~~
+
+  打印时，将字号适当缩小，让内容占满窗口，使得一页纸可以放下更多内容；将
+  链接显示出来；隐藏对打印无用的内容。
+
+  更多可以参考 [关于页面打印]
+  <https://taxodium.ink/about-html-print.html>。
+
+  ,----
+  | @layer print {
+  |   @media print {
+  |     html {
+  |       font-size: 16px;
+  |     }
+  | 
+  |     body {
+  |       background-image: none;
+  |       margin: 0;
+  |       max-width: 100vw;
+  |     }
+  | 
+  |     #preamble,
+  |     #postamble,
+  |     #back-to-top,
+  |     .code-copy-btn
+  |     {
+  |       display: none;
+  |     }
+  | 
+  |     a::after {
+  |       word-break: break-all;
+  |       content: " (" attr(href) ")";
+  |     }
+  | 
+  |     /* 部分链接意义不大，不需要展示出来 */
+  |     a:where(.footref, .footnum)::after,
+  |     #table-of-contents a::after {
+  |       content: "";
+  |     }
+  |   }
+  | }
+  `----
+
+
+1.3 @layer function
+~~~~~~~~~~~~~~~~~~~
+
+1.3.1 layer start
+-----------------
+
+  ,----
+  | @layer function {
+  `----
+
+
+1.3.2 back-to-top
+-----------------
+
+  Back to top 按钮样式。
+
+  ,----
+  | #back-to-top {
+  |   position: fixed;
+  |   bottom: 1rem;
+  |   right: 1rem;
+  |   width: 2rem;
+  |   height: 2rem;
+  |   z-index: 1;
+  |   cursor: pointer;
+  |   padding: 0.5rem;
+  |   border: 2px;
+  |   border-style: solid;
+  |   border-color: var(--color-border);
+  |   border-color: light-dark(var(--color-border), var(--dark-color-border));
+  |   background-color: var(--color-bg);
+  |   background-color: light-dark(var(--color-bg), var(--dark-color-bg));
+  |   color: var(--color-text);
+  |   color: light-dark(var(--color-text), var(--dark-color-text));
+  |   border-radius: 0.25rem;
+  |   opacity: 0;
+  |   visibility: hidden;
+  |   transition: opacity 0.25s ease-in-out, visibility 0.5s;
+  | }
+  | 
+  | @media screen and (width >= 1200px) {
+  |   #back-to-top {
+  |     right: calc(var(--half-content-margin) - 4rem);
+  |   }
+  | }
+  | 
+  | #back-to-top svg {
+  |   display: block;
+  |   width: 100%;
+  |   height: 100%;
+  |   fill: currentColor;
+  | }
+  | 
+  | #back-to-top.show {
+  |   opacity: 0.4;
+  |   visibility: visible;
+  | }
+  | 
+  | #back-to-top.show:hover {
+  |   opacity: 1;
+  | }
+  `----
+
+
+1.3.3 代码高亮
+--------------
+
+  参考了 [Styling Tables the Modern CSS Way]，仅高亮几种关键字的颜色。
+
+  ,----
+  | .src > code {
+  |   color: var(--color-text);
+  |   color: light-dark(var(--color-text), var(--dark-color-text));
+  | }
+  | .org-comment {
+  |   color: #7f0000;
+  |   color: light-dark(#7f0000, #c0a38a);
+  |   font-style: italic;
+  | }
+  | .org-comment-delimiter {
+  |   color: #7f0000;
+  |   color: light-dark(#7f0000, #c0a38a);
+  |   font-style: italic;
+  | }
+  | .org-diff-added {
+  |   color: #005000;
+  |   color: light-dark(#005000, #a0e0a0);
+  |   background-color: #c3ebc1;
+  |   background-color: light-dark(#c3ebc1, #00371f);
+  | }
+  | .org-diff-indicator-added {
+  |   color: #006700;
+  |   color: light-dark(#006700, #279c40);
+  |   background-color: #c3ebc1;
+  |   background-color: light-dark(#c3ebc1, #00371f);
+  | }
+  | .org-diff-indicator-removed {
+  |   color: #aa2222;
+  |   color: light-dark(#aa2222, #f36649);
+  |   background-color: #f4d0cf;
+  |   background-color: light-dark(#f4d0cf, #450f1f);
+  | }
+  | .org-diff-removed {
+  |   color: #8f1313;
+  |   color: light-dark(#8f1313, #ffbfbf);
+  |   background-color: #f4d0cf;
+  |   background-color: light-dark(#f4d0cf, #450f1f);
+  | }
+  | .org-doc {
+  |   color: #304463;
+  |   color: light-dark(#304463, #8aa0df);
+  |   font-style: italic;
+  | }
+  | .org-function-name {
+  |   color: #602938;
+  |   color: light-dark(#602938, #35afbf);
+  | }
+  | .org-number {
+  |   color: #000000;
+  |   color: light-dark(#000000, #b8c6d5);
+  | }
+  | .org-string {
+  |   color: #00598b;
+  |   color: light-dark(#00598b, #df9080);
+  | }
+  | .org-variable-name {
+  |   color: #00603f;
+  |   color: light-dark(#00603f, #6a9fff);
+  | }
+  `----
+
+
+[Styling Tables the Modern CSS Way]
+<https://piccalil.li/blog/styling-tables-the-modern-css-way/>
+
+
+1.3.4 代码复制按钮
+------------------
+
+  [code-enhanced.js] 会在代码块附近添加一个复制按钮，用于复制代码块的内
+  容。按钮放置在右上角，始终展示。
+
+  ,----
+  | .org-src-container {
+  |   display: grid;
+  |   grid-template-columns: auto;
+  |   grid-template-areas:
+  |     "copy-btn"
+  |     "code";
+  | 
+  |   &:has(.code-copy-btn) {
+  |     pre {
+  |       margin-block-start: 0.25rem;
+  |     }
+  |   }
+  | }
+  | 
+  | .code-copy-btn {
+  |   grid-area: copy-btn;
+  |   cursor: pointer;
+  |   max-width: fit-content;
+  |   font-size: 1rem;
+  |   justify-self: end;
+  | }
+  `----
+
+
+[code-enhanced.js] <file:js/code-enhanced.js>
+
+
+1.3.5 代码悬浮高亮
+------------------
+
+  org-publish 支持标记代码行，并能够通过链接指向代码行，使其高亮。
+
+  高亮逻辑由 [code-highlighted.js] 实现，会添加 `.code-highlighted' 类。
+
+  交互见： [在 Emacs 中用 Elfeed 阅读订阅流]
+  <https://taxodium.ink/use-elfeed-to-read-feed-in-emacs.html>。
+
+  ,----
+  | .code-highlighted {
+  |   transition: background-color 0.1s ease-in-out;
+  |   background-color: var(--color-bg-code-highlighted);
+  |   background-color: light-dark(var(--color-bg-code-highlighted), var(--dark-color-bg-code-highlighted));
+  | }
+  | 
+  | a.coderef {
+  |   font-size: 0.85rem;
+  |   background: var(--color-bg-code);
+  |   background: light-dark(var(--color-bg-code), var(--dark-color-bg-code));
+  |   border-radius: 6px;
+  |   padding: 0.05rem 0.2rem;
+  |   color: var(--color-text);
+  |   color: light-dark(var(--color-text), var(--dark-color-text));
+  |   text-decoration: none;
+  | 
+  |   &:visited {
+  |     color: var(--color-text);
+  |     color: light-dark(var(--color-text), var(--dark-color-text));
+  |   }
+  | 
+  |   &:hover {
+  |     color: #fff;
+  |     background: var(--color-link);
+  |     background: light-dark(var(--color-link), var(--dark-color-link));
+  | 
+  |     & code {
+  |       color: #fff;
+  |     }
+  |   }
+  | }
+  `----
+
+
+[code-highlighted.js]
+<file:~/git/taxodium/publish/js/code-highlighted.js>
+
+
+1.3.6 Webmentions
+-----------------
+
+  [webmention] <https://taxodium.ink/add-webmention-to-blog.html> 相关样
+  式。
+
+  ,----
+  | .webmention {
+  |   font-size: 0.9rem;
+  | 
+  |   & form {
+  |     display: grid;
+  |     grid-template-columns: max-content auto max-content;
+  |     gap: 0.5em;
+  |     align-items: center;
+  | 
+  |     @media screen and (width <= 680px) {
+  |       grid-template-columns: 1fr;
+  |     }
+  | 
+  |     & input {
+  |       border: 1px;
+  |       border-style: solid;
+  |       border-color: var(--color-border);
+  |       border-color: light-dark(var(--color-border), var(--dark-color-border));
+  |       border-radius: 0.2rem;
+  |       padding: 0.3rem;
+  |       font-size: 1em;
+  | 
+  |       &::placeholder {
+  |         padding-inline-start: 0.5rem;
+  |       }
+  | 
+  |       &.button {
+  |         cursor: pointer;
+  |         padding: 0.2rem 0.5rem;
+  |         border-radius: 0.2rem;
+  | 
+  |         &:hover {
+  |           opacity: 0.8;
+  |         }
+  |       }
+  | 
+  |       &[readonly] {
+  |         cursor: not-allowed;
+  |       }
+  |     }
+  |   }
+  | 
+  |   &:not(:has(.webmention__list li)) {
+  |     & hr {
+  |       display: none;
+  |     }
+  |   }
+  | }
+  | 
+  | .webmention__tip {
+  |   margin: revert;
+  |   font-size: revert;
+  |   color: var(--color-text-secondary);
+  |   color: light-dark(
+  |     var(--color-text-secondary),
+  |     var(--dark-color-text-secondary)
+  |   );
+  | }
+  | 
+  | .webmention__list {
+  |   list-style: none;
+  |   padding-inline: 0;
+  |   display: flex;
+  |   flex-direction: column;
+  |   margin-block: 0;
+  |   gap: 2.5rem;
+  | 
+  |   & blockquote {
+  |     padding-inline: 1rem;
+  |   }
+  | 
+  |   @media screen and (width <= 400px) {
+  |     list-style: none;
+  |     padding-inline-start: 0;
+  |   }
+  | }
+  | 
+  | .webmention__profile {
+  |   display: grid;
+  |   grid-template-columns: max-content auto;
+  |   grid-template-areas:
+  |     "avatar author"
+  |     "avatar source";
+  |   column-gap: 1rem;
+  | }
+  | 
+  | .webmention__avatar {
+  |   object-fit: contain;
+  |   border-radius: 0.5rem;
+  |   width: 3.5rem;
+  |   align-self: start;
+  |   grid-area: avatar;
+  | 
+  |   @media screen and (width <= 400px) {
+  |     width: 2.5rem;
+  |   }
+  | }
+  | 
+  | .webmention__author {
+  |   margin-inline-end: 1rem;
+  |   grid-area: author;
+  |   width: fit-content;
+  | }
+  | 
+  | .webmention__source {
+  |   word-break: break-all;
+  |   grid-area: source;
+  |   margin: 0;
+  |   align-self: end;
+  | }
+  | 
+  | .webmention__content {
+  |   clear: both;
+  |   margin-block-start: 1rem;
+  | 
+  |   &:empty {
+  |     display: none;
+  |   }
+  | }
+  | 
+  | .webmention__date {
+  |   margin-block: .5rem 0;
+  |   font-size: .75rem;
+  |   color: var(--color-text-secondary);
+  |   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  |   word-break: break-all;
+  | }
+  | 
+  | .h-card[aria-hidden="true"] {
+  |   display: none;
+  | }
+  `----
+
+
+1.3.7 :focus-visible
+--------------------
+
+  使用 tab 聚焦到可点击元素时的样式，增加了动画，使得被聚焦的元素更明显。
+
+  注意 [box-shadow is no alternative to outline]，如果打算用 box-shadow
+  替换 outline，最好保留 `outline: 2px solid transparent;' 使得
+  box-shadow 失效的时候依然有边框。
+
+  ,----
+  | /** :focus-visible is a neat pseudo-class that only applies focus styles when users navigate with the keyboard. */
+  | *:focus-visible {
+  |   outline-color: var(--color-fucus-visible-outline);
+  |   outline-color: light-dark(var(--color-fucus-visible-outline), var(--dark-color-fucus-visible-outline));
+  |   outline-style: solid;
+  |   outline-offset: .25rem;
+  |   outline-width: .2rem;
+  |   border-radius: .1rem;
+  | }
+  | 
+  | @media (prefers-reduced-motion: no-preference) {
+  |   *:focus-visible {
+  |     animation: outline-bounce .5s;
+  |   }
+  | }
+  | 
+  | @keyframes outline-bounce {
+  |   0% { outline-offset: .25rem }
+  |   50% { outline-offset: .5rem }
+  |   100% { outline-offset: .25rem }
+  | }
+  `----
+
+
+[box-shadow is no alternative to outline]
+<https://matuzo.at/blog/2026/box-shadow-no-alternative-to-outline>
+
+
+1.3.8 note section
+------------------
+
+  note section 一般用于一些补充内容，设置一个特殊的样式，使其正文区分。
+
+  ,----
+  | section[role="note"] {
+  |   border: 2px dashed;
+  |   border-color: var(--color-border);
+  |   border-color: light-dark(var(--color-border), var(--dark-color-border));
+  |   color: var(--color-text-secondary);
+  |   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  |   padding-inline: 1rem;
+  |   margin-block: 1rem;
+  |   border-radius: 0.5rem;
+  |   position: relative;
+  | 
+  |   &::before {
+  |     /* ✏ 的 Unicode \270F, \FE0E 是文本变体选择器，选择纯文本形式展示 */
+  |     content: "\270F\FE0E";
+  |     position: absolute;
+  |     font-size: 2rem;
+  |     inset-block-start: -1rem;
+  |     inset-inline-start: 0;
+  |     color: var(--color-border);
+  |     color: light-dark(var(--color-border), var(--dark-color-border));
+  |     transform: rotate(135deg);
+  |   }
+  | 
+  |   & + section[role="note"] {
+  |     margin-block-start: 1rem;
+  |   }
+  | }
+  `----
+
+
+1.3.9 banner section
+--------------------
+
+  banner 样式，用于一些通知。
+
+  ,----
+  | section[role="note"].banner {
+  |   padding: .25rem 1rem;
+  |   margin-block: 1rem;
+  |   border-radius: 0;
+  |   border: 1px solid;
+  |   border-inline-start: 10px solid;
+  |   border-color: var(--color-link);
+  |   border-color: light-dark(var(--color-link), var(--dark-color-link));
+  |   background: oklch(from var(--color-link) l c h / .2);
+  |   color: var(--color-text);
+  |   color: light-dark(var(--color-text), var(--dark-color-text));
+  | 
+  |   &::before {
+  |     content: "";
+  |   }
+  | }
+  `----
+
+
+1.3.10 footnote & sidenote
+--------------------------
+
+  footnote，依赖 [sidenote.js]
+
+  ,----
+  | #text-footnotes {
+  |   margin-block-start: 1.25rem;
+  | }
+  | 
+  | .footdef {
+  |   display: grid;
+  |   grid-template-columns: max-content auto;
+  |   gap: 0.5rem;
+  | }
+  | 
+  | .footpara {
+  |   & *:first-child {
+  |     margin-block-start: 0;
+  |   }
+  | }
+  | 
+  | .sidenote {
+  |   /*
+  |         屏幕宽度减去内容宽度后，剩余 margin 的一半用于展示 sidenote,
+  |         减去适量偏移量，避免出現横向滚动条，以及過於靠近邊緣
+  |  */
+  |   --sidenote-max-width: 25ch;
+  |   width: max-content;
+  |   max-width: var(--sidenote-max-width);
+  |   font-size: 0.8rem;
+  |   pointer-events: auto;
+  |   display: grid;
+  |   grid-template-columns: max-content 1fr;
+  |   gap: 0.2em;
+  |   transition: opacity .25s ease-in-out;
+  |   opacity: 0.15;
+  |   align-items: start;
+  |   color: var(--color-text-secondary);
+  |   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  |   float: inline-start;
+  |   clear: inline-end;
+  |   &.inline-start {
+  |     float: inline-start;
+  |   }
+  | 
+  |   &.inline-end {
+  |     float: inline-end;
+  |   }
+  | 
+  |   &.sidenote-ref-highlight,
+  |   &:hover {
+  |     opacity: 1;
+  |   }
+  | 
+  |   & *:last-child {
+  |     margin-block-end: 0;
+  |   }
+  | }
+  | 
+  | .sidenote-toggle-trigger,
+  | a[role="doc-backlink"] {
+  |   position: relative;
+  | 
+  |   &::before {
+  |     content: '';
+  |     position: absolute;
+  |     top: var(--extra-active-area-size);
+  |     left: var(--extra-active-area-size);
+  |     right: var(--extra-active-area-size);
+  |     bottom: var(--extra-active-area-size);
+  |     cursor: pointer;
+  |   }
+  | }
+  | 
+  | @media (pointer: fine) and (hover: hover) {
+  |   .sidenote-ref-highlight,
+  |   .sidenote-toggle-trigger:hover,
+  |   a[role="doc-backlink"]:hover {
+  |     &::before {
+  |       border: 3px solid;
+  |       border-color: var(--color-taxodium-purple);
+  |       border-color: light-dark(var(--color-taxodium-purple), var(--dark-color-taxodium-purple));
+  |       border-radius: 5px;
+  |       opacity: 0.8;
+  |     }
+  |   }
+  | }
+  | 
+  | .sidenote-toggle-trigger {
+  |   vertical-align: super;
+  |   background: transparent;
+  |   color: var(--color-taxodium-purple);
+  |   color: light-dark(var(--color-taxodium-purple), var(--dark-color-taxodium-purple));
+  |   display: none;
+  |   padding: 0;
+  |   font-size: 1rem;
+  | }
+  | 
+  | @media screen and (width <= 1620px) {
+  |   .sidenote.sidenote.sidenote {
+  |     clear: both;
+  |     margin-inline: 0;
+  |     margin-block: .5rem;
+  |     opacity: 1;
+  |     display: none;
+  |     width: 100%;
+  |     max-width: 100%;
+  |     grid-template-columns: auto;
+  |     gap: 0;
+  |     box-sizing: border-box;
+  | 
+  |     & .footpara:last-child() {
+  |       margin-block-end: 0;
+  |     }
+  |   }
+  | 
+  |   .sidenote-toggle-trigger {
+  |     display: inline-block;
+  |   }
+  | 
+  |   [role="doc-backlink"] {
+  |     display: none;
+  |   }
+  | 
+  |   /* fix safari quirks :( */
+  |   details,
+  |   li:has(.sidenote) + li {
+  |     clear: both;
+  |   }
+  | }
+  `----
+
+
+[sidenote.js] <file:js/sidenote.js>
+
+
+1.3.11 layer end
+----------------
+
+  ,----
+  | }
+  `----
+
+
+1.4 @layer special
+~~~~~~~~~~~~~~~~~~
+
+1.4.1 layer start
+-----------------
+
+  ,----
+  | @layer special {
+  `----
+
+
+1.4.2 retro theme
+-----------------
+
+  样式借鉴了 [rohit]。
+
+  ,----
+  | /* scan-line, retro style */
+  | /* inspire from https://seated.ro/blog/tinkering-a-lost-art */
+  | body:where(.dark-retro)::after {
+  |   content: "";
+  |   position: fixed;
+  |   top: 0;
+  |   left: 0;
+  |   bottom: 0;
+  |   right: 0;
+  |   background-repeat: repeat;
+  |   background-attachment: fixed;
+  |   pointer-events: none;
+  |   z-index: 3;
+  | }
+  | 
+  | body.dark-retro::after {
+  |   --scan-line-width: 1px;
+  |   background-image: linear-gradient(oklch(0 0 0 / .8) var(--scan-line-width), transparent var(--scan-line-width));
+  |   background-size: calc(2 * var(--scan-line-width)) calc(2 * var(--scan-line-width));
+  | 
+  |   @media screen and (width <= 400px) {
+  |     --scan-line-width: .7px;
+  |   }
+  | }
+  `----
+
+
+[rohit] <https://seated.ro/>
+
+
+1.4.3 layer end
+---------------
+
+  ,----
+  | }
+  `----
+
+
+1.5 @layer utils
+~~~~~~~~~~~~~~~~
+
+1.5.1 layer start
+-----------------
+
+  ,----
+  | @layer utils {
+  `----
+
+
+1.5.2 .hidden-link
+------------------
+
+  有的彩蛋链接，为了避免暴露，将链接颜色改成和正文颜色一样。静待有缘人发
+  现 :P
+
+  ,----
+  | .hidden-link a {
+  |   text-decoration: none;
+  |   color: var(--color-text);
+  |   color: light-dark(var(--color-text), var(--dark-color-text));
+  | 
+  |   &:hover {
+  |     color: #fff;
+  |   }
+  | 
+  |   &:visited {
+  |     color: var(--color-text);
+  |     color: light-dark(var(--color-text), var(--dark-color-text));
+  |   }
+  | }
+  `----
+
+
+1.5.3 inline image
+------------------
+
+  行内图片，和文字一样大的图片，很少用到。
+
+  ,----
+  | img.inline-image {
+  |   width: 1rem;
+  |   height: 1rem;
+  |   vertical-align: -3.5px;
+  | }
+  `----
+
+
+1.5.4 lyrics
+------------
+
+  一些特殊歌词样式。
+
+  见：
+  - [Album#5 - Darklands] <https://taxodium.ink/album-5.html>
+  - [Album#17 - 哈雷妈妈] <https://taxodium.ink/album-17.html>
+
+  ,----
+  | .lyrics {
+  |   & i {
+  |     color: var(--color-text);
+  |     color: light-dark(var(--color-text), var(--dark-color-text));
+  |   }
+  | }
+  | 
+  | .lyrics--cute i {
+  |   font-family: Schoolbell, var(--font-family);
+  | }
+  | 
+  | .lyrics--color {
+  |   color: var(--color-lyrics);
+  |   color: light-dark(var(--color-lyrics), var(--dark-color-lyrics));
+  | }
+  | 
+  | .lyrics--small {
+  |   font-size: 0.8rem;
+  | }
+  | 
+  | .lyrics--large {
+  |   font-size: 1.2rem;
+  | }
+  | 
+  | .lyrics--huge {
+  |   font-size: 1.5rem;
+  | }
+  `----
+
+
+1.5.5 image-list
+----------------
+
+  目前用于 [日常#12 - 苹果设备的联动、最近做的一些菜式、死亡搁浅、深圳美
+  术馆看展] <https://taxodium.ink/nichijou-12.html>。
+
+  设置 [overscroll-behavior: contain] 可以避免列表滚动到底部后滚动页面，
+  这样可以保证元素不会因为页面滚动而滚动离开视口。
+
+  给图片设置 `vertical-align: top' 可以让图片脱离行内元素的 baseline，从
+  而避免图片下方出现空白。具体见： [Understanding the fundamentals of
+  CSS Layout]。
+
+  ,----
+  | /* 只支持全部都是 <figure> 或者全部都是 <a> */
+  | .image-list {
+  |   display: flex;
+  |   justify-content: center;
+  |   gap: 1em;
+  |   flex-wrap: wrap;
+  |   overflow: auto;
+  |   max-height: 65vh;
+  |   border: 2px dashed;
+  |   border-color: var(--color-border);
+  |   border-color: light-dark(var(--color-border), var(--dark-color-border));
+  |   color: var(--color-text-secondary);
+  |   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  |   padding: 1em;
+  |   margin-block: 1em;
+  |   border-radius: .5em;
+  |   overscroll-behavior: contain;
+  | 
+  |   & figure {
+  |     margin: 0;
+  |   }
+  | 
+  |   & img {
+  |     max-height: 50vh;
+  |     /* 让图片脱离 baseline，图片下方有多余的空白 */
+  |     vertical-align: top;
+  |   }
+  | }
+  `----
+
+
+[overscroll-behavior: contain]
+<https://modern-css.com/preventing-scroll-chaining-without-javascript/>
+
+[Understanding the fundamentals of CSS Layout]
+<https://polypane.app/blog/understanding-the-fundamentals-of-css-layout/#lines-and-baselines>
+
+
+1.5.6 emacs mark
+----------------
+
+  主要用在 [Emacs Elevator Pitch - Only Emacs can save your soul]
+  <https://taxodium.ink/emacs-elevator-pitch-2025-08.html>。
+
+  ,----
+  | mark.emacs {
+  |   background: linear-gradient(to right bottom, #8482c7, #943dc1);
+  |   box-shadow: 1px 2px 2px var(--color-box-shadow);
+  |   box-shadow: 1px 2px 2px light-dark(var(--color-box-shadow), var(--dark-color-box-shadow));
+  |   color: #fff;
+  |   border-radius: 5px;
+  |   padding: 0px 4px;
+  | }
+  `----
+
+
+1.5.7 .lyric-card
+-----------------
+
+  ,----
+  | .lyric-card {
+  |   position: relative;
+  | 
+  |   figure {
+  |     margin: 0;
+  | 
+  |     img {
+  |       vertical-align: top;
+  |     }
+  |   }
+  | 
+  |   p.verse {
+  |     max-width: 95%;
+  |     box-sizing: border-box;
+  |     position: absolute;
+  |     inset-block-start: 0;
+  |     inset-inline-start: 0;
+  |     height: 100%;
+  |     margin: 0;
+  |     border: 0;
+  |     border-radius: 10px;
+  |     overflow: auto;
+  |     scrollbar-width: none;
+  |     padding-block: 2rem;
+  |     padding-inline: 1rem;
+  |     text-wrap: pretty;
+  |     overscroll-behavior: contain;
+  |     mask-image: linear-gradient(
+  |       to bottom,
+  |       transparent 0%,
+  |       black 2rem,
+  |       black calc(100% - 2rem),
+  |       transparent 100%
+  |     );
+  |     -webkit-mask-image: linear-gradient(
+  |       to bottom,
+  |       transparent 0%,
+  |       black 2rem,
+  |       black calc(100% - 2rem),
+  |       transparent 100%
+  |     );
+  |   }
+  | }
+  `----
+
+
+1.5.8 layer end
+---------------
+
+  ,----
+  | }
+  `----
+
+
+1.5.9 blockquote/verse
+----------------------
+
+1.5.9.1 .indent-paragraph
+
+  带有 `.indent-paragraph' 的内容，段落首行缩紧 2 个字。
+
+  ,----
+  | details.indent-paragraph p,
+  | blockquote.indent-paragraph
+  | {
+  |   text-indent: 2rem;
+  | }
+  `----
+
+
+1.5.9.2 .single
+
+  带有 `.single' 的引用，会使用引号包裹起来。
+
+  ,----
+  | :where(.verse,blockquote).single {
+  |   border: none;
+  |   position: relative;
+  |   margin-block: 2rem;
+  | 
+  |   &::before,
+  |   &::after {
+  |     color: var(--color-border);
+  |     color: light-dark(var(--color-border), var(--dark-color-border));
+  |     font-size: 4rem;
+  |     position: absolute;
+  |   }
+  | 
+  |   &::before {
+  |     content: "“";
+  |     top: 0.2rem;
+  |     left: -0.1rem;
+  |     line-height: 0.2rem;
+  |   }
+  | 
+  |   &::after {
+  |     content: "”";
+  |     right: -0.1rem;
+  |     bottom: -0.6rem;
+  |     line-height: 0.2rem;
+  |   }
+  | }
+  `----
+
+
+1.5.9.3 .vertical-rl
+
+  有的 blockquote/verse 文字是纵向的，针对它们调整间距等样式。
+
+  ,----
+  | blockquote.vertical-rl,
+  | p.verse.vertical-rl {
+  |   writing-mode: vertical-rl;
+  |   padding: 0;
+  |   border: none;
+  |   padding-block-start: 0.5rem;
+  |   font-size: 0.9rem;
+  |   width: 100%;
+  |   max-width: 100%;
+  |   overflow: auto;
+  |   container-type: scroll-state;
+  |   container-name: vertical-rl;
+  |   position: relative;
+  | 
+  |   .footref {
+  |     writing-mode: initial;
+  |   }
+  | 
+  |   @media screen and (width >= 580px) {
+  |     &.center {
+  |       align-content: center;
+  |     }
+  |   }
+  | }
+  | 
+  | @container vertical-rl scroll-state(scrollable: block-end) {
+  |   p.verse.vertical-rl::after {
+  |     content: "☟";
+  |     position: absolute;
+  |     inset-block-end: 0;
+  |     inset-inline-end: 0;
+  |     font-size: 1.2rem;
+  |   }
+  | }
+  `----
+
+
+1.5.10 float image
+------------------
+
+  添加 `.float-start' 或 `.float-end' 可以让图片浮动，图片会占据一半的内
+  容空间。当屏幕较小时，取消浮动，让图片显示得更大一些。
+
+  figure 需要添加一些下边距，避免图片和下方文字贴合过近。
+
+  例如：
+  - [日常#5 - PL-330 收音机、咖啡、通关空洞骑士、CITY 完结]
+    <https://taxodium.ink/nichijou-5.html>
+  - [日常#10 - 香港迪士尼、莽山五指峰]
+    <https://taxodium.ink/nichijou-10.html>
+
+  ,----
+  | figure {
+  |   &:has(.float-start) {
+  |     float: inline-start;
+  |     margin-block: 0;
+  |     margin-block-end: 1rem;
+  |     margin-inline-end: 1rem;
+  |     max-width: 50%;
+  |   }
+  | 
+  |   &:has(.float-end) {
+  |     float: inline-end;
+  |     margin-block: 0;
+  |     margin-block-end: 1rem;
+  |     margin-inline-start: 1rem;
+  |     max-width: 50%;
+  |   }
+  | 
+  |   &:has(.center) {
+  |     text-align: center;
+  |   }
+  | 
+  |   @media screen and (width <= 765px) {
+  |     &:has(:is(.float-start, .float-end)) {
+  |       float: none;
+  |       margin-inline: 0;
+  |       margin-block: 1rem;
+  |       max-width: fit-content;
+  |     }
+  |   }
+  | }
+  `----
+
+
+2 index.css
+===========
+
+  首页的样式。
+
+
+2.1 标题
+~~~~~~~~
+
+  ,----
+  | header {
+  |   & h1 {
+  |     transition: text-shadow 0.25s ease-in-out, color 0.25s ease-in-out;
+  |     &:hover {
+  |       color: transparent;
+  |       text-shadow: var(--color-taxodium-purple) -5px -5px 1px,
+  |                    var(--color-taxodium-yellow) 10px 10px 5px;
+  |       mix-blend-mode: plus-lighter;
+  |     }
+  |   }
+  | }
+  | 
+  | h2 {
+  |   text-align: center;
+  |   width: 100%;
+  | }
+  | 
+  | /* 文章标题的子标题 */
+  | .sitemap-subtitle {
+  |   color: var(--color-text-secondary);
+  |   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  |   font-size: 0.85rem;
+  | }
+  | 
+  | /* 标题下的一句话 */
+  | header + p {
+  |   text-align: center;
+  |   color: var(--color-text-secondary);
+  |   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  | }
+  | 
+  | /* 移除 postamble 的内容 */
+  | #postamble::before {
+  |   display: none;
+  | }
+  | 
+  `----
+
+
+2.2 quick access
+~~~~~~~~~~~~~~~~
+
+  ,----
+  | .quick-access {
+  |   text-align: center;
+  |   line-height: 1;
+  | 
+  |   a {
+  |     text-decoration: none;
+  |     position: relative;
+  |     display: inline-block;
+  |     transition: transform 0.2s;
+  |     font-family: system-ui;
+  | 
+  |     &:active {
+  |       transform: scale(0.9);
+  |     }
+  | 
+  |     &.anime {
+  |       filter: grayscale(1) brightness(0.75);
+  |       transition: all 0.8s;
+  |     }
+  | 
+  |     &.black-hole {
+  |       padding-inline: 0.5rem;
+  |       cursor: none;
+  |     }
+  | 
+  |     &:hover {
+  |       background: unset;
+  | 
+  |       &.changelog {
+  |         transform-origin: center bottom;
+  |         animation: jelly 0.7s;
+  |       }
+  | 
+  |       &.music-rank {
+  |         animation: infinite play-cd 1s linear;
+  |       }
+  | 
+  |       &.black-hole {
+  |         cursor: none;
+  | 
+  |         &::before {
+  |           cursor: none;
+  |         }
+  |       }
+  | 
+  |       &.anime {
+  |         filter: grayscale(0) brightness(120%);
+  |       }
+  | 
+  |       &.tools {
+  |         transform-origin: center center;
+  |         animation: infinite heat-hammer 0.8s linear;
+  |       }
+  |     }
+  | 
+  |     /* 扩大 icon 的 hover 范围 */
+  |     &::before {
+  |       content: "";
+  |       position: absolute;
+  |       top: var(--extra-active-area-size);
+  |       left: var(--extra-active-area-size);
+  |       right: var(--extra-active-area-size);
+  |       bottom: var(--extra-active-area-size);
+  |       cursor: pointer;
+  |     }
+  | 
+  |     &::after {
+  |       display: none !important;
+  |     }
+  |   }
+  | }
+  | 
+  | @keyframes jelly {
+  |   0% {
+  |     transform: scale(1, 1);
+  |   }
+  |   30% {
+  |     transform: scale(1.25, 0.75);
+  |   }
+  |   40% {
+  |     transform: scale(0.75, 1.25);
+  |   }
+  |   50% {
+  |     transform: scale(1.15, 0.85);
+  |   }
+  |   65% {
+  |     transform: scale(0.95, 1.05);
+  |   }
+  |   75% {
+  |     transform: scale(1.05, 0.95);
+  |   }
+  |   100% {
+  |     transform: scale(1, 1);
+  |   }
+  | }
+  | 
+  | @keyframes play-cd {
+  |   0% {
+  |     transform: rotate(0);
+  |   }
+  |   100% {
+  |     transform: rotate(360deg);
+  |   }
+  | }
+  | 
+  | @keyframes heat-hammer {
+  |   0% {
+  |     transform: rotateZ(-25deg);
+  |   }
+  |   100% {
+  |     transform: rotateZ(15deg);
+  |   }
+  | }
+  | 
+  | @keyframes unroll {
+  |   0% {
+  |     clip-path: inset(0 0 100% 0);
+  |     opacity: 0;
+  |   }
+  |   100% {
+  |     clip-path: inset(0 0 0 0);
+  |     opacity: 1;
+  |   }
+  | }
+  | 
+  | .light.light {
+  |   .kaomoji-writing {
+  |     display: none;
+  |   }
+  | 
+  |   .kaomoji-sleeping {
+  |     display: block;
+  |   }
+  | }
+  | 
+  | @media (prefers-color-scheme: light) {
+  |   .kaomoji-writing {
+  |     display: none;
+  |   }
+  | }
+  | 
+  | .dark.dark {
+  |   .kaomoji-sleeping {
+  |     display: none;
+  |   }
+  | 
+  |   .kaomoji-writing {
+  |     display: block;
+  |   }
+  | }
+  | 
+  | @media (prefers-color-scheme: dark) {
+  |   .kaomoji-sleeping {
+  |     display: none;
+  |   }
+  | }
+  `----
+
+
+2.3 kaomoji-writing
+~~~~~~~~~~~~~~~~~~~
+
+  给最近发布标题下面的颜文字设置一点动画，写字、眨眼，可爱吗？ (≖ᴗ≖๑)
+
+  ,----
+  | .kaomoji-writing {
+  |   width: fit-content;
+  |   margin-inline: auto;
+  | 
+  |   &:hover {
+  |     .kaomoji-writing__pen {
+  |       animation: infinite writing .25s;
+  |     }
+  |     .kaomoji-writing__eye {
+  |       animation: infinite blink 1s alternate;
+  |     }
+  |     .kaomoji-writing__dash::before {
+  |       animation: infinite moving-dash 1s alternate;
+  |     }
+  |   }
+  | }
+  | 
+  | .kaomoji-writing__dash {
+  |   position: relative;
+  |   white-space: nowrap;
+  |   color: var(--color-text-secondary);
+  |   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  | 
+  |   &::before {
+  |     content: '';
+  |     position: absolute;
+  |     inset-inline-end: 0;
+  |     inset-block-end: -.3rem;
+  |     transform: rotateX(-45deg);
+  |     animation: infinite moving-dash 5s alternate;
+  |   }
+  | }
+  | 
+  | .kaomoji-writing__pen {
+  |   display: inline-block;
+  |   animation: infinite writing 1s;
+  | }
+  | 
+  | .kaomoji-writing__eye {
+  |   display: inline-block;
+  |   animation: infinite blink 3s alternate;
+  | }
+  | 
+  | @keyframes moving-dash {
+  |   0% {
+  |     content: '..';
+  |   }
+  | 
+  |   25% {
+  |     content: '...';
+  |   }
+  | 
+  |   100% {
+  |     content: '.....'
+  |   }
+  | }
+  | 
+  | @keyframes writing {
+  |   0% {
+  |     transform: rotate(-5deg);
+  |   }
+  | 
+  |   100% {
+  |     transform: rotate(0deg);
+  |   }
+  | }
+  | 
+  | @keyframes blink {
+  |   0% {
+  |     opacity: 0;
+  |   }
+  | 
+  |   5% {
+  |     opacity: 1;
+  |   }
+  | 
+  |   94.99% {
+  |     opacity: 1;
+  |   }
+  | 
+  |   95% {
+  |     opacity: 0;
+  |   }
+  | 
+  |   100% {
+  |     opacity: 1;
+  |   }
+  | }
+  `----
+
+
+2.4 kaomoji-sleeping
+~~~~~~~~~~~~~~~~~~~~
+
+  给最近发布标题下面的颜文字设置一点动画，写字、眨眼，可爱吗？ (≖ᴗ≖๑)
+
+  ,----
+  | .kaomoji-sleeping {
+  |   width: fit-content;
+  |   margin-inline: auto;
+  |   position: relative;
+  |   inset-inline-end: 1rem;
+  | }
+  | 
+  | .kaomoji-sleeping__zzz {
+  |   position: relative;
+  |   white-space: nowrap;
+  |   color: var(--color-text-secondary);
+  |   color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  | 
+  |   &::after {
+  |     content: '';
+  |     position: absolute;
+  |     inset-block-start: -.5rem;
+  |     inset-inline-start: .5rem;
+  |     animation: infinite moving-zzz 5s;
+  |     transform: rotateZ(-5deg);
+  |     transform-origin: bottom left;
+  |   }
+  | }
+  | 
+  | .kaomoji-sleeping__hand {
+  |   display: inline-block;
+  |   animation: infinite moving-hand 1s alternate;
+  | }
+  | 
+  | @keyframes moving-zzz {
+  |   0% {
+  |     content: '';
+  |   }
+  | 
+  |   25% {
+  |     content: 'z';
+  |   }
+  | 
+  |   50% {
+  |     content: 'z z';
+  |   }
+  | 
+  |   85% {
+  |     content: 'z z Z'
+  |   }
+  | 
+  |   100% {
+  |     content: '';
+  |   }
+  | }
+  | 
+  | @keyframes moving-hand {
+  |   0% {
+  |     transform: rotate(-10deg);
+  |   }
+  | 
+  |   100% {
+  |     transform: rotate(10deg);
+  |   }
+  | }
+  `----
+
+
+2.5 列表
+~~~~~~~~
+
+  实现类似书籍目录的样式。
+
+  页码实现可以参考 [Zine#14::Responsive TOC leader lines with CSS]
+  <https://taxodium.ink/14.html#f8cb500a-1a67-4283-a81b-8681a14f05a1>。
+
+  ,----
+  | #content ul {
+  |   padding-inline-start: 0;
+  |   counter-reset: step;
+  |   counter-set: step -1;
+  |   transition: background 0.25s ease-in-out;
+  | 
+  |   li {
+  |     counter-increment: step;
+  |     display: grid;
+  |     grid-template-columns: auto max-content;
+  |     grid-template-areas: "chapter page";
+  |     gap: 0 0.5rem;
+  |     margin-block: 0.5rem;
+  |     align-content: start;
+  | 
+  |     &::after {
+  |       grid-area: page;
+  |       content: counter(step);
+  |       color: var(--color-border);
+  |       color: light-dark(var(--color-border), var(--dark-color-border));
+  |       font-size: 1.2rem;
+  |       text-align: end;
+  |     }
+  | 
+  |     & a {
+  |       grid-area: chapter;
+  |       overflow: hidden;
+  |       position: relative;
+  | 
+  |       &::after {
+  |         position: absolute;
+  |         content: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "
+  |                  ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "
+  |                  ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ";
+  |         text-align: end;
+  |         padding-left: 0.5rem;
+  |         color: var(--color-border);
+  |         color: light-dark(var(--color-border), var(--dark-color-border));
+  |       }
+  |     }
+  | 
+  |     .timestamp {
+  |       display: none;
+  |     }
+  |   }
+  | }
+  `----
+
+
+2.6 custom
+~~~~~~~~~~
+
+  ,----
+  | #text-zine ul {
+  |   display: grid;
+  |   grid-template-columns: repeat(4, 1fr);
+  |   column-gap: 1rem;
+  | 
+  |   @media screen and (width <= 900px) {
+  |     grid-template-columns: repeat(3, 1fr);
+  |   }
+  | 
+  |   @media screen and (width <= 600px) {
+  |     grid-template-columns: repeat(2, 1fr);
+  |   }
+  | 
+  |   @media screen and (width <= 400px) {
+  |     grid-template-columns: 1fr;
+  |   }
+  | }
+  `----
+
+
+3 album.css
+===========
+
+  专辑分享页面的特殊样式。
+
+  ,----
+  | .figure-number {
+  |   display: none;
+  | }
+  | 
+  | #postamble::before {
+  |   content: "take a sad song and make it better";
+  | 
+  |   @media screen and (width <= 400px) {
+  |     font-size: 0.8rem;
+  |   }
+  | }
+  | 
+  | p.verse {
+  |   border: none;
+  |   padding: 0;
+  | }
+  | 
+  | img[src*="images\/album"] {
+  |   border-radius: 10px;
+  | 
+  |   @media (prefers-color-scheme: light) {
+  |     box-shadow: 5px 2px 5px var(--color-box-shadow);
+  |   }
+  | 
+  |   @media (prefers-color-scheme: dark) {
+  |     box-shadow: 0 0 10px var(--dark-color-box-shadow);
+  |   }
+  | }
+  | 
+  | .light img[src*="images\/album"] {
+  |   box-shadow: 5px 2px 5px var(--color-box-shadow);
+  | }
+  | 
+  | .dark img[src*="images\/album"] {
+  |   box-shadow: 0 0 10px var(--dark-color-box-shadow);
+  | }
+  `----
+
+
+3.1 lucida
+~~~~~~~~~~
+
+  Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figure，导致
+  增加了上下边距，这些边距是不必要的。
+
+  ,----
+  | details figure:has(a[href*="lucida"]) {
+  |   margin-block: 0;
+  | }
+  `----
+
+  另外还需要处理多个图标的情况，增加一个类按需使用。
+
+  ,----
+  | .album-lucida {
+  |   display: flex;
+  |   gap: .5rem;
+  | 
+  |   /* 移除 org publish 生成的多余的 <p> */
+  |   & p {
+  |     display: none;
+  |   }
+  | }
+  `----
+
+
+4 album-wall.css
+================
+
+  [Album Wall] <https://taxodium.ink/album-wall.html> 页面的特殊样式。
+
+  ,----
+  | .figure-number {
+  |   display: none;
+  | }
+  | 
+  | .filter {
+  |   text-align: center;
+  |   align-items: center;
+  |   justify-content: center;
+  |   display: flex;
+  |   gap: 0.2rem;
+  | 
+  |   & label,
+  |   input {
+  |     cursor: pointer;
+  |   }
+  | }
+  | 
+  | #content:has(#filter-shared:checked) figure:has(a[href*="images\/album"]) {
+  |   display: none;
+  | }
+  | 
+  | .album-wall {
+  |   display: grid;
+  |   grid-template-columns: repeat(auto-fill, calc(20px * 14));
+  |   gap: 0 1.5rem;
+  |   justify-content: center;
+  |   width: 99vw;
+  |   position: relative;
+  |   left: 50%;
+  |   right: 50%;
+  |   margin-left: -49.5vw;
+  |   margin-right: -49.5vw;
+  | 
+  |   @media screen and (width <= 1920px) {
+  |     grid-template-columns: repeat(auto-fill, calc(20px * 12));
+  |   }
+  | 
+  |   @media screen and (width <= 800px) {
+  |     grid-template-columns: repeat(auto-fill, calc(20px * 10));
+  |   }
+  | 
+  |   @media screen and (width <= 600px) {
+  |     gap: 0 1rem;
+  |     width: 100%;
+  |     left: 0;
+  |     right: 0;
+  |     margin: 0;
+  |   }
+  | 
+  |   @media screen and (width <= 480px) {
+  |     grid-template-columns: repeat(2, calc(20px * 8));
+  |     gap: 1rem 0.5rem;
+  |   }
+  | 
+  |   @media (pointer: fine) and (hover: hover) {
+  |     & figure {
+  |       &:hover {
+  |         transform: rotate(0);
+  |         z-index: 1;
+  |         filter: grayscale(0) sepia(0) blur(0);
+  | 
+  |         & figcaption {
+  |           opacity: 1;
+  |           transform: translateY(0);
+  |         }
+  |       }
+  |     }
+  |   }
+  | 
+  |   p {
+  |     display: none;
+  |   }
+  | 
+  |   & figure {
+  |     margin: 0;
+  |     position: relative;
+  |     transform: perspective(500px) rotateX(5deg) rotateY(-5deg) rotateZ(1deg);
+  |     transition:
+  |       transform 0.25s ease-in-out,
+  |       opacity 0.8s ease-in-out,
+  |       filter 1.5s ease-in-out,
+  |       display 0.25s allow-discrete ease-in-out;
+  |     transform-origin: center bottom;
+  |     filter: grayscale(0.95) sepia(.05) blur(.55px);
+  | 
+  |     & figcaption {
+  |       transition:
+  |         transform 0.25s ease-in-out,
+  |         opacity 0.25s ease-in-out;
+  |       transition-delay: 0.5s;
+  |       opacity: 0;
+  |       transform: translateY(-25%);
+  |       color: var(--color-text-secondary);
+  |       color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  | 
+  |       & b {
+  |         color: var(--color-text);
+  |         color: light-dark(var(--color-text), var(--dark-color-text));
+  |       }
+  |     }
+  | 
+  |     @starting-style {
+  |       opacity: 0;
+  |     }
+  | 
+  |     @media screen and (width <= 400px) {
+  |       transform: unset;
+  |       filter: none;
+  | 
+  |       & figcaption {
+  |         opacity: 1;
+  |         transform: none;
+  |       }
+  |     }
+  |   }
+  | 
+  |   & a {
+  |     display: inline-block;
+  |     line-height: 0;
+  |     font-size: 0;
+  |   }
+  | 
+  |   & img {
+  |     object-fit: cover;
+  |     aspect-ratio: 1;
+  |     width: 100%;
+  |     box-shadow: -5px 5px 5px var(--color-box-shadow) !important;
+  |     border-radius: 3px;
+  |   }
+  | }
+  `----
+
+
+4.1 animation
+~~~~~~~~~~~~~
+
+  关于 [animation-timeline CSS property] ，推薦看 Josh W Comeau 的
+  [Scroll-Driven Animations]，目前 Firefox 還不支持 `animation-timeline'
+  。
+
+  注意添加 `@media (prefers-reduced-motion: reduce)' 基于用戶配置关閉動
+  画。
+
+  - `animation-timeline: view();' 让元素基于 viewport 控制動画
+  - `animation-range-start' 和 `animation-range-end' 控制動画执行区間，
+    見 [<timeline-range-name> CSS type]
+  - `animation-fill-mode: both;' 让動画結束后保持状态
+
+  動画謹慎用 `filter' ，可能会在手機上造成严重的性能問題。
+
+  ,----
+  | .album-wall {
+  |   @media screen and (width <= 400px) {
+  |     & figure:nth-child(even) {
+  |       animation: album-reveal-even;
+  |       animation-timeline: view();
+  |       animation-fill-mode: both;
+  |       animation-range-start: entry 5%;
+  |       animation-range-end: entry 80%;
+  |     }
+  | 
+  |     & figure:nth-child(odd) {
+  |       animation: album-reveal-odd;
+  |       animation-timeline: view();
+  |       animation-fill-mode: both;
+  |       animation-range-start: entry 10%;
+  |       animation-range-end: entry 80%;
+  |     }
+  |   }
+  | }
+  | 
+  | @media (prefers-reduced-motion: reduce) {
+  |   .album-wall.album-wall figure  {
+  |     filter: none;
+  |     animation: none;
+  |   }
+  | }
+  | 
+  | @keyframes album-reveal-even {
+  |   0% {
+  |     transform: translateY(1rem);
+  |     opacity: 0;
+  |   }
+  | 
+  |   100% {
+  |     transform: unset;
+  |     opacity: 1;
+  |   }
+  | }
+  | 
+  | @keyframes album-reveal-odd {
+  |   0% {
+  |     transform: translateY(2rem);
+  |     opacity: 0;
+  |   }
+  | 
+  |   100% {
+  |     transform: unset;
+  |     opacity: 1;
+  |   }
+  | }
+  `----
+
+
+[animation-timeline CSS property]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-timeline>
+
+[Scroll-Driven Animations]
+<https://www.joshwcomeau.com/animation/scroll-driven-animations/>
+
+[<timeline-range-name> CSS type]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/timeline-range-name#exit>
+
+
+5 album-rank.css
+================
+
+  [听歌排行] <https://taxodium.ink/music-rank.html> 页面的特殊样式，在首
+  頁也應用了。
+
+  ,----
+  | .figure-number {
+  |   display: none;
+  | }
+  | 
+  | .album-rank {
+  |   display: grid;
+  |   grid-template-columns: repeat(auto-fill, calc(20px * 10));
+  |   gap: 1.5rem;
+  |   justify-content: space-around;
+  |   margin-block-start: 1rem;
+  | 
+  |   @media screen and (width <= 480px) {
+  |     grid-template-columns: repeat(2, calc(20px * 8));
+  |     gap: 1rem 0.5rem;
+  |   }
+  | 
+  |   p {
+  |     display: none;
+  |   }
+  | 
+  |   & figure {
+  |     margin: 0;
+  |     transform-origin: center bottom;
+  | 
+  |     &:nth-child(even) {
+  |       transform: rotateY(-2deg) rotateZ(.5deg);
+  |     }
+  | 
+  |     &:nth-child(odd) {
+  |       transform: rotateY(2deg) rotateZ(-.5deg);
+  |     }
+  | 
+  |     & figcaption {
+  |       color: var(--color-text-secondary);
+  |       color: light-dark(var(--color-text-secondary), var(--dark-color-text-secondary));
+  | 
+  |       & b {
+  |         color: var(--color-text);
+  |         color: light-dark(var(--color-text), var(--dark-color-text));
+  |       }
+  |     }
+  |   }
+  | 
+  |   & a {
+  |     display: inline-block;
+  |     line-height: 0;
+  |     font-size: 0;
+  |     position: relative;
+  | 
+  |     @media (pointer: fine) and (hover: hover) {
+  |       &:hover::after {
+  |         transform: translateX(15%);
+  |         opacity: 1;
+  |       }
+  | 
+  |       &:hover img {
+  |         transform: translateX(-10%);
+  |       }
+  | 
+  |       &::after {
+  |         transition:
+  |           transform .55s ease-in-out,
+  |           opacity .55s ease-in-out;
+  |         content: "";
+  |         display: inline-block;
+  |         width: 95%;
+  |         height: 95%;
+  |         opacity: 0;
+  |         background:
+  |           conic-gradient(
+  |             from 15deg at 50% 50%,
+  |             transparent 0deg,
+  |             oklch(1 0 0 / .2) 25deg,
+  |             oklch(1 0 0 / .35) 45deg,
+  |             oklch(1 0 0 / .2) 60deg,
+  |             transparent 80deg,
+  |             transparent 185deg,
+  |             oklch(1 0 0 / .2) 195deg,
+  |             oklch(1 0 0 / .35) 220deg,
+  |             oklch(1 0 0 / .2) 240deg,
+  |             transparent 260deg
+  |           ),
+  |           radial-gradient(
+  |             circle at 50% 50%,
+  |             oklch(1 0 0 / .8) 0%,
+  |             oklch(1 0 0 / .8) 10%,
+  |             transparent 10.1%,
+  |             transparent
+  |           ),
+  |           repeating-radial-gradient(oklch(0 0 0) 0px, oklch(.4 0 0) 4px);
+  |         position: absolute;
+  |         inset-block-start: 5%;
+  |         inset-inline-start: 5%;
+  |         border-radius: 100%;
+  |         z-index: -1;
+  |       }
+  |     }
+  |   }
+  | 
+  |   & img {
+  |     transition: transform 0.55s ease-in-out;
+  |     object-fit: cover;
+  |     aspect-ratio: 1;
+  |     width: 100%;
+  |     box-shadow: 5px 5px 5px var(--color-box-shadow) !important;
+  |     border-radius: 3px;
+  |   }
+  | }
+  `----
+
+
+5.1 animation
+~~~~~~~~~~~~~
+
+  关于 [animation-timeline CSS property] ，推薦看 Josh W Comeau 的
+  [Scroll-Driven Animations]，目前 Firefox 還不支持 `animation-timeline'
+  。
+
+  注意添加 `@media (prefers-reduced-motion: reduce)' 基于用戶配置关閉動
+  画。
+
+  - `animation-timeline: view();' 让元素基于 viewport 控制動画
+  - `animation-range-start' 和 `animation-range-end' 控制動画执行区間，
+    見 [<timeline-range-name> CSS type]
+  - `animation-fill-mode: both;' 让動画結束后保持状态
+
+  動画謹慎用 `filter' ，可能会在手機上造成严重的性能問題。
+
+  ,----
+  | .album-wall {
+  |   @media screen and (width <= 400px) {
+  |     & figure:nth-child(even) {
+  |       animation: album-reveal-even;
+  |       animation-timeline: view();
+  |       animation-fill-mode: both;
+  |       animation-range-start: entry 5%;
+  |       animation-range-end: entry 80%;
+  |     }
+  | 
+  |     & figure:nth-child(odd) {
+  |       animation: album-reveal-odd;
+  |       animation-timeline: view();
+  |       animation-fill-mode: both;
+  |       animation-range-start: entry 10%;
+  |       animation-range-end: entry 80%;
+  |     }
+  |   }
+  | }
+  | 
+  | @media (prefers-reduced-motion: reduce) {
+  |   .album-wall.album-wall figure  {
+  |     filter: none;
+  |     animation: none;
+  |   }
+  | }
+  | 
+  | @keyframes album-reveal-even {
+  |   0% {
+  |     transform: translateY(1rem);
+  |     opacity: 0;
+  |   }
+  | 
+  |   100% {
+  |     transform: unset;
+  |     opacity: 1;
+  |   }
+  | }
+  | 
+  | @keyframes album-reveal-odd {
+  |   0% {
+  |     transform: translateY(2rem);
+  |     opacity: 0;
+  |   }
+  | 
+  |   100% {
+  |     transform: unset;
+  |     opacity: 1;
+  |   }
+  | }
+  `----
+
+
+[animation-timeline CSS property]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-timeline>
+
+[Scroll-Driven Animations]
+<https://www.joshwcomeau.com/animation/scroll-driven-animations/>
+
+[<timeline-range-name> CSS type]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/timeline-range-name#exit>
+
+
+6 88-31-button.css
+==================
+
+  88x31 按钮的特殊样式，在页面按需引用。
+
+  ,----
+  | .buttons-container {
+  |   display: flex;
+  |   flex-wrap: wrap;
+  |   justify-content: center;
+  |   gap: 0.5em;
+  | 
+  |   figure {
+  |     margin: 0;
+  |     width: fit-content;
+  |     display: inline-block;
+  |     max-width: 88px;
+  |     max-height: 31px;
+  | 
+  |     img {
+  |       max-width: 88px;
+  |       max-height: 31px;
+  |     }
+  |   }
+  | 
+  |   /* style inspired by https://indieweb.social/@sstephenson/116098428280403793 */
+  |   p {
+  |     display: inline-flex;
+  |     width: 88px;
+  |     height: 31px;
+  |     border: outset 5px #aaa;
+  |     font-size: .55rem;
+  |     white-space: nowrap;
+  |     margin: 0;
+  |     align-items: center;
+  |     justify-content: center;
+  |     box-sizing: border-box;
+  |     background: #ccc;
+  |     font-weight: 900;
+  | 
+  |     a {
+  |       color: blue;
+  |       text-decoration-thickness: 1px;
+  |       text-underline-offset: unset;
+  | 
+  |       &:hover {
+  |         background: none;
+  |         text-decoration: underline;
+  |       }
+  |     }
+  |   }
+  | }
+  `----
+
+
+7 image-enhance.css
+===================
+
+  图片增强样式：
+
+  - 隐藏 figure-number
+  - 图片增加圆角和阴影
+
+  ,----
+  | .figure-number {
+  |   display: none
+  | }
+  | 
+  | img {
+  |   border-radius: 10px;
+  | 
+  |   @media (prefers-color-scheme: light) {
+  |     box-shadow: 5px 5px 8px var(--color-box-shadow);
+  |   }
+  | 
+  |   @media (prefers-color-scheme: dark) {
+  |     box-shadow: 0 0 10px var(--dark-color-box-shadow);
+  |   }
+  | }
+  | 
+  | .light img {
+  |   box-shadow: 5px 5px 8px var(--color-box-shadow);
+  | }
+  | 
+  | .dark img {
+  |   box-shadow: 0 0 10px var(--dark-color-box-shadow);
+  | }
+  `----
+
+
+8 text-indent.css
+=================
+
+  对于大量文字为主的文章，可以考虑首行缩进，通过引入额外样式实现。
+
+  ,----
+  | #content p {
+  |   text-indent: 2em;
+  | }
+  | 
+  | #content :where(blockquote,[role=note],.sidenote-content,.footpara) p {
+  |   text-indent: 0em;
+  | }
+  `----

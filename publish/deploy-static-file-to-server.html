@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>部署前端静态文件的简单步骤</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="部署前端打包输出的静态文件到 nginx，结合 scp、tar 以及 bash 脚本实现相对方便的发布。" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="部署前端打包输出的静态文件到 nginx，结合 scp、tar 以及 bash 脚本实现相对方便的发布。">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -196,9 +196,9 @@
 
 <div class="org-src-container">
 <pre class="src src-bash"><code>ssh root@1.1.1.1
-The authenticity of host <span class="org-string">'1.1.1.1 (1.1.1.1)'</span> can<span class="org-string">'t be established.
-nECDSA key fingerprint is SHA256:2CDXn8/+GTFrUT7ayu0BRrKAVShN7P13wO0bSJdSAW4.
-Are you sure you want to continue connecting (yes/no/[fingerprint])?</span>
+The authenticity of host <span class="org-string">'1.1.1.1 (1.1.1.1)'</span> can<span class="org-string">'t be established.</span>
+<span class="org-string">nECDSA key fingerprint is SHA256:2CDXn8/+GTFrUT7ayu0BRrKAVShN7P13wO0bSJdSAW4.</span>
+<span class="org-string">Are you sure you want to continue connecting (yes/no/[fingerprint])?</span>
 </code></pre>
 </div>
 
@@ -298,22 +298,22 @@ server {
     listen       9999;
     server_name  localhost;
 
-    <span class="org-comment-delimiter">#</span><span class="org-comment">charset koi8-r;
-</span>
-    <span class="org-comment-delimiter">#</span><span class="org-comment">access_log  logs/host.access.log  main;
-</span>
+    <span class="org-comment-delimiter">#</span><span class="org-comment">charset koi8-r;</span>
+
+    <span class="org-comment-delimiter">#</span><span class="org-comment">access_log  logs/host.access.log  main;</span>
+
     location / {
-        <span class="org-comment-delimiter"># </span><span class="org-comment">&#36825;&#37324;&#25351;&#23450;&#20102;&#38745;&#24577;&#25991;&#20214;&#25152;&#22312;&#30340;&#25991;&#20214;&#36335;&#24452;
-</span>        root /home/hello-world;
+        <span class="org-comment-delimiter"># </span><span class="org-comment">&#36825;&#37324;&#25351;&#23450;&#20102;&#38745;&#24577;&#25991;&#20214;&#25152;&#22312;&#30340;&#25991;&#20214;&#36335;&#24452;</span>
+        root /home/hello-world;
         index index.html index.htm;
         try_files $<span class="org-variable-name">uri</span> $<span class="org-variable-name">uri</span>/ /index.html;
     }
 
-    <span class="org-comment-delimiter">#</span><span class="org-comment">error_page  404              /404.html;
-</span>
-    <span class="org-comment-delimiter"># </span><span class="org-comment">redirect server error pages to the static page /50x.html
-</span>    <span class="org-comment-delimiter">#</span><span class="org-comment">
-</span>    error_page   500 502 503 504  /50x.html;
+    <span class="org-comment-delimiter">#</span><span class="org-comment">error_page  404              /404.html;</span>
+
+    <span class="org-comment-delimiter"># </span><span class="org-comment">redirect server error pages to the static page /50x.html</span>
+    <span class="org-comment-delimiter">#</span>
+    error_page   500 502 503 504  /50x.html;
     <span class="org-variable-name">location</span> = /50x.html {
         root   html;
     }
@@ -368,33 +368,33 @@ server {
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">env</span><span class="org-comment"> sh
-</span>
-<span class="org-comment-delimiter"># </span><span class="org-comment">abort on errors
-</span><span class="org-builtin">set</span> -e
+<pre class="src src-bash"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">env</span><span class="org-comment"> sh</span>
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">install &#26356;&#26032;&#20381;&#36182;
-</span>yarn
+<span class="org-comment-delimiter"># </span><span class="org-comment">abort on errors</span>
+<span class="org-builtin">set</span> -e
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">build &#26500;&#24314;
-</span>yarn build
+<span class="org-comment-delimiter"># </span><span class="org-comment">install &#26356;&#26032;&#20381;&#36182;</span>
+yarn
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">build &#26500;&#24314;</span>
+yarn build
 
 <span class="org-builtin">echo</span> <span class="org-string">"Build finish!"</span>
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">navigate into the build output directory
-</span><span class="org-builtin">cd</span> dist/
+<span class="org-comment-delimiter"># </span><span class="org-comment">navigate into the build output directory</span>
+<span class="org-builtin">cd</span> dist/
 
 <span class="org-builtin">echo</span> <span class="org-string">"tar start"</span>
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">&#25171;&#21253;&#21387;&#32553;&#26500;&#24314;&#21518;&#30340;&#38745;&#24577;&#25991;&#20214;
-</span>tar zcvf build.tar.gz *
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#25171;&#21253;&#21387;&#32553;&#26500;&#24314;&#21518;&#30340;&#38745;&#24577;&#25991;&#20214;</span>
+tar zcvf build.tar.gz *
 
 <span class="org-builtin">echo</span> <span class="org-string">"tar finish"</span>
 
 <span class="org-builtin">echo</span> <span class="org-string">'upload to 1.1.1.1 and untar'</span>
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">&#19978;&#20256;tar&#21253;&#21040;&#30446;&#26631;&#26426;&#22120;&#65292;&#24182;&#35299;&#21387;&#21040;&#23545;&#24212;&#30340;&#30446;&#24405;
-</span>ssh root@1.1.1.1 <span class="org-string">"tar -C /home/hello-world -xz -f-"</span> &lt; build.tar.gz
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#19978;&#20256;tar&#21253;&#21040;&#30446;&#26631;&#26426;&#22120;&#65292;&#24182;&#35299;&#21387;&#21040;&#23545;&#24212;&#30340;&#30446;&#24405;</span>
+ssh root@1.1.1.1 <span class="org-string">"tar -C /home/hello-world -xz -f-"</span> &lt; build.tar.gz
 
 <span class="org-builtin">echo</span> <span class="org-string">'upload &amp; untar done'</span>
 
@@ -455,7 +455,6 @@ server {
 </div>
 </div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -470,23 +469,21 @@ server {
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2021-08-10 Tue 21:39">2021-08-10 Tue 21:39</time>，更新于 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 部署前端静态文件的简单步骤 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2021-08-10 Tue 21:39">2021-08-10 Tue 21:39</time>，更新於 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 部署前端静态文件的简单步骤 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/deploy-static-file-to-server.txt">純文本版本</a> 或 <a href="/deploy-static-file-to-server.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Elfeed 4.0.0 使用分享</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="Elfeed 是一個 Emacs 中的 RSS 訂閱/閱讀工具，分享一下它的使用" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="Elfeed 是一個 Emacs 中的 RSS 訂閱/閱讀工具，分享一下它的使用">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -87,91 +87,91 @@
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defconst</span> <span class="org-variable-name">*is-a-mac*</span> (eq system-type 'darwin))
 
-<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35774;&#32622; mac &#30340;&#24555;&#25463;&#38190;
-</span>(<span class="org-keyword">when</span> *is-a-mac*
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35774;&#32622; mac &#30340;&#24555;&#25463;&#38190;</span>
+(<span class="org-keyword">when</span> *is-a-mac*
   (<span class="org-keyword">setq</span> mac-command-modifier 'meta
       mac-option-modifier 'super))
 
-<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35373;&#32622;&#40664;&#35469;&#23383;&#39636;&#22823;&#23567;
-</span>(set-face-attribute 'default nil <span class="org-builtin">:height</span> 250)
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35373;&#32622;&#40664;&#35469;&#23383;&#39636;&#22823;&#23567;</span>
+(set-face-attribute 'default nil <span class="org-builtin">:height</span> 250)
 
-<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#28155;&#21152; package &#30340;&#19979;&#36617;&#20179;&#24235;&#65292;melpa &#19978;&#26377;&#26356;&#22810;&#30340;&#25844;&#23637;
-</span>(<span class="org-keyword">require</span> '<span class="org-constant">package</span>)
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#28155;&#21152; package &#30340;&#19979;&#36617;&#20179;&#24235;&#65292;melpa &#19978;&#26377;&#26356;&#22810;&#30340;&#25844;&#23637;</span>
+(<span class="org-keyword">require</span> '<span class="org-constant">package</span>)
 (add-to-list 'package-archives '(<span class="org-string">"melpa"</span> . <span class="org-string">"https://melpa.org/packages/"</span>) t)
 (add-to-list 'package-unsigned-archives <span class="org-string">"melpa"</span>)
 
-<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35519;&#25972; elfeed &#25968;&#25454;&#24235;&#30340;&#30446;&#24405;&#917763;&#20301;&#32622;
-</span>(<span class="org-keyword">setq</span> elfeed-db-directory <span class="org-string">"~/Downloads/emacs-config/.elfeed"</span>)
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35519;&#25972; elfeed &#25968;&#25454;&#24235;&#30340;&#30446;&#24405;&#917763;&#20301;&#32622;</span>
+(<span class="org-keyword">setq</span> elfeed-db-directory <span class="org-string">"~/Downloads/emacs-config/.elfeed"</span>)
 
-<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#28155;&#21152;&#35330;&#38321;&#27969;
-</span>(<span class="org-keyword">setq</span> elfeed-feeds
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#28155;&#21152;&#35330;&#38321;&#27969;</span>
+(<span class="org-keyword">setq</span> elfeed-feeds
       '((<span class="org-string">"https://taxodium.ink/rss.xml"</span> <span class="org-builtin">:title</span> <span class="org-string">"Taxodium"</span>  emacs zine)
       (<span class="org-string">"https://kagi.com/api/v1/smallweb/feed/"</span> <span class="org-builtin">:title</span> <span class="org-string">"Kagi Small Web"</span> )
       (<span class="org-string">"https://bf.zzxworld.com/feed.xml"</span> <span class="org-builtin">:title</span> <span class="org-string">"BlogFinder"</span> <span class="org-builtin">:no-update</span> t <span class="org-builtin">:fetch-link</span> t feeds )))
 
-<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35373;&#32622; *elfeed-search* &#38913;&#38754;&#30340;&#26178;&#38291;&#26684;&#24335;&#65292;&#26371;&#24433;&#21709;&#20998;&#32068;&#30340;&#23637;&#31034;
-</span>(<span class="org-keyword">setq</span> elfeed-search-separator-date-format <span class="org-string">"%Y-%m-%d"</span>)
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35373;&#32622; *elfeed-search* &#38913;&#38754;&#30340;&#26178;&#38291;&#26684;&#24335;&#65292;&#26371;&#24433;&#21709;&#20998;&#32068;&#30340;&#23637;&#31034;</span>
+(<span class="org-keyword">setq</span> elfeed-search-separator-date-format <span class="org-string">"%Y-%m-%d"</span>)
 
-<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35373;&#32622;&#40664;&#35469;&#30340;&#36942;&#28670;&#26465;&#20214;
-</span>(<span class="org-keyword">setq-default</span> elfeed-search-filter <span class="org-string">"@1weeks +unread"</span>)
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35373;&#32622;&#40664;&#35469;&#30340;&#36942;&#28670;&#26465;&#20214;</span>
+(<span class="org-keyword">setq-default</span> elfeed-search-filter <span class="org-string">"@1weeks +unread"</span>)
 
-<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#25289;&#21462;&#26032;&#26465;&#30446;&#26178;&#65292;&#23559;&#19968;&#20491;&#26376;&#21069;&#30340;&#33258;&#21205;&#27161;&#35352;&#28858;&#24049;&#35712;
-</span>(add-hook 'elfeed-new-entry-hook
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#25289;&#21462;&#26032;&#26465;&#30446;&#26178;&#65292;&#23559;&#19968;&#20491;&#26376;&#21069;&#30340;&#33258;&#21205;&#27161;&#35352;&#28858;&#24049;&#35712;</span>
+(add-hook 'elfeed-new-entry-hook
           (elfeed-make-tagger <span class="org-builtin">:before</span> <span class="org-string">"1 months ago"</span>
                               <span class="org-builtin">:remove</span> 'unread))
 
-<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#38321;&#35712;&#26178;&#38283;&#21855; `</span><span class="org-comment"><span class="org-constant">olivetti-mode</span></span><span class="org-comment">'&#65292;&#35731;&#20839;&#23481;&#23621;&#20013;&#23637;&#31034;
-</span>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/preview-elfeed-with-olivetti</span> ()
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#38321;&#35712;&#26178;&#38283;&#21855; `</span><span class="org-comment"><span class="org-constant">olivetti-mode</span></span><span class="org-comment">'&#65292;&#35731;&#20839;&#23481;&#23621;&#20013;&#23637;&#31034;</span>
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/preview-elfeed-with-olivetti</span> ()
   <span class="org-doc">"Preview elfeed with `</span><span class="org-doc"><span class="org-constant">olivetti-mode</span></span><span class="org-doc">'."</span>
   (olivetti-mode)
   (olivetti-set-width 80)
   (visual-line-mode))
 (add-hook 'elfeed-show-mode-hook #'spike-leung/preview-elfeed-with-olivetti)
 
-<span class="org-comment-delimiter">;; </span><span class="org-comment">&#22686;&#24375;&#33258;&#21205;&#35036;&#20840;
-</span>(<span class="org-keyword">use-package</span> vertico
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#22686;&#24375;&#33258;&#21205;&#35036;&#20840;</span>
+(<span class="org-keyword">use-package</span> vertico
   <span class="org-builtin">:init</span>
   (vertico-mode))
 
-<span class="org-comment-delimiter">;; </span><span class="org-comment">&#20801;&#35377;&#35036;&#20840;&#38364;&#37749;&#23383;&#26080;&#24207;
-</span>(<span class="org-keyword">use-package</span> orderless
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#20801;&#35377;&#35036;&#20840;&#38364;&#37749;&#23383;&#26080;&#24207;</span>
+(<span class="org-keyword">use-package</span> orderless
   <span class="org-builtin">:custom</span>
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">Configure a custom style dispatcher (see the Consult wiki)
-</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">(orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch))
-</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">(orderless-component-separator #'orderless-escapable-split-on-space)
-</span>  (completion-styles '(orderless basic))
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Configure a custom style dispatcher (see the Consult wiki)</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">(orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch))</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">(orderless-component-separator #'orderless-escapable-split-on-space)</span>
+  (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles partial-completion))))
-  (completion-category-defaults nil) <span class="org-comment-delimiter">;; </span><span class="org-comment">Disable defaults, use our settings
-</span>  (completion-pcm-leading-wildcard t)) <span class="org-comment-delimiter">;; </span><span class="org-comment">Emacs 31: partial-completion behaves like substring
-</span>
-<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35731;&#35036;&#20840;&#39023;&#31034;&#27880;&#35299; (annotation)
-</span>(<span class="org-keyword">use-package</span> marginalia
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">Bind `</span><span class="org-comment"><span class="org-constant">marginalia-cycle</span></span><span class="org-comment">' locally in the minibuffer.  To make the binding
-</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">available in the *Completions* buffer, add it to the
-</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">completion-list-mode-map</span></span><span class="org-comment">'.
-</span>  <span class="org-builtin">:bind</span> (<span class="org-builtin">:map</span> minibuffer-local-map
+  (completion-category-defaults nil) <span class="org-comment-delimiter">;; </span><span class="org-comment">Disable defaults, use our settings</span>
+  (completion-pcm-leading-wildcard t)) <span class="org-comment-delimiter">;; </span><span class="org-comment">Emacs 31: partial-completion behaves like substring</span>
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">&#35731;&#35036;&#20840;&#39023;&#31034;&#27880;&#35299; (annotation)</span>
+(<span class="org-keyword">use-package</span> marginalia
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Bind `</span><span class="org-comment"><span class="org-constant">marginalia-cycle</span></span><span class="org-comment">' locally in the minibuffer.  To make the binding</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">available in the *Completions* buffer, add it to the</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">completion-list-mode-map</span></span><span class="org-comment">'.</span>
+  <span class="org-builtin">:bind</span> (<span class="org-builtin">:map</span> minibuffer-local-map
               (<span class="org-string">"M-A"</span> . marginalia-cycle))
 
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">The :init section is always executed.
-</span>  <span class="org-builtin">:init</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">The :init section is always executed.</span>
+  <span class="org-builtin">:init</span>
 
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">Marginalia must be activated in the :init section of use-package such that
-</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">the mode gets enabled right away. Note that this forces loading the
-</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">package.
-</span>  (marginalia-mode))
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Marginalia must be activated in the :init section of use-package such that</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">the mode gets enabled right away. Note that this forces loading the</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">package.</span>
+  (marginalia-mode))
 
 (custom-set-variables
- <span class="org-comment-delimiter">;; </span><span class="org-comment">custom-set-variables was added by Custom.
-</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">If you edit it by hand, you could mess it up, so be careful.
-</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">Your init file should contain only one such instance.
-</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">If there is more than one, they won't work right.
-</span> '(package-selected-packages '(elfeed marginalia olivetti orderless vertico)))
+ <span class="org-comment-delimiter">;; </span><span class="org-comment">custom-set-variables was added by Custom.</span>
+ <span class="org-comment-delimiter">;; </span><span class="org-comment">If you edit it by hand, you could mess it up, so be careful.</span>
+ <span class="org-comment-delimiter">;; </span><span class="org-comment">Your init file should contain only one such instance.</span>
+ <span class="org-comment-delimiter">;; </span><span class="org-comment">If there is more than one, they won't work right.</span>
+ '(package-selected-packages '(elfeed marginalia olivetti orderless vertico)))
 (custom-set-faces
- <span class="org-comment-delimiter">;; </span><span class="org-comment">custom-set-faces was added by Custom.
-</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">If you edit it by hand, you could mess it up, so be careful.
-</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">Your init file should contain only one such instance.
-</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">If there is more than one, they won't work right.
-</span> )
+ <span class="org-comment-delimiter">;; </span><span class="org-comment">custom-set-faces was added by Custom.</span>
+ <span class="org-comment-delimiter">;; </span><span class="org-comment">If you edit it by hand, you could mess it up, so be careful.</span>
+ <span class="org-comment-delimiter">;; </span><span class="org-comment">Your init file should contain only one such instance.</span>
+ <span class="org-comment-delimiter">;; </span><span class="org-comment">If there is more than one, they won't work right.</span>
+ )
 </code></pre>
 </div>
 </details>
@@ -192,7 +192,7 @@ Elfeed 的安装參考 <a href="https://github.com/emacs-elfeed/elfeed/tree/main
 配置 Elfeed，可以寫在 <code>~/.emacs.d/init.el</code>
 </p>
 
-<section role="note" id="org4363b07">
+<section role="note" id="orgfea2629">
 <p>
 Emacs 的配置一般寫在 <code>~/.emacs.d/init.el</code> ，取决於的操作系統路徑可能有差异。
 </p>
@@ -491,7 +491,6 @@ macOS 也可以從這兩個地方下載：
 </div>
 </div></div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -506,23 +505,21 @@ macOS 也可以從這兩個地方下載：
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2026-06-20 Sat 20:50">2026-06-20 Sat 20:50</time>，更新于 <time class="dt-updated" datetime="2026-06-20 Sat 22:09">2026-06-20 Sat 22:09</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Elfeed 4.0.0 使用分享 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-06-20 Sat 20:50">2026-06-20 Sat 20:50</time>，更新於 <time class="dt-updated" datetime="2026-06-20 Sat 22:09">2026-06-20 Sat 22:09</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Elfeed 4.0.0 使用分享 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/elfeed-4-0-0-usage-sharing.txt">純文本版本</a> 或 <a href="/elfeed-4-0-0-usage-sharing.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

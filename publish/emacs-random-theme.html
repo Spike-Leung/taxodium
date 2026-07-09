@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>在 Emacs 随机切换主题</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="在 Emacs 中随机切换主题，设置一个主题列表，然后设置定时器，每隔一段时间，随机从列表中选择一个主题应用。" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="在 Emacs 中随机切换主题，设置一个主题列表，然后设置定时器，每隔一段时间，随机从列表中选择一个主题应用。">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -54,7 +54,7 @@
 Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/modus-themes">modus-themes</a> 和 <a href="https://github.com/protesilaos/ef-themes">ef-themes</a>，它们都是出自 <a href="https://github.com/protesilaos">protesilaos</a>。
 </p>
 
-<section role="note" id="org85a1643">
+<section role="note" id="orgce42d80">
 <p>
 后续可能还会加入 <a href="https://github.com/protesilaos/doric-themes">doric-themes</a>，也是 Prot 的写的主题，这个主题的颜色比较单一，写作的时候用感觉不错。
 </p>
@@ -100,8 +100,8 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
     ef-light
     ef-maris-dark
     ef-maris-light
-    <span class="org-comment-delimiter">;; </span><span class="org-comment">ef-melissa-dark
-</span>    ef-melissa-light
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">ef-melissa-dark</span>
+    ef-melissa-light
     ef-night
     ef-owl
     ef-reverie
@@ -116,9 +116,9 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
     ef-winter)
   <span class="org-doc">"A list of themes to randomly cycle through."</span>)
 
-<span class="org-comment-delimiter">;;; </span><span class="org-comment">theme related
-</span><span class="org-comment-delimiter">;; </span><span class="org-comment">@see: https://emacsredux.com/blog/2025/02/03/clean-unloading-of-emacs-themes/
-</span>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/disable-all-active-themes</span> ()
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">theme related</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">@see: https://emacsredux.com/blog/2025/02/03/clean-unloading-of-emacs-themes/</span>
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/disable-all-active-themes</span> ()
   <span class="org-doc">"Disable all currently active themes."</span>
   (<span class="org-keyword">interactive</span>)
   (<span class="org-keyword">dolist</span> (theme custom-enabled-themes)
@@ -132,10 +132,10 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
     (<span class="org-keyword">let</span> ((theme (nth (random (length spike-leung/candidate-themes)) spike-leung/candidate-themes)))
       (<span class="org-keyword">condition-case</span> err
           (<span class="org-keyword">progn</span>
-            <span class="org-comment-delimiter">;; </span><span class="org-comment">Load theme to ensure its specific settings/customizations are applied
-</span>            (load-theme theme <span class="org-builtin">:no-confirm</span>)
-            <span class="org-comment-delimiter">;; </span><span class="org-comment">Enable the theme (this actually applies it and adds to custom-enabled-themes)
-</span>            (enable-theme theme)
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Load theme to ensure its specific settings/customizations are applied</span>
+            (load-theme theme <span class="org-builtin">:no-confirm</span>)
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Enable the theme (this actually applies it and adds to custom-enabled-themes)</span>
+            (enable-theme theme)
             (message <span class="org-string">"Applied random theme: %s"</span> theme))
         (<span class="org-warning">error</span> (message <span class="org-string">"Error applying theme %s: %s"</span> theme err))))))
 
@@ -171,7 +171,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 へ(゜∇、°)へ へ(゜∇、°)へ
 </p>
 
-<section role="note" id="org3ba9c42">
+<section role="note" id="org61aee61">
 <p>
 说起来奇怪，如果是我自己主动切换的主题，可能切换后我马上就想换了。
 </p>
@@ -204,14 +204,14 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
       (<span class="org-keyword">if</span> (<span class="org-keyword">and</span> (&gt;= hour 8) (&lt; hour 18))
           (modus-themes-load-random 'light)
         (modus-themes-load-random 'dark))))
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22240;&#20026; desktop &#20250;&#20445;&#23384; face &#30456;&#20851;&#20869;&#23481;&#65292;&#21487;&#33021;&#20250;&#21644;&#20027;&#39064;&#20914;&#31361;&#65292;&#22240;&#27492;&#20027;&#39064;&#21152;&#36733;&#38656;&#35201;&#22312;&#24674;&#22797; desktop &#20043;&#21518;
-</span>  <span class="org-builtin">:hook</span> (desktop-after-read . spike-leung/modus-themes-load-based-on-time)
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22240;&#20026; desktop &#20250;&#20445;&#23384; face &#30456;&#20851;&#20869;&#23481;&#65292;&#21487;&#33021;&#20250;&#21644;&#20027;&#39064;&#20914;&#31361;&#65292;&#22240;&#27492;&#20027;&#39064;&#21152;&#36733;&#38656;&#35201;&#22312;&#24674;&#22797; desktop &#20043;&#21518;</span>
+  <span class="org-builtin">:hook</span> (desktop-after-read . spike-leung/modus-themes-load-based-on-time)
   <span class="org-builtin">:config</span>
   (<span class="org-keyword">setq</span> modus-themes-italic-constructs t
         modus-themes-bold-constructs t
         modus-themes-disable-other-themes t)
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">remove fill-column-indicator background
-</span>  (<span class="org-keyword">modus-themes-with-colors</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">remove fill-column-indicator background</span>
+  (<span class="org-keyword">modus-themes-with-colors</span>
     (custom-set-faces
      `(fill-column-indicator ((,c <span class="org-builtin">:background</span> unspecified <span class="org-builtin">:foreground</span> ,bg-dim <span class="org-builtin">:height</span> 1.0)))))
   (<span class="org-keyword">defun</span> <span class="org-function-name">light</span>()
@@ -248,14 +248,14 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 <summary>代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">theme
-</span>(<span class="org-keyword">use-package</span> modus-themes
+<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">theme</span>
+(<span class="org-keyword">use-package</span> modus-themes
   <span class="org-builtin">:config</span>
   (<span class="org-keyword">setq</span> modus-themes-italic-constructs t
         modus-themes-bold-constructs t
         modus-themes-disable-other-themes t)
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">remove fill-column-indicator background
-</span>  (<span class="org-keyword">modus-themes-with-colors</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">remove fill-column-indicator background</span>
+  (<span class="org-keyword">modus-themes-with-colors</span>
     (custom-set-faces
      `(fill-column-indicator ((,c <span class="org-builtin">:background</span> unspecified <span class="org-builtin">:foreground</span> ,bg-dim <span class="org-builtin">:height</span> 1.0))))))
 
@@ -263,21 +263,21 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 (<span class="org-keyword">use-package</span> doric-themes)
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/load-theme-by-time</span> (light-fn dark-fn)
-  <span class="org-doc">"Call LIGHT-FN  to load light themes from 8:00a.m to 6:00p.m.
-otherwise, call DARK-FN to load dark themes."</span>
+  <span class="org-doc">"Call LIGHT-FN  to load light themes from 8:00a.m to 6:00p.m.</span>
+<span class="org-doc">otherwise, call DARK-FN to load dark themes."</span>
   (<span class="org-keyword">let</span> ((hour (string-to-number (format-time-string <span class="org-string">"%H"</span>))))
     (funcall (<span class="org-keyword">if</span> (<span class="org-keyword">and</span> (&gt;= hour 8) (&lt; hour 18)) light-fn dark-fn))))
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/themes-load-random</span> (<span class="org-type">&amp;optional</span> background-mode)
-  <span class="org-doc">"Random load themes.
+  <span class="org-doc">"Random load themes.</span>
 
-Use `</span><span class="org-doc"><span class="org-constant">ef-themes</span></span><span class="org-doc">' for Monday,Tuesday,Wednesday.
-Use `</span><span class="org-doc"><span class="org-constant">modus-themes</span></span><span class="org-doc">' on Thursday, Friday.
-Use `</span><span class="org-doc"><span class="org-constant">doric-themes</span></span><span class="org-doc">' on Saturday, Sunday.
-Use light themes at day, use dark themes at night.
+<span class="org-doc">Use `</span><span class="org-doc"><span class="org-constant">ef-themes</span></span><span class="org-doc">' for Monday,Tuesday,Wednesday.</span>
+<span class="org-doc">Use `</span><span class="org-doc"><span class="org-constant">modus-themes</span></span><span class="org-doc">' on Thursday, Friday.</span>
+<span class="org-doc">Use `</span><span class="org-doc"><span class="org-constant">doric-themes</span></span><span class="org-doc">' on Saturday, Sunday.</span>
+<span class="org-doc">Use light themes at day, use dark themes at night.</span>
 
-With optional BACKGROUND-MODE as a prefix argument, prompt to limit the
-set of themes to either dark or light variants."</span>
+<span class="org-doc">With optional BACKGROUND-MODE as a prefix argument, prompt to limit the</span>
+<span class="org-doc">set of themes to either dark or light variants."</span>
   (<span class="org-keyword">require</span> '<span class="org-constant">modus-themes</span>)
   (<span class="org-keyword">require</span> '<span class="org-constant">ef-themes</span>)
   (<span class="org-keyword">require</span> '<span class="org-constant">doric-themes</span>)
@@ -313,16 +313,16 @@ set of themes to either dark or light variants."</span>
   (<span class="org-keyword">interactive</span>)
   (<span class="org-keyword">setq</span> spike-leung/current-theme-background-mode 'dark)
   (spike-leung/themes-load-random 'dark)
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#26263;&#33394;&#20027;&#39064;&#36866;&#24403;&#38477;&#20302;&#36879;&#26126;&#24230;&#65292;&#30475;&#36215;&#26469;&#26356;&#22909;&#30475;&#12290;&#19981;&#21516;&#30340;&#20027;&#39064;&#36866;&#21512;&#19981;&#21516;&#30340;&#36879;&#26126;&#24230;&#12290;
-</span>  (<span class="org-keyword">let</span> ((theme (format <span class="org-string">"%s"</span> custom-enabled-themes)))
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#26263;&#33394;&#20027;&#39064;&#36866;&#24403;&#38477;&#20302;&#36879;&#26126;&#24230;&#65292;&#30475;&#36215;&#26469;&#26356;&#22909;&#30475;&#12290;&#19981;&#21516;&#30340;&#20027;&#39064;&#36866;&#21512;&#19981;&#21516;&#30340;&#36879;&#26126;&#24230;&#12290;</span>
+  (<span class="org-keyword">let</span> ((theme (format <span class="org-string">"%s"</span> custom-enabled-themes)))
     (<span class="org-keyword">cond</span>
      ((string-match-p (<span class="org-keyword">rx</span> (<span class="org-keyword">or</span> <span class="org-string">"modus-"</span> <span class="org-string">"ef-"</span>)) theme)
       (modify-frame-parameters nil `((alpha . 80))))
      ((string-match-p <span class="org-string">"doric-"</span> theme)
       (modify-frame-parameters nil `((alpha . 95)))))))
 
-<span class="org-comment-delimiter">;; </span><span class="org-comment">&#35201;&#22312; desktop &#21152;&#36733;&#21518;&#20877;&#25191;&#34892;&#65292;&#36991;&#20813;&#34987; desktop &#35760;&#24405;&#30340;&#20027;&#39064;&#35206;&#30422;&#65292;&#23548;&#33268;&#28151;&#20081;
-</span>(add-hook 'desktop-after-read-hook #'spike-leung/themes-load-random)
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#35201;&#22312; desktop &#21152;&#36733;&#21518;&#20877;&#25191;&#34892;&#65292;&#36991;&#20813;&#34987; desktop &#35760;&#24405;&#30340;&#20027;&#39064;&#35206;&#30422;&#65292;&#23548;&#33268;&#28151;&#20081;</span>
+(add-hook 'desktop-after-read-hook #'spike-leung/themes-load-random)
 </code></pre>
 </div>
 
@@ -339,8 +339,8 @@ set of themes to either dark or light variants."</span>
 <summary>代码</summary>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">olivetti &#26159;&#19968;&#27454;&#25171;&#23383;&#26426;&#30340;&#21517;&#23383;&#65292;&#36825;&#20010;&#27169;&#24335;&#20250;&#27169;&#20223;&#25171;&#23383;&#26426;&#30340;&#32440;&#24352;&#22823;&#23567;&#65292;&#20889;&#20316;&#26102;&#29992;
-</span>(<span class="org-keyword">use-package</span> olivetti
+<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">olivetti &#26159;&#19968;&#27454;&#25171;&#23383;&#26426;&#30340;&#21517;&#23383;&#65292;&#36825;&#20010;&#27169;&#24335;&#20250;&#27169;&#20223;&#25171;&#23383;&#26426;&#30340;&#32440;&#24352;&#22823;&#23567;&#65292;&#20889;&#20316;&#26102;&#29992;</span>
+(<span class="org-keyword">use-package</span> olivetti
   <span class="org-builtin">:diminish</span>
   <span class="org-builtin">:custom</span>
   (olivetti-style 'fancy)
@@ -377,7 +377,6 @@ set of themes to either dark or light variants."</span>
 </ul>
 </div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -392,23 +391,21 @@ set of themes to either dark or light variants."</span>
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2025-05-21 Wed 21:40">2025-05-21 Wed 21:40</time>，更新于 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 在 Emacs 随机切换主题 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2025-05-21 Wed 21:40">2025-05-21 Wed 21:40</time>，更新於 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 在 Emacs 随机切换主题 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/emacs-random-theme.txt">純文本版本</a> 或 <a href="/emacs-random-theme.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

@@ -1,0 +1,146 @@
+                        ________________________
+
+                         关于 COOKIE 的一些知识
+
+                              Spike Leung
+                        ________________________
+
+
+                         [2022-02-23 Wed 21:39]
+
+
+Table of Contents
+_________________
+
+1. 作用
+2. 创建
+3. 属性
+4. withCredentials
+5. 参考
+
+
+Cookie 是服务器发送给客户端的一小段数据（一般不超过 4K）。
+
+客户端会在请求时将 cookie 发送给服务器。由于 HTTP 是无状态的，服务器不会
+记住客户端，因此就通过 cookie 的字段去辨识客户端。
+
+
+1 作用
+======
+
+  - 管理会话信息： 例如登录信息，购物车，游戏分数等服务器需要记住的东西
+  - 个性化： 例如一些用户配置，主题等
+  - 跟踪： 通过 cookie 记录和分析用户行为
+
+
+2 创建
+======
+
+  当服务器收到请求时，可以通过返回一个或多个 [Set-Cookie] 头部字段设置
+  cookie。
+
+  ,----
+  | Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Max-Age=2592000; Domain=somecompany.co.uk
+  `----
+
+  而客户端收到返回时，则会将信息存到 cookie 中，之后请求时，通过
+  [Cookie] 头部传给服务器。
+
+  ,----
+  | Cookie: PHPSESSID=298zf09hf012fh2; csrftoken=u32t4o3tb3gg43; _gat=1
+  `----
+
+
+[Set-Cookie]
+<https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie>
+
+[Cookie]
+<https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cookie>
+
+
+3 属性
+======
+
+  - *Expires*: cookie 过期的绝对时间，相对于客户端的时间而言
+  - *Max-Age*: cookie 过期的相对时间
+  - Expires 和 Max-Age 都不设置，则当关闭会话时，cookie 失效
+  - *Secure*: 只通过 HTTPS 传递 cookie
+  - *HttpOnly*: 不允许通过 [Document.cookie] 获取 cookie，客户端就无法获
+     取了
+  - *Domian*: 指定可以接收 cookie 的主机，默认和设置 cookie 的主机一样，
+     不包含子域。如果设置了 Domain，则子域都是允许访问的。如果子域需要共
+     享 cookie，可以设置。
+  - *Path*: 需要包含 path 才能发送 cookie
+  - *[SameSite]*: 用来限制第三方的 cookie，指定跨站时如何发送
+    - 同站： 顶级域名 + 1 层域名都相同，例如 a.hello.com 和 b.hello.com
+      属于同站，应为顶级域名(.com) + 1 层域名(.hello) 都相同
+    - 跨站： 非同站就是跨站，例如： a.hi.com & a.hello.com
+    - 第一方 cookie： 由地址栏的域名设置的 cookie
+    - 第三方 cookie： 和地址栏不同的域名所设置的 cookie
+    - SameSite: Strict: 跨站时，任何情况都不发送 cookie
+    - SameSite: Lax (默认): 大多数跨站都不发送 cookie，除了链接(a 标签)，
+      预加载，get表单
+    - SameSite: None: 不管是否跨站都发送，但是同时要设置 Secure 属性才行,
+      也意味着网站需要支持 https
+
+
+[Document.cookie]
+<https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie>
+
+[SameSite]
+<https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite>
+
+
+4 withCredentials
+=================
+
+  当跨站或者跨域发送请求时，想要带上 cookie，就得设置 [withCredentials]
+  为 true，同时服务器要返回 [Access-Control-Allow-Credentials]，也设置为
+  true，
+
+  [Access-Control-Allow-Origin] 不能设置为 *，得指定对应的请求的 origin。
+
+        For requests without credentials, the literal value "*"
+        can be specified as a wildcard
+
+
+[withCredentials]
+<https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/withCredentials>
+
+[Access-Control-Allow-Credentials]
+<https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials>
+
+[Access-Control-Allow-Origin]
+<https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin>
+
+
+5 参考
+======
+
+  - [Cookie] - MDN
+  - [Set-Cookie] - MDN
+  - [Cookie 的 SameSite 属性] - ruanyifeng
+  - [SameSite小识] - 知乎@深红
+  - [你是如何被广告跟踪的？] -知乎@巴伐利亚啤酒馆
+  - [01-跨域和跨站的基本概念] @Alex Zhong
+  - [Understanding "same-site" and "same-origin"] - web.dev@Eiji
+    Kitamura
+
+
+[Cookie] <https://DEVELOPER.mozilla.org/en-US/docs/Web/HTTP/Cookies>
+
+[Set-Cookie]
+<https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie>
+
+[Cookie 的 SameSite 属性]
+<https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html>
+
+[SameSite小识] <https://zhuanlan.zhihu.com/p/121048298>
+
+[你是如何被广告跟踪的？] <https://zhuanlan.zhihu.com/p/34591096>
+
+[01-跨域和跨站的基本概念]
+<https://alexzhong22c.github.io/2020/05/22/cross-origin-cross-site/>
+
+[Understanding "same-site" and "same-origin"]
+<https://web.dev/same-site-same-origin/>

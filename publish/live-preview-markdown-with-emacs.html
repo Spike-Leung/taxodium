@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Emacs 实时预览 markdown</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="分享我目前在 Emacs 中时预览 markdown 的方法" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="分享我目前在 Emacs 中时预览 markdown 的方法">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -70,7 +70,7 @@ Emacs 中可以集成 <a href="https://github.com/jrblevin/markdown-mode">markdo
 它的原理是开启一个 HTTP 服务，将 Emacs 中的 buffer 渲染成 HTML 进行预览，每当 buffer 的内容变化，就主动发送新的 HTML 内容进行更新。
 </p>
 
-<section role="note" id="org6179b0c">
+<section role="note" id="org0ecfa9f">
 <p>
 buffer 可以简单理解为文件内容，感兴趣可以看 <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html">Buffers</a>。
 </p>
@@ -95,52 +95,52 @@ HTML 中加载 <a href="https://github.com/markedjs/marked">Marked</a>，将 mar
 <details>
 <summary>init-my-markdown.el</summary>
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">init-my-markdown.el --- use impatient-mode to preview markdown
-</span><span class="org-comment-delimiter">;;; </span><span class="org-comment">Commentary:
-</span><span class="org-comment-delimiter">;;; </span><span class="org-comment">@see:  https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type
-</span><span class="org-comment-delimiter">;;; </span><span class="org-comment">Code:
-</span>
+<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">init-my-markdown.el --- use impatient-mode to preview markdown</span>
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">Commentary:</span>
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">@see:  https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type</span>
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">Code:</span>
+
 (maybe-require-package 'impatient-mode)
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/imp-markdown-filter</span> (buffer)
-  <span class="org-doc">"Define imp markdown filter.
-Wrap BUFFER with HTML, render with https://github.com/markedjs/marked and style with https://github.com/sindresorhus/github-markdown-css"</span>
+  <span class="org-doc">"Define imp markdown filter.</span>
+<span class="org-doc">Wrap BUFFER with HTML, render with https://github.com/markedjs/marked and style with https://github.com/sindresorhus/github-markdown-css"</span>
   (princ (<span class="org-keyword">with-current-buffer</span> buffer
-           (format <span class="org-string">"&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;title&gt;Markdown Preview&lt;/title&gt;
-  &lt;head&gt;
-    &lt;link
-      rel=\"stylesheet\"
-      href=\"https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css\"
-      integrity=\"sha512-BrOPA520KmDMqieeM7XFe6a3u3Sb3F1JBaQnrIAmWg3EYrciJ+Qqe6ZcKCdfPv26rGcgTrJnZ/IdQEct8h3Zhw==\"
-      crossorigin=\"anonymous\"
-      referrerpolicy=\"no-referrer\"
-    /&gt;
-    &lt;style&gt;
-          .markdown-body {
-                  box-sizing: border-box;
-                  min-width: 200px;
-                  max-width: 980px;
-                  margin: 0 auto;
-                  padding: 45px;
-          }
+           (format <span class="org-string">"&lt;!DOCTYPE html&gt;</span>
+<span class="org-string">&lt;html&gt;</span>
+<span class="org-string">  &lt;title&gt;Markdown Preview&lt;/title&gt;</span>
+<span class="org-string">  &lt;head&gt;</span>
+<span class="org-string">    &lt;link</span>
+<span class="org-string">      rel=\"stylesheet\"</span>
+<span class="org-string">      href=\"https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css\"</span>
+<span class="org-string">      integrity=\"sha512-BrOPA520KmDMqieeM7XFe6a3u3Sb3F1JBaQnrIAmWg3EYrciJ+Qqe6ZcKCdfPv26rGcgTrJnZ/IdQEct8h3Zhw==\"</span>
+<span class="org-string">      crossorigin=\"anonymous\"</span>
+<span class="org-string">      referrerpolicy=\"no-referrer\"</span>
+<span class="org-string">    /&gt;</span>
+<span class="org-string">    &lt;style&gt;</span>
+<span class="org-string">          .markdown-body {</span>
+<span class="org-string">                  box-sizing: border-box;</span>
+<span class="org-string">                  min-width: 200px;</span>
+<span class="org-string">                  max-width: 980px;</span>
+<span class="org-string">                  margin: 0 auto;</span>
+<span class="org-string">                  padding: 45px;</span>
+<span class="org-string">          }</span>
 
-          @media (max-width: 767px) {
-                  .markdown-body {
-                          padding: 15px;
-                  }
-          }
-    &lt;/style&gt;
-    &lt;script src=\"https://cdn.jsdelivr.net/npm/marked/marked.min.js\"&gt;&lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div id=\"markdown-body\" class=\"markdown-body\"&gt;&lt;/div&gt;
-    &lt;script&gt;
-      document.getElementById('</span><span class="org-string"><span class="org-constant">markdown-body</span></span><span class="org-string">').innerHTML = marked.parse(%s);
-    &lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;"</span>
+<span class="org-string">          @media (max-width: 767px) {</span>
+<span class="org-string">                  .markdown-body {</span>
+<span class="org-string">                          padding: 15px;</span>
+<span class="org-string">                  }</span>
+<span class="org-string">          }</span>
+<span class="org-string">    &lt;/style&gt;</span>
+<span class="org-string">    &lt;script src=\"https://cdn.jsdelivr.net/npm/marked/marked.min.js\"&gt;&lt;/script&gt;</span>
+<span class="org-string">  &lt;/head&gt;</span>
+<span class="org-string">  &lt;body&gt;</span>
+<span class="org-string">    &lt;div id=\"markdown-body\" class=\"markdown-body\"&gt;&lt;/div&gt;</span>
+<span class="org-string">    &lt;script&gt;</span>
+<span class="org-string">      document.getElementById('</span><span class="org-string"><span class="org-constant">markdown-body</span></span><span class="org-string">').innerHTML = marked.parse(%s);</span>
+<span class="org-string">    &lt;/script&gt;</span>
+<span class="org-string">  &lt;/body&gt;</span>
+<span class="org-string">&lt;/html&gt;"</span>
                    (json-encode (buffer-substring-no-properties (point-min) (point-max)))))
          (current-buffer)))
 
@@ -191,7 +191,6 @@ Wrap BUFFER with HTML, render with https://github.com/markedjs/marked and style 
 </details>
 </div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -206,23 +205,21 @@ Wrap BUFFER with HTML, render with https://github.com/markedjs/marked and style 
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2025-06-20 Fri 21:39">2025-06-20 Fri 21:39</time>，更新于 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Emacs 实时预览 markdown &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2025-06-20 Fri 21:39">2025-06-20 Fri 21:39</time>，更新於 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Emacs 实时预览 markdown &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/live-preview-markdown-with-emacs.txt">純文本版本</a> 或 <a href="/live-preview-markdown-with-emacs.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

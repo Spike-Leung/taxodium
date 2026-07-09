@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>让博客的代码高亮适配主题</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="让 org-puhlish 生成的代码高亮，和亮色/暗色主题适配，基于亮色/暗色主题切换。" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="让 org-puhlish 生成的代码高亮，和亮色/暗色主题适配，基于亮色/暗色主题切换。">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -54,7 +54,7 @@
 我的博客是用 <code>org-publish</code> 生成的，后面我给博客添加了主题切换（见 <a href="setup-blog-color-scheme.html#0E86BEB5-D1F9-451D-8271-B63E836FE0A3">给博客添加 dark mode</a>）， 当时留下了一个问题 ⸺ <code>org-publish</code> 生成的代码高亮是内联在 HTML 标签里的，我没法通过 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark">light-dark</a> 去设置亮色/暗色主题下不同的颜色，只能选择一种代码高亮主题，要么是亮色，要么是暗色。
 </p>
 
-<section role="note" id="orgbdcfe40">
+<section role="note" id="org4fe8737">
 <p>
 如果你好奇博客是如何用 <code>org-publish</code> 构建的：
 </p>
@@ -129,8 +129,8 @@
   (message <span class="org-string">"setup org-publish-project-alist"</span>)
 <span id="coderef-css" class="coderef-off">  (<span class="org-keyword">setq</span> org-html-htmlize-output-type 'css)</span>
   (<span class="org-keyword">setq</span> org-publish-project-alist
-        `() <span class="org-comment-delimiter">;; </span><span class="org-comment">&#27492;&#22788;&#30465;&#30053; `</span><span class="org-comment"><span class="org-constant">org-publish-project-alist</span></span><span class="org-comment">' &#30456;&#20851;&#37197;&#32622;
-</span>        ))
+        `() <span class="org-comment-delimiter">;; </span><span class="org-comment">&#27492;&#22788;&#30465;&#30053; `</span><span class="org-comment"><span class="org-constant">org-publish-project-alist</span></span><span class="org-comment">' &#30456;&#20851;&#37197;&#32622;</span>
+        ))
 
 (spike-leung/setup-org-publish-project-alist)
 
@@ -155,7 +155,7 @@
 <li>找一个喜欢的暗色主题，生成一份 <code>dark.txt</code></li>
 </ul>
 
-<section role="note" id="orgcc03d9d">
+<section role="note" id="orged07da4">
 <p>
 <code>org-html-htmlize-generate-css</code> 生成的类名前缀可以通过 <code>org-html-htmlize-font-prefix</code> 修改，默认是 <code>org-。</code>
 </p>
@@ -213,8 +213,8 @@ You can copy and paste <b>the ones you need</b> into your CSS file.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">&#23450;&#20041;&#19968;&#20010;&#21464;&#37327;&#65292;&#23384;&#20648;&#24403;&#21069;&#20027;&#39064;&#30340; background-mode
-</span>(<span class="org-keyword">defvar</span> <span class="org-variable-name">spike-leung/current-theme-background-mode</span> 'light
+<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">&#23450;&#20041;&#19968;&#20010;&#21464;&#37327;&#65292;&#23384;&#20648;&#24403;&#21069;&#20027;&#39064;&#30340; background-mode</span>
+(<span class="org-keyword">defvar</span> <span class="org-variable-name">spike-leung/current-theme-background-mode</span> 'light
   <span class="org-doc">"Current theme's background-mode value&#65292;can be 'light or 'dark, default to 'light."</span>)
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">light</span>()
@@ -229,12 +229,12 @@ You can copy and paste <b>the ones you need</b> into your CSS file.
   (<span class="org-keyword">setq</span> spike-leung/current-theme-background-mode 'dark)
   (spike-leung/themes-load-random 'dark))
 
-<span class="org-comment-delimiter">;; </span><span class="org-comment">&#35201;&#22312; desktop &#21152;&#36733;&#21518;&#20877;&#25191;&#34892;&#65292;&#36991;&#20813;&#34987; desktop &#35760;&#24405;&#30340;&#20027;&#39064;&#35206;&#30422;&#65292;&#23548;&#33268;&#28151;&#20081;
-</span>(add-hook 'desktop-after-read-hook #'spike-leung/themes-load-random)
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#35201;&#22312; desktop &#21152;&#36733;&#21518;&#20877;&#25191;&#34892;&#65292;&#36991;&#20813;&#34987; desktop &#35760;&#24405;&#30340;&#20027;&#39064;&#35206;&#30422;&#65292;&#23548;&#33268;&#28151;&#20081;</span>
+(add-hook 'desktop-after-read-hook #'spike-leung/themes-load-random)
 
-<span class="org-comment-delimiter">;; </span><span class="org-comment">&#22522;&#20110; `</span><span class="org-comment"><span class="org-constant">spike-leung/current-theme-background-mode</span></span><span class="org-comment">',
-</span><span class="org-comment-delimiter">;; </span><span class="org-comment">&#23558; `</span><span class="org-comment"><span class="org-constant">org-html-htmlize-generate-css</span></span><span class="org-comment">' &#29983;&#25104;&#30340; buffer &#20869;&#23481;&#20445;&#23384;&#21040;&#23545;&#24212;&#30340;&#25991;&#20214;
-</span>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/save-org-html-htmlize-generate-css</span> (<span class="org-type">&amp;rest</span> _)
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#22522;&#20110; `</span><span class="org-comment"><span class="org-constant">spike-leung/current-theme-background-mode</span></span><span class="org-comment">',</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#23558; `</span><span class="org-comment"><span class="org-constant">org-html-htmlize-generate-css</span></span><span class="org-comment">' &#29983;&#25104;&#30340; buffer &#20869;&#23481;&#20445;&#23384;&#21040;&#23545;&#24212;&#30340;&#25991;&#20214;</span>
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/save-org-html-htmlize-generate-css</span> (<span class="org-type">&amp;rest</span> _)
   <span class="org-doc">"Save content generated by `</span><span class="org-doc"><span class="org-constant">org-html-htmlize-generate-css</span></span><span class="org-doc">' to files."</span>
   (<span class="org-keyword">with-current-buffer</span> <span class="org-string">"*html*"</span>
     (<span class="org-keyword">cond</span>
@@ -244,9 +244,9 @@ You can copy and paste <b>the ones you need</b> into your CSS file.
       (write-region nil nil <span class="org-string">"~/git/taxodium/scripts/dark.txt"</span> nil))))
   (kill-buffer <span class="org-string">"*html*"</span>))
 
-<span class="org-comment-delimiter">;; </span><span class="org-comment">&#28155;&#21152;&#19968;&#20010; advice&#65292;
-</span><span class="org-comment-delimiter">;; </span><span class="org-comment">&#22312; `</span><span class="org-comment"><span class="org-constant">org-html-htmlize-generate-css</span></span><span class="org-comment">' &#23436;&#25104;&#20043;&#21518;&#25191;&#34892; `</span><span class="org-comment"><span class="org-constant">spike-leung/current-theme-background-mode</span></span><span class="org-comment">'
-</span>(advice-remove 'org-html-htmlize-generate-css #'spike-leung/save-org-html-htmlize-generate-css)
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#28155;&#21152;&#19968;&#20010; advice&#65292;</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#22312; `</span><span class="org-comment"><span class="org-constant">org-html-htmlize-generate-css</span></span><span class="org-comment">' &#23436;&#25104;&#20043;&#21518;&#25191;&#34892; `</span><span class="org-comment"><span class="org-constant">spike-leung/current-theme-background-mode</span></span><span class="org-comment">'</span>
+(advice-remove 'org-html-htmlize-generate-css #'spike-leung/save-org-html-htmlize-generate-css)
 (advice-add 'org-html-htmlize-generate-css <span class="org-builtin">:after</span> #'spike-leung/save-org-html-htmlize-generate-css)
 </code></pre>
 </div>
@@ -276,8 +276,8 @@ You can copy and paste <b>the ones you need</b> into your CSS file.
 
 <span class="org-keyword">function</span> <span class="org-function-name">parseCSS</span>(<span class="org-variable-name">content</span>) {
   <span class="org-keyword">const</span> <span class="org-variable-name">rules</span> = {};
-  <span class="org-comment-delimiter">// </span><span class="org-comment">org- &#23545;&#24212;&#30340;&#26159; ox-html.el &#20013; `org-html-htmlize-font-prefix` &#30340;&#20540;
-</span>  <span class="org-keyword">const</span> <span class="org-variable-name">ruleRegex</span> = <span class="org-string">/\.org-[^{]+\{[^}]+\}/</span>g;
+  <span class="org-comment-delimiter">// </span><span class="org-comment">org- &#23545;&#24212;&#30340;&#26159; ox-html.el &#20013; `org-html-htmlize-font-prefix` &#30340;&#20540;</span>
+  <span class="org-keyword">const</span> <span class="org-variable-name">ruleRegex</span> = <span class="org-string">/\.org-[^{]+\{[^}]+\}/</span>g;
 
   (content.match(ruleRegex) || []).forEach(rule =&gt; {
     <span class="org-keyword">const</span> <span class="org-variable-name">selector</span> = rule.match(<span class="org-string">/(\.org-[\w-]+)/</span>)[1];
@@ -352,7 +352,6 @@ Happy hacking - <a href="how-to-get-started-with-emacs.html">Emacs</a> ♥ you!
 </p>
 </div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -367,23 +366,21 @@ Happy hacking - <a href="how-to-get-started-with-emacs.html">Emacs</a> ♥ you!
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2026-03-10 Tue 21:00">2026-03-10 Tue 21:00</time>，更新于 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 让博客的代码高亮适配主题 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-03-10 Tue 21:00">2026-03-10 Tue 21:00</time>，更新於 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 让博客的代码高亮适配主题 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/adapt-code-highlighting-to-the-blog-theme.txt">純文本版本</a> 或 <a href="/adapt-code-highlighting-to-the-blog-theme.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

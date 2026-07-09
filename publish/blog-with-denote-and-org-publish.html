@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>结合 denote 和 org-publish 写博客</title>
-<meta name="author" content="Spike Leung" />
+<meta name="author" content="Spike Leung">
 <meta name="description" content="结合 denote 和 org-publish 写博客，denote 可以更好的组织文件，
-org-publish 则用于发布，涉及一些 Elisp 使得 denote 能用于 org-publish" />
-<meta name="generator" content="Org Mode" />
+org-publish 则用于发布，涉及一些 Elisp 使得 denote 能用于 org-publish">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -241,14 +241,14 @@ denote 中的改动有两个地方：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8
-</span>(<span class="org-keyword">setq</span> org-export-allow-bind-keywords t)
+<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8</span>
+(<span class="org-keyword">setq</span> org-export-allow-bind-keywords t)
 
-<span class="org-comment-delimiter">;;; </span><span class="org-comment">make denote-link-ol-export support #+export_file_name
-</span><span class="org-comment-delimiter">;; </span><span class="org-comment">see also: https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/
-</span>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/my-denote--get-export-file-name</span> (file)
-  <span class="org-doc">"Find #+export_file_name in FILE and return its value.
-Return nil if not found or FILE does not exist."</span>
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">make denote-link-ol-export support #+export_file_name</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">see also: https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/</span>
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/my-denote--get-export-file-name</span> (file)
+  <span class="org-doc">"Find #+export_file_name in FILE and return its value.</span>
+<span class="org-doc">Return nil if not found or FILE does not exist."</span>
   (<span class="org-keyword">when</span> (<span class="org-keyword">and</span> file (file-exists-p file))
     (<span class="org-keyword">with-temp-buffer</span>
       (insert-file-contents file)
@@ -257,9 +257,9 @@ Return nil if not found or FILE does not exist."</span>
         (string-trim (match-string-no-properties 1))))))
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/denote-link-ol-export</span> (link description format)
-  <span class="org-doc">"Export a `</span><span class="org-doc"><span class="org-constant">denote:</span></span><span class="org-doc">' link from Org files.
-The LINK, DESCRIPTION, and FORMAT are handled by the export
-backend."</span>
+  <span class="org-doc">"Export a `</span><span class="org-doc"><span class="org-constant">denote:</span></span><span class="org-doc">' link from Org files.</span>
+<span class="org-doc">The LINK, DESCRIPTION, and FORMAT are handled by the export</span>
+<span class="org-doc">backend."</span>
   (<span class="org-keyword">pcase-let*</span> ((`(,path ,query ,file-search) (denote-link--ol-resolve-link-to-target link <span class="org-builtin">:full-data</span>))
                (export-file-name (<span class="org-keyword">when</span> path (spike-leung/my-denote--get-export-file-name path)))
                (anchor (<span class="org-keyword">if</span> export-file-name
@@ -284,8 +284,8 @@ backend."</span>
 (<span class="org-keyword">with-eval-after-load</span> 'denote
   (add-hook 'find-file-hook #'denote-fontify-links-mode-maybe)
   (add-hook 'dired-mode-hook #'denote-dired-mode-in-directories)
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#35206;&#30422; denote &#40664;&#35748;&#30340; export &#26041;&#27861;
-</span>  (org-link-set-parameters <span class="org-string">"denote"</span> <span class="org-builtin">:export</span> #'spike-leung/denote-link-ol-export))
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#35206;&#30422; denote &#40664;&#35748;&#30340; export &#26041;&#27861;</span>
+  (org-link-set-parameters <span class="org-string">"denote"</span> <span class="org-builtin">:export</span> #'spike-leung/denote-link-ol-export))
 
 </code></pre>
 </div>
@@ -302,7 +302,7 @@ backend."</span>
 此外，还需要利用 denote 提供的方法，将文件重命名成 denote 的命名格式。
 </p>
 
-<section role="note" id="orgd998acd">
+<section role="note" id="orgfbc75f1">
 <p>
 Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如:
 </p>
@@ -330,7 +330,7 @@ Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如
 </div>
 <div id="outline-container-E566CAD6-D575-4D43-B989-F7BA96130DA2" class="outline-2">
 <h2 id="E566CAD6-D575-4D43-B989-F7BA96130DA2"><a href="#E566CAD6-D575-4D43-B989-F7BA96130DA2">org-publish</a></h2>
-<div class="outline-text-2" id="text-E566CAD6-D575-4D43-B989-F7BA96130DA2"><section role="note" id="orga0d7080">
+<div class="outline-text-2" id="text-E566CAD6-D575-4D43-B989-F7BA96130DA2"><section role="note" id="org2423b85">
 <p>
 关于如何使用 org-publish 发布博客，见 <a href="org-publish-blog.html">使用 org-publish 发布博客</a>，这里不再赘述。
 </p>
@@ -373,9 +373,9 @@ Prot 考虑得很周到，提供了很多方便的方法用于重命名。例如
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/get-file-list-from-denote-silo</span> (silos tag)
-  <span class="org-doc">"Return files in SILOS match TAG.
-SILO is a file path from `</span><span class="org-doc"><span class="org-constant">denote-silo-directories</span></span><span class="org-doc">'.
-TAG is string."</span>
+  <span class="org-doc">"Return files in SILOS match TAG.</span>
+<span class="org-doc">SILO is a file path from `</span><span class="org-doc"><span class="org-constant">denote-silo-directories</span></span><span class="org-doc">'.</span>
+<span class="org-doc">TAG is string."</span>
   (<span class="org-keyword">cl-letf</span> ((denote-directory (expand-file-name silos)))
     (denote-directory-files tag)))
 
@@ -386,9 +386,9 @@ TAG is string."</span>
         `((<span class="org-string">"orgfiles"</span>
            <span class="org-builtin">:base-directory</span> <span class="org-string">"~/git/taxodium/posts"</span>
            <span class="org-builtin">:base-extension</span> <span class="org-string">"org"</span>
-           <span class="org-builtin">:exclude</span> <span class="org-string">".*"</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">&#25490;&#38500;&#25152;&#26377;&#25991;&#20214;
-</span>           <span class="org-builtin">:include</span>  ,(spike-leung/get-file-list-from-denote-silo <span class="org-string">"~/git/taxodium/posts"</span> <span class="org-string">"_published"</span>) <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36807;&#28388;&#33719;&#21462;&#23545;&#24212; keyword &#30340;&#25991;&#20214;
-</span>           <span class="org-builtin">:publishing-directory</span> <span class="org-string">"~/git/taxodium/publish"</span>
+           <span class="org-builtin">:exclude</span> <span class="org-string">".*"</span> <span class="org-comment-delimiter">;; </span><span class="org-comment">&#25490;&#38500;&#25152;&#26377;&#25991;&#20214;</span>
+           <span class="org-builtin">:include</span>  ,(spike-leung/get-file-list-from-denote-silo <span class="org-string">"~/git/taxodium/posts"</span> <span class="org-string">"_published"</span>) <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36807;&#28388;&#33719;&#21462;&#23545;&#24212; keyword &#30340;&#25991;&#20214;</span>
+           <span class="org-builtin">:publishing-directory</span> <span class="org-string">"~/git/taxodium/publish"</span>
            <span class="org-builtin">:publishing-function</span> spike-leung/org-html-publish-to-html-orgfiles
            <span class="org-builtin">:section-numbers</span> nil
            <span class="org-builtin">:with-toc</span> t
@@ -406,12 +406,12 @@ TAG is string."</span>
            <span class="org-builtin">:author</span> <span class="org-string">"Spike Leung"</span>
            <span class="org-builtin">:email</span> <span class="org-string">"l-yanlei@hotmail.com"</span>)
 
-          <span class="org-comment-delimiter">;; </span><span class="org-comment">&#30465;&#30053;&#20854;&#20182;&#20195;&#30721;&#65292;&#20855;&#20307;&#21487;&#20197;&#30475;&#28304;&#30721;
-</span>          )))
+          <span class="org-comment-delimiter">;; </span><span class="org-comment">&#30465;&#30053;&#20854;&#20182;&#20195;&#30721;&#65292;&#20855;&#20307;&#21487;&#20197;&#30475;&#28304;&#30721;</span>
+          )))
 
-(spike-leung/setup-org-publish-project-alist) <span class="org-comment-delimiter">;; </span><span class="org-comment">&#21021;&#22987;&#21270; org-publish-project-alist
-</span><span class="org-comment-delimiter">;; </span><span class="org-comment">&#22312;&#25191;&#34892; org-publish &#20043;&#21069;&#26356;&#26032; org-publish-project-alist
-</span>(advice-add 'org-publish <span class="org-builtin">:before</span> #'spike-leung/setup-org-publish-project-alist)
+(spike-leung/setup-org-publish-project-alist) <span class="org-comment-delimiter">;; </span><span class="org-comment">&#21021;&#22987;&#21270; org-publish-project-alist</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#22312;&#25191;&#34892; org-publish &#20043;&#21069;&#26356;&#26032; org-publish-project-alist</span>
+(advice-add 'org-publish <span class="org-builtin">:before</span> #'spike-leung/setup-org-publish-project-alist)
 </code></pre>
 </div>
 </details>
@@ -441,19 +441,19 @@ TAG is string."</span>
          <span class="org-builtin">:auto-sitemap</span> t
          <span class="org-builtin">:sitemap-filename</span> <span class="org-string">"index.org"</span>
          <span class="org-builtin">:sitemap-title</span> <span class="org-string">"Taxodium"</span>
-         <span class="org-builtin">:sitemap-format-entry</span> spike-leung/sitemap-format-entry <span class="org-comment-delimiter">;; </span><span class="org-comment">&lt;-- &#35843;&#25972; entry &#30340;&#36820;&#22238;
-</span>         <span class="org-builtin">:sitemap-sort-files</span> anti-chronologically
+         <span class="org-builtin">:sitemap-format-entry</span> spike-leung/sitemap-format-entry <span class="org-comment-delimiter">;; </span><span class="org-comment">&lt;-- &#35843;&#25972; entry &#30340;&#36820;&#22238;</span>
+         <span class="org-builtin">:sitemap-sort-files</span> anti-chronologically
          <span class="org-builtin">:sitemap-function</span> spike-leung/sitemap-function
          <span class="org-builtin">:author</span> <span class="org-string">"Spike Leung"</span>
          <span class="org-builtin">:email</span> <span class="org-string">"l-yanlei@hotmail.com"</span>)
 
-        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#30465;&#30053;&#37096;&#20998;&#20195;&#30721;
-</span>        ))
+        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#30465;&#30053;&#37096;&#20998;&#20195;&#30721;</span>
+        ))
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/sitemap-format-entry</span> (entry style project)
-  <span class="org-doc">"Custom format for site map ENTRY, as a string.
-ENTRY is a file name.  STYLE is the style of the sitemap.
-PROJECT is the current project."</span>
+  <span class="org-doc">"Custom format for site map ENTRY, as a string.</span>
+<span class="org-doc">ENTRY is a file name.  STYLE is the style of the sitemap.</span>
+<span class="org-doc">PROJECT is the current project."</span>
   (<span class="org-keyword">let*</span> ((export-file-name (spike-leung/org-publish-get-org-keyword entry project <span class="org-string">"export_file_name"</span>)))
     (<span class="org-keyword">cond</span> ((not (directory-name-p entry))
            (format <span class="org-string">"[[file:%s][%s]]"</span>
@@ -464,13 +464,13 @@ PROJECT is the current project."</span>
                     entry)
                    (org-publish-find-title entry project)))
           ((eq style 'tree)
-           <span class="org-comment-delimiter">;; </span><span class="org-comment">Return only last subdir.
-</span>           (file-name-nondirectory (directory-file-name entry)))
+           <span class="org-comment-delimiter">;; </span><span class="org-comment">Return only last subdir.</span>
+           (file-name-nondirectory (directory-file-name entry)))
           (t entry))))
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/org-publish-get-org-keyword</span> (entry project keyword)
-  <span class="org-doc">"Get the value of the given KEYWORD in the current Org file.
-KEYWORD is case-insensitive."</span>
+  <span class="org-doc">"Get the value of the given KEYWORD in the current Org file.</span>
+<span class="org-doc">KEYWORD is case-insensitive."</span>
   (<span class="org-keyword">let</span> ((file (org-publish--expand-file-name entry project)))
     (<span class="org-keyword">when</span> (<span class="org-keyword">and</span> (file-readable-p file) (not (directory-name-p file)))
       (<span class="org-keyword">org-with-file-buffer</span> file
@@ -495,29 +495,29 @@ KEYWORD is case-insensitive."</span>
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><code>(<span class="org-keyword">use-package</span> denote
   <span class="org-builtin">:custom</span>
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20462;&#25913; `</span><span class="org-comment"><span class="org-constant">denote-link-description-format</span></span><span class="org-comment">' &#30340;&#36820;&#22238;&#65292;&#28155;&#21152; subtitle
-</span>  (denote-link-description-format #'spike-leung/denote-link-description-with-signature-and-title-and-subtitle)
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20462;&#25913; `</span><span class="org-comment"><span class="org-constant">denote-link-description-format</span></span><span class="org-comment">' &#30340;&#36820;&#22238;&#65292;&#28155;&#21152; subtitle</span>
+  (denote-link-description-format #'spike-leung/denote-link-description-with-signature-and-title-and-subtitle)
   <span class="org-builtin">:config</span>
   (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/denote-link-description-with-signature-and-title-and-subtitle</span> (file <span class="org-type">&amp;optional</span> file-type)
-    <span class="org-doc">"Return link description for FILE with FILE-TYPE.
-For backward compatibility, FILE-TYPE is an optional parameter.  If it
-is nil, then compute FILE-TYPE internally.
+    <span class="org-doc">"Return link description for FILE with FILE-TYPE.</span>
+<span class="org-doc">For backward compatibility, FILE-TYPE is an optional parameter.  If it</span>
+<span class="org-doc">is nil, then compute FILE-TYPE internally.</span>
 
-- If the region is active, use it as the description.
+<span class="org-doc">- If the region is active, use it as the description.</span>
 
-- If FILE has a signature, then format the description as a sequence of
-  the signature text and the title with two spaces between them.
+<span class="org-doc">- If FILE has a signature, then format the description as a sequence of</span>
+<span class="org-doc">  the signature text and the title with two spaces between them.</span>
 
-- If FILE does not have a signature, then use its title as the
-  description.
+<span class="org-doc">- If FILE does not have a signature, then use its title as the</span>
+<span class="org-doc">  description.</span>
 
-- If FILE has subtitle, append subtitle
+<span class="org-doc">- If FILE has subtitle, append subtitle</span>
 
-- If none of the above works, return an empty string.
+<span class="org-doc">- If none of the above works, return an empty string.</span>
 
-This function is useful as the value of the user option
-`</span><span class="org-doc"><span class="org-constant">denote-link-description-format</span></span><span class="org-doc">' (which can optionally be bound to a
-function)."</span>
+<span class="org-doc">This function is useful as the value of the user option</span>
+<span class="org-doc">`</span><span class="org-doc"><span class="org-constant">denote-link-description-format</span></span><span class="org-doc">' (which can optionally be bound to a</span>
+<span class="org-doc">function)."</span>
     (<span class="org-keyword">let*</span> ((type (<span class="org-keyword">or</span> file-type (denote-filetype-heuristics file)))
            (signature (denote-retrieve-filename-signature file))
            (title (denote-retrieve-title-or-filename file type))
@@ -533,8 +533,8 @@ function)."</span>
   )
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/my-denote--get-subtitle</span> (file)
-  <span class="org-doc">"Find #+subtitle in FILE and return its value.
-Return nil if not found or FILE does not exist."</span>
+  <span class="org-doc">"Find #+subtitle in FILE and return its value.</span>
+<span class="org-doc">Return nil if not found or FILE does not exist."</span>
   (<span class="org-keyword">when</span> (<span class="org-keyword">and</span> file (file-exists-p file))
     (<span class="org-keyword">with-temp-buffer</span>
       (insert-file-contents file)
@@ -579,13 +579,13 @@ Return nil if not found or FILE does not exist."</span>
              <span class="org-builtin">:email</span> <span class="org-string">"l-yanlei@hotmail.com"</span>))))
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/org-html-publish-sitemap</span> (plist filename pub-dir)
-  <span class="org-doc">"`</span><span class="org-doc"><span class="org-constant">org-publish</span></span><span class="org-doc">' `</span><span class="org-doc"><span class="org-constant">:publishing-function</span></span><span class="org-doc">' for sitemap.
-Add subtitle to links which has subtitle.
-See `</span><span class="org-doc"><span class="org-constant">org-html-publish-to-html</span></span><span class="org-doc">' for param PLIST,FILENAME,PUB-DIR."</span>
+  <span class="org-doc">"`</span><span class="org-doc"><span class="org-constant">org-publish</span></span><span class="org-doc">' `</span><span class="org-doc"><span class="org-constant">:publishing-function</span></span><span class="org-doc">' for sitemap.</span>
+<span class="org-doc">Add subtitle to links which has subtitle.</span>
+<span class="org-doc">See `</span><span class="org-doc"><span class="org-constant">org-html-publish-to-html</span></span><span class="org-doc">' for param PLIST,FILENAME,PUB-DIR."</span>
   (<span class="org-keyword">let</span> ((output-filename (org-html-publish-to-html plist filename pub-dir)))
-    <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36825;&#37324;&#24212;&#35813;&#29992; `</span><span class="org-comment"><span class="org-constant">with-temp-buffer</span></span><span class="org-comment">' &#32780;&#19981;&#35201;&#29992; `</span><span class="org-comment"><span class="org-constant">with-current-buffer</span></span><span class="org-comment">' &#21644; '`</span><span class="org-comment"><span class="org-constant">find-file-noselect</span></span><span class="org-comment">'
-</span>    <span class="org-comment-delimiter">;; </span><span class="org-comment">see: https://emacs.stackexchange.com/questions/2868/whats-wrong-with-find-file-noselect
-</span>    (<span class="org-keyword">with-temp-buffer</span>
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36825;&#37324;&#24212;&#35813;&#29992; `</span><span class="org-comment"><span class="org-constant">with-temp-buffer</span></span><span class="org-comment">' &#32780;&#19981;&#35201;&#29992; `</span><span class="org-comment"><span class="org-constant">with-current-buffer</span></span><span class="org-comment">' &#21644; '`</span><span class="org-comment"><span class="org-constant">find-file-noselect</span></span><span class="org-comment">'</span>
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">see: https://emacs.stackexchange.com/questions/2868/whats-wrong-with-find-file-noselect</span>
+    (<span class="org-keyword">with-temp-buffer</span>
       (insert-file-contents output-filename)
       (goto-char (point-min))
       (<span class="org-keyword">while</span> (re-search-forward
@@ -619,9 +619,9 @@ See `</span><span class="org-doc"><span class="org-constant">org-html-publish-to
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/denote-toggle-publish-draft</span> ()
-  <span class="org-doc">"&#20999;&#25442;&#21338;&#23458;&#25991;&#31456;&#30340;&#29366;&#24577;&#65292;&#22312; :published: &#21644; :draft:preview: &#20043;&#38388;&#20999;&#25442;&#12290;
-&#22240;&#20026; :published: &#30340;&#25991;&#31456;&#27604;&#36739;&#22810;&#65292;org-publish &#26500;&#24314;&#27604;&#36739;&#24930;&#65292;
-&#20999;&#25442;&#21040; :draft:preview: &#26500;&#24314;&#26356;&#24555;&#65292;&#26041;&#20415;&#39044;&#35272;&#12290;"</span>
+  <span class="org-doc">"&#20999;&#25442;&#21338;&#23458;&#25991;&#31456;&#30340;&#29366;&#24577;&#65292;&#22312; :published: &#21644; :draft:preview: &#20043;&#38388;&#20999;&#25442;&#12290;</span>
+<span class="org-doc">&#22240;&#20026; :published: &#30340;&#25991;&#31456;&#27604;&#36739;&#22810;&#65292;org-publish &#26500;&#24314;&#27604;&#36739;&#24930;&#65292;</span>
+<span class="org-doc">&#20999;&#25442;&#21040; :draft:preview: &#26500;&#24314;&#26356;&#24555;&#65292;&#26041;&#20415;&#39044;&#35272;&#12290;"</span>
   (<span class="org-keyword">interactive</span>)
   (<span class="org-keyword">unless</span> (buffer-file-name)
     (<span class="org-warning">user-error</span> <span class="org-string">"&#24403;&#21069;&#32531;&#20914;&#21306;&#27809;&#26377;&#20851;&#32852;&#25991;&#20214;"</span>))
@@ -671,7 +671,7 @@ See `</span><span class="org-doc"><span class="org-constant">org-html-publish-to
 好啦，博客构建就折腾到这，要开始多写内容了！
 </p>
 
-<section role="note" id="org23f3962">
+<section role="note" id="org2a89615">
 <p>
 关于文章内容，你可以 Emacs China 中讨论：<a href="https://emacs-china.org/t/denote-org-publish/30027">结合 denote 和 org-publish 写博客</a>。
 </p>
@@ -690,7 +690,6 @@ See `</span><span class="org-doc"><span class="org-constant">org-html-publish-to
 </div>
 </div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -705,23 +704,21 @@ See `</span><span class="org-doc"><span class="org-constant">org-html-publish-to
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2025-08-28 Thu 18:40">2025-08-28 Thu 18:40</time>，更新于 <time class="dt-updated" datetime="2026-06-03 Wed 16:22">2026-06-03 Wed 16:22</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 结合 denote 和 org-publish 写博客 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2025-08-28 Thu 18:40">2025-08-28 Thu 18:40</time>，更新於 <time class="dt-updated" datetime="2026-06-03 Wed 16:22">2026-06-03 Wed 16:22</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 结合 denote 和 org-publish 写博客 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/blog-with-denote-and-org-publish.txt">純文本版本</a> 或 <a href="/blog-with-denote-and-org-publish.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

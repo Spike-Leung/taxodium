@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>导出 Elfeed 选中条目到 GitHub Page 作为 Reading List</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="导出 Elfeed 选中条目到 GitHub Page 作为 Reading List，便于手机查看" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="导出 Elfeed 选中条目到 GitHub Page 作为 Reading List，便于手机查看">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -98,10 +98,10 @@
 <pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/elfeed-reading-list</span> ()
   <span class="org-doc">"Generate selected Elfeed entries as reading list. Auto push to git."</span>
   (<span class="org-keyword">interactive</span> nil elfeed-search-mode)
-  (<span class="org-keyword">let</span> ((repo-dir (expand-file-name <span class="org-string">"~/git/reading-list"</span>)) <span class="org-comment-delimiter">;; </span><span class="org-comment">repo-dir is a git repo that save expoted HTML
-</span>        (entries (elfeed-search-selected))) <span class="org-comment-delimiter">;; </span><span class="org-comment">get all selected entries from elfeed
-</span>    <span class="org-comment-delimiter">;; </span><span class="org-comment">create a temp-buffer to insert links
-</span>    (<span class="org-keyword">with-temp-buffer</span>
+  (<span class="org-keyword">let</span> ((repo-dir (expand-file-name <span class="org-string">"~/git/reading-list"</span>)) <span class="org-comment-delimiter">;; </span><span class="org-comment">repo-dir is a git repo that save expoted HTML</span>
+        (entries (elfeed-search-selected))) <span class="org-comment-delimiter">;; </span><span class="org-comment">get all selected entries from elfeed</span>
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">create a temp-buffer to insert links</span>
+    (<span class="org-keyword">with-temp-buffer</span>
       (goto-char (point-min))
       (insert (format <span class="org-string">"#+title: Reading list\n"</span>))
       (insert <span class="org-string">"#+options: html-postamble:nil\n"</span>)
@@ -112,22 +112,22 @@
       (insert <span class="org-string">"@@html:&lt;span&gt;&lt;input type=\"checkbox\" id=\"like\"/&gt;&lt;label for=\"like\" class=\"like-label\"&gt;&lt;/label&gt;&lt;/span&gt;@@"</span>)
       (insert <span class="org-string">"@@html:&lt;/div&gt;@@"</span>)
       (insert <span class="org-string">"\n\n"</span>)
-      <span class="org-comment-delimiter">;; </span><span class="org-comment">traverse elfeed entries, generate org mode link
-</span>      (<span class="org-keyword">dolist</span> (entry entries)
+      <span class="org-comment-delimiter">;; </span><span class="org-comment">traverse elfeed entries, generate org mode link</span>
+      (<span class="org-keyword">dolist</span> (entry entries)
         (<span class="org-keyword">let*</span> ((link (elfeed-entry-link entry))
                (title (elfeed-entry-title entry))
                (like-button (format <span class="org-string">"@@html:&lt;span class=\"like-button\" data-id=\"%s\"&gt;&lt;/span&gt;@@"</span> link)))
           (insert (format <span class="org-string">"- %s %s"</span> (org-link-make-string link title) like-button)))
         (insert <span class="org-string">"\n"</span>))
-      (insert <span class="org-string">"&#36889;&#26159;&#20174; [[https://github.com/emacs-elfeed/elfeed][elfeed]] &#23548;&#20986;&#30340;&#20010;&#20154;&#35330;&#38321;&#25968;&#25454;&#65292;&#20165;&#26041;&#20415;&#20010;&#20154;&#20351;&#29992;&#12290;\n\n
-&#20855;&#20307;&#35211;&#65306; [[https://taxodium.ink/export-elfeed-selected-entries-to-github-page-as-reading-list.html][&#23548;&#20986; Elfeed &#36873;&#20013;&#26465;&#30446;&#21040; GitHub Page &#20316;&#20026; Reading List]]&#12290;\n\n"</span>)
-      <span class="org-comment-delimiter">;; </span><span class="org-comment">enable org mode
-</span>      (org-mode)
-      <span class="org-comment-delimiter">;; </span><span class="org-comment">export to HTML
-</span>      (org-export-to-file 'html <span class="org-string">"~/git/reading-list/index.html"</span>))
+      (insert <span class="org-string">"&#36889;&#26159;&#20174; [[https://github.com/emacs-elfeed/elfeed][elfeed]] &#23548;&#20986;&#30340;&#20010;&#20154;&#35330;&#38321;&#25968;&#25454;&#65292;&#20165;&#26041;&#20415;&#20010;&#20154;&#20351;&#29992;&#12290;\n\n</span>
+<span class="org-string">&#20855;&#20307;&#35211;&#65306; [[https://taxodium.ink/export-elfeed-selected-entries-to-github-page-as-reading-list.html][&#23548;&#20986; Elfeed &#36873;&#20013;&#26465;&#30446;&#21040; GitHub Page &#20316;&#20026; Reading List]]&#12290;\n\n"</span>)
+      <span class="org-comment-delimiter">;; </span><span class="org-comment">enable org mode</span>
+      (org-mode)
+      <span class="org-comment-delimiter">;; </span><span class="org-comment">export to HTML</span>
+      (org-export-to-file 'html <span class="org-string">"~/git/reading-list/index.html"</span>))
     (message <span class="org-string">"Entries export to index.html"</span>)
-    <span class="org-comment-delimiter">;; </span><span class="org-comment">you can push the HTML manual, or add auto push process below.
-</span>    (<span class="org-keyword">let</span> ((default-directory repo-dir))
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">you can push the HTML manual, or add auto push process below.</span>
+    (<span class="org-keyword">let</span> ((default-directory repo-dir))
       (<span class="org-keyword">unless</span> (file-directory-p (expand-file-name <span class="org-string">".git"</span> repo-dir))
         (<span class="org-warning">user-error</span> <span class="org-string">"Not a git repository: %s"</span> repo-dir))
       (shell-command <span class="org-string">"git add index.html"</span>)
@@ -159,7 +159,6 @@
 </p>
 </div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -174,23 +173,21 @@
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2026-05-21 Thu 23:50">2026-05-21 Thu 23:50</time>，更新于 <time class="dt-updated" datetime="2026-06-09 Tue 02:28">2026-06-09 Tue 02:28</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 导出 Elfeed 选中条目到 GitHub Page 作为 Reading List &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-05-21 Thu 23:50">2026-05-21 Thu 23:50</time>，更新於 <time class="dt-updated" datetime="2026-06-09 Tue 02:28">2026-06-09 Tue 02:28</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 导出 Elfeed 选中条目到 GitHub Page 作为 Reading List &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/export-elfeed-selected-entries-to-github-page-as-reading-list.txt">純文本版本</a> 或 <a href="/export-elfeed-selected-entries-to-github-page-as-reading-list.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

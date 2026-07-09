@@ -1,0 +1,322 @@
+                        _______________________
+
+                         在 EMACS 随机切换主题
+
+                              Spike Leung
+                        _______________________
+
+
+                         [2025-05-21 Wed 21:40]
+
+
+Table of Contents
+_________________
+
+
+
+
+Emacs 里我目前最喜欢的主题是 [modus-themes] 和 [ef-themes]，它们都是出自
+[protesilaos]。
+
+后续可能还会加入 [doric-themes]，也是 Prot 的写的主题，这个主题的颜色比
+较单一，写作的时候用感觉不错。
+
+`modus-themes' 相对来说更成熟，覆盖了大部分的包和使用场景； `ef-themes'
+则提供了更多的色彩选择。
+
+一个主题用久了就会觉得有些厌倦，想有一些新鲜感，就总是会找新主题，换新主
+题。
+
+平时主要用 `consult-theme' （[consult] 提供的一个方法）去切换主题，前阵
+子看了 [emacs-更改配色方案]，受到文章的启发，我找 LLM 帮我写了一些用于定
+时切换主题的方法。
+
+,----
+| (defvar spike-leung/candidate-themes
+|   '(modus-operandi
+|     modus-operandi-tinted
+|     modus-vivendi
+|     modus-vivendi-tinted
+|     ef-arbutus
+|     ef-autumn
+|     ef-bio
+|     ef-cherie
+|     ef-cyprus
+|     ef-dark
+|     ef-deuteranopia-dark
+|     ef-deuteranopia-light
+|     ef-dream
+|     ef-duo-dark
+|     ef-duo-light
+|     ef-eagle
+|     ef-elea-dark
+|     ef-elea-light
+|     ef-frost
+|     ef-kassio
+|     ef-light
+|     ef-maris-dark
+|     ef-maris-light
+|     ;; ef-melissa-dark
+|     ef-melissa-light
+|     ef-night
+|     ef-owl
+|     ef-reverie
+|     ef-rosa
+|     ef-spring
+|     ef-summer
+|     ef-symbiosis
+|     ef-trio-dark
+|     ef-trio-light
+|     ef-tritanopia-dark
+|     ef-tritanopia-light
+|     ef-winter)
+|   "A list of themes to randomly cycle through.")
+| 
+| ;;; theme related
+| ;; @see: https://emacsredux.com/blog/2025/02/03/clean-unloading-of-emacs-themes/
+| (defun spike-leung/disable-all-active-themes ()
+|   "Disable all currently active themes."
+|   (interactive)
+|   (dolist (theme custom-enabled-themes)
+|     (disable-theme theme)))
+| 
+| (defun spike-leung/apply-random-theme ()
+|   "Disable current themes and apply a random theme from `spike-leung/candidate-themes`."
+|   (interactive)
+|   (when (boundp 'spike-leung/candidate-themes)
+|     (spike-leung/disable-all-active-themes)
+|     (let ((theme (nth (random (length spike-leung/candidate-themes)) spike-leung/candidate-themes)))
+|       (condition-case err
+|           (progn
+|             ;; Load theme to ensure its specific settings/customizations are applied
+|             (load-theme theme :no-confirm)
+|             ;; Enable the theme (this actually applies it and adds to custom-enabled-themes)
+|             (enable-theme theme)
+|             (message "Applied random theme: %s" theme))
+|         (error (message "Error applying theme %s: %s" theme err))))))
+| 
+| (run-with-timer (* 15 60) (* 15 60) 'spike-leung/apply-random-theme)
+`----
+
+[Source]
+
+这段代码主要做了这几个事：
+
+- 定义一个变量，存储所有我需要随机的主题
+- 定义一个函数，随机从变量中获取一个主题然后应用
+  + 重置当前的主题设置
+  + 随机获取一个主题
+  + 加载获取的主题
+- 设置一个定时器，每隔一定时间调用函数切换主题
+
+用了一阵子，它很好地满足了我的新鲜感，如果你感兴趣，不妨试试～
+
+へ(゜∇、°)へ へ(゜∇、°)へ
+
+说起来奇怪，如果是我自己主动切换的主题，可能切换后我马上就想换了。
+
+但是随机切换的主题，我反而有种顺其自然的心境，更愿意先用用看。
+
+------------------------------------------------------------------------
+
+*更新*
+
+现在主要使用 `modus-themes' ，通过 `light' 和 `dark' 两个函数切换明暗主
+题。
+
+,----
+| (use-package modus-themes
+|   :ensure
+|   :init
+|   (defun spike-leung/modus-themes-load-based-on-time ()
+|     "根据当前时间加载主题：08:00-18:00 使用浅色主题，其他时间使用深色主题。"
+|     (let ((hour (string-to-number (format-time-string "%H"))))
+|       (if (and (>= hour 8) (< hour 18))
+|           (modus-themes-load-random 'light)
+|         (modus-themes-load-random 'dark))))
+|   ;; 因为 desktop 会保存 face 相关内容，可能会和主题冲突，因此主题加载需要在恢复 desktop 之后
+|   :hook (desktop-after-read . spike-leung/modus-themes-load-based-on-time)
+|   :config
+|   (setq modus-themes-italic-constructs t
+|         modus-themes-bold-constructs t
+|         modus-themes-disable-other-themes t)
+|   ;; remove fill-column-indicator background
+|   (modus-themes-with-colors
+|     (custom-set-faces
+|      `(fill-column-indicator ((,c :background unspecified :foreground ,bg-dim :height 1.0)))))
+|   (defun light()
+|     "Toggle light theme."
+|     (interactive)
+|     (modus-themes-load-random 'light))
+|   (defun dark()
+|     "Toggle dark theme."
+|     (interactive)
+|     (modus-themes-load-random 'dark)))
+`----
+
+[Source]
+
+------------------------------------------------------------------------
+
+*更新*
+
+看到 Prot 一直在更新 `doric-themes' 和 `ef-themes' ，于是又心痒痒。
+
+`ef-themes' 颜色最鲜艳， `modus-themes' 次之， `doric-themes' 最单调，周
+三前觉得周末很远，比较煎熬，所以周一到周三使用 `ef-themes' ，让色彩丰富
+明亮一些；周四周五快到周末了，心情渐佳，改用 `modus-themes' ；周末应该好
+好休息，就用单调一些的 `doric-themes' ，避免过分沉浸在 Emacs 中。白天用
+亮色主题，晚上用暗色主题。
+
+,----
+| ;; theme
+| (use-package modus-themes
+|   :config
+|   (setq modus-themes-italic-constructs t
+|         modus-themes-bold-constructs t
+|         modus-themes-disable-other-themes t)
+|   ;; remove fill-column-indicator background
+|   (modus-themes-with-colors
+|     (custom-set-faces
+|      `(fill-column-indicator ((,c :background unspecified :foreground ,bg-dim :height 1.0))))))
+| 
+| (use-package ef-themes)
+| (use-package doric-themes)
+| 
+| (defun spike-leung/load-theme-by-time (light-fn dark-fn)
+|   "Call LIGHT-FN  to load light themes from 8:00a.m to 6:00p.m.
+| otherwise, call DARK-FN to load dark themes."
+|   (let ((hour (string-to-number (format-time-string "%H"))))
+|     (funcall (if (and (>= hour 8) (< hour 18)) light-fn dark-fn))))
+| 
+| (defun spike-leung/themes-load-random (&optional background-mode)
+|   "Random load themes.
+| 
+| Use `ef-themes' for Monday,Tuesday,Wednesday.
+| Use `modus-themes' on Thursday, Friday.
+| Use `doric-themes' on Saturday, Sunday.
+| Use light themes at day, use dark themes at night.
+| 
+| With optional BACKGROUND-MODE as a prefix argument, prompt to limit the
+| set of themes to either dark or light variants."
+|   (require 'modus-themes)
+|   (require 'ef-themes)
+|   (require 'doric-themes)
+|   (let ((week (string-to-number (format-time-string "%u"))))
+|     (cond
+|      ((<= week 3)
+|       (cond
+|        ((eq background-mode 'light) (ef-themes-load-random-light))
+|        ((eq background-mode 'dark) (ef-themes-load-random-dark))
+|        (t (spike-leung/load-theme-by-time #'ef-themes-load-random-light #'ef-themes-load-random-dark))))
+|      ((<= week 5)
+|       (if background-mode
+|           (modus-themes-load-random background-mode)
+|         (spike-leung/load-theme-by-time
+|          (lambda () (modus-themes-load-random 'light))
+|          (lambda () (modus-themes-load-random 'dark)))))
+|      (t
+|       (if background-mode
+|           (doric-themes-load-random background-mode)
+|         (spike-leung/load-theme-by-time
+|          (lambda () (doric-themes-load-random 'light))
+|          (lambda () (doric-themes-load-random 'dark))))))))
+| 
+| (defun light()
+|   "Load random light themes."
+|   (interactive)
+|   (setq spike-leung/current-theme-background-mode 'light)
+|   (spike-leung/themes-load-random 'light)
+|   (modify-frame-parameters nil `((alpha . 100))))
+| 
+| (defun dark()
+|   "Load random dark themes."
+|   (interactive)
+|   (setq spike-leung/current-theme-background-mode 'dark)
+|   (spike-leung/themes-load-random 'dark)
+|   ;; 暗色主题适当降低透明度，看起来更好看。不同的主题适合不同的透明度。
+|   (let ((theme (format "%s" custom-enabled-themes)))
+|     (cond
+|      ((string-match-p (rx (or "modus-" "ef-")) theme)
+|       (modify-frame-parameters nil `((alpha . 80))))
+|      ((string-match-p "doric-" theme)
+|       (modify-frame-parameters nil `((alpha . 95)))))))
+| 
+| ;; 要在 desktop 加载后再执行，避免被 desktop 记录的主题覆盖，导致混乱
+| (add-hook 'desktop-after-read-hook #'spike-leung/themes-load-random)
+`----
+
+[Source]
+
+另外，我平时写博客会用到 [Olivetti]，`ef-themes' 和 `doric-themes' 没有
+设置 fringe 的颜色，导致 Olivetti 主体和 fringe 无法区分。所以我写了个函
+数，在切换主题之后，获取一个和 Olivetti 主体接近的颜色作为
+`olivetti-fringe' 的颜色。
+
+,----
+| ;; olivetti 是一款打字机的名字，这个模式会模仿打字机的纸张大小，写作时用
+| (use-package olivetti
+|   :diminish
+|   :custom
+|   (olivetti-style 'fancy)
+|   (olivetti-body-width 100)
+|   (olivetti-margin-width 5)
+|   :hook (olivetti-mode-on . spike-leung/set-olivetti-fringe-face)
+|   :config
+|   (defun spike-leung/set-olivetti-fringe-face (&rest _)
+|     "Set `olivetti-fringe' to `fringe''s background, fallback to `org-block''s background."
+|     (let ((bg-default (face-attribute 'default :background nil))
+|           (bg-fringe (face-attribute 'fringe :background nil))
+|           (bg-fallback (face-attribute 'org-block :background nil)))
+|       (if (eq bg-default bg-fringe)
+|           (set-face-attribute 'olivetti-fringe nil :background bg-fallback)
+|         (set-face-attribute 'olivetti-fringe nil :background bg-fringe))))
+| 
+|   (advice-remove 'spike-leung/themes-load-random #'spike-leung/set-olivetti-fringe-face)
+|   (advice-add 'spike-leung/themes-load-random :after #'spike-leung/set-olivetti-fringe-face))
+`----
+
+------------------------------------------------------------------------
+
+*其他参考*
+
+- [Picking an emacs colour theme] by gds
+- [guidoschmidt/circadian.el] Theme-switching for Emacs based on daytime
+- [Setting Emacs Theme Based on Ambient Light] by Matt Bilyeu
+- [Darkman for Emacs]
+
+
+[modus-themes] <https://github.com/protesilaos/modus-themes>
+
+[ef-themes] <https://github.com/protesilaos/ef-themes>
+
+[protesilaos] <https://github.com/protesilaos>
+
+[doric-themes] <https://github.com/protesilaos/doric-themes>
+
+[consult] <https://github.com/minad/consult>
+
+[emacs-更改配色方案]
+<https://tomoemami.github.io/20250520T155435--emacs-%E6%9B%B4%E6%94%B9%E9%85%8D%E8%89%B2%E6%96%B9%E6%A1%88__blog.html>
+
+[Source]
+<https://github.com/Spike-Leung/emacs.d/blob/b154827ba5be6944b5134cfc5abdb0603178ee5e/lisp/my-lisp/init-my-theme.el>
+
+[Source]
+<https://github.com/Spike-Leung/Spikemacs/blob/89772555ee975cdac276b0678d758cbac7bfdbc8/lisp/init-ui.el#L48-L76>
+
+[Source]
+<https://github.com/Spike-Leung/Spikemacs/blob/65b9510858af876df69ed38a00aa3916a9b83280/lisp/init-ui.el#L51-L115>
+
+[Olivetti] <https://github.com/rnkn/olivetti>
+
+[Picking an emacs colour theme]
+<https://www.kindness.city/blog/2026-trying-out-emacs-colour-themes.html>
+
+[guidoschmidt/circadian.el]
+<https://github.com/guidoschmidt/circadian.el>
+
+[Setting Emacs Theme Based on Ambient Light]
+<https://matthewbilyeu.com/blog/2018-04-09/setting-emacs-theme-based-on-ambient-light>
+
+[Darkman for Emacs] <https://darkman.grtcdr.tn/>

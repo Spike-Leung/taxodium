@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Git 的校验实践</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="使用 husky，lint-staged 等工具校验 git 提交，从而提高 git 提交的质量。还分享了一些 git message 如何写得更好的内容。" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="使用 husky，lint-staged 等工具校验 git 提交，从而提高 git 提交的质量。还分享了一些 git message 如何写得更好的内容。">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -117,11 +117,11 @@
 配置 Git 编辑器：
 </p>
 <div class="org-src-container">
-<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">vim &#21487;&#20197;&#25442;&#25104;&#20320;&#20064;&#24815;&#30340;&#32534;&#36753;&#22120;
-</span>git config --global core.editor <span class="org-string">"vim"</span>
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">vim &#21487;&#20197;&#25442;&#25104;&#20320;&#20064;&#24815;&#30340;&#32534;&#36753;&#22120;</span>
+git config --global core.editor <span class="org-string">"vim"</span>
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">&#25110;&#32773;&#35774;&#32622; GIT_EDITOR &#21464;&#37327;&#65292;&#22312;&#20320;&#30340; .bashrc / .zshrc &#25991;&#20214;&#20013;&#28155;&#21152;&#21363;&#21487;
-</span><span class="org-builtin">export</span> <span class="org-variable-name">GIT_EDITOR</span>=vim
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#25110;&#32773;&#35774;&#32622; GIT_EDITOR &#21464;&#37327;&#65292;&#22312;&#20320;&#30340; .bashrc / .zshrc &#25991;&#20214;&#20013;&#28155;&#21152;&#21363;&#21487;</span>
+<span class="org-builtin">export</span> <span class="org-variable-name">GIT_EDITOR</span>=vim
 </code></pre>
 </div>
 </div>
@@ -175,21 +175,21 @@ and <span class="org-sh-quoted-exec">`rebase`</span> can get confused if you run
 Explain the problem that this commit is solving. Focus on why you
 are making this change as opposed to how (the code explains that).
 Are there side effects or other unintuitive consequences of this
-change? Here<span class="org-string">'s the place to explain them.
+change? Here<span class="org-string">'s the place to explain them.</span>
 
-Further paragraphs come after blank lines.
+<span class="org-string">Further paragraphs come after blank lines.</span>
 
- - Bullet points are okay, too
+<span class="org-string"> - Bullet points are okay, too</span>
 
- - Typically a hyphen or asterisk is used for the bullet, preceded
-   by a single space, with blank lines in between, but conventions
-   vary here
+<span class="org-string"> - Typically a hyphen or asterisk is used for the bullet, preceded</span>
+<span class="org-string">   by a single space, with blank lines in between, but conventions</span>
+<span class="org-string">   vary here</span>
 
-If you use an issue tracker, put references to them at the bottom,
-like this:
+<span class="org-string">If you use an issue tracker, put references to them at the bottom,</span>
+<span class="org-string">like this:</span>
 
-Resolves: #123
-See also: #456, #789</span>
+<span class="org-string">Resolves: #123</span>
+<span class="org-string">See also: #456, #789</span>
 </code></pre>
 </div>
 </div>
@@ -242,15 +242,15 @@ Multi-line description of commit,
 feel free to be detailed.
 
 [Ticket: X]
-<span class="org-comment-delimiter"># </span><span class="org-comment">Please enter the commit message for your changes. Lines starting
-</span><span class="org-comment-delimiter"># </span><span class="org-comment">with '#' will be ignored, and an empty message aborts the commit.
-</span><span class="org-comment-delimiter"># </span><span class="org-comment">On branch master
-</span><span class="org-comment-delimiter"># </span><span class="org-comment">Changes to be committed:
-</span><span class="org-comment-delimiter">#   </span><span class="org-comment">(use "git reset HEAD &lt;file&gt;..." to unstage)
-</span><span class="org-comment-delimiter">#</span><span class="org-comment">
-</span><span class="org-comment-delimiter"># </span><span class="org-comment">modified:   lib/test.rb
-</span><span class="org-comment-delimiter">#</span><span class="org-comment">
-</span>~
+<span class="org-comment-delimiter"># </span><span class="org-comment">Please enter the commit message for your changes. Lines starting</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">with '#' will be ignored, and an empty message aborts the commit.</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">On branch master</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Changes to be committed:</span>
+<span class="org-comment-delimiter">#   </span><span class="org-comment">(use "git reset HEAD &lt;file&gt;..." to unstage)</span>
+<span class="org-comment-delimiter">#</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">modified:   lib/test.rb</span>
+<span class="org-comment-delimiter">#</span>
+~
 ~
 <span class="org-string">".git/COMMIT_EDITMSG"</span> 14L, 297C
 </code></pre>
@@ -343,8 +343,8 @@ githooks 最早出现的版本时 <code>2.19.0</code> ，如果你的 Git 版本
 设置好语言后，就编写脚本，例如 <code>pre-push</code>:
 </p>
 <div class="org-src-container">
-<pre class="src src-shell"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/bin/</span><span class="org-keyword">sh</span><span class="org-comment">
-</span><span class="org-variable-name">COMMIT_ID</span>=$(git log -n 1 --pretty=format:<span class="org-string">"%H"</span> main)
+<pre class="src src-shell"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/bin/</span><span class="org-keyword">sh</span>
+<span class="org-variable-name">COMMIT_ID</span>=$(git log -n 1 --pretty=format:<span class="org-string">"%H"</span> main)
 
 <span class="org-keyword">if</span> git merge-base --is-ancestor $<span class="org-variable-name">COMMIT_ID</span> HEAD
 <span class="org-keyword">then</span>
@@ -415,8 +415,8 @@ drwxrwxr-x 2 spike spike 4096 Oct 25 09:14 _
 安装  <a href="https://github.com/conventional-changelog/commitlint">commitlint</a> 以来，然后创建 <code>commit-msg</code> 钩子，在提交后，校验提交信息是否符合规范：
 </p>
 <div class="org-src-container">
-<pre class="src src-shell"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">env</span><span class="org-comment"> sh
-</span>. <span class="org-string">"$(dirname -- "$0")/_/husky.sh"</span>
+<pre class="src src-shell"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">env</span><span class="org-comment"> sh</span>
+. <span class="org-string">"$(dirname -- "$0")/_/husky.sh"</span>
 
 npx --no -- commitlint --edit ${<span class="org-variable-name">1</span>}
 </code></pre>
@@ -426,8 +426,8 @@ npx --no -- commitlint --edit ${<span class="org-variable-name">1</span>}
 <div id="outline-container-b568a982-3ed4-4d97-af63-abe11f373d79" class="outline-4">
 <h4 id="b568a982-3ed4-4d97-af63-abe11f373d79"><a href="#b568a982-3ed4-4d97-af63-abe11f373d79">提交前校验&amp;格式化代码(pre-commit)</a></h4>
 <div class="outline-text-4" id="text-b568a982-3ed4-4d97-af63-abe11f373d79"><div class="org-src-container">
-<pre class="src src-shell"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">env</span><span class="org-comment"> sh
-</span>. <span class="org-string">"$(dirname -- "$0")/_/husky.sh"</span>
+<pre class="src src-shell"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">env</span><span class="org-comment"> sh</span>
+. <span class="org-string">"$(dirname -- "$0")/_/husky.sh"</span>
 npx lint-staged
 </code></pre>
 </div>
@@ -454,18 +454,18 @@ npx lint-staged
 <div id="outline-container-35c1589b-671f-4259-854e-377d7680471f" class="outline-4">
 <h4 id="35c1589b-671f-4259-854e-377d7680471f"><a href="#35c1589b-671f-4259-854e-377d7680471f">推送时判断是否合包含主分支提交(pre-push)</a></h4>
 <div class="outline-text-4" id="text-35c1589b-671f-4259-854e-377d7680471f"><div class="org-src-container">
-<pre class="src src-shell"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/bin/</span><span class="org-keyword">sh</span><span class="org-comment">
-</span><span class="org-comment-delimiter"># </span><span class="org-comment">&#33719;&#21462; main &#20998;&#25903;&#26368;&#26032;&#30340;&#25552;&#20132;
-</span>git fetch
+<pre class="src src-shell"><code><span class="org-comment-delimiter">#</span><span class="org-comment">!/bin/</span><span class="org-keyword">sh</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#33719;&#21462; main &#20998;&#25903;&#26368;&#26032;&#30340;&#25552;&#20132;</span>
+git fetch
 <span class="org-variable-name">COMMIT_ID</span>=$(git log -n 1 --pretty=format:<span class="org-string">"%H"</span> origin/main)
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">&#21028;&#26029; main &#30340;&#26368;&#26032;&#25552;&#20132; &#26159;&#19981;&#26159; &#24403;&#21069;&#30340;&#26368;&#26032;&#25552;&#20132; (HEAD) &#30340;&#19978;&#28216;
-</span><span class="org-keyword">if</span> git merge-base --is-ancestor $<span class="org-variable-name">COMMIT_ID</span> HEAD
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#21028;&#26029; main &#30340;&#26368;&#26032;&#25552;&#20132; &#26159;&#19981;&#26159; &#24403;&#21069;&#30340;&#26368;&#26032;&#25552;&#20132; (HEAD) &#30340;&#19978;&#28216;</span>
+<span class="org-keyword">if</span> git merge-base --is-ancestor $<span class="org-variable-name">COMMIT_ID</span> HEAD
 <span class="org-keyword">then</span>
     <span class="org-keyword">exit</span> 0
 <span class="org-keyword">else</span>
-    <span class="org-comment-delimiter"># </span><span class="org-comment">&#22914;&#26524;&#19981;&#26159;&#21017;&#25552;&#31034; exit code &#19981;&#20026; 0&#65292;&#20250;&#38459;&#26029; push&#65292;&#26080;&#27861;&#25512;&#36865;&#21040;&#36828;&#31243;
-</span>    <span class="org-builtin">echo</span> <span class="org-string">"&#20027;&#20998;&#25903;&#26377;&#20320;&#27809;&#26377;&#21512;&#24182;&#30340;&#25552;&#20132;&#65292;&#22312;&#25552;&#27979;&#21069;&#35831;&#21512;&#24182;"</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">&#22914;&#26524;&#19981;&#26159;&#21017;&#25552;&#31034; exit code &#19981;&#20026; 0&#65292;&#20250;&#38459;&#26029; push&#65292;&#26080;&#27861;&#25512;&#36865;&#21040;&#36828;&#31243;</span>
+    <span class="org-builtin">echo</span> <span class="org-string">"&#20027;&#20998;&#25903;&#26377;&#20320;&#27809;&#26377;&#21512;&#24182;&#30340;&#25552;&#20132;&#65292;&#22312;&#25552;&#27979;&#21069;&#35831;&#21512;&#24182;"</span>
     <span class="org-keyword">exit</span> 1
 <span class="org-keyword">fi</span>
 
@@ -533,7 +533,6 @@ changeset 就会帮你把所有的 changeset 合并到 <code>CHANGELOG.md</code>
 </div>
 </div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -548,23 +547,21 @@ changeset 就会帮你把所有的 changeset 合并到 <code>CHANGELOG.md</code>
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2022-11-17 Thu 14:44">2022-11-17 Thu 14:44</time>，更新于 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Git 的校验实践 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2022-11-17 Thu 14:44">2022-11-17 Thu 14:44</time>，更新於 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Git 的校验实践 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/git-lint-practice.txt">純文本版本</a> 或 <a href="/git-lint-practice.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

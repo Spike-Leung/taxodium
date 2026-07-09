@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Emacs 中配置 .authinfo.gpg</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="在 Emacs 中如何配置 .authinfo 获取 LLM 的 API Key，以及如何加密 authinfo" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="在 Emacs 中如何配置 .authinfo 获取 LLM 的 API Key，以及如何加密 authinfo">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -125,7 +125,7 @@ Emacs 是通过 <code>auth-source</code> 去实现身份验证的，一般将验
 <b>machine</b> 是服务器，可以是 DNS 名称或 IP 地址，对应 <code>auth-source-search</code> 中的 <code>:host</code> 。
 </p>
 
-<section role="note" id="org9be1d65">
+<section role="note" id="org3f0b967">
 <p>
 <code>auth-source-search</code> 是 Emacs 中的一个函数，可以基于条件查询返回用 <code>auth-source</code> 定义的密钥。
 </p>
@@ -164,19 +164,19 @@ machine openrouter.ai/api login apikey password xxxx
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">get-deepseek-api-key</span> ()
   <span class="org-doc">"Get deepseek api from .authinfo."</span>
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">auth-source-search</span></span><span class="org-comment">' &#36820;&#22238;&#30340;&#26159;&#19968;&#20010; list&#65292;&#37324;&#38754;&#21253;&#21547;&#22810;&#20010; pList&#65292;
-</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36890;&#36807; `</span><span class="org-comment"><span class="org-constant">:host</span></span><span class="org-comment">'&#12289;`</span><span class="org-comment"><span class="org-constant">:user</span></span><span class="org-comment">'&#12289;`</span><span class="org-comment"><span class="org-constant">:requrie</span></span><span class="org-comment">' &#38480;&#21046;&#26597;&#35810;&#26465;&#20214;&#65292;&#19968;&#33324;&#21482;&#20250;&#36820;&#22238;&#19968;&#20010; pList
-</span>  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36890;&#36807; `</span><span class="org-comment"><span class="org-constant">car</span></span><span class="org-comment">' &#33719;&#21462;&#31532;&#19968;&#20010; pList&#65292;&#20877;&#36890;&#36807; `</span><span class="org-comment"><span class="org-constant">plist-get</span></span><span class="org-comment">' &#33719;&#21462; `</span><span class="org-comment"><span class="org-constant">:secret</span></span><span class="org-comment">' &#23646;&#24615;&#30340;&#20540;
-</span>  (<span class="org-keyword">if-let</span> ((secret (plist-get (car (auth-source-search
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">auth-source-search</span></span><span class="org-comment">' &#36820;&#22238;&#30340;&#26159;&#19968;&#20010; list&#65292;&#37324;&#38754;&#21253;&#21547;&#22810;&#20010; pList&#65292;</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36890;&#36807; `</span><span class="org-comment"><span class="org-constant">:host</span></span><span class="org-comment">'&#12289;`</span><span class="org-comment"><span class="org-constant">:user</span></span><span class="org-comment">'&#12289;`</span><span class="org-comment"><span class="org-constant">:requrie</span></span><span class="org-comment">' &#38480;&#21046;&#26597;&#35810;&#26465;&#20214;&#65292;&#19968;&#33324;&#21482;&#20250;&#36820;&#22238;&#19968;&#20010; pList</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36890;&#36807; `</span><span class="org-comment"><span class="org-constant">car</span></span><span class="org-comment">' &#33719;&#21462;&#31532;&#19968;&#20010; pList&#65292;&#20877;&#36890;&#36807; `</span><span class="org-comment"><span class="org-constant">plist-get</span></span><span class="org-comment">' &#33719;&#21462; `</span><span class="org-comment"><span class="org-constant">:secret</span></span><span class="org-comment">' &#23646;&#24615;&#30340;&#20540;</span>
+  (<span class="org-keyword">if-let</span> ((secret (plist-get (car (auth-source-search
                                     <span class="org-builtin">:host</span> <span class="org-string">"api.deepseek.com"</span>
                                     <span class="org-builtin">:user</span> <span class="org-string">"apikey"</span>
                                     <span class="org-builtin">:require</span> '(<span class="org-builtin">:secret</span>)))
                               <span class="org-builtin">:secret</span>)))
-      <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">:secret</span></span><span class="org-comment">' &#21487;&#33021;&#26159;&#19968;&#20010;&#20989;&#25968;
-</span>      (<span class="org-keyword">if</span> (functionp secret)
+      <span class="org-comment-delimiter">;; </span><span class="org-comment">`</span><span class="org-comment"><span class="org-constant">:secret</span></span><span class="org-comment">' &#21487;&#33021;&#26159;&#19968;&#20010;&#20989;&#25968;</span>
+      (<span class="org-keyword">if</span> (functionp secret)
           (encode-coding-string (funcall secret) 'utf-8)
-        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22914;&#26524;&#19981;&#26159;&#20989;&#25968;&#21017;&#30452;&#25509;&#36820;&#22238;
-</span>        secret)
+        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#22914;&#26524;&#19981;&#26159;&#20989;&#25968;&#21017;&#30452;&#25509;&#36820;&#22238;</span>
+        secret)
     (<span class="org-warning">user-error</span> <span class="org-string">"No %s found in the auth source"</span> user)))
 </code></pre>
 </div>
@@ -205,8 +205,8 @@ machine openrouter.ai/api login apikey password xxxx
 </p>
 
 <div class="org-src-container">
-<pre class="src src-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">&#30465;&#30053;&#20854;&#20182;&#20195;&#30721;
-</span>
+<pre class="src src-lisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">&#30465;&#30053;&#20854;&#20182;&#20195;&#30721;</span>
+
 <span id="coderef-call-immersive-translate-api-key" class="coderef-off">(<span class="org-string">"Authorization"</span> . ,(concat <span class="org-string">"Bearer "</span> (immersive-translate-api-key</span>
 <span id="coderef-param-host" class="coderef-off">                                       immersive-translate-chatgpt-host</span>
 <span id="coderef-param-user" class="coderef-off">                                       <span class="org-string">"apikey"</span>))))))</span>
@@ -221,12 +221,12 @@ machine openrouter.ai/api login apikey password xxxx
 
 <div class="org-src-container">
 <pre class="src src-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">immersive-translate-api-key</span> (host user)
-  <span class="org-doc">"Lookup api key in the auth source.
+  <span class="org-doc">"Lookup api key in the auth source.</span>
 
-By default, `</span><span class="org-doc"><span class="org-constant">immersive-translate-chatgpt-host</span></span><span class="org-doc">' is used as HOST
-and \"apikey\" as USER in Chatgpt backend.
-\"fanyi-api.baidu.com\" is used as HOST and
-`</span><span class="org-doc"><span class="org-constant">immersive-translate-baidu-appid</span></span><span class="org-doc">' as USER in Baidu backend."</span>
+<span class="org-doc">By default, `</span><span class="org-doc"><span class="org-constant">immersive-translate-chatgpt-host</span></span><span class="org-doc">' is used as HOST</span>
+<span class="org-doc">and \"apikey\" as USER in Chatgpt backend.</span>
+<span class="org-doc">\"fanyi-api.baidu.com\" is used as HOST and</span>
+<span class="org-doc">`</span><span class="org-doc"><span class="org-constant">immersive-translate-baidu-appid</span></span><span class="org-doc">' as USER in Baidu backend."</span>
 <span id="coderef-auth-source-search" class="coderef-off">  (if-let ((secret (plist-get (car (auth-source-search</span>
 <span id="coderef-host" class="coderef-off">                                    <span class="org-builtin">:host</span> host</span>
 <span id="coderef-user" class="coderef-off">                                    <span class="org-builtin">:user</span> user</span>
@@ -302,7 +302,7 @@ sub   rsa4096 2025-02-27 [E]
 <li><code>l-yanlei@hotmail.com</code> 是和这个 gpg 密钥关联的邮箱</li>
 </ul>
 
-<section role="note" id="orgead90f2">
+<section role="note" id="orgd5298cb">
 <p>
 关于 GPG 密钥的更详细的解释，你可以看 <a href="https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/">Anatomy of a GPG Key</a>。
 </p>
@@ -339,7 +339,7 @@ sub   rsa4096 2025-02-27 [E]
 Emacs 内置的 EasyPG Assistant 可以帮你 <b>自动</b> 完成加密解密，当需要访问 gpg 加密文件的时候它就会启用，你不需要额外做什么。
 </p>
 
-<section role="note" id="org7781dc0">
+<section role="note" id="orgbc77495">
 <p>
 在 Emacs 中你可以通过 <code>C-h R epa</code> 查看 EasyPG Assistant 的文档。
 </p>
@@ -409,7 +409,6 @@ Emacs 内置的 EasyPG Assistant 可以帮你 <b>自动</b> 完成加密解密�
 </div>
 </div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -424,23 +423,21 @@ Emacs 内置的 EasyPG Assistant 可以帮你 <b>自动</b> 完成加密解密�
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2025-02-27 Thu 14:29">2025-02-27 Thu 14:29</time>，更新于 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Emacs 中配置 .authinfo.gpg &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2025-02-27 Thu 14:29">2025-02-27 Thu 14:29</time>，更新於 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Emacs 中配置 .authinfo.gpg &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/config-authinfo-with-emacs.txt">純文本版本</a> 或 <a href="/config-authinfo-with-emacs.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

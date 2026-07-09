@@ -1,0 +1,388 @@
+                           __________________
+
+                            注释是你的好朋友
+
+                              Spike Leung
+                           __________________
+
+
+                         [2025-02-26 Wed 16:30]
+
+
+Table of Contents
+_________________
+
+1. 为什么需要写注释
+2. 什么时候需要写注释
+.. 1. 一些不建议使用注释的场景
+.. 2. 一些建议使用注释的场景
+3. 注释的分类
+4. 注释和代码同等重要
+5. Refs
+
+
+我收集了一些关于代码注释的文章，这篇文章是对它们的整理。
+
+推荐去阅读一下原文，如果你有更好的文章，也欢迎分享 ヾ(*´∀ ˋ*)ﾉ
+
+
+1 为什么需要写注释
+==================
+
+  写代码是什么，不同的人有不同的答案，但有 [一个答案] 我很喜欢：
+
+        Writing code is sharing the experience of understanding
+        the requirements/implementation.
+
+        编写代码就是分享理解需求/实现的经验。
+
+  编码始于需求，我们写下的代码，是对需求的实现和描述，体现了我们对需求的
+  理解。而当别人阅读代码的时候，我们希望对方能通过代码理解当时的需求，理
+  解我们的设计，这就要求代码具有很高的可读性。
+
+  提高可读性，除了代码本身，注释也发挥着很大的作用。
+
+        虽然逐行记录代码的功能通常没有太大用处，因为通过阅读代码就
+        能理解其含义，但编写可读代码的一个关键目标是降低读者在阅读
+        代码时需要记住的努力和细节数量。因此，对我来说，注释可以是
+        降低读者认知负担的工具。以下代码片段就是一个好例子:
+
+        ,----
+        | /* Initial Stack: array */
+        |   lua_getglobal(lua,"table");
+        |   lua_pushstring(lua,"sort");
+        |   lua_gettable(lua,-2);       /* Stack: array, table, table.sort */
+        |   lua_pushvalue(lua,-3);      /* Stack: array, table, table.sort, array */
+        |   if (lua_pcall(lua,1,0,0)) {
+        |       /* Stack: array, table, error */
+        | 
+        |       /* We are not interested in the error, we assume that the problem is
+        |        * that there are 'false' elements inside the array, so we try
+        |        * again with a slower function but able to handle this case, that
+        |        * is: table.sort(table, __redis__compare_helper) */
+        |       lua_pop(lua,1);             /* Stack: array, table */
+        |       lua_pushstring(lua,"sort"); /* Stack: array, table, sort */
+        |       lua_gettable(lua,-2);       /* Stack: array, table, table.sort */
+        |       lua_pushvalue(lua,-3);      /* Stack: array, table, table.sort, array */
+        |       lua_getglobal(lua,"__redis__compare_helper");
+        |       /* Stack: array, table, table.sort, array, __redis__compare_helper */
+        |       lua_call(lua,2,0);
+        |   }
+        `----
+
+        [Source]
+
+  ([文档]，[提交信息和错误报告] 也很有用！)
+
+  或许你会认为，只要我把代码写得足够清晰，代码本身就是自解释的，我不需要
+  注释。但我觉得下面这段话说得很对，大多时候这都是 「自欺欺人」：
+
+        许多开发者抱有一种不切实际的信念，认为如果代码足够清晰，就
+        不需要使用注释。这是一个美好的前提，但根本不成立。第一个问
+        题是，大多数开发者面临巨大的时间压力，没有时间将代码写得如
+        此清晰，以至于不需要进一步的注释。事实上，程序员更常见的经
+        历是，看到自己六个月前写的代码时，会想 「我真不敢相信这是
+        我写的！」_不要自欺欺人，以为你可以写出如此清晰的代码，以
+        至于不需要注释就能理解。_
+
+        另一个问题是，_代码仅解释了事情是如何完成的，而不是为什么
+        以那种方式完成，_特别是当有明显的替代方案时；如果「为什么」
+        不是显而易见的，技术债务就会在缺乏解释的情况下累积。请注意，
+        如果没有这样的解释性注释，代码可能会变得极其难以维护，⸺ _
+        因为没有人敢去触碰它，这正是技术债务的定义。_
+
+        [Source]
+
+  写代码和写作有点相似，代码是写给人看的（包括自己），要尽可能地清晰传达
+  代码的意图，而注释可以帮助我们揭示代码中隐含的意图，让读者更好理解。
+
+  理解代码，最终还是依靠「读者」自己，或许我们写的注释还不足以将一切描述
+  清楚，但至少通过注释，我们补充一些信息，辅助别人阅读我们的代码。
+
+        这里的关键是你我都陷入了同一个陷阱。我在 18 年前重构了那个
+        旧算法，我认为所有那些方法和变量名称会使我的意图清晰 ⸺ 因
+        为我理解那个算法。
+
+        你在一段时间前写了那段代码，并用你认为能解释你意图的注释进
+        行了装饰 ⸺ 因为你理解那个算法。
+
+        但我的变量名在 18 年后并没有帮助我。它们也没有帮助你，或者
+        你的学生。而你的注释也没有帮助我。
+
+        我们在箱子里试图与那些站在外面、看不到我们所看到的东西的人
+        沟通。
+
+        _说到底，向一个对你试图解释的细节不熟悉的人解释某件事是非
+        常困难的。_ _我们的解释往往只有在读者自己理清了细节之后才
+        有意义。_
+
+        [Source]
+
+
+[一个答案]
+<https://zverok.space/blog/2024-10-06-poetry.html#:~:text=Taking%20the%20definition%20of%20writing%20from%20earlier%2C%20we%20can%20say%20that%20writing%20code%20is%20sharing%20the%20experience%20of%20understanding%20the%20requirements/implementation.>
+
+[Source]
+<https://antirez.com/news/124#:~:text=2.%20While%20it,of%20the%20reader>
+
+[文档] <https://vadimkravcenko.com/shorts/proper-documentation/>
+
+[提交信息和错误报告]
+<https://testing.googleblog.com/2017/09/code-health-providing-context-with.html>
+
+[Source]
+<https://blogs.oracle.com/javamagazine/post/java-comments-reduce-technical-debt#:~:text=Comments%20explain%20the%20code,definition%20of%20technical%20debt>
+
+[Source]
+<https://github.com/johnousterhout/aposd-vs-clean-code/tree/main#:~:text=The%20bottom%20line,details%20for%20themself.>
+
+
+2 什么时候需要写注释
+====================
+
+  [当代码不足以描述清楚逻辑的时候，就考虑补充注释]。
+
+
+[当代码不足以描述清楚逻辑的时候，就考虑补充注释]
+<https://testing.googleblog.com/2017/07/code-health-to-comment-or-not-to-comment.html>
+
+2.1 一些不建议使用注释的场景
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  - 可以使用含义更具体的变量，函数描述代码逻辑，而不需要注释
+
+    使用具体含义的变量
+    ,----
+    | - // 总价格中减去折扣
+    | - finalPrice = (numItems * itemPrice) - min(5, numItems) * itemPrice * 0.1;
+    | 
+    | + price = numItems * itemPrice;
+    | + discount = min(5, numItems) * itemPrice * 0.1;
+    | + finalPrice = price - discount;
+    | 
+    `----
+
+    ,----
+    | - int width = ...; // Width in pixels.
+    | 
+    | + int widthInPixels = ...;
+    | 
+    `----
+
+    使用函数封装，函数名揭示逻辑
+    ,----
+    | - // Filter offensive words.
+    | - for (String word : words) { ... }
+    | 
+    | + filterOffensiveWords(words);
+    | 
+    `----
+
+  - 添加检查，而不是用注释描述
+
+    ,----
+    | - // height 总是大于 0，所以这里不会出错
+    | - return width / height;
+    | 
+    | + checkArgument(height > 0);
+    | + return width / height;
+    | 
+    `----
+
+  - 代码已经足够清楚，不需要重复描述
+    ,----
+    | - // Get all users.
+    | userService.getAllUsers();
+    | - // Check if the name is empty.
+    | if (name.isEmpty()) { ... }
+    `----
+
+
+2.2 一些建议使用注释的场景
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  - 揭示你的意图：解释代码 /为什么/ 要做某些事情（而不是做什么）。
+    ,----
+    | // 只计算一次，因为计算成本很高。
+    `----
+
+  - 保护未来善意的编辑人员不会错误地「修正」你的代码。
+    ,----
+    | // 创建一个新的 Foo 实例，因为 Foo 不是线程安全的。
+    `----
+
+  - 澄清：代码审查过程中出现的问题，或代码读者可能提出/困惑的问题。
+    ,----
+    | // 注意顺序很重要，因为...
+    `----
+
+  - 解释你写不符合规范/要求的代码的理由
+    ,----
+    | @SuppressWarnings("unchecked") // 强制转换是安全的，因为...
+    `----
+
+
+3 注释的分类
+============
+
+  [antirez] 在他的博客 [Writing system software: code comments.] 中对注
+  释做了 9 个分类，里面还有大量的代码实例，推荐看看原文。
+
+  FUNCTION COMMENTS
+        函数注释的目的在于让读者无需直接阅读代码本身。理想情况下，通过阅
+        读注释就能将某段代码视为遵循特定规则的黑盒。
+
+  DESIGN COMMENTS
+        函数注释通常位于函数的开头，而设计注释通常位于文件的开头。设计注
+        释基本上说明了某段代码如何以及为何使用某些算法、技术、技巧和实现
+        方式。它是对代码中实现内容的高层次概述。
+
+  WHY COMMENTS
+        为什么注释用于解释代码做某些事情的原因，即使代码正在做的事情非常
+        清楚。看代码虽然知道在做什么，但可能不知道为什么要这么做，而为什
+        么注释可以补充这些背景。
+
+        例如有的代码可能需要放在前面先执行，虽然那行代码确实写在前面，但
+        对于其他人可能不知道为什么要放在前面先执行，而为什么注释就可以告
+        诉他。
+
+  TEACHER COMMENTS
+        教师评论并不试图解释代码本身或我们应该注意的某些副作用。相反，他
+        们教授的是代码运行的领域（例如数学、计算机图形学、网络、统计学、
+        复杂数据结构），这可能是读者技能范围之外的领域，或者只是因为细节
+        太多而无法从记忆中回忆起所有细节。
+
+  CHECKLIST COMMENTS
+        有时由于语言限制、设计问题，或者仅仅是由于系统中自然产生的复杂性，
+        不可能将某个概念或界面集中在一块，因此代码中有些地方会告诉你要记
+        住在代码的其他地方做事情。
+
+        例如有的逻辑分散在很多个文件，修改了一个地方，其他好几个地方也需
+        要修改，checklist 可以提醒开发者需要留意修改的地方。
+
+  GUIDE COMMENTS
+        引导注释的作用只有一个：照看读者，帮助读者处理源代码中的内容，提
+        供明确的分工、节奏，并介绍您将要阅读的内容。引导注释存在的唯一理
+        由就是降低程序员阅读代码时的认知负荷。
+
+        引导注释还有其他作用：由于它们将代码清晰地划分为独立的部分，代码
+        中的新内容很可能会被插入到相应的部分，而不是随意地结束在某个部分。
+
+        将相关语句放在附近也是可读性的一大优势。
+
+  TRIVIAL COMMENTS
+        琐碎注释是指的认知负荷与的认知负荷相同或更高的指导性注释。
+
+  DEBT COMMENTS
+        债务注释是硬编码在源代码本身中的技术债务声明。
+
+        FIXME、[TODO]、「This is a hack」等都是债务注释。
+
+        一般来说，这些注释并不是很好，我尽量避免使用它们，但这并不总是可
+        能的，有时与其永远忘记某个问题，我更愿意在源代码中加入一个节点。
+
+  BACKUP COMMENTS
+        备份注释是指开发人员对某些代码块甚至整个函数的旧版本进行注释，因
+        为她或他对新版本中操作的变更缺乏安全感。
+
+        但源代码不是用来备份的。
+
+        如果你想保存一个函数或代码部分的旧版本，你的工作还没有完成，不能
+        提交。要么确保新函数比过去的函数更好，要么就在本地开发环境中保留
+        它，直到确定为止。
+
+        看代码有时会看到一些已经注释不用的代码，既没写为什么要注释掉，也
+        没有删掉，会影响阅读正常代码逻辑，也不确定能不能删除，最后可能就
+        变成一种债务了。
+
+
+[antirez] <https://github.com/antirez>
+
+[Writing system software: code comments.] <https://antirez.com/news/124>
+
+[TODO]
+<https://web.archive.org/web/20220517152711/https://goldin.io/blog/stop-using-todo>
+
+
+4 注释和代码同等重要
+====================
+
+  常听到的说法是，注释会过时，如果不及时维护，注释反而成为了一种误导。解
+  决的办法就是把注释和代码同等看待，同等重视。
+
+        维护不善的注释是技术债务的明显来源。_为了避免这个问题，要
+        像重视代码一样重视注释。_例如，在进行代码审查时，不仅要特
+        别注意新代码周围的注释，还要注意文件中更高层次的注释在新功
+        能下是否仍然正确。
+
+        [Source]
+
+        传统的计算机程序由包含程序代码的文本文件组成。程序代码中散
+        布着对代码各部分进行描述的注释。
+
+        在文学编程中，重点正好相反。有文化的程序员(literate
+        programmer)不再编写包含文档的代码，而是编写包含代码的文档。
+        注入程序的英文注释不再需要隐藏在文件顶部的注释分隔符中、程
+        序标题下或行尾。_取而代之的是，它被置于阳光下，成为主要焦
+        点。_
+
+        [Source]
+
+  还有一个小技巧，注释在 IDE 中往往颜色比较浅，容易让人忽视，或许可以换
+  一种主题，凸显注释，提高对注释的重视。
+
+  在 Emacs 里，我使用的主题是 [modus-theme]，可以自定义颜色，[我将注释的
+  颜色改成了 (comment rust)], 是一种偏橙色的颜色，相比灰色更能突显注释的
+  颜色。希望我的注释不会生锈 (rust) 吧，哈哈。
+
+
+[Source]
+<https://blogs.oracle.com/javamagazine/post/java-comments-reduce-technical-debt#:~:text=Poorly%20maintained%20comments,the%20new%20functionality>
+
+[Source]
+<http://www.literateprogramming.com/index.html#:~:text=A%20traditional%20computer,literate%20programming%20tools>
+
+[modus-theme] <https://protesilaos.com/emacs/modus-themes>
+
+[我将注释的颜色改成了 (comment rust)]
+<https://github.com/Spike-Leung/emacs.d/blob/5c48743feee2654a20dd28b83c1ed060f533a285/lisp/my-lisp/init-modus-theme.el#L33>
+
+
+5 Refs
+======
+
+  - [Code Health: To Comment or Not to Comment?] Google 的一篇文章，讲述
+    什么时候适合写注释
+  - [Reduce technical debt by valuing comments as much as code] 注释的重
+    要性
+  - [Heresy II – Comments Are Code] 注释的重要性
+  - [Writing system Software: code comments] 注释的分类
+  - [Stop Using TODO for Everything] 细化 TODO
+  - [aposd vs clean code #comments] 一些关于注释的讨论
+  - [Writing good comments: the why, not the how] 注释应该主要描述 why，
+    一些代码本身缺失的上下文
+  - [Maybe Comments SHOULD Explain 'What'] by Hillel Wayne
+
+
+[Code Health: To Comment or Not to Comment?]
+<https://testing.googleblog.com/2017/07/code-health-to-comment-or-not-to-comment.html>
+
+[Reduce technical debt by valuing comments as much as code]
+<https://blogs.oracle.com/javamagazine/post/java-comments-reduce-technical-debt>
+
+[Heresy II – Comments Are Code]
+<https://responsibleautomation.wordpress.com/2018/02/01/heresy-ii-comments-are-code/>
+
+[Writing system Software: code comments] <https://antirez.com/news/124>
+
+[Stop Using TODO for Everything]
+<https://web.archive.org/web/20220517152711/https://goldin.io/blog/stop-using-todo>
+
+[aposd vs clean code #comments]
+<https://github.com/johnousterhout/aposd-vs-clean-code/blob/main/README.md#comments>
+
+[Writing good comments: the why, not the how]
+<https://www.jackfranklin.co.uk/blog/code-comments-why-not-how/>
+
+[Maybe Comments SHOULD Explain 'What']
+<https://www.hillelwayne.com/post/what-comments/>

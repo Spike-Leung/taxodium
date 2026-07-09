@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>macOS 下个人开发环境搭建</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="个人 macOS 环境搭建，涉及 Emacs，Homebrew，Makefile，代理，Git，GitHub 等" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="个人 macOS 环境搭建，涉及 Emacs，Homebrew，Makefile，代理，Git，GitHub 等">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -140,14 +140,14 @@ mac mini 是没有键盘鼠标的，首次开机的时候没法直接连接蓝�
 <div class="org-src-container">
 <pre class="src src-sh"><code>brew tap v2raya/v2raya
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">install
-</span>brew install v2raya
+<span class="org-comment-delimiter"># </span><span class="org-comment">install</span>
+brew install v2raya
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">run on terminal
-</span>v2raya --lite
+<span class="org-comment-delimiter"># </span><span class="org-comment">run on terminal</span>
+v2raya --lite
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">run as a brew service
-</span>brew services start v2raya
+<span class="org-comment-delimiter"># </span><span class="org-comment">run as a brew service</span>
+brew services start v2raya
 </code></pre>
 </div></li>
 </ul>
@@ -191,7 +191,7 @@ mac mini 是没有键盘鼠标的，首次开机的时候没法直接连接蓝�
 我不想每次都这么费劲，之前了解过一点 Makefile，这次就决定通过 Makefile 将相关环境配置好。
 </p>
 
-<section role="note" id="org9f5241c">
+<section role="note" id="org607f686">
 <p>
 <a href="https://github.com/chaselambda/makefiletutorial">Makefile Tutorial</a> 是一个不错的 Makefile 入门教程。
 </p>
@@ -224,7 +224,7 @@ Makefile 中做的主要的事情：
 <li>配置 <a href="https://github.com/ohmyzsh/ohmyzsh">ohmyzsh</a>，<a href="https://github.com/starship/starship">starship</a>，<a href="https://github.com/tmux/tmux">tmux</a>，<a href="https://github.com/volta-cli/volta">volta</a> (NodeJS 相关配置) 以及我积攒了一阵子的 dotfiles。</li>
 </ul>
 
-<section role="note" id="org815c502">
+<section role="note" id="org275dc87">
 <p>
 关于 dotfiles 建议看看 <a href="https://effective-shell.com/part-5-building-your-toolkit/managing-your-dotfiles/">Managing your Dotfiles</a>。
 </p>
@@ -248,51 +248,51 @@ Makefile 中做的主要的事情：
         ln -sf ~/Dropbox/elfeed ~/.elfeed
 
 <span class="org-makefile-targets">dependence</span>:
-        <span class="org-comment-delimiter"># </span><span class="org-comment">&#30830;&#20445; /usr/local/bin &#23384;&#22312;&#19988;&#26377;&#26435;&#38480;
-</span>        sudo mkdir -p /usr/local/bin
+        <span class="org-comment-delimiter"># </span><span class="org-comment">&#30830;&#20445; /usr/local/bin &#23384;&#22312;&#19988;&#26377;&#26435;&#38480;</span>
+        sudo mkdir -p /usr/local/bin
         <span class="org-makefile-targets">sudo chown -R $(</span><span class="org-variable-name"><span class="org-makefile-targets">shell</span></span><span class="org-makefile-targets"> whoami)</span>:admin /usr/local/bin
 
-        <span class="org-comment-delimiter"># </span><span class="org-comment">&#26816;&#26597;&#24182;&#23433;&#35013; ohmyzsh
-</span>        if [ ! -d <span class="org-string">"$$HOME/.oh-my-zsh"</span> ]; then \
+        <span class="org-comment-delimiter"># </span><span class="org-comment">&#26816;&#26597;&#24182;&#23433;&#35013; ohmyzsh</span>
+        if [ ! -d <span class="org-string">"$$HOME/.oh-my-zsh"</span> ]; then \
                 echo <span class="org-string">"Installing ohmyzsh..."</span>; \
                 sh -c <span class="org-string">"$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</span>; \
         else \
                 echo <span class="org-string">"ohmyzsh already installed. Skipping."</span>; \
         fi
 
-        <span class="org-comment-delimiter"># </span><span class="org-comment">&#26816;&#26597;&#24182;&#23433;&#35013; starship
-</span>        if ! command -v starship &gt;/dev/null; then \
+        <span class="org-comment-delimiter"># </span><span class="org-comment">&#26816;&#26597;&#24182;&#23433;&#35013; starship</span>
+        if ! command -v starship &gt;/dev/null; then \
                 echo <span class="org-string">"Installing starship..."</span>; \
                 curl -sS https://starship.rs/install.sh | sh; \
         else \
                 echo <span class="org-string">"starship already installed. Skipping."</span>; \
         fi
 
-        <span class="org-comment-delimiter"># </span><span class="org-comment">&#23433;&#35013; zsh &#25554;&#20214;&#21644;&#24037;&#20855;
-</span>        brew install zsh-syntax-highlighting
+        <span class="org-comment-delimiter"># </span><span class="org-comment">&#23433;&#35013; zsh &#25554;&#20214;&#21644;&#24037;&#20855;</span>
+        brew install zsh-syntax-highlighting
         <span class="org-makefile-targets">echo </span><span class="org-string"><span class="org-makefile-targets">"source $$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"</span></span><span class="org-makefile-targets"> &gt;&gt; $${ZDOTDIR</span>:-$$HOME}/.zshrc
 
         if [ ! -d <span class="org-string">"$${ZSH_CUSTOM:-$$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"</span> ]; then \
                 git clone git@github.com:zsh-users/zsh-autosuggestions $${ZSH_CUSTOM:-$$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions; \
         fi
 
-        <span class="org-comment-delimiter"># </span><span class="org-comment">GNU related
-</span>        brew install coreutils
+        <span class="org-comment-delimiter"># </span><span class="org-comment">GNU related</span>
+        brew install coreutils
         brew install gnupg
 
-        <span class="org-comment-delimiter"># </span><span class="org-comment">tmux
-</span>        brew install tmux
+        <span class="org-comment-delimiter"># </span><span class="org-comment">tmux</span>
+        brew install tmux
 
-        <span class="org-comment-delimiter"># </span><span class="org-comment">fzf
-</span>        brew install fzf
+        <span class="org-comment-delimiter"># </span><span class="org-comment">fzf</span>
+        brew install fzf
 
-        <span class="org-comment-delimiter"># </span><span class="org-comment">mcfly, for search history
-</span>        <span class="org-comment-delimiter"># </span><span class="org-comment">Add the following to the end of ~/.zshrc: eval "$(</span><span class="org-comment"><span class="org-variable-name">mcfly</span></span><span class="org-comment"> init zsh)"
-</span>        brew install mcfly
+        <span class="org-comment-delimiter"># </span><span class="org-comment">mcfly, for search history</span>
+        <span class="org-comment-delimiter"># </span><span class="org-comment">Add the following to the end of ~/.zshrc: eval "$(</span><span class="org-comment"><span class="org-variable-name">mcfly</span></span><span class="org-comment"> init zsh)"</span>
+        brew install mcfly
         brew install ripgrep
 <span class="org-makefile-targets">nodejs</span>:
-        <span class="org-comment-delimiter"># </span><span class="org-comment">volta
-</span>        <span class="org-makefile-targets">curl https</span>://get.volta.sh | bash
+        <span class="org-comment-delimiter"># </span><span class="org-comment">volta</span>
+        <span class="org-makefile-targets">curl https</span>://get.volta.sh | bash
 
         volta install node
         volta install pnpm
@@ -304,24 +304,24 @@ Makefile 中做的主要的事情：
         git config --global user.email <span class="org-string">"l-yanlei@hotmail.com"</span>
 
 <span class="org-makefile-targets">python</span>:
-        <span class="org-comment-delimiter"># </span><span class="org-comment">require phthon: https://www.python.org/
-</span>        <span class="org-comment-delimiter"># </span><span class="org-comment">aider
-</span>        python3 -m pip install aider-install &amp;&amp; aider-install
+        <span class="org-comment-delimiter"># </span><span class="org-comment">require phthon: https://www.python.org/</span>
+        <span class="org-comment-delimiter"># </span><span class="org-comment">aider</span>
+        python3 -m pip install aider-install &amp;&amp; aider-install
 
-        <span class="org-comment-delimiter"># </span><span class="org-comment">beancount
-</span>        sudo -H python3 -m pip install beancount
+        <span class="org-comment-delimiter"># </span><span class="org-comment">beancount</span>
+        sudo -H python3 -m pip install beancount
         python3 -m pip install fava
 
-        <span class="org-comment-delimiter"># </span><span class="org-comment">fix: omz_urlencode:5: command not found: pygmentize
-</span>        python3 -m pip install Pygments
+        <span class="org-comment-delimiter"># </span><span class="org-comment">fix: omz_urlencode:5: command not found: pygmentize</span>
+        python3 -m pip install Pygments
 
 <span class="org-makefile-targets">emacs</span>:
         sudo ln -s /Applications/Emacs.app/Contents/MacOS/Emacs /usr/local/bin/emacs
         sudo ln -s /Applications/Emacs.app/Contents/MacOS/bin/emacsclient /usr/local/bin
 
 <span class="org-makefile-targets">install</span>:
-        <span class="org-comment-delimiter"># </span><span class="org-comment">&#23433;&#35013; dotfiles
-</span>        cd ~/Dropbox/dotfiles &amp;&amp; ./install.sh
+        <span class="org-comment-delimiter"># </span><span class="org-comment">&#23433;&#35013; dotfiles</span>
+        cd ~/Dropbox/dotfiles &amp;&amp; ./install.sh
 </code></pre>
 </div>
 </details>
@@ -342,11 +342,11 @@ git config --global user.email <span class="org-string">"your.email@example.com"
 </p>
 
 <div class="org-src-container">
-<pre class="src src-sh"><code><span class="org-comment-delimiter"># </span><span class="org-comment">generate ssh keys
-</span>ssh-keygen
+<pre class="src src-sh"><code><span class="org-comment-delimiter"># </span><span class="org-comment">generate ssh keys</span>
+ssh-keygen
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">copy ssh keys
-</span>pbcopy &lt; ~/.ssh/id_ed25519.pub
+<span class="org-comment-delimiter"># </span><span class="org-comment">copy ssh keys</span>
+pbcopy &lt; ~/.ssh/id_ed25519.pub
 </code></pre>
 </div>
 </div>
@@ -467,7 +467,6 @@ macOS 下如何方便地切换中英文？总是切换输入法感觉有点麻�
 </div>
 </div></div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -482,23 +481,21 @@ macOS 下如何方便地切换中英文？总是切换输入法感觉有点麻�
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2025-04-26 Sat 16:12">2025-04-26 Sat 16:12</time>，更新于 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: macOS 下个人开发环境搭建 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2025-04-26 Sat 16:12">2025-04-26 Sat 16:12</time>，更新於 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: macOS 下个人开发环境搭建 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/setup-macos.txt">純文本版本</a> 或 <a href="/setup-macos.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

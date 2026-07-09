@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Translation In Emacs</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="我在 Emacs 中配置的一些翻译工具" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="我在 Emacs 中配置的一些翻译工具">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -135,11 +135,11 @@ fanyi 则是当作字典使用，碰到一两个单词不熟悉，就使用 fany
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">immersive-translate
-</span>(<span class="org-keyword">require</span> '<span class="org-constant">immersive-translate</span>)
+<pre class="src src-elisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">immersive-translate</span>
+(<span class="org-keyword">require</span> '<span class="org-constant">immersive-translate</span>)
 (add-hook 'elfeed-show-mode-hook #'immersive-translate-setup)
-<span class="org-comment-delimiter">;; </span><span class="org-comment">need to api key with user `apikey` in `.authinfo`
-</span>(<span class="org-keyword">setq</span> immersive-translate-backend 'chatgpt
+<span class="org-comment-delimiter">;; </span><span class="org-comment">need to api key with user `apikey` in `.authinfo`</span>
+(<span class="org-keyword">setq</span> immersive-translate-backend 'chatgpt
       immersive-translate-chatgpt-host <span class="org-string">"openrouter.ai/api"</span>
       immersive-translate-chatgpt-model <span class="org-string">"google/gemini-2.5-flash"</span>
       immersive-translate-pending-message <span class="org-string">"(&#8790;&#7447;&#8790;&#3665;)"</span>
@@ -156,7 +156,7 @@ API Key 在 <code>~/.authinfo</code> 中配置，由于 emacs-immersive-translat
 </code></pre>
 </div>
 
-<section role="note" id="org5653c91">
+<section role="note" id="orga492a13">
 <p>
 关于 .authinfo 你可以参考：
 </p>
@@ -180,8 +180,8 @@ gt.el 也是可以在 MELPA 上直接安装。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">@see: https://github.com/lorniu/gt.el
-</span>(maybe-require-package 'gt)
+<pre class="src src-elisp"><code><span class="org-comment-delimiter">;; </span><span class="org-comment">@see: https://github.com/lorniu/gt.el</span>
+(maybe-require-package 'gt)
 (maybe-require-package 'plz)
 (<span class="org-keyword">with-eval-after-load</span> 'init-auth
   (<span class="org-keyword">with-eval-after-load</span> 'gt
@@ -211,15 +211,15 @@ Source: <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/i
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">init-auth --- config for auth related -*- lexical-binding: t -*-
-</span><span class="org-comment-delimiter">;;; </span><span class="org-comment">Commentary:
-</span><span class="org-comment-delimiter">;;; </span><span class="org-comment">Code:
-</span>(<span class="org-keyword">setq</span> epa-pinentry-mode 'loopback) <span class="org-comment-delimiter">;; </span><span class="org-comment">input pass in minibuffer
-</span>
-<span class="org-comment-delimiter">;; </span><span class="org-comment">(auth-source-pass-enable) ;;; use pass to manage auth-source
-</span>
-<span class="org-comment-delimiter">;;; </span><span class="org-comment">function to get api-key from authinfo
-</span>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/get-api-key</span> (service <span class="org-type">&amp;optional</span> host)
+<pre class="src src-elisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">init-auth --- config for auth related -*- lexical-binding: t -*-</span>
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">Commentary:</span>
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">Code:</span>
+(<span class="org-keyword">setq</span> epa-pinentry-mode 'loopback) <span class="org-comment-delimiter">;; </span><span class="org-comment">input pass in minibuffer</span>
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">(auth-source-pass-enable) ;;; use pass to manage auth-source</span>
+
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">function to get api-key from authinfo</span>
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/get-api-key</span> (service <span class="org-type">&amp;optional</span> host)
   <span class="org-doc">"Retrieve the API key for SERVICE from authinfo.  if HOST exist, retrieve by HOST."</span>
   (<span class="org-keyword">let*</span> ((host (<span class="org-keyword">or</span> host (format <span class="org-string">"api.%s.com"</span> service)))
          (creds (car (auth-source-search <span class="org-builtin">:host</span> host <span class="org-builtin">:port</span> 443))))
@@ -276,8 +276,8 @@ gptel 就是当 LLM 用，需要翻译的时候就复制文字和它对话。此
 </p>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">keybindings
-</span>(<span class="org-keyword">defvar</span> <span class="org-variable-name">spike-leung/my-translate-keymap</span> (make-sparse-keymap)
+<pre class="src src-elisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">keybindings</span>
+(<span class="org-keyword">defvar</span> <span class="org-variable-name">spike-leung/my-translate-keymap</span> (make-sparse-keymap)
   <span class="org-doc">"Keymap for translation commands."</span>)
 
 (define-key spike-leung/my-translate-keymap (kbd <span class="org-string">"i"</span>) 'immersive-translate-buffer)
@@ -321,7 +321,6 @@ See:
 </div>
 </div></div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -336,23 +335,21 @@ See:
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2025-01-16 Thu 21:39">2025-01-16 Thu 21:39</time>，更新于 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Translation In Emacs &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2025-01-16 Thu 21:39">2025-01-16 Thu 21:39</time>，更新於 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Translation In Emacs &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/translation-in-emacs.txt">純文本版本</a> 或 <a href="/translation-in-emacs.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

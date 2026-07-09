@@ -1,0 +1,248 @@
+                             _____________
+
+                                MONOREPO
+
+                              Spike Leung
+                             _____________
+
+
+                         [2022-07-28 Thu 15:15]
+
+
+Table of Contents
+_________________
+
+1. Why
+.. 1. multirepo 优缺点
+..... 1. 优点
+..... 2. 缺点
+2. What
+3. monorepo 优缺点
+.. 1. 优点
+.. 2. 缺点
+4. 例子
+5. Refs
+
+
+1 Why
+=====
+
+  当项目变得庞大的时候，自然就会想到去拆分，以更小的单位去维护，或者复用。
+
+  一种组织方式是，将项目拆成多个独立的 repo，然后通过子模块关联，
+
+  或者将某些模块发到 npm，通过 npm 去安装依赖。
+
+  这种拆分成多个 repo 的组织形式，称为 `multirepo' ，这种组织形式的有什
+  么优劣呢？
+
+
+1.1 multirepo 优缺点
+~~~~~~~~~~~~~~~~~~~~
+
+1.1.1 优点
+----------
+
+  - 每个仓库的大小一般不会很大
+
+  - 每个仓库独立，可以单独对仓库进行权限控制， 例如控制谁有权限访问，谁
+    可以提交等。
+
+
+1.1.2 缺点
+----------
+
+  - 当维护多个 repo 时，需要在多个 repo 之间切换，容易混乱。
+
+  - 每个仓库可能有一套自己的配置，仓库之间不兼容，标准不统一。
+
+  - repo 和子模块可能存在重复的依赖，导致依赖的重复安装。
+
+  - 不在同一个 repo 中，不方便分析整个项目的所有依赖。
+
+  - 发布的时候，如果多个 repo 存在依赖关系，要按照依赖顺序依次构建再部署。
+
+  - repo 之间存在依赖关系，调试依赖的仓库时，需要 npm link 关联仓库。
+
+
+2 What
+======
+
+  面对 multirepo 的这些问题，就有人提出了 `monorepo' 的组织方式。
+
+        A monorepo is a single repository containing multiple
+        distinct
+        projects, with well-defined relationships.
+
+  一个 monorepo 应该是：
+
+  - 单一的仓库
+  - 仓库中包含多个独立的项目
+  - 每个项目之间的关系定义清晰明确
+
+  简单的理解，monorepo 就是把原来的 multirepo 合并成一个 repo。
+
+  那是不是把每个 repo 分别放到不同的目录，建一个新的庞大的仓库，就完事了
+  呢？
+
+  这样就变成一个“大杂烩”了，被称为 `Single-repo Monolith', 已经接近
+  monorepo 的样子了。
+
+  在这个基础上，还需要：
+
+  1. 每个 repo 逻辑上独立，项目之间可能是不相关的，松散连接的，或者可以
+     通过一些方式连接起来。（譬如 pnpm 的 workspace）
+
+  2. 要保证项目之间的依赖关系定义清晰
+
+     *项目间的依赖关系*
+           monorepo 的项目之间可能存在依赖关系，如何可以方便地添加依赖，
+           完成构建。在 pnpm 中，可以在子项目的 `package.json' 中通过
+           [workspace] 关键字去引用项目。
+
+     *项目第三方依赖间的关系*
+           monorepo 中可能多个项目同时依赖了相同的第三方依赖，如都依赖
+           vue。在 pnpm，相同的依赖可以考虑按照到 workspace 中，而不是具
+           体的项目里。
+           尽管都是依赖 vue，但是不同项目可能依赖不同版本的 vue，需要解
+           决版本问题。
+
+  对于 *项目间的依赖关系* ，为了实现一定程度的自动化，需要借助一些工具，
+  如 [NX]，[Lerna]，[turborepo]。
+
+  对于 *项目第三方依赖间的关系*, 可以借助 [yarn]，[pnpm] 等包管理工具的
+  workspace 功能去实现。
+
+  所以，有别于 Single-repo Monolisth， monorepo 需要有明确清晰的依赖关系，
+  能够很方便地管理依赖。
+
+
+[workspace] <https://pnpm.io/workspaces>
+
+[NX] <https://nx.dev/>
+
+[Lerna] <https://lerna.js.org/>
+
+[turborepo] <https://turborepo.org/>
+
+[yarn] <https://yarnpkg.com/>
+
+[pnpm] <https://pnpm.io/>
+
+
+3 monorepo 优缺点
+=================
+
+3.1 优点
+~~~~~~~~
+
+  - 更容易管理依赖
+
+  - 源码都在一起，方便调试
+
+  - 可以在多个模块中，复用相同的配置，例如单元测试，CI/CD 相关的配置，便
+    于保持规范一致
+
+  - 由于相关的项目都在一起，因此可以比较方便地编写集成测试
+
+  - 当有一个功能，牵涉多个模块时，可以在一个提交中改好，而 multirepo 则
+    需要在多个 repo 做提交
+
+
+3.2 缺点
+~~~~~~~~
+
+  - 项目启动，打包构建速度变慢
+
+  - 当项目很庞大，提交记录很多时，git 的一些操作性能上会变慢
+
+  - 没法限制不同模块的访问权限。也是一个优点，开发人员能看到所有模块，了
+    解到这些模块的关联，而不是只关注自己的模块。
+
+  - 可能出现"幽灵"依赖，由于依赖安装在项目的 root 目录，所有模块能访问到，
+    于是即使模块中忘了声明某个依赖，但是 root 中存在，则可以使用。但实
+    际部署时，会因为没有声明依赖，导致没有安装而报错。
+
+
+4 例子
+======
+
+  [Monorepos By Example: Part 1]
+        一个应用 monorepo 的例子，用 Lerna 管理依赖。
+
+  [Spike-Leung/leetcode]
+        我自己的实践，分成了 solutions, solution-parser, web 三个
+        package，然后用 pnpm 的 workspace 关联。
+
+  [illa-design]
+        一个组件库，组件之间就是以 monorepo 的形式组织的，目前使用的工具
+        是 turborepo
+
+  [vuejs/core]
+        看起来也是一个 monorepo 的组织方式，使用了 pnpm 去管理依赖
+
+
+[Monorepos By Example: Part 1]
+<https://codeburst.io/monorepos-by-example-part-1-3a883b49047e>
+
+[Spike-Leung/leetcode] <https://github.com/Spike-Leung/leetcode>
+
+[illa-design] <https://github.com/illa-family/illa-design>
+
+[vuejs/core] <https://github.com/vuejs/core>
+
+
+5 Refs
+======
+
+  [monorepo.tools]
+        对 monorepo 的整体介绍，同时比对了不同 monorepo 工具之间的优缺点
+
+  [Monorepo 的过去、现在、和未来]
+        解释了 monolith 和 moporepo 间的差别，怎么实现这些差别，以及相关
+        的工具，比较了作者自己用到的一些工具
+
+  [From many to one: Moving our JavaScript code into a monorepo]
+        Aha! 团队迁移 monorepo 的选型
+
+  [开源项目都在用 monorepo，但是你知道居然有那么多坑么？]
+        对比了 multirepo 和 monorepo 的优缺点，较详细地分析了 monorepo
+        带来的问题：依赖，构建，测试，发布等
+
+  [Guide to Monorepos for Front-end Code]
+        讲了为什么要用 monorepo，monorepo 的优劣，以及实现 monorepo 的工
+        具链
+
+  [Awesome Monorepo]
+        整理了 monorepo 相关的工具
+
+  [JavaScript package managers compared: npm, Yarn, or pnpm?]
+        比对了常用的包管理工具： npm vs yarn vs pnpm, 提及他们对
+        monorepo 的支持
+
+  [Exploring the Typescript Monorepo (a practical, hands-on adventure)]
+        Monorepo 引子，作为目录管理和 multirepo 管理的折中模式，同时包含
+        一些实践。
+
+
+[monorepo.tools] <https://monorepo.tools/>
+
+[Monorepo 的过去、现在、和未来]
+<https://mp.weixin.qq.com/s/U8_30S9B0S_SU3jdgUxFGQ>
+
+[From many to one: Moving our JavaScript code into a monorepo]
+<https://www.aha.io/engineering/articles/monorepo>
+
+[开源项目都在用 monorepo，但是你知道居然有那么多坑么？]
+<https://segmentfault.com/a/1190000039814987>
+
+[Guide to Monorepos for Front-end Code]
+<https://www.toptal.com/front-end/guide-to-monorepos>
+
+[Awesome Monorepo] <https://github.com/korfuri/awesome-monorepo>
+
+[JavaScript package managers compared: npm, Yarn, or pnpm?]
+<https://blog.logrocket.com/javascript-package-managers-compared/>
+
+[Exploring the Typescript Monorepo (a practical, hands-on adventure)]
+<https://dev.to/jonlauridsen/exploring-the-typescript-monorepo-a-practical-hands-on-adventure-your-help-is-needed-2ggb>

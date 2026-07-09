@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>用 iframe 显示 HTML 例子</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="博客中使用 iframe 去呈现一些 HTML 例子" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="博客中使用 iframe 去呈现一些 HTML 例子">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -121,41 +121,41 @@ iframe 实例是：
   <span class="org-doc">"Process the next HTML block from the current position, escape it, compress it, and generate a #+begin_export html block with an iframe, replacing any existing export block."</span>
   (<span class="org-keyword">interactive</span>)
   (<span class="org-keyword">let</span> (html-content escaped-html srcdoc start end export-start export-end)
-    <span class="org-comment-delimiter">;; </span><span class="org-comment">Search for the next #+begin_src html block from the current position
-</span>    (<span class="org-keyword">save-excursion</span>
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">Search for the next #+begin_src html block from the current position</span>
+    (<span class="org-keyword">save-excursion</span>
       (<span class="org-keyword">when</span> (re-search-forward <span class="org-string">"^#\\+begin_src html"</span> nil t)
         (<span class="org-keyword">setq</span> start (match-end 0))
         (<span class="org-keyword">when</span> (re-search-forward <span class="org-string">"^#\\+end_src"</span> nil t)
           (<span class="org-keyword">setq</span> end (match-beginning 0))
           (<span class="org-keyword">setq</span> html-content (buffer-substring-no-properties start end))
-          <span class="org-comment-delimiter">;; </span><span class="org-comment">Process the HTML content
-</span>          (<span class="org-keyword">when</span> html-content
-            <span class="org-comment-delimiter">;; </span><span class="org-comment">Escape HTML characters using sgml-quote in a temporary buffer
-</span>            (<span class="org-keyword">setq</span> escaped-html
+          <span class="org-comment-delimiter">;; </span><span class="org-comment">Process the HTML content</span>
+          (<span class="org-keyword">when</span> html-content
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Escape HTML characters using sgml-quote in a temporary buffer</span>
+            (<span class="org-keyword">setq</span> escaped-html
                   (<span class="org-keyword">with-temp-buffer</span>
                     (insert html-content)
-                    (sgml-mode) <span class="org-comment-delimiter">;; </span><span class="org-comment">Switch to sgml-mode to enable sgml-quote
-</span>                    (sgml-quote (point-min) (point-max))
+                    (sgml-mode) <span class="org-comment-delimiter">;; </span><span class="org-comment">Switch to sgml-mode to enable sgml-quote</span>
+                    (sgml-quote (point-min) (point-max))
                     (buffer-string)))
 
-            <span class="org-comment-delimiter">;; </span><span class="org-comment">Compress into a single line and remove extra spaces
-</span>            (<span class="org-keyword">setq</span> srcdoc (replace-regexp-in-string <span class="org-string">"[\n\r]+"</span> <span class="org-string">" "</span> escaped-html))
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Compress into a single line and remove extra spaces</span>
+            (<span class="org-keyword">setq</span> srcdoc (replace-regexp-in-string <span class="org-string">"[\n\r]+"</span> <span class="org-string">" "</span> escaped-html))
             (<span class="org-keyword">setq</span> srcdoc (replace-regexp-in-string <span class="org-string">"[ \t]+"</span> <span class="org-string">" "</span> srcdoc))
 
-            <span class="org-comment-delimiter">;; </span><span class="org-comment">Move to the end of the block and check for existing export block
-</span>            (goto-char end)
-            (forward-line 1) <span class="org-comment-delimiter">;; </span><span class="org-comment">Move to the line after #+end_src
-</span>
-            <span class="org-comment-delimiter">;; </span><span class="org-comment">Check if there's an existing #+begin_export html block
-</span>            (<span class="org-keyword">when</span> (looking-at <span class="org-string">"^#\\+begin_export html"</span>)
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Move to the end of the block and check for existing export block</span>
+            (goto-char end)
+            (forward-line 1) <span class="org-comment-delimiter">;; </span><span class="org-comment">Move to the line after #+end_src</span>
+
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Check if there's an existing #+begin_export html block</span>
+            (<span class="org-keyword">when</span> (looking-at <span class="org-string">"^#\\+begin_export html"</span>)
               (<span class="org-keyword">setq</span> export-start (point))
               (<span class="org-keyword">when</span> (re-search-forward <span class="org-string">"^#\\+end_export"</span> nil t)
                 (<span class="org-keyword">setq</span> export-end (point))
-                <span class="org-comment-delimiter">;; </span><span class="org-comment">Delete the existing export block
-</span>                (delete-region export-start export-end)))
+                <span class="org-comment-delimiter">;; </span><span class="org-comment">Delete the existing export block</span>
+                (delete-region export-start export-end)))
 
-            <span class="org-comment-delimiter">;; </span><span class="org-comment">Insert the new #+begin_export html block
-</span>            (insert (format <span class="org-string">"#+begin_export html\n&lt;iframe style=\"width:100%%\" srcdoc=\"%s\"&gt;&lt;/iframe&gt;\n#+end_export\n"</span> srcdoc))))))))
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">Insert the new #+begin_export html block</span>
+            (insert (format <span class="org-string">"#+begin_export html\n&lt;iframe style=\"width:100%%\" srcdoc=\"%s\"&gt;&lt;/iframe&gt;\n#+end_export\n"</span> srcdoc))))))))
 </code></pre>
 </div>
 
@@ -168,7 +168,6 @@ iframe 实例是：
 </p>
 </div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -183,23 +182,21 @@ iframe 实例是：
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2024-08-05 Mon 16:25">2024-08-05 Mon 16:25</time>，更新于 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 用 iframe 显示 HTML 例子 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2024-08-05 Mon 16:25">2024-08-05 Mon 16:25</time>，更新於 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 用 iframe 显示 HTML 例子 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/use-iframe-for-blog-demo.txt">純文本版本</a> 或 <a href="/use-iframe-for-blog-demo.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

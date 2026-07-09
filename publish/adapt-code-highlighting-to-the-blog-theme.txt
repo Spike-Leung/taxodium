@@ -1,0 +1,276 @@
+                       __________________________
+
+                        让博客的代码高亮适配主题
+
+                              Spike Leung
+                       __________________________
+
+
+                         [2026-03-10 Tue 21:00]
+
+
+Table of Contents
+_________________
+
+
+
+
+我的博客是用 `org-publish' 生成的，后面我给博客添加了主题切换（见 [给博
+客添加 dark mode]
+<https://taxodium.ink/setup-blog-color-scheme.html#0E86BEB5-D1F9-451D-8271-B63E836FE0A3>
+）， 当时留下了一个问题 ⸺ `org-publish' 生成的代码高亮是内联在 HTML 标签
+里的，我没法通过 [light-dark] 去设置亮色/暗色主题下不同的颜色，只能选择
+一种代码高亮主题，要么是亮色，要么是暗色。
+
+如果你好奇博客是如何用 `org-publish' 构建的：
+
+- [使用 org-publish 发布博客]
+  <https://taxodium.ink/org-publish-blog.html>
+- [结合 denote 和 org-publish 写博客]
+  <https://taxodium.ink/blog-with-denote-and-org-publish.html>
+
+因为只能二选一，我最终选择的是暗色。这会导致在亮色主题下，出现一大块黑色
+的内容，看着有点突兀。没有选择亮色，是因为亮色主题一般需要配合一个偏白的
+背景色，当切换成暗色主题时，大块的白色会很刺眼。
+
+内联的颜色默认是当前 Emacs 的主题色，因为我平时的习惯是 [随机切换主题]
+<https://taxodium.ink/emacs-random-theme.html>，我当前用的 Emacs 主题和
+`org-publish' 用到的主题未必是一致的，所以我每次在 `org-publish' 前还需
+要将 Emacs 主题重置一下。
+
+,----
+| (defun spike-leung/apply-theme-when-publish (&rest args)
+|   "Switch theme when do `org-publish'.ARGS will pass to `org-publish'."
+|   (require 'modus-themes)
+|   (require 'ef-themes)
+|   (require 'doric-themes)
+|   (let ((current-theme (car custom-enabled-themes)))
+|     (load-theme 'modus-vivendi t)
+|     (apply args)
+|     (when current-theme
+|       (disable-theme 'modus-vivendi)
+|       (enable-theme current-theme)
+|       (load-theme current-theme :no-confirm))))
+| 
+| (advice-remove 'org-publish #'spike-leung/apply-theme-when-publish)
+| (advice-remove 'load-theme #'spike-leung/set-olivetti-fringe-face)
+| (advice-add 'org-publish :around #'spike-leung/apply-theme-when-publish)
+| (advice-add 'load-theme :after #'spike-leung/set-olivetti-fringe-face)
+`----
+
+最近又在折腾博客样式，就顺便去看了一下 `org-publish' 中代码块的高亮是如
+何实现的，于是看到了 `org-html-htmlize-output-type' 这个参数，将其设置为
+`css' ，代码高亮就会使用添加类名的方式实现，而不是内联，这样我就可以基于
+类名去应用 [light-dark] 了。
+
+(ﾉ>ω<)ﾉ 好耶！
+
+------------------------------------------------------------------------
+
+具体做法：
+
+首先，将 `org-html-htmlize-output-type' 设置为 `css' 。
+
+因为我希望只在 `org-publish' 的时候才设置为 `css' ，其他导出 HTML 的情况
+还是保持内联，所以我会在 `org-publish' 之前 将
+`org-html-htmlize-output-type' 设置为 `css'，在 `org-publish' 完成 后将
+其 重置回 `inline-css'。
+
+,----
+| (defun spike-leung/setup-org-publish-project-alist (&rest _args)
+|   "Setup `org-publish-project-alist'."
+|   (message "setup org-publish-project-alist")
+|   (setq org-html-htmlize-output-type 'css)
+|   (setq org-publish-project-alist
+|         `() ;; 此处省略 `org-publish-project-alist' 相关配置
+|         ))
+| 
+| (spike-leung/setup-org-publish-project-alist)
+| 
+| (defun spike-leung/org-publish-after-callback ()
+|   "Stuff to do after `org-publish'"
+|   (setq org-html-htmlize-output-type 'inline-css))
+| 
+| (advice-remove 'org-publish #'spike-leung/setup-org-publish-project-alist)
+| (advice-add 'org-publish :before #'spike-leung/setup-org-publish-project-alist)
+| 
+| (advice-remove 'org-publish #'spike-leung/org-publish-after-callback)
+| (advice-add 'org-publish :after #'spike-leung/org-publish-after-callback)
+`----
+
+然后，使用 `org-html-htmlize-generate-css' 这个方法去生成当前 Emacs 主题
+的 CSS：
+- 找一个喜欢的亮色主题，生成一份 `light.txt'
+- 找一个喜欢的暗色主题，生成一份 `dark.txt'
+
+`org-html-htmlize-generate-css' 生成的类名前缀可以通过
+`org-html-htmlize-font-prefix' 修改，默认是 `org-。'
+
+`org-html-htmlize-generate-css' 的描述是：
+
+      Create the CSS for *all font definitions* in the *current
+      Emacs session*.
+
+      Use this to create face definitions in your CSS style file
+      that can then be used by code snippets transformed by
+      htmlize.
+
+      This command just produces a buffer that contains class
+      definitions for *all faces used in the current Emacs
+      session.*
+
+      You can copy and paste *the ones you need* into your CSS
+      file.
+
+有的 font definitions 应该是需要启用了某个 mode 才会生成，可能需要在
+Emacs 中，把那些常用的语言文件都访问一下，例如打开一下 `.css' 、 `.js'
+、 `.html' 等文件，使得 font definitions 尽可能齐全。
+
+不过我目前还没碰到缺少的 font definitions 的问题，我觉得先不用考虑这个问
+题，等碰到缺少的情况，再打开对应的文件启用一下对应的 mode 就好了。
+
+另外， `org-html-htmlize-output-type' 生成的 class 定义很多，有的未必用
+得上，可以考虑只选择那些需要的，从而减小最终合并的 CSS 的体积。
+
+`org-html-htmlize-generate-css' 默认会生成一个 `*​html*' buffer，我需要将
+其内容复制到 `light.txt' 或 `dark.txt' 。
+
+为了方便，可以借助 advice，在 `org-html-htmlize-generate-css' 完成后，将
+buffer 内容自动保存到对应的文件中。
+
+,----
+| ;; 定义一个变量，存储当前主题的 background-mode
+| (defvar spike-leung/current-theme-background-mode 'light
+|   "Current theme's background-mode value，can be 'light or 'dark, default to 'light.")
+| 
+| (defun light()
+|   "Load random light themes."
+|   (interactive)
+|   (setq spike-leung/current-theme-background-mode 'light)
+|   (spike-leung/themes-load-random 'light))
+| 
+| (defun dark()
+|   "Load random dark themes."
+|   (interactive)
+|   (setq spike-leung/current-theme-background-mode 'dark)
+|   (spike-leung/themes-load-random 'dark))
+| 
+| ;; 要在 desktop 加载后再执行，避免被 desktop 记录的主题覆盖，导致混乱
+| (add-hook 'desktop-after-read-hook #'spike-leung/themes-load-random)
+| 
+| ;; 基于 `spike-leung/current-theme-background-mode',
+| ;; 将 `org-html-htmlize-generate-css' 生成的 buffer 内容保存到对应的文件
+| (defun spike-leung/save-org-html-htmlize-generate-css (&rest _)
+|   "Save content generated by `org-html-htmlize-generate-css' to files."
+|   (with-current-buffer "*html*"
+|     (cond
+|      ((eq spike-leung/current-theme-background-mode 'light)
+|       (write-region nil nil "~/git/taxodium/scripts/light.txt" nil))
+|      ((eq spike-leung/current-theme-background-mode 'dark)
+|       (write-region nil nil "~/git/taxodium/scripts/dark.txt" nil))))
+|   (kill-buffer "*html*"))
+| 
+| ;; 添加一个 advice，
+| ;; 在 `org-html-htmlize-generate-css' 完成之后执行 `spike-leung/current-theme-background-mode'
+| (advice-remove 'org-html-htmlize-generate-css #'spike-leung/save-org-html-htmlize-generate-css)
+| (advice-add 'org-html-htmlize-generate-css :after #'spike-leung/save-org-html-htmlize-generate-css)
+`----
+
+接着，写一个 [脚本]，合并 `light.txt' 和 `dark.txt' ，生成一份 CSS 文件，
+将两个主题的颜色合并，使用 [light-dark] 定义亮色/暗色主题下的颜色。
+
+如果你打算使用这个脚本，你可能需要调整一下代码中文件的路径。或者你可以找
+LLM 写一个。
+
+,----
+| import fs from "fs"
+| import path from "path";
+| import { fileURLToPath } from "url";
+| const __filename = fileURLToPath(import.meta.url);
+| const __dirname = path.dirname(__filename);
+| 
+| const LightThemeFilePath = path.join(__dirname, ".", "light.txt");
+| const DarkThemeFilePath = path.join(__dirname, ".", "dark.txt");
+| const OutputFilePath = path.join(__dirname, "..", "publish/styles/fontify-code.css");
+| 
+| function parseCSS(content) {
+|   const rules = {};
+|   // org- 对应的是 ox-html.el 中 `org-html-htmlize-font-prefix` 的值
+|   const ruleRegex = /\.org-[^{]+\{[^}]+\}/g;
+| 
+|   (content.match(ruleRegex) || []).forEach(rule => {
+|     const selector = rule.match(/(\.org-[\w-]+)/)[1];
+|     const block = rule.match(/\{([^}]+)\}/)[1];
+|     const props = {}, comments = {};
+|     let lastComment = null;
+| 
+|     block.split('\n').forEach(line => {
+|       line = line.trim();
+|       if (!line) return;
+|       if (line.startsWith('/*') && line.endsWith('*/')) {
+|         lastComment = line; return;
+|       }
+|       const m = line.match(/^([a-z-]+)\s*:\s*([^;]+)/);
+|       if (m) {
+|         props[m[1]] = m[2].trim();
+|       }
+|     });
+|     rules[selector] = { properties: props };
+|   });
+|   return rules;
+| }
+| 
+| function generate(light, dark) {
+|   const selectors = Array.from(new Set([...Object.keys(light), ...Object.keys(dark)])).sort();
+|   return selectors.map(sel => {
+|     const l = light[sel] || { properties: {} };
+|     const d = dark[sel] || { properties: {} };
+|     const props = [...new Set([...Object.keys(l.properties), ...Object.keys(d.properties)])];
+| 
+|     let block = `${sel}{`;
+| 
+|     props.forEach(prop => {
+|       const lv = l.properties[prop] || '', dv = d.properties[prop] || '';
+|       const isColor = /color|background|border|outline/.test(prop);
+| 
+|       if (isColor && lv && dv) {
+|         block += `${prop}:${lv};${prop}:light-dark(${lv},${dv});`;
+|       } else if (lv) {
+|         block += `${prop}:${lv};`;
+|       } else if (dv) {
+|         block += `${prop}:${dv};`;
+|       }
+|     });
+| 
+|     return block + '}';
+|   }).join('');
+| }
+| 
+| const light = parseCSS(fs.readFileSync(LightThemeFilePath, 'utf8'));
+| const dark = parseCSS(fs.readFileSync(DarkThemeFilePath, 'utf8'));
+| fs.writeFileSync(OutputFilePath, generate(light, dark));
+| console.log('Generated Finished');
+`----
+
+[Source]
+
+最后，在博客中引用生成好的 CSS 文件就好了。
+
+Happy hacking - [Emacs]
+<https://taxodium.ink/how-to-get-started-with-emacs.html> ♥ you!
+
+如果你有什么想法，也可以在 [让 org-publish 生成的代码高亮，基于亮色/暗色
+主题切换] 参与讨论。
+
+
+[light-dark]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark>
+
+[脚本]
+<https://github.com/Spike-Leung/taxodium/blob/b777de19ab27ac41bdb9681d3e1838d88d3c1593/scripts/generate-fontify-code-css.js>
+
+[Source]
+<https://github.com/Spike-Leung/taxodium/blob/b777de19ab27ac41bdb9681d3e1838d88d3c1593/scripts/generate-fontify-code-css.js>
+
+[让 org-publish 生成的代码高亮，基于亮色/暗色主题切换]
+<https://emacs-china.org/t/org-publish/31096>

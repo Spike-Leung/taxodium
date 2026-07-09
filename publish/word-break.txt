@@ -1,0 +1,173 @@
+                        ________________________
+
+                         WORD-BREAK: BREAK-ALL;
+
+                              Spike Leung
+                        ________________________
+
+
+                         [2024-08-04 Sun 16:32]
+
+
+Table of Contents
+_________________
+
+
+
+
+开发中碰到一个问题，有一个信息字段，label 不换行，value 如果比较长就换行。
+
+一直以为只要设置 [word-break: break-all;] 就万事大吉，但碰到恰好全是英文
+句号(`.' )的时候，失效了。
+
+,----
+| <!DOCTYPE html>
+| <html>
+|   <head>
+|     <style>
+|     .box {
+|       width: 200px;
+|       padding: 10px;
+|       border: 1px solid #000;
+|       border-color: light-dark(#000, #fff);
+|     }
+| 
+|     .value {
+|       word-break: break-all;
+|     }
+|     </style>
+|   </head>
+|   <body>
+|     <div class="box">
+|       <span class="label">label:</span><span class="value">...................................................................................</span>
+|     </div>
+|   </body>
+| </html>
+`----
+
+其实这是一个边界场景，因为内容都是标点符号(`.')，规范中规定，对于
+`word-break: break-all;' 在标点之间不会考虑换行：
+
+      This value does not affect whether there are soft wrap
+      opportunities around punctuation characters.  To allow
+      breaks anywhere, see line-break: anywhere.
+
+      [Source]
+
+为了解决，可以使用 [line-break: anywhere;] 或者 [overflow-wrap:
+anywhere;]。
+
+,----
+| <!DOCTYPE html>
+| <html>
+|   <head>
+|     <style>
+|     .box {
+|       width: 200px;
+|       padding: 10px;
+|       border: 1px solid #000;
+|       border-color: light-dark(#000, #fff);
+|     }
+| 
+|     .value {
+|       word-break: break-all;
+|       line-break: anywhere;
+|     }
+|     </style>
+|   </head>
+|   <body>
+|     <div class="box">
+|       <span class="label">label:</span><span class="value">...................................................................................</span>
+|     </div>
+|   </body>
+| </html>
+`----
+
+对于普通的内容，其实 `word-break: break-all;' 是没问题的。
+
+,----
+| <!DOCTYPE html>
+| <html>
+|   <head>
+|     <style>
+|     .box {
+|       width: 200px;
+|       padding: 10px;
+|       border: 1px solid #000;
+|       border-color: light-dark(#000, #fff);
+|     }
+| 
+|     .value {
+|       word-break: break-all;
+|     }
+|     </style>
+|   </head>
+|   <body>
+|     <div class="box">
+|       <span class="label">label:</span><span class="value">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+|     </div>
+|   </body>
+| </html>
+`----
+另外，如果设置为 `word-break: break-word;' 也是没问题的。
+
+,----
+| <!DOCTYPE html>
+| <html>
+|   <head>
+|     <style>
+|     .box {
+|       width: 200px;
+|       padding: 10px;
+|       border: 1px solid #000;
+|       border-color: light-dark(#000, #fff);
+|     }
+| 
+|     .value {
+|       word-break: break-word;
+|     }
+|     </style>
+|   </head>
+|   <body>
+|     <div class="box">
+|       <span class="label">label:</span><span class="value">...................................................................................</span>
+|     </div>
+|   </body>
+| </html>
+`----
+
+因为规范中对于 `word-break: break-word;' 的描述是这样的：
+
+      For compatibility with legacy content, the word-break
+      property also supports a deprecated break-word keyword. When
+      specified, this has `the same effect as word-break: normal
+      and overflow-wrap: anywhere', regardless of the actual value
+      of the overflow-wrap property.
+
+      [Source]
+
+也就是说， `word-break: break-word;' 相当于设置了 `overflow-wrap:
+anywhere;' ，所以即使是标点符号，也能换行。
+
+关于文本换行，[Wrapping and breaking text] 讲得很详细，里面还介绍了
+[<wbr>] (标记一个可换行的位置)，[hyphens] (换行增加连接符 `-')，推荐阅读
+一下。
+
+
+[word-break: break-all;]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/word-break#break-all>
+
+[Source] <https://drafts.csswg.org/css-text/#word-break-property>
+
+[line-break: anywhere;]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/line-break#anywhere>
+
+[overflow-wrap: anywhere;]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-wrap#anywhere>
+
+[Wrapping and breaking text]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_text/Wrapping_breaking_text>
+
+[<wbr>] <https://developer.mozilla.org/en-US/docs/Web/HTML/Element/wbr>
+
+[hyphens] <https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens>

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>使用 gptel-request 封装一个翻译方法</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="使用 gptel 封装一些常用的使用 LLM 的场景" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="使用 gptel 封装一些常用的使用 LLM 的场景">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -62,7 +62,7 @@
 Emacs 中的翻译的工具也不少，写这个函数只是分享一下 <code>gptel-request</code> 的一种实现。
 </p>
 
-<section role="note" id="org65a8ad3">
+<section role="note" id="org20b252b">
 <p>
 一些 Emacs 的翻译配置：
 </p>
@@ -99,9 +99,9 @@ Emacs 中的翻译的工具也不少，写这个函数只是分享一下 <code>g
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/translate-region</span> (prompt)
-  <span class="org-doc">"Translate the selected region (default to English) replace it.
-If no region is active, try to guess the sentence or paragraph at point.
-With prefix argument, PROMPT is used as the translation prompt."</span>
+  <span class="org-doc">"Translate the selected region (default to English) replace it.</span>
+<span class="org-doc">If no region is active, try to guess the sentence or paragraph at point.</span>
+<span class="org-doc">With prefix argument, PROMPT is used as the translation prompt."</span>
   (<span class="org-keyword">interactive</span>
    (list (<span class="org-keyword">when</span> current-prefix-arg
            (read-string <span class="org-string">"Translation prompt: "</span> <span class="org-string">"Translate the following text to English:"</span>))))
@@ -184,36 +184,36 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
      <span class="org-builtin">:model</span> 'google/gemini-3-flash-preview
      ,@args))
 
-(<span class="org-keyword">spike-leung/define-gptel-preset</span> 'quote-format
+(spike-leung/define-gptel-preset 'quote-format
                                  <span class="org-builtin">:description</span> <span class="org-string">"&#26684;&#24335;&#21270;&#24341;&#29992;"</span>
-                                 <span class="org-builtin">:rewrite-message</span> <span class="org-string">"&#25353;&#29031;&#20197;&#19979;&#35201;&#27714;&#65292;&#26684;&#24335;&#21270;&#20869;&#23481;:
-- &#24403;&#23384;&#22312;&#33521;&#25991;&#21644;&#20013;&#25991;&#32763;&#35793;&#65292;&#31227;&#38500;&#33521;&#25991;
-- &#24403;&#28041;&#21450;&#21040;&#32553;&#20889;&#65292;&#38656;&#35201;&#22312;&#20013;&#25991;&#38468;&#36817;&#34917;&#20805;&#33521;&#25991;&#32553;&#20889;&#21644;&#23436;&#25972;&#30340;&#33521;&#25991;&#65292;&#22914;&#26368;&#20302;&#21512;&#26684;&#35835;&#32773; (MQR, Minimum Qualified Reader)
-- &#24403;&#23384;&#22312;&#20013;&#33521;&#25991;&#28151;&#21512;&#65292;&#20013;&#25991;&#21644;&#33521;&#25991;/&#25968;&#23383;&#20043;&#38388;&#38656;&#35201;&#20445;&#30041;&#19968;&#20010;&#31354;&#26684;
-- &#24403;&#25991;&#26412;&#20013;&#21253;&#21547;&#30772;&#25240;&#21495;&#65292;&#20363;&#22914; &#8212;&#8212;&#12289;--&#65292;&#38656;&#35201;&#23558;&#20182;&#20204;&#26367;&#25442;&#20026; &#11834; &#65292;&#27880;&#24847;&#65292;&#11834;  &#30340;&#21069;&#21518;&#38656;&#35201;&#20445;&#30041;&#19968;&#20010;&#31354;&#26684;
-- &#25991;&#26412;&#20013;&#30340;&#24341;&#21495;&#26367;&#25442;&#20026;&#30452;&#35282;&#24341;&#21495; &#12300;&#12301;&#12289;&#12302;&#12303;&#65292;&#22914;&#26524;&#24341;&#21495;&#37324;&#38754;&#36824;&#26377;&#24341;&#21495;&#65292;&#21017;&#37319;&#29992; &#12300;&#12302;&#12303;&#12301;&#30340;&#23884;&#22871;&#24418;&#24335;
-&#38656;&#35201;&#26684;&#24335;&#21270;&#20869;&#23481;&#65306;"</span>)
+                                 <span class="org-builtin">:rewrite-message</span> <span class="org-string">"&#25353;&#29031;&#20197;&#19979;&#35201;&#27714;&#65292;&#26684;&#24335;&#21270;&#20869;&#23481;:</span>
+<span class="org-string">- &#24403;&#23384;&#22312;&#33521;&#25991;&#21644;&#20013;&#25991;&#32763;&#35793;&#65292;&#31227;&#38500;&#33521;&#25991;</span>
+<span class="org-string">- &#24403;&#28041;&#21450;&#21040;&#32553;&#20889;&#65292;&#38656;&#35201;&#22312;&#20013;&#25991;&#38468;&#36817;&#34917;&#20805;&#33521;&#25991;&#32553;&#20889;&#21644;&#23436;&#25972;&#30340;&#33521;&#25991;&#65292;&#22914;&#26368;&#20302;&#21512;&#26684;&#35835;&#32773; (MQR, Minimum Qualified Reader)</span>
+<span class="org-string">- &#24403;&#23384;&#22312;&#20013;&#33521;&#25991;&#28151;&#21512;&#65292;&#20013;&#25991;&#21644;&#33521;&#25991;/&#25968;&#23383;&#20043;&#38388;&#38656;&#35201;&#20445;&#30041;&#19968;&#20010;&#31354;&#26684;</span>
+<span class="org-string">- &#24403;&#25991;&#26412;&#20013;&#21253;&#21547;&#30772;&#25240;&#21495;&#65292;&#20363;&#22914; &#8212;&#8212;&#12289;--&#65292;&#38656;&#35201;&#23558;&#20182;&#20204;&#26367;&#25442;&#20026; &#11834; &#65292;&#27880;&#24847;&#65292;&#11834;  &#30340;&#21069;&#21518;&#38656;&#35201;&#20445;&#30041;&#19968;&#20010;&#31354;&#26684;</span>
+<span class="org-string">- &#25991;&#26412;&#20013;&#30340;&#24341;&#21495;&#26367;&#25442;&#20026;&#30452;&#35282;&#24341;&#21495; &#12300;&#12301;&#12289;&#12302;&#12303;&#65292;&#22914;&#26524;&#24341;&#21495;&#37324;&#38754;&#36824;&#26377;&#24341;&#21495;&#65292;&#21017;&#37319;&#29992; &#12300;&#12302;&#12303;&#12301;&#30340;&#23884;&#22871;&#24418;&#24335;</span>
+<span class="org-string">&#38656;&#35201;&#26684;&#24335;&#21270;&#20869;&#23481;&#65306;"</span>)
 
-(<span class="org-keyword">spike-leung/define-gptel-preset</span> 'lyric-format
+(spike-leung/define-gptel-preset 'lyric-format
                                  <span class="org-builtin">:description</span> <span class="org-string">"&#26684;&#24335;&#21270;&#27468;&#35789;"</span>
-                                 <span class="org-builtin">:rewrite-message</span> <span class="org-string">"&#26684;&#24335;&#21270;&#27468;&#35789;&#65292;&#23558;&#21407;&#22987;&#27468;&#35789;&#21644;&#20013;&#25991;&#32763;&#35793;&#25286;&#20998;&#25104;&#20004;&#37096;&#20998;&#12290;
-&#23545;&#20110;&#21407;&#25991;&#27468;&#35789;&#65292;&#36755;&#20986;&#26684;&#24335;&#20026;&#65306;
-#+begin_verse
-[&#21407;&#25991;&#27468;&#35789;]
-#+end_verse
+                                 <span class="org-builtin">:rewrite-message</span> <span class="org-string">"&#26684;&#24335;&#21270;&#27468;&#35789;&#65292;&#23558;&#21407;&#22987;&#27468;&#35789;&#21644;&#20013;&#25991;&#32763;&#35793;&#25286;&#20998;&#25104;&#20004;&#37096;&#20998;&#12290;</span>
+<span class="org-string">&#23545;&#20110;&#21407;&#25991;&#27468;&#35789;&#65292;&#36755;&#20986;&#26684;&#24335;&#20026;&#65306;</span>
+<span class="org-string">#+begin_verse</span>
+<span class="org-string">[&#21407;&#25991;&#27468;&#35789;]</span>
+<span class="org-string">#+end_verse</span>
 
-&#23545;&#20110;&#32763;&#35793;&#65292;&#36755;&#20986;&#26684;&#24335;&#20026;&#65306;
-#+begin_details
-#+html: &lt;summary&gt;&#27468;&#35789;&#22823;&#24847;&lt;/summary&gt;
-#+begin_verse
-[&#32763;&#35793;]
-#+end_verse
-#+end_details"</span>)
+<span class="org-string">&#23545;&#20110;&#32763;&#35793;&#65292;&#36755;&#20986;&#26684;&#24335;&#20026;&#65306;</span>
+<span class="org-string">#+begin_details</span>
+<span class="org-string">#+html: &lt;summary&gt;&#27468;&#35789;&#22823;&#24847;&lt;/summary&gt;</span>
+<span class="org-string">#+begin_verse</span>
+<span class="org-string">[&#32763;&#35793;]</span>
+<span class="org-string">#+end_verse</span>
+<span class="org-string">#+end_details"</span>)
 </code></pre>
 </div>
 </details>
 
-<section role="note" id="org129f82d">
+<section role="note" id="org7a4188a">
 <p>
 在 preset 中 <code>:rewrite-message</code> 对应的是 <code>gptel-rewrite-message</code> 或者 <code>gptel--rewrite-message</code> ，你还可以定义很多参数，具体见 <a href="https://github.com/karthink/gptel?tab=readme-ov-file#option-presets">gptel - Option presets</a>。
 </p>
@@ -234,22 +234,22 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 <pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/gptel-rewrite-preset</span> ()
   <span class="org-doc">"Pick a preset from `</span><span class="org-doc"><span class="org-constant">gptel--known-presets</span></span><span class="org-doc">' and execute `</span><span class="org-doc"><span class="org-constant">gptel--suffix-rewrite</span></span><span class="org-doc">'."</span>
   (<span class="org-keyword">interactive</span>)
-  <span class="org-comment-delimiter">;; </span><span class="org-comment">gptel--suffix-rewrite &#20381;&#36182; gptel-rewrite &#30340;&#21152;&#36733;
-</span>  (<span class="org-keyword">require</span> '<span class="org-constant">gptel-rewrite</span>)
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">gptel--suffix-rewrite &#20381;&#36182; gptel-rewrite &#30340;&#21152;&#36733;</span>
+  (<span class="org-keyword">require</span> '<span class="org-constant">gptel-rewrite</span>)
   (<span class="org-keyword">unless</span> (use-region-p) (<span class="org-warning">user-error</span> <span class="org-string">"Requires a selected region"</span>))
   (<span class="org-keyword">let*</span> ((preset-name
-          <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36873;&#25321; preset
-</span>          (completing-read <span class="org-string">"Pick a preset: "</span>
+          <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36873;&#25321; preset</span>
+          (completing-read <span class="org-string">"Pick a preset: "</span>
                            gptel--known-presets
-                           <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36807;&#28388;&#36873;&#39033;&#65292;&#21482;&#20445;&#30041;&#24102;&#26377; `</span><span class="org-comment"><span class="org-constant">:rewrite-message</span></span><span class="org-comment">' &#30340;&#36873;&#39033;
-</span>                           (<span class="org-keyword">lambda</span> (preset)
+                           <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36807;&#28388;&#36873;&#39033;&#65292;&#21482;&#20445;&#30041;&#24102;&#26377; `</span><span class="org-comment"><span class="org-constant">:rewrite-message</span></span><span class="org-comment">' &#30340;&#36873;&#39033;</span>
+                           (<span class="org-keyword">lambda</span> (preset)
                              (plist-member (cdr preset) <span class="org-builtin">:rewrite-message</span>))
-                           <span class="org-comment-delimiter">;; </span><span class="org-comment">&#24517;&#39035;&#21305;&#37197;&#36873;&#39033;
-</span>                           t))
-         <span class="org-comment-delimiter">;; </span><span class="org-comment">&#25214;&#21040;&#23545;&#24212;&#30340; preset&#65292;&#33719;&#21462; preset &#35774;&#32622;
-</span>         (preset (gptel-get-preset (intern preset-name))))
-    <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20351;&#29992; preset &#35843;&#29992; gptel-rewrite
-</span>    (<span class="org-keyword">gptel-with-preset</span> preset
+                           <span class="org-comment-delimiter">;; </span><span class="org-comment">&#24517;&#39035;&#21305;&#37197;&#36873;&#39033;</span>
+                           t))
+         <span class="org-comment-delimiter">;; </span><span class="org-comment">&#25214;&#21040;&#23545;&#24212;&#30340; preset&#65292;&#33719;&#21462; preset &#35774;&#32622;</span>
+         (preset (gptel-get-preset (intern preset-name))))
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20351;&#29992; preset &#35843;&#29992; gptel-rewrite</span>
+    (gptel-with-preset preset
       (gptel--suffix-rewrite))))
 </code></pre>
 </div>
@@ -270,7 +270,6 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 </p>
 </div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -285,23 +284,21 @@ With prefix argument, PROMPT is used as the translation prompt."</span>
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2025-04-15 Tue 16:24">2025-04-15 Tue 16:24</time>，更新于 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 使用 gptel-request 封装一个翻译方法 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2025-04-15 Tue 16:24">2025-04-15 Tue 16:24</time>，更新於 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 使用 gptel-request 封装一个翻译方法 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/use-gptel-request-to-translate.txt">純文本版本</a> 或 <a href="/use-gptel-request-to-translate.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

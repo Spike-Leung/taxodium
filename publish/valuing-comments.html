@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>注释是你的好朋友</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="关于为什么要写注释、注释的重要性、注释的分类" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="关于为什么要写注释、注释的重要性、注释的分类">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -112,10 +112,10 @@ Writing code is sharing the experience of understanding the requirements/impleme
   <span class="org-keyword">if</span> (lua_pcall(lua,1,0,0)) {
       <span class="org-comment-delimiter">/* </span><span class="org-comment">Stack: array, table, error</span><span class="org-comment-delimiter"> */</span>
 
-      <span class="org-comment-delimiter">/* </span><span class="org-comment">We are not interested in the error, we assume that the problem is
-       * that there are 'false' elements inside the array, so we try
-       * again with a slower function but able to handle this case, that
-       * is: table.sort(table, __redis__compare_helper)</span><span class="org-comment-delimiter"> */</span>
+      <span class="org-comment-delimiter">/* </span><span class="org-comment">We are not interested in the error, we assume that the problem is</span>
+<span class="org-comment">       * that there are 'false' elements inside the array, so we try</span>
+<span class="org-comment">       * again with a slower function but able to handle this case, that</span>
+<span class="org-comment">       * is: table.sort(table, __redis__compare_helper)</span><span class="org-comment-delimiter"> */</span>
       lua_pop(lua,1);             <span class="org-comment-delimiter">/* </span><span class="org-comment">Stack: array, table</span><span class="org-comment-delimiter"> */</span>
       lua_pushstring(lua,<span class="org-string">"sort"</span>); <span class="org-comment-delimiter">/* </span><span class="org-comment">Stack: array, table, sort</span><span class="org-comment-delimiter"> */</span>
       lua_gettable(lua,-2);       <span class="org-comment-delimiter">/* </span><span class="org-comment">Stack: array, table, table.sort</span><span class="org-comment-delimiter"> */</span>
@@ -206,21 +206,21 @@ Writing code is sharing the experience of understanding the requirements/impleme
 使用具体含义的变量
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // &#24635;&#20215;&#26684;&#20013;&#20943;&#21435;&#25240;&#25187;
-</span><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> finalPrice = (numItems * itemPrice) - min(5, numItems) * itemPrice * 0.1;
-</span>
-<span class="org-diff-indicator-added">+</span><span class="org-diff-added"> price = numItems * itemPrice;
-</span><span class="org-diff-indicator-added">+</span><span class="org-diff-added"> discount = min(5, numItems) * itemPrice * 0.1;
-</span><span class="org-diff-indicator-added">+</span><span class="org-diff-added"> finalPrice = price - discount;
-</span>
+<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // &#24635;&#20215;&#26684;&#20013;&#20943;&#21435;&#25240;&#25187;</span>
+<span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> finalPrice = (numItems * itemPrice) - min(5, numItems) * itemPrice * 0.1;</span>
+
+<span class="org-diff-indicator-added">+</span><span class="org-diff-added"> price = numItems * itemPrice;</span>
+<span class="org-diff-indicator-added">+</span><span class="org-diff-added"> discount = min(5, numItems) * itemPrice * 0.1;</span>
+<span class="org-diff-indicator-added">+</span><span class="org-diff-added"> finalPrice = price - discount;</span>
+
 </code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> int width = ...; // Width in pixels.
-</span>
-<span class="org-diff-indicator-added">+</span><span class="org-diff-added"> int widthInPixels = ...;
-</span>
+<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> int width = ...; // Width in pixels.</span>
+
+<span class="org-diff-indicator-added">+</span><span class="org-diff-added"> int widthInPixels = ...;</span>
+
 </code></pre>
 </div>
 
@@ -228,11 +228,11 @@ Writing code is sharing the experience of understanding the requirements/impleme
 使用函数封装，函数名揭示逻辑
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Filter offensive words.
-</span><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> for (String word : words) { ... }
-</span>
-<span class="org-diff-indicator-added">+</span><span class="org-diff-added"> filterOffensiveWords(words);
-</span>
+<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Filter offensive words.</span>
+<span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> for (String word : words) { ... }</span>
+
+<span class="org-diff-indicator-added">+</span><span class="org-diff-added"> filterOffensiveWords(words);</span>
+
 </code></pre>
 </div></li>
 
@@ -241,12 +241,12 @@ Writing code is sharing the experience of understanding the requirements/impleme
 </p>
 
 <div class="org-src-container">
-<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // height &#24635;&#26159;&#22823;&#20110; 0&#65292;&#25152;&#20197;&#36825;&#37324;&#19981;&#20250;&#20986;&#38169;
-</span><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> return width / height;
-</span>
-<span class="org-diff-indicator-added">+</span><span class="org-diff-added"> checkArgument(height &gt; 0);
-</span><span class="org-diff-indicator-added">+</span><span class="org-diff-added"> return width / height;
-</span>
+<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // height &#24635;&#26159;&#22823;&#20110; 0&#65292;&#25152;&#20197;&#36825;&#37324;&#19981;&#20250;&#20986;&#38169;</span>
+<span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> return width / height;</span>
+
+<span class="org-diff-indicator-added">+</span><span class="org-diff-added"> checkArgument(height &gt; 0);</span>
+<span class="org-diff-indicator-added">+</span><span class="org-diff-added"> return width / height;</span>
+
 </code></pre>
 </div></li>
 
@@ -254,10 +254,10 @@ Writing code is sharing the experience of understanding the requirements/impleme
 代码已经足够清楚，不需要重复描述
 </p>
 <div class="org-src-container">
-<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Get all users.
-</span><span class="org-diff-context">userService.getAllUsers();
-</span><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Check if the name is empty.
-</span>if (name.isEmpty()) { ... }
+<pre class="src src-diff"><code><span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Get all users.</span>
+<span class="org-diff-context">userService.getAllUsers();</span>
+<span class="org-diff-indicator-removed">-</span><span class="org-diff-removed"> // Check if the name is empty.</span>
+if (name.isEmpty()) { ... }
 </code></pre>
 </div></li>
 </ul>
@@ -316,7 +316,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 为什么注释用于解释代码做某些事情的原因，即使代码正在做的事情非常清楚。看代码虽然知道在做什么，但可能不知道为什么要这么做，而为什么注释可以补充这些背景。
 </p>
 
-<section role="note" id="org0a9ef2f">
+<section role="note" id="orgeaf98b9">
 <p>
 例如有的代码可能需要放在前面先执行，虽然那行代码确实写在前面，但对于其他人可能不知道为什么要放在前面先执行，而为什么注释就可以告诉他。
 </p>
@@ -328,7 +328,7 @@ Writing code is sharing the experience of understanding the requirements/impleme
 有时由于语言限制、设计问题，或者仅仅是由于系统中自然产生的复杂性，不可能将某个概念或界面集中在一块，因此代码中有些地方会告诉你要记住在代码的其他地方做事情。
 </p>
 
-<section role="note" id="orgbbbe24f">
+<section role="note" id="org8572d64">
 <p>
 例如有的逻辑分散在很多个文件，修改了一个地方，其他好几个地方也需要修改，
 checklist 可以提醒开发者需要留意修改的地方。
@@ -373,7 +373,7 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 如果你想保存一个函数或代码部分的旧版本，你的工作还没有完成，不能提交。要么确保新函数比过去的函数更好，要么就在本地开发环境中保留它，直到确定为止。
 </p>
 
-<section role="note" id="org9c5b537">
+<section role="note" id="orge651683">
 <p>
 看代码有时会看到一些已经注释不用的代码，既没写为什么要注释掉，也没有删掉，会影响阅读正常代码逻辑，也不确定能不能删除，最后可能就变成一种债务了。
 </p>
@@ -440,7 +440,6 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 </div>
 </div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -455,23 +454,21 @@ FIXME、<a href="https://web.archive.org/web/20220517152711/https://goldin.io/bl
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2025-02-26 Wed 16:30">2025-02-26 Wed 16:30</time>，更新于 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 注释是你的好朋友 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2025-02-26 Wed 16:30">2025-02-26 Wed 16:30</time>，更新於 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 注释是你的好朋友 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/valuing-comments.txt">純文本版本</a> 或 <a href="/valuing-comments.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>

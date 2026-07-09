@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>使用 GitHub Actions 部署博客到 GitHub Pages</title>
-<meta name="author" content="Spike Leung" />
-<meta name="description" content="关于 GitHub Actions 使用的简单介绍" />
-<meta name="generator" content="Org Mode" />
+<meta name="author" content="Spike Leung">
+<meta name="description" content="关于 GitHub Actions 使用的简单介绍">
+<meta name="generator" content="Org Mode">
 
 <meta name="color-scheme" content="light dark" />
 <link rel="preload" href="/styles/main.css" as="style" />
@@ -119,37 +119,37 @@ GitHub Actions are event-driven, meaning that you can run a series of commands a
 </p>
 
 <div class="org-src-container">
-<pre class="src src-yaml"><code><span class="org-comment-delimiter"># </span><span class="org-comment">Optional - The name of the workflow as it will appear in the Actions tab of the GitHub repository.
-</span><span class="org-comment-delimiter"># </span><span class="org-comment">workflows &#30340;&#21517;&#31216;
-</span><span class="org-variable-name">name</span>: deploy-to-github-page
-<span class="org-comment-delimiter"># </span><span class="org-comment">Specify the event that automatically triggers the workflow file.
-</span><span class="org-comment-delimiter"># </span><span class="org-comment">&#30417;&#21548;&#20160;&#20040;&#20107;&#20214;&#26102;&#35302;&#21457;&#36825;&#20010;workflows, &#36825;&#37324;&#30417;&#21548;push
-</span><span class="org-constant">on</span>: [push]
-<span class="org-comment-delimiter"># </span><span class="org-comment">Groups together all the jobs that run in the workflow file
-</span><span class="org-comment-delimiter"># </span><span class="org-comment">&#36825;&#20010;workflows&#20855;&#20307;&#26159;&#30001;&#21738;&#20123;&#20219;&#21153;&#32452;&#25104;&#30340;
-</span><span class="org-variable-name">jobs</span>:
-  <span class="org-comment-delimiter"># </span><span class="org-comment">define job name
-</span>  <span class="org-comment-delimiter"># </span><span class="org-comment">&#20219;&#21153;1, `deploy`&#26159;&#20219;&#21153;&#30340;&#21517;&#31216;
-</span>  <span class="org-variable-name">deploy</span>:
-    <span class="org-comment-delimiter"># </span><span class="org-comment">Configures the job to run on an Ubuntu Linux runner
-</span>    <span class="org-comment-delimiter"># </span><span class="org-comment">&#22312;&#20160;&#20040;&#29615;&#22659;&#19979;&#25191;&#34892;&#36825;&#20010;&#20219;&#21153;
-</span>    <span class="org-variable-name">runs-on</span>: ubuntu-latest
-    <span class="org-comment-delimiter"># </span><span class="org-comment">Groups together all the steps that run in the job
-</span>    <span class="org-comment-delimiter"># </span><span class="org-comment">Each item nested under this section is a separate action or shell command.
-</span>    <span class="org-comment-delimiter"># </span><span class="org-comment">&#20219;&#21153;&#20855;&#20307;&#21253;&#21547;&#20160;&#20040;&#27493;&#39588;
-</span>    <span class="org-variable-name">steps</span>:
-      <span class="org-comment-delimiter"># </span><span class="org-comment">actions The uses keyword tells the job to retrieve v2 of the community action named actions/checkout@v2
-</span>      <span class="org-comment-delimiter"># </span><span class="org-comment">&#27599;&#20010;&#27493;&#39588;&#65292;&#21363;&#21487;&#20197;&#20351;&#29992;(`uses`)&#21035;&#20154;&#20889;&#22909;&#30340;`actions`, &#20063;&#21487;&#20197;&#36305;&#33258;&#24049;&#20889;&#30340;&#21629;&#20196;(`run`)
-</span>      - <span class="org-variable-name">uses</span>: actions/checkout@v2 <span class="org-comment-delimiter"># </span><span class="org-comment">&#25289;&#21462;&#20195;&#30721;
-</span>        - <span class="org-variable-name">uses</span>: actions/setup-node@v2 <span class="org-comment-delimiter"># </span><span class="org-comment">&#35013;node.js&#29615;&#22659;
-</span>          <span class="org-variable-name">with</span>: <span class="org-comment-delimiter"># </span><span class="org-comment">&#36755;&#20837;&#36825;&#20010;`actions`&#38656;&#35201;&#30340;&#21442;&#25968;&#65292;&#20363;&#22914;&#29256;&#26412;&#21495;
-</span>          <span class="org-variable-name">node-version</span>: <span class="org-string">'14'</span>
-          <span class="org-comment-delimiter"># </span><span class="org-comment">shell command, The run keyword tells the job to execute a command on the runner.
-</span>          - <span class="org-variable-name">run</span>: yarn install <span class="org-comment-delimiter"># </span><span class="org-comment">&#23433;&#35013;&#21338;&#23458;&#30340;&#20381;&#36182;
-</span>            - <span class="org-variable-name">run</span>: yarn build <span class="org-comment-delimiter"># </span><span class="org-comment">&#26500;&#24314;&#21338;&#23458;&#30340;&#38745;&#24577;&#25991;&#20214;
-</span>              - <span class="org-variable-name">name</span>: Deploy
-                <span class="org-variable-name">uses</span>: peaceiris/actions-gh-pages@v3 <span class="org-comment-delimiter"># </span><span class="org-comment">&#20351;&#29992;&#21035;&#20154;&#20889;&#22909;&#25226;&#38745;&#24577;&#25991;&#20214;&#21457;&#24067;&#21040;`GitHub Pages`&#30340;`actions`
-</span>                <span class="org-variable-name">with</span>:
+<pre class="src src-yaml"><code><span class="org-comment-delimiter"># </span><span class="org-comment">Optional - The name of the workflow as it will appear in the Actions tab of the GitHub repository.</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">workflows &#30340;&#21517;&#31216;</span>
+<span class="org-variable-name">name</span>: deploy-to-github-page
+<span class="org-comment-delimiter"># </span><span class="org-comment">Specify the event that automatically triggers the workflow file.</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#30417;&#21548;&#20160;&#20040;&#20107;&#20214;&#26102;&#35302;&#21457;&#36825;&#20010;workflows, &#36825;&#37324;&#30417;&#21548;push</span>
+<span class="org-constant">on</span>: [push]
+<span class="org-comment-delimiter"># </span><span class="org-comment">Groups together all the jobs that run in the workflow file</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#36825;&#20010;workflows&#20855;&#20307;&#26159;&#30001;&#21738;&#20123;&#20219;&#21153;&#32452;&#25104;&#30340;</span>
+<span class="org-variable-name">jobs</span>:
+  <span class="org-comment-delimiter"># </span><span class="org-comment">define job name</span>
+  <span class="org-comment-delimiter"># </span><span class="org-comment">&#20219;&#21153;1, `deploy`&#26159;&#20219;&#21153;&#30340;&#21517;&#31216;</span>
+  <span class="org-variable-name">deploy</span>:
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Configures the job to run on an Ubuntu Linux runner</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">&#22312;&#20160;&#20040;&#29615;&#22659;&#19979;&#25191;&#34892;&#36825;&#20010;&#20219;&#21153;</span>
+    <span class="org-variable-name">runs-on</span>: ubuntu-latest
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Groups together all the steps that run in the job</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Each item nested under this section is a separate action or shell command.</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">&#20219;&#21153;&#20855;&#20307;&#21253;&#21547;&#20160;&#20040;&#27493;&#39588;</span>
+    <span class="org-variable-name">steps</span>:
+      <span class="org-comment-delimiter"># </span><span class="org-comment">actions The uses keyword tells the job to retrieve v2 of the community action named actions/checkout@v2</span>
+      <span class="org-comment-delimiter"># </span><span class="org-comment">&#27599;&#20010;&#27493;&#39588;&#65292;&#21363;&#21487;&#20197;&#20351;&#29992;(`uses`)&#21035;&#20154;&#20889;&#22909;&#30340;`actions`, &#20063;&#21487;&#20197;&#36305;&#33258;&#24049;&#20889;&#30340;&#21629;&#20196;(`run`)</span>
+      - <span class="org-variable-name">uses</span>: actions/checkout@v2 <span class="org-comment-delimiter"># </span><span class="org-comment">&#25289;&#21462;&#20195;&#30721;</span>
+        - <span class="org-variable-name">uses</span>: actions/setup-node@v2 <span class="org-comment-delimiter"># </span><span class="org-comment">&#35013;node.js&#29615;&#22659;</span>
+          <span class="org-variable-name">with</span>: <span class="org-comment-delimiter"># </span><span class="org-comment">&#36755;&#20837;&#36825;&#20010;`actions`&#38656;&#35201;&#30340;&#21442;&#25968;&#65292;&#20363;&#22914;&#29256;&#26412;&#21495;</span>
+          <span class="org-variable-name">node-version</span>: <span class="org-string">'14'</span>
+          <span class="org-comment-delimiter"># </span><span class="org-comment">shell command, The run keyword tells the job to execute a command on the runner.</span>
+          - <span class="org-variable-name">run</span>: yarn install <span class="org-comment-delimiter"># </span><span class="org-comment">&#23433;&#35013;&#21338;&#23458;&#30340;&#20381;&#36182;</span>
+            - <span class="org-variable-name">run</span>: yarn build <span class="org-comment-delimiter"># </span><span class="org-comment">&#26500;&#24314;&#21338;&#23458;&#30340;&#38745;&#24577;&#25991;&#20214;</span>
+              - <span class="org-variable-name">name</span>: Deploy
+                <span class="org-variable-name">uses</span>: peaceiris/actions-gh-pages@v3 <span class="org-comment-delimiter"># </span><span class="org-comment">&#20351;&#29992;&#21035;&#20154;&#20889;&#22909;&#25226;&#38745;&#24577;&#25991;&#20214;&#21457;&#24067;&#21040;`GitHub Pages`&#30340;`actions`</span>
+                <span class="org-variable-name">with</span>:
                   <span class="org-variable-name">github_token</span>: ${{ secrets.GITHUB_TOKEN }}
                   <span class="org-variable-name">publish_dir</span>: docs/.vuepress/dist
 
@@ -194,7 +194,6 @@ GitHub Actions are event-driven, meaning that you can run a series of commands a
 </div>
 </div>
 <div id="postamble" class="status">
-
 <details class="webmention js-required">
 <summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
 <p class="webmention__tip">
@@ -209,23 +208,21 @@ GitHub Actions are event-driven, meaning that you can run a series of commands a
 </form>
 <hr></hr>
 <ul class="webmention__list"></ul>
-</details>
-<footer>
-<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建于 <time class="dt-published" datetime="2021-08-10 Tue 21:39">2021-08-10 Tue 21:39</time>，更新于 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
-<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
-<p>所有源代码以及任何内联文档遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 使用 GitHub Actions 部署博客到 GitHub Pages &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">纯文本</a> 邮件 :)</p>
-<p>如果你偏好纯文本阅读，请将当前 URL 的 <code>.html</code> 替换为 <code>.org</code>。</p>
-<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
-</footer>
-<div class="h-card p-author" aria-hidden="true">
+</details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
 <a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
 <a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
 </div>
-<script src="/js/code-enhanced.js" defer></script>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2021-08-10 Tue 21:39">2021-08-10 Tue 21:39</time>，更新於 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21 Tue 23:28</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 使用 GitHub Actions 部署博客到 GitHub Pages &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果你偏好純文本閱讀，可以查看 <a href="/use-github-action-deploy-blog.txt">純文本版本</a> 或 <a href="/use-github-action-deploy-blog.org">原始 org 文件</a>。</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+</footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
 <script src="/js/backtop.js" defer></script>
 <script src="/js/sidenote.js" defer></script>
