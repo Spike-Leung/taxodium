@@ -144,5 +144,5 @@ document.addEventListener("DOMContentLoaded", () => {
   }, 500)
 
   setSafariFlag();
-  document.querySelector("#lightdark").addEventListener('change', (event) => switchMode(event.target.value));
+  document.querySelector("#lightdark")?.addEventListener('change', (event) => switchMode(event.target.value));
 });
