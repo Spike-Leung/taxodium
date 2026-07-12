@@ -1,12 +1,12 @@
-                            ________________
+                                    ________________
 
-                             SVN CHEATSHEET
+                                     SVN CHEATSHEET
 
-                              Spike Leung
-                            ________________
+                                      Spike Leung
+                                    ________________
 
 
-                         [2021-07-31 Sat 10:10]
+                                 [2021-07-31 Sat 10:10]
 
 
 Table of Contents
@@ -35,11 +35,11 @@ _________________
 
 Window 上有 [TortoiseSVN]，Mac 有 [SmartSVN] 。
 
-笔者当时用的就是 `SmartSVN' ，但有些功能需要付费，有的地方也不方便，所以
-就学习了命令行操作。
+笔者当时用的就是 `SmartSVN' ，但有些功能需要付费，有的地方也不方便，所以就学习了命令行操
+作。
 
-或者也可以用 `Emacs' ， 它集成了一套还不错的版本控制操作， `Emacs' 结合
-命令行，基本上可以覆盖我所有的使用场景了。
+或者也可以用 `Emacs' ， 它集成了一套还不错的版本控制操作， `Emacs' 结合命令行，基本上可
+以覆盖我所有的使用场景了。
 
 
 [TortoiseSVN] <https://tortoisesvn.net/>
@@ -83,8 +83,7 @@ Window 上有 [TortoiseSVN]，Mac 有 [SmartSVN] 。
 3 svn list
 ==========
 
-  当知道 SVN 仓库的 URL，可以通过 `svn list' 查看仓库下包行那些 Tags，哪
-  些分支。
+  当知道 SVN 仓库的 URL，可以通过 `svn list' 查看仓库下包行那些 Tags，哪些分支。
 
   ,----
   | svn list URL
@@ -137,15 +136,14 @@ Window 上有 [TortoiseSVN]，Mac 有 [SmartSVN] 。
 
   `<REV>' 是对应的日志序号，例如 1234。
 
-  这个命令会打开一个编辑器，让你编辑日志信息，但如果没有配置，就会出现一
-  个报错:
+  这个命令会打开一个编辑器，让你编辑日志信息，但如果没有配置，就会出现一个报错:
 
   `svn: could not use external editor to fetch log message'
 
   可以去修改 SVN 的配置文件，指定编辑器。
 
-  在 Mac 中，路径一般是在 `~/.subversion/config' ， 找到 `editor-cmd' ，
-  指定为你喜欢的编辑器即可。
+  在 Mac 中，路径一般是在 `~/.subversion/config' ， 找到 `editor-cmd' ，指定为你喜欢的编
+  辑器即可。
 
   ,----
   | *# Section for configuring external helper applications.
@@ -181,12 +179,10 @@ Window 上有 [TortoiseSVN]，Mac 有 [SmartSVN] 。
 
   SVN 支持从文件读取路径，于是可以这么做：
 
-  1. `svn st -q | cut -c 9- > ~/target.txt' 把改动的文件路径全部输出到一
-     个文件中。
-  2. 打开 `~/target.txt', 看看有没有路径是需要删除的，有的话就删除，剩下
-     的就是之后要提交的文件。
-  3. `svn commit --targets ~/target.txt' 使用 `~/target.txt' 的内容进行
-     提交。
+  1. `svn st -q | cut -c 9- > ~/target.txt' 把改动的文件路径全部输出到一个文件中。
+  2. 打开 `~/target.txt', 看看有没有路径是需要删除的，有的话就删除，剩下的就是之后要提交
+     的文件。
+  3. `svn commit --targets ~/target.txt' 使用 `~/target.txt' 的内容进行提交。
 
 
 8 svn diff
@@ -208,30 +204,24 @@ Window 上有 [TortoiseSVN]，Mac 有 [SmartSVN] 。
 8.1 diff 美化
 ~~~~~~~~~~~~~
 
-  默认 `svn diff' 输出的内容颜色是一样的，只能通过 `+' 和 `-' 判断哪些是
-  增加，哪些是删除。
+  默认 `svn diff' 输出的内容颜色是一样的，只能通过 `+' 和 `-' 判断哪些是增加，哪些是删除。
 
   为了直观一些，可以安装 `colordiff' 进行美化：
 
   1. `brew install colordiff' 安装 colordiff。
-  2. `svn diff menu.jsp -r 23304:23314 | colordiff' 通过管道把输出交给
-     `colordiff' 美化。
+  2. `svn diff menu.jsp -r 23304:23314 | colordiff' 通过管道把输出交给 `colordiff' 美化。
 
   具体可以参考 [制作一个更漂亮的SVN Diff命令]。
 
-  尽管已经有了颜色区分了，但还是不太方便比对，可以参考以下两篇文章，使用
-  比对工具进行查看：
+  尽管已经有了颜色区分了，但还是不太方便比对，可以参考以下两篇文章，使用比对工具进行查看：
 
-  1. [Is there any free svn diff tool for Mac Instead of use command
-     line 'svn diff']
+  1. [Is there any free svn diff tool for Mac Instead of use command line 'svn diff']
   2. [Wrapper to use OS X FileMerge when calling `svn diff`]
 
 
-[制作一个更漂亮的SVN Diff命令]
-<http://icodeit.org/2015/02/make-a-colorful-svn-diff/>
+[制作一个更漂亮的SVN Diff命令] <http://icodeit.org/2015/02/make-a-colorful-svn-diff/>
 
-[Is there any free svn diff tool for Mac Instead of use command line
-'svn diff']
+[Is there any free svn diff tool for Mac Instead of use command line 'svn diff']
 <https://stackoverflow.com/questions/25050303/is-there-any-free-svn-diff-tool-for-mac-instead-of-use-command-line-svn-diff>
 
 [Wrapper to use OS X FileMerge when calling `svn diff`]
@@ -259,8 +249,8 @@ Window 上有 [TortoiseSVN]，Mac 有 [SmartSVN] 。
 
   你可以通过定制一些别名来节省操作。
 
-  例如编辑日志，每次都要输入 `svn propedit -r <REV> --revprop svn:log'
-  就很麻烦，也有可能记不住那么多参数。
+  例如编辑日志，每次都要输入 `svn propedit -r <REV> --revprop svn:log' 就很麻烦，也有可
+  能记不住那么多参数。
 
   笔者使用的是 `zsh' ，在 `.zshrc' 中可以定义函数, 如：
 
@@ -273,8 +263,7 @@ Window 上有 [TortoiseSVN]，Mac 有 [SmartSVN] 。
   | }
   `----
 
-  之后，我就可以调用 `editSvnLog xxxx' 去编辑日志，输入要修改的 `xxxx'
-  对应的提交信息了。
+  之后，我就可以调用 `editSvnLog xxxx' 去编辑日志，输入要修改的 `xxxx' 对应的提交信息了。
 
   如果你用的是 `bash', 那就改 `.bashrc' 。
 
@@ -283,8 +272,7 @@ Window 上有 [TortoiseSVN]，Mac 有 [SmartSVN] 。
 ===========
 
   - [SVN Commit Specific files]
-  - [How to view changes made to files on a certain revision in
-    Subversion]
+  - [How to view changes made to files on a certain revision in Subversion]
   - [How do I ignore files in Subversion?]
   - [Make a Bash alias that takes a parameter?]
   - [svnbucket]

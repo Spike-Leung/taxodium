@@ -1,12 +1,12 @@
-                 _____________________________________
+                         _____________________________________
 
-                  使用 GPTEL-REQUEST 封装一个翻译方法
+                          使用 GPTEL-REQUEST 封装一个翻译方法
 
-                              Spike Leung
-                 _____________________________________
+                                      Spike Leung
+                         _____________________________________
 
 
-                         [2025-04-15 Tue 16:24]
+                                 [2025-04-15 Tue 16:24]
 
 
 Table of Contents
@@ -17,30 +17,26 @@ _________________
 
 <file:./images/use-gptel-request-to-translate/demo.gif>
 
-最近用 LLM 挺多的，尝试用英文写 prompt，但有时我不知道怎么写，就想着翻译
-一下。Emacs 中的翻译的工具也不少，写这个函数只是分享一下 `gptel-request'
-的一种实现。
+最近用 LLM 挺多的，尝试用英文写 prompt，但有时我不知道怎么写，就想着翻译一下。Emacs 中的
+翻译的工具也不少，写这个函数只是分享一下 `gptel-request' 的一种实现。
 
 一些 Emacs 的翻译配置：
 
-- [Translation In Emacs]
-  <https://taxodium.ink/translation-in-emacs.html>
+- [Translation In Emacs] <https://taxodium.ink/translation-in-emacs.html>
 - [英文翻译] by Manatee LazyCat
 
 逻辑都是 LLM 写的，大体的逻辑是（源码见 [init-gptel.el]）：
 
-1. 找到当前选中区域，或者基于当前 point 获取对应的行/段落，作为要翻译的
-   内容。
+1. 找到当前选中区域，或者基于当前 point 获取对应的行/段落，作为要翻译的内容。
 2. 绑定一些本地变量，如 model，backend，因为翻译只需要一个快速便宜的模型。
-3. 调用 `gptel-request' ，写一个翻译的 prompt，发起请求，得到响应后覆盖
-   第 1 步选中的内容。
+3. 调用 `gptel-request' ，写一个翻译的 prompt，发起请求，得到响应后覆盖第 1 步选中的内容。
 
-------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 
 更新：
 
-- 偶尔碰到 openai 的模型会失效，Google 的相对稳定一点，设置一个 fallback
-  的模型，如果失效了就调用 fallback 模型重试。
+- 偶尔碰到 openai 的模型会失效，Google 的相对稳定一点，设置一个 fallback 的模型，如果失
+  效了就调用 fallback 模型重试。
 - 支持自定义 prompt，有时可能需要翻译成别的语言可能有用。
 
 ,----
@@ -104,15 +100,15 @@ _________________
 `----
 
 
-利用 `gptel-request' ，封装一些 prompt，可以方便地解决平时一些重复的、可
-以使用 LLM 解决的任务。
+利用 `gptel-request' ，封装一些 prompt，可以方便地解决平时一些重复的、可以使用 LLM 解决
+的任务。
 
-------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 
 更新一个更好的实现，代码更优雅一些。
 
-首先通过 `defmacro' 定义一些 preset，在 preset 中设置 `:rewrite-message'
-，定义 rewrite 的 prompt：
+首先通过 `defmacro' 定义一些 preset，在 preset 中设置 `:rewrite-message' ，定义 rewrite
+的 prompt：
 
 ,----
 | (defmacro spike-leung/define-gptel-preset (name &rest args)
@@ -149,11 +145,9 @@ _________________
 `----
 
 在 preset 中 `:rewrite-message' 对应的是 `gptel-rewrite-message' 或者
-`gptel--rewrite-message' ，你还可以定义很多参数，具体见 [gptel - Option
-presets]。
+`gptel--rewrite-message' ，你还可以定义很多参数，具体见 [gptel - Option presets]。
 
-如果不了解 macro，推荐阅读 [Evaluation inside of a macro or special
-form]。
+如果不了解 macro，推荐阅读 [Evaluation inside of a macro or special form]。
 
 接下来定义一个方法，选择 preset 然后调用 `gptel--suffix-rewrite' :
 
@@ -184,10 +178,9 @@ form]。
 - [init-ai.el]
 - [init-keybinding.el]
 
-------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 
-你可以在 [使用 gptel-request 写的一个翻译函数] 进行讨论，或者看看其他人
-分享的思路。
+你可以在 [使用 gptel-request 写的一个翻译函数] 进行讨论，或者看看其他人分享的思路。
 
 
 [英文翻译]
@@ -202,11 +195,9 @@ form]。
 [Evaluation inside of a macro or special form]
 <https://protesilaos.com/emacs/emacs-lisp-elements#h:evaluation-inside-of-a-macro-or-special-form>
 
-[init-ai.el]
-<https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-ai.el>
+[init-ai.el] <https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-ai.el>
 
 [init-keybinding.el]
 <https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-keybinding.el>
 
-[使用 gptel-request 写的一个翻译函数]
-<https://emacs-china.org/t/gptel-request/29360>
+[使用 gptel-request 写的一个翻译函数] <https://emacs-china.org/t/gptel-request/29360>

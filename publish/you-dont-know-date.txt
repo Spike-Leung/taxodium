@@ -1,12 +1,12 @@
-                             _____________
+                                     _____________
 
-                              DATE 的踩坑
+                                      DATE 的踩坑
 
-                              Spike Leung
-                             _____________
+                                      Spike Leung
+                                     _____________
 
 
-                         [2024-01-08 Mon 21:40]
+                                 [2024-01-08 Mon 21:40]
 
 
 Table of Contents
@@ -35,16 +35,14 @@ _________________
   | getMonth('2023-03', '2024-03-25 08:00:00') // 13
   `----
 
-  开始日期和结束日期都相同，预期得到的月份数也是相同的，但是实际结果却相
-  差了一个月。
+  开始日期和结束日期都相同，预期得到的月份数也是相同的，但是实际结果却相差了一个月。
 
-  观察代码发现，开始日期和结束日期传入的 date string 不一样，开始时期只
-  包含年月，而结束日期则具体到时分秒。
+  观察代码发现，开始日期和结束日期传入的 date string 不一样，开始时期只包含年月，而结束
+  日期则具体到时分秒。
 
   是不是因为 date string 不同，导致得到的时间存在差异呢？
 
-  尝试相同的日期，不同的 date string 表示，看看结果，得到的结果确实不同，
-  相差了 8 小时。
+  尝试相同的日期，不同的 date string 表示，看看结果，得到的结果确实不同，相差了 8 小时。
 
   ,----
   | new Date('2024-01-01') // Mon Jan 01 2024 08:00:00 GMT+0800 (China Standard Time)
@@ -53,27 +51,25 @@ _________________
 
   查阅 Date 的文档，发现：
 
-        When the time zone offset is absent, *date-only forms are
-        interpreted as a UTC time and date-time forms are
-        interpreted as local time*. This is due to a historical
-        spec error that was not consistent with ISO 8601 but could
-        not be changed due to web compatibility. See Broken Parser
-        – A Web Reality Issue.
+    When the time zone offset is absent, *date-only forms are interpreted as a UTC
+    time and date-time forms are interpreted as local time*. This is due to a
+    historical spec error that was not consistent with ISO 8601 but could not be
+    changed due to web compatibility. See Broken Parser – A Web Reality Issue.
 
-        --- [Date time string format]
+    --- [Date time string format]
 
   对于 *2024-01-01*
 
   - 时分省略了，默认是 00:00:00
   - 它是 `date-only' 格式，会被当作是 UTC 时间
   - 它实际会被解释成 UTC 时间的 2024-01-01 00:00:00
-  - new Date() 返回的是本地时间，我当前是在北京时区(+8h)，所以最后得到的
-    是 Mon Jan 01 2024 *08*:00:00 GMT+0800 (China Standard Time)
+  - new Date() 返回的是本地时间，我当前是在北京时区(+8h)，所以最后得到的是 Mon Jan 01
+    2024 *08*:00:00 GMT+0800 (China Standard Time)
 
   对于 *2024-01-01 00:00:00*
 
-  - 它是 `date-time' 格式，会被当作本地时间，所以最终返回的是 Mon Jan 01
-    2024 *00*:00:00 GMT+0800 (China Standard Time)
+  - 它是 `date-time' 格式，会被当作本地时间，所以最终返回的是 Mon Jan 01 2024 *00*:00:00
+    GMT+0800 (China Standard Time)
 
 
   通过不同的输入，可以比较一下不同 date string 的返回值：
@@ -98,13 +94,11 @@ _________________
   | new Date('2023-03-01 00:00:00').toUTCString() // 'Tue, 28 Feb 2023 16:00:00 GMT'
   `----
 
-  回到最开始的问题，代码中使用 `getTime()' 获取时间戳，getTime 获取的是
-  UTC 时间戳：
+  回到最开始的问题，代码中使用 `getTime()' 获取时间戳，getTime 获取的是 UTC 时间戳：
 
-        The getTime() method of Date instances returns the number
-        of milliseconds for this date since the epoch, which is
-        defined as the midnight at the beginning of January 1,
-        1970, UTC.  --- [Date.prototype.getTime()]
+    The getTime() method of Date instances returns the number of milliseconds for this
+    date since the epoch, which is defined as the midnight at the beginning of January
+    1, 1970, UTC.  --- [Date.prototype.getTime()]
 
   通过 `toUTCString()' 可以看到代码中开始时间，结束时间的返回的 UTC 时间:
 
@@ -114,8 +108,8 @@ _________________
   | new Date('2024-03-25 08:00:00').toUTCString() // 'Mon, 25 Mar 2024 00:00:00 GMT'
   `----
 
-  可以看到，2024-03-25 01:00:00 和 2024-03-25 08:00:00 在 UTC 时间中相差
-  了一天，就是这一天的差异，导致了计算结果的差异。
+  可以看到，2024-03-25 01:00:00 和 2024-03-25 08:00:00 在 UTC 时间中相差了一天，就是这一
+  天的差异，导致了计算结果的差异。
 
 
 [Date time string format]
@@ -127,8 +121,8 @@ _________________
 1.1 如何规避
 ~~~~~~~~~~~~
 
-  由于以 date string 形式创建 Date，得到的结果可能不同，因此最好避免用
-  date string ，而是用参数的形式创建:
+  由于以 date string 形式创建 Date，得到的结果可能不同，因此最好避免用 date string ，而
+  是用参数的形式创建:
 
   ,----
   | // Remember (and accept) that month is zero-indexed in JavaScript.

@@ -1,12 +1,12 @@
-               __________________________________________
+                       __________________________________________
 
-                EMACS: 封装 WEBJUMP 搜索 SYMBOL-AT-POINT
+                        EMACS: 封装 WEBJUMP 搜索 SYMBOL-AT-POINT
 
-                              Spike Leung
-               __________________________________________
+                                      Spike Leung
+                       __________________________________________
 
 
-                         [2026-01-26 Mon 11:54]
+                                 [2026-01-26 Mon 11:54]
 
 
 Table of Contents
@@ -15,8 +15,7 @@ _________________
 
 
 
-`webjump' 是 Emacs 里内置的一个包，你可以配置想要搜索的网站，然后通过
-webjump 选择搜索。
+`webjump' 是 Emacs 里内置的一个包，你可以配置想要搜索的网站，然后通过 webjump 选择搜索。
 
 例如这是我设置的网站：
 
@@ -30,18 +29,18 @@ webjump 选择搜索。
 |                       ("Haici" . [simple-query "dict.cn" "dict.cn/search?q=" ""])))
 `----
 
-当我调用 webjump 时，它会让我从上面的选项里选一个，然后输入搜索关键字，
-之后就会跳转到对应的网站搜索。
+当我调用 webjump 时，它会让我从上面的选项里选一个，然后输入搜索关键字，之后就会跳转到对
+应的网站搜索。
 
-可以将一些比较高频的搜索条件内置在搜索链接里。如果经常搜索 GitHub 上的内
-容，可以加上 `site:github.com' ，使得总是搜索 `github.com' 的内容；或者
-也可以直接用 GitHub 本身的搜索 `https://github.com/search?q=%s' 。
+可以将一些比较高频的搜索条件内置在搜索链接里。如果经常搜索 GitHub 上的内容，可以加上
+`site:github.com' ，使得总是搜索 `github.com' 的内容；或者也可以直接用 GitHub 本身的搜索
+`https://github.com/search?q=%s' 。
 
 `symbol-at-point' 也是 Emacs 里内置的一个函数，可以获取当前指针下的内容。
 
-结合两者，我写了一个函数，获取指针下的内容，然后调用 webjump 去搜索，这
-样在 Emacs 里碰到什么我想要查询的，就可以快速调用常用的网站进行搜索。例
-如写页面的时候快速去 MDN 查询一些 API 的使用。
+结合两者，我写了一个函数，获取指针下的内容，然后调用 webjump 去搜索，这样在 Emacs 里碰到
+什么我想要查询的，就可以快速调用常用的网站进行搜索。例如写页面的时候快速去 MDN 查询一些
+API 的使用。
 
 ,----
 | (use-package webjump
@@ -81,27 +80,26 @@ webjump 选择搜索。
 
 [Emacs China 上的相关讨论]
 
-------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 
 更新：
 
-因为是针对 point 下的内容操作，所以很适合用 [embark]，可以不用记忆额外的
-快捷键，更容易想起来用。
+因为是针对 point 下的内容操作，所以很适合用 [embark]，可以不用记忆额外的快捷键，更容易想
+起来用。
 
-embark 可以理解成 Emacs 里的右键菜单，在任何位置都可以调用 `embark-act'
-唤起这个菜单，菜单中的内容是可以自己定制的，这样就可以快速进行一些操作。
+embark 可以理解成 Emacs 里的右键菜单，在任何位置都可以调用 `embark-act' 唤起这个菜单，菜
+单中的内容是可以自己定制的，这样就可以快速进行一些操作。
 
-最近还经常用 [Kagi Assistant]，所以把 Kagi Assistant 的链接也加入到了
-webjump，这样我就可以随时从 Emacs 中获取上下文，然后去 Kagi Assistant 进
-行对话。
+最近还经常用 [Kagi Assistant]，所以把 Kagi Assistant 的链接也加入到了 webjump，这样我就
+可以随时从 Emacs 中获取上下文，然后去 Kagi Assistant 进行对话。
 
 现在我的操作流程是：
 
-- 在 Emacs 中，按下 ，这会调用 `embark-act' 。embark 会自动帮我选择
-  point 下的内容，可能是一个符号，可能是一个 region（选中的区域）。
+- 在 Emacs 中，按下 ，这会调用 `embark-act' 。embark 会自动帮我选择 point 下的内容，可能
+  是一个符号，可能是一个 region（选中的区域）。
 - 按下 ，这个按键绑定了 `spike-leung/webjump-symbol-at-point' 。
-- 选择 「Kagi LLM」，输入 prompt，然后就会带着上下文和 prompt，跳转到
-  Kagi Assistant 开始对话
+- 选择 「Kagi LLM」，输入 prompt，然后就会带着上下文和 prompt，跳转到 Kagi Assistant 开
+  始对话
 
 具体代码：
 
@@ -163,10 +161,10 @@ webjump，这样我就可以随时从 Emacs 中获取上下文，然后去 Kagi 
 |   (keymap-set embark-region-map "W" #'spike-leung/webjump-symbol-at-point))
 `----
 
-------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 
-webjump 和浏览器或者搜索引擎中的 Search Shortcuts 差不多, 可以保存常用的
-搜索条件便于快速搜索。
+webjump 和浏览器或者搜索引擎中的 Search Shortcuts 差不多, 可以保存常用的搜索条件便于快速
+搜索。
 
 例如我经常需要从 Kagi 找专辑封面的图片，而且希望图片尺寸尽可能大。
 
@@ -176,8 +174,8 @@ webjump 和浏览器或者搜索引擎中的 Search Shortcuts 差不多, 可以�
 3. 切换到图片搜索
 4. 设置尺寸为 large 进行过滤
 
-通过 Search Shortcuts，我设置了
-`https://kagi.com/images?q=%s&size=large' ，并绑定 `@a' 。
+通过 Search Shortcuts，我设置了 `https://kagi.com/images?q=%s&size=large' ，并绑定 `@a'
+。
 
 我的操作就变成:
 1. 触发搜索栏
@@ -188,12 +186,10 @@ webjump 和浏览器或者搜索引擎中的 Search Shortcuts 差不多, 可以�
 - `filetype:' 可以搜索指定的文件类型
 - ...
 
-然后将平时频繁使用的一些搜索条件保存到 Search Shortcuts，这样下次使用就
-会方便一些。
+然后将平时频繁使用的一些搜索条件保存到 Search Shortcuts，这样下次使用就会方便一些。
 
 
-[Emacs China 上的相关讨论]
-<https://emacs-china.org/t/webjump-symbol-at-point/30838>
+[Emacs China 上的相关讨论] <https://emacs-china.org/t/webjump-symbol-at-point/30838>
 
 [embark] <https://github.com/oantolin/embark>
 

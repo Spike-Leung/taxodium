@@ -1,12 +1,12 @@
-                            ________________
+                                    ________________
 
-                             GIT 的校验实践
+                                     GIT 的校验实践
 
-                              Spike Leung
-                            ________________
+                                      Spike Leung
+                                    ________________
 
 
-                         [2022-11-17 Thu 14:44]
+                                 [2022-11-17 Thu 14:44]
 
 
 Table of Contents
@@ -36,8 +36,7 @@ _________________
 1.1 diff
 ~~~~~~~~
 
-  在提交前最好先确认一下当前提交了什么文件，看看 diff，确认没有改错后再
-  提交。
+  在提交前最好先确认一下当前提交了什么文件，看看 diff，确认没有改错后再提交。
 
 
 1.2 编写方式
@@ -48,11 +47,10 @@ _________________
   | git commit -m 'your message'
   `----
 
-  但是它的缺点是能写的内容不多, 有时你可能有一些补充信息，或者需要附上一
-  些 issue 链接，就不方便了。
+  但是它的缺点是能写的内容不多, 有时你可能有一些补充信息，或者需要附上一些 issue 链接，
+  就不方便了。
 
-  所以建议是配置好 Git 使用的编辑器，然后直接敲 `git commit', 在编辑器中
-  进行编写。
+  所以建议是配置好 Git 使用的编辑器，然后直接敲 `git commit', 在编辑器中进行编写。
 
   配置 Git 编辑器：
   ,----
@@ -78,23 +76,18 @@ _________________
 
   其中类型的定义可以参考 [Angular]:
 
-        - *build*: Changes that affect the build system or
-           external dependencies (example scopes: gulp, broccoli,
-           npm)
-        - *ci*: Changes to our CI configuration files and scripts
-           (example scopes: Travis, Circle, BrowserStack,
-           SauceLabs)
-        - *docs*: Documentation only changes
-        - *feat*: A new feature
-        - *fix*: A bug fix
-        - *perf*: A code change that improves performance
-        - *refactor*: A code change that neither fixes a bug nor
-           adds a feature
-        - *style*: Changes that do not affect the meaning of the
-           code (white-space, formatting, missing semi-colons,
-           etc)
-        - *test*: Adding missing tests or correcting existing
-           tests
+    - *build*: Changes that affect the build system or external dependencies (example
+       scopes: gulp, broccoli, npm)
+    - *ci*: Changes to our CI configuration files and scripts (example scopes: Travis,
+       Circle, BrowserStack, SauceLabs)
+    - *docs*: Documentation only changes
+    - *feat*: A new feature
+    - *fix*: A bug fix
+    - *perf*: A code change that improves performance
+    - *refactor*: A code change that neither fixes a bug nor adds a feature
+    - *style*: Changes that do not affect the meaning of the code (white-space,
+       formatting, missing semi-colons, etc)
+    - *test*: Adding missing tests or correcting existing tests
 
   提交信息的编写可以参考 [Introduction: Why good commit messages matter]：
 
@@ -129,24 +122,20 @@ _________________
   `----
 
 
-[约定式提交]
-<https://www.conventionalcommits.org/zh-hans/v1.0.0-beta.4/>
+[约定式提交] <https://www.conventionalcommits.org/zh-hans/v1.0.0-beta.4/>
 
-[Angular]
-<https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#type>
+[Angular] <https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#type>
 
-[Introduction: Why good commit messages matter]
-<https://cbea.ms/git-commit/>
+[Introduction: Why good commit messages matter] <https://cbea.ms/git-commit/>
 
 
 1.4 工具校验
 ~~~~~~~~~~~~
 
-  在团队协作中，为了确保大家的提交都符合规范，最好是通过工具去约束，而不
-  是人为检查。
+  在团队协作中，为了确保大家的提交都符合规范，最好是通过工具去约束，而不是人为检查。
 
-  格式的约束可以通过 [commitlint] 等工具实现，可以添加一个 `pre-commit'
-  的钩子，在提交前进行格式的校验。
+  格式的约束可以通过 [commitlint] 等工具实现，可以添加一个 `pre-commit' 的钩子，在提交前
+  进行格式的校验。
 
 
 [commitlint] <https://github.com/conventional-changelog/commitlint>
@@ -155,8 +144,8 @@ _________________
 1.5 提交信息模板(commit.template)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  团队中可能有约定好的提交信息格式，也可以添加一份提交模板在项目，每次提
-  交时都读取模板进行编写，这样也可以统一格式。
+  团队中可能有约定好的提交信息格式，也可以添加一份提交模板在项目，每次提交时都读取模板进
+  行编写，这样也可以统一格式。
 
   可以在项目中根目录创建一份 `.gittemplate.txt' , 然后写入模板内容：
   ,----
@@ -168,8 +157,7 @@ _________________
   | [Ticket: X]
   `----
 
-  然后给项目的 git 仓库配置使用这个模板(具体配置会生成在 `项目根目录
-  /.git/config' 下)：
+  然后给项目的 git 仓库配置使用这个模板(具体配置会生成在 `项目根目录/.git/config' 下)：
   ,----
   | git config commit.template .gittemplate.txt
   `----
@@ -199,8 +187,8 @@ _________________
 2 githooks / husky
 ==================
 
-  前面提到，可以用 [commitlint] 在 `pre-commit' 时进行校验，
-  `pre-commit' 指的就是一个 [Git 钩子]，可以在提交前触发一些动作。
+  前面提到，可以用 [commitlint] 在 `pre-commit' 时进行校验， `pre-commit' 指的就是一个
+  [Git 钩子]，可以在提交前触发一些动作。
 
   你可以在提交前后，push 前后，合并前后去触发一些动作。
 
@@ -208,12 +196,10 @@ _________________
 
   - 在提交的时候检查代码格式，格式化代码 (执行 eslint, prettier)
   - 在确认提交信息后，校验提交信息的格式
-  - 在 push 到远端时，校验代码是否有错误，跑测试用例，比对分支看是否缺少
-    上游提交等
+  - 在 push 到远端时，校验代码是否有错误，跑测试用例，比对分支看是否缺少上游提交等
   - ...
 
-  githooks 最早出现的版本时 `2.19.0' ，如果你的 Git 版本过低，就需要升级
-  一下。
+  githooks 最早出现的版本时 `2.19.0' ，如果你的 Git 版本过低，就需要升级一下。
 
 
 [commitlint] <https://github.com/conventional-changelog/commitlint>
@@ -248,8 +234,7 @@ _________________
     | -rwxr-xr-x 1 spike spike 3610 Oct 27 19:10 update.sample
     `----
 
-  - 根据需要的钩子，将 `.simple' 后缀移除，例如 `pre-commit.sample' 改为
-    `pre-commit'
+  - 根据需要的钩子，将 `.simple' 后缀移除，例如 `pre-commit.sample' 改为 `pre-commit'
 
   - 打开文件，设置为你想写的语言
 
@@ -277,13 +262,13 @@ _________________
     | fi
     `----
 
-  - 保存好脚本后, 当 push 的时候，就会执行 `pre-push' 里面的脚本，去比对
-    分支，如果不同步则会出现提示文字
+  - 保存好脚本后, 当 push 的时候，就会执行 `pre-push' 里面的脚本，去比对分支，如果不同步
+    则会出现提示文字
 
   但是 githooks 是 `存储在本地，不进入版本管理' 的。
 
-  一个解决办法是在项目中创建一个目录存放 hooks, 同步到远端后，大家拉取下
-  来拷贝 `.git/hooks' 目录里。
+  一个解决办法是在项目中创建一个目录存放 hooks, 同步到远端后，大家拉取下来拷贝
+  `.git/hooks' 目录里。
 
 
 2.1.2 husky
@@ -291,8 +276,8 @@ _________________
 
   [husky] 是一个方便写 githooks 的工具，目前也蛮流行的。
 
-  它会在项目的根目录下创 `.husky' 目录，存放 husky 生成的所有 hooks，这
-  样可以避免 hooks 在本地仓库没有同步的问题。
+  它会在项目的根目录下创 `.husky' 目录，存放 husky 生成的所有 hooks，这样可以避免 hooks
+  在本地仓库没有同步的问题。
 
   它还会修改 githooks 对应的路径，改写为 `.husky' 目录, 如果你打开
   `/project-root/.git/config' , 你会看到：
@@ -302,8 +287,7 @@ _________________
   |         hooksPath = .husky
   `----
 
-  husky 的使用就不赘述了，如果项目可以 husky，建议还是用 husky 来维护
-  githooks。
+  husky 的使用就不赘述了，如果项目可以 husky，建议还是用 husky 来维护 githooks。
 
 
 [husky] <https://typicode.github.io/husky/#/>
@@ -328,8 +312,7 @@ _________________
 2.2.1 校验提交信息 (commit-msg)
 -------------------------------
 
-  安装 [commitlint] 以来，然后创建 `commit-msg' 钩子，在提交后，校验提交
-  信息是否符合规范：
+  安装 [commitlint] 以来，然后创建 `commit-msg' 钩子，在提交后，校验提交信息是否符合规范：
   ,----
   | #!/usr/bin/env sh
   | . "$(dirname -- "$0")/_/husky.sh"
@@ -350,8 +333,8 @@ _________________
   | npx lint-staged
   `----
 
-  这里用到了 [okonet/lint-staged], 它的作用是对 staged 中的内容(git add
-  进去的内容)进行一些处理。
+  这里用到了 [okonet/lint-staged], 它的作用是对 staged 中的内容(git add 进去的内容)进行
+  一些处理。
 
   `.lintstagedrc.json':
   ,----
@@ -360,8 +343,7 @@ _________________
   | }
   `----
 
-  例如这里就是对 src 下的 js 和 vue 类型的文件，用 pretteir 格式化后，再
-  用 eslint 去校验。
+  例如这里就是对 src 下的 js 和 vue 类型的文件，用 pretteir 格式化后，再用 eslint 去校验。
 
 
 [okonet/lint-staged] <https://github.com/okonet/lint-staged>
@@ -387,8 +369,7 @@ _________________
   | fi
   | 
   `----
-  当存在多条分支时，有时容易忘记合并主分支代码，导致测试时丢失主分支的提
-  交。
+  当存在多条分支时，有时容易忘记合并主分支代码，导致测试时丢失主分支的提交。
 
   你就可以写一个 `pre-push' 钩子，再 push 的时候去校验一下。
 
@@ -396,8 +377,8 @@ _________________
 3 changelog
 ===========
 
-  涉及到版本控制，自然也有版本号和发布日志，一般而言，版本号应该遵循[语
-  义化版本 2.0.0]的规范。
+  涉及到版本控制，自然也有版本号和发布日志，一般而言，版本号应该遵循[语义化版本 2.0.0]的
+  规范。
 
   而发布日志，一般而言也可以用一个 `CHANGELOG.md' 文件去编写和维护。
 
@@ -408,16 +389,15 @@ _________________
   | npx changeset
   `----
 
-  changeset 会要求你选择当前这条记录对应的语义化版本，从而约束你去遵守语
-  义化。
+  changeset 会要求你选择当前这条记录对应的语义化版本，从而约束你去遵守语义化。
 
   在发布前可以不断地添加 changeset，等到要发布时，执行：
   ,----
   | npx changeset version
   `----
 
-  changeset 就会帮你把所有的 changeset 合并到 `CHANGELOG.md' 中，同时根
-  据你之前的选择计算对应的版本号。
+  changeset 就会帮你把所有的 changeset 合并到 `CHANGELOG.md' 中，同时根据你之前的选择计
+  算对应的版本号。
 
 
 [语义化版本 2.0.0] <https://semver.org/lang/zh-CN/>
@@ -429,8 +409,7 @@ _________________
 ======
 
   - [8.1 Customizing Git - Git Configuration]
-  - [How do I make git use the editor of my choice for editing commit
-    messages?]
+  - [How do I make git use the editor of my choice for editing commit messages?]
   - [Get Started with Git Hooks]
   - [adambard / learnxinyminutes-docs] 快速了解 bash 等脚本语言用法
 
@@ -438,12 +417,10 @@ _________________
 [8.1 Customizing Git - Git Configuration]
 <https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration>
 
-[How do I make git use the editor of my choice for editing commit
-messages?]
+[How do I make git use the editor of my choice for editing commit messages?]
 <https://stackoverflow.com/questions/2596805/how-do-i-make-git-use-the-editor-of-my-choice-for-editing-commit-messages>
 
 [Get Started with Git Hooks]
 <https://medium.com/@f3igao/get-started-with-git-hooks-5a489725c639>
 
-[adambard / learnxinyminutes-docs]
-<https://github.com/adambard/learnxinyminutes-docs>
+[adambard / learnxinyminutes-docs] <https://github.com/adambard/learnxinyminutes-docs>

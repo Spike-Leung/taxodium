@@ -1,12 +1,12 @@
-             _____________________________________________
+                     _____________________________________________
 
-              使用 GITHUB ACTIONS 部署博客到 GITHUB PAGES
+                      使用 GITHUB ACTIONS 部署博客到 GITHUB PAGES
 
-                              Spike Leung
-             _____________________________________________
+                                      Spike Leung
+                     _____________________________________________
 
 
-                         [2021-08-10 Tue 21:39]
+                                 [2021-08-10 Tue 21:39]
 
 
 Table of Contents
@@ -20,8 +20,8 @@ _________________
 2. 参考链接
 
 
-笔者目前的博客使用的是 [Vuepress], 参考文档，使用 `Travis CI' 实现了博客
-推送更新后自动部署。
+笔者目前的博客使用的是 [Vuepress], 参考文档，使用 `Travis CI' 实现了博客推送更新后自动部
+署。
 
 最近了解到 `GitHub Actions' ，遂将博客的自动部署改为 `GitHub Actions' 。
 
@@ -39,8 +39,7 @@ _________________
 
   - +尝鲜+
   - 它和 `GitHub` 集成到一起，方便
-  - 有很多别人已经写好的 [actions] 可以直接拿来用，避免重复造轮子，节省
-    时间
+  - 有很多别人已经写好的 [actions] 可以直接拿来用，避免重复造轮子，节省时间
   - ...
 
 
@@ -53,11 +52,11 @@ _________________
 1.2.1 Event-Driven
 ------------------
 
-        GitHub Actions are event-driven, meaning that you can run
-        a series of commands after a specified event has occurred
+    GitHub Actions are event-driven, meaning that you can run a series of commands
+    after a specified event has occurred
 
-  `GitHub Actions' 它是事件驱动的，当某个事件，例如 `push' ， `merge' 发
-  生的时候，就触发对应的处理 [workflows]
+  `GitHub Actions' 它是事件驱动的，当某个事件，例如 `push' ， `merge' 发生的时候，就触发
+  对应的处理 [workflows]
 
 
 [workflows]
@@ -67,11 +66,10 @@ _________________
 1.2.2 创建 GitHub Actions
 -------------------------
 
-  1. 在 Git 仓库下创建 `.github/workflows' 目录， 目录下创建一个对应的
-     `xxxx.yaml' 配置文件，每个 `yaml' 文件对应一个 `workflows'
+  1. 在 Git 仓库下创建 `.github/workflows' 目录， 目录下创建一个对应的 `xxxx.yaml' 配置
+     文件，每个 `yaml' 文件对应一个 `workflows'
 
-  2. 一个 `xxx.yaml' 文件，内容大致如下：(这是我的博客的部署
-     `workflows', 具体含义见注释)
+  2. 一个 `xxx.yaml' 文件，内容大致如下：(这是我的博客的部署 `workflows', 具体含义见注释)
 
      ,----
      | # Optional - The name of the workflow as it will appear in the Actions tab of the GitHub repository.
@@ -111,21 +109,21 @@ _________________
      `----
 
 
-  部署博客的 `workflows' 还是蛮简单的，阅读配置文件，可以发现 `GitHub
-  Actions' 的大致流程是这样的:
+  部署博客的 `workflows' 还是蛮简单的，阅读配置文件，可以发现 `GitHub Actions' 的大致流
+  程是这样的:
 
-  - 当某个事件发生，例如 `push' ，就会触发 `workflows' ，对应
-    `.github/workflows' 目录下定义的 `yaml' 配置
+  - 当某个事件发生，例如 `push' ，就会触发 `workflows' ，对应 `.github/workflows' 目录下
+    定义的 `yaml' 配置
   - 每个 `workflows' 定义
     + 匹配什么事件 (`on: push')
     + 定义都有那些任务 (`jobs')
-  - `jobs' 中定义任务的执行环境 (`runs-on') ，每个 `jobs' 是由一个一个步
-    骤 (`steps') 组成的，每个 `steps' 可以是
+  - `jobs' 中定义任务的执行环境 (`runs-on') ，每个 `jobs' 是由一个一个步骤 (`steps') 组
+    成的，每个 `steps' 可以是
     + `uses' 别人写好的 `actions'
     + `run' 自己定义的命令
 
-  所以，思考你想在仓库发生什么事件时，做什么任务，这个任务具体包含哪些步
-  骤，然后编写一个配置文件，就差不多了。
+  所以，思考你想在仓库发生什么事件时，做什么任务，这个任务具体包含哪些步骤，然后编写一个
+  配置文件，就差不多了。
 
 
 2 参考链接

@@ -1,12 +1,12 @@
-                           _________________
+                                   _________________
 
-                            JS 中的定时任务
+                                    JS 中的定时任务
 
-                              Spike Leung
-                           _________________
+                                      Spike Leung
+                                   _________________
 
 
-                         [2022-02-14 Mon 21:39]
+                                 [2022-02-14 Mon 21:39]
 
 
 Table of Contents
@@ -26,19 +26,17 @@ _________________
 1 setTimeout
 ============
 
-  [ setTimeout()] 可以设置一个延迟，延迟多少秒将一个 callback 放入到[宏
-  任务队列]。
+  [ setTimeout()] 可以设置一个延迟，延迟多少秒将一个 callback 放入到[宏任务队列]。
 
   虽然设置了延迟时间，但不是到了延迟时间，callback 就会马上执行。
 
-  callback 只是被放到了宏任务队列中，当调用栈空闲的时候，才会从宏任务队
-  列中取一个任务执行。
+  callback 只是被放到了宏任务队列中，当调用栈空闲的时候，才会从宏任务队列中取一个任务执
+  行。
 
   如果调用栈的任务还没处理完，就会延迟了宏任务队列中的任务的执行时间。
 
 
-[ setTimeout()]
-<https://developer.mozilla.org/en-US/docs/Web/API/setTimeout>
+[ setTimeout()] <https://developer.mozilla.org/en-US/docs/Web/API/setTimeout>
 
 [宏任务队列]
 <https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide#tasks_vs_microtasks>
@@ -49,8 +47,7 @@ _________________
 
   这里的 0 其实是放入到宏任务队列的延迟，而不是放入调用栈的延迟。
 
-  因此，不能保证 callback 会马上被执行，依旧需要等待调用栈任务(当前的同
-  步任务) 执行完成。
+  因此，不能保证 callback 会马上被执行，依旧需要等待调用栈任务(当前的同步任务) 执行完成。
 
   如果调用栈内的任务执行需要很久，那 callback 也可能等很久才会被执行。
 
@@ -62,8 +59,7 @@ _________________
 
   它只是把任务加入到了任务队列，任务未必马上就执行。
 
-  如果间隔时间小于任务执行时间，例如，间隔时间为 5s，callback 执行时间需
-  要 20s。
+  如果间隔时间小于任务执行时间，例如，间隔时间为 5s，callback 执行时间需要 20s。
 
   那么，每 5s 加入一个任务，假设经过了 20s， 则有四个任务 A， B， C， D。
 
@@ -78,8 +74,7 @@ _________________
   当 callback 执行时间可能大于间隔时间时，用 setInterval 就不合适了。
 
 
-[setInterval()]
-<https://developer.mozilla.org/en-US/docs/Web/API/setInterval>
+[setInterval()] <https://developer.mozilla.org/en-US/docs/Web/API/setInterval>
 
 3.1 对于长时间的同步任务
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -98,8 +93,7 @@ _________________
   | }, 1000);
   `----
 
-  时间很长的同步任务会阻塞 setInerval 的执行，并没有按照每一秒的频率去执
-  行。
+  时间很长的同步任务会阻塞 setInerval 的执行，并没有按照每一秒的频率去执行。
 
 
 3.2 对于长时间的异步任务
@@ -121,8 +115,8 @@ _________________
   |   console.log('counter', counter);
   | }, 200);
   `----
-  对于执行时间长的异步任务，例如接口请求，接口的响应可能需要很长时间，这
-  就会造成大量请求的堆积。
+  对于执行时间长的异步任务，例如接口请求，接口的响应可能需要很长时间，这就会造成大量请求
+  的堆积。
 
   想保持 callback 每隔一段时间执行，可以使用嵌套的 setTimeout 实现。
 
@@ -139,14 +133,12 @@ _________________
   | })()
   `----
 
-  嵌套的 setTimeout 可以确保 callback 间隔一段时间执行，避免了
-  setInterval 的弊端。
+  嵌套的 setTimeout 可以确保 callback 间隔一段时间执行，避免了 setInterval 的弊端。
 
-  除此之外，嵌套的 setTimeout 还可以根据 callback 的执行情况，调整延迟时
-  间。
+  除此之外，嵌套的 setTimeout 还可以根据 callback 的执行情况，调整延迟时间。
 
-  例如轮询请求接口，如果发现服务器已经超过负载，没法处理更多的请求了，可
-  以延长轮询时间，降低服务器的负载。
+  例如轮询请求接口，如果发现服务器已经超过负载，没法处理更多的请求了，可以延长轮询时间，
+  降低服务器的负载。
 
   ,----
   | let delay = 5000;
@@ -174,22 +166,21 @@ _________________
 
   但是 24 帧其实还不够，往往要达到 60 帧左右，动画才会看起来顺滑。
 
-  实现动画可以用 setInterval 或者嵌套的 setTimeout，设置 60 fps (1000 /
-  60) 的间隔，不断地进行改变。
+  实现动画可以用 setInterval 或者嵌套的 setTimeout，设置 60 fps (1000 / 60) 的间隔，不断
+  地进行改变。
 
-  但是这两个 api 都有一些弊端，可能会被其他同步任务阻塞，导致不能及时地
-  更新动画，而出现丢帧。
+  但是这两个 api 都有一些弊端，可能会被其他同步任务阻塞，导致不能及时地更新动画，而出现
+  丢帧。
 
-  而且这两个 api 也不会考虑当前的 tab 是否显示去暂停或开始，导致性能消耗
-  可能比较大。
+  而且这两个 api 也不会考虑当前的 tab 是否显示去暂停或开始，导致性能消耗可能比较大。
 
   而 requestAnimationFrame 则是为了解决这些问题出现的，它有几个优点：
 
-  1. 不会被当前的同步任务阻塞，不会出现卡帧问题，它总是在屏幕下一次重绘
-     之前去调用 callback，相对于 setInterval 更稳定。
+  1. 不会被当前的同步任务阻塞，不会出现卡帧问题，它总是在屏幕下一次重绘之前去调用
+     callback，相对于 setInterval 更稳定。
   2. 不用指定间隔，而是根据显示器的刷新率调整 callback 的调用频率。
-  3. 如果浏览器 tab 没有被激活 / 选中，或者元素不可见，那么
-     requestAnimationFrame 就会暂停，减少了性能消耗。
+  3. 如果浏览器 tab 没有被激活 / 选中，或者元素不可见，那么 requestAnimationFrame 就会暂
+     停，减少了性能消耗。
 
      当需要去实现动画时，应该优先去考虑 requestAnimationFrame 。
 
@@ -203,26 +194,25 @@ _________________
 
   [window.requestIdleCallback()] 用于在浏览器空闲的时候，去调用 callback。
 
-  在每一帧渲染的最后，如果完成帧的渲染，还有空余时间，就可以利用这段空余
-  的时间去执行 callback，避免影响渲染，动画等。
+  在每一帧渲染的最后，如果完成帧的渲染，还有空余时间，就可以利用这段空余的时间去执行
+  callback，避免影响渲染，动画等。
 
-  如果浏览器一直处于满载状态，requestIdleCallback 注册的 callback 有可能
-  一直都不会执行。
+  如果浏览器一直处于满载状态，requestIdleCallback 注册的 callback 有可能一直都不会执行。
 
   requestIdleCallback(callback, options) 中的第二个参数是 options。
 
-  可以指定一个 timeout，表示如果超过了 timeout 还没有找到空闲时间去执行，
-  则强制执行 callback，不再等待空闲。
+  可以指定一个 timeout，表示如果超过了 timeout 还没有找到空闲时间去执行，则强制执行
+  callback，不再等待空闲。
 
   建议使用的时候都指定 timeout。
 
-  由于是利用帧的最后一点空闲时间去执行 callback，callback 做的事情应该比
-  较简单，耗时不要太长。
+  由于是利用帧的最后一点空闲时间去执行 callback，callback 做的事情应该比较简单，耗时不要
+  太长。
 
   例如统计数据上传、数据预加载等。
 
-  另外由于帧已经渲染完成，尽量不要在 requestIdleCallback 再去改变 DOM，
-  避免造成新的重绘，影响下一帧的渲染。
+  另外由于帧已经渲染完成，尽量不要在 requestIdleCallback 再去改变 DOM， 避免造成新的重绘，
+  影响下一帧的渲染。
 
 
 [window.requestIdleCallback()]
@@ -234,12 +224,12 @@ _________________
 
   - [Cooperative asynchronous JavaScript: Timeouts and intervals] - MDN
   - [调度：setTimeout 和 setInterval] - javascript.info
-  - [Why not to use setInterval] - dev.io @ Akanksha Sharma指出了
-    setInterval 在执行一些消耗时间的任务时的问题
-  - [Understanding JavaScript's requestAnimationFrame() method for
-    smooth animations ]- javascriptkit有一些例子
-  - [The requestAnimationFrame() guide] - flaviocopes.com分析了
-    setTimeout, setInterval, requestAnimationFrame 在时间上的表现
+  - [Why not to use setInterval] - dev.io @ Akanksha Sharma指出了setInterval 在执行一些
+    消耗时间的任务时的问题
+  - [Understanding JavaScript's requestAnimationFrame() method for smooth animations ]-
+    javascriptkit有一些例子
+  - [The requestAnimationFrame() guide] - flaviocopes.com分析了 setTimeout, setInterval,
+    requestAnimationFrame 在时间上的表现
   - [Animating with requestAnimationFrame] - kirupa.com以视频的方式介绍
     requestAnimationFrame 的使用。
   - [requestIdleCallback和requestAnimationFrame详解] - 知乎 @ DC_er
@@ -249,18 +239,15 @@ _________________
 [Cooperative asynchronous JavaScript: Timeouts and intervals]
 <https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals>
 
-[调度：setTimeout 和 setInterval]
-<https://zh.javascript.info/settimeout-setinterval>
+[调度：setTimeout 和 setInterval] <https://zh.javascript.info/settimeout-setinterval>
 
 [Why not to use setInterval]
 <https://dev.to/akanksha_9560/why-not-to-use-setinterval--2na9>
 
-[Understanding JavaScript's requestAnimationFrame() method for smooth
-animations ]
+[Understanding JavaScript's requestAnimationFrame() method for smooth animations ]
 <http://www.javascriptkit.com/javatutors/requestanimationframe.shtml>
 
-[The requestAnimationFrame() guide]
-<https://flaviocopes.com/requestanimationframe/>
+[The requestAnimationFrame() guide] <https://flaviocopes.com/requestanimationframe/>
 
 [Animating with requestAnimationFrame]
 <https://www.kirupa.com/html5/animating_with_requestAnimationFrame.htm>

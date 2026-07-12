@@ -1,12 +1,12 @@
-                      ____________________________
+                              ____________________________
 
-                       EMACS 中配置 .AUTHINFO.GPG
+                               EMACS 中配置 .AUTHINFO.GPG
 
-                              Spike Leung
-                      ____________________________
+                                      Spike Leung
+                              ____________________________
 
 
-                         [2025-02-27 Thu 14:29]
+                                 [2025-02-27 Thu 14:29]
 
 
 Table of Contents
@@ -19,19 +19,17 @@ _________________
 5. 写在最后
 
 
-之前我写过一篇 [在 Emacs 中集成翻译插件] 的文章，插件依赖一些 LLM 服务，
-LLM 服务需要配置对应的 API key，它们是定义在 `~/.authinfo' 中的。
+之前我写过一篇 [在 Emacs 中集成翻译插件] 的文章，插件依赖一些 LLM 服务，LLM 服务需要配置
+对应的 API key，它们是定义在 `~/.authinfo' 中的。
 
-但是 `~/.authinfo' 是未加密的，如果泄露了，那么我的 API key 可能被滥用，
-所以我觉得还需要对它做一层加密。
+但是 `~/.authinfo' 是未加密的，如果泄露了，那么我的 API key 可能被滥用，所以我觉得还需要
+对它做一层加密。
 
-这篇文章我会分享如何在 `~/.authinfo' 中定义 API key、如何使用 [GnuPG] 对
-`~/.authinfo' 加密，以及如何配置 Emacs 从加密后的 `~/.authinfo.gpg' 中读
-取 API key。
+这篇文章我会分享如何在 `~/.authinfo' 中定义 API key、如何使用 [GnuPG] 对 `~/.authinfo'
+加密，以及如何配置 Emacs 从加密后的 `~/.authinfo.gpg' 中读取 API key。
 
 
-[在 Emacs 中集成翻译插件]
-<https://taxodium.ink/translation-in-emacs.html>
+[在 Emacs 中集成翻译插件] <https://taxodium.ink/translation-in-emacs.html>
 
 [GnuPG] <https://www.gnupg.org/documentation/manuals/gnupg/index.html>
 
@@ -39,22 +37,19 @@ LLM 服务需要配置对应的 API key，它们是定义在 `~/.authinfo' 中�
 1 authinfo
 ==========
 
-        有些连接到其他服务的 Emacs 软件包需要身份验证，由于反复提
-        供相同的用户名和密码可能会令人烦恼，Emacs 通过
-        [auth-source] 库提供了持久化信息。
+    有些连接到其他服务的 Emacs 软件包需要身份验证，由于反复提供相同的用户名和密码可能
+    会令人烦恼，Emacs 通过 [auth-source] 库提供了持久化信息。
 
-        默认情况下，身份验证信息来自 `~/.authinfo' 或
-        `~/.authinfo.gpg' 或 `~/.netrc' 文件。
+    默认情况下，身份验证信息来自 `~/.authinfo' 或 `~/.authinfo.gpg' 或 `~/.netrc' 文件。
 
-        这些文件的语法与 ftp 程序中的 netrc 文件类似，如下所示：
+    这些文件的语法与 ftp 程序中的 netrc 文件类似，如下所示：
 
-        machine /mymachine/ login /myloginname/ password
-        /mypassword/ port /myport/
+    machine /mymachine/ login /myloginname/ password /mypassword/ port /myport/
 
-        [Source]
+    [Source]
 
-  Emacs 是通过 `auth-source' 去实现身份验证的，一般将验证信息 (例如 API
-  Key) 存储在这三个文件中:
+  Emacs 是通过 `auth-source' 去实现身份验证的，一般将验证信息 (例如 API Key) 存储在这三
+  个文件中:
 
   - `~/.authinfo'
   - `~/.authinfo.gpg' (加密)
@@ -62,15 +57,15 @@ LLM 服务需要配置对应的 API key，它们是定义在 `~/.authinfo' 中�
 
   验证信息的格式是：
 
-        *machine* mymachine *login* myloginname *password* mypassword *port* myport
+    *machine* mymachine *login* myloginname *password* mypassword *port* myport
 
   其中:
 
-  - *machine* 是服务器，可以是 DNS 名称或 IP 地址，对应
-     `auth-source-search' 中的 `:host' 。
+  - *machine* 是服务器，可以是 DNS 名称或 IP 地址，对应 `auth-source-search' 中的
+     `:host' 。
 
-    `auth-source-search' 是 Emacs 中的一个函数，可以基于条件查询返回用
-    `auth-source' 定义的密钥。
+    `auth-source-search' 是 Emacs 中的一个函数，可以基于条件查询返回用 `auth-source' 定
+    义的密钥。
 
   - *login* 是用户名，对应 `auth-source-search' 中的 `:user' 。
   - *port* 是连接端口或协议，对应 `auth-source-search' 中的 `:port' 。
@@ -89,8 +84,7 @@ LLM 服务需要配置对应的 API key，它们是定义在 `~/.authinfo' 中�
   | machine openrouter.ai/api login apikey password xxxx
   `----
 
-  在 Emacs 里，可以通过 `auth-source-search' 去查询 `~/.authinfo' 的信息，
-  获取对应的密钥。
+  在 Emacs 里，可以通过 `auth-source-search' 去查询 `~/.authinfo' 的信息，获取对应的密钥。
 
   例如，我想查询 `~/.authinfo' 中 deepseek 的密钥，在 Emacs 中可以这么写：
 
@@ -113,22 +107,21 @@ LLM 服务需要配置对应的 API key，它们是定义在 `~/.authinfo' 中�
   |     (user-error "No %s found in the auth source" user)))
   `----
 
-  如果你只是希望配置好 API key 给插件用，你只需要将 API key 按照插件要求
-  定义在 `~/.authinfo' 中，然后使用 `auth-source-search' 去读取就可以了。
+  如果你只是希望配置好 API key 给插件用，你只需要将 API key 按照插件要求定义在
+  `~/.authinfo' 中，然后使用 `auth-source-search' 去读取就可以了。
 
-  [emacs-immersive-translate] 是 Emacs 中的一个翻译插件（我在
-  [Translation In Emacs]
+  [emacs-immersive-translate] 是 Emacs 中的一个翻译插件（我在 [Translation In Emacs]
   <https://taxodium.ink/translation-in-emacs.html> 中介绍过）。
 
-  它可以使用 LLM 进行翻译，LLM 翻译需要配置 API Key，而 API Key 需要写入
-  到 `~/.authinfo' ，然后从里面读取。
+  它可以使用 LLM 进行翻译，LLM 翻译需要配置 API Key，而 API Key 需要写入到 `~/.authinfo'
+  ，然后从里面读取。
 
-  它支持配置 chatgpt，从 [immersive-translate-chatgpt.el] 中可以看到它获
-  取 API Key 的逻辑：
+  它支持配置 chatgpt，从 [immersive-translate-chatgpt.el] 中可以看到它获取 API Key 的逻
+  辑：
 
   它调用了 immersive-translate-api-key 这个方法获取 API key，传入
-  immersive-translate-chatgpt-host 作为 `host' 参数，默认值是
-  `api.openai.com' ，传入 apikey 作为 `user' 参数。
+  immersive-translate-chatgpt-host 作为 `host' 参数，默认值是 `api.openai.com' ，传入
+  apikey 作为 `user' 参数。
 
   ,----
   | ;; 省略其他代码
@@ -140,8 +133,8 @@ LLM 服务需要配置对应的 API key，它们是定义在 `~/.authinfo' 中�
   | ;; 省略其他代码
   `----
 
-  而 [immersive-translate-api-key] 则是使用 auth-source-search 从
-  `~/.authinfo' 中读取密钥的。
+  而 [immersive-translate-api-key] 则是使用 auth-source-search 从 `~/.authinfo' 中读取密
+  钥的。
 
   ,----
   | (defun immersive-translate-api-key (host user)
@@ -162,28 +155,24 @@ LLM 服务需要配置对应的 API key，它们是定义在 `~/.authinfo' 中�
   |     (user-error "No %s found in the auth source" user)))
   `----
 
-  因此，为了能够让 [emacs-immersive-translate] 使用 chatgpt 翻译，需要在
-  `~/.authinfo' 中添加以下配置：
+  因此，为了能够让 [emacs-immersive-translate] 使用 chatgpt 翻译，需要在 `~/.authinfo'
+  中添加以下配置：
 
   ,----
   | machine api.openai.com login apikey password your_openai_api_key
   `----
 
-  我在 [init-auth.el] 使用 `auth-source-search' 读取 `~/.authinfo' 配置
-  的密钥。
+  我在 [init-auth.el] 使用 `auth-source-search' 读取 `~/.authinfo' 配置的密钥。
 
   然后在 [init-ai.el] 引用了 `init-auth' ，将密钥传递给了 gptel 使用。
 
-  如果你想共享 `~/.authinfo' ，例如分享给特定的人，推送到公开的 git 仓库，
-  同步到云盘，你不想所有人都能看到你的密钥，那你可能需要进一步对文件进行
-  加密。
+  如果你想共享 `~/.authinfo' ，例如分享给特定的人，推送到公开的 git 仓库，同步到云盘，你
+  不想所有人都能看到你的密钥，那你可能需要进一步对文件进行加密。
 
 
-[auth-source]
-<https://www.gnu.org/software/emacs/manual/html_mono/auth.html>
+[auth-source] <https://www.gnu.org/software/emacs/manual/html_mono/auth.html>
 
-[Source]
-<https://www.gnu.org/software/emacs/manual/html_node/emacs/Authentication.html>
+[Source] <https://www.gnu.org/software/emacs/manual/html_node/emacs/Authentication.html>
 
 [emacs-immersive-translate]
 <https://github.com/Elilif/emacs-immersive-translate/tree/main>
@@ -210,8 +199,7 @@ LLM 服务需要配置对应的 API key，它们是定义在 `~/.authinfo' 中�
 
   执行 `gpg --full-generate-key' ，按照提示完成创建即可。
 
-  创建完成后可以通过 `gpg --list-keys' 查看当前得密钥，例如我执行后会得
-  到：
+  创建完成后可以通过 `gpg --list-keys' 查看当前得密钥，例如我执行后会得到：
 
   ,----
   | /home/spike/.gnupg/pubring.kbx
@@ -234,11 +222,10 @@ LLM 服务需要配置对应的 API key，它们是定义在 `~/.authinfo' 中�
 
   执行 `gpg -e -r "SpikeLeung" ~/.authinfo' 。
 
-  其中， `-e' 表示加密， `-r' 指定使用哪个 user-id，对应的是上面 uid 中
-  的内容，你可以用名字或者邮箱，例如这里用的是名字 `SpikeLeung' 。
+  其中， `-e' 表示加密， `-r' 指定使用哪个 user-id，对应的是上面 uid 中的内容，你可以用
+  名字或者邮箱，例如这里用的是名字 `SpikeLeung' 。
 
-  加密成功的话，就会在当前目录生成一个带有 `.gpg' 后缀的加密文件
-  `~/.authinfo.gpg' 。
+  加密成功的话，就会在当前目录生成一个带有 `.gpg' 后缀的加密文件 `~/.authinfo.gpg' 。
 
 
 [Anatomy of a GPG Key]
@@ -248,19 +235,18 @@ LLM 服务需要配置对应的 API key，它们是定义在 `~/.authinfo' 中�
 3 配置 Emacs 读取 ~/.authinfo.gpg
 =================================
 
-  原来 `~/.authinfo' 是未加密的，Emacs 里可以随便访问，现在加密了，那么
-  在访问前就要先解密才能访问了。
+  原来 `~/.authinfo' 是未加密的，Emacs 里可以随便访问，现在加密了，那么在访问前就要先解
+  密才能访问了。
 
-  为了让 Emacs 能够解密 gpg 加密的文件，我们需要让 Emacs 能够读取 gpg 密
-  钥，然后用密钥去解密。
+  为了让 Emacs 能够解密 gpg 加密的文件，我们需要让 Emacs 能够读取 gpg 密钥，然后用密钥去
+  解密。
 
-  Emacs 内置的 EasyPG Assistant 可以帮你 *自动* 完成加密解密，当需要访问
-  gpg 加密文件的时候它就会启用，你不需要额外做什么。
+  Emacs 内置的 EasyPG Assistant 可以帮你 *自动* 完成加密解密，当需要访问 gpg 加密文件的
+  时候它就会启用，你不需要额外做什么。
 
   在 Emacs 中你可以通过 `C-h R epa' 查看 EasyPG Assistant 的文档。
 
-  因为 gpg 密钥我也设置了密码，打开 Emacs 还需要先输入密码，让 gpg 密钥
-  能被访问。
+  因为 gpg 密钥我也设置了密码，打开 Emacs 还需要先输入密码，让 gpg 密钥能被访问。
 
   默认输入密码是弹窗输入，输入的时候很容易卡顿，可以添加下面的配置：
 
@@ -274,19 +260,18 @@ LLM 服务需要配置对应的 API key，它们是定义在 `~/.authinfo' 中�
 4 Bonus: The Unix password store (pass)
 =======================================
 
-  除了 EasyPG Assistant，你也可以用 [The Unix password store (pass)]，这
-  是一个简单的密码管理程序。
+  除了 EasyPG Assistant，你也可以用 [The Unix password store (pass)]，这是一个简单的密码
+  管理程序。
 
-  如果你有在多个设备管理密码，或者有多个 gpg 密钥需要管理，你也可以考虑
-  用 pass。它更侧重于密码管理，可以方便地在多个设备管理密钥，Emacs 也可
-  以和 pass 集成。
+  如果你有在多个设备管理密码，或者有多个 gpg 密钥需要管理，你也可以考虑用 pass。它更侧重
+  于密码管理，可以方便地在多个设备管理密钥，Emacs 也可以和 pass 集成。
 
   如果你的环境中没有 [pass]，首先你需要按照文档安装好。
 
   然后初始化 pass: `pass init gpg-id' ，这里的 gpg-id 可以是:
 
-  - fingerprint: `1BAF5568B6...4B1CF' ，你可以完整输入一长串，好像也可以
-    只输入前几位，和 git hash 有点类似
+  - fingerprint: `1BAF5568B6...4B1CF' ，你可以完整输入一长串，好像也可以只输入前几位，和
+    git hash 有点类似
   - uid: `SpikeLeung' 或者 `l-yanlei@hotmail.com'
 
   这样，pass 就配置好了。

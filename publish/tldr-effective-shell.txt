@@ -1,12 +1,12 @@
-                         ______________________
+                                 ______________________
 
-                          TLDR EFFECTIVE-SHELL
+                                  TLDR EFFECTIVE-SHELL
 
-                              Spike Leung
-                         ______________________
+                                      Spike Leung
+                                 ______________________
 
 
-                         [2023-09-21 Thu 16:17]
+                                 [2023-09-21 Thu 16:17]
 
 
 Table of Contents
@@ -28,8 +28,8 @@ _________________
 1 前言
 ======
 
-  这是之前做的一个关于 shell 的分享，内容基本来自 [effective-shell]，这
-  是一个非常好的 shell 入门教程， 你可以把这篇文章当作是它的 [TL;DR]。
+  这是之前做的一个关于 shell 的分享，内容基本来自 [effective-shell]，这是一个非常好的
+  shell 入门教程， 你可以把这篇文章当作是它的 [TL;DR]。
 
 
 [effective-shell] <https://effective-shell.com/>
@@ -40,10 +40,10 @@ _________________
 2 为什么学
 ==========
 
-        熟练使用命令行是一种常常被忽视，或被认为难以掌握的技能，但
-        实际上，它会提高你作为工程师的灵活性以及生产力。
+    熟练使用命令行是一种常常被忽视，或被认为难以掌握的技能，但实际上，它会提高你作为工
+    程师的灵活性以及生产力。
 
-        -- [命令行的艺术]
+    -- [命令行的艺术]
 
   - 提高效率， 某些场景下，shell 操作比图形界面更高效
   - 某些场景下，只有 shell 能用，没有 GUI
@@ -64,9 +64,8 @@ _________________
 
   我们平时说的 `shell' ，一般指的就是命令行。
 
-        When we talk about "The Shell", we're normally referring
-        to the simple, text-based interface which is used to
-        control a computer or about program.
+    When we talk about "The Shell", we're normally referring to the simple, text-based
+    interface which is used to control a computer or about program.
 
   更具体的，shell 就是调用系统 kernel 的程序，他们的关系好比果核和果壳。
 
@@ -75,57 +74,45 @@ _________________
   - [The Operating System]
   - `pstree -psa $$'
 
-        So what is the shell? The shell is just a general name for
-        any user space program that allows access to resources in
-        the system, via some kind of interface.
+    So what is the shell? The shell is just a general name for any user space program
+    that allows access to resources in the system, via some kind of interface.
 
-        Shells come in many different flavours but are generally
-        provided to aid a human operator in accessing the
-        system. This could be interactively, by typing at a
-        terminal, or via scripts, which are files that contain a
-        sequence of commands.
+    Shells come in many different flavours but are generally provided to aid a human
+    operator in accessing the system. This could be interactively, by typing at a
+    terminal, or via scripts, which are files that contain a sequence of commands.
 
-        For example, to see all of the files in a folder, the
-        human operator could write a program in a language such as
-        C, making system calls to do what they want. But for
-        day-to-day tasks, this would be repetitive. A shell will
-        normally offer us a quick way to do that exact task,
-        without having to manually write a program to do it.
+    For example, to see all of the files in a folder, the human operator could write a
+    program in a language such as C, making system calls to do what they want. But for
+    day-to-day tasks, this would be repetitive. A shell will normally offer us a quick
+    way to do that exact task, without having to manually write a program to do it.
 
   什么是 terminal (终端)？
 
-  一般是指用于和 shell 交互，给 shell 提供输入， 显示 shell 执行后的结果
-  的程序。
+  一般是指用于和 shell 交互，给 shell 提供输入， 显示 shell 执行后的结果的程序。
 
-        We're not directly interacting with the 'shell' in this
-        diagram. We're actually using a terminal. When a user
-        wants to work with a shell interactively, using a keyboard
-        to provide input and a display to see the output on the
-        screen, the user uses a terminal.
+    We're not directly interacting with the 'shell' in this diagram. We're actually
+    using a terminal. When a user wants to work with a shell interactively, using a
+    keyboard to provide input and a display to see the output on the screen, the user
+    uses a terminal.
 
-        The shell is the program that is going to take input from
-        somewhere and run a series of commands. When the shell is
-        running in a terminal, it is normally taking input
-        interactively from the user. As the user types in
-        commands, the terminal feeds the input to the shell and
-        presents the output of the shell on the screen.
+    The shell is the program that is going to take input from somewhere and run a
+    series of commands. When the shell is running in a terminal, it is normally taking
+    input interactively from the user. As the user types in commands, the terminal
+    feeds the input to the shell and presents the output of the shell on the screen.
 
-  常见的 shell: [sh(Bourne Shell)], [bash (Bourne Again Shell)], `zsh',
-  `fish', `ksh'
+  常见的 shell: [sh(Bourne Shell)], [bash (Bourne Again Shell)], `zsh', `fish', `ksh'
 
   常见的 terminal: `iTerm2', `Windows Terminal', `xterm', `tabby'
 
 
-[什么是 shell]
-<https://effective-shell.com/part-2-core-skills/what-is-a-shell>
+[什么是 shell] <https://effective-shell.com/part-2-core-skills/what-is-a-shell>
 
 [The Operating System]
 <https://effective-shell.com/part-2-core-skills/what-is-a-shell/#the-operating-system>
 
 [sh(Bourne Shell)] <https://en.wikipedia.org/wiki/Bourne_shell>
 
-[bash (Bourne Again Shell)]
-<https://en.wikipedia.org/wiki/Bash_(Unix_shell)>
+[bash (Bourne Again Shell)] <https://en.wikipedia.org/wiki/Bash_(Unix_shell)>
 
 
 4 常用命令
@@ -134,9 +121,8 @@ _________________
 4.1 [Understanding Commands]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        A command in a shell is something you execute. It might
-        take parameters. Generally it'll have a form like this:
-        `command param1 param2'
+    A command in a shell is something you execute. It might take parameters. Generally
+    it'll have a form like this: `command param1 param2'
 
 
 [Understanding Commands]
@@ -155,56 +141,46 @@ _________________
 4.2.1 Executables
 -----------------
 
-        Executables are programs your system can use; your shell
-        just calls out to them.
+    Executables are programs your system can use; your shell just calls out to them.
 
-        Executables are just files with `the 'executable' bit
-        set'. If I execute the cat command, the shell will search
-        for an executable named cat in my `$PATH'. If it finds it,
-        it will run the program.
+    Executables are just files with `the 'executable' bit set'. If I execute the cat
+    command, the shell will search for an executable named cat in my `$PATH'. If it
+    finds it, it will run the program.
 
-        `$PATH' is the standard environment variable used to
-        define where the shell should search for programs.
+    `$PATH' is the standard environment variable used to define where the shell should
+    search for programs.
 
-        The shell will start with the earlier locations and move
-        to the later ones. This allows local flavours of tools to
-        be installed for users, which will take precedence over
-        general versions of tools.
+    The shell will start with the earlier locations and move to the later ones. This
+    allows local flavours of tools to be installed for users, which will take
+    precedence over general versions of tools.
 
-        Executables don't have to be compiled program code, they
-        can be scripts. If a file starts with `#! (the
-        'shebang')', then the system will try to run the contents
-        of the file with the program specified in the shebang.
+    Executables don't have to be compiled program code, they can be scripts. If a file
+    starts with `#! (the 'shebang')', then the system will try to run the contents of
+    the file with the program specified in the shebang.
 
 
 4.2.2 "Built-Ins"
 -----------------
 
-        Builtins are /very/ shell-specific and usually control the
-        shell itself
+    Builtins are /very/ shell-specific and usually control the shell itself
 
-  "Built-Ins" 的指令是和 shell 强相关的，换言之，某个命令，可能 bash 有，
-  但 zsh 就没有。
+  "Built-Ins" 的指令是和 shell 强相关的，换言之，某个命令，可能 bash 有，但 zsh 就没有。
 
-  之所以需要有 "Built-Ins" 命令，是因为内建的会执行得更快，而且作用的范
-  围更广。
+  之所以需要有 "Built-Ins" 命令，是因为内建的会执行得更快，而且作用的范围更广。
 
-        Some commands are a builtin so that they can function in a
-        sensible manner. For example, `cd' command changes the
-        current directory - if we executed it as a process, it
-        would change only the directory for the `cd' process
-        itself, not the shell, making it much less useful.
+    Some commands are a builtin so that they can function in a sensible manner. For
+    example, `cd' command changes the current directory - if we executed it as a
+    process, it would change only the directory for the `cd' process itself, not the
+    shell, making it much less useful.
 
-        Echo is builtin because the shell can run much more
-        quickly by not actually running a program if it has its
-        own built in implementation.
+    Echo is builtin because the shell can run much more quickly by not actually
+    running a program if it has its own built in implementation.
 
 
 4.2.3 Functions
 ---------------
 
-        Functions are powerful ways to write logic but will
-        normally be shell-specific.
+    Functions are powerful ways to write logic but will normally be shell-specific.
 
   ,----
   | wsl_proxy_on() {
@@ -228,8 +204,8 @@ _________________
 4.2.4 Aliases
 -------------
 
-        Aliases are conveniences for human operators, but only in
-        the context of an interactive shell.
+    Aliases are conveniences for human operators, but only in the context of an
+    interactive shell.
 
   ,----
   | # ---------------------------------------------------------------- #
@@ -255,24 +231,23 @@ _________________
   - [manutal sections]: `man 1 intro'
 
     Section 1
-          Executable programs or shell commands
+      Executable programs or shell commands
     Section 2
-          System calls (functions provided by the kernel)
+      System calls (functions provided by the kernel)
     Section 3
-          Library calls (functions within program libraries)
+      Library calls (functions within program libraries)
     Section 4
-          Special files (usually found in /dev)
+      Special files (usually found in /dev)
     Section 5
-          File formats and conventions (e.g. /etc/passwd)
+      File formats and conventions (e.g. /etc/passwd)
     Section 6
-          Games
+      Games
     Section 7
-          Miscellaneous (including macro packages and conventions),
-          e.g. man(7), groff(7)
+      Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
     Section 8
-          System administration commands (usually only for root)
+      System administration commands (usually only for root)
     Section 9
-          Kernel routines (Non standard)
+      Kernel routines (Non standard)
 
   - `man -k' : 模糊搜索
 
@@ -346,19 +321,19 @@ _________________
 ----------
 
   `pwd'
-        Print Working Directory
+    Print Working Directory
   `ls'
-        List Directory Contents
+    List Directory Contents
   `cd'
-        Change Directory
-        `.'
-              This folder
-        `..'
-              The parent folder
-        `~'
-              Home (cd without any parameters)
-        `-'
-              Go back to the last location you moved to
+    Change Directory
+    `.'
+      This folder
+    `..'
+      The parent folder
+    `~'
+      Home (cd without any parameters)
+    `-'
+      Go back to the last location you moved to
 
   ,----
   | alias ..="cd .."
@@ -370,16 +345,15 @@ _________________
   | alias ........="cd ../../../../../../.."
   `----
 
-        One thing we might want to do is quickly move from one
-        location to another, then go back again.
+    One thing we might want to do is quickly move from one location to another, then
+    go back again.
 
   `pushd'
-        '[pushes]' a new working directory onto a stack - moving you
-        there.
+    '[pushes]' a new working directory onto a stack - moving you there.
   `popd'
-        'pops' the working directory off the top of the stack
+    'pops' the working directory off the top of the stack
   `dirs'
-        查看 poshd 和 popd 操作后的堆栈情况
+    查看 poshd 和 popd 操作后的堆栈情况
 
   <https://effective-shell.com/assets/images/pushd-popd-stack-ccd34132d513841c5b1d97c842b0413f.png>
 
@@ -401,50 +375,46 @@ _________________
   - `file'
   - [find]
 
-          您当然可以使用 alias 设置别名来简化上述操作，但 *shell
-          的哲学之一便是寻找（更好用的）替代方案。*
+      您当然可以使用 alias 设置别名来简化上述操作，但 *shell 的哲学之一便是寻找（更好
+      用的）替代方案。*
 
-          记住，shell 最好的特性就是您只是在调用程序，因此您只要找
-          到合适的替代程序即可（甚至自己编写）。
+      记住，shell 最好的特性就是您只是在调用程序，因此您只要找到合适的替代程序即可（甚
+      至自己编写）。
 
-          例如，[fd] 就是一个更简单、更快速、更友好的程序，它可以
-          用来作为 `find' 的替代品。它有很多不错的默认设置，例如输
-          出着色、默认支持正则匹配、支持 unicode 并且我认为它的语
-          法更符合直觉。以模式 PATTERN 搜索的语法是 `fd PATTERN' 。
+      例如，[fd] 就是一个更简单、更快速、更友好的程序，它可以用来作为 `find' 的替代品。
+      它有很多不错的默认设置，例如输出着色、默认支持正则匹配、支持 unicode 并且我认为
+      它的语法更符合直觉。以模式 PATTERN 搜索的语法是 `fd PATTERN' 。
 
-          -- [Shell 工具和脚本]
+      -- [Shell 工具和脚本]
 
 
 [find] <https://effective-shell.com/part-2-core-skills/finding-files>
 
 [fd] <https://github.com/sharkdp/fd>
 
-[Shell 工具和脚本]
-<https://missing-semester-cn.github.io/2020/shell-tools/>
+[Shell 工具和脚本] <https://missing-semester-cn.github.io/2020/shell-tools/>
 
 
 4.4.3 剪贴板体操运动员 (Clipboard Gymnast)
 ------------------------------------------
 
-        `Ctrl' key is called the Control Key is that it is used to
-        send control sequences to the computer.
+    `Ctrl' key is called the Control Key is that it is used to send control sequences
+    to the computer.
 
   `Ctrl-C'
-        Terminates the current program
+    Terminates the current program
   `Ctrl-V'
-        Verbatim Insert, it tells the shell to write out the next
-        keystroke you give it.
+    Verbatim Insert, it tells the shell to write out the next keystroke you give it.
 
-  熟悉的 cv 是 shell 中的控制指令，没法完成粘贴复制，换成 `Ctrl + Shift
-  + C' 和 `Ctrl + Shift + V'
+  熟悉的 cv 是 shell 中的控制指令，没法完成粘贴复制，换成 `Ctrl + Shift + C' 和 `Ctrl +
+  Shift + V'
 
   - [pbpaste | pbcopy] : 可以移除格式
 
-  - [pbpaste | sort | uniq | tr ' ' '_' | sed 's/$/@simpsons.com/' |
-    pbcopy] : 快速转换 excel 表格的内容
+  - [pbpaste | sort | uniq | tr ' ' '_' | sed 's/$/@simpsons.com/' | pbcopy] : 快速转换
+    excel 表格的内容
 
-  - `pbpaste | grep 评选中 | grep 前端 | sort -g | cut -f 1,4' : 快速查
-    看评选的改进项
+  - `pbpaste | grep 评选中 | grep 前端 | sort -g | cut -f 1,4' : 快速查看评选的改进项
 
 
 [pbpaste | pbcopy]
@@ -458,79 +428,69 @@ _________________
 --------------
 
   [grep]
-        `g/re/p' , This command ran on all lines (`g', for global),
-        applied a regular expression (`re', for regular expression) and
-        then printed (`p' for print) the results.
+    `g/re/p' , This command ran on all lines (`g', for global), applied a regular
+    expression (`re', for regular expression) and then printed (`p' for print) the
+    results.
 
-        + 结合多个管道过滤内容
+    + 结合多个管道过滤内容
 
-        + `-v' 排除 grep 的内容
+    + `-v' 排除 grep 的内容
 
   [head / tails]
-        `head' is used to extract part of the top of a file and `tail'
-        is used to extract part of the end of a file.
+    `head' is used to extract part of the top of a file and `tail' is used to extract
+    part of the end of a file.
 
-        + `head ~/effective-shell/data/top100.csv'
+    + `head ~/effective-shell/data/top100.csv'
 
-        + `head -n 3 ~/effective-shell/data/top100.csv'
+    + `head -n 3 ~/effective-shell/data/top100.csv'
 
-        + `tail $HISTFILE'
+    + `tail $HISTFILE'
 
-        + `tail -f $HISTFILE'
+    + `tail -f $HISTFILE'
 
-        + `head ~/effective-shell/data/top100.csv | tail -n +2' 去掉表头，
-          从第二行开始输出
+    + `head ~/effective-shell/data/top100.csv | tail -n +2' 去掉表头，从第二行开始输出
 
   [tr (translate characters)]
-        Perform a simple substitution of characters.
+    Perform a simple substitution of characters.
 
-        + `head -n 1 ~/effective-shell/data/top100.csv | tr ',' '\n''
+    + `head -n 1 ~/effective-shell/data/top100.csv | tr ',' '\n''
 
-        + `head -n 1 ~/effective-shell/data/top100.csv | tr ',' '\n' |
-          tr -d '"''
+    + `head -n 1 ~/effective-shell/data/top100.csv | tr ',' '\n' | tr -d '"''
 
-        + `echo "Welcome to the shell" | tr 'shell' 'machine''
+    + `echo "Welcome to the shell" | tr 'shell' 'machine''
 
-        + `echo "Use your inside voice..." | tr '[[:lower:]]'
-          '[[:upper:]]''
+    + `echo "Use your inside voice..." | tr '[[:lower:]]' '[[:upper:]]''
 
   [cut]
-        The `cut' command splits a line of text, using a given
-        delimiter.
+    The `cut' command splits a line of text, using a given delimiter.
 
-        + `cut -d',' -f 3 ~/effective-shell/data/top100.csv | head'
+    + `cut -d',' -f 3 ~/effective-shell/data/top100.csv | head'
 
-        + `echo "2020-11-29T12:50:52.762Z: info - Request: GET
-          /svg/menu.svg" | cut -c 12-19'
+    + `echo "2020-11-29T12:50:52.762Z: info - Request: GET /svg/menu.svg" | cut -c
+      12-19'
 
-        + `echo "2020-11-29T12:50:52.762Z: info - Request: GET
-          /svg/menu.svg" | cut -c 27-'
+    + `echo "2020-11-29T12:50:52.762Z: info - Request: GET /svg/menu.svg" | cut -c 27-'
 
   [rev]
-        Reverse the given input.
+    Reverse the given input.
 
-        + `pwd | rev | cut -d'/' -f 1 | rev'
+    + `pwd | rev | cut -d'/' -f 1 | rev'
 
   [sort and uniq]
-        The `uniq' command removes duplicate lines from a stream of
-        text.
+    The `uniq' command removes duplicate lines from a stream of text.
 
-        + `cut -c 27- ~/effective-shell/logs/web-server-logs.txt | grep
-          error | sort | uniq'
+    + `cut -c 27- ~/effective-shell/logs/web-server-logs.txt | grep error | sort | uniq'
 
   less
-        Open a file for interactive reading, allowing scrolling and
-        search.
+    Open a file for interactive reading, allowing scrolling and search.
 
   [Xargs]
-        The xargs /[build and execute commands]/ command takes input,
-        uses the input to create commands, then executes the commands. I
-        tend to remember it as `"Execute with Arguments"' as the name
-        xargs sounds a little odd!
+    The xargs /[build and execute commands]/ command takes input, uses the input to
+    create commands, then executes the commands. I tend to remember it as `"Execute with
+    Arguments"' as the name xargs sounds a little odd!
 
-              By default `xargs' take the input, joins each line
-              together with a space and then passes it to the
-              `echo' command.
+      By default `xargs' take the input, joins each line together with a space and
+      then passes it to the `echo' command.
 
   ,----
   | # 将找到的文件通过 xargs 拼接后，传给 rm 执行
@@ -574,8 +534,7 @@ _________________
   `----
 
 
-[grep]
-<https://effective-shell.com/part-3-manipulating-text/get-to-grips-with-grep/>
+[grep] <https://effective-shell.com/part-3-manipulating-text/get-to-grips-with-grep/>
 
 [head / tails]
 <https://effective-shell.com/part-3-manipulating-text/slice-and-dice-text/#heads-and-tails>
@@ -601,47 +560,40 @@ _________________
 
   - [regex101]
 
-        *My general advice for regular expressions is start simple
-         and add complexity only if you need it.*
+    *My general advice for regular expressions is start simple and add complexity only
+     if you need it.*
 
-        We can build regular expressions using an 'iterative'
-        process, starting with the basics, then adding more
-        features as we need them.
+    We can build regular expressions using an 'iterative' process, starting with the
+    basics, then adding more features as we need them.
 
-        Let's take validating an email address as an example. The
-        way I would build a regular expression to validate an
-        email address would be to use the following steps:
+    Let's take validating an email address as an example. The way I would build a
+    regular expression to validate an email address would be to use the following
+    steps:
 
-        + Create a small list of valid email address
+    + Create a small list of valid email address
 
-        + Add some items to the list which look 'kind of' valid
-          but are not quite right
+    + Add some items to the list which look 'kind of' valid but are not quite right
 
-        + Build a regular expression which matches the correct
-          email address
+    + Build a regular expression which matches the correct email address
 
-        + Refine the expression to eliminate the invalid addresses
+    + Refine the expression to eliminate the invalid addresses
 
 
-        In most cases this will be sufficient.
+    In most cases this will be sufficient.
 
-        I would advise that you keep expressions simple if
-        possible - if they are getting too complex then break up
-        your input or break up the processing into smaller chunks
-        of work!
+    I would advise that you keep expressions simple if possible - if they are getting
+    too complex then break up your input or break up the processing into smaller
+    chunks of work!
 
-        Remember that a regular expression does not have to be the
-        only way you validate input. You might use a regular
-        expression to do a quick check on a form on a website to
-        make sure that an email address has at least the correct
-        structure, but you might then use a more sophisticated
-        check later on (such as sending the user an activation
-        email) to actually confirm that the address actually
-        belongs to the user.
+    Remember that a regular expression does not have to be the only way you validate
+    input. You might use a regular expression to do a quick check on a form on a
+    website to make sure that an email address has at least the correct structure, but
+    you might then use a more sophisticated check later on (such as sending the user
+    an activation email) to actually confirm that the address actually belongs to the
+    user.
 
 
-[正则表达式]
-<https://effective-shell.com/part-3-manipulating-text/regex-essentials/>
+[正则表达式] <https://effective-shell.com/part-3-manipulating-text/regex-essentials/>
 
 [regex101] <https://regex101.com/>
 
@@ -713,11 +665,10 @@ _________________
 5.3.1 [2>&1]
 ------------
 
-  为什么不是 `2>1' ? 这样实际是将 `stderr' 重定向到文件 `1' 中，而不是重
-  定向到 `stdout' 。
+  为什么不是 `2>1' ? 这样实际是将 `stderr' 重定向到文件 `1' 中，而不是重定向到 `stdout'
+  。
 
-  如果想重定向到 `stdout' ，就需要使用 `&1', 表达 `stdout' 的 file
-  descriptor。
+  如果想重定向到 `stdout' ，就需要使用 `&1', 表达 `stdout' 的 file descriptor。
 
   `2 >&1, 2> &1' 也是不对的，不能有空格, 两者都会被当作命令执行。
 
@@ -730,29 +681,27 @@ _________________
 
 * 5.3.1.1 2>&1 的位置
 
-        Bash (and most bash-like shells) process redirections from
-        /left to right/, [and when we redirect we duplicate the
-        source.]
+    Bash (and most bash-like shells) process redirections from /left to right/, [and
+    when we redirect we duplicate the source.]
 
-  如果想将所有的输出 (包括 `stderr') 重定向到一个文件，以下顺序得到的结
-  果是不同的：
+  如果想将所有的输出 (包括 `stderr') 重定向到一个文件，以下顺序得到的结果是不同的：
 
   - `ls /usr/bin /nothing 2>&1 > all-output.txt'
 
     `2>&1'
-          duplicate file descriptor `2' (`stderr') and write it to `1' -
-          /which is currently the terminal!/
+      duplicate file descriptor `2' (`stderr') and write it to `1' - /which is currently
+      the terminal!/
 
     `> all-output.txt'
-          duplicate file descriptor `1' (`stdout') and write it to a
-          file called `all-output.txt'
+      duplicate file descriptor `1' (`stdout') and write it to a file called
+      `all-output.txt'
 
   - `ls /usr/bin /nothing > all-output.txt 2>&1'
 
     + Redirect `stdout' to the file `all-output.txt'
 
-    + Now redirect `stderr' to `stdout' - which by this point has
-      already been redirected to a file
+    + Now redirect `stderr' to `stdout' - which by this point has already been
+      redirected to a file
 
 
   [and when we redirect we duplicate the source.]
@@ -768,12 +717,11 @@ _________________
   | cat ~/effective-shell/text/simpsons-characters.txt | sort | tee sorted.txt | uniq | grep '^A'
   `----
 
-        This command sorts the list of Simpsons characters,
-        removes duplicates and filters down to ones which start
-        with the letter A.
+    This command sorts the list of Simpsons characters, removes duplicates and filters
+    down to ones which start with the letter A.
 
-        The `tee' command is like a T-pipe in plumbing - it lets
-        the stream of data go in two directions!
+    The `tee' command is like a T-pipe in plumbing - it lets the stream of data go in
+    two directions!
 
 
 [The T Pipe]
@@ -793,16 +741,15 @@ _________________
 7 [Job Control]
 ===============
 
-  当命令在前台执行，此时又需要在命令行做别的事情，就得先关掉前台运行的程
-  序，完成要做的事情，再重新运行，比较麻烦。
+  当命令在前台执行，此时又需要在命令行做别的事情，就得先关掉前台运行的程序，完成要做的事
+  情，再重新运行，比较麻烦。
 
   当然也可以直接另起一个终端，或者用 tmux。
 
   但如果想在一个命令窗口比较方便地处理任务，就需要学习 Job 的操作。
 
 
-[Job Control]
-<https://effective-shell.com/part-2-core-skills/job-control>
+[Job Control] <https://effective-shell.com/part-2-core-skills/job-control>
 
 7.1 Run in the Background
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -837,14 +784,12 @@ _________________
 7.5 Why You Shouldn't Use Jobs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        The most obvious one is that all jobs write to the same
-        output, meaning you can quickly get garbled output like
-        this:
+    The most obvious one is that all jobs write to the same output, meaning you can
+    quickly get garbled output like this:
 
-        <https://effective-shell.com/assets/images/output-c59dac752d60566d856c3f01b4ef0ffb.png>
+    <https://effective-shell.com/assets/images/output-c59dac752d60566d856c3f01b4ef0ffb.png>
 
-  推荐学会 `CTRL + Z' 和 `fg' 将任务快速来回切换，解决一些临时需要解决的
-  任务即可。
+  推荐学会 `CTRL + Z' 和 `fg' 将任务快速来回切换，解决一些临时需要解决的任务即可。
 
 
 8 Shell Scripting Essentials
@@ -853,15 +798,12 @@ _________________
 8.1 [什么是 Shell Script]
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        A shell script is just a text file which contains a set of
-        commands.
+    A shell script is just a text file which contains a set of commands.
 
-  当你发现总是重复敲一系列命令的时候，就可以考虑将这些重复的序列写脚本，
-  这样有几个好处：
+  当你发现总是重复敲一系列命令的时候，就可以考虑将这些重复的序列写脚本，这样有几个好处：
 
   - 节省时间，不用每次敲一些重复的命令
-  - 可以使用你喜欢的编辑器编辑脚本，添加注释描述你想实现的事情，可以利用
-    git 管理版本
+  - 可以使用你喜欢的编辑器编辑脚本，添加注释描述你想实现的事情，可以利用 git 管理版本
   - 作为脚本文件，便于机器之间的分享，与人之间的分享
 
 
@@ -899,10 +841,9 @@ _________________
   |     | head -n 10
   `----
 
-        Be careful when you split lines up - the continuation
-        character must be *the last character on the line*. If you
-        add something after it (such as a comment) then the
-        command will fail.
+    Be careful when you split lines up - the continuation character must be *the last
+    character on the line*. If you add something after it (such as a comment) then the
+    command will fail.
 
 
 [命令过长时如何换行]
@@ -936,32 +877,28 @@ _________________
   | ~/scripts/common.v1.sh
   `----
 
-  但这种方式由于没有指定执行脚本的 shell 程序，如果你用的是 Bash，那就是
-  用 Bash 执行，如果用的是 zsh，那就是 zsh 执行。
+  但这种方式由于没有指定执行脚本的 shell 程序，如果你用的是 Bash，那就是用 Bash 执行，如
+  果用的是 zsh，那就是 zsh 执行。
 
 
 8.4 [shebangs]
 ~~~~~~~~~~~~~~
 
-  让脚本可执行后，它最终使用什么执行，是取决于执行环境的，这就容易产生歧
-  义。
+  让脚本可执行后，它最终使用什么执行，是取决于执行环境的，这就容易产生歧义。
 
   例如是用 Bash 相关语法写的脚本，如果是由 zsh 执行，就有可能出错。
 
   为了避免歧义，需要指定执行脚本的 shell，这就是 `shebangs' 的作用。
 
-        A *shebang* is a special set of symbols at the beginning
-        of a file that tells the system what program should be
-        used to run the file.
+    A *shebang* is a special set of symbols at the beginning of a file that tells the
+    system what program should be used to run the file.
 
-        The shebang is the two characters - `#!'. The name
-        'shebang' comes from the names of the symbols. The first
-        symbol is a 'sharp' symbol (sometimes it is called a hash,
-        it depends a little on context). The second symbol is an
-        exclamation point. In programming the exclamation point is
-        sometimes called the 'bang' symbol. When we put the two
-        together, we get 'sharp bang', which is shortened to
-        'shebang'.
+    The shebang is the two characters - `#!'. The name 'shebang' comes from the names
+    of the symbols. The first symbol is a 'sharp' symbol (sometimes it is called a
+    hash, it depends a little on context). The second symbol is an exclamation
+    point. In programming the exclamation point is sometimes called the 'bang'
+    symbol. When we put the two together, we get 'sharp bang', which is shortened to
+    'shebang'.
 
   之前的脚本，可以加上 `shebangs':
 
@@ -1002,13 +939,13 @@ _________________
 8.4.1 [env]
 -----------
 
-  `shebangs' 指定的程序，需要通过完整路径指向程序的可执行文件，而如果指
-  向的程序不存在，就会出错。
+  `shebangs' 指定的程序，需要通过完整路径指向程序的可执行文件，而如果指向的程序不存在，
+  就会出错。
 
   你可以 `type' 命令找到某个程序的路径，但会有些麻烦。
 
-  此时就可以利用 `env' (/set environment and execute command/) ，它会去
-  执行命令，并从 `$PATH' 上找到命令所在的路径。
+  此时就可以利用 `env' (/set environment and execute command/) ，它会去执行命令，并从
+  `$PATH' 上找到命令所在的路径。
 
   ,----
   | #!/usr/bin/env bash
@@ -1016,10 +953,9 @@ _________________
   | echo "Hello from Bash"
   `----
 
-        Using a shebang to specify the exact command to run, and
-        then using the `env' command to allow the $PATH to be
-        searched is generally the safest and most portable way to
-        specify how a shell script should run.
+    Using a shebang to specify the exact command to run, and then using the `env'
+    command to allow the $PATH to be searched is generally the safest and most
+    portable way to specify how a shell script should run.
 
 
 [env]
@@ -1029,18 +965,16 @@ _________________
 8.5 [Sourcing Shell Scripts]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        You can also use the `source' (execute commands from a
-        file) command to load the contents of a file into the
-        *current* shell.
+    You can also use the `source' (execute commands from a file) command to load the
+    contents of a file into the *current* shell.
 
-        Remember that when we run a shell script, a new shell is
-        created as a child process of the current shell. This
-        means that if you change something in the environment,
-        such as a variable, it will not affect the environment of
-        the shell that ran the script.
+    Remember that when we run a shell script, a new shell is created as a child
+    process of the current shell. This means that if you change something in the
+    environment, such as a variable, it will not affect the environment of the shell
+    that ran the script.
 
-  当执行 shell 脚本的时候，实际上会创建一个 *新的 shell* 去执行，和当前
-  的 shell 环境是分开的。
+  当执行 shell 脚本的时候，实际上会创建一个 *新的 shell* 去执行，和当前的 shell 环境是分
+  开的。
 
   如果想将 shell 脚本的改动作用在当前 shell 环境，则可以用 `source'.
 
@@ -1059,21 +993,17 @@ _________________
 8.6 如何安装脚本
 ~~~~~~~~~~~~~~~~
 
-        This works because when the shell sees a command, it
-        searches through the folders in the `$PATH' environment
-        variable to find out where the command is. And the
-        `/usr/local/bin' folder is in this list of paths.
+    This works because when the shell sees a command, it searches through the folders
+    in the `$PATH' environment variable to find out where the command is. And the
+    `/usr/local/bin' folder is in this list of paths.
 
-        Why do we use the `/usr/local/bin' folder rather than the
-        `/usr/bin' folder? This is just a convention. In general,
-        the `/usr/bin' folder is for commands which are install ed
-        with package manager tools like apt or Homebrew (on
-        MacOS). The `/usr/local/bin' folder is used for commands
-        which you create for yourself on your local machine and
-        manage yourself.
+    Why do we use the `/usr/local/bin' folder rather than the `/usr/bin' folder? This
+    is just a convention. In general, the `/usr/bin' folder is for commands which are
+    install ed with package manager tools like apt or Homebrew (on MacOS). The
+    `/usr/local/bin' folder is used for commands which you create for yourself on your
+    local machine and manage yourself.
 
-  通过软链接(`ln -s')将脚本放到 `/usr/local/bin', 就可以直接通过脚本名执
-  行脚本。
+  通过软链接(`ln -s')将脚本放到 `/usr/local/bin', 就可以直接通过脚本名执行脚本。
 
   ,----
   | ln -s ~/scripts/common.v1.sh /usr/local/bin/common
@@ -1086,50 +1016,41 @@ _________________
 9.1 [变量]
 ~~~~~~~~~~
 
-        *Variables* are places where the system, the shell, or
-        shell users like ourselves can store data.
+    *Variables* are places where the system, the shell, or shell users like ourselves
+    can store data.
 
-        By convention, if a variable is in *uppercase* then it is
-        an *environment variable* or a built in variable that
-        comes from the shell.
+    By convention, if a variable is in *uppercase* then it is an *environment
+    variable* or a built in variable that comes from the shell.
 
-        An environment variable is a variable that is set by the
-        system. They often contain useful values to help configure
-        your system.
+    An environment variable is a variable that is set by the system. They often
+    contain useful values to help configure your system.
 
-        Variables that you define yourself should be *lowercase*.
+    Variables that you define yourself should be *lowercase*.
 
-        This helps to distinguish between environment variables
-        and your own variables.
+    This helps to distinguish between environment variables and your own variables.
 
-        It is a good habit to use lowercase for variable
-        names. Using uppercase will work, but when you use
-        uppercase you run the risk of 'overwriting' the value of
-        an environment variable and causing unexpected results
-        later.
+    It is a good habit to use lowercase for variable names. Using uppercase will work,
+    but when you use uppercase you run the risk of 'overwriting' the value of an
+    environment variable and causing unexpected results later.
 
-        The variables we create in the Shell are called *Shell
-        Variables*. They are accessible in the *current shell
-        session* that we are running.
+    The variables we create in the Shell are called *Shell Variables*. They are
+    accessible in the *current shell session* that we are running.
 
-        Shell variables are *isolated to the current process*.
+    Shell variables are *isolated to the current process*.
 
-        If we run another process from our shell, such as another
-        shell script or program, our shell variables are not
-        inherited by this process.
+    If we run another process from our shell, such as another shell script or program,
+    our shell variables are not inherited by this process.
 
-        This is by design - these shell variables are expected to
-        be used for our local session only.
+    This is by design - these shell variables are expected to be used for our local
+    session only.
 
-        If you want to ensure that a variable is available to all
-        child processes, you can use the `export' (set export
-        attribute) builtin to tell the shell to export the
-        variable as an Environment Variable.
+    If you want to ensure that a variable is available to all child processes, you can
+    use the `export' (set export attribute) builtin to tell the shell to export the
+    variable as an Environment Variable.
 
-        *Environment Variables are always inherited by child
-        processes* - so if you need to provide some kind of
-        configuration or context to a child process, you will
-        likely want to export your variable.
+    *Environment Variables are always inherited by child processes* - so if you need
+    to provide some kind of configuration or context to a child process, you will
+    likely want to export your variable.
 
 
 [变量]
@@ -1162,14 +1083,12 @@ _________________
 9.1.2 [数组]
 ------------
 
-        Arrays in *Bash* start at index *zero*. Arrays in the
-        *Z-Shell* start at index *one* - this can cause confusion
-        and mistakes in scripts so it is something you might have
-        to consider if you are writing scripts that can be used by
-        either shell.
+    Arrays in *Bash* start at index *zero*. Arrays in the *Z-Shell* start at index
+    *one* - this can cause confusion and mistakes in scripts so it is something you
+    might have to consider if you are writing scripts that can be used by either
+    shell.
 
-        *It's important to use curly braces around your array
-         expressions.*
+    *It's important to use curly braces around your array expressions.*
 
   ,----
   | days=("Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")
@@ -1209,40 +1128,35 @@ _________________
   | echo "Book details: ${book[title]} - ${book[author]}"
   `----
 
-        If you find yourself using associative arrays, I expect
-        that there is a good chance you are [trying to do
-        something that is more complex than is suitable for a
-        shell script.]
+    If you find yourself using associative arrays, I expect that there is a good
+    chance you are [trying to do something that is more complex than is suitable for a
+    shell script.]
 
 
 [对象 (Associative Arrays)]
 <https://effective-shell.com/part-3-manipulating-text/variables-reading-input-and-mathematics/#associative-arrays>
 
-[trying to do something that is more complex than is suitable for a
-shell script.]
+[trying to do something that is more complex than is suitable for a shell script.]
 <https://effective-shell.com/part-6-advanced-techniques/how-to-avoid-scripting/>
 
 
 9.1.4 [关于引号]
 ----------------
 
-        There is often a lot of confusion about a specific topic
-        in the shell - when should you surround a variable in
-        quotes?
+    There is often a lot of confusion about a specific topic in the shell - when
+    should you surround a variable in quotes?
 
-        This might sound like a purely stylistic question, but
-        surrounding a variable in quotes can dramatically change
-        how your script works.
+    This might sound like a purely stylistic question, but surrounding a variable in
+    quotes can dramatically change how your script works.
 
-        Quoting Tips:
+    Quoting Tips:
 
-        + Use *double quotes* most of the time - they will handle
-          variables and sub-shells for you and not do weird things
-          like word splitting
+    + Use *double quotes* most of the time - they will handle variables and sub-shells
+      for you and not do weird things like word splitting
 
-        + Use *single quotes* for literal values
+    + Use *single quotes* for literal values
 
-        + Use *no quotes* if you want to expand wildcards
+    + Use *no quotes* if you want to expand wildcards
 
 
 [关于引号]
@@ -1250,9 +1164,8 @@ shell script.]
 
 * 9.1.4.1 Single Quotes - Literal Values
 
-        Single quotes should be used when you want to put *special
-        characters* into a variable, or call a command that
-        includes whitespace or special characters.
+    Single quotes should be used when you want to put *special characters* into a
+    variable, or call a command that includes whitespace or special characters.
 
   ,----
   | message='   ~~ Save $$$ on with ** "this deal" ** ! ~~   '
@@ -1262,10 +1175,9 @@ shell script.]
 
 * 9.1.4.2 Double Quotes - Parameter Expansion
 
-        Double quotes work in a very similar way to single quotes
-        except that they allow you to *use parameter expansion*
-        with the `$' dollar symbol and *escaping with the `\'
-        symbol*.
+    Double quotes work in a very similar way to single quotes except that they allow
+    you to *use parameter expansion* with the `$' dollar symbol and *escaping with the
+    `\' symbol*.
 
   ,----
   | deal="Buy one get one free"
@@ -1279,34 +1191,32 @@ shell script.]
 
 * 9.1.4.3 [No Qoutes - Shell Expansion]
 
-        If you don't include quotes around a variable or value,
-        then the shell will perform a series of operations called
-        *Shell Expansion*.
+    If you don't include quotes around a variable or value, then the shell will
+    perform a series of operations called *Shell Expansion*.
 
   `Brace expansion'
-        `touch file{1,2,3}' is expanded to `touch file1 file2 file3'
+    `touch file{1,2,3}' is expanded to `touch file1 file2 file3'
 
   `Tilde expansion'
-        `cd ~' is expanded to `cd /home/dwmkerr'
+    `cd ~' is expanded to `cd /home/dwmkerr'
 
   `Parameter and variable expansion'
-        `echo $SHELL' is expanded to `echo /usr/bin/sh' (note that this
-          expansion also occurs with double quotes)
+    `echo $SHELL' is expanded to `echo /usr/bin/sh' (note that this expansion also
+      occurs with double quotes)
 
   `Command substitution'
-        `echo $(date)' is expanded to echo the results of the date
-        command (this also occurs with double quotes)
+    `echo $(date)' is expanded to echo the results of the date command (this also occurs
+    with double quotes)
 
   `Arithmetic expansion'
-        `square=$((4 * 4))' has the value `4 * 4' evaluated
-        mathematically (we see this at the end of this chapter)
+    `square=$((4 * 4))' has the value `4 * 4' evaluated mathematically (we see this at
+    the end of this chapter)
 
   `Word splitting'
-        see [Loops and working with Files and Folders]
+    see [Loops and working with Files and Folders]
 
   `Pathname expansion'
-        `ls *.txt' is expanded to all filename that match the wildcard
-        pattern *.txt
+    `ls *.txt' is expanded to all filename that match the wildcard pattern *.txt
 
 
   [No Qoutes - Shell Expansion]
@@ -1318,22 +1228,19 @@ shell script.]
 
 * 9.1.4.4 [Shell Parameter Expansion]
 
-        Shell Parameter Expansion is the process by which the
-        shell evaluates a variable that follows the `$' dollar
-        symbol.
+    Shell Parameter Expansion is the process by which the shell evaluates a variable
+    that follows the `$' dollar symbol.
 
-        But there are a number of special features we can use when
-        expanding parameters. There are many options available and
-        you can find them all by running `man bash' and searching
-        for the text `EXPANSION'.
+    But there are a number of special features we can use when expanding
+    parameters. There are many options available and you can find them all by running
+    `man bash' and searching for the text `EXPANSION'.
 
-        I would avoid these techniques if possible as they are
-        fairly specific to Bash and likely will be confusing to
-        readers.
+    I would avoid these techniques if possible as they are fairly specific to Bash and
+    likely will be confusing to readers.
 
-        It is generally enough to know that if you see special
-        symbols inside a ${variable} expression then the writer is
-        performing some kind of string manipulation.
+    It is generally enough to know that if you see special symbols inside a
+    ${variable} expression then the writer is performing some kind of string
+    manipulation.
 
   + Length: `${#var}'
 
@@ -1355,23 +1262,19 @@ shell script.]
 9.1.5 [The Read Command]
 ------------------------
 
-        The `read' (/read from standard input/) command can be
-        used to read a line of text from standard input. When the
-        text is read it is put into a variable, allowing it to be
-        used in our scripts.
+    The `read' (/read from standard input/) command can be used to read a line of text
+    from standard input. When the text is read it is put into a variable, allowing it
+    to be used in our scripts.
 
-        The `read' command reads a line of text from standard
-        input and stores the result in a variable called
-        `REPLY'. We can then use this variable to use the text
-        that was read.
+    The `read' command reads a line of text from standard input and stores the result
+    in a variable called `REPLY'. We can then use this variable to use the text that
+    was read.
 
-        In general you should provide a variable name for `read' -
-        it will make your script a little easier to
-        understand. Not every user will know that the `$REPLY'
-        variable is the default location, so they might find it
-        confusing if you don't provide a variable name. By
-        specifying a variable name explicitly we make our script
-        easier to follow.
+    In general you should provide a variable name for `read' - it will make your
+    script a little easier to understand. Not every user will know that the `$REPLY'
+    variable is the default location, so they might find it confusing if you don't
+    provide a variable name. By specifying a variable name explicitly we make our
+    script easier to follow.
 
 
   ,----
@@ -1457,15 +1360,13 @@ shell script.]
   | 
   `----
 
-        The if statement will run the 'test commands'. If the
-        result of the commands are all *zero* (which means
-        'success'), then each of the 'conditional' commands will
-        be run. We 'close' the if statement with the `fi' keyword,
-        which is `if' written backwards.
+    The if statement will run the 'test commands'. If the result of the commands are
+    all *zero* (which means 'success'), then each of the 'conditional' commands will
+    be run. We 'close' the if statement with the `fi' keyword, which is `if' written
+    backwards.
 
 
-[条件]
-<https://effective-shell.com/part-4-shell-scripting/mastering-conditional-logic>
+[条件] <https://effective-shell.com/part-4-shell-scripting/mastering-conditional-logic>
 
 9.2.1 [The Test Command]
 ------------------------
@@ -1653,13 +1554,11 @@ shell script.]
   | done
   `----
 
-        The reason is that the shell is a *text based* environment
-        and the designers have taken this into account. Most of
-        the time when we are running shell commands in a terminal
-        we are running commands that simply output text. If we
-        want to be able to use the output of these commands in
-        constructs like loops, the shell has to decide how to
-        split the output up.
+    The reason is that the shell is a *text based* environment and the designers have
+    taken this into account. Most of the time when we are running shell commands in a
+    terminal we are running commands that simply output text. If we want to be able to
+    use the output of these commands in constructs like loops, the shell has to decide
+    how to split the output up.
 
 
   [For Loops - Words]
@@ -1675,13 +1574,11 @@ shell script.]
   | done
   `----
 
-        By default, if the shell doesn't find anything with a
-        wildcard pattern it *does not expand* it. This is very
-        confusing.
+    By default, if the shell doesn't find anything with a wildcard pattern it *does
+    not expand* it. This is very confusing.
 
-        By default, if a shell 'glob' (a pattern that includes a
-        wildcard) does not match any files, the shell simply
-        leaves the pattern as-is.
+    By default, if a shell 'glob' (a pattern that includes a wildcard) does not match
+    any files, the shell simply leaves the pattern as-is.
 
 
   [For Loops - Files with Wildcards]
@@ -1712,10 +1609,9 @@ shell script.]
 
 * 9.3.1.4 [For Loops - Files with Find]
 
-        If the files that you are trying to loop through are too
-        complex to match with a shell pattern, you can use the
-        `find' command to search for files, then loop through the
-        results.
+    If the files that you are trying to loop through are too complex to match with a
+    shell pattern, you can use the `find' command to search for files, then loop
+    through the results.
 
   ,----
   | # Create a symlink to 'effective-shell' that has a space in it...
@@ -1729,11 +1625,11 @@ shell script.]
   | done
   `----
 
-  在 [For Loops - Files with Wildcards] 中看到，shell 会按照空格分割文本，
-  此时 find 找到的文件如果带有空格，也会被分割，导致文件名不对。
+  在 [For Loops - Files with Wildcards] 中看到，shell 会按照空格分割文本，此时 find 找到
+  的文件如果带有空格，也会被分割，导致文件名不对。
 
-  一种解决办法时临时改变 shell 使用的分割符，由于 find 找回来的文件都是
-  以换行符分割的，因此，可以将分割符临时从空格设置为换行符。
+  一种解决办法时临时改变 shell 使用的分割符，由于 find 找回来的文件都是以换行符分割的，
+  因此，可以将分割符临时从空格设置为换行符。
 
   ,----
   | # Save the current value of IFS - so we can restore it later. Split on newlines.
@@ -1752,16 +1648,14 @@ shell script.]
   | IFS=$old_ifs
   `----
 
-        The `$IFS' variable is the '[internal field separator]'
-        variable. It is what the shell uses to decide what
-        characters should be used to split up text into words. By
-        default, this variable includes the space character, the
-        tab character and the newline character.
+    The `$IFS' variable is the '[internal field separator]' variable. It is what the
+    shell uses to decide what characters should be used to split up text into
+    words. By default, this variable includes the space character, the tab character
+    and the newline character.
 
-        I believe that in this case it is probably best to not use
-        a shell script. There is no solution that is particularly
-        clean or simple. In this case I think you might be better
-        off using a programming language.
+    I believe that in this case it is probably best to not use a shell script. There
+    is no solution that is particularly clean or simple. In this case I think you
+    might be better off using a programming language.
 
 
   [For Loops - Files with Find]
@@ -1775,10 +1669,9 @@ shell script.]
 
 * 9.3.1.5 [For Loops - Looping over Sequences]
 
-        Another common way to use a for loop is with `brace
-        expansion'. Brace expansion we have already seen a number
-        of times so far - we can use it to generate a sequence of
-        values.
+    Another common way to use a for loop is with `brace expansion'. Brace expansion we
+    have already seen a number of times so far - we can use it to generate a sequence
+    of values.
 
   ,----
   | touch {coffee,tea,milkshake}-menu.txt
@@ -1798,8 +1691,8 @@ shell script.]
 9.3.2 [The While Loop]
 ----------------------
 
-        The `while' loop is a loop that executes commands until a
-        certain condition is met.
+    The `while' loop is a loop that executes commands until a certain condition is
+    met.
 
   基本结构：
 
@@ -1857,9 +1750,9 @@ shell script.]
 
 * 9.3.2.2 [While Loops - The Infinite Loop]
 
-        There are times that you may want to loop forever. For
-        example you might be writing a script that reads an option
-        from the user, processes it, and then starts again.
+    There are times that you may want to loop forever. For example you might be
+    writing a script that reads an option from the user, processes it, and then starts
+    again.
 
   ,----
   | while true
@@ -1888,20 +1781,17 @@ shell script.]
 9.3.3 [The Until Loop]
 ----------------------
 
-        The until loop operates just like the while loop, except
-        that it runs *until* the test commands return success.
+    The until loop operates just like the while loop, except that it runs *until* the
+    test commands return success.
 
-        As long as the *test commands* do not return success, the
-        loop will run the *conditional commands*. After the
-        *conditional commands* have been run, the loop goes 'back
-        to the start' and evaluates the test commands again.
+    As long as the *test commands* do not return success, the loop will run the
+    *conditional commands*. After the *conditional commands* have been run, the loop
+    goes 'back to the start' and evaluates the test commands again.
 
-        In general I would recommend using while loops rather than
-        until loops. While loops are going to be more familiar to
-        readers as they exist in many programming languages -
-        until loops are a little more rare. And you can easily
-        turn any until loop into a while loop by simply inverting
-        the test commands you are running.
+    In general I would recommend using while loops rather than until loops. While
+    loops are going to be more familiar to readers as they exist in many programming
+    languages - until loops are a little more rare. And you can easily turn any until
+    loop into a while loop by simply inverting the test commands you are running.
 
   ,----
   | until <test-commands>
@@ -1967,8 +1857,8 @@ shell script.]
 9.4 [函数]
 ~~~~~~~~~~
 
-        The shell allows you to create functions - a set of
-        commands that you can call at any time.
+    The shell allows you to create functions - a set of commands that you can call at
+    any time.
 
   基本格式：
 
@@ -2027,24 +1917,20 @@ shell script.]
 
 * 9.4.1.1 [作用域]
 
-        If you come from a programming background you might find
-        it odd that you can create a variable in a function and
-        use it outside of the function. This is a feature known as
-        *dynamic scoping*. Many common programming languages like
-        Python, JavaScript, C, Java and others use an alternative
-        mechanism called *lexical scoping*.
+    If you come from a programming background you might find it odd that you can
+    create a variable in a function and use it outside of the function. This is a
+    feature known as *dynamic scoping*. Many common programming languages like Python,
+    JavaScript, C, Java and others use an alternative mechanism called *lexical
+    scoping*.
 
-        *Lexical scoping* is a feature that ensures that you can
-        only use a variable from within the 'scope' that it is
-        defined. This can reduce errors - because it means that if
-        you define a variable in a function you don't accidentally
-        'overwrite' the value of another variable that is used
-        elsewhere.
+    *Lexical scoping* is a feature that ensures that you can only use a variable from
+    within the 'scope' that it is defined. This can reduce errors - because it means
+    that if you define a variable in a function you don't accidentally 'overwrite' the
+    value of another variable that is used elsewhere.
 
-        You can use the `local' keyword to define a variable that
-        is only available in the 'local' scope, i.e. the function
-        that it is defined in. This allows you to use lexical
-        scoping and can reduce the risk of errors.
+    You can use the `local' keyword to define a variable that is only available in the
+    'local' scope, i.e. the function that it is defined in. This allows you to use
+    lexical scoping and can reduce the risk of errors.
 
   ,----
   | run_loop() {
@@ -2057,9 +1943,8 @@ shell script.]
   | }
   `----
 
-        In general, you should use 'local' variables inside
-        functions. This can help to avoid problems where calling a
-        function can have an unintended side effects:
+    In general, you should use 'local' variables inside functions. This can help to
+    avoid problems where calling a function can have an unintended side effects:
 
   ,----
   | # 比较用 local 和不用的区别
@@ -2165,13 +2050,12 @@ shell script.]
   | Result is: 0
   `----
 
-        In general, this method of returning values from a
-        function should be avoided. It overwrites the value of a
-        global variable and that can be confusing for the
-        operator.
+    In general, this method of returning values from a function should be avoided. It
+    overwrites the value of a global variable and that can be confusing for the
+    operator.
 
-        A more common way to return a value from a function is to
-        write its result to *stdout*
+    A more common way to return a value from a function is to write its result to
+    *stdout*
 
 
 * 9.4.3.2 输出到 stdout
@@ -2190,23 +2074,19 @@ shell script.]
   | don't shout!
   `----
 
-        If you have a programming background it might seem very
-        strange that you write results in a function by writing to
-        *stdout*. Remember - the shell is a text based interface
-        to the computer system. The majority of commands that we
-        have seen so far that provide output write their output to
-        the screen. This is what `ls' does, what `find' does, what
-        `cat' does and so on. When we `echo' a result from a
-        function, we are really just following the Unix standard
-        of writing the results of a program to the screen.
+    If you have a programming background it might seem very strange that you write
+    results in a function by writing to *stdout*. Remember - the shell is a text based
+    interface to the computer system. The majority of commands that we have seen so
+    far that provide output write their output to the screen. This is what `ls' does,
+    what `find' does, what `cat' does and so on. When we `echo' a result from a
+    function, we are really just following the Unix standard of writing the results of
+    a program to the screen.
 
-        Remember - shell functions are designed to behave in a
-        similar way to shell commands. They write their output to
-        stdout.
+    Remember - shell functions are designed to behave in a similar way to shell
+    commands. They write their output to stdout.
 
-        Although it might feel a bit clunky, writing the results
-        of a command to stdout is a tried and tested method of
-        returning results.
+    Although it might feel a bit clunky, writing the results of a command to stdout is
+    a tried and tested method of returning results.
 
   但是，如果脚本中有很多次输出，最终的结果可能不是我们期待的。
 
@@ -2238,26 +2118,23 @@ shell script.]
 
 * 9.4.3.3 [Returning Status Codes]
 
-        The `return' (return from shell function) command causes a
-        function to exit with a given status code.
+    The `return' (return from shell function) command causes a function to exit with a
+    given status code.
 
-        This is something that often causes confusion in shell
-        scripts. The reason is that in most programming languages,
-        you would use a 'return' statement to return the result of
-        a function. But in the shell, when we return, we set the
-        status code of the function.
+    This is something that often causes confusion in shell scripts. The reason is that
+    in most programming languages, you would use a 'return' statement to return the
+    result of a function. But in the shell, when we return, we set the status code of
+    the function.
 
-        What is a status code?  When a command runs, we expect it
-        to return a status code of 'zero' to indicate success. Any
-        non-zero status code is used to specify an error code.
+    What is a status code?  When a command runs, we expect it to return a status code
+    of 'zero' to indicate success. Any non-zero status code is used to specify an
+    error code.
 
-        Remember - only use the 'return' command to set a status
-        code. Many shells will only allow values from *0-255* to
-        be set, and most users will expect that a command should
-        return zero for success and that any non-zero value is an
-        error code. If you need to provide output for a command
-        that is not just a status code, you should write it to
-        stdout or if you must, set the value of a global variable.
+    Remember - only use the 'return' command to set a status code. Many shells will
+    only allow values from *0-255* to be set, and most users will expect that a
+    command should return zero for success and that any non-zero value is an error
+    code. If you need to provide output for a command that is not just a status code,
+    you should write it to stdout or if you must, set the value of a global variable.
 
   ,----
   | command_exists() {
@@ -2285,20 +2162,16 @@ shell script.]
 9.5 [错误处理]
 ~~~~~~~~~~~~~~
 
-        When you run a shell script, if a command in the script
-        fails, the script will *continue to run*. Like many other
-        points in this chapter this might seem unintuitive if you
-        come from a programming background, but this makes sense
-        in the shell - if the shell was to terminate whenever a
-        command fails it would be very difficult to use
-        interactively.
+    When you run a shell script, if a command in the script fails, the script will
+    *continue to run*. Like many other points in this chapter this might seem
+    unintuitive if you come from a programming background, but this makes sense in the
+    shell - if the shell was to terminate whenever a command fails it would be very
+    difficult to use interactively.
 
-        In general in your shell scripts if a command fails you
-        probably want the entire script to stop
-        executing. Otherwise you can get this cascading effect as
-        commands continue to return even after there was a
-        failure, which can lead to all sorts of unexpected
-        behaviour.
+    In general in your shell scripts if a command fails you probably want the entire
+    script to stop executing. Otherwise you can get this cascading effect as commands
+    continue to return even after there was a failure, which can lead to all sorts of
+    unexpected behaviour.
 
   如果先创建一个文件, 在执行脚本:
 
@@ -2330,13 +2203,11 @@ shell script.]
 9.5.1 [出错后退出]
 ------------------
 
-        You can use the `set' (set option) command to set an
-        option in the shell. There is an option that tells the
-        shell to exit when a command fails.
+    You can use the `set' (set option) command to set an option in the shell. There is
+    an option that tells the shell to exit when a command fails.
 
-        The 'set' command allows you to turn on and turn off shell
-        options. The 'e' option means 'exit if any command exits
-        with a non-zero status'.
+    The 'set' command allows you to turn on and turn off shell options. The 'e' option
+    means 'exit if any command exits with a non-zero status'.
 
   ,----
   | #!/usr/bin/env sh
@@ -2347,12 +2218,11 @@ shell script.]
   | # ...
   `----
 
-        One thing to be aware of is that the `set -e' option only
-        affects the *final* command of a pipeline.
+    One thing to be aware of is that the `set -e' option only affects the *final*
+    command of a pipeline.
 
-        To ensure that the shell terminates if a command in a
-        pipeline fails we must set the pipefail option: `set -o
-        pipefail'
+    To ensure that the shell terminates if a command in a pipeline fails we must set
+    the pipefail option: `set -o pipefail'
 
   ,----
   | grep '[:space:]*#' ~/effective-shell/scripts/common.sh | tr 'a-z' 'A-Z'
@@ -2366,11 +2236,9 @@ shell script.]
 9.6 [debug]
 ~~~~~~~~~~~
 
-        You can use the `set' (set option) command to set the
-        trace option (`set -x'). This option is incredibly useful
-        for debugging shell scripts. When the trace option is set,
-        the shell will write out each statement before it is
-        evaluated.
+    You can use the `set' (set option) command to set the trace option (`set
+    -x'). This option is incredibly useful for debugging shell scripts. When the trace
+    option is set, the shell will write out each statement before it is evaluated.
 
   ,----
   | # today.sh - creates a 'today' symlink in the home directory folder to a fresh
@@ -2396,20 +2264,16 @@ shell script.]
   | echo "${temp_path}"
   `----
 
-        *Each command that the shell executes is written to stdout
-        before it is executed.* The parameters are expanded, which
-        can make it far easier to see what is going on and
-        troubleshoot issues.
+    *Each command that the shell executes is written to stdout before it is executed.*
+    The parameters are expanded, which can make it far easier to see what is going on
+    and troubleshoot issues.
 
-        The `+' symbol is written at the start of each trace line,
-        so that you can differentiate it from normal output that
-        you write in your script1. The final line of output in the
-        example above does not have a + in front of it - because
-        it is actual output from an echo command, rather than a
-        trace line.
+    The `+' symbol is written at the start of each trace line, so that you can
+    differentiate it from normal output that you write in your script1. The final line
+    of output in the example above does not have a + in front of it - because it is
+    actual output from an echo command, rather than a trace line.
 
-        The number of + symbols indicates the *'level of
-        indirection'*
+    The number of + symbols indicates the *'level of indirection'*
 
   ,----
   | set -x
@@ -2465,10 +2329,9 @@ shell script.]
 9.7.3 [Traps]
 -------------
 
-        You can use the `trap' (trap signals and events) command
-        to specify a set of commands to run when the shell
-        receives signals, or at certain points such as when the
-        script exits or a function returns.
+    You can use the `trap' (trap signals and events) command to specify a set of
+    commands to run when the shell receives signals, or at certain points such as when
+    the script exits or a function returns.
 
   ,----
   | # Create a temporary folder for the effective shell download.
@@ -2501,8 +2364,8 @@ shell script.]
 9.7.4 [Handling Options]
 ------------------------
 
-        You can use the `getopts' (parse option arguments) command
-        to process the arguments for a script or function.
+    You can use the `getopts' (parse option arguments) command to process the
+    arguments for a script or function.
 
   处理 `-h', `-e' 等选项
 
@@ -2514,10 +2377,9 @@ shell script.]
 9.7.5 [Using 'Select' to Show a Menu]
 -------------------------------------
 
-        The `select' compound command prints a menu and allows the
-        user to make a selection. It is not part of the Posix
-        standard, but is available in Bash and most Bash-like
-        shells.
+    The `select' compound command prints a menu and allows the user to make a
+    selection. It is not part of the Posix standard, but is available in Bash and most
+    Bash-like shells.
 
   ,----
   | select fruit in Apple Banana Cherry Durian
@@ -2535,16 +2397,14 @@ shell script.]
 9.7.6 [Running Commands in Subshells]
 -------------------------------------
 
-        You will often see a nice little trick that allows you to
-        change the current directory for a specific command,
-        without affecting the current directory for the shell.
+    You will often see a nice little trick that allows you to change the current
+    directory for a specific command, without affecting the current directory for the
+    shell.
 
-        The brackets around the statements mean that these
-        commands are run in a sub-shell. Because they run in a
-        sub-shell, they change the directory in the sub-shell
-        only, not the current shell. This means we don't need to
-        change back to the previous directory after the commands
-        have completed.
+    The brackets around the statements mean that these commands are run in a
+    sub-shell. Because they run in a sub-shell, they change the directory in the
+    sub-shell only, not the current shell. This means we don't need to change back to
+    the previous directory after the commands have completed.
 
   ,----
   | (mkdir -p ~/new-project; cd ~/new-project; touch README.md)
@@ -2576,19 +2436,18 @@ shell script.]
 
 
 
-[tmux]
-<https://effective-shell.com/part-6-advanced-techniques/master-the-multiplexer/>
+[tmux] <https://effective-shell.com/part-6-advanced-techniques/master-the-multiplexer/>
 
 
 10.3 [oh my zsh]
 ~~~~~~~~~~~~~~~~
 
   [zsh]
-        Zsh is a shell designed for interactive use, although it is also
-        a powerful scripting language.
+    Zsh is a shell designed for interactive use, although it is also a powerful
+    scripting language.
 
   [starship]
-        Cross-shell [Propmt].
+    Cross-shell [Propmt].
 
   推荐的[插件]:
 
@@ -2678,8 +2537,7 @@ shell script.]
 
 [计算机教育中缺失的一课] <https://missing-semester-cn.github.io/>
 
-[The Art of Command Line]
-<https://github.com/jlevy/the-art-of-command-line>
+[The Art of Command Line] <https://github.com/jlevy/the-art-of-command-line>
 
 [Bash 脚本教程] <https://wangdoc.com/bash/>
 

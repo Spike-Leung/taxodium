@@ -1,12 +1,12 @@
-                     _____________________________
+                             _____________________________
 
-                      让你的 RSS/ATOM FEED 更好看
+                              让你的 RSS/ATOM FEED 更好看
 
-                              Spike Leung
-                     _____________________________
+                                      Spike Leung
+                             _____________________________
 
 
-                         [2025-04-11 Fri 16:05]
+                                 [2025-04-11 Fri 16:05]
 
 
 Table of Contents
@@ -17,11 +17,11 @@ _________________
 3. 我的一个呼吁
 
 
-主流浏览器，如 Chrome、Firefox、Safari 已经计划在将来移除 [XSLT] 的支持，
-到时本文内容可能会过时，更多见 [Removing XSLT for a more secure browser]。
+主流浏览器，如 Chrome、Firefox、Safari 已经计划在将来移除 [XSLT] 的支持，到时本文内容可
+能会过时，更多见 [Removing XSLT for a more secure browser]。
 
-在往下看之前，你可以先看看我现在的 [Atom feed]，或许说不上很好看，但应该
-比枯燥的 XML 标签看起来要友好一点吧 (つд⊂)
+在往下看之前，你可以先看看我现在的 [Atom feed]，或许说不上很好看，但应该比枯燥的 XML 标
+签看起来要友好一点吧 (つд⊂)
 
 - [Airing 的博客]
 - [jakelazaroff.com]
@@ -46,16 +46,16 @@ _________________
 1 缘由
 ======
 
-  最近在整理自己的订阅流， 在整理的过程中看到了 [jakelazaroff.com]，点开
-  发现虽然 URL 是 <https://jakelazaroff.com/rss.xml> ，但是看起来和我平
-  时看到的一堆 XML 标签不同，是个还挺好看的页面。
+  最近在整理自己的订阅流， 在整理的过程中看到了 [jakelazaroff.com]，点开发现虽然 URL 是
+  <https://jakelazaroff.com/rss.xml> ，但是看起来和我平时看到的一堆 XML 标签不同，是个还
+  挺好看的页面。
 
-  于是我打开浏览器 Developer Tools 看看他是怎么做的，发现看到的是一个
-  HTML。嗯？既然 URL 上是 rss.xml，它的内容为什么不是一堆 XML 标签？再切
-  换到 Sources 找到 rss.xml，这次看到的就是 XML 标签了。
+  于是我打开浏览器 Developer Tools 看看他是怎么做的，发现看到的是一个 HTML。嗯？既然 URL
+  上是 rss.xml，它的内容为什么不是一堆 XML 标签？再切换到 Sources 找到 rss.xml，这次看到
+  的就是 XML 标签了。
 
-  那他是怎么把 XML 转换成有样式的 HTML 的？在他页面中的 [About Feeds] 中
-  我找到了答案 ⸺ [pretty-feed-v3.xsl]。
+  那他是怎么把 XML 转换成有样式的 HTML 的？在他页面中的 [About Feeds] 中我找到了答案 ⸺
+  [pretty-feed-v3.xsl]。
 
 
 [jakelazaroff.com] <https://jakelazaroff.com/rss.xml>
@@ -69,8 +69,8 @@ _________________
 2 实现
 ======
 
-  如果你是 RSS feed，只要在你的 XML 文件开头引入 [pretty-feed-v3.xsl]，
-  你就可以得到一个好看的 HTML feed 页面了。
+  如果你是 RSS feed，只要在你的 XML 文件开头引入 [pretty-feed-v3.xsl]，你就可以得到一个
+  好看的 HTML feed 页面了。
 
   ,----
   | <?xml version="1.0" encoding="UTF-8"?>
@@ -80,33 +80,32 @@ _________________
   | <rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"></rss>
   `----
 
-  如果你是 Atom feed，你需要修改一下 [pretty-feed-v3.xsl]，你可以参考
-  [我的实现]，或者看看 [相关 issue]。
+  如果你是 Atom feed，你需要修改一下 [pretty-feed-v3.xsl]，你可以参考 [我的实现]，或者看
+  看 [相关 issue]。
 
-  用到的技术是 [xml-stylesheet] 和 [XSLT(eXtensible Stylesheet
-  Language/Transform)]。
+  用到的技术是 [xml-stylesheet] 和 [XSLT(eXtensible Stylesheet Language/Transform)]。
 
   如果你熟悉 HTML，我们可以做一个类比。
 
-  `<?xml-stylesheet href="some.xsl" type="text/xsl"?>' 就相当于 `<link
-  rel="stylesheet" href="some.css">' , 作用是引用一个样式表。
+  `<?xml-stylesheet href="some.xsl" type="text/xsl"?>' 就相当于 `<link rel="stylesheet"
+  href="some.css">' , 作用是引用一个样式表。
 
-  [xml-stylesheet] 引用的样式表有自己的规则，但整体来说它很像 HTML，你也
-  可以在里面写 HTML 标签，用 <style> 写样式。
+  [xml-stylesheet] 引用的样式表有自己的规则，但整体来说它很像 HTML，你也可以在里面写
+  HTML 标签，用 <style> 写样式。
 
-  它也像一个模版，用 HTML 写模版，而数据则通过 [XSLT] 从你的 RSS / Atom
-  feed 的 XML 中读取，例如读取标题，作者，文章标题，发布时间，文章总结等。
+  它也像一个模版，用 HTML 写模版，而数据则通过 [XSLT] 从你的 RSS / Atom feed 的 XML 中读
+  取，例如读取标题，作者，文章标题，发布时间，文章总结等。
 
   如果你只是想美化一下，你基于现有的文件修改就好了：
 
   - 适用 RSS feed： [Matt Webb's pretty-feed-v3.xsl]
   - 使用 Atom feed：[Spike Leung's pretty-feed-v3.xsl]
 
-  如果你嫌麻烦，也可以用 [RSS.Beauty]，但自己写的话，定制化会更高，如果
-  你还有更好的方法欢迎分享。
+  如果你嫌麻烦，也可以用 [RSS.Beauty]，但自己写的话，定制化会更高，如果你还有更好的方法
+  欢迎分享。
 
-  如果你不熟悉 XSLT 也不用担心，问问 LLM (Large Language Model) 就好啦！
-  可以适当进行 Vibe Coding ~
+  如果你不熟悉 XSLT 也不用担心，问问 LLM (Large Language Model) 就好啦！可以适当进行
+  Vibe Coding ~
 
 
 [pretty-feed-v3.xsl]
@@ -137,20 +136,18 @@ _________________
 3 我的一个呼吁
 ==============
 
-  让订阅流变好看并不麻烦，我推荐你尝试一下，给读者一个更好的体验，如果你
-  在实现过程中有什么问题，欢迎邮件或留言交流。
+  让订阅流变好看并不麻烦，我推荐你尝试一下，给读者一个更好的体验，如果你在实现过程中有什
+  么问题，欢迎邮件或留言交流。
 
-  另外，我呼吁大家在订阅流旁边引用 [About Feeds]，让一些不熟悉订阅流的用
-  户能够快速上手。
+  另外，我呼吁大家在订阅流旁边引用 [About Feeds]，让一些不熟悉订阅流的用户能够快速上手。
 
-  我自己也写了一份 [中文版 About Feeds]
-  <https://taxodium.ink/about-feeds.html> ，针对中文用户做了一些调整，你
-  可以引用我的，或者自己写一份。
+  我自己也写了一份 [中文版 About Feeds] <https://taxodium.ink/about-feeds.html> ，针对中
+  文用户做了一些调整，你可以引用我的，或者自己写一份。
 
   这样，我们可以鼓励更多的人使用订阅流，摆脱广告和算法，定制自己的信息流。
 
-  最后，如果你愿意，可以尝试给 [genmon/aboutfeeds] 做贡献，例如增加 Atom
-  feed 支持，增加多语言支持，方便更多的人。
+  最后，如果你愿意，可以尝试给 [genmon/aboutfeeds] 做贡献，例如增加 Atom feed 支持，增加
+  多语言支持，方便更多的人。
 
   Happy hacking ｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡
 

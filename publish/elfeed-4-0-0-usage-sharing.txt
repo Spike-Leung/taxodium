@@ -1,12 +1,12 @@
-                        _______________________
+                                _______________________
 
-                         ELFEED 4.0.0 使用分享
+                                 ELFEED 4.0.0 使用分享
 
-                              Spike Leung
-                        _______________________
+                                      Spike Leung
+                                _______________________
 
 
-                         [2026-06-20 Sat 20:50]
+                                 [2026-06-20 Sat 20:50]
 
 
 Table of Contents
@@ -18,12 +18,11 @@ _________________
 4. 搜索過濾
 5. 其它
 
-[Elfeed] 是一個 Emacs 里的 [RSS] <https://taxodium.ink/about-feeds.html>
-閲讀器，關於 Elfeed 之前寫過一篇 [在 Emacs 中用 Elfeed 阅读订阅流]
-<https://taxodium.ink/use-elfeed-to-read-feed-in-emacs.html>，那篇文章没
-怎麼展示 Elfeed 的使用，更多還是在分享一些工具函数。前陣子 [Elfeed 也更
-新到了 4.0.0]，新增了很多方便的功能，我最近也用的很多，所以再分享一下它
-的使用，或許你會想嘗試一下它。
+[Elfeed] 是一個 Emacs 里的 [RSS] <https://taxodium.ink/about-feeds.html> 閲讀器，關於
+Elfeed 之前寫過一篇 [在 Emacs 中用 Elfeed 阅读订阅流]
+<https://taxodium.ink/use-elfeed-to-read-feed-in-emacs.html>，那篇文章没怎麼展示 Elfeed
+的使用，更多還是在分享一些工具函数。前陣子 [Elfeed 也更新到了 4.0.0]，新增了很多方便的功
+能，我最近也用的很多，所以再分享一下它的使用，或許你會想嘗試一下它。
 
 為了更直觀了解，我录󠄃了個視頻，也可以看看：
 
@@ -136,37 +135,33 @@ _________________
 1 安装
 ======
 
-  Elfeed 運行在 Emacs 中，關於 [Emacs 的安装][1] 和使用這里就不贅述了，
-  之前可以參考之前寫的 [如何上手 Emacs]
-  <https://taxodium.ink/how-to-get-started-with-emacs.html>。我想說的是，
-  Emacs 安装和簡单使用并不難，Emacs 也有圖形界面，也可以通過鼠標完成大部
-  分常用操作，不必看到 Emacs 就望而止步。不過請至少閲讀一遍 Emacs
-  tutorial，下面的安装我會假設你己經讀過一遍了。
+  Elfeed 運行在 Emacs 中，關於 [Emacs 的安装][1] 和使用這里就不贅述了，之前可以參考之前
+  寫的 [如何上手 Emacs] <https://taxodium.ink/how-to-get-started-with-emacs.html>。我想
+  說的是，Emacs 安装和簡单使用并不難，Emacs 也有圖形界面，也可以通過鼠標完成大部分常用操
+  作，不必看到 Emacs 就望而止步。不過請至少閲讀一遍 Emacs tutorial，下面的安装我會假設你
+  己經讀過一遍了。
 
   Elfeed 的安装參考 [Elfeed 的 README]，大致這几步:
 
   - 执行 `M-x package-install' ，輪入 `elfeed' 进行安装
   - 配置 Elfeed，可以寫在 `~/.emacs.d/init.el'
 
-    Emacs 的配置一般寫在 `~/.emacs.d/init.el' ，取决於的操作系統路徑可能
-    有差异。
+    Emacs 的配置一般寫在 `~/.emacs.d/init.el' ，取决於的操作系統路徑可能有差异。
 
     ,----
     | (setq elfeed-feeds
     |       '("https://taxodium.ink/rss.xml"
     |         "https://kagi.com/api/v1/smallweb/feed/"))
     `----
-  - 执行 `M-x load-file' ，輪入 `~/.emacs.d/init.el' ，讓 Emacs 加載
-    `init.el' 里的配置
+  - 执行 `M-x load-file' ，輪入 `~/.emacs.d/init.el' ，讓 Emacs 加載 `init.el' 里的配置
 
-  這樣就安装好了，之後可以执行 `M-x elfeed' 打開 Elfeed 閲讀，执行 `M-x
-  elfeed-update' 拉取訂閱流获取更新(也可以在 Elfeed 的 buffer 按 触發)。
+  這樣就安装好了，之後可以执行 `M-x elfeed' 打開 Elfeed 閲讀，执行 `M-x elfeed-update'
+  拉取訂閱流获取更新(也可以在 Elfeed 的 buffer 按 触發)。
 
 
 [Emacs 的安装] <https://www.gnu.org/software/emacs/>
 
-[Elfeed 的 README]
-<https://github.com/emacs-elfeed/elfeed/tree/main#prerequisites>
+[Elfeed 的 README] <https://github.com/emacs-elfeed/elfeed/tree/main#prerequisites>
 
 
 2 管理訂閱流
@@ -185,27 +180,23 @@ _________________
 
   上面我添加了 5 条訂閱流，其中
   - `:title' 可以指定顯示的名称。
-  - `:no-update' 可以讓訂閱流默認不更新，需要手動去触發更新。有的訂閲流
-    更新太多太頻繁，就可以讓它們默認不更新，什麼時候想看再用
-    `elfeed-update-feed' 手動触發更新。
+  - `:no-update' 可以讓訂閱流默認不更新，需要手動去触發更新。有的訂閲流更新太多太頻繁，
+    就可以讓它們默認不更新，什麼時候想看再用 `elfeed-update-feed' 手動触發更新。
 
-    `elfeed-update-feed' 支持自動補全，但默認的補全不是很好用。建議安装
-    [minad/vertico] 、[oantolin/orderless]、[minad/marginalia] 获得更好
-    的補全。
+    `elfeed-update-feed' 支持自動補全，但默認的補全不是很好用。建議安装 [minad/vertico]
+    、[oantolin/orderless]、[minad/marginalia] 获得更好的補全。
 
-  - `:fetch-link' 有的訂閲流只包含原文鏈接，設置 `:fetch-link' 可以自動
-    拉取鏈接內容。
+  - `:fetch-link' 有的訂閲流只包含原文鏈接，設置 `:fetch-link' 可以自動拉取鏈接內容。
 
   - 剩下的 `emacs' 、 `weekly' 等是標簽。(添加標簽後，执行 `M-x
     elfeed-apply-autotags-now' 可以更新己有条目的標簽)
 
   更多配置見 [Elfeed 的 README]。
 
-  可以看到這就是一些有一定格式的文本，很容易編輯、搜索，所有用於文本的編
-  輯技巧都能用上，例如多指針編輯、正則替換等，比許多圖形介面要方便的多。
+  可以看到這就是一些有一定格式的文本，很容易編輯、搜索，所有用於文本的編輯技巧都能用上，
+  例如多指針編輯、正則替換等，比許多圖形介面要方便的多。
 
-  如果後面想換一個閱讀器，可以执行 `M-x elfeed-export-opml' 將所有訂閱流
-  导出。
+  如果後面想換一個閱讀器，可以执行 `M-x elfeed-export-opml' 將所有訂閱流导出。
 
 
 [minad/vertico] <https://github.com/minad/vertico>
@@ -220,9 +211,8 @@ _________________
 3 閱讀
 ======
 
-  执行 `M-x elfeed' 就可以打開 Elfeed 閱讀，在 Elfeed 的 buffer 按
-  (`elfeed-update') 触發更新(那些設置了 `:no-update t' 的訂閱流不會被触
-  發)。
+  执行 `M-x elfeed' 就可以打開 Elfeed 閱讀，在 Elfeed 的 buffer 按 (`elfeed-update') 触
+  發更新(那些設置了 `:no-update t' 的訂閱流不會被触發)。
 
   默認視圖是按月份分組的。
 
@@ -236,14 +226,13 @@ _________________
 
   <file:images/elfeed-4-0-0-usage-sharing/elfeed-search-date-view.webp>
 
-  按下 `o' (`elfeed-search-cycle-order') 可以切換分組模式，默認在按日期
-  分組和按訂閱流分組之間切換。
+  按下 `o' (`elfeed-search-cycle-order') 可以切換分組模式，默認在按日期分組和按訂閱流分
+  組之間切換。
 
   <file:images/elfeed-4-0-0-usage-sharing/elfeed-search-feed-view.webp>
 
-  在条目上，按下 (`elfeed-search-show-entry') 可以查看条目的文章內容，它
-  是通過解析 XML 呈現的，不會加載 JS、CSS，只顯示 HTML 的內容，可以說很
-  簡陋，但它也更干净，没有太多干擾。
+  在条目上，按下 (`elfeed-search-show-entry') 可以查看条目的文章內容，它是通過解析 XML
+  呈現的，不會加載 JS、CSS，只顯示 HTML 的內容，可以說很簡陋，但它也更干净，没有太多干擾。
 
   <file:images/elfeed-4-0-0-usage-sharing/elfeed-show.webp>
 
@@ -253,8 +242,8 @@ _________________
   - (`elfeed-search-untag-all-unread') 可以標記己讀，
   - (`elfeed-search-untag-all-unread') 可以標記未讀。
 
-  更多可以參考 [README]，或者执行 `M-x describe-mode' 查看
-  `elfeed-search-mode' 的按鍵綁定。
+  更多可以參考 [README]，或者执行 `M-x describe-mode' 查看 `elfeed-search-mode' 的按鍵綁
+  定。
 
   <file:images/elfeed-4-0-0-usage-sharing/elfeed-describe-mode.webp>
 
@@ -268,35 +257,33 @@ _________________
 
   在条目上按下：
 
-  - 可以基於条目的日期過濾，例如条目的日期是 2026-06-01，按下後就只顯示
-    2026-06-01 往後的条目。
+  - 可以基於条目的日期過濾，例如条目的日期是 2026-06-01，按下後就只顯示 2026-06-01 往後
+    的条目。
 
-  - 可以基於条目的訂閱流過濾，例如条目属於 taxodium.ink，按下後就只顯示
-    属於 taxodium.ink 的条目。
+  - 可以基於条目的訂閱流過濾，例如条目属於 taxodium.ink，按下後就只顯示属於 taxodium.ink
+    的条目。
 
-  - 可以排除条目的訂閱流，例如条目属於 taxodium.ink，按下後就不會顯示属
-    於 taxodium.ink 的条目。
+  - 可以排除条目的訂閱流，例如条目属於 taxodium.ink，按下後就不會顯示属於 taxodium.ink
+    的条目。
 
-  在 Elfeed 的 buffer (`*elfeed-search*') 上，按下
-  (`elfeed-search-live-filter') 可以輸入過濾條件實時過濾，可以按照日期、
-  訂閱流名称、条目名称、標簽 (支持自動補全) 過濾，也支持設置排除条件，具
-  體語法可以參考 [Filter Syntax]。
+  在 Elfeed 的 buffer (`*elfeed-search*') 上，按下 (`elfeed-search-live-filter') 可以輸
+  入過濾條件實時過濾，可以按照日期、訂閱流名称、条目名称、標簽 (支持自動補全) 過濾，也支
+  持設置排除条件，具體語法可以參考 [Filter Syntax]。
 
-  4.0.0 還增加了 [Tree View]，可以集中查看所有標簽，执行 `M-x
-  elfeed-tree' 可以打開 Tree View 視圖。
+  4.0.0 還增加了 [Tree View]，可以集中查看所有標簽，执行 `M-x elfeed-tree' 可以打開 Tree
+  View 視圖。
 
   <file:images/elfeed-4-0-0-usage-sharing/elfeed-tree-view.webp>
 
   Tree View 的結构和標簽的位置有關：
 
-  - `("https://yhetil.org/emacs-devel/new.atom" emacs lists)' emacs 會作
-    為根節點，lists 是它下面的子節點。
-  - `("https://yhetil.org/emacs-devel/new.atom" lists emacs)' lists 會作
-    為根節點，emacs 是它下面的子節點。
+  - `("https://yhetil.org/emacs-devel/new.atom" emacs lists)' emacs 會作為根節點，lists
+    是它下面的子節點。
+  - `("https://yhetil.org/emacs-devel/new.atom" lists emacs)' lists 會作為根節點，emacs
+    是它下面的子節點。
 
 
-[Filter Syntax]
-<https://github.com/emacs-elfeed/elfeed/tree/main#filter-syntax>
+[Filter Syntax] <https://github.com/emacs-elfeed/elfeed/tree/main#filter-syntax>
 
 [Tree View] <https://github.com/emacs-elfeed/elfeed/tree/main#tree-view>
 
@@ -313,8 +300,8 @@ _________________
 5.1 默認過濾条件
 ~~~~~~~~~~~~~~~~
 
-  默認過濾条件是 `@6months +unread' ，即近 6 個月未讀的条目，但我只想看
-  最近一周，可以修改 `elfeed-search-filter' ：
+  默認過濾条件是 `@6months +unread' ，即近 6 個月未讀的条目，但我只想看最近一周，可以修
+  改 `elfeed-search-filter' ：
 
   ,----
   | (setq-default elfeed-search-filter "@1weeks +unread")
@@ -323,15 +310,14 @@ _________________
   過濾條件語法參考 [Filter Syntax]。
 
 
-[Filter Syntax]
-<https://github.com/emacs-elfeed/elfeed/tree/main#filter-syntax>
+[Filter Syntax] <https://github.com/emacs-elfeed/elfeed/tree/main#filter-syntax>
 
 
 5.2 將某個時間之前的条目自動標記己讀
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  新增訂閱流時，我可能只是想看作者的後續更新，有的訂閱流可能塞进了所有文
-  章，就會一下子出現大量未讀条目。
+  新增訂閱流時，我可能只是想看作者的後續更新，有的訂閱流可能塞进了所有文章，就會一下子出
+  現大量未讀条目。
 
   我只想看最近一個月的，可以在拉取時讓 Elfeed 自動將一個月前的標記為己讀。
 
@@ -350,9 +336,9 @@ _________________
 5.3 在手機上閱讀
 ~~~~~~~~~~~~~~~~
 
-  Elfeed 只能在 Emacs 中用，手機上沒装 Emacs 就用不了了。我的解决辦法是，
-  先在電脑上打開 Elfeed，將想看的內空生成一份 HTML，放到一個 Web 服務器
-  上供手機訪問。主要在無法用電脑時應付一下，更多時候我還是在電脑上閲讀。
+  Elfeed 只能在 Emacs 中用，手機上沒装 Emacs 就用不了了。我的解决辦法是，先在電脑上打開
+  Elfeed，將想看的內空生成一份 HTML，放到一個 Web 服務器上供手機訪問。主要在無法用電脑時
+  應付一下，更多時候我還是在電脑上閲讀。
 
   具體參考 [导出 Elfeed 选中条目到 GitHub Page 作为 Reading List]
   <https://taxodium.ink/export-elfeed-selected-entries-to-github-page-as-reading-list.html>
@@ -362,8 +348,8 @@ _________________
 5.4 优化閱讀體驗
 ~~~~~~~~~~~~~~~~
 
-  我的顯示器比较寬，默認內容都在左側，閱讀起來不舒服。在閱讀時我會開啟󠄁
-  [olivetti-mode] 讓內容居中。
+  我的顯示器比较寬，默認內容都在左側，閱讀起來不舒服。在閱讀時我會開啟󠄁 [olivetti-mode]
+  讓內容居中。
 
   ,----
   | (defun spike-leung/preview-elfeed-with-olivetti ()
