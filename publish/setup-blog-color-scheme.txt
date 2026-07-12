@@ -35,7 +35,7 @@ _________________
 - 散光患者可能在 light mode 下更容易聚焦
 
 不管如何，或许有人需要 dark mode，我也想实践一下文章中的方法，所以我给博客加上了 dark
-mode 啦ヾ(*´∀ ˋ*)ﾉ
+mode 啦ヾ(´∀ ˋ)ﾉ
 
 本来以为是一件不怎么麻烦的事情，但实践下来要处理的内容还不少，接下来我会分享是如何实现的，
 以及碰到的问题，包括：
@@ -56,8 +56,8 @@ mode 啦ヾ(*´∀ ˋ*)ﾉ
 1 设置 dark mode
 ================
 
-  *1. 在 `<head>' 中添加 `<meta name="color-scheme" content="light dark">' (@see:
-   [init-org-publish.el])*
+  1. 在 `<head>' 中添加 `<meta name="color-scheme" content="light dark">' (@see:
+  [init-org-publish.el])
 
   适配 dark mode 的一种方法是设置 [color-scheme]，可以在 `<meta>' 中添加，也可以在元素上
   设置，例如：
@@ -91,7 +91,7 @@ mode 啦ヾ(*´∀ ˋ*)ﾉ
 
   所以，接下来需要用 CSS，告诉浏览器在 `color-scheme: dark;' 下用什么颜色。
 
-  *2. CSS 中通过 [light-dark()] 设置不同的颜色*
+  2. CSS 中通过 [light-dark()] 设置不同的颜色
 
   按照 [color-scheme] 文档中的介绍，有两种办法去适配颜色：
 
@@ -151,8 +151,8 @@ mode 啦ヾ(*´∀ ˋ*)ﾉ
   关于兼容性问题，推荐看看 [A Framework for Evaluating Browser Support]，里面介绍了在使
   用较新的 CSS 特性的时候需要考虑什么，以及如何测试。
 
-  *3. 页面上通过 `<select>' 去切换 `<meta name="color-scheme">' 的值，记住读者选择的
-   color-scheme*
+  3. 页面上通过 `<select>' 去切换 `<meta name="color-scheme">' 的值，记住读者选择的
+  color-scheme
 
   经过上面 1，2 两步，现在已经拥有一个基于 color-scheme 的博客了。
 
@@ -235,12 +235,12 @@ mode 啦ヾ(*´∀ ˋ*)ﾉ
   除了读者主动切换 `<select>' ，我还需要在页面初始化的时候，还原读者之前选择的
   color-scheme。
 
-  +从 [giscus 源码] 看，giscus 初始化的时候也是通过 postMessage 去设置主题的，这里似乎存
+  从 [giscus 源码] 看，giscus 初始化的时候也是通过 postMessage 去设置主题的，这里似乎存
   在一个竞态问题， gisucs 初始化的 postMessage 有时比我切换主题的 postMessage 执行得晚，
-  会将我设置的主题重置。+
+  会将我设置的主题重置。
 
-  +为了避免这个问题，我通过 [setTimeout()] 延缓切换主题的 postMesssage 的执行，在很大程
-  度上能够解决问题，基本很少出现被覆盖的情况。+
+  为了避免这个问题，我通过 [setTimeout()] 延缓切换主题的 postMesssage 的执行，在很大程度
+  上能够解决问题，基本很少出现被覆盖的情况。
 
   可以通过动态加载 giscus 解决问题，在加载 giscus 之前先基于当前的 color-scheme 设置
   giscus 使用的主题，就可以确保 giscus 加载时的主题是正确的。

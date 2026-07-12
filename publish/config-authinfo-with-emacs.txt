@@ -44,7 +44,7 @@ _________________
 
     这些文件的语法与 ftp 程序中的 netrc 文件类似，如下所示：
 
-    machine /mymachine/ login /myloginname/ password /mypassword/ port /myport/
+    machine mymachine login myloginname password mypassword port myport
 
     [Source]
 
@@ -57,19 +57,19 @@ _________________
 
   验证信息的格式是：
 
-    *machine* mymachine *login* myloginname *password* mypassword *port* myport
+    machine mymachine login myloginname password mypassword port myport
 
   其中:
 
-  - *machine* 是服务器，可以是 DNS 名称或 IP 地址，对应 `auth-source-search' 中的
-     `:host' 。
+  - machine 是服务器，可以是 DNS 名称或 IP 地址，对应 `auth-source-search' 中的 `:host'
+    。
 
     `auth-source-search' 是 Emacs 中的一个函数，可以基于条件查询返回用 `auth-source' 定
     义的密钥。
 
-  - *login* 是用户名，对应 `auth-source-search' 中的 `:user' 。
-  - *port* 是连接端口或协议，对应 `auth-source-search' 中的 `:port' 。
-  - *password* 就是对应的密钥，或者 API key 之类的。
+  - login 是用户名，对应 `auth-source-search' 中的 `:user' 。
+  - port 是连接端口或协议，对应 `auth-source-search' 中的 `:port' 。
+  - password 就是对应的密钥，或者 API key 之类的。
 
   你可以按照这个格式，在 `~/.authinfo' 存储相关的密钥。
 
@@ -195,7 +195,7 @@ _________________
 
   我对 GnuPG 研究得不多，简单分享一下如何创建 gpg 密钥，如何加密文件。
 
-  *创建 gpg 密钥*
+  创建 gpg 密钥
 
   执行 `gpg --full-generate-key' ，按照提示完成创建即可。
 
@@ -218,7 +218,7 @@ _________________
 
   关于 GPG 密钥的更详细的解释，你可以看 [Anatomy of a GPG Key]。
 
-  *加密文件*
+  加密文件
 
   执行 `gpg -e -r "SpikeLeung" ~/.authinfo' 。
 
@@ -241,8 +241,8 @@ _________________
   为了让 Emacs 能够解密 gpg 加密的文件，我们需要让 Emacs 能够读取 gpg 密钥，然后用密钥去
   解密。
 
-  Emacs 内置的 EasyPG Assistant 可以帮你 *自动* 完成加密解密，当需要访问 gpg 加密文件的
-  时候它就会启用，你不需要额外做什么。
+  Emacs 内置的 EasyPG Assistant 可以帮你 自动 完成加密解密，当需要访问 gpg 加密文件的时
+  候它就会启用，你不需要额外做什么。
 
   在 Emacs 中你可以通过 `C-h R epa' 查看 EasyPG Assistant 的文档。
 

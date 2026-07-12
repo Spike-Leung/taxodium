@@ -162,7 +162,7 @@ _________________
 4.2.2 "Built-Ins"
 -----------------
 
-    Builtins are /very/ shell-specific and usually control the shell itself
+    Builtins are very shell-specific and usually control the shell itself
 
   "Built-Ins" 的指令是和 shell 强相关的，换言之，某个命令，可能 bash 有，但 zsh 就没有。
 
@@ -375,8 +375,8 @@ _________________
   - `file'
   - [find]
 
-      您当然可以使用 alias 设置别名来简化上述操作，但 *shell 的哲学之一便是寻找（更好
-      用的）替代方案。*
+      您当然可以使用 alias 设置别名来简化上述操作，但 shell 的哲学之一便是寻找（更好用
+      的）替代方案。
 
       记住，shell 最好的特性就是您只是在调用程序，因此您只要找到合适的替代程序即可（甚
       至自己编写）。
@@ -485,8 +485,8 @@ _________________
     Open a file for interactive reading, allowing scrolling and search.
 
   [Xargs]
-    The xargs /[build and execute commands]/ command takes input, uses the input to
-    create commands, then executes the commands. I tend to remember it as `"Execute with
+    The xargs [build and execute commands] command takes input, uses the input to create
+    commands, then executes the commands. I tend to remember it as `"Execute with
     Arguments"' as the name xargs sounds a little odd!
 
       By default `xargs' take the input, joins each line together with a space and
@@ -560,8 +560,8 @@ _________________
 
   - [regex101]
 
-    *My general advice for regular expressions is start simple and add complexity only
-     if you need it.*
+    My general advice for regular expressions is start simple and add complexity only
+    if you need it.
 
     We can build regular expressions using an 'iterative' process, starting with the
     basics, then adding more features as we need them.
@@ -611,11 +611,11 @@ _________________
 
   <https://effective-shell.com/assets/images/diagram-cat-sort-uniq-pipeline-8c8d76566f351b4b9b900dde52af86b3.png>
 
-   operator  meaning                                                                   
-  -------------------------------------------------------------------------------------
-   `>'       redirect the standard output of a program to create or *overwrite* a file 
-   `>>'      redirect the standard output of a program to create or *append* to a file 
-   `<'       redirect a file to the *standard input* of a program                      
+   operator  meaning                                                                 
+  -----------------------------------------------------------------------------------
+   `>'       redirect the standard output of a program to create or overwrite a file 
+   `>>'      redirect the standard output of a program to create or append to a file 
+   `<'       redirect a file to the standard input of a program                      
 
 
 [Thinking in Pipelines]
@@ -681,7 +681,7 @@ _________________
 
 * 5.3.1.1 2>&1 的位置
 
-    Bash (and most bash-like shells) process redirections from /left to right/, [and
+    Bash (and most bash-like shells) process redirections from left to right, [and
     when we redirect we duplicate the source.]
 
   如果想将所有的输出 (包括 `stderr') 重定向到一个文件，以下顺序得到的结果是不同的：
@@ -689,8 +689,8 @@ _________________
   - `ls /usr/bin /nothing 2>&1 > all-output.txt'
 
     `2>&1'
-      duplicate file descriptor `2' (`stderr') and write it to `1' - /which is currently
-      the terminal!/
+      duplicate file descriptor `2' (`stderr') and write it to `1' - which is currently
+      the terminal!
 
     `> all-output.txt'
       duplicate file descriptor `1' (`stdout') and write it to a file called
@@ -841,8 +841,8 @@ _________________
   |     | head -n 10
   `----
 
-    Be careful when you split lines up - the continuation character must be *the last
-    character on the line*. If you add something after it (such as a comment) then the
+    Be careful when you split lines up - the continuation character must be the last
+    character on the line. If you add something after it (such as a comment) then the
     command will fail.
 
 
@@ -890,7 +890,7 @@ _________________
 
   为了避免歧义，需要指定执行脚本的 shell，这就是 `shebangs' 的作用。
 
-    A *shebang* is a special set of symbols at the beginning of a file that tells the
+    A shebang is a special set of symbols at the beginning of a file that tells the
     system what program should be used to run the file.
 
     The shebang is the two characters - `#!'. The name 'shebang' comes from the names
@@ -944,7 +944,7 @@ _________________
 
   你可以 `type' 命令找到某个程序的路径，但会有些麻烦。
 
-  此时就可以利用 `env' (/set environment and execute command/) ，它会去执行命令，并从
+  此时就可以利用 `env' (set environment and execute command) ，它会去执行命令，并从
   `$PATH' 上找到命令所在的路径。
 
   ,----
@@ -966,15 +966,15 @@ _________________
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     You can also use the `source' (execute commands from a file) command to load the
-    contents of a file into the *current* shell.
+    contents of a file into the current shell.
 
     Remember that when we run a shell script, a new shell is created as a child
     process of the current shell. This means that if you change something in the
     environment, such as a variable, it will not affect the environment of the shell
     that ran the script.
 
-  当执行 shell 脚本的时候，实际上会创建一个 *新的 shell* 去执行，和当前的 shell 环境是分
-  开的。
+  当执行 shell 脚本的时候，实际上会创建一个 新的 shell 去执行，和当前的 shell 环境是分开
+  的。
 
   如果想将 shell 脚本的改动作用在当前 shell 环境，则可以用 `source'.
 
@@ -1016,16 +1016,16 @@ _________________
 9.1 [变量]
 ~~~~~~~~~~
 
-    *Variables* are places where the system, the shell, or shell users like ourselves
+    Variables are places where the system, the shell, or shell users like ourselves
     can store data.
 
-    By convention, if a variable is in *uppercase* then it is an *environment
-    variable* or a built in variable that comes from the shell.
+    By convention, if a variable is in uppercase then it is an environment variable or
+    a built in variable that comes from the shell.
 
     An environment variable is a variable that is set by the system. They often
     contain useful values to help configure your system.
 
-    Variables that you define yourself should be *lowercase*.
+    Variables that you define yourself should be lowercase.
 
     This helps to distinguish between environment variables and your own variables.
 
@@ -1033,10 +1033,10 @@ _________________
     but when you use uppercase you run the risk of 'overwriting' the value of an
     environment variable and causing unexpected results later.
 
-    The variables we create in the Shell are called *Shell Variables*. They are
-    accessible in the *current shell session* that we are running.
+    The variables we create in the Shell are called Shell Variables. They are
+    accessible in the current shell session that we are running.
 
-    Shell variables are *isolated to the current process*.
+    Shell variables are isolated to the current process.
 
     If we run another process from our shell, such as another shell script or program,
     our shell variables are not inherited by this process.
@@ -1048,9 +1048,9 @@ _________________
     use the `export' (set export attribute) builtin to tell the shell to export the
     variable as an Environment Variable.
 
-    *Environment Variables are always inherited by child processes* - so if you need
-    to provide some kind of configuration or context to a child process, you will
-    likely want to export your variable.
+    Environment Variables are always inherited by child processes - so if you need to
+    provide some kind of configuration or context to a child process, you will likely
+    want to export your variable.
 
 
 [变量]
@@ -1083,12 +1083,11 @@ _________________
 9.1.2 [数组]
 ------------
 
-    Arrays in *Bash* start at index *zero*. Arrays in the *Z-Shell* start at index
-    *one* - this can cause confusion and mistakes in scripts so it is something you
-    might have to consider if you are writing scripts that can be used by either
-    shell.
+    Arrays in Bash start at index zero. Arrays in the Z-Shell start at index one -
+    this can cause confusion and mistakes in scripts so it is something you might have
+    to consider if you are writing scripts that can be used by either shell.
 
-    *It's important to use curly braces around your array expressions.*
+    It's important to use curly braces around your array expressions.
 
   ,----
   | days=("Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")
@@ -1151,12 +1150,12 @@ _________________
 
     Quoting Tips:
 
-    + Use *double quotes* most of the time - they will handle variables and sub-shells
+    + Use double quotes most of the time - they will handle variables and sub-shells
       for you and not do weird things like word splitting
 
-    + Use *single quotes* for literal values
+    + Use single quotes for literal values
 
-    + Use *no quotes* if you want to expand wildcards
+    + Use no quotes if you want to expand wildcards
 
 
 [关于引号]
@@ -1164,7 +1163,7 @@ _________________
 
 * 9.1.4.1 Single Quotes - Literal Values
 
-    Single quotes should be used when you want to put *special characters* into a
+    Single quotes should be used when you want to put special characters into a
     variable, or call a command that includes whitespace or special characters.
 
   ,----
@@ -1176,8 +1175,8 @@ _________________
 * 9.1.4.2 Double Quotes - Parameter Expansion
 
     Double quotes work in a very similar way to single quotes except that they allow
-    you to *use parameter expansion* with the `$' dollar symbol and *escaping with the
-    `\' symbol*.
+    you to use parameter expansion with the `$' dollar symbol and escaping with the
+    `\' symbol.
 
   ,----
   | deal="Buy one get one free"
@@ -1192,7 +1191,7 @@ _________________
 * 9.1.4.3 [No Qoutes - Shell Expansion]
 
     If you don't include quotes around a variable or value, then the shell will
-    perform a series of operations called *Shell Expansion*.
+    perform a series of operations called Shell Expansion.
 
   `Brace expansion'
     `touch file{1,2,3}' is expanded to `touch file1 file2 file3'
@@ -1262,7 +1261,7 @@ _________________
 9.1.5 [The Read Command]
 ------------------------
 
-    The `read' (/read from standard input/) command can be used to read a line of text
+    The `read' (read from standard input) command can be used to read a line of text
     from standard input. When the text is read it is put into a variable, allowing it
     to be used in our scripts.
 
@@ -1361,8 +1360,8 @@ _________________
   `----
 
     The if statement will run the 'test commands'. If the result of the commands are
-    all *zero* (which means 'success'), then each of the 'conditional' commands will
-    be run. We 'close' the if statement with the `fi' keyword, which is `if' written
+    all zero (which means 'success'), then each of the 'conditional' commands will be
+    run. We 'close' the if statement with the `fi' keyword, which is `if' written
     backwards.
 
 
@@ -1554,7 +1553,7 @@ _________________
   | done
   `----
 
-    The reason is that the shell is a *text based* environment and the designers have
+    The reason is that the shell is a text based environment and the designers have
     taken this into account. Most of the time when we are running shell commands in a
     terminal we are running commands that simply output text. If we want to be able to
     use the output of these commands in constructs like loops, the shell has to decide
@@ -1574,8 +1573,8 @@ _________________
   | done
   `----
 
-    By default, if the shell doesn't find anything with a wildcard pattern it *does
-    not expand* it. This is very confusing.
+    By default, if the shell doesn't find anything with a wildcard pattern it does not
+    expand it. This is very confusing.
 
     By default, if a shell 'glob' (a pattern that includes a wildcard) does not match
     any files, the shell simply leaves the pattern as-is.
@@ -1781,12 +1780,12 @@ _________________
 9.3.3 [The Until Loop]
 ----------------------
 
-    The until loop operates just like the while loop, except that it runs *until* the
+    The until loop operates just like the while loop, except that it runs until the
     test commands return success.
 
-    As long as the *test commands* do not return success, the loop will run the
-    *conditional commands*. After the *conditional commands* have been run, the loop
-    goes 'back to the start' and evaluates the test commands again.
+    As long as the test commands do not return success, the loop will run the
+    conditional commands. After the conditional commands have been run, the loop goes
+    'back to the start' and evaluates the test commands again.
 
     In general I would recommend using while loops rather than until loops. While
     loops are going to be more familiar to readers as they exist in many programming
@@ -1919,11 +1918,11 @@ _________________
 
     If you come from a programming background you might find it odd that you can
     create a variable in a function and use it outside of the function. This is a
-    feature known as *dynamic scoping*. Many common programming languages like Python,
-    JavaScript, C, Java and others use an alternative mechanism called *lexical
-    scoping*.
+    feature known as dynamic scoping. Many common programming languages like Python,
+    JavaScript, C, Java and others use an alternative mechanism called lexical
+    scoping.
 
-    *Lexical scoping* is a feature that ensures that you can only use a variable from
+    Lexical scoping is a feature that ensures that you can only use a variable from
     within the 'scope' that it is defined. This can reduce errors - because it means
     that if you define a variable in a function you don't accidentally 'overwrite' the
     value of another variable that is used elsewhere.
@@ -2055,7 +2054,7 @@ _________________
     operator.
 
     A more common way to return a value from a function is to write its result to
-    *stdout*
+    stdout
 
 
 * 9.4.3.2 输出到 stdout
@@ -2075,7 +2074,7 @@ _________________
   `----
 
     If you have a programming background it might seem very strange that you write
-    results in a function by writing to *stdout*. Remember - the shell is a text based
+    results in a function by writing to stdout. Remember - the shell is a text based
     interface to the computer system. The majority of commands that we have seen so
     far that provide output write their output to the screen. This is what `ls' does,
     what `find' does, what `cat' does and so on. When we `echo' a result from a
@@ -2131,10 +2130,10 @@ _________________
     error code.
 
     Remember - only use the 'return' command to set a status code. Many shells will
-    only allow values from *0-255* to be set, and most users will expect that a
-    command should return zero for success and that any non-zero value is an error
-    code. If you need to provide output for a command that is not just a status code,
-    you should write it to stdout or if you must, set the value of a global variable.
+    only allow values from 0-255 to be set, and most users will expect that a command
+    should return zero for success and that any non-zero value is an error code. If
+    you need to provide output for a command that is not just a status code, you
+    should write it to stdout or if you must, set the value of a global variable.
 
   ,----
   | command_exists() {
@@ -2163,7 +2162,7 @@ _________________
 ~~~~~~~~~~~~~~
 
     When you run a shell script, if a command in the script fails, the script will
-    *continue to run*. Like many other points in this chapter this might seem
+    continue to run. Like many other points in this chapter this might seem
     unintuitive if you come from a programming background, but this makes sense in the
     shell - if the shell was to terminate whenever a command fails it would be very
     difficult to use interactively.
@@ -2218,7 +2217,7 @@ _________________
   | # ...
   `----
 
-    One thing to be aware of is that the `set -e' option only affects the *final*
+    One thing to be aware of is that the `set -e' option only affects the final
     command of a pipeline.
 
     To ensure that the shell terminates if a command in a pipeline fails we must set
@@ -2264,16 +2263,16 @@ _________________
   | echo "${temp_path}"
   `----
 
-    *Each command that the shell executes is written to stdout before it is executed.*
-    The parameters are expanded, which can make it far easier to see what is going on
-    and troubleshoot issues.
+    Each command that the shell executes is written to stdout before it is
+    executed. The parameters are expanded, which can make it far easier to see what is
+    going on and troubleshoot issues.
 
     The `+' symbol is written at the start of each trace line, so that you can
     differentiate it from normal output that you write in your script1. The final line
     of output in the example above does not have a + in front of it - because it is
     actual output from an echo command, rather than a trace line.
 
-    The number of + symbols indicates the *'level of indirection'*
+    The number of + symbols indicates the 'level of indirection'
 
   ,----
   | set -x
