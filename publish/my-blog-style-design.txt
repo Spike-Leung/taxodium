@@ -543,17 +543,24 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   |   object-fit: contain;
   | }
   | 
-  | img {
+  | video {
+  |   border: 2px solid;
+  |   border-color: var(--color-border);
+  |   border-color: light-dark(var(--color-border), var(--dark-color-border));
+  |   border-radius: 5px;
+  | }
+  | 
+  | img,video {
   |   @media (prefers-color-scheme: dark) {
   |     filter: brightness(0.85) contrast(1.05);
   |   }
   | }
   | 
-  | .dark img {
+  | .dark :where(img, video) {
   |   filter: brightness(0.85) contrast(1.05);
   | }
   | 
-  | .light img {
+  | .light :where(img, video) {
   |   filter: none;
   | }
   `----
