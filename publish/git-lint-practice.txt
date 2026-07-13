@@ -65,7 +65,8 @@ _________________
 1.3 格式
 ~~~~~~~~
 
-  提交信息一般遵循[约定式提交]的规范去编写，基本结构为：
+  提交信息一般遵循[约定式提交]
+  (<https://www.conventionalcommits.org/zh-hans/v1.0.0-beta.4/>)的规范去编写，基本结构为：
   ,----
   | <类型>[可选的作用域]: <描述>
   | 
@@ -74,7 +75,8 @@ _________________
   | [可选的脚注]
   `----
 
-  其中类型的定义可以参考 [Angular]:
+  其中类型的定义可以参考 [Angular]
+  (<https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#type>):
 
     - build: Changes that affect the build system or external dependencies (example
       scopes: gulp, broccoli, npm)
@@ -89,7 +91,8 @@ _________________
       formatting, missing semi-colons, etc)
     - test: Adding missing tests or correcting existing tests
 
-  提交信息的编写可以参考 [Introduction: Why good commit messages matter]：
+  提交信息的编写可以参考 [Introduction: Why good commit messages matter]
+  (<https://cbea.ms/git-commit/>)：
 
   ,----
   | Summarize changes in around 50 characters or less
@@ -122,23 +125,14 @@ _________________
   `----
 
 
-[约定式提交] <https://www.conventionalcommits.org/zh-hans/v1.0.0-beta.4/>
-
-[Angular] <https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#type>
-
-[Introduction: Why good commit messages matter] <https://cbea.ms/git-commit/>
-
-
 1.4 工具校验
 ~~~~~~~~~~~~
 
   在团队协作中，为了确保大家的提交都符合规范，最好是通过工具去约束，而不是人为检查。
 
-  格式的约束可以通过 [commitlint] 等工具实现，可以添加一个 `pre-commit' 的钩子，在提交前
-  进行格式的校验。
-
-
-[commitlint] <https://github.com/conventional-changelog/commitlint>
+  格式的约束可以通过 [commitlint]
+  (<https://github.com/conventional-changelog/commitlint>) 等工具实现，可以添加一个
+  `pre-commit' 的钩子，在提交前进行格式的校验。
 
 
 1.5 提交信息模板(commit.template)
@@ -187,8 +181,9 @@ _________________
 2 githooks / husky
 ==================
 
-  前面提到，可以用 [commitlint] 在 `pre-commit' 时进行校验， `pre-commit' 指的就是一个
-  [Git 钩子]，可以在提交前触发一些动作。
+  前面提到，可以用 [commitlint] (<https://github.com/conventional-changelog/commitlint>)
+  在 `pre-commit' 时进行校验， `pre-commit' 指的就是一个 [Git 钩子]
+  (<https://git-scm.com/docs/githooks>)，可以在提交前触发一些动作。
 
   你可以在提交前后，push 前后，合并前后去触发一些动作。
 
@@ -201,10 +196,6 @@ _________________
 
   githooks 最早出现的版本时 `2.19.0' ，如果你的 Git 版本过低，就需要升级一下。
 
-
-[commitlint] <https://github.com/conventional-changelog/commitlint>
-
-[Git 钩子] <https://git-scm.com/docs/githooks>
 
 2.1 配置方法
 ~~~~~~~~~~~~
@@ -274,7 +265,8 @@ _________________
 2.1.2 husky
 -----------
 
-  [husky] 是一个方便写 githooks 的工具，目前也蛮流行的。
+  [husky] (<https://typicode.github.io/husky/#/>) 是一个方便写 githooks 的工具，目前也蛮
+  流行的。
 
   它会在项目的根目录下创 `.husky' 目录，存放 husky 生成的所有 hooks，这样可以避免 hooks
   在本地仓库没有同步的问题。
@@ -288,9 +280,6 @@ _________________
   `----
 
   husky 的使用就不赘述了，如果项目可以 husky，建议还是用 husky 来维护 githooks。
-
-
-[husky] <https://typicode.github.io/husky/#/>
 
 
 2.2 一些例子
@@ -312,16 +301,14 @@ _________________
 2.2.1 校验提交信息 (commit-msg)
 -------------------------------
 
-  安装 [commitlint] 以来，然后创建 `commit-msg' 钩子，在提交后，校验提交信息是否符合规范：
+  安装 [commitlint] (<https://github.com/conventional-changelog/commitlint>) 以来，然后
+  创建 `commit-msg' 钩子，在提交后，校验提交信息是否符合规范：
   ,----
   | #!/usr/bin/env sh
   | . "$(dirname -- "$0")/_/husky.sh"
   | 
   | npx --no -- commitlint --edit ${1}
   `----
-
-
-[commitlint] <https://github.com/conventional-changelog/commitlint>
 
 
 2.2.2 提交前校验&格式化代码(pre-commit)
@@ -333,8 +320,8 @@ _________________
   | npx lint-staged
   `----
 
-  这里用到了 [okonet/lint-staged], 它的作用是对 staged 中的内容(git add 进去的内容)进行
-  一些处理。
+  这里用到了 [okonet/lint-staged] (<https://github.com/okonet/lint-staged>), 它的作用是
+  对 staged 中的内容(git add 进去的内容)进行一些处理。
 
   `.lintstagedrc.json':
   ,----
@@ -344,9 +331,6 @@ _________________
   `----
 
   例如这里就是对 src 下的 js 和 vue 类型的文件，用 pretteir 格式化后，再用 eslint 去校验。
-
-
-[okonet/lint-staged] <https://github.com/okonet/lint-staged>
 
 
 2.2.3 推送时判断是否合包含主分支提交(pre-push)
@@ -377,12 +361,13 @@ _________________
 3 changelog
 ===========
 
-  涉及到版本控制，自然也有版本号和发布日志，一般而言，版本号应该遵循[语义化版本 2.0.0]的
-  规范。
+  涉及到版本控制，自然也有版本号和发布日志，一般而言，版本号应该遵循[语义化版本 2.0.0]
+  (<https://semver.org/lang/zh-CN/>)的规范。
 
   而发布日志，一般而言也可以用一个 `CHANGELOG.md' 文件去编写和维护。
 
-  而 [changesets] 可以方便地让你按照语义化的规范去编写 changelog。
+  而 [changesets] (<https://github.com/changesets/changesets>) 可以方便地让你按照语义化
+  的规范去编写 changelog。
 
   当做了一些修改，觉得有必要再发布日志里说明，就可以添加一条 changeset：
   ,----
@@ -400,27 +385,14 @@ _________________
   算对应的版本号。
 
 
-[语义化版本 2.0.0] <https://semver.org/lang/zh-CN/>
-
-[changesets] <https://github.com/changesets/changesets>
-
-
 4 Refs
 ======
 
   - [8.1 Customizing Git - Git Configuration]
+    (<https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration>)
   - [How do I make git use the editor of my choice for editing commit messages?]
+    (<https://stackoverflow.com/questions/2596805/how-do-i-make-git-use-the-editor-of-my-choice-for-editing-commit-messages>)
   - [Get Started with Git Hooks]
-  - [adambard / learnxinyminutes-docs] 快速了解 bash 等脚本语言用法
-
-
-[8.1 Customizing Git - Git Configuration]
-<https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration>
-
-[How do I make git use the editor of my choice for editing commit messages?]
-<https://stackoverflow.com/questions/2596805/how-do-i-make-git-use-the-editor-of-my-choice-for-editing-commit-messages>
-
-[Get Started with Git Hooks]
-<https://medium.com/@f3igao/get-started-with-git-hooks-5a489725c639>
-
-[adambard / learnxinyminutes-docs] <https://github.com/adambard/learnxinyminutes-docs>
+    (<https://medium.com/@f3igao/get-started-with-git-hooks-5a489725c639>)
+  - [adambard / learnxinyminutes-docs]
+    (<https://github.com/adambard/learnxinyminutes-docs>) 快速了解 bash 等脚本语言用法

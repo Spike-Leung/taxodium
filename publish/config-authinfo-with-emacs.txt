@@ -19,26 +19,25 @@ _________________
 5. 写在最后
 
 
-之前我写过一篇 [在 Emacs 中集成翻译插件] 的文章，插件依赖一些 LLM 服务，LLM 服务需要配置
-对应的 API key，它们是定义在 `~/.authinfo' 中的。
+之前我写过一篇 [在 Emacs 中集成翻译插件]
+(<https://taxodium.ink/translation-in-emacs.html>) 的文章，插件依赖一些 LLM 服务，LLM 服
+务需要配置对应的 API key，它们是定义在 `~/.authinfo' 中的。
 
 但是 `~/.authinfo' 是未加密的，如果泄露了，那么我的 API key 可能被滥用，所以我觉得还需要
 对它做一层加密。
 
-这篇文章我会分享如何在 `~/.authinfo' 中定义 API key、如何使用 [GnuPG] 对 `~/.authinfo'
-加密，以及如何配置 Emacs 从加密后的 `~/.authinfo.gpg' 中读取 API key。
-
-
-[在 Emacs 中集成翻译插件] <https://taxodium.ink/translation-in-emacs.html>
-
-[GnuPG] <https://www.gnupg.org/documentation/manuals/gnupg/index.html>
+这篇文章我会分享如何在 `~/.authinfo' 中定义 API key、如何使用 [GnuPG]
+(<https://www.gnupg.org/documentation/manuals/gnupg/index.html>) 对 `~/.authinfo' 加密，
+以及如何配置 Emacs 从加密后的 `~/.authinfo.gpg' 中读取 API key。
 
 
 1 authinfo
 ==========
 
     有些连接到其他服务的 Emacs 软件包需要身份验证，由于反复提供相同的用户名和密码可能
-    会令人烦恼，Emacs 通过 [auth-source] 库提供了持久化信息。
+    会令人烦恼，Emacs 通过 [auth-source]
+    (<https://www.gnu.org/software/emacs/manual/html_mono/auth.html>) 库提供了持久化信
+    息。
 
     默认情况下，身份验证信息来自 `~/.authinfo' 或 `~/.authinfo.gpg' 或 `~/.netrc' 文件。
 
@@ -47,6 +46,7 @@ _________________
     machine mymachine login myloginname password mypassword port myport
 
     [Source]
+    (<https://www.gnu.org/software/emacs/manual/html_node/emacs/Authentication.html>)
 
   Emacs 是通过 `auth-source' 去实现身份验证的，一般将验证信息 (例如 API Key) 存储在这三
   个文件中:
@@ -110,14 +110,17 @@ _________________
   如果你只是希望配置好 API key 给插件用，你只需要将 API key 按照插件要求定义在
   `~/.authinfo' 中，然后使用 `auth-source-search' 去读取就可以了。
 
-  [emacs-immersive-translate] 是 Emacs 中的一个翻译插件（我在 [Translation In Emacs]
-  <https://taxodium.ink/translation-in-emacs.html> 中介绍过）。
+  [emacs-immersive-translate]
+  (<https://github.com/Elilif/emacs-immersive-translate/tree/main>) 是 Emacs 中的一个翻
+  译插件（我在 [Translation In Emacs] <https://taxodium.ink/translation-in-emacs.html>
+  中介绍过）。
 
   它可以使用 LLM 进行翻译，LLM 翻译需要配置 API Key，而 API Key 需要写入到 `~/.authinfo'
   ，然后从里面读取。
 
-  它支持配置 chatgpt，从 [immersive-translate-chatgpt.el] 中可以看到它获取 API Key 的逻
-  辑：
+  它支持配置 chatgpt，从 [immersive-translate-chatgpt.el]
+  (<https://github.com/Elilif/emacs-immersive-translate/blob/1d00d558363985fa988fc40cd5093bfc6926d83e/immersive-translate-chatgpt.el#L109C6-L111C66>)
+  中可以看到它获取 API Key 的逻辑：
 
   它调用了 immersive-translate-api-key 这个方法获取 API key，传入
   immersive-translate-chatgpt-host 作为 `host' 参数，默认值是 `api.openai.com' ，传入
@@ -133,8 +136,9 @@ _________________
   | ;; 省略其他代码
   `----
 
-  而 [immersive-translate-api-key] 则是使用 auth-source-search 从 `~/.authinfo' 中读取密
-  钥的。
+  而 [immersive-translate-api-key]
+  (<https://github.com/Elilif/emacs-immersive-translate/blob/1d00d558363985fa988fc40cd5093bfc6926d83e/immersive-translate.el#L197-L212>)
+  则是使用 auth-source-search 从 `~/.authinfo' 中读取密钥的。
 
   ,----
   | (defun immersive-translate-api-key (host user)
@@ -155,39 +159,24 @@ _________________
   |     (user-error "No %s found in the auth source" user)))
   `----
 
-  因此，为了能够让 [emacs-immersive-translate] 使用 chatgpt 翻译，需要在 `~/.authinfo'
-  中添加以下配置：
+  因此，为了能够让 [emacs-immersive-translate]
+  (<https://github.com/Elilif/emacs-immersive-translate/tree/main>) 使用 chatgpt 翻译，
+  需要在 `~/.authinfo' 中添加以下配置：
 
   ,----
   | machine api.openai.com login apikey password your_openai_api_key
   `----
 
-  我在 [init-auth.el] 使用 `auth-source-search' 读取 `~/.authinfo' 配置的密钥。
+  我在 [init-auth.el]
+  (<https://github.com/Spike-Leung/Spikemacs/blob/5c2c68f8a338c3a1de0d325b06183b5ca58eb063/lisp/init-auth.el>)
+  使用 `auth-source-search' 读取 `~/.authinfo' 配置的密钥。
 
-  然后在 [init-ai.el] 引用了 `init-auth' ，将密钥传递给了 gptel 使用。
+  然后在 [init-ai.el]
+  (<https://github.com/Spike-Leung/Spikemacs/blob/5c2c68f8a338c3a1de0d325b06183b5ca58eb063/lisp/init-ai.el>)
+  引用了 `init-auth' ，将密钥传递给了 gptel 使用。
 
   如果你想共享 `~/.authinfo' ，例如分享给特定的人，推送到公开的 git 仓库，同步到云盘，你
   不想所有人都能看到你的密钥，那你可能需要进一步对文件进行加密。
-
-
-[auth-source] <https://www.gnu.org/software/emacs/manual/html_mono/auth.html>
-
-[Source] <https://www.gnu.org/software/emacs/manual/html_node/emacs/Authentication.html>
-
-[emacs-immersive-translate]
-<https://github.com/Elilif/emacs-immersive-translate/tree/main>
-
-[immersive-translate-chatgpt.el]
-<https://github.com/Elilif/emacs-immersive-translate/blob/1d00d558363985fa988fc40cd5093bfc6926d83e/immersive-translate-chatgpt.el#L109C6-L111C66>
-
-[immersive-translate-api-key]
-<https://github.com/Elilif/emacs-immersive-translate/blob/1d00d558363985fa988fc40cd5093bfc6926d83e/immersive-translate.el#L197-L212>
-
-[init-auth.el]
-<https://github.com/Spike-Leung/Spikemacs/blob/5c2c68f8a338c3a1de0d325b06183b5ca58eb063/lisp/init-auth.el>
-
-[init-ai.el]
-<https://github.com/Spike-Leung/Spikemacs/blob/5c2c68f8a338c3a1de0d325b06183b5ca58eb063/lisp/init-ai.el>
 
 
 2 GnuPG 加密
@@ -216,7 +205,8 @@ _________________
   - `[ultimate] SpikeLeung <l-yanlei@hotmail.com>' 是 uid
   - `l-yanlei@hotmail.com' 是和这个 gpg 密钥关联的邮箱
 
-  关于 GPG 密钥的更详细的解释，你可以看 [Anatomy of a GPG Key]。
+  关于 GPG 密钥的更详细的解释，你可以看 [Anatomy of a GPG Key]
+  (<https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/>)。
 
   加密文件
 
@@ -226,10 +216,6 @@ _________________
   名字或者邮箱，例如这里用的是名字 `SpikeLeung' 。
 
   加密成功的话，就会在当前目录生成一个带有 `.gpg' 后缀的加密文件 `~/.authinfo.gpg' 。
-
-
-[Anatomy of a GPG Key]
-<https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/>
 
 
 3 配置 Emacs 读取 ~/.authinfo.gpg
@@ -260,13 +246,14 @@ _________________
 4 Bonus: The Unix password store (pass)
 =======================================
 
-  除了 EasyPG Assistant，你也可以用 [The Unix password store (pass)]，这是一个简单的密码
-  管理程序。
+  除了 EasyPG Assistant，你也可以用 [The Unix password store (pass)]
+  (<https://www.gnu.org/software/emacs/manual/html_node/auth/The-Unix-password-store.html>)
+  ，这是一个简单的密码管理程序。
 
   如果你有在多个设备管理密码，或者有多个 gpg 密钥需要管理，你也可以考虑用 pass。它更侧重
   于密码管理，可以方便地在多个设备管理密钥，Emacs 也可以和 pass 集成。
 
-  如果你的环境中没有 [pass]，首先你需要按照文档安装好。
+  如果你的环境中没有 [pass] (<https://www.passwordstore.org/>)，首先你需要按照文档安装好。
 
   然后初始化 pass: `pass init gpg-id' ，这里的 gpg-id 可以是:
 
@@ -281,12 +268,6 @@ _________________
   ,----
   | (auth-source-pass-enable)
   `----
-
-
-[The Unix password store (pass)]
-<https://www.gnu.org/software/emacs/manual/html_node/auth/The-Unix-password-store.html>
-
-[pass] <https://www.passwordstore.org/>
 
 
 5 写在最后

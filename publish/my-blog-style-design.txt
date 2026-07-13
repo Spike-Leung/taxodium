@@ -99,19 +99,17 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
 大体的设计还是基于 [我的博客设计] <https://taxodium.ink/my-blog-design.html>，相比上个版
 本而言，移除了字体，暂时只用系统自带的字体，这样博客可以少加载些资源。另外移除了
 [pagefind] <https://taxodium.ink/use-pagefind-to-search-blog.html> 提供的搜索功能以及
-[littlefoot] 的脚注增强功能，一个考虑是最近的供应链攻击比较多，这两个都是外部的 JS，不受
-我控制（虽然我可以下载下来，避免它们更新），而且也不是必不可少的功能，还是少加载一些 JS
-吧。不过由于 Webmention 需要渲染 HTML 内容，还是保留了一个 `purify.min.js' 的外部 JS 依
-赖。剩下的一些 JS 都是我自己编写的，都比较简短，也在我的控制下。
+[littlefoot] (<https://github.com/goblindegook/littlefoot>) 的脚注增强功能，一个考虑是最
+近的供应链攻击比较多，这两个都是外部的 JS，不受我控制（虽然我可以下载下来，避免它们更新），
+而且也不是必不可少的功能，还是少加载一些 JS 吧。不过由于 Webmention 需要渲染 HTML 内容，
+还是保留了一个 `purify.min.js' 的外部 JS 依赖。剩下的一些 JS 都是我自己编写的，都比较简
+短，也在我的控制下。
 
-这次重写，使用了 [@layer] 去分类样式，也尝试用 [文学编程]
+这次重写，使用了 [@layer]
+(<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@layer>) 去分类样
+式，也尝试用 [文学编程]
 <https://taxodium.ink/11.html#5d75b436-2b28-4216-9b3d-79e177927b78> 的形式去描述设计，尝
 试尝试新东西。这个文档应该会持续迭代，样式会基于这份文档生成。
-
-
-[littlefoot] <https://github.com/goblindegook/littlefoot>
-
-[@layer] <https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@layer>
 
 
 1 main.css
@@ -134,8 +132,8 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   首先定义一些 CSS 变量，主要是颜色相关的。
 
   顏色参考：
-  - [APCA Contrast Calculator]
-  - [flexoki]
+  - [APCA Contrast Calculator] (<https://apcacontrast.com/>)
+  - [flexoki] (<https://github.com/kepano/flexoki>)
 
   ,----
   | :root {
@@ -209,21 +207,21 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-[APCA Contrast Calculator] <https://apcacontrast.com/>
-
-[flexoki] <https://github.com/kepano/flexoki>
-
-
 1.1.3 html / body / font
 ------------------------
 
   定义 `<html>' 的样式：
-  - 指定字体、字号、后面基于 `<html>' 字体大小，使用 [rem] 作为长度单位
+  - 指定字体、字号、后面基于 `<html>' 字体大小，使用 [rem]
+    (<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-size#rems>)
+    作为长度单位
   - 设置滚动条颜色
-  - 设置 [scrollbar-gutter] 避免滚动条造成布局偏移
+  - 设置 [scrollbar-gutter]
+    (<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scrollbar-gutter>)
+    避免滚动条造成布局偏移
   - `font-smoothing: antialiased;' 会让字體更精細，但可能会因為太細导致有点看不清。
 
-  如果有的英文不好区分，可以考慮安装 [Atkinson Hyperlegible] 字體。
+  如果有的英文不好区分，可以考慮安装 [Atkinson Hyperlegible]
+  (<https://www.brailleinstitute.org/freefont/>) 字體。
 
   ,----
   | html {
@@ -306,15 +304,6 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-[rem]
-<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-size#rems>
-
-[scrollbar-gutter]
-<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scrollbar-gutter>
-
-[Atkinson Hyperlegible] <https://www.brailleinstitute.org/freefont/>
-
-
 1.1.4 导航栏
 ------------
 
@@ -366,7 +355,9 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
 1.1.5 theme select
 ------------------
 
-  主题下拉框样式，[field-sizing] 可以让下拉框基于内容长度自适应宽度。
+  主题下拉框样式，[field-sizing]
+  (<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/field-sizing>)
+  可以让下拉框基于内容长度自适应宽度。
 
   ,----
   | #lightdark {
@@ -377,18 +368,18 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-[field-sizing]
-<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/field-sizing>
-
-
 1.1.6 skip nav
 --------------
 
-  处理 [Skip navigation] 的样式，默认是隐藏的，只要在 focus 时才显示。样式实现参考了
-  [Stefan Judis 的博客]。
+  处理 [Skip navigation]
+  (<https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/main#skip_navigation>)
+  的样式，默认是隐藏的，只要在 focus 时才显示。样式实现参考了 [Stefan Judis 的博客]
+  (<https://www.stefanjudis.com/>)。
 
-  其中 [@starting-style] 用于设置元素加载前的样式初始值，这里设置的目的是在页面切换，发
-  生 view transition 的时候，先隐藏 `.a11y-nav' 元素，避免出现一个收起的动画。
+  其中 [@starting-style]
+  (<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@starting-style>)
+  用于设置元素加载前的样式初始值，这里设置的目的是在页面切换，发生 view transition 的时
+  候，先隐藏 `.a11y-nav' 元素，避免出现一个收起的动画。
 
   ,----
   | .a11y-nav {
@@ -417,15 +408,6 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   |   }
   | }
   `----
-
-
-[Skip navigation]
-<https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/main#skip_navigation>
-
-[Stefan Judis 的博客] <https://www.stefanjudis.com/>
-
-[@starting-style]
-<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@starting-style>
 
 
 1.1.7 title & subtitle
@@ -482,9 +464,12 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
 
     其模式为：基础大小 × 比例 ^ 指数。
 
-    这就是 [pow()] 发挥作用的地方。
+    这就是 [pow()]
+    (<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/pow>) 发挥作用
+    的地方。
 
     [Building Typographic Scales in CSS with :heading(), sibling-index(), and pow()]
+    (<https://www.alwaystwisted.com/articles/building-typographic-scales-with-headings-sibling-index-and-pow>)
 
   因为标题本身字体就很大，行高太大，就会有很多多余的空白，所以将行高降低为 1.2。
 
@@ -526,12 +511,6 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   |   --heading-level: 0;
   | }
   `----
-
-
-[pow()] <https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/pow>
-
-[Building Typographic Scales in CSS with :heading(), sibling-index(), and pow()]
-<https://www.alwaystwisted.com/articles/building-typographic-scales-with-headings-sibling-index-and-pow>
 
 
 1.1.9 图片/视频
@@ -766,7 +745,8 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
 1.1.15 ruby
 -----------
 
-  适当放大 [<rt>] 的字号。
+  适当放大 [<rt>]
+  (<https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/rt>) 的字号。
 
   ,----
   | rt {
@@ -775,13 +755,10 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-[<rt>] <https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/rt>
-
-
 1.1.16 代码块
 -------------
 
-  参考了 [Protesilaos Stavrou] 的样式 。
+  参考了 [Protesilaos Stavrou] (<https://protesilaos.com/>) 的样式 。
 
   ,----
   | pre {
@@ -799,9 +776,6 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   |   border-color: light-dark(var(--color-border), var(--dark-color-border));
   | }
   `----
-
-
-[Protesilaos Stavrou] <https://protesilaos.com/>
 
 
 1.1.17 引用 blockquote、verse
@@ -971,7 +945,8 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
 1.1.23 table
 ------------
 
-  参考了 [Styling Tables the Modern CSS Way]。
+  参考了 [Styling Tables the Modern CSS Way]
+  (<https://piccalil.li/blog/styling-tables-the-modern-css-way/>)。
 
   ,----
   | table {
@@ -1034,10 +1009,6 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   |   }
   | }
   `----
-
-
-[Styling Tables the Modern CSS Way]
-<https://piccalil.li/blog/styling-tables-the-modern-css-way/>
 
 
 1.1.24 list
@@ -1290,7 +1261,9 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
 1.3.3 代码高亮
 --------------
 
-  参考了 [Styling Tables the Modern CSS Way]，仅高亮几种关键字的颜色。
+  参考了 [Styling Tables the Modern CSS Way]
+  (<https://piccalil.li/blog/styling-tables-the-modern-css-way/>)，仅高亮几种关键字的颜
+  色。
 
   ,----
   | .src > code {
@@ -1355,15 +1328,11 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-[Styling Tables the Modern CSS Way]
-<https://piccalil.li/blog/styling-tables-the-modern-css-way/>
-
-
 1.3.4 代码复制按钮
 ------------------
 
-  [code-enhanced.js] 会在代码块附近添加一个复制按钮，用于复制代码块的内容。按钮放置在右
-  上角，始终展示。
+  [code-enhanced.js] (<file:js/code-enhanced.js>) 会在代码块附近添加一个复制按钮，用于复
+  制代码块的内容。按钮放置在右上角，始终展示。
 
   ,----
   | .org-src-container {
@@ -1390,15 +1359,14 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-[code-enhanced.js] <file:js/code-enhanced.js>
-
-
 1.3.5 代码悬浮高亮
 ------------------
 
   org-publish 支持标记代码行，并能够通过链接指向代码行，使其高亮。
 
-  高亮逻辑由 [code-highlighted.js] 实现，会添加 `.code-highlighted' 类。
+  高亮逻辑由 [code-highlighted.js]
+  (<file:~/git/taxodium/publish/js/code-highlighted.js>) 实现，会添加
+  `.code-highlighted' 类。
 
   交互见： [在 Emacs 中用 Elfeed 阅读订阅流]
   <https://taxodium.ink/use-elfeed-to-read-feed-in-emacs.html>。
@@ -1436,9 +1404,6 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   |   }
   | }
   `----
-
-
-[code-highlighted.js] <file:~/git/taxodium/publish/js/code-highlighted.js>
 
 
 1.3.6 Webmentions
@@ -1586,8 +1551,10 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
 
   使用 tab 聚焦到可点击元素时的样式，增加了动画，使得被聚焦的元素更明显。
 
-  注意 [box-shadow is no alternative to outline]，如果打算用 box-shadow 替换 outline，最
-  好保留 `outline: 2px solid transparent;' 使得 box-shadow 失效的时候依然有边框。
+  注意 [box-shadow is no alternative to outline]
+  (<https://matuzo.at/blog/2026/box-shadow-no-alternative-to-outline>)，如果打算用
+  box-shadow 替换 outline，最好保留 `outline: 2px solid transparent;' 使得 box-shadow 失
+  效的时候依然有边框。
 
   ,----
   | /** :focus-visible is a neat pseudo-class that only applies focus styles when users navigate with the keyboard. */
@@ -1612,10 +1579,6 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   |   100% { outline-offset: .25rem }
   | }
   `----
-
-
-[box-shadow is no alternative to outline]
-<https://matuzo.at/blog/2026/box-shadow-no-alternative-to-outline>
 
 
 1.3.8 note section
@@ -1682,7 +1645,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
 1.3.10 footnote & sidenote
 --------------------------
 
-  footnote，依赖 [sidenote.js]
+  footnote，依赖 [sidenote.js] (<file:js/sidenote.js>)
 
   ,----
   | #text-footnotes {
@@ -1813,9 +1776,6 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-[sidenote.js] <file:js/sidenote.js>
-
-
 1.3.11 layer end
 ----------------
 
@@ -1838,7 +1798,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
 1.4.2 retro theme
 -----------------
 
-  样式借鉴了 [rohit]。
+  样式借鉴了 [rohit] (<https://seated.ro/>)。
 
   ,----
   | /* scan-line, retro style */
@@ -1866,9 +1826,6 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   |   }
   | }
   `----
-
-
-[rohit] <https://seated.ro/>
 
 
 1.4.3 layer end
@@ -1973,11 +1930,14 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   目前用于 [日常#12 - 苹果设备的联动、最近做的一些菜式、死亡搁浅、深圳美术馆看展]
   <https://taxodium.ink/nichijou-12.html>。
 
-  设置 [overscroll-behavior: contain] 可以避免列表滚动到底部后滚动页面，这样可以保证元素
-  不会因为页面滚动而滚动离开视口。
+  设置 [overscroll-behavior: contain]
+  (<https://modern-css.com/preventing-scroll-chaining-without-javascript/>) 可以避免列表
+  滚动到底部后滚动页面，这样可以保证元素不会因为页面滚动而滚动离开视口。
 
   给图片设置 `vertical-align: top' 可以让图片脱离行内元素的 baseline，从而避免图片下方出
-  现空白。具体见： [Understanding the fundamentals of CSS Layout]。
+  现空白。具体见： [Understanding the fundamentals of CSS Layout]
+  (<https://polypane.app/blog/understanding-the-fundamentals-of-css-layout/#lines-and-baselines>)
+  。
 
   ,----
   | /* 只支持全部都是 <figure> 或者全部都是 <a> */
@@ -2009,13 +1969,6 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   |   }
   | }
   `----
-
-
-[overscroll-behavior: contain]
-<https://modern-css.com/preventing-scroll-chaining-without-javascript/>
-
-[Understanding the fundamentals of CSS Layout]
-<https://polypane.app/blog/understanding-the-fundamentals-of-css-layout/#lines-and-baselines>
 
 
 1.5.6 emacs mark
@@ -2908,14 +2861,18 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
 4.1 animation
 ~~~~~~~~~~~~~
 
-  关于 [animation-timeline CSS property] ，推薦看 Josh W Comeau 的 [Scroll-Driven
-  Animations]，目前 Firefox 還不支持 `animation-timeline' 。
+  关于 [animation-timeline CSS property]
+  (<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-timeline>)
+  ，推薦看 Josh W Comeau 的 [Scroll-Driven Animations]
+  (<https://www.joshwcomeau.com/animation/scroll-driven-animations/>)，目前 Firefox 還不
+  支持 `animation-timeline' 。
 
   注意添加 `@media (prefers-reduced-motion: reduce)' 基于用戶配置关閉動画。
 
   - `animation-timeline: view();' 让元素基于 viewport 控制動画
   - `animation-range-start' 和 `animation-range-end' 控制動画执行区間，見
     [<timeline-range-name> CSS type]
+    (<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/timeline-range-name#exit>)
   - `animation-fill-mode: both;' 让動画結束后保持状态
 
   動画謹慎用 `filter' ，可能会在手機上造成严重的性能問題。
@@ -2972,16 +2929,6 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   |   }
   | }
   `----
-
-
-[animation-timeline CSS property]
-<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-timeline>
-
-[Scroll-Driven Animations]
-<https://www.joshwcomeau.com/animation/scroll-driven-animations/>
-
-[<timeline-range-name> CSS type]
-<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/timeline-range-name#exit>
 
 
 5 album-rank.css
@@ -3104,14 +3051,18 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
 5.1 animation
 ~~~~~~~~~~~~~
 
-  关于 [animation-timeline CSS property] ，推薦看 Josh W Comeau 的 [Scroll-Driven
-  Animations]，目前 Firefox 還不支持 `animation-timeline' 。
+  关于 [animation-timeline CSS property]
+  (<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-timeline>)
+  ，推薦看 Josh W Comeau 的 [Scroll-Driven Animations]
+  (<https://www.joshwcomeau.com/animation/scroll-driven-animations/>)，目前 Firefox 還不
+  支持 `animation-timeline' 。
 
   注意添加 `@media (prefers-reduced-motion: reduce)' 基于用戶配置关閉動画。
 
   - `animation-timeline: view();' 让元素基于 viewport 控制動画
   - `animation-range-start' 和 `animation-range-end' 控制動画执行区間，見
     [<timeline-range-name> CSS type]
+    (<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/timeline-range-name#exit>)
   - `animation-fill-mode: both;' 让動画結束后保持状态
 
   動画謹慎用 `filter' ，可能会在手機上造成严重的性能問題。
@@ -3168,16 +3119,6 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   |   }
   | }
   `----
-
-
-[animation-timeline CSS property]
-<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-timeline>
-
-[Scroll-Driven Animations]
-<https://www.joshwcomeau.com/animation/scroll-driven-animations/>
-
-[<timeline-range-name> CSS type]
-<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/timeline-range-name#exit>
 
 
 6 88-31-button.css

@@ -92,34 +92,23 @@ _________________
 
      项目间的依赖关系
        monorepo 的项目之间可能存在依赖关系，如何可以方便地添加依赖，完成构建。在 pnpm 中，
-       可以在子项目的 `package.json' 中通过 [workspace] 关键字去引用项目。
+       可以在子项目的 `package.json' 中通过 [workspace] (<https://pnpm.io/workspaces>)
+       关键字去引用项目。
 
      项目第三方依赖间的关系
        monorepo 中可能多个项目同时依赖了相同的第三方依赖，如都依赖 vue。在 pnpm，相同的
        依赖可以考虑按照到 workspace 中，而不是具体的项目里。
        尽管都是依赖 vue，但是不同项目可能依赖不同版本的 vue，需要解决版本问题。
 
-  对于 项目间的依赖关系 ，为了实现一定程度的自动化，需要借助一些工具，如 [NX]，[Lerna]，
-  [turborepo]。
+  对于 项目间的依赖关系 ，为了实现一定程度的自动化，需要借助一些工具，如 [NX]
+  (<https://nx.dev/>)，[Lerna] (<https://lerna.js.org/>)，[turborepo]
+  (<https://turborepo.org/>)。
 
-  对于 项目第三方依赖间的关系, 可以借助 [yarn]，[pnpm] 等包管理工具的 workspace 功能去实
-  现。
+  对于 项目第三方依赖间的关系, 可以借助 [yarn] (<https://yarnpkg.com/>)，[pnpm]
+  (<https://pnpm.io/>) 等包管理工具的 workspace 功能去实现。
 
   所以，有别于 Single-repo Monolisth， monorepo 需要有明确清晰的依赖关系，能够很方便地管
   理依赖。
-
-
-[workspace] <https://pnpm.io/workspaces>
-
-[NX] <https://nx.dev/>
-
-[Lerna] <https://lerna.js.org/>
-
-[turborepo] <https://turborepo.org/>
-
-[yarn] <https://yarnpkg.com/>
-
-[pnpm] <https://pnpm.io/>
 
 
 3 monorepo 优缺点
@@ -158,77 +147,45 @@ _________________
 4 例子
 ======
 
-  [Monorepos By Example: Part 1]
+  [Monorepos By Example: Part 1] (<https://codeburst.io/monorepos-by-example-part-1-3a883b49047e>)
     一个应用 monorepo 的例子，用 Lerna 管理依赖。
 
-  [Spike-Leung/leetcode]
+  [Spike-Leung/leetcode] (<https://github.com/Spike-Leung/leetcode>)
     我自己的实践，分成了 solutions, solution-parser, web 三个 package，然后用 pnpm 的
     workspace 关联。
 
-  [illa-design]
+  [illa-design] (<https://github.com/illa-family/illa-design>)
     一个组件库，组件之间就是以 monorepo 的形式组织的，目前使用的工具是 turborepo
 
-  [vuejs/core]
+  [vuejs/core] (<https://github.com/vuejs/core>)
     看起来也是一个 monorepo 的组织方式，使用了 pnpm 去管理依赖
-
-
-[Monorepos By Example: Part 1]
-<https://codeburst.io/monorepos-by-example-part-1-3a883b49047e>
-
-[Spike-Leung/leetcode] <https://github.com/Spike-Leung/leetcode>
-
-[illa-design] <https://github.com/illa-family/illa-design>
-
-[vuejs/core] <https://github.com/vuejs/core>
 
 
 5 Refs
 ======
 
-  [monorepo.tools]
+  [monorepo.tools] (<https://monorepo.tools/>)
     对 monorepo 的整体介绍，同时比对了不同 monorepo 工具之间的优缺点
 
-  [Monorepo 的过去、现在、和未来]
+  [Monorepo 的过去、现在、和未来] (<https://mp.weixin.qq.com/s/U8_30S9B0S_SU3jdgUxFGQ>)
     解释了 monolith 和 moporepo 间的差别，怎么实现这些差别，以及相关的工具，比较了作者自
     己用到的一些工具
 
-  [From many to one: Moving our JavaScript code into a monorepo]
+  [From many to one: Moving our JavaScript code into a monorepo] (<https://www.aha.io/engineering/articles/monorepo>)
     Aha! 团队迁移 monorepo 的选型
 
-  [开源项目都在用 monorepo，但是你知道居然有那么多坑么？]
+  [开源项目都在用 monorepo，但是你知道居然有那么多坑么？] (<https://segmentfault.com/a/1190000039814987>)
     对比了 multirepo 和 monorepo 的优缺点，较详细地分析了 monorepo 带来的问题：依赖，构
     建，测试，发布等
 
-  [Guide to Monorepos for Front-end Code]
+  [Guide to Monorepos for Front-end Code] (<https://www.toptal.com/front-end/guide-to-monorepos>)
     讲了为什么要用 monorepo，monorepo 的优劣，以及实现 monorepo 的工具链
 
-  [Awesome Monorepo]
+  [Awesome Monorepo] (<https://github.com/korfuri/awesome-monorepo>)
     整理了 monorepo 相关的工具
 
-  [JavaScript package managers compared: npm, Yarn, or pnpm?]
+  [JavaScript package managers compared: npm, Yarn, or pnpm?] (<https://blog.logrocket.com/javascript-package-managers-compared/>)
     比对了常用的包管理工具： npm vs yarn vs pnpm, 提及他们对 monorepo 的支持
 
-  [Exploring the Typescript Monorepo (a practical, hands-on adventure)]
+  [Exploring the Typescript Monorepo (a practical, hands-on adventure)] (<https://dev.to/jonlauridsen/exploring-the-typescript-monorepo-a-practical-hands-on-adventure-your-help-is-needed-2ggb>)
     Monorepo 引子，作为目录管理和 multirepo 管理的折中模式，同时包含一些实践。
-
-
-[monorepo.tools] <https://monorepo.tools/>
-
-[Monorepo 的过去、现在、和未来] <https://mp.weixin.qq.com/s/U8_30S9B0S_SU3jdgUxFGQ>
-
-[From many to one: Moving our JavaScript code into a monorepo]
-<https://www.aha.io/engineering/articles/monorepo>
-
-[开源项目都在用 monorepo，但是你知道居然有那么多坑么？]
-<https://segmentfault.com/a/1190000039814987>
-
-[Guide to Monorepos for Front-end Code]
-<https://www.toptal.com/front-end/guide-to-monorepos>
-
-[Awesome Monorepo] <https://github.com/korfuri/awesome-monorepo>
-
-[JavaScript package managers compared: npm, Yarn, or pnpm?]
-<https://blog.logrocket.com/javascript-package-managers-compared/>
-
-[Exploring the Typescript Monorepo (a practical, hands-on adventure)]
-<https://dev.to/jonlauridsen/exploring-the-typescript-monorepo-a-practical-hands-on-adventure-your-help-is-needed-2ggb>

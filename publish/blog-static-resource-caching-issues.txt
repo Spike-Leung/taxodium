@@ -25,7 +25,7 @@ TL;DR
 
 ----------------------------------------------------------------------------------------
 
-前些天在折腾 [ImageMagick]，看看能不能把 [Album Wall]
+前些天在折腾 [ImageMagick] (<https://imagemagick.org/>)，看看能不能把 [Album Wall]
 <https://taxodium.ink/album-wall.html> 的图片再优化一下。尝试了很多参数，可能还是对参数
 理解不够，也没能折腾出什么有趣的风格，不过也做了一点点小的优化，例如现在专辑上的一些字可
 以显示出来了。
@@ -100,13 +100,13 @@ TL;DR
 使用 `?timestamp=xxxx' 是因为时间戳一般来说都会不一样，每次获取一个新的时间戳就好，获取
 时间戳也相对简单。
 
-我的博客托管在 [Netlify]，就算我不设置缓存，它默认也是有缓存机制的。默认是
-`cache-control public,max-age=0,must-revalidate' ，即资源会立即过期，并且每次都需要重新
-验证资源。每次请求资源都会返回 Etag，每次刷新页面，都会重新请求资源，如果资源的 Etag 没
-有变化，Netlify 会返回 `304 Not Modified' 告诉浏览器资源未变化，浏览器就会使用这个资源的
-缓存；如果 Etag 变化了，就会返回更新后的资源。这样，如果资源没有更新，就会一直使用缓存；
-如果资源更新了，就会使用最新的。唯一的缺点就是每次都需要发送请求判断资源是否过期，而请求
-就可能受到网络影响，有可能需要等待一阵子。
+我的博客托管在 [Netlify] (<https://www.netlify.com/>)，就算我不设置缓存，它默认也是有缓
+存机制的。默认是 `cache-control public,max-age=0,must-revalidate' ，即资源会立即过期，并
+且每次都需要重新验证资源。每次请求资源都会返回 Etag，每次刷新页面，都会重新请求资源，如
+果资源的 Etag 没有变化，Netlify 会返回 `304 Not Modified' 告诉浏览器资源未变化，浏览器就
+会使用这个资源的缓存；如果 Etag 变化了，就会返回更新后的资源。这样，如果资源没有更新，就
+会一直使用缓存；如果资源更新了，就会使用最新的。唯一的缺点就是每次都需要发送请求判断资源
+是否过期，而请求就可能受到网络影响，有可能需要等待一阵子。
 
 如果是一些确定极少变化的静态资源，可以考虑设置 `cache-control
 public,max-age=31536000,immutable' ，可以很大程度改善这些资源的加载速度。例如我看到有的
@@ -119,16 +119,9 @@ public,max-age=31536000,immutable' ，可以很大程度改善这些资源的加
 如果是一些偶尔会改变的静态资源，可以设置一个较短的 `max-age' ，或者依赖服务器默认的缓存
 配置。
 
-就算什么都不做，浏览器本身也有 [默认的缓存机制]，不确定怎么弄，依赖浏览器默认行为就好。
+就算什么都不做，浏览器本身也有 [默认的缓存机制]
+(<https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching#heuristic_caching>)，
+不确定怎么弄，依赖浏览器默认行为就好。
 
-如果你想了解 HTTP Cache，MDN 的 [HTTP caching] 是份不错的文档。
-
-
-[ImageMagick] <https://imagemagick.org/>
-
-[Netlify] <https://www.netlify.com/>
-
-[默认的缓存机制]
-<https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching#heuristic_caching>
-
-[HTTP caching] <https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching>
+如果你想了解 HTTP Cache，MDN 的 [HTTP caching]
+(<https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching>) 是份不错的文档。

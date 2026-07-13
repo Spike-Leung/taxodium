@@ -17,28 +17,36 @@ _________________
 
 最近在写离职交接文档，打算把一些项目的 README.md 更新一下，便于后续的人了解项目。
 
-Emacs 中可以集成 [markdown-mode] 扩展编辑 markdown 的能力，它默认用 [EWW] 进行预览，但
-EWW 的样式相对比较简单。
+Emacs 中可以集成 [markdown-mode] (<https://github.com/jrblevin/markdown-mode>) 扩展编辑
+markdown 的能力，它默认用 [EWW]
+(<https://www.gnu.org/software/emacs/manual/html_mono/eww.html>) 进行预览，但 EWW 的样式
+相对比较简单。
 
 我希望预览的 markdown 样式和实际在 GitHub/GitLab 上看到是差不多的，这样可以提前发现一些
 排版问题。
 
-最早的时候，我参考 [Live preview as you type]，使用 [Impatient Mode] 和 [StrapDown.js]
-渲染。
+最早的时候，我参考 [Live preview as you type]
+(<https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type>)，使用 [Impatient Mode]
+(<https://github.com/skeeto/impatient-mode>) 和 [StrapDown.js]
+(<https://github.com/Naereen/Strapdown.js/>) 渲染。
 
 它的原理是开启一个 HTTP 服务，将 Emacs 中的 buffer 渲染成 HTML 进行预览，每当 buffer 的
 内容变化，就主动发送新的 HTML 内容进行更新。
 
-buffer 可以简单理解为文件内容，感兴趣可以看 [Buffers]。
+buffer 可以简单理解为文件内容，感兴趣可以看 [Buffers]
+(<https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html>)。
 
-HTML 中加载 [Marked]，将 markdown 内容转换 HTML 标签展示。
+HTML 中加载 [Marked] (<https://github.com/markedjs/marked>)，将 markdown 内容转换 HTML
+标签展示。
 
-尽管 StrapDown.js 提供了不少 [主题]，但都和 GitHub 上的样式有差异。
+尽管 StrapDown.js 提供了不少 [主题] (<https://bootswatch.com/>)，但都和 GitHub 上的样式
+有差异。
 
 主题其实就是加载 CSS，所以，通过替换对应的 CSS 文件，就可以实现 GitHub 的 markdown 样式，
-例如使用 [github-markdown-css]。
+例如使用 [github-markdown-css] (<https://github.com/sindresorhus/github-markdown-css>)。
 
-最终，我就得到这样一个 [markdown 的实时预览方法]:
+最终，我就得到这样一个 [markdown 的实时预览方法]
+(<https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-my-markdown.el>):
 
 ,----
 | ;;; init-my-markdown.el --- use impatient-mode to preview markdown
@@ -112,45 +120,13 @@ HTML 中加载 [Marked]，将 markdown 内容转换 HTML 标签展示。
 
 <file:images/live-preview-markdown-with-emacs/screenshot.png>
 
-在 [Markdown 预览的效果有点差强人意] 里我还找了其他的一些方案，感兴趣可以看看：
+在 [Markdown 预览的效果有点差强人意] (<https://emacs-china.org/t/topic/1549/5>) 里我还找
+了其他的一些方案，感兴趣可以看看：
 
-- [vmd-mode.el] 快速的 Github 风格 Markdown 预览，与 emacs 缓冲区的更改同步（无需保存）。
-- [livedown.el] [Livedown] 的 Emacs 插件。
-- [FLYMD] 即时 Markdown 预览。
-- [grip-mode] 使用 [grip] 实时预览 Github 风格的 Markdown/Org 文件
-
-
-[markdown-mode] <https://github.com/jrblevin/markdown-mode>
-
-[EWW] <https://www.gnu.org/software/emacs/manual/html_mono/eww.html>
-
-[Live preview as you type] <https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type>
-
-[Impatient Mode] <https://github.com/skeeto/impatient-mode>
-
-[StrapDown.js] <https://github.com/Naereen/Strapdown.js/>
-
-[Buffers] <https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html>
-
-[Marked] <https://github.com/markedjs/marked>
-
-[主题] <https://bootswatch.com/>
-
-[github-markdown-css] <https://github.com/sindresorhus/github-markdown-css>
-
-[markdown 的实时预览方法]
-<https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-my-markdown.el>
-
-[Markdown 预览的效果有点差强人意] <https://emacs-china.org/t/topic/1549/5>
-
-[vmd-mode.el] <https://github.com/blak3mill3r/vmd-mode>
-
-[livedown.el] <https://github.com/shime/emacs-livedown>
-
-[Livedown] <https://github.com/shime/livedown>
-
-[FLYMD] <https://github.com/mola-T/flymd>
-
-[grip-mode] <https://github.com/seagle0128/grip-mode>
-
-[grip] <https://github.com/joeyespo/grip>
+- [vmd-mode.el] (<https://github.com/blak3mill3r/vmd-mode>) 快速的 Github 风格 Markdown
+  预览，与 emacs 缓冲区的更改同步（无需保存）。
+- [livedown.el] (<https://github.com/shime/emacs-livedown>) [Livedown]
+  (<https://github.com/shime/livedown>) 的 Emacs 插件。
+- [FLYMD] (<https://github.com/mola-T/flymd>) 即时 Markdown 预览。
+- [grip-mode] (<https://github.com/seagle0128/grip-mode>) 使用 [grip]
+  (<https://github.com/joeyespo/grip>) 实时预览 Github 风格的 Markdown/Org 文件

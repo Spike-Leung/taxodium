@@ -18,16 +18,17 @@ _________________
 4. 搜索過濾
 5. 其它
 
-[Elfeed] 是一個 Emacs 里的 [RSS] <https://taxodium.ink/about-feeds.html> 閲讀器，關於
-Elfeed 之前寫過一篇 [在 Emacs 中用 Elfeed 阅读订阅流]
-<https://taxodium.ink/use-elfeed-to-read-feed-in-emacs.html>，那篇文章没怎麼展示 Elfeed
-的使用，更多還是在分享一些工具函数。前陣子 [Elfeed 也更新到了 4.0.0]，新增了很多方便的功
-能，我最近也用的很多，所以再分享一下它的使用，或許你會想嘗試一下它。
+[Elfeed] (<https://github.com/emacs-elfeed/elfeed/tree/main>) 是一個 Emacs 里的 [RSS]
+<https://taxodium.ink/about-feeds.html> 閲讀器，關於 Elfeed 之前寫過一篇 [在 Emacs 中用
+Elfeed 阅读订阅流] <https://taxodium.ink/use-elfeed-to-read-feed-in-emacs.html>，那篇文
+章没怎麼展示 Elfeed 的使用，更多還是在分享一些工具函数。前陣子 [Elfeed 也更新到了 4.0.0]
+(<https://github.com/emacs-elfeed/elfeed/blob/main/NEWS.org#version-400-2026-06-06>)，新
+增了很多方便的功能，我最近也用的很多，所以再分享一下它的使用，或許你會想嘗試一下它。
 
 為了更直觀了解，我录󠄃了個視頻，也可以看看：
 
-- YouTube: [Elfeed 4.0.0 使用分享]
-- Bilibili: [Elfeed 4.0.0 使用分享]
+- YouTube: [Elfeed 4.0.0 使用分享] (<https://youtu.be/HlEuXpG992A>)
+- Bilibili: [Elfeed 4.0.0 使用分享] (<https://www.bilibili.com/video/BV1bTjp6REtn/>)
 
 有點囉嗦，推薦 1.5 倍速看。
 
@@ -122,26 +123,17 @@ Elfeed 之前寫過一篇 [在 Emacs 中用 Elfeed 阅读订阅流]
 `----
 
 
-[Elfeed] <https://github.com/emacs-elfeed/elfeed/tree/main>
-
-[Elfeed 也更新到了 4.0.0]
-<https://github.com/emacs-elfeed/elfeed/blob/main/NEWS.org#version-400-2026-06-06>
-
-[Elfeed 4.0.0 使用分享] <https://youtu.be/HlEuXpG992A>
-
-[Elfeed 4.0.0 使用分享] <https://www.bilibili.com/video/BV1bTjp6REtn/>
-
-
 1 安装
 ======
 
-  Elfeed 運行在 Emacs 中，關於 [Emacs 的安装][1] 和使用這里就不贅述了，之前可以參考之前
-  寫的 [如何上手 Emacs] <https://taxodium.ink/how-to-get-started-with-emacs.html>。我想
-  說的是，Emacs 安装和簡单使用并不難，Emacs 也有圖形界面，也可以通過鼠標完成大部分常用操
-  作，不必看到 Emacs 就望而止步。不過請至少閲讀一遍 Emacs tutorial，下面的安装我會假設你
-  己經讀過一遍了。
+  Elfeed 運行在 Emacs 中，關於 [Emacs 的安装] (<https://www.gnu.org/software/emacs/>)[1]
+  和使用這里就不贅述了，之前可以參考之前寫的 [如何上手 Emacs]
+  <https://taxodium.ink/how-to-get-started-with-emacs.html>。我想說的是，Emacs 安装和簡
+  单使用并不難，Emacs 也有圖形界面，也可以通過鼠標完成大部分常用操作，不必看到 Emacs 就
+  望而止步。不過請至少閲讀一遍 Emacs tutorial，下面的安装我會假設你己經讀過一遍了。
 
-  Elfeed 的安装參考 [Elfeed 的 README]，大致這几步:
+  Elfeed 的安装參考 [Elfeed 的 README]
+  (<https://github.com/emacs-elfeed/elfeed/tree/main#prerequisites>)，大致這几步:
 
   - 执行 `M-x package-install' ，輪入 `elfeed' 进行安装
   - 配置 Elfeed，可以寫在 `~/.emacs.d/init.el'
@@ -157,11 +149,6 @@ Elfeed 之前寫過一篇 [在 Emacs 中用 Elfeed 阅读订阅流]
 
   這樣就安装好了，之後可以执行 `M-x elfeed' 打開 Elfeed 閲讀，执行 `M-x elfeed-update'
   拉取訂閱流获取更新(也可以在 Elfeed 的 buffer 按 触發)。
-
-
-[Emacs 的安装] <https://www.gnu.org/software/emacs/>
-
-[Elfeed 的 README] <https://github.com/emacs-elfeed/elfeed/tree/main#prerequisites>
 
 
 2 管理訂閱流
@@ -184,28 +171,21 @@ Elfeed 之前寫過一篇 [在 Emacs 中用 Elfeed 阅读订阅流]
     就可以讓它們默認不更新，什麼時候想看再用 `elfeed-update-feed' 手動触發更新。
 
     `elfeed-update-feed' 支持自動補全，但默認的補全不是很好用。建議安装 [minad/vertico]
-    、[oantolin/orderless]、[minad/marginalia] 获得更好的補全。
+    (<https://github.com/minad/vertico>) 、[oantolin/orderless]
+    (<https://github.com/oantolin/orderless>)、[minad/marginalia]
+    (<https://github.com/minad/marginalia>) 获得更好的補全。
 
   - `:fetch-link' 有的訂閲流只包含原文鏈接，設置 `:fetch-link' 可以自動拉取鏈接內容。
 
   - 剩下的 `emacs' 、 `weekly' 等是標簽。(添加標簽後，执行 `M-x
     elfeed-apply-autotags-now' 可以更新己有条目的標簽)
 
-  更多配置見 [Elfeed 的 README]。
+  更多配置見 [Elfeed 的 README] (<https://github.com/emacs-elfeed/elfeed/>)。
 
   可以看到這就是一些有一定格式的文本，很容易編輯、搜索，所有用於文本的編輯技巧都能用上，
   例如多指針編輯、正則替換等，比許多圖形介面要方便的多。
 
   如果後面想換一個閱讀器，可以执行 `M-x elfeed-export-opml' 將所有訂閱流导出。
-
-
-[minad/vertico] <https://github.com/minad/vertico>
-
-[oantolin/orderless] <https://github.com/oantolin/orderless>
-
-[minad/marginalia] <https://github.com/minad/marginalia>
-
-[Elfeed 的 README] <https://github.com/emacs-elfeed/elfeed/>
 
 
 3 閱讀
@@ -242,14 +222,11 @@ Elfeed 之前寫過一篇 [在 Emacs 中用 Elfeed 阅读订阅流]
   - (`elfeed-search-untag-all-unread') 可以標記己讀，
   - (`elfeed-search-untag-all-unread') 可以標記未讀。
 
-  更多可以參考 [README]，或者执行 `M-x describe-mode' 查看 `elfeed-search-mode' 的按鍵綁
-  定。
+  更多可以參考 [README]
+  (<https://github.com/emacs-elfeed/elfeed/tree/main#prerequisites:~:text=From%20the%20search%20buffer%20there%20are%20a%20number%20of%20ways%20to%20interact%20with%20entries%2E%20Entries%20are%20selected%20by%20placing%20the%20point%20over%20an%20entry%2E%20Multiple%20entries%20are%20selected%20at%20once%20by%20using%20an%20active%20region>)
+  ，或者执行 `M-x describe-mode' 查看 `elfeed-search-mode' 的按鍵綁定。
 
   <file:images/elfeed-4-0-0-usage-sharing/elfeed-describe-mode.webp>
-
-
-[README]
-<https://github.com/emacs-elfeed/elfeed/tree/main#prerequisites:~:text=From%20the%20search%20buffer%20there%20are%20a%20number%20of%20ways%20to%20interact%20with%20entries%2E%20Entries%20are%20selected%20by%20placing%20the%20point%20over%20an%20entry%2E%20Multiple%20entries%20are%20selected%20at%20once%20by%20using%20an%20active%20region>
 
 
 4 搜索過濾
@@ -268,10 +245,12 @@ Elfeed 之前寫過一篇 [在 Emacs 中用 Elfeed 阅读订阅流]
 
   在 Elfeed 的 buffer (`*elfeed-search*') 上，按下 (`elfeed-search-live-filter') 可以輸
   入過濾條件實時過濾，可以按照日期、訂閱流名称、条目名称、標簽 (支持自動補全) 過濾，也支
-  持設置排除条件，具體語法可以參考 [Filter Syntax]。
+  持設置排除条件，具體語法可以參考 [Filter Syntax]
+  (<https://github.com/emacs-elfeed/elfeed/tree/main#filter-syntax>)。
 
-  4.0.0 還增加了 [Tree View]，可以集中查看所有標簽，执行 `M-x elfeed-tree' 可以打開 Tree
-  View 視圖。
+  4.0.0 還增加了 [Tree View]
+  (<https://github.com/emacs-elfeed/elfeed/tree/main#tree-view>)，可以集中查看所有標簽，
+  执行 `M-x elfeed-tree' 可以打開 Tree View 視圖。
 
   <file:images/elfeed-4-0-0-usage-sharing/elfeed-tree-view.webp>
 
@@ -281,11 +260,6 @@ Elfeed 之前寫過一篇 [在 Emacs 中用 Elfeed 阅读订阅流]
     是它下面的子節點。
   - `("https://yhetil.org/emacs-devel/new.atom" lists emacs)' lists 會作為根節點，emacs
     是它下面的子節點。
-
-
-[Filter Syntax] <https://github.com/emacs-elfeed/elfeed/tree/main#filter-syntax>
-
-[Tree View] <https://github.com/emacs-elfeed/elfeed/tree/main#tree-view>
 
 
 5 其它
@@ -307,10 +281,8 @@ Elfeed 之前寫過一篇 [在 Emacs 中用 Elfeed 阅读订阅流]
   | (setq-default elfeed-search-filter "@1weeks +unread")
   `----
 
-  過濾條件語法參考 [Filter Syntax]。
-
-
-[Filter Syntax] <https://github.com/emacs-elfeed/elfeed/tree/main#filter-syntax>
+  過濾條件語法參考 [Filter Syntax]
+  (<https://github.com/emacs-elfeed/elfeed/tree/main#filter-syntax>)。
 
 
 5.2 將某個時間之前的条目自動標記己讀
@@ -327,10 +299,7 @@ Elfeed 之前寫過一篇 [在 Emacs 中用 Elfeed 阅读订阅流]
   |                               :remove 'unread))
   `----
 
-  更多見 [Tag Hooks]。
-
-
-[Tag Hooks] <https://github.com/emacs-elfeed/elfeed/tree/main#tag-hooks>
+  更多見 [Tag Hooks] (<https://github.com/emacs-elfeed/elfeed/tree/main#tag-hooks>)。
 
 
 5.3 在手機上閱讀
@@ -349,7 +318,7 @@ Elfeed 之前寫過一篇 [在 Emacs 中用 Elfeed 阅读订阅流]
 ~~~~~~~~~~~~~~~~
 
   我的顯示器比较寬，默認內容都在左側，閱讀起來不舒服。在閱讀時我會開啟󠄁 [olivetti-mode]
-  讓內容居中。
+  (<https://github.com/rnkn/olivetti>) 讓內容居中。
 
   ,----
   | (defun spike-leung/preview-elfeed-with-olivetti ()
@@ -363,9 +332,6 @@ Elfeed 之前寫過一篇 [在 Emacs 中用 Elfeed 阅读订阅流]
   <file:images/elfeed-4-0-0-usage-sharing/elfeed-show.webp>
 
   <file:images/elfeed-4-0-0-usage-sharing/elfeed-show-olivetti.webp>
-
-
-[olivetti-mode] <https://github.com/rnkn/olivetti>
 
 
 

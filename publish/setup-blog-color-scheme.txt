@@ -23,7 +23,8 @@ _________________
 4. 写在最后
 
 
-在整理周刊的时候，看到 [Come to the light-dark() Side]，一篇关于如何设置 dark mode 的很
+在整理周刊的时候，看到 [Come to the light-dark() Side]
+(<https://css-tricks.com/come-to-the-light-dark-side/>)，一篇关于如何设置 dark mode 的很
 棒的文章。
 
 我个人比较喜欢 light mode，除了代码编辑器外，其他都是 light mode。我觉得 light mode 看起
@@ -31,7 +32,8 @@ _________________
 
 但是文章里说到，不同人群有不同的需要：
 
-- [飞蚊症] 患者可能更喜欢 dark mode（可能是 dark mode 下飞蚊不那么明显？）
+- [飞蚊症] (<https://zh.wikipedia.org/wiki/%E9%A3%9B%E8%9A%8A%E7%97%87>) 患者可能更喜欢
+  dark mode（可能是 dark mode 下飞蚊不那么明显？）
 - 散光患者可能在 light mode 下更容易聚焦
 
 不管如何，或许有人需要 dark mode，我也想实践一下文章中的方法，所以我给博客加上了 dark
@@ -48,19 +50,16 @@ mode 啦ヾ(´∀ ˋ)ﾉ
 - 第三方兼容
 
 
-[Come to the light-dark() Side] <https://css-tricks.com/come-to-the-light-dark-side/>
-
-[飞蚊症] <https://zh.wikipedia.org/wiki/%E9%A3%9B%E8%9A%8A%E7%97%87>
-
-
 1 设置 dark mode
 ================
 
   1. 在 `<head>' 中添加 `<meta name="color-scheme" content="light dark">' (@see:
-  [init-org-publish.el])
+  [init-org-publish.el]
+  (<https://github.com/Spike-Leung/emacs.d/blob/26402349a476c6118b2bc94fc09901fe45019b56/lisp/my-lisp/init-org-publish.el#L8-L9>))
 
-  适配 dark mode 的一种方法是设置 [color-scheme]，可以在 `<meta>' 中添加，也可以在元素上
-  设置，例如：
+  适配 dark mode 的一种方法是设置 [color-scheme]
+  (<https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme>)，可以在 `<meta>' 中
+  添加，也可以在元素上设置，例如：
 
   ,----
   | <head>
@@ -91,11 +90,15 @@ mode 啦ヾ(´∀ ˋ)ﾉ
 
   所以，接下来需要用 CSS，告诉浏览器在 `color-scheme: dark;' 下用什么颜色。
 
-  2. CSS 中通过 [light-dark()] 设置不同的颜色
+  2. CSS 中通过 [light-dark()]
+  (<https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark>) 设置不同的
+  颜色
 
-  按照 [color-scheme] 文档中的介绍，有两种办法去适配颜色：
+  按照 [color-scheme] (<https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme>)
+  文档中的介绍，有两种办法去适配颜色：
 
   - 使用 [prefers-color-scheme]
+    (<https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme>)
 
     ,----
     | :root {
@@ -118,7 +121,10 @@ mode 啦ヾ(´∀ ˋ)ﾉ
     | 
     `----
 
-  - 使用 [light-dark()]，这是 [Come to the light-dark() Side] 中推荐的方法。
+  - 使用 [light-dark()]
+    (<https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark>)，这是
+    [Come to the light-dark() Side]
+    (<https://css-tricks.com/come-to-the-light-dark-side/>) 中推荐的方法。
 
     ,----
     | :root {
@@ -136,8 +142,12 @@ mode 啦ヾ(´∀ ˋ)ﾉ
     | 
     `----
 
-  博客中，我主要是用 [light-dark()] 去设置不同的颜色，部分地方使用
-  [prefers-color-scheme]，具体可以看博客的 [style.css]。
+  博客中，我主要是用 [light-dark()]
+  (<https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark>) 去设置不同
+  的颜色，部分地方使用 [prefers-color-scheme]
+  (<https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme>)，具体
+  可以看博客的 [style.css]
+  (<https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/style.css>)。
 
   需要注意的是，浏览器可能不支持 `light-dark()' ，需要设置一个回退的样式，例如:
 
@@ -148,8 +158,9 @@ mode 啦ヾ(´∀ ˋ)ﾉ
   | }
   `----
 
-  关于兼容性问题，推荐看看 [A Framework for Evaluating Browser Support]，里面介绍了在使
-  用较新的 CSS 特性的时候需要考虑什么，以及如何测试。
+  关于兼容性问题，推荐看看 [A Framework for Evaluating Browser Support]
+  (<https://www.joshwcomeau.com/css/browser-support>)，里面介绍了在使用较新的 CSS 特性的
+  时候需要考虑什么，以及如何测试。
 
   3. 页面上通过 `<select>' 去切换 `<meta name="color-scheme">' 的值，记住读者选择的
   color-scheme
@@ -163,38 +174,17 @@ mode 啦ヾ(´∀ ˋ)ﾉ
   以还需要在页面提供一个切换 color-scheme 的地方。
 
   方法有很多，我是在博客的导航栏右侧放置了一个 `<select>' ，然后写了一点 JavaScript 去控
-  制，具体见 [color-scheme.js]。
+  制，具体见 [color-scheme.js]
+  (<https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/js/color-scheme.js>)
+  。
 
   除了开放切换 color-scheme 外，还需要记住读者的 color-scheme 配置，这样读者下次进来就还
-  是他之前的配置，相对友好一些，目前我是存储在 [localStorage] 中。
+  是他之前的配置，相对友好一些，目前我是存储在 [localStorage]
+  (<https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage>) 中。
 
   这样就拥有一个可以切换 light ，dark 的博客啦 ｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡
 
   但事情并没有这么简单，过程中我还碰到了不少问题，接下来逐个看看。
-
-
-[init-org-publish.el]
-<https://github.com/Spike-Leung/emacs.d/blob/26402349a476c6118b2bc94fc09901fe45019b56/lisp/my-lisp/init-org-publish.el#L8-L9>
-
-[color-scheme] <https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme>
-
-[light-dark()] <https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark>
-
-[prefers-color-scheme]
-<https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme>
-
-[Come to the light-dark() Side] <https://css-tricks.com/come-to-the-light-dark-side/>
-
-[style.css]
-<https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/style.css>
-
-[A Framework for Evaluating Browser Support]
-<https://www.joshwcomeau.com/css/browser-support>
-
-[color-scheme.js]
-<https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/js/color-scheme.js>
-
-[localStorage] <https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage>
 
 
 2 踩坑
@@ -215,77 +205,62 @@ mode 啦ヾ(´∀ ˋ)ﾉ
   但这样又引入了另一个问题，由于 color-scheme.js 执行的时候，页面的 DOM 还没渲染，因此无
   法提前获取 DOM，设置 `<select>' 的选中值，以及其他 DOM 元素的样式。
 
-  所以 color-scheme.js 中还需要监听 [DOMContentLoaded] 事件，当页面 DOM 加载完成后，执行
-  一些获取 DOM ，设置 color-scheme 的逻辑。
-
-
-[DOMContentLoaded]
-<https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event>
+  所以 color-scheme.js 中还需要监听 [DOMContentLoaded]
+  (<https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event>)
+  事件，当页面 DOM 加载完成后，执行一些获取 DOM ，设置 color-scheme 的逻辑。
 
 
 2.2 dark mode 下 giscus 的处理
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  我希望 [giscus] 也会基于读者选择的 color-scheme 切换主题，博客中 giscus 是懒加载的，只
-  有滚动到底部的时候才会加载。
+  我希望 [giscus] (<https://github.com/giscus/giscus>) 也会基于读者选择的 color-scheme
+  切换主题，博客中 giscus 是懒加载的，只有滚动到底部的时候才会加载。
 
-  从 [Dynamic theme changing available? #336] 中找到了动态切换主题的方法，即用
-  [postMessage()] 通知 giscus 切换主题，但这种方法只适用于手动点击 `<select>' 切换的情况。
+  从 [Dynamic theme changing available? #336]
+  (<https://github.com/giscus/giscus/issues/336>) 中找到了动态切换主题的方法，即用
+  [postMessage()]
+  (<https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage>) 通知 giscus 切
+  换主题，但这种方法只适用于手动点击 `<select>' 切换的情况。
 
   除了读者主动切换 `<select>' ，我还需要在页面初始化的时候，还原读者之前选择的
   color-scheme。
 
-  从 [giscus 源码] 看，giscus 初始化的时候也是通过 postMessage 去设置主题的，这里似乎存
-  在一个竞态问题， gisucs 初始化的 postMessage 有时比我切换主题的 postMessage 执行得晚，
-  会将我设置的主题重置。
+  从 [giscus 源码]
+  (<https://github.com/giscus/giscus/blob/e2368de91c3382ee256a4632628de00dd05a0e94/pages/index.tsx#L102-L120>)
+  看，giscus 初始化的时候也是通过 postMessage 去设置主题的，这里似乎存在一个竞态问题，
+  gisucs 初始化的 postMessage 有时比我切换主题的 postMessage 执行得晚，会将我设置的主题
+  重置。
 
-  为了避免这个问题，我通过 [setTimeout()] 延缓切换主题的 postMesssage 的执行，在很大程度
-  上能够解决问题，基本很少出现被覆盖的情况。
+  为了避免这个问题，我通过 [setTimeout()]
+  (<https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout>) 延缓切换主题的
+  postMesssage 的执行，在很大程度上能够解决问题，基本很少出现被覆盖的情况。
 
   可以通过动态加载 giscus 解决问题，在加载 giscus 之前先基于当前的 color-scheme 设置
   giscus 使用的主题，就可以确保 giscus 加载时的主题是正确的。
 
-  代码可以参考 [laymonage 的回答] 。
+  代码可以参考 [laymonage 的回答]
+  (<https://github.com/giscus/giscus/issues/336#issuecomment-1009551934>) 。
 
   giscus 我已经移除了，相关思考记录在 [移除博客的留言]
   <https://taxodium.ink/remove-comment-from-blog.html>。
-
-
-[giscus] <https://github.com/giscus/giscus>
-
-[Dynamic theme changing available? #336] <https://github.com/giscus/giscus/issues/336>
-
-[postMessage()] <https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage>
-
-[giscus 源码]
-<https://github.com/giscus/giscus/blob/e2368de91c3382ee256a4632628de00dd05a0e94/pages/index.tsx#L102-L120>
-
-[setTimeout()] <https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout>
-
-[laymonage 的回答] <https://github.com/giscus/giscus/issues/336#issuecomment-1009551934>
 
 
 2.3 dark mode 下 iframe 的处理
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   我的博客里会用 [用 iframe 显示 HTML 例子]
-  <https://taxodium.ink/use-iframe-for-blog-demo.html>，[<iframe>] 是独立于我博客窗口的，
-  不受 [style.css] 的影响，为了能够适配 color-scheme，我会遍历页面上所有的 iframe，然后
-  在他们的 [contentDocument] 设置 color-scheme 属性。
+  <https://taxodium.ink/use-iframe-for-blog-demo.html>，[<iframe>]
+  (<https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe>) 是独立于我博客窗
+  口的，不受 [style.css]
+  (<https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/style.css>)
+  的影响，为了能够适配 color-scheme，我会遍历页面上所有的 iframe，然后在他们的
+  [contentDocument]
+  (<https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement/contentDocument>)
+  设置 color-scheme 属性。
 
   这里也会存在一个时机的问题，需要在 iframe 加载完成后再设置 color-scheme 才行，不然
-  color-scheme 无法生效，实现上是通过监听 iframe 的 [load event] 进行设置的。
-
-
-[<iframe>] <https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe>
-
-[style.css]
-<https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/style.css>
-
-[contentDocument]
-<https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement/contentDocument>
-
-[load event] <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/load_event>
+  color-scheme 无法生效，实现上是通过监听 iframe 的 [load event]
+  (<https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/load_event>) 进行设置的。
 
 
 2.4 dark mode 下代码块高亮的处理
@@ -305,8 +280,10 @@ mode 啦ヾ(´∀ ˋ)ﾉ
   块的背景色设置成 dark mode 的背景色，也能看清，就是页面上会有很多黑色的代码块，有点突
   兀。
 
-  后来突然想到可以用 [CSS fitler] 的 [invert()] 将颜色进行反转，那是不是可以直接把亮色主
-  题的代码颜色，反转一下，就能在 dark mode 下用了? (≖ᴗ≖๑)
+  后来突然想到可以用 [CSS fitler]
+  (<https://developer.mozilla.org/en-US/docs/Web/CSS/filter>) 的 [invert()]
+  (<https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/invert>) 将颜色进行
+  反转，那是不是可以直接把亮色主题的代码颜色，反转一下，就能在 dark mode 下用了? (≖ᴗ≖๑)
 
   于是设置了 `filter: invert(100%);' ，在 dark mode 下代码确实能看清了，但是由于颜色反转
   过头，像是 diff 的颜色，绿色表示新增，红色表示移除，invert 之后已经不是这两个颜色了，
@@ -334,16 +311,11 @@ mode 啦ヾ(´∀ ˋ)ﾉ
   <https://taxodium.ink/adapt-code-highlighting-to-the-blog-theme.html>。
 
 
-[CSS fitler] <https://developer.mozilla.org/en-US/docs/Web/CSS/filter>
-
-[invert()] <https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/invert>
-
-
 2.5 第三方兼容
 ~~~~~~~~~~~~~~
 
-  页面中可能使用了一些第三方的库，例如 [pagefind],这些库有自己的样式，没有做 dark mode
-  的适配，可能需要自己去调整对应的 CSS 样式。
+  页面中可能使用了一些第三方的库，例如 [pagefind] (<https://pagefind.app/>),这些库有自己
+  的样式，没有做 dark mode 的适配，可能需要自己去调整对应的 CSS 样式。
 
   关于 pagefind 的使用，我也写了篇文章：[使用 pagefind 添加博客搜索功能]
   <https://taxodium.ink/use-pagefind-to-search-blog.html>
@@ -354,16 +326,9 @@ mode 啦ヾ(´∀ ˋ)ﾉ
   具体你可以看看我的实现：
 
   - [color-scheme.js]
+    (<https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/js/color-scheme.js>)
   - [style.css]
-
-
-[pagefind] <https://pagefind.app/>
-
-[color-scheme.js]
-<https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/js/color-scheme.js>
-
-[style.css]
-<https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/style.css>
+    (<https://github.com/Spike-Leung/taxodium/blob/org-publish/publish/styles/style.css>)
 
 
 3 TODO Todos
@@ -377,10 +342,8 @@ mode 啦ヾ(´∀ ˋ)ﾉ
   - [X] 稳定 iframe，giscus 的主题切换，避免切换失败的情况-> 已解决，通过动态加载 giscus
     实现，具体可以往上面翻翻看
   - [X] 更好看的 dark mode 配色-> 调整过一阵子，对目前的颜色还算满意，除了好看，还应该考
-    虑可读性，可访问性，可以参考 [APCA] 进行配色。
-
-
-[APCA] <https://git.apcacontrast.com/documentation/APCAeasyIntro>
+    虑可读性，可访问性，可以参考 [APCA]
+    (<https://git.apcacontrast.com/documentation/APCAeasyIntro>) 进行配色。
 
 
 4 写在最后

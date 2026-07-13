@@ -16,10 +16,12 @@ _________________
 
 
 [最近改了订阅流] <https://taxodium.ink/blog-update-2025-04-08.html>，发现之前提交到
-[VXNA] 的订阅流失效了，一直无法拉取更新。
+[VXNA] (<https://www.v2ex.com/xna>) 的订阅流失效了，一直无法拉取更新。
 
-[和 Livid 沟通后]，他给了我 [一个链接]，是 [Feed Validation Service] 这个网站，你可以给
-它一个订阅流 URL，或者把整个订阅流的 XML 复制进去，然后校验你的订阅流是否有效。
+[和 Livid 沟通后] (<https://www.v2ex.com/t/1061054?p=1#reply11>)，他给了我 [一个链接]
+(<https://validator.w3.org/feed/check.cgi?url=https%3A%2F%2Ftaxodium.ink%2Findex.xml>)，
+是 [Feed Validation Service] (<https://validator.w3.org/feed/>) 这个网站，你可以给它一个
+订阅流 URL，或者把整个订阅流的 XML 复制进去，然后校验你的订阅流是否有效。
 
 如果是有效的，你会看到「This is a valid Atom 1.0 feed.」或者「This is a valid RSS feed.」
 等类似的提示。
@@ -28,6 +30,7 @@ _________________
 确实存在一些不符合规范的地方：
 
 - id 不符合 [canonical form]
+  (<https://validator.w3.org/feed/docs/warning/NonCanonicalURI.html>)
 
   ,----
   | - feedId: 'https://taxodium.ink',
@@ -66,24 +69,12 @@ _________________
 
   但是它们目前都是不允许被包含在订阅流的 XML 中的，所以我在生成订阅流的时候将它们移除了。
 
-目前我已经都调整好了([相关的代码改动])，如果你是自己生成的订阅流，生成完之后，可以用
-[Feed Validation Service] 验证一下～
+目前我已经都调整好了([相关的代码改动]
+(<https://github.com/Spike-Leung/taxodium/compare/27f7d47...06cf1ae>))，如果你是自己生成
+的订阅流，生成完之后，可以用 [Feed Validation Service]
+(<https://validator.w3.org/feed/>) 验证一下～
 
 Happy hacking (ﾉ>ω<)ﾉ
-
-
-[VXNA] <https://www.v2ex.com/xna>
-
-[和 Livid 沟通后] <https://www.v2ex.com/t/1061054?p=1#reply11>
-
-[一个链接]
-<https://validator.w3.org/feed/check.cgi?url=https%3A%2F%2Ftaxodium.ink%2Findex.xml>
-
-[Feed Validation Service] <https://validator.w3.org/feed/>
-
-[canonical form] <https://validator.w3.org/feed/docs/warning/NonCanonicalURI.html>
-
-[相关的代码改动] <https://github.com/Spike-Leung/taxodium/compare/27f7d47...06cf1ae>
 
 
 
