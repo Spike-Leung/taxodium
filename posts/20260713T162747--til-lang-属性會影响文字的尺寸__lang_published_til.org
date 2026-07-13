@@ -1,0 +1,54 @@
+#+title:      TIL: lang 属性會影响文字的尺寸
+#+export_file_name: til-lang-attribute-affects-text-size
+#+date:       [2026-07-13 Mon 17:30]
+#+filetags:   :lang:published:til:
+#+identifier: 20260713T162747
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: lang 属性會影响文字的尺寸，分享發現的問題和解决方法
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content hideblocks
+
+先看下問題的表現，當切換頁面导航時，會發現导航处的文字樣式有變化，
+但兩個頁面的导航是一樣的，理論上說切換時應該不會有樣式變化的。
+
+#+begin_export html
+<figure>
+  <a href="/images/til-lang-attribute-affects-text-size/zen.webm" target="_blank">
+    <video controls muted playsinline loading="lazy">
+      <source src="/images/til-lang-attribute-affects-text-size/zen.webm" type="video/webm">
+    </video>
+  </a>
+  <figcaption>在 Zen 瀏覧器上切換导航里的頁面，可以看到在頁面切換時，連結下的下划綫長度會變化。</figcaption>
+</figure>
+#+end_export
+
+#+begin_export html
+<figure>
+  <a href="/images/til-lang-attribute-affects-text-size/safari.webm" target="_blank">
+    <video controls muted playsinline loading="lazy">
+      <source src="/images/til-lang-attribute-affects-text-size/safari.webm" type="video/webm">
+    </video>
+  </a>
+  <figcaption>在 Safari 瀏覧器上切換导航里的頁面，可以看到在頁面切換時，連結的字體大小會變化。</figcaption>
+</figure>
+#+end_export
+
+定位了好久，我先查看了元素尺寸，發現切換時確實存在細微的尺寸變化；
+然後我開始排查樣式，是不是主頁里有額外的樣式？是不是导航的樣式寫的有問題？有什麼語法用的不對？
+調了半天還是沒有頭續。
+
+但兩個頁面有這樣的差导肯定有原因，我開始對比兩個 HTML 的差异，
+把大量无關的 HTML 刪除，只剩导航，問題依然存在。
+最後我看到兩個頁面的唯一差异是設置在 ~<html>~ 元素上的 ~lang~ ，
+在主頁是 ~<html lang="en">~ ，而其他頁面都是 ~<html lang="zh-CN">~ 。
+把主頁的 ~lang~ 修正為 ~zh-CN~ ，問題解决了。
+
+之前在加 [[denote:20241116T162652][pagefind 搜索功能]] 時我把所有頁面的 ~lang~ 都改成了 ~zh-CN~ ，看來還是改漏了。
+我以為 [[https://www.youtube.com/watch?v=NP94u7y_KkQ][lang 只是對屏幕閱讀有影響]]，沒想到還影响了文字顯示。
+
+這是因為瀏覧器會根據頁面上設置的 ~lang~ 去找合適的字體 (font-family)，
+而我也沒有設置中文字體，而是由瀏覧器自己找，
+這就导致了 ~lang~ 不同時，應用的字體存在差异，表現出來的就是尺寸的變化。
