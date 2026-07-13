@@ -164,7 +164,10 @@ ${ALL_CATEGORIES.map((cat) => `  <category term="${cat.term}" label="${cat.label
 
     // Ensure URLs are properly encoded
     const entryUrl = `${CONFIG.feedId}${encodeURI(entry.file)}`;
-    const subtitle = entry.subtitle ? `- ${entry.subtitle}` : ''
+    const subtitle = entry.subtitle ? `- ${entry.subtitle}` : '';
+    const txtFileUrl = entryUrl.replace("html", "txt");
+    const orgFileUrl = entryUrl.replace("html", "org");
+    const extraLinks = `<a href="${txtFileUrl}">純文本版本</a> <a href="${orgFileUrl}">原始 org 文件</a>`
 
     feed += `  <entry>
     <title>${entry.title} ${subtitle}</title>
@@ -173,7 +176,7 @@ ${ALL_CATEGORIES.map((cat) => `  <category term="${cat.term}" label="${cat.label
     <updated>${entry.updated}</updated>
     <published>${entry.date}</published>
     ${entry.summary ? `<summary><![CDATA[${entry.summary}]]></summary>` : ""}
-    <content type="html" xml:lang="zh-CN" xml:base="${entryUrl}"><![CDATA[${entry.content}${CONFIG.postamble}]]></content>
+    <content type="html" xml:lang="zh-CN" xml:base="${entryUrl}"><![CDATA[${entry.content}${CONFIG.postamble}${extraLinks}]]></content>
   </entry>\n`;
   }
 
