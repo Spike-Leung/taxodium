@@ -51,6 +51,7 @@
   function arrangeSidenotePosition() {
     const isShowAsSidenote = matchMedia("(width >= 1620px)").matches;
 
+    // footref is the footnote number in text
     const footrefList = Array.from(document.querySelectorAll(".footref"));
     footrefList.forEach((footrefElement) => {
       const footrefHash = footrefElement.hash.slice(1);
@@ -89,6 +90,35 @@
         }
       });
     });
+
+    isShowAsSidenote && avoidSidenoteOverlap()
+  }
+
+  function avoidSidenoteOverlap() {
+    const sidenoteElements = document.querySelectorAll(".sidenote");
+    if (sidenoteElements.length === 0) return
+
+    let prevSidenoteElement = null
+    Array.from(sidenoteElements).forEach((sidenoteElement, index) => {
+      if (prevSidenoteElement) {
+        const isSidenoteRefNearInlineStart = sidenoteElement.classList.contains("inline-start")
+        const isPrevSidenoteRefNearInlineStart = prevSidenoteElement.classList.contains("inline-start")
+        if (isPrevSidenoteRefNearInlineStart === isSidenoteRefNearInlineStart) {
+          const prevRect = prevSidenoteElement.getBoundingClientRect()
+          const rect = sidenoteElement.getBoundingClientRect()
+
+          // if prevSidenoteElement dimension contains sidenoteElement
+          if (prevRect &&
+              rect &&
+              rect.top > prevRect.top
+              && rect.top < prevRect.bottom) {
+            // set clear to avoid overlap
+            sidenoteElement.style.clear = "inline-start";
+          }
+        }
+      }
+      prevSidenoteElement = sidenoteElement
+    })
   }
 
   function highlightRefPair() {
