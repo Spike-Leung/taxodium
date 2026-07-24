@@ -109,11 +109,67 @@ Kagi、bing、百度等都不需要 JavaScript 也能搜索，我不理解 Googl
 如果你也是一位博客作者，可以禁用 JavaScript 看看自己博客的表現，然後考慮一下是否需要 JavaScript，是否需要那麼多 JavaScript、是否需要加載几 MB 甚至十几 MB 的資源。<a href="https://neocities.org/browse">許多有風格的網站</a> 其實不需要多少 JavaScript，讓網站好看大多數時候 CSS 就够了。最重要的還是內容，是你寫下的文字，以及讓你的文字能够被輕松閲讀到。
 </p>
 
-<section role="note" id="org9de6115">
+<section role="note" id="org75d8c60">
 <p>
 我的博客也依赖 <a href="blog-optional-js.html">一些 JavaScript</a>，不過你禁用了也沒太大影響，如果有問題歡迎給我报錯 :)
 </p>
 </section>
+
+<hr>
+
+<p>
+最後分享一些可以不電要 JavaScript 功能：
+</p>
+
+<p>
+<b>搜索</b>
+</p>
+
+<p>
+我原來是 <a href="use-pagefind-to-search-blog.html">使用 pagefind 實現博客搜索功能</a>，但現在去掉了，改為用搜索引擎的功能，只要用一個表單就够了。你可以在 <a href="search.html">搜索</a> 查看效果，下面是用 Kagi 搜索用到表單 HTML：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html"><code>&lt;<span class="org-function-name">search</span>&gt;
+  &lt;<span class="org-function-name">form</span> <span class="org-variable-name">action</span>=<span class="org-string">"https://kagi.com/search"</span>&gt;
+    &lt;<span class="org-function-name">input</span> <span class="org-variable-name">type</span>=<span class="org-string">"search"</span> <span class="org-variable-name">name</span>=<span class="org-string">"q"</span> <span class="org-variable-name">value</span>=<span class="org-string">"site:taxodium.ink "</span>/&gt;
+    &lt;<span class="org-function-name">button</span> <span class="org-variable-name">type</span>=<span class="org-string">"submit"</span>&gt;&#25628;&#32034;&lt;/<span class="org-function-name">button</span>&gt;
+  &lt;/<span class="org-function-name">form</span>&gt;
+&lt;/<span class="org-function-name">search</span>&gt;
+</code></pre>
+</div>
+
+<p>
+<b>查看圖片</b>
+</p>
+
+<p>
+有的博客會實現灯箱，方便讀者查看圖片，但其實給圖片加個 <a href="#coderef-img-link" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-img-link');" onmouseout="CodeHighlightOff(this, 'coderef-img-link');">連結</a>，也够用了。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html"><code>&lt;<span class="org-function-name">figure</span>&gt;
+<span id="coderef-img-link" class="coderef-off">  &lt;<span class="org-function-name">a</span> <span class="org-variable-name">href</span>=<span class="org-string">"images/album/20260716T193438--&#22825;&#20351;&#38899;&#20048;__albumwall_image_&#27754;&#24029;_20260521.webp"</span>&gt;</span>
+    &lt;<span class="org-function-name">img</span> <span class="org-variable-name">src</span>=<span class="org-string">"images/album/20260716T193438--&#22825;&#20351;&#38899;&#20048;__albumwall_image_&#27754;&#24029;_20260521.webp"</span>
+         <span class="org-variable-name">alt</span>=<span class="org-string">"&#22825;&#20351;&#38899;&#20048; by &#27754;&#24029; (2026)"</span>
+         <span class="org-variable-name">data-href</span>=<span class="org-string">"images/album/20260716T193438--&#22825;&#20351;&#38899;&#20048;__albumwall_image_&#27754;&#24029;_20260521.webp"</span>&gt;
+
+  &lt;/<span class="org-function-name">a</span>&gt;
+  &lt;<span class="org-function-name">figcaption</span>&gt;&lt;<span class="org-function-name">span</span> <span class="org-variable-name">class</span>=<span class="org-string">"figure-number"</span>&gt;&#22270;2<span class="org-variable-name">&amp;nbsp;</span> &lt;/<span class="org-function-name">span</span>&gt;&#12298;&#22825;&#20351;&#38899;&#20048;&#12299;&#23554;&#36655;&#23553;&#38754;&lt;/<span class="org-function-name">figcaption</span>&gt;
+&lt;/<span class="org-function-name">figure</span>&gt;
+</code></pre>
+</div>
+
+<p>
+例如下面的圖片你點擊後會在當前 Tab 打開，瀏覧器自帯了放大縮小的功能，也能完全利用瀏覧器展示圖片。不足的是看多張可能不太方便。
+</p>
+
+
+<figure>
+<a href="images/album/20260716T193438--天使音乐__albumwall_image_汪川_20260521.webp"><img src="images/album/20260716T193438--天使音乐__albumwall_image_汪川_20260521.webp" alt="天使音乐 by 汪川 (2026)" data-href="images/album/20260716T193438--天使音乐__albumwall_image_汪川_20260521.webp"></a>
+
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>《天使音乐》専輯封面</figcaption>
+</figure>
 <div id="footnotes">
 <h2 class="footnotes">&#33050;&#27880;: </h2>
 <div id="text-footnotes">
@@ -149,7 +205,7 @@ Kagi、bing、百度等都不需要 JavaScript 也能搜索，我不理解 Googl
 </div>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建於 <time class="dt-published" datetime="2026-07-25 Sat 02:30">2026-07-25 Sat 02:30</time>，更新於 <time class="dt-updated" datetime="2026-07-25 Sat 02:34">2026-07-25 Sat 02:34</time>，</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-07-25 Sat 02:30">2026-07-25 Sat 02:30</time>，更新於 <time class="dt-updated" datetime="2026-07-25 Sat 02:54">2026-07-25 Sat 02:54</time>，</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
 <p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
 <p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 請開啟 JavaScript 以繼續搜尋 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>

@@ -73,6 +73,49 @@ Kagi、bing、百度等都不需要 JavaScript 也能搜索，我不理解 Googl
 我的博客也依赖 [[denote:20260520T223932][一些 JavaScript]]，不過你禁用了也沒太大影響，如果有問題歡迎給我报錯 :)
 #+end_section
 
+-----
+
+最後分享一些可以不電要 JavaScript 功能：
+
+*搜索*
+
+我原來是 [[denote:20241116T162652][使用 pagefind 實現博客搜索功能]]，但現在去掉了，改為用搜索引擎的功能，只要用一個表單就够了。
+你可以在 [[denote:20260413T163540][搜索]] 查看效果，下面是用 Kagi 搜索用到表單 HTML：
+
+#+begin_src html
+  <search>
+    <form action="https://kagi.com/search">
+      <input type="search" name="q" value="site:taxodium.ink "/>
+      <button type="submit">搜索</button>
+    </form>
+  </search>
+#+end_src
+
+*查看圖片*
+
+有的博客會實現灯箱，方便讀者查看圖片，但其實給圖片加個 [[(img-link)][連結]]，也够用了。
+
+#+begin_src html -r
+  <figure>
+    <a href="images/album/20260716T193438--天使音乐__albumwall_image_汪川_20260521.webp"> (ref:img-link)
+      <img src="images/album/20260716T193438--天使音乐__albumwall_image_汪川_20260521.webp"
+           alt="天使音乐 by 汪川 (2026)"
+           data-href="images/album/20260716T193438--天使音乐__albumwall_image_汪川_20260521.webp">
+
+    </a>
+    <figcaption><span class="figure-number">图2&nbsp; </span>《天使音乐》専輯封面</figcaption>
+  </figure>
+#+end_src
+
+例如下面的圖片你點擊後會在當前 Tab 打開，瀏覧器自帯了放大縮小的功能，也能完全利用瀏覧器展示圖片。
+不足的是看多張可能不太方便。
+
+#+caption: 《天使音乐》専輯封面
+#+attr_html: loading="lazy"
+#+attr_html: :alt 天使音乐 by 汪川 (2026)
+#+attr_html: :data-href images/album/20260716T193438--天使音乐__albumwall_image_汪川_20260521.webp
+[[file:images/album/20260716T193438--天使音乐__albumwall_image_汪川_20260521.webp]]
+
 * Footnotes
 :PROPERTIES:
 :CUSTOM_ID: 545997DA-0174-4353-83F4-2F2A6EFB6089
