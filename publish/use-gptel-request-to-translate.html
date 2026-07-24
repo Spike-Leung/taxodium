@@ -63,7 +63,7 @@
 Emacs 中的翻译的工具也不少，写这个函数只是分享一下 <code>gptel-request</code> 的一种实现。
 </p>
 
-<section role="note" id="org80f5148">
+<section role="note" id="org439ac5d">
 <p>
 一些 Emacs 的翻译配置：
 </p>
@@ -185,7 +185,7 @@ Emacs 中的翻译的工具也不少，写这个函数只是分享一下 <code>g
      <span class="org-builtin">:model</span> 'google/gemini-3-flash-preview
      ,@args))
 
-(<span class="org-keyword">spike-leung/define-gptel-preset</span> 'quote-format
+(spike-leung/define-gptel-preset 'quote-format
                                  <span class="org-builtin">:description</span> <span class="org-string">"&#26684;&#24335;&#21270;&#24341;&#29992;"</span>
                                  <span class="org-builtin">:rewrite-message</span> <span class="org-string">"&#25353;&#29031;&#20197;&#19979;&#35201;&#27714;&#65292;&#26684;&#24335;&#21270;&#20869;&#23481;:</span>
 <span class="org-string">- &#24403;&#23384;&#22312;&#33521;&#25991;&#21644;&#20013;&#25991;&#32763;&#35793;&#65292;&#31227;&#38500;&#33521;&#25991;</span>
@@ -195,7 +195,7 @@ Emacs 中的翻译的工具也不少，写这个函数只是分享一下 <code>g
 <span class="org-string">- &#25991;&#26412;&#20013;&#30340;&#24341;&#21495;&#26367;&#25442;&#20026;&#30452;&#35282;&#24341;&#21495; &#12300;&#12301;&#12289;&#12302;&#12303;&#65292;&#22914;&#26524;&#24341;&#21495;&#37324;&#38754;&#36824;&#26377;&#24341;&#21495;&#65292;&#21017;&#37319;&#29992; &#12300;&#12302;&#12303;&#12301;&#30340;&#23884;&#22871;&#24418;&#24335;</span>
 <span class="org-string">&#38656;&#35201;&#26684;&#24335;&#21270;&#20869;&#23481;&#65306;"</span>)
 
-(<span class="org-keyword">spike-leung/define-gptel-preset</span> 'lyric-format
+(spike-leung/define-gptel-preset 'lyric-format
                                  <span class="org-builtin">:description</span> <span class="org-string">"&#26684;&#24335;&#21270;&#27468;&#35789;"</span>
                                  <span class="org-builtin">:rewrite-message</span> <span class="org-string">"&#26684;&#24335;&#21270;&#27468;&#35789;&#65292;&#23558;&#21407;&#22987;&#27468;&#35789;&#21644;&#20013;&#25991;&#32763;&#35793;&#25286;&#20998;&#25104;&#20004;&#37096;&#20998;&#12290;</span>
 <span class="org-string">&#23545;&#20110;&#21407;&#25991;&#27468;&#35789;&#65292;&#36755;&#20986;&#26684;&#24335;&#20026;&#65306;</span>
@@ -214,7 +214,7 @@ Emacs 中的翻译的工具也不少，写这个函数只是分享一下 <code>g
 </div>
 </details>
 
-<section role="note" id="orgf467fca">
+<section role="note" id="orgeb31768">
 <p>
 在 preset 中 <code>:rewrite-message</code> 对应的是 <code>gptel-rewrite-message</code> 或者 <code>gptel--rewrite-message</code> ，你还可以定义很多参数，具体见 <a href="https://github.com/karthink/gptel?tab=readme-ov-file#option-presets">gptel - Option presets</a>。
 </p>
@@ -250,7 +250,7 @@ Emacs 中的翻译的工具也不少，写这个函数只是分享一下 <code>g
          <span class="org-comment-delimiter">;; </span><span class="org-comment">&#25214;&#21040;&#23545;&#24212;&#30340; preset&#65292;&#33719;&#21462; preset &#35774;&#32622;</span>
          (preset (gptel-get-preset (intern preset-name))))
     <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20351;&#29992; preset &#35843;&#29992; gptel-rewrite</span>
-    (<span class="org-keyword">gptel-with-preset</span> preset
+    (gptel-with-preset preset
       (gptel--suffix-rewrite))))
 </code></pre>
 </div>
@@ -271,12 +271,13 @@ Emacs 中的翻译的工具也不少，写这个函数只是分享一下 <code>g
 </p>
 </div>
 <div id="postamble" class="status">
-<details class="webmention js-required">
-<summary>Webmentions <span class="webmention__count">(加载中...)</span></summary>
+<details class="webmention">
+<summary>Webmentions <span class="webmention__count js-required">(加载中...)</span></summary>
 <p class="webmention__tip">
 如果你想回应这篇文章，可以在你的文章或社交媒体帖子中链接这篇文章，然后提交你的 URL，你的回应随后会显示在此页面上。
 (<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
 </p>
+<noscript><p class="webmention__tip">你可以發送 Webmention，但加載數據需要開啟 JS。</p></noscript>
 <form action="https://webmention.io/taxodium.ink/webmention" method="post">
 <label for="source">你文章或帖子的 URL:</label>
 <input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
@@ -284,7 +285,7 @@ Emacs 中的翻译的工具也不少，写这个函数只是分享一下 <code>g
 <input type="submit" class="button" value="提交"/>
 </form>
 <hr></hr>
-<ul class="webmention__list"></ul>
+<ul class="webmention__list js-required"></ul>
 </details><div class="h-card p-author" aria-hidden="true">
 <img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
 <img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
