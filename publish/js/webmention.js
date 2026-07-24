@@ -40,7 +40,7 @@
       if (entry["wm-private"] === true) continue;
 
       const li = document.createElement("li");
-      li.className = "webmention-card"
+      li.className = "webmention__item"
 
       // author info
       const divProfile = document.createElement("div");
