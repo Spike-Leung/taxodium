@@ -93,7 +93,7 @@ Kagi、bing、百度等都不需要 JavaScript 也能搜索，我不理解 Googl
 <ol class="org-ol">
 <li>一片空白或者就一直加載，沒有任何提示</li>
 <li>無法閱讀，但會檢測沒有開啟 JavaScript (一般會用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/noscript">&lt;noscript&gt;</a>)，并給出相關提示</li>
-<li>可以閱讀，但因為禁用 JavaScript，樣式有問題，部分功能受限 (例如切換明暗主題)</li>
+<li>可以閱讀，但因為禁用 JavaScript 导致樣式有問題，部分功能受限 (例如切換明暗主題)</li>
 <li>可以閱讀，樣式正常，部分功能受限</li>
 <li>可以閱讀，樣式正常，部分功能受限，合理地处理了需要 JavaScript 的功能
 (可能隱藏、可能給出提示、或者用 CSS 禁用)</li>
@@ -104,14 +104,18 @@ Kagi、bing、百度等都不需要 JavaScript 也能搜索，我不理解 Googl
 </p>
 
 <p>
-至於後 3 類，因為閲讀基本沒問題，我一般都會看完，而對第 5 類博客我會很喜歡，因為博客作者大概率是一個注重閲讀體驗的人。
+對於第 3 類樣式有問題的其實也是不應該的，JavaScript 不應該影響到 CSS，會出現樣式問題，可能是有的樣式依赖 JavaScript 生成，或者因為 JavaScript 加載失敗而阻塞了 CSS 的加載。
+</p>
+
+<p>
+對於後 3 類，因為閲讀基本沒問題，我一般都會看完，而對第 5 類博客我會更喜歡，因為博客作者大概率是一個注重閲讀體驗的人。
 </p>
 
 <p>
 如果你也是一位博客作者，可以禁用 JavaScript 看看自己博客的表現，然後考慮一下是否需要 JavaScript，是否需要那麼多 JavaScript、是否需要加載几 MB 甚至十几 MB 的資源。<a href="https://neocities.org/browse">許多有風格的網站</a> 其實不需要多少 JavaScript，讓網站好看大多數時候 CSS 就够了。最重要的還是內容，是你寫下的文字，以及讓你的文字能够被輕松閲讀到。
 </p>
 
-<section role="note" id="org07798f0">
+<section role="note" id="orgcaf1c5a">
 <p>
 我的博客也依赖 <a href="blog-optional-js.html">一些 JavaScript</a>，不過你禁用了也沒太大影響，如果有問題歡迎給我报錯 :)
 </p>
@@ -167,7 +171,7 @@ Kagi、bing、百度等都不需要 JavaScript 也能搜索，我不理解 Googl
 </div>
 
 <p>
-例如下面的圖片你點擊後會在當前 Tab 打開，瀏覧器自帯了放大縮小的功能，也能完全利用瀏覧器展示圖片。不足的是看多張可能不太方便。
+例如下面的圖片你點擊後會在當前 Tab 打開，瀏覧器自帯了放大縮小的功能，也能完全利用瀏覧器的空間展示圖片，缺點是看多張不太方便。
 </p>
 
 
@@ -176,6 +180,33 @@ Kagi、bing、百度等都不需要 JavaScript 也能搜索，我不理解 Googl
 
 <figcaption><span class="figure-number">&#22270;2&nbsp; </span>《天使音乐》専輯封面</figcaption>
 </figure>
+
+<p>
+<b>一些簡單的狀態判斷</b>
+</p>
+
+<p>
+在 <a href="album-wall.html">Album Wall</a> 我有很多的専輯封面，有的専輯是我寫文章分享過的，有的則沒有，我想讓用戶可以過濾分享過的専輯。只需要一個 checkbox 和一點 CSS：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html"><code>&lt;<span class="org-function-name">div</span> <span class="org-variable-name">class</span>=<span class="org-string">"filter"</span>&gt;
+  &lt;<span class="org-function-name">input</span> <span class="org-variable-name">type</span>=<span class="org-string">"checkbox"</span> <span class="org-variable-name">id</span>=<span class="org-string">"filter-shared"</span>/&gt;
+  &lt;<span class="org-function-name">label</span> <span class="org-variable-name">for</span>=<span class="org-string">"filter-shared"</span>&gt;&#20165;&#23637;&#31034;&#24050;&#20998;&#20139;&#30340;&#19987;&#36753;&lt;/<span class="org-function-name">label</span>&gt;
+&lt;/<span class="org-function-name">div</span>&gt;
+</code></pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-css"><code><span class="org-css-selector">#content:has(#filter-shared:checked) figure:has(a[href*=</span><span class="org-string">"images\/album"</span><span class="org-css-selector">])</span> {
+  <span class="org-css-property">display</span>: none;
+}
+</code></pre>
+</div>
+
+<p>
+原理是利用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has">:has()</a> 判斷頁面中的 checkbox 是否被勾選，如果是則將未分享的専輯隱藏。
+</p>
 <div id="footnotes">
 <h2 class="footnotes">&#33050;&#27880;: </h2>
 <div id="text-footnotes">
@@ -211,7 +242,7 @@ Kagi、bing、百度等都不需要 JavaScript 也能搜索，我不理解 Googl
 </div>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建於 <time class="dt-published" datetime="2026-07-25 Sat 02:30">2026-07-25 Sat 02:30</time>，更新於 <time class="dt-updated" datetime="2026-07-25 Sat 03:38">2026-07-25 Sat 03:38</time>，</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-07-25 Sat 02:30">2026-07-25 Sat 02:30</time>，更新於 <time class="dt-updated" datetime="2026-07-25 Sat 10:17">2026-07-25 Sat 10:17</time>，</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
 <p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
 <p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 請開啟 JavaScript 以繼續搜尋 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>

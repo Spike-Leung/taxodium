@@ -53,7 +53,7 @@ Kagi、bing、百度等都不需要 JavaScript 也能搜索，我不理解 Googl
 
 1. 一片空白或者就一直加載，沒有任何提示
 2. 無法閱讀，但會檢測沒有開啟 JavaScript (一般會用 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/noscript][<noscript>]])，并給出相關提示
-3. 可以閱讀，但因為禁用 JavaScript，樣式有問題，部分功能受限 (例如切換明暗主題)
+3. 可以閱讀，但因為禁用 JavaScript 导致樣式有問題，部分功能受限 (例如切換明暗主題)
 4. 可以閱讀，樣式正常，部分功能受限
 5. 可以閱讀，樣式正常，部分功能受限，合理地处理了需要 JavaScript 的功能
    (可能隱藏、可能給出提示、或者用 CSS 禁用)
@@ -62,8 +62,12 @@ Kagi、bing、百度等都不需要 JavaScript 也能搜索，我不理解 Googl
 這類博客也往往會加載大量 JavaScript 和其他資源，很多也不太注重內容的呈現，
 開啟 JavaScript 之後迎接你的可能是一堆動來動去的東西。
 
-至於後 3 類，因為閲讀基本沒問題，我一般都會看完，
-而對第 5 類博客我會很喜歡，因為博客作者大概率是一個注重閲讀體驗的人。
+對於第 3 類樣式有問題的其實也是不應該的，JavaScript 不應該影響到 CSS，
+會出現樣式問題，可能是有的樣式依赖 JavaScript 生成，
+或者因為 JavaScript 加載失敗而阻塞了 CSS 的加載。
+
+對於後 3 類，因為閲讀基本沒問題，我一般都會看完，
+而對第 5 類博客我會更喜歡，因為博客作者大概率是一個注重閲讀體驗的人。
 
 如果你也是一位博客作者，可以禁用 JavaScript 看看自己博客的表現，
 然後考慮一下是否需要 JavaScript，是否需要那麼多 JavaScript、是否需要加載几 MB 甚至十几 MB 的資源。
@@ -111,14 +115,34 @@ Kagi、bing、百度等都不需要 JavaScript 也能搜索，我不理解 Googl
   </figure>
 #+end_src
 
-例如下面的圖片你點擊後會在當前 Tab 打開，瀏覧器自帯了放大縮小的功能，也能完全利用瀏覧器展示圖片。
-不足的是看多張可能不太方便。
+例如下面的圖片你點擊後會在當前 Tab 打開，
+瀏覧器自帯了放大縮小的功能，也能完全利用瀏覧器的空間展示圖片，缺點是看多張不太方便。
 
 #+caption: 《天使音乐》専輯封面
 #+attr_html: loading="lazy"
 #+attr_html: :alt 天使音乐 by 汪川 (2026)
 #+attr_html: :data-href images/album/20260716T193438--天使音乐__albumwall_image_汪川_20260521.webp
 [[file:images/album/20260716T193438--天使音乐__albumwall_image_汪川_20260521.webp]]
+
+*一些簡單的狀態判斷*
+
+在 [[denote:20251031T215229][Album Wall]] 我有很多的専輯封面，有的専輯是我寫文章分享過的，有的則沒有，我想讓用戶可以過濾分享過的専輯。
+只需要一個 checkbox 和一點 CSS：
+
+#+begin_src html
+<div class="filter">
+  <input type="checkbox" id="filter-shared"/>
+  <label for="filter-shared">仅展示已分享的专辑</label>
+</div>
+#+end_src
+
+#+begin_src css
+  #content:has(#filter-shared:checked) figure:has(a[href*="images\/album"]) {
+    display: none;
+  }
+#+end_src
+
+原理是利用 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has][:has()]] 判斷頁面中的 checkbox 是否被勾選，如果是則將未分享的専輯隱藏。
 
 * Footnotes
 :PROPERTIES:
