@@ -82,6 +82,7 @@
     --color-bg-code-highlighted: oklch(0 0 0 / 0.1);
     --color-fucus-visible-outline: oklch(from var(--color-link) l c h / 0.8);
     --color-bg-mark: #FFEDAB;
+    --color-bg-target: oklch(from #FFEDAB calc(l + .5) c h / .8);
 
     --dark-flexoki-base-200: #CECDC3;
     --dark-flexoki-base-300: #B7B5AC;
@@ -104,6 +105,7 @@
     --dark-color-bg-code-highlighted: oklch(1 0 0 / 0.3);
     --dark-color-fucus-visible-outline: oklch(from var(--dark-color-link) l c h / 0.8);
     --dark-color-bg-mark: oklch(from var(--color-bg-mark) l c h / .8);
+    --dark-color-bg-target: oklch(from var(--dark-color-taxodium-purple) l c h / .35);
 
     --table-border: 2px solid var(--color-text);
     --table-cell-border: 1px solid var(--color-border);
@@ -554,6 +556,20 @@ org publish 有时会生成一些空白的 ~<p>~ ，没啥用，将他们都隐�
 #+begin_src css
   p:empty {
     display: none;
+  }
+#+end_src
+
+*** target
+:PROPERTIES:
+:CUSTOM_ID: 00305699-CBFC-4C2A-920C-C41BCF3C6F65
+:END:
+
+設置 [[denote:20241028T214050::#95f53c7f-af5f-49cf-abad-92edebf9f623][Copy Link To Highlight]] 時的樣時，系統自帯背景色有時會看著刺眼，主動選擇合適的背㬌色更穩妥。
+
+#+begin_src css
+  ::target-text {
+    background: var(--color-bg-target);
+    background: light-dark(var(--color-bg-target), var(--dark-color-bg-target));
   }
 #+end_src
 
