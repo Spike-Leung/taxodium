@@ -69,6 +69,9 @@ async function processPost(entry) {
     // Remove .lyric-card, cause without style, lyric-card looks bad.
     contentDiv.querySelectorAll(".lyric-card").forEach((el) => el.remove());
 
+    // Remove role with doc-pullquote, cause there is no style in rss, so do not duplicate text
+    contentDiv.querySelectorAll("[role='doc-pullquote']").forEach((el) => el.remove());
+
     // Remove not allowed style attributes from all elements
     const notAllowedStyles = ["view-transition-name", "word-break"];
     contentDiv.querySelectorAll("[style]").forEach((el) => {
