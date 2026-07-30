@@ -1574,6 +1574,50 @@ note section 一般用于一些补充内容，设置一个特殊的样式，使�
     }
   }
 #+end_src
+*** pullquote
+:PROPERTIES:
+:CUSTOM_ID: 59CC4AB1-2B23-42DF-BCFE-6803C4015B27
+:END:
+
+借鉴了 [[https://e89295.com/blog/][我的部落格]] 的設計，把正文中某句話單獨提出來強調。
+
+#+begin_src css
+  aside[role="doc-pullquote"] {
+    float: inline-start;
+    max-width: 35%;
+    color: color-mix(in oklch, var(--color-taxodium-purple) 20%, var(--color-taxodium-yellow) 80%);
+    position: relative;
+    padding-inline: 1.5rem;
+    margin: .5rem;
+
+    p {
+      margin: 0;
+    }
+
+    &.inline-end {
+      float: inline-end;
+    }
+
+    @media screen and (width <= 400px) {
+      max-width: 100%;
+      float: none!important;
+    }
+
+    &::before {
+      content: "「";
+      position: absolute;
+      inset-inline-start: 0;
+      inset-block-start: -.5rem;
+    }
+
+    &::after {
+      content: "」";
+      position: absolute;
+      inset-inline-end: 0;
+      inset-block-end: -.5rem;
+    }
+  }
+#+end_src
 
 *** banner section
 :PROPERTIES:
