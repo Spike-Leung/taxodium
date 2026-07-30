@@ -2650,35 +2650,6 @@ figure 需要添加一些下边距，避免图片和下方文字贴合过近。
       grid-template-columns: 1fr;
     }
   }
-
-
-  :where(
-    #text-zine,
-    #text-emacs,
-    #text-nichijou,
-    #text-blog,
-    #text-book-and-movie,
-    #text-others
-  ) ul {
-    @media screen and (width <= 400px) {
-      max-inline-size: 400px;
-      max-block-size: 100%;
-      overflow: auto;
-      writing-mode: vertical-lr;
-      margin: 0;
-      padding-block: 1rem;
-      box-sizing: border-box;
-      overscroll-behavior: contain;
-
-      & a {
-        text-decoration: none;
-      }
-    }
-  }
-
-  #text-others ul {
-    margin-inline-end: 1rem;
-  }
 #+end_src
 
 * album.css
@@ -2987,18 +2958,8 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
     margin-block-start: 1rem;
 
     @media screen and (width <= 480px) {
-      display: flex;
-      overflow-x: auto;
-      overflow-y: hidden;
-      block-size: 340px;
-      inline-size: 100p%;
-      box-sizing: border-box;
-      overscroll-behavior: contain;
-
-      & figure {
-        min-inline-size: 160px;
-        min-block-size: 160px;
-      }
+      grid-template-columns: repeat(2, calc(20px * 8));
+      gap: 1rem 0.5rem;
     }
 
     p {
