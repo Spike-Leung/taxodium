@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blaugust 2026 Feeds</title>
+<meta name="author" content="Spike Leung">
+<meta name="description" content="分享 Blaugust 2026 Feeds 以及我是用 Elisp 如何製作的">
+<meta name="generator" content="Org Mode">
+
+<meta name="color-scheme" content="light dark" />
+<link rel="preload" href="/styles/main.css" as="style" />
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="preload" href="/js/color-scheme.js" as="script"/>
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<script src="/js/color-scheme.js"></script>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主頁</a></li>
+    <li><a href="/subscribe.html">訂閱</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/shuffle.html" class="js-required">隨機</a></li>
+  </ul>
+  <!--
+  <span class="snow-toggle-container">
+    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
+    <label for="snow-toggle" class="snow-icon"></label>
+  </span>
+  -->
+  <select id="lightdark" class="js-required" aria-label="切換明暗主題">
+    <option value="auto">Auto</option>
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
+  </select>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">Blaugust 2026 Feeds</h1>
+<p class="subtitle" role="doc-subtitle">以及我是如何用 Elisp 製作的</p>
+</header><p>
+生成了一份 <a href="/blaugust-2026.opml" download>Blaugust 2026 Feeds</a> (更新於 2026-08-02)，如果你需要可以點擊下載，然後导入到你的 RSS 閱讀器中。如果你想 <a href="https://docs.google.com/forms/d/e/1FAIpQLScouIfF_RGkOPhWbyDjAhGTnxJ0smWfhZEiZRiAeLnvzPuO9g/viewform?usp=send_form">參加 Blaugut</a>，現在就是最好的時間！
+</p>
+
+<p>
+這份 OMPL 文件裡沒有完全包擴 <a href="https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/">Blaugust 2026 – Meet the Mentors &amp; Participant List</a> 中的博客，因為有的博客無法訪問，有的在頁面上找不到訂閱連結，所以缺失了几個博客。如果在連結裡找不到你的博客，歡迎邮件聯系我，我很樂意更新進去。連結我會定期更新（可能每隔 7 天），你可以看連結後的更新日期了解是否更新過。
+</p>
+
+<hr>
+
+<p>
+我主要是通過博客主頁中的 <code>&lt;link&gt;</code> 去查找博客的訂閱連結：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html"><code>&lt;<span class="org-function-name">head</span>&gt;
+  <span class="org-comment-delimiter">&lt;!-- </span><span class="org-comment">RSS</span><span class="org-comment-delimiter">  --&gt;</span>
+  &lt;<span class="org-function-name">link</span> <span class="org-variable-name">rel</span>=<span class="org-string">"alternate"</span> <span class="org-variable-name">type</span>=<span class="org-string">"application/rss+xml"</span> <span class="org-variable-name">title</span>=<span class="org-string">"your blog name"</span> <span class="org-variable-name">href</span>=<span class="org-string">"https://example.org/feed.xml"</span> /&gt;
+  <span class="org-comment-delimiter">&lt;!-- </span><span class="org-comment">Atom</span><span class="org-comment-delimiter"> --&gt;</span>
+  &lt;<span class="org-function-name">link</span> <span class="org-variable-name">rel</span>=<span class="org-string">"alternate"</span> <span class="org-variable-name">type</span>=<span class="org-string">"application/atom+xml"</span> <span class="org-variable-name">title</span>=<span class="org-string">"your blog name"</span> <span class="org-variable-name">href</span>=<span class="org-string">"https://example.org/atom.xml"</span> /&gt;
+&lt;/<span class="org-function-name">head</span>&gt;
+</code></pre>
+</div>
+
+<p>
+但我發現有的博客并沒有添加，我建議有空可以加上去，這有助於 RSS 閱讀工具 <small>(和我)</small> 發現你博客的訂閱連結。
+</p>
+
+<p>
+有的博客沒有設置 <code>&lt;link&gt;</code> ，我會在頁面中查找有沒有 RSS 訂閱按鈕或相關連結。如果還是沒有，我也會嘗試在博客域名後面加上 <code>/feed.xml</code> 、 <code>/rss.xml</code> 看看能不能找到。大多時候我都能找到，但有的博客都不提供我就沒辦法了，如果你的博客也是這樣的，我請求你加上 <code>&lt;link&gt;</code> 以及在頁面上提供明顯的訂閱入口。
+</p>
+
+<p>
+另外 owls 也製作了一份 OPML 訂閱文件： <a href="https://godless-internets.org/2026/07/19/the-blaugust-2026-post-firehose">The Blaugust 2026 Post Firehose</a>，他也分享了他是如何製作的，推薦去看看。
+</p>
+
+<hr>
+
+<p>
+截止目前 Blaugust 的參加者大約有 90 多個，如果一個個博客點開去找訂閱連結會花不少時間，所以我是用一段 Elisp 脚本去抓取的。為什麼是 Elisp？因為我不熟悉 Elisp，想著可以順便學習一下如何通過 Elisp 抓取 HTML 頁面信息。
+</p>
+
+<p>
+大體的流程是這樣的：
+</p>
+
+<ul class="org-ul">
+<li>拉取 <a href="https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/">Blaugust 2026 – Meet the Mentors &amp; Participant List</a> 的 HTML，解析所有參加者的域名和博客名字。</li>
+<li>遍歷所有參加者的域名，获取主頁的 HTML，從中查找 <code>&lt;link ref="alternative" type="application/rss+xml"&gt;</code> 和 <code>&lt;link ref="alternative" type="application/atom+xml"&gt;</code> ，获取到訂閱 URL。<small>(有的博客沒提供，或者有的做了爬虫防护，可能會获取不到；另外也可能會获取到多個連結，除了文章的，還有評論的；有的是 <code>/feed/</code> ，還要拼接上域名。)</small></li>
+<li>生成一份文件，包含所有訂閱數據，我會檢查一遍，处理找不到訂閱連結的博客。</li>
+<li>用文件數據按照 <a href="https://en.wikipedia.org/wiki/OPML">OPML</a> 格式生成 OMML 文件。</li>
+</ul>
+
+<hr>
+
+<p>
+如果你也用 Emacs，你或許會對實現的 Elisp 代碼感興趣。
+</p>
+
+<details>
+<summary>Elisp 代碼</summary>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">init-blaugust.el --- Insert description here -*- lexical-binding: t -*-</span>
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">Commentary:</span>
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">Code:</span>
+
+(<span class="org-keyword">require</span> '<span class="org-constant">plz</span>)
+(<span class="org-keyword">require</span> '<span class="org-constant">dom</span>)
+(<span class="org-keyword">require</span> '<span class="org-constant">rx</span>)
+(<span class="org-keyword">require</span> '<span class="org-constant">cl-lib</span>)
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--fetch-parse-dom</span> (url then else)
+  <span class="org-doc">"Fetch URL and parse html to dom.</span>
+<span class="org-doc">THEN and ELSE are callback pass to plz, see `</span><span class="org-doc"><span class="org-constant">plz</span></span><span class="org-doc">' for more info."</span>
+  (plz 'get url
+    <span class="org-builtin">:as</span> (<span class="org-keyword">lambda</span> () (libxml-parse-html-region (point-min) (point-max)))
+    <span class="org-builtin">:then</span> then
+    <span class="org-builtin">:else</span> else))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--get-feeds-from-link</span> (url callback)
+  <span class="org-doc">"Get RSS or Atom feed links from URL.</span>
+<span class="org-doc">Call CALLBACK with a list of feeds."</span>
+  (spike-leung/blaugust--fetch-parse-dom
+   url
+   (<span class="org-keyword">lambda</span> (dom)
+     (<span class="org-keyword">let*</span> (
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">find all feed &lt;link&gt; tag</span>
+            (feed-link-tags
+             (<span class="org-keyword">and</span> dom
+                  (seq-filter
+                   (<span class="org-keyword">lambda</span> (elt)
+                     (<span class="org-keyword">and</span> (equal <span class="org-string">"alternate"</span> (<span class="org-keyword">dom-attr</span> elt 'rel))
+                          (member (<span class="org-keyword">dom-attr</span> elt 'type) '(<span class="org-string">"application/rss+xml"</span>
+                                                         <span class="org-string">"application/atom+xml"</span>))))
+                   (dom-by-tag dom 'link))))
+            <span class="org-comment-delimiter">;; </span><span class="org-comment">get feed url from &lt;link&gt;</span>
+            (feeds
+             (<span class="org-keyword">if</span> feed-link-tags
+                 (mapcar (<span class="org-keyword">lambda</span> (link-tag)
+                           (<span class="org-keyword">let</span> ((href (<span class="org-keyword">dom-attr</span> link-tag 'href)))
+                             (<span class="org-keyword">if</span> (string-match-p (<span class="org-keyword">rx</span> bos (<span class="org-keyword">or</span> <span class="org-string">"https://"</span> <span class="org-string">"http://"</span>)) href)
+                                 href
+                               (url-expand-file-name href url))))
+                         feed-link-tags)
+               nil)))
+       (funcall callback feeds)))
+   <span class="org-comment-delimiter">;; </span><span class="org-comment">ignore error</span>
+   (<span class="org-keyword">lambda</span> (_err)
+     (funcall callback nil))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--save-blogroll</span> (blogroll output-file start-time)
+  <span class="org-doc">"Save BLOGROLL to OUTPUT-FILE.</span>
+<span class="org-doc">Calc duration with START-TIME."</span>
+  (<span class="org-keyword">let</span> ((elapsed (float-time (time-subtract (current-time) start-time)))
+        (sorted-blogroll (sort (copy-sequence blogroll)
+                               (<span class="org-keyword">lambda</span> (a b)
+                                 (string&lt; (downcase (plist-get a <span class="org-builtin">:title</span>))
+                                          (downcase (plist-get b <span class="org-builtin">:title</span>)))))))
+    (message <span class="org-string">"Collect finish (%.1fs). Write result to %s..."</span> elapsed output-file)
+    (make-directory (file-name-directory output-file) t)
+    (<span class="org-keyword">with-temp-file</span> output-file
+      (insert (pp-to-string sorted-blogroll)))
+    (message <span class="org-string">"Wrote blogroll to %s (%.1fs)"</span> output-file elapsed)))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--collect-feed-for-participant</span> (participant callback)
+  <span class="org-doc">"Collect feeds for PARTICIPANT.</span>
+<span class="org-doc">Call CALLBACK with PARTICIPANT augmented by :feeds."</span>
+  (spike-leung/blaugust--get-feeds-from-link
+   (plist-get participant <span class="org-builtin">:domain</span>)
+   (<span class="org-keyword">lambda</span> (feeds)
+     (funcall callback (plist-put participant <span class="org-builtin">:feeds</span> feeds)))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--collect-participant-links</span> (participant-list-url callback)
+  <span class="org-doc">"Collect participant entries from PARTICIPANT-LIST-URL.</span>
+<span class="org-doc">Call CALLBACK with a list of plists (:title :link)."</span>
+  (spike-leung/blaugust--fetch-parse-dom
+   participant-list-url
+   (<span class="org-keyword">lambda</span> (dom)
+     (<span class="org-keyword">let</span> ((participant-a-tags (<span class="org-keyword">and</span> dom (dom-by-tag (cdr (dom-by-class dom <span class="org-string">"wp-block-list"</span>)) 'a))))
+       (funcall callback
+                (mapcar
+                 (<span class="org-keyword">lambda</span> (atag)
+                   (<span class="org-keyword">let</span> ((title (dom-text atag))
+                         (domain (<span class="org-keyword">dom-attr</span> atag 'href)))
+                     `(<span class="org-builtin">:title</span> ,title <span class="org-builtin">:domain</span> ,domain)))
+                 participant-a-tags))))
+   (<span class="org-keyword">lambda</span> (_err)
+     (funcall callback nil))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--collect-blaugust-feeds</span> (participant-list-url output-file)
+  <span class="org-doc">"Collect feeds from PARTICIPANT-LIST-URL.</span>
+<span class="org-doc">Save data to OUTPUT-FILE."</span>
+  (<span class="org-keyword">interactive</span> <span class="org-string">"sParticipant List URL: \nFOutput File:"</span>)
+  (<span class="org-keyword">let</span> ((start-time (current-time)))
+    (message <span class="org-string">"Start collecting Blaugust feeds..."</span>)
+    (<span class="org-keyword">condition-case</span> err
+        (spike-leung/blaugust--collect-participant-links
+         participant-list-url
+         (<span class="org-keyword">lambda</span> (participants)
+           (<span class="org-keyword">let</span> ((total (length participants))
+                 (completed 0)
+                 (blogroll nil))
+             (<span class="org-keyword">if</span> (zerop total)
+                 (message <span class="org-string">"No blogroll found."</span>)
+               (message <span class="org-string">"Collecting feeds from %d blogs..."</span> total)
+               (<span class="org-keyword">dolist</span> (participant participants)
+                 (spike-leung/blaugust--collect-feed-for-participant
+                  participant
+                  (<span class="org-keyword">lambda</span> (participant-with-feeds)
+                    (<span class="org-keyword">push</span> participant-with-feeds blogroll)
+                    (<span class="org-keyword">cl-incf</span> completed)
+                    (message <span class="org-string">"Collected %d/%d: %s"</span> completed total (plist-get participant <span class="org-builtin">:title</span>))
+                    (<span class="org-keyword">when</span> (= completed total)
+                      (spike-leung/blaugust--save-blogroll blogroll output-file start-time)))))))))
+      (<span class="org-warning">error</span>
+       (message <span class="org-string">"Failed to fetch participant page: %s"</span> participant-list-url)
+       nil))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--export-opml</span> (title input-file output-file)
+  <span class="org-doc">"Export feeds from INPUT-FILE plist to OPML-formatted OUTPUT-FILE.</span>
+<span class="org-doc">TITLE is the title in opml file.</span>
+<span class="org-doc">Use `</span><span class="org-doc"><span class="org-constant">spike-leung/blaugust--collect-blaugust-feeds</span></span><span class="org-doc">' to generate INPUT-FILE."</span>
+  (<span class="org-keyword">declare</span> (completion elfeed--mode-p))
+  (<span class="org-keyword">interactive</span> <span class="org-string">"sTitle in OPML file: \nFInput file: \nFOutput OPML file: "</span>)
+  (<span class="org-keyword">let*</span> ((feeds (<span class="org-keyword">with-temp-buffer</span>
+                  (insert-file-contents input-file)
+                  (read (current-buffer)))))
+    (<span class="org-keyword">with-temp-file</span> output-file
+      (<span class="org-keyword">let</span> ((standard-output (current-buffer)))
+        (princ <span class="org-string">"&lt;?xml version=\"1.0\"?&gt;\n"</span>)
+        (xml-print
+         `((opml ((version . <span class="org-string">"1.0"</span>))
+                 (head ()
+                       (title () ,title))
+                 (body ()
+                       ,@(<span class="org-keyword">cl-loop</span> for feed in feeds
+                                  for url = (car (plist-get feed <span class="org-builtin">:feeds</span>))
+                                  for domain = (plist-get feed <span class="org-builtin">:domain</span>)
+                                  for title = (<span class="org-keyword">or</span> (plist-get feed <span class="org-builtin">:title</span>) <span class="org-string">""</span>)
+                                  collect `(outline ((xmlUrl . ,url)
+                                                     (htmlUrl . ,domain)
+                                                     (title . ,title)
+                                                     (text . ,title))))))))))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--generate-blaugust-elfeed-feeds</span> (input-file)
+  <span class="org-doc">"Generate elfeed feeds from blaugust feeds.</span>
+<span class="org-doc">INPUT-FILE is the blaugust feeds generated</span>
+<span class="org-doc">by `</span><span class="org-doc"><span class="org-constant">spike-leung/blaugust--collect-blaugust-feeds</span></span><span class="org-doc">'."</span>
+  (<span class="org-keyword">interactive</span> <span class="org-string">"FInput file:"</span>)
+  (<span class="org-keyword">let*</span> ((feeds (<span class="org-keyword">with-temp-buffer</span>
+                  (insert-file-contents input-file)
+                  (read (current-buffer))))
+         (existing-feed-urls
+          (mapcar (<span class="org-keyword">lambda</span> (feed)
+                    (<span class="org-keyword">cond</span>
+                     ((stringp feed) feed)
+                     ((listp feed) (car feed))
+                     (t nil)))
+                  elfeed-feeds))
+         (blaugust-elfeed-feeds
+          (mapcar (<span class="org-keyword">lambda</span> (feed)
+                    `(
+                      <span class="org-comment-delimiter">;; </span><span class="org-comment">feed url</span>
+                      ,(car (plist-get feed <span class="org-builtin">:feeds</span>))
+                      <span class="org-comment-delimiter">;;</span><span class="org-comment">title</span>
+                      <span class="org-builtin">:title</span>
+                      ,(plist-get feed <span class="org-builtin">:title</span>)
+                      <span class="org-comment-delimiter">;; </span><span class="org-comment">set no-update t as default</span>
+                      <span class="org-builtin">:no-update</span> t
+                      <span class="org-comment-delimiter">;; </span><span class="org-comment">add tags</span>
+                      blaugust2026)
+                    )
+                  feeds))
+         (existing-feeds
+          (seq-filter (<span class="org-keyword">lambda</span> (feed)
+                        (member (car feed) existing-feed-urls))
+                      blaugust-elfeed-feeds))
+         (new-feeds
+          (seq-filter (<span class="org-keyword">lambda</span> (feed)
+                        (not (member (car feed) existing-feed-urls)))
+                      blaugust-elfeed-feeds))
+         )
+    (<span class="org-keyword">with-current-buffer</span> (get-buffer-create <span class="org-string">"*blaugust-elfeed-feeds*"</span>)
+      (erase-buffer)
+      (insert <span class="org-string">";; Already exist\n"</span>)
+      (insert (pp-to-string existing-feeds))
+      (insert <span class="org-string">"\n;; New\n"</span>)
+      (insert (pp-to-string new-feeds))
+      (lisp-mode)
+      (display-buffer (current-buffer)))))
+
+(<span class="org-keyword">provide</span> '<span class="org-constant">init-blaugust</span>)
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">init-blaugust.el ends here</span>
+</code></pre>
+</div>
+</details>
+
+<p>
+Elisp 代碼主要用到了：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/alphapapa/plz.el">alphapapa/plz.el</a>，用來發起請求，plz 提供了回調方法，也提供了多種返回體格式，讓处理請求更容易。</li>
+<li><code>dom.el</code> ，Emacs 內置的处 DOM 的擴展，提供了 <code>libxml-parse-html-region</code> 解析 HTML，<code>dom-by-class</code> 等方法查找元素， <code>dom-attr</code> 等获取 DOM 元素信息。</li>
+</ul>
+
+<p>
+使用時：
+</p>
+<ul class="org-ul">
+<li>用 <code>spike-leung/blaugust--collect-blaugust-feeds</code> ，輸入 <a href="https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/">Blaugust 2026 – Meet the Mentors &amp; Participant List</a> 的連結和一個文件名，就會拉取所有的 participant 的信息。</li>
+<li>檢查文件中的信息，补全沒拉取到的博客信息。沒拉取到的博客，會顯示成 <code>:feeds nil</code> 。</li>
+<li>用 <code>spike-leung/blaugust--export-opml</code> ，基於上面生成的文件生成 OPML 文件。</li>
+<li>如果你用 <a href="elfeed-4-0-0-usage-sharing.html">elfeed</a>，還可以調用 <code>spike-leung/blaugust--generate-blaugust-elfeed-feeds</code> ，這會和己有的 <code>elfeed-feeds</code> 比對，顯示一個临時 buffer，列出哪些己經在 <code>elfeed-feeds</code> 裡，哪些是新的，數據格式和 <code>elfeed-feeds</code> 是一樣的，可以方便地添加到 elfeed 里 <small>(默認會加上 <code>blaugust2026</code> 的 tag，以及設置了 <code>:no-update t</code>)</small>。</li>
+</ul>
+</div>
+<div id="postamble" class="status">
+<details class="webmention">
+<summary>Webmentions <span class="webmention__count js-required">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回应这篇文章，可以在你的文章或社交媒体帖子中链接这篇文章，然后提交你的 URL，你的回应随后会显示在此页面上。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<noscript><p class="webmention__tip">你可以發送 Webmention，但加載數據需要開啟 JS。</p></noscript>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章或帖子的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention__list js-required"></ul>
+</details><div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-08-02 Sun 23:40">2026-08-02 Sun 23:40</time>，更新於 <time class="dt-updated" datetime="2026-08-03 Mon 01:29">2026-08-03 Mon 01:29</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Blaugust 2026 Feeds 以及我是如何用 Elisp 製作的&body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+<a href="/blaugust-2026-feeds.txt">純文本版本</a> <a href="/blaugust-2026-feeds.org">原始 org 文件</a>
+</footer><script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<!--
+<script src="/js/snow-fall.js" defer type="module"></script>
+<snow-fall></snow-fall>
+<div id="caravan">
+  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
+  <div style="animation-delay:-0.5s; left:20px;"></div>
+  <div style="animation-delay:-1.0s; left:40px;"></div>
+  <div style="animation-delay:-1.5s; left:60px;"></div>
+  <div style="animation-delay:-2.0s; left:80px;"></div>
+  <div style="animation-delay:-2.5s; left:100px;"></div>
+  <div style="animation-delay:-3.0s; left:120px;"></div>
+  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
+</div>
+-->
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

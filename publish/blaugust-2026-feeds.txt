@@ -1,0 +1,289 @@
+_____________________________
+
+BLAUGUST 2026 FEEDS
+以及我是如何用 Elisp 製作的
+
+Spike Leung
+_____________________________
+
+
+[2026-08-02 Sun 23:40]
+
+
+Table of Contents
+_________________
+
+
+
+
+生成了一份 (更新於 2026-08-02)，如果你需要可以點擊下載，然後导入到你的 RSS 閱讀器中。如
+果你想 [參加 Blaugut]
+(<https://docs.google.com/forms/d/e/1FAIpQLScouIfF_RGkOPhWbyDjAhGTnxJ0smWfhZEiZRiAeLnvzPuO9g/viewform?usp=send_form>)
+，現在就是最好的時間！
+
+這份 OMPL 文件裡沒有完全包擴 [Blaugust 2026 – Meet the Mentors & Participant List]
+(<https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/>)
+中的博客，因為有的博客無法訪問，有的在頁面上找不到訂閱連結，所以缺失了几個博客。如果在連
+結裡找不到你的博客，歡迎邮件聯系我，我很樂意更新進去。連結我會定期更新（可能每隔 7 天），
+你可以看連結後的更新日期了解是否更新過。
+
+----------------------------------------------------------------------------------------
+
+我主要是通過博客主頁中的 `<link>' 去查找博客的訂閱連結：
+
+,----
+| <head>
+|   <!-- RSS  -->
+|   <link rel="alternate" type="application/rss+xml" title="your blog name" href="https://example.org/feed.xml" />
+|   <!-- Atom -->
+|   <link rel="alternate" type="application/atom+xml" title="your blog name" href="https://example.org/atom.xml" />
+| </head>
+`----
+
+但我發現有的博客并沒有添加，我建議有空可以加上去，這有助於 RSS 閱讀工具 (和我) 發現你博
+客的訂閱連結。
+
+有的博客沒有設置 `<link>' ，我會在頁面中查找有沒有 RSS 訂閱按鈕或相關連結。如果還是沒有，
+我也會嘗試在博客域名後面加上 `/feed.xml' 、 `/rss.xml' 看看能不能找到。大多時候我都能找
+到，但有的博客都不提供我就沒辦法了，如果你的博客也是這樣的，我請求你加上 `<link>' 以及在
+頁面上提供明顯的訂閱入口。
+
+另外 owls 也製作了一份 OPML 訂閱文件： [The Blaugust 2026 Post Firehose]
+(<https://godless-internets.org/2026/07/19/the-blaugust-2026-post-firehose>)，他也分享了
+他是如何製作的，推薦去看看。
+
+----------------------------------------------------------------------------------------
+
+截止目前 Blaugust 的參加者大約有 90 多個，如果一個個博客點開去找訂閱連結會花不少時間，所
+以我是用一段 Elisp 脚本去抓取的。為什麼是 Elisp？因為我不熟悉 Elisp，想著可以順便學習一
+下如何通過 Elisp 抓取 HTML 頁面信息。
+
+大體的流程是這樣的：
+
+- 拉取 [Blaugust 2026 – Meet the Mentors & Participant List]
+  (<https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/>)
+  的 HTML，解析所有參加者的域名和博客名字。
+- 遍歷所有參加者的域名，获取主頁的 HTML，從中查找 `<link ref="alternative"
+  type="application/rss+xml">' 和 `<link ref="alternative" type="application/atom+xml">'
+  ，获取到訂閱 URL。(有的博客沒提供，或者有的做了爬虫防护，可能會获取不到；另外也可能會
+  获取到多個連結，除了文章的，還有評論的；有的是 `/feed/' ，還要拼接上域名。)
+- 生成一份文件，包含所有訂閱數據，我會檢查一遍，处理找不到訂閱連結的博客。
+- 用文件數據按照 [OPML] (<https://en.wikipedia.org/wiki/OPML>) 格式生成 OMML 文件。
+
+----------------------------------------------------------------------------------------
+
+如果你也用 Emacs，你或許會對實現的 Elisp 代碼感興趣。
+
+,----
+| ;;; init-blaugust.el --- Insert description here -*- lexical-binding: t -*-
+| ;;; Commentary:
+| ;;; Code:
+| 
+| (require 'plz)
+| (require 'dom)
+| (require 'rx)
+| (require 'cl-lib)
+| 
+| (defun spike-leung/blaugust--fetch-parse-dom (url then else)
+|   "Fetch URL and parse html to dom.
+| THEN and ELSE are callback pass to plz, see `plz' for more info."
+|   (plz 'get url
+|     :as (lambda () (libxml-parse-html-region (point-min) (point-max)))
+|     :then then
+|     :else else))
+| 
+| (defun spike-leung/blaugust--get-feeds-from-link (url callback)
+|   "Get RSS or Atom feed links from URL.
+| Call CALLBACK with a list of feeds."
+|   (spike-leung/blaugust--fetch-parse-dom
+|    url
+|    (lambda (dom)
+|      (let* (
+|             ;; find all feed <link> tag
+|             (feed-link-tags
+|              (and dom
+|                   (seq-filter
+|                    (lambda (elt)
+|                      (and (equal "alternate" (dom-attr elt 'rel))
+|                           (member (dom-attr elt 'type) '("application/rss+xml"
+|                                                          "application/atom+xml"))))
+|                    (dom-by-tag dom 'link))))
+|             ;; get feed url from <link>
+|             (feeds
+|              (if feed-link-tags
+|                  (mapcar (lambda (link-tag)
+|                            (let ((href (dom-attr link-tag 'href)))
+|                              (if (string-match-p (rx bos (or "https://" "http://")) href)
+|                                  href
+|                                (url-expand-file-name href url))))
+|                          feed-link-tags)
+|                nil)))
+|        (funcall callback feeds)))
+|    ;; ignore error
+|    (lambda (_err)
+|      (funcall callback nil))))
+| 
+| (defun spike-leung/blaugust--save-blogroll (blogroll output-file start-time)
+|   "Save BLOGROLL to OUTPUT-FILE.
+| Calc duration with START-TIME."
+|   (let ((elapsed (float-time (time-subtract (current-time) start-time)))
+|         (sorted-blogroll (sort (copy-sequence blogroll)
+|                                (lambda (a b)
+|                                  (string< (downcase (plist-get a :title))
+|                                           (downcase (plist-get b :title)))))))
+|     (message "Collect finish (%.1fs). Write result to %s..." elapsed output-file)
+|     (make-directory (file-name-directory output-file) t)
+|     (with-temp-file output-file
+|       (insert (pp-to-string sorted-blogroll)))
+|     (message "Wrote blogroll to %s (%.1fs)" output-file elapsed)))
+| 
+| (defun spike-leung/blaugust--collect-feed-for-participant (participant callback)
+|   "Collect feeds for PARTICIPANT.
+| Call CALLBACK with PARTICIPANT augmented by :feeds."
+|   (spike-leung/blaugust--get-feeds-from-link
+|    (plist-get participant :domain)
+|    (lambda (feeds)
+|      (funcall callback (plist-put participant :feeds feeds)))))
+| 
+| (defun spike-leung/blaugust--collect-participant-links (participant-list-url callback)
+|   "Collect participant entries from PARTICIPANT-LIST-URL.
+| Call CALLBACK with a list of plists (:title :link)."
+|   (spike-leung/blaugust--fetch-parse-dom
+|    participant-list-url
+|    (lambda (dom)
+|      (let ((participant-a-tags (and dom (dom-by-tag (cdr (dom-by-class dom "wp-block-list")) 'a))))
+|        (funcall callback
+|                 (mapcar
+|                  (lambda (atag)
+|                    (let ((title (dom-text atag))
+|                          (domain (dom-attr atag 'href)))
+|                      `(:title ,title :domain ,domain)))
+|                  participant-a-tags))))
+|    (lambda (_err)
+|      (funcall callback nil))))
+| 
+| (defun spike-leung/blaugust--collect-blaugust-feeds (participant-list-url output-file)
+|   "Collect feeds from PARTICIPANT-LIST-URL.
+| Save data to OUTPUT-FILE."
+|   (interactive "sParticipant List URL: \nFOutput File:")
+|   (let ((start-time (current-time)))
+|     (message "Start collecting Blaugust feeds...")
+|     (condition-case err
+|         (spike-leung/blaugust--collect-participant-links
+|          participant-list-url
+|          (lambda (participants)
+|            (let ((total (length participants))
+|                  (completed 0)
+|                  (blogroll nil))
+|              (if (zerop total)
+|                  (message "No blogroll found.")
+|                (message "Collecting feeds from %d blogs..." total)
+|                (dolist (participant participants)
+|                  (spike-leung/blaugust--collect-feed-for-participant
+|                   participant
+|                   (lambda (participant-with-feeds)
+|                     (push participant-with-feeds blogroll)
+|                     (cl-incf completed)
+|                     (message "Collected %d/%d: %s" completed total (plist-get participant :title))
+|                     (when (= completed total)
+|                       (spike-leung/blaugust--save-blogroll blogroll output-file start-time)))))))))
+|       (error
+|        (message "Failed to fetch participant page: %s" participant-list-url)
+|        nil))))
+| 
+| (defun spike-leung/blaugust--export-opml (title input-file output-file)
+|   "Export feeds from INPUT-FILE plist to OPML-formatted OUTPUT-FILE.
+| TITLE is the title in opml file.
+| Use `spike-leung/blaugust--collect-blaugust-feeds' to generate INPUT-FILE."
+|   (declare (completion elfeed--mode-p))
+|   (interactive "sTitle in OPML file: \nFInput file: \nFOutput OPML file: ")
+|   (let* ((feeds (with-temp-buffer
+|                   (insert-file-contents input-file)
+|                   (read (current-buffer)))))
+|     (with-temp-file output-file
+|       (let ((standard-output (current-buffer)))
+|         (princ "<?xml version=\"1.0\"?>\n")
+|         (xml-print
+|          `((opml ((version . "1.0"))
+|                  (head ()
+|                        (title () ,title))
+|                  (body ()
+|                        ,@(cl-loop for feed in feeds
+|                                   for url = (car (plist-get feed :feeds))
+|                                   for domain = (plist-get feed :domain)
+|                                   for title = (or (plist-get feed :title) "")
+|                                   collect `(outline ((xmlUrl . ,url)
+|                                                      (htmlUrl . ,domain)
+|                                                      (title . ,title)
+|                                                      (text . ,title))))))))))))
+| 
+| (defun spike-leung/blaugust--generate-blaugust-elfeed-feeds (input-file)
+|   "Generate elfeed feeds from blaugust feeds.
+| INPUT-FILE is the blaugust feeds generated
+| by `spike-leung/blaugust--collect-blaugust-feeds'."
+|   (interactive "FInput file:")
+|   (let* ((feeds (with-temp-buffer
+|                   (insert-file-contents input-file)
+|                   (read (current-buffer))))
+|          (existing-feed-urls
+|           (mapcar (lambda (feed)
+|                     (cond
+|                      ((stringp feed) feed)
+|                      ((listp feed) (car feed))
+|                      (t nil)))
+|                   elfeed-feeds))
+|          (blaugust-elfeed-feeds
+|           (mapcar (lambda (feed)
+|                     `(
+|                       ;; feed url
+|                       ,(car (plist-get feed :feeds))
+|                       ;;title
+|                       :title
+|                       ,(plist-get feed :title)
+|                       ;; set no-update t as default
+|                       :no-update t
+|                       ;; add tags
+|                       blaugust2026)
+|                     )
+|                   feeds))
+|          (existing-feeds
+|           (seq-filter (lambda (feed)
+|                         (member (car feed) existing-feed-urls))
+|                       blaugust-elfeed-feeds))
+|          (new-feeds
+|           (seq-filter (lambda (feed)
+|                         (not (member (car feed) existing-feed-urls)))
+|                       blaugust-elfeed-feeds))
+|          )
+|     (with-current-buffer (get-buffer-create "*blaugust-elfeed-feeds*")
+|       (erase-buffer)
+|       (insert ";; Already exist\n")
+|       (insert (pp-to-string existing-feeds))
+|       (insert "\n;; New\n")
+|       (insert (pp-to-string new-feeds))
+|       (lisp-mode)
+|       (display-buffer (current-buffer)))))
+| 
+| (provide 'init-blaugust)
+| ;;; init-blaugust.el ends here
+`----
+
+Elisp 代碼主要用到了：
+
+- [alphapapa/plz.el] (<https://github.com/alphapapa/plz.el>)，用來發起請求，plz 提供了回
+  調方法，也提供了多種返回體格式，讓处理請求更容易。
+- `dom.el' ，Emacs 內置的处 DOM 的擴展，提供了 `libxml-parse-html-region' 解析 HTML，
+  `dom-by-class' 等方法查找元素， `dom-attr' 等获取 DOM 元素信息。
+
+使用時：
+- 用 `spike-leung/blaugust--collect-blaugust-feeds' ，輸入 [Blaugust 2026 – Meet the
+  Mentors & Participant List]
+  (<https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/>)
+  的連結和一個文件名，就會拉取所有的 participant 的信息。
+- 檢查文件中的信息，补全沒拉取到的博客信息。沒拉取到的博客，會顯示成 `:feeds nil' 。
+- 用 `spike-leung/blaugust--export-opml' ，基於上面生成的文件生成 OPML 文件。
+- 如果你用 [elfeed] <https://taxodium.ink/elfeed-4-0-0-usage-sharing.html>，還可以調用
+  `spike-leung/blaugust--generate-blaugust-elfeed-feeds' ，這會和己有的 `elfeed-feeds'
+  比對，顯示一個临時 buffer，列出哪些己經在 `elfeed-feeds' 裡，哪些是新的，數據格式和
+  `elfeed-feeds' 是一樣的，可以方便地添加到 elfeed 里 (默認會加上 `blaugust2026' 的 tag，
+  以及設置了 `:no-update t')。
