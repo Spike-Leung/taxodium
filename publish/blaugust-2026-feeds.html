@@ -53,7 +53,8 @@
 <h1 class="title p-name">Blaugust 2026 Feeds</h1>
 <p class="subtitle" role="doc-subtitle">以及我是如何用 Elisp 製作的</p>
 </header><p>
-生成了一份 <a href="/blaugust-2026.opml" download>Blaugust 2026 Feeds</a> (更新於 2026-08-02)，如果你需要可以點擊下載，然後导入到你的 RSS 閱讀器中。如果你想 <a href="https://docs.google.com/forms/d/e/1FAIpQLScouIfF_RGkOPhWbyDjAhGTnxJ0smWfhZEiZRiAeLnvzPuO9g/viewform?usp=send_form">參加 Blaugut</a>，現在就是最好的時間！
+生成了一份 <a href="/blaugust-2026.opml" download>Blaugust 2026 Feeds</a>
+(更新於 2026-08-03)，如果你需要可以點擊下載，然後导入到你的 RSS 閱讀器中。如果你想 <a href="https://docs.google.com/forms/d/e/1FAIpQLScouIfF_RGkOPhWbyDjAhGTnxJ0smWfhZEiZRiAeLnvzPuO9g/viewform?usp=send_form">參加 Blaugut</a>，現在就是最好的時間！
 </p>
 
 <p>
@@ -79,6 +80,18 @@
 <p>
 但我發現有的博客并沒有添加，我建議有空可以加上去，這有助於 RSS 閱讀工具 <small>(和我)</small> 發現你博客的訂閱連結。
 </p>
+
+<section role="note" id="orgaeef093">
+<p>
+如果頁面上有 <code>&lt;link&gt;</code> ，可以打開頁面的 Web Developer Tools，执行這段 JS 找到頁面下所有的訂閱連結。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><code>Array.from(document.querySelectorAll(<span class="org-string">"link[rel=alternate][type*=application]"</span>))
+  .map(n =&gt; console.log(n.href))
+</code></pre>
+</div>
+</section>
 
 <p>
 有的博客沒有設置 <code>&lt;link&gt;</code> ，我會在頁面中查找有沒有 RSS 訂閱連結；如果還是沒有，我也會嘗試在博客域名後面加上 <code>/feed.xml</code> 、 <code>/rss.xml</code> 看看能不能找到。大多時候我都能找到，但有的博客不提供我就沒辦法了，如果你的博客也是這樣的，我請求你加上 <code>&lt;link&gt;</code> 以及在頁面上提供明顯的訂閱連結。
@@ -161,6 +174,7 @@
        (funcall callback feeds)))
    <span class="org-comment-delimiter">;; </span><span class="org-comment">ignore error</span>
    (<span class="org-keyword">lambda</span> (_err)
+     (message <span class="org-string">"Request failed: %S"</span> _err)
      (funcall callback nil))))
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--save-blogroll</span> (blogroll output-file start-time)
@@ -236,15 +250,21 @@
        (message <span class="org-string">"Failed to fetch participant page: %s"</span> participant-list-url)
        nil))))
 
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--read-blogroll</span> (input-file)
+  <span class="org-doc">"Read INPUT-FILE as blogroll data."</span>
+  (seq-filter (<span class="org-keyword">lambda</span> (feed)
+                (not (null (plist-get feed <span class="org-builtin">:feeds</span>))))
+              (<span class="org-keyword">with-temp-buffer</span>
+                (insert-file-contents input-file)
+                (read (current-buffer)))))
+
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--export-opml</span> (title input-file output-file)
   <span class="org-doc">"Export feeds from INPUT-FILE plist to OPML-formatted OUTPUT-FILE.</span>
 <span class="org-doc">TITLE is the title in opml file.</span>
 <span class="org-doc">Use `</span><span class="org-doc"><span class="org-constant">spike-leung/blaugust--collect-blaugust-feeds</span></span><span class="org-doc">' to generate INPUT-FILE."</span>
   (<span class="org-keyword">declare</span> (completion elfeed--mode-p))
   (<span class="org-keyword">interactive</span> <span class="org-string">"sTitle in OPML file: \nFInput file: \nFOutput OPML file: "</span>)
-  (<span class="org-keyword">let*</span> ((feeds (<span class="org-keyword">with-temp-buffer</span>
-                  (insert-file-contents input-file)
-                  (read (current-buffer)))))
+  (<span class="org-keyword">let*</span> ((feeds (spike-leung/blaugust--read-blogroll input-file)))
     (<span class="org-keyword">with-temp-file</span> output-file
       (<span class="org-keyword">let</span> ((standard-output (current-buffer)))
         (princ <span class="org-string">"&lt;?xml version=\"1.0\"?&gt;\n"</span>)
@@ -267,9 +287,7 @@
 <span class="org-doc">INPUT-FILE is the blaugust feeds generated</span>
 <span class="org-doc">by `</span><span class="org-doc"><span class="org-constant">spike-leung/blaugust--collect-blaugust-feeds</span></span><span class="org-doc">'."</span>
   (<span class="org-keyword">interactive</span> <span class="org-string">"FInput file:"</span>)
-  (<span class="org-keyword">let*</span> ((feeds (<span class="org-keyword">with-temp-buffer</span>
-                  (insert-file-contents input-file)
-                  (read (current-buffer))))
+  (<span class="org-keyword">let*</span> ((feeds (spike-leung/blaugust--read-blogroll input-file))
          (existing-feed-urls
           (mapcar (<span class="org-keyword">lambda</span> (feed)
                     (<span class="org-keyword">cond</span>
@@ -336,7 +354,7 @@ Elisp 代碼主要用到了：
 </p>
 <ul class="org-ul">
 <li>用 <code>spike-leung/blaugust--collect-blaugust-feeds</code> ，輸入 <a href="https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/">Blaugust 2026 – Meet the Mentors &amp; Participant List</a> 的連結和一個文件名，就會拉取所有的 participant 的信息。</li>
-<li>檢查文件中的信息，补全沒拉取到的博客信息。沒拉取到的博客，會顯示成 <code>:feeds nil</code> 。</li>
+<li>檢查文件中的信息<small> (可以通過 <code>consult-line</code> 和 <code>embark-export</code> 過濾出 <code>:feeds nil</code> 的部分)</small>，补全沒拉取到的博客信息。沒拉取到的博客，會顯示成 <code>:feeds nil</code> 。</li>
 <li>用 <code>spike-leung/blaugust--export-opml</code> ，基於上面生成的文件生成 OPML 文件。</li>
 <li>如果你用 <a href="elfeed-4-0-0-usage-sharing.html">elfeed</a>，還可以調用 <code>spike-leung/blaugust--generate-blaugust-elfeed-feeds</code> ，這會和己有的 <code>elfeed-feeds</code> 比對，顯示一個临時 buffer，列出哪些己經在 <code>elfeed-feeds</code> 裡、哪些是新的，數據格式和 <code>elfeed-feeds</code> 是一樣的，可以方便地添加到 elfeed 里 <small>(默認會加上 <code>blaugust2026</code> 的 tag，對原來 <code>elfeed-feeds</code> 中沒有的還會加上 <code>new-feeds</code> 的 tag，便於過濾)</small>。</li>
 </ul>
@@ -365,7 +383,7 @@ Elisp 代碼主要用到了：
 </div>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建於 <time class="dt-published" datetime="2026-08-02 Sun 23:40">2026-08-02 Sun 23:40</time>，更新於 <time class="dt-updated" datetime="2026-08-03 Mon 10:23">2026-08-03 Mon 10:23</time>，</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-08-02 Sun 23:40">2026-08-02 Sun 23:40</time>，更新於 <time class="dt-updated" datetime="2026-08-03 Mon 11:17">2026-08-03 Mon 11:17</time>，</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
 <p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
 <p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Blaugust 2026 Feeds 以及我是如何用 Elisp 製作的&body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>

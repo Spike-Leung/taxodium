@@ -16,7 +16,7 @@ _________________
 
 
 
-生成了一份 (更新於 2026-08-02)，如果你需要可以點擊下載，然後导入到你的 RSS 閱讀器中。如
+生成了一份 (更新於 2026-08-03)，如果你需要可以點擊下載，然後导入到你的 RSS 閱讀器中。如
 果你想 [參加 Blaugut]
 (<https://docs.google.com/forms/d/e/1FAIpQLScouIfF_RGkOPhWbyDjAhGTnxJ0smWfhZEiZRiAeLnvzPuO9g/viewform?usp=send_form>)
 ，現在就是最好的時間！
@@ -42,6 +42,14 @@ _________________
 
 但我發現有的博客并沒有添加，我建議有空可以加上去，這有助於 RSS 閱讀工具 (和我) 發現你博
 客的訂閱連結。
+
+如果頁面上有 `<link>' ，可以打開頁面的 Web Developer Tools，执行這段 JS 找到頁面下所有的
+訂閱連結。
+
+,----
+| Array.from(document.querySelectorAll("link[rel=alternate][type*=application]"))
+|   .map(n => console.log(n.href))
+`----
 
 有的博客沒有設置 `<link>' ，我會在頁面中查找有沒有 RSS 訂閱連結；如果還是沒有，我也會嘗
 試在博客域名後面加上 `/feed.xml' 、 `/rss.xml' 看看能不能找到。大多時候我都能找到，但有
@@ -121,6 +129,7 @@ _________________
 |        (funcall callback feeds)))
 |    ;; ignore error
 |    (lambda (_err)
+|      (message "Request failed: %S" _err)
 |      (funcall callback nil))))
 | 
 | (defun spike-leung/blaugust--save-blogroll (blogroll output-file start-time)
@@ -196,15 +205,21 @@ _________________
 |        (message "Failed to fetch participant page: %s" participant-list-url)
 |        nil))))
 | 
+| (defun spike-leung/blaugust--read-blogroll (input-file)
+|   "Read INPUT-FILE as blogroll data."
+|   (seq-filter (lambda (feed)
+|                 (not (null (plist-get feed :feeds))))
+|               (with-temp-buffer
+|                 (insert-file-contents input-file)
+|                 (read (current-buffer)))))
+| 
 | (defun spike-leung/blaugust--export-opml (title input-file output-file)
 |   "Export feeds from INPUT-FILE plist to OPML-formatted OUTPUT-FILE.
 | TITLE is the title in opml file.
 | Use `spike-leung/blaugust--collect-blaugust-feeds' to generate INPUT-FILE."
 |   (declare (completion elfeed--mode-p))
 |   (interactive "sTitle in OPML file: \nFInput file: \nFOutput OPML file: ")
-|   (let* ((feeds (with-temp-buffer
-|                   (insert-file-contents input-file)
-|                   (read (current-buffer)))))
+|   (let* ((feeds (spike-leung/blaugust--read-blogroll input-file)))
 |     (with-temp-file output-file
 |       (let ((standard-output (current-buffer)))
 |         (princ "<?xml version=\"1.0\"?>\n")
@@ -227,9 +242,7 @@ _________________
 | INPUT-FILE is the blaugust feeds generated
 | by `spike-leung/blaugust--collect-blaugust-feeds'."
 |   (interactive "FInput file:")
-|   (let* ((feeds (with-temp-buffer
-|                   (insert-file-contents input-file)
-|                   (read (current-buffer))))
+|   (let* ((feeds (spike-leung/blaugust--read-blogroll input-file))
 |          (existing-feed-urls
 |           (mapcar (lambda (feed)
 |                     (cond
@@ -289,7 +302,8 @@ Elisp 代碼主要用到了：
   Mentors & Participant List]
   (<https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/>)
   的連結和一個文件名，就會拉取所有的 participant 的信息。
-- 檢查文件中的信息，补全沒拉取到的博客信息。沒拉取到的博客，會顯示成 `:feeds nil' 。
+- 檢查文件中的信息(可以通過 `consult-line' 和 `embark-export' 過濾出 `:feeds nil' 的部分)，
+  补全沒拉取到的博客信息。沒拉取到的博客，會顯示成 `:feeds nil' 。
 - 用 `spike-leung/blaugust--export-opml' ，基於上面生成的文件生成 OPML 文件。
 - 如果你用 [elfeed] <https://taxodium.ink/elfeed-4-0-0-usage-sharing.html>，還可以調用
   `spike-leung/blaugust--generate-blaugust-elfeed-feeds' ，這會和己有的 `elfeed-feeds'
