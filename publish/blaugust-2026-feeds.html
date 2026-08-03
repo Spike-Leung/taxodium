@@ -63,7 +63,7 @@
 <hr>
 
 <p>
-我主要是通過博客主頁中的 <code>&lt;link&gt;</code> 去查找博客的訂閱連結：
+我主要是通過博客主頁中的 <code>&lt;link&gt;</code> 去查找博客的訂閱連結，一般可以在主頁的 <code>&lt;head&gt;</code> 裡找到：
 </p>
 
 <div class="org-src-container">
@@ -81,11 +81,11 @@
 </p>
 
 <p>
-有的博客沒有設置 <code>&lt;link&gt;</code> ，我會在頁面中查找有沒有 RSS 訂閱按鈕或相關連結。如果還是沒有，我也會嘗試在博客域名後面加上 <code>/feed.xml</code> 、 <code>/rss.xml</code> 看看能不能找到。大多時候我都能找到，但有的博客都不提供我就沒辦法了，如果你的博客也是這樣的，我請求你加上 <code>&lt;link&gt;</code> 以及在頁面上提供明顯的訂閱入口。
+有的博客沒有設置 <code>&lt;link&gt;</code> ，我會在頁面中查找有沒有 RSS 訂閱連結；如果還是沒有，我也會嘗試在博客域名後面加上 <code>/feed.xml</code> 、 <code>/rss.xml</code> 看看能不能找到。大多時候我都能找到，但有的博客不提供我就沒辦法了，如果你的博客也是這樣的，我請求你加上 <code>&lt;link&gt;</code> 以及在頁面上提供明顯的訂閱連結。
 </p>
 
 <p>
-另外 owls 也製作了一份 OPML 訂閱文件： <a href="https://godless-internets.org/2026/07/19/the-blaugust-2026-post-firehose">The Blaugust 2026 Post Firehose</a>，他也分享了他是如何製作的，推薦去看看。
+另外 owls 也製作了一份 OPML 訂閱文件 ⸺ <a href="https://godless-internets.org/2026/07/19/the-blaugust-2026-post-firehose">The Blaugust 2026 Post Firehose</a>，他也分享了他是如何製作的，可以去看看。
 </p>
 
 <hr>
@@ -102,7 +102,7 @@
 <li>拉取 <a href="https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/">Blaugust 2026 – Meet the Mentors &amp; Participant List</a> 的 HTML，解析所有參加者的域名和博客名字。</li>
 <li>遍歷所有參加者的域名，获取主頁的 HTML，從中查找 <code>&lt;link ref="alternative" type="application/rss+xml"&gt;</code> 和 <code>&lt;link ref="alternative" type="application/atom+xml"&gt;</code> ，获取到訂閱 URL。<small>(有的博客沒提供，或者有的做了爬虫防护，可能會获取不到；另外也可能會获取到多個連結，除了文章的，還有評論的；有的是 <code>/feed/</code> ，還要拼接上域名。)</small></li>
 <li>生成一份文件，包含所有訂閱數據，我會檢查一遍，处理找不到訂閱連結的博客。</li>
-<li>用文件數據按照 <a href="https://en.wikipedia.org/wiki/OPML">OPML</a> 格式生成 OMML 文件。</li>
+<li>用文件數據按照 <a href="https://en.wikipedia.org/wiki/OPML">OPML</a> 格式生成 OPML 文件。</li>
 </ul>
 
 <hr>
@@ -115,7 +115,7 @@
 <summary>Elisp 代碼</summary>
 
 <div class="org-src-container">
-<pre class="src src-elisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">init-blaugust.el --- Insert description here -*- lexical-binding: t -*-</span>
+<pre class="src src-elisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">init-blaugust.el --- Fetch Blaugust Participant -*- lexical-binding: t -*-</span>
 <span class="org-comment-delimiter">;;; </span><span class="org-comment">Commentary:</span>
 <span class="org-comment-delimiter">;;; </span><span class="org-comment">Code:</span>
 
@@ -191,7 +191,12 @@
   (spike-leung/blaugust--fetch-parse-dom
    participant-list-url
    (<span class="org-keyword">lambda</span> (dom)
-     (<span class="org-keyword">let</span> ((participant-a-tags (<span class="org-keyword">and</span> dom (dom-by-tag (cdr (dom-by-class dom <span class="org-string">"wp-block-list"</span>)) 'a))))
+     (<span class="org-keyword">let</span> ((participant-a-tags
+            (<span class="org-keyword">and</span> dom
+                 (mapcan (<span class="org-keyword">lambda</span> (wp-block-list)
+                           (dom-by-tag wp-block-list 'a)
+                           )
+                         (cdr (dom-by-class dom <span class="org-string">"wp-block-list"</span>))))))
        (funcall callback
                 (mapcar
                  (<span class="org-keyword">lambda</span> (atag)
@@ -281,8 +286,8 @@
                       <span class="org-builtin">:title</span>
                       ,(plist-get feed <span class="org-builtin">:title</span>)
                       <span class="org-comment-delimiter">;; </span><span class="org-comment">set no-update t as default</span>
-                      <span class="org-builtin">:no-update</span> t
-                      <span class="org-comment-delimiter">;; </span><span class="org-comment">add tags</span>
+                      <span class="org-comment-delimiter">;; </span><span class="org-comment">:no-update t</span>
+                      <span class="org-comment-delimiter">;; </span><span class="org-comment">tags</span>
                       blaugust2026)
                     )
                   feeds))
@@ -291,10 +296,12 @@
                         (member (car feed) existing-feed-urls))
                       blaugust-elfeed-feeds))
          (new-feeds
-          (seq-filter (<span class="org-keyword">lambda</span> (feed)
-                        (not (member (car feed) existing-feed-urls)))
-                      blaugust-elfeed-feeds))
-         )
+          (mapcar (<span class="org-keyword">lambda</span> (feed)
+                    <span class="org-comment-delimiter">;; </span><span class="org-comment">add tag for new feeds</span>
+                    (append feed '(new-feeds)))
+                  (seq-filter (<span class="org-keyword">lambda</span> (feed)
+                                (not (member (car feed) existing-feed-urls)))
+                              blaugust-elfeed-feeds))))
     (<span class="org-keyword">with-current-buffer</span> (get-buffer-create <span class="org-string">"*blaugust-elfeed-feeds*"</span>)
       (erase-buffer)
       (insert <span class="org-string">";; Already exist\n"</span>)
@@ -316,7 +323,12 @@ Elisp 代碼主要用到了：
 
 <ul class="org-ul">
 <li><a href="https://github.com/alphapapa/plz.el">alphapapa/plz.el</a>，用來發起請求，plz 提供了回調方法，也提供了多種返回體格式，讓处理請求更容易。</li>
-<li><code>dom.el</code> ，Emacs 內置的处 DOM 的擴展，提供了 <code>libxml-parse-html-region</code> 解析 HTML，<code>dom-by-class</code> 等方法查找元素， <code>dom-attr</code> 等获取 DOM 元素信息。</li>
+<li><code>dom.el</code> 是 Emacs 內置的，提供了一些处理 DOM 的方法：
+<ul class="org-ul">
+<li><code>libxml-parse-html-region</code> 解析 HTML</li>
+<li><code>dom-by-class</code> 等方法查找 DOM</li>
+<li><code>dom-attr</code> 等获取 DOM 信息</li>
+</ul></li>
 </ul>
 
 <p>
@@ -326,7 +338,7 @@ Elisp 代碼主要用到了：
 <li>用 <code>spike-leung/blaugust--collect-blaugust-feeds</code> ，輸入 <a href="https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/">Blaugust 2026 – Meet the Mentors &amp; Participant List</a> 的連結和一個文件名，就會拉取所有的 participant 的信息。</li>
 <li>檢查文件中的信息，补全沒拉取到的博客信息。沒拉取到的博客，會顯示成 <code>:feeds nil</code> 。</li>
 <li>用 <code>spike-leung/blaugust--export-opml</code> ，基於上面生成的文件生成 OPML 文件。</li>
-<li>如果你用 <a href="elfeed-4-0-0-usage-sharing.html">elfeed</a>，還可以調用 <code>spike-leung/blaugust--generate-blaugust-elfeed-feeds</code> ，這會和己有的 <code>elfeed-feeds</code> 比對，顯示一個临時 buffer，列出哪些己經在 <code>elfeed-feeds</code> 裡，哪些是新的，數據格式和 <code>elfeed-feeds</code> 是一樣的，可以方便地添加到 elfeed 里 <small>(默認會加上 <code>blaugust2026</code> 的 tag，以及設置了 <code>:no-update t</code>)</small>。</li>
+<li>如果你用 <a href="elfeed-4-0-0-usage-sharing.html">elfeed</a>，還可以調用 <code>spike-leung/blaugust--generate-blaugust-elfeed-feeds</code> ，這會和己有的 <code>elfeed-feeds</code> 比對，顯示一個临時 buffer，列出哪些己經在 <code>elfeed-feeds</code> 裡、哪些是新的，數據格式和 <code>elfeed-feeds</code> 是一樣的，可以方便地添加到 elfeed 里 <small>(默認會加上 <code>blaugust2026</code> 的 tag，對原來 <code>elfeed-feeds</code> 中沒有的還會加上 <code>new-feeds</code> 的 tag，便於過濾)</small>。</li>
 </ul>
 </div>
 <div id="postamble" class="status">
@@ -353,7 +365,7 @@ Elisp 代碼主要用到了：
 </div>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建於 <time class="dt-published" datetime="2026-08-02 Sun 23:40">2026-08-02 Sun 23:40</time>，更新於 <time class="dt-updated" datetime="2026-08-03 Mon 01:29">2026-08-03 Mon 01:29</time>，</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-08-02 Sun 23:40">2026-08-02 Sun 23:40</time>，更新於 <time class="dt-updated" datetime="2026-08-03 Mon 10:23">2026-08-03 Mon 10:23</time>，</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
 <p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
 <p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Blaugust 2026 Feeds 以及我是如何用 Elisp 製作的&body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>

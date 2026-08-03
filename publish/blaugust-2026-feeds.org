@@ -22,7 +22,7 @@
 
 -----
 
-我主要是通過博客主頁中的 ~<link>~ 去查找博客的訂閱連結：
+我主要是通過博客主頁中的 ~<link>~ 去查找博客的訂閱連結，一般可以在主頁的 ~<head>~ 裡找到：
 
 #+begin_src html
   <head>
@@ -36,12 +36,13 @@
 但我發現有的博客并沒有添加，我建議有空可以加上去，
 這有助於 RSS 閱讀工具 @@html:<small>@@(和我)@@html:</small>@@ 發現你博客的訂閱連結。
 
-有的博客沒有設置 ~<link>~ ，我會在頁面中查找有沒有 RSS 訂閱按鈕或相關連結。
+有的博客沒有設置 ~<link>~ ，我會在頁面中查找有沒有 RSS 訂閱連結；
 如果還是沒有，我也會嘗試在博客域名後面加上 ~/feed.xml~ 、 ~/rss.xml~ 看看能不能找到。
-大多時候我都能找到，但有的博客都不提供我就沒辦法了，如果你的博客也是這樣的，
-我請求你加上 ~<link>~ 以及在頁面上提供明顯的訂閱入口。
+大多時候我都能找到，但有的博客不提供我就沒辦法了，如果你的博客也是這樣的，
+我請求你加上 ~<link>~ 以及在頁面上提供明顯的訂閱連結。
 
-另外 owls 也製作了一份 OPML 訂閱文件： [[https://godless-internets.org/2026/07/19/the-blaugust-2026-post-firehose][The Blaugust 2026 Post Firehose]]，他也分享了他是如何製作的，推薦去看看。
+另外 owls 也製作了一份 OPML 訂閱文件 ⸺ [[https://godless-internets.org/2026/07/19/the-blaugust-2026-post-firehose][The Blaugust 2026 Post Firehose]]，
+他也分享了他是如何製作的，可以去看看。
 
 -----
 
@@ -58,7 +59,7 @@
   @@html:<small>@@(有的博客沒提供，或者有的做了爬虫防护，可能會获取不到；
   另外也可能會获取到多個連結，除了文章的，還有評論的；有的是 ~/feed/~ ，還要拼接上域名。)@@html:</small>@@
 - 生成一份文件，包含所有訂閱數據，我會檢查一遍，处理找不到訂閱連結的博客。
-- 用文件數據按照 [[https://en.wikipedia.org/wiki/OPML][OPML]] 格式生成 OMML 文件。
+- 用文件數據按照 [[https://en.wikipedia.org/wiki/OPML][OPML]] 格式生成 OPML 文件。
 
 -----
 
@@ -68,7 +69,7 @@
 #+html: <summary>Elisp 代碼</summary>
 
 #+begin_src elisp
-  ;;; init-blaugust.el --- Insert description here -*- lexical-binding: t -*-
+  ;;; init-blaugust.el --- Fetch Blaugust Participant -*- lexical-binding: t -*-
   ;;; Commentary:
   ;;; Code:
 
@@ -144,7 +145,12 @@
     (spike-leung/blaugust--fetch-parse-dom
      participant-list-url
      (lambda (dom)
-       (let ((participant-a-tags (and dom (dom-by-tag (cdr (dom-by-class dom "wp-block-list")) 'a))))
+       (let ((participant-a-tags
+              (and dom
+                   (mapcan (lambda (wp-block-list)
+                             (dom-by-tag wp-block-list 'a)
+                             )
+                           (cdr (dom-by-class dom "wp-block-list"))))))
          (funcall callback
                   (mapcar
                    (lambda (atag)
@@ -234,8 +240,8 @@
                         :title
                         ,(plist-get feed :title)
                         ;; set no-update t as default
-                        :no-update t
-                        ;; add tags
+                        ;; :no-update t
+                        ;; tags
                         blaugust2026)
                       )
                     feeds))
@@ -244,10 +250,12 @@
                           (member (car feed) existing-feed-urls))
                         blaugust-elfeed-feeds))
            (new-feeds
-            (seq-filter (lambda (feed)
-                          (not (member (car feed) existing-feed-urls)))
-                        blaugust-elfeed-feeds))
-           )
+            (mapcar (lambda (feed)
+                      ;; add tag for new feeds
+                      (append feed '(new-feeds)))
+                    (seq-filter (lambda (feed)
+                                  (not (member (car feed) existing-feed-urls)))
+                                blaugust-elfeed-feeds))))
       (with-current-buffer (get-buffer-create "*blaugust-elfeed-feeds*")
         (erase-buffer)
         (insert ";; Already exist\n")
@@ -265,8 +273,10 @@
 Elisp 代碼主要用到了：
 
 - [[https://github.com/alphapapa/plz.el][alphapapa/plz.el]]，用來發起請求，plz 提供了回調方法，也提供了多種返回體格式，讓处理請求更容易。
-- ~dom.el~ ，Emacs 內置的处 DOM 的擴展，提供了 ~libxml-parse-html-region~ 解析 HTML，
-  ~dom-by-class~ 等方法查找元素， ~dom-attr~ 等获取 DOM 元素信息。
+- ~dom.el~ 是 Emacs 內置的，提供了一些处理 DOM 的方法：
+  + ~libxml-parse-html-region~ 解析 HTML
+  + ~dom-by-class~ 等方法查找 DOM
+  + ~dom-attr~ 等获取 DOM 信息
 
 使用時：
 - 用 ~spike-leung/blaugust--collect-blaugust-feeds~ ，
@@ -276,5 +286,6 @@ Elisp 代碼主要用到了：
 - 用 ~spike-leung/blaugust--export-opml~ ，基於上面生成的文件生成 OPML 文件。
 - 如果你用 [[denote:20260618T142353][elfeed]]，還可以調用 ~spike-leung/blaugust--generate-blaugust-elfeed-feeds~ ，
   這會和己有的 ~elfeed-feeds~ 比對，
-  顯示一個临時 buffer，列出哪些己經在 ~elfeed-feeds~ 裡，哪些是新的，數據格式和 ~elfeed-feeds~ 是一樣的，
-  可以方便地添加到 elfeed 里 @@html:<small>@@(默認會加上 ~blaugust2026~ 的 tag，以及設置了 ~:no-update t~)@@html:</small>@@。
+  顯示一個临時 buffer，列出哪些己經在 ~elfeed-feeds~ 裡、哪些是新的，數據格式和 ~elfeed-feeds~ 是一樣的，
+  可以方便地添加到 elfeed 里 @@html:<small>@@(默認會加上 ~blaugust2026~ 的 tag，
+  對原來 ~elfeed-feeds~ 中沒有的還會加上 ~new-feeds~ 的 tag，便於過濾)@@html:</small>@@。
