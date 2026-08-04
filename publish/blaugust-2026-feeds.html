@@ -53,8 +53,7 @@
 <h1 class="title p-name">Blaugust 2026 Feeds</h1>
 <p class="subtitle" role="doc-subtitle">以及我是如何用 Elisp 製作的</p>
 </header><p>
-生成了一份 <a href="/blaugust-2026.opml" download>Blaugust 2026 Feeds</a>
-(更新於 2026-08-03)，如果你需要可以點擊下載，然後导入到你的 RSS 閱讀器中。如果你想 <a href="https://docs.google.com/forms/d/e/1FAIpQLScouIfF_RGkOPhWbyDjAhGTnxJ0smWfhZEiZRiAeLnvzPuO9g/viewform?usp=send_form">參加 Blaugust</a>，現在就是最好的時間！
+生成了一份 <a href="/blaugust-2026.opml" download>Blaugust 2026 Feeds</a><small> (更新於 2026-08-04，137 / 148)，</small>如果你需要可以點擊下載，然後导入到你的 RSS 閱讀器中。如果你想 <a href="https://docs.google.com/forms/d/e/1FAIpQLScouIfF_RGkOPhWbyDjAhGTnxJ0smWfhZEiZRiAeLnvzPuO9g/viewform?usp=send_form">參加 Blaugust</a>，現在就是最好的時間！
 </p>
 
 <p>
@@ -81,7 +80,7 @@
 但我發現有的博客并沒有添加，我建議有空可以加上去，這有助於 RSS 閱讀工具 <small>(和我)</small> 發現你博客的訂閱連結。
 </p>
 
-<section role="note" id="orgae6fc66">
+<section role="note" id="org89819b7">
 <p>
 如果頁面上有 <code>&lt;link&gt;</code> ，可以打開頁面的 Web Developer Tools，执行這段 JS 找到頁面下所有的訂閱連結。
 </p>
@@ -177,19 +176,49 @@
      (message <span class="org-string">"Request failed: %S"</span> _err)
      (funcall callback nil))))
 
-(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--save-blogroll</span> (blogroll output-file start-time)
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--save-blogroll</span> (blogroll output-file start-time <span class="org-type">&amp;optional</span> old-blogroll)
   <span class="org-doc">"Save BLOGROLL to OUTPUT-FILE.</span>
-<span class="org-doc">Calc duration with START-TIME."</span>
-  (<span class="org-keyword">let</span> ((elapsed (float-time (time-subtract (current-time) start-time)))
-        (sorted-blogroll (sort (copy-sequence blogroll)
-                               (<span class="org-keyword">lambda</span> (a b)
-                                 (string&lt; (downcase (plist-get a <span class="org-builtin">:title</span>))
-                                          (downcase (plist-get b <span class="org-builtin">:title</span>)))))))
+<span class="org-doc">Calc duration with START-TIME.</span>
+<span class="org-doc">If OLD-BLOGROLL not nil, merge BLOGROLL with EXSITING-BLOGROLL."</span>
+  (<span class="org-keyword">let*</span> ((elapsed (float-time (time-subtract (current-time) start-time)))
+         (merged-blogroll
+          (<span class="org-keyword">if</span> old-blogroll
+              (spike-leung/blaugust--merge-blogroll blogroll old-blogroll)
+            blogroll))
+         (sorted-blogroll (sort (copy-sequence merged-blogroll)
+                                (<span class="org-keyword">lambda</span> (a b)
+                                  (string&lt; (downcase (plist-get a <span class="org-builtin">:title</span>))
+                                           (downcase (plist-get b <span class="org-builtin">:title</span>)))))))
     (message <span class="org-string">"Collect finish (%.1fs). Write result to %s..."</span> elapsed output-file)
     (make-directory (file-name-directory output-file) t)
     (<span class="org-keyword">with-temp-file</span> output-file
       (insert (pp-to-string sorted-blogroll)))
     (message <span class="org-string">"Wrote blogroll to %s (%.1fs)"</span> output-file elapsed)))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--merge-blogroll</span> (new old)
+  <span class="org-doc">"Merge curated OLD blogroll into NEW by :domain.</span>
+<span class="org-doc">If a NEW entry has no :feeds but OLD has :feeds for the same domain,</span>
+<span class="org-doc">reuse OLD's :feeds.  Also keep OLD entries not present in NEW."</span>
+  (<span class="org-keyword">let</span> ((old-table (make-hash-table <span class="org-builtin">:test</span> #'equal))
+        result)
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">init table</span>
+    (<span class="org-keyword">dolist</span> (o old)
+      (puthash (plist-get o <span class="org-builtin">:domain</span>) o old-table))
+    (<span class="org-keyword">dolist</span> (n new)
+      <span class="org-comment-delimiter">;; </span><span class="org-comment">if n's feeds is nil while o's feeds not, merge</span>
+      (<span class="org-keyword">let*</span> ((key (plist-get n <span class="org-builtin">:domain</span>))
+             (old-entry (gethash key old-table))
+             (old-feeds (<span class="org-keyword">and</span> old-entry (plist-get old-entry <span class="org-builtin">:feeds</span>)))
+             (new-feeds (plist-get n <span class="org-builtin">:feeds</span>)))
+        (<span class="org-keyword">when</span> (<span class="org-keyword">and</span> old-feeds (null new-feeds))
+          (message <span class="org-string">"Reusing curated feeds for %s"</span> key)
+          (<span class="org-keyword">setq</span> n (plist-put (copy-sequence n) <span class="org-builtin">:feeds</span> old-feeds)))
+        (<span class="org-keyword">push</span> n result)
+        (remhash key old-table)))
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">Any old entries whose domain did not appear in new are pushed into result too.</span>
+    (maphash (<span class="org-keyword">lambda</span> (_key o) (<span class="org-keyword">push</span> o result)) old-table)
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">Reverse result because push builds it backwards.</span>
+    (nreverse result)))
 
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--collect-feed-for-participant</span> (participant callback)
   <span class="org-doc">"Collect feeds for PARTICIPANT.</span>
@@ -221,11 +250,14 @@
    (<span class="org-keyword">lambda</span> (_err)
      (funcall callback nil))))
 
-(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--collect-blaugust-feeds</span> (participant-list-url output-file)
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--collect-feeds</span> (participant-list-url output-file)
   <span class="org-doc">"Collect feeds from PARTICIPANT-LIST-URL.</span>
 <span class="org-doc">Save data to OUTPUT-FILE."</span>
   (<span class="org-keyword">interactive</span> <span class="org-string">"sParticipant List URL: \nFOutput File:"</span>)
-  (<span class="org-keyword">let</span> ((start-time (current-time)))
+  (<span class="org-keyword">let</span> ((start-time (current-time))
+        (existing-blogroll (<span class="org-keyword">and</span> (file-exists-p output-file)
+                                (<span class="org-keyword">ignore-errors</span>
+                                  (spike-leung/blaugust--read-blogroll output-file)))))
     (message <span class="org-string">"Start collecting Blaugust feeds..."</span>)
     (<span class="org-keyword">condition-case</span> err
         (spike-leung/blaugust--collect-participant-links
@@ -245,7 +277,7 @@
                     (<span class="org-keyword">cl-incf</span> completed)
                     (message <span class="org-string">"Collected %d/%d: %s"</span> completed total (plist-get participant <span class="org-builtin">:title</span>))
                     (<span class="org-keyword">when</span> (= completed total)
-                      (spike-leung/blaugust--save-blogroll blogroll output-file start-time)))))))))
+                      (spike-leung/blaugust--save-blogroll blogroll output-file start-time existing-blogroll)))))))))
       (<span class="org-warning">error</span>
        (message <span class="org-string">"Failed to fetch participant page: %s"</span> participant-list-url)
        nil))))
@@ -261,7 +293,7 @@
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--export-opml</span> (title input-file output-file)
   <span class="org-doc">"Export feeds from INPUT-FILE plist to OPML-formatted OUTPUT-FILE.</span>
 <span class="org-doc">TITLE is the title in opml file.</span>
-<span class="org-doc">Use `</span><span class="org-doc"><span class="org-constant">spike-leung/blaugust--collect-blaugust-feeds</span></span><span class="org-doc">' to generate INPUT-FILE."</span>
+<span class="org-doc">Use `</span><span class="org-doc"><span class="org-constant">spike-leung/blaugust--collect-feeds</span></span><span class="org-doc">' to generate INPUT-FILE."</span>
   (<span class="org-keyword">declare</span> (completion elfeed--mode-p))
   (<span class="org-keyword">interactive</span> <span class="org-string">"sTitle in OPML file: \nFInput file: \nFOutput OPML file: "</span>)
   (<span class="org-keyword">let*</span> ((feeds (spike-leung/blaugust--read-blogroll input-file)))
@@ -282,10 +314,10 @@
                                                      (title . ,title)
                                                      (text . ,title))))))))))))
 
-(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--generate-blaugust-elfeed-feeds</span> (input-file)
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/blaugust--generate-elfeed-feeds</span> (input-file)
   <span class="org-doc">"Generate elfeed feeds from blaugust feeds.</span>
 <span class="org-doc">INPUT-FILE is the blaugust feeds generated</span>
-<span class="org-doc">by `</span><span class="org-doc"><span class="org-constant">spike-leung/blaugust--collect-blaugust-feeds</span></span><span class="org-doc">'."</span>
+<span class="org-doc">by `</span><span class="org-doc"><span class="org-constant">spike-leung/blaugust--collect-feeds</span></span><span class="org-doc">'."</span>
   (<span class="org-keyword">interactive</span> <span class="org-string">"FInput file:"</span>)
   (<span class="org-keyword">let*</span> ((feeds (spike-leung/blaugust--read-blogroll input-file))
          (existing-feed-urls
@@ -353,10 +385,10 @@ Elisp 代碼主要用到了：
 使用時：
 </p>
 <ul class="org-ul">
-<li>用 <code>spike-leung/blaugust--collect-blaugust-feeds</code> ，輸入 <a href="https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/">Blaugust 2026 – Meet the Mentors &amp; Participant List</a> 的連結和一個文件名，就會從連結拉取所有的 participant 的信息保存到文件中。</li>
+<li>用 <code>spike-leung/blaugust--collect-feeds</code> ，輸入 <a href="https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/">Blaugust 2026 – Meet the Mentors &amp; Participant List</a> 的連結和一個文件名，就會從連結拉取所有的 participant 的信息保存到文件中。</li>
 <li>檢查文件中的信息<small> (可以通過 <code>consult-line</code> 和 <code>embark-export</code> 過濾出 <code>:feeds nil</code> 的部分)</small>，补全沒拉取到的博客信息。沒拉取到的博客，會顯示成 <code>:feeds nil</code> 。</li>
 <li>用 <code>spike-leung/blaugust--export-opml</code> ，基於上面生成的文件生成 OPML 文件。</li>
-<li>如果你用 <a href="elfeed-4-0-0-usage-sharing.html">elfeed</a>，還可以調用 <code>spike-leung/blaugust--generate-blaugust-elfeed-feeds</code> ，這會和己有的 <code>elfeed-feeds</code> 比對，顯示一個临時 buffer，列出哪些己經在 <code>elfeed-feeds</code> 裡、哪些是新的，數據格式和 <code>elfeed-feeds</code> 是一樣的，可以方便地添加到 elfeed 里 <small>(默認會加上 <code>blaugust2026</code> 的 tag，對原來 <code>elfeed-feeds</code> 中沒有的還會加上 <code>new-feeds</code> 的 tag，便於過濾)</small>。</li>
+<li>如果你用 <a href="elfeed-4-0-0-usage-sharing.html">elfeed</a>，還可以調用 <code>spike-leung/blaugust--generate-elfeed-feeds</code> ，這會和己有的 <code>elfeed-feeds</code> 比對，顯示一個临時 buffer，列出哪些己經在 <code>elfeed-feeds</code> 裡、哪些是新的，數據格式和 <code>elfeed-feeds</code> 是一樣的，可以方便地添加到 elfeed 里 <small>(默認會加上 <code>blaugust2026</code> 的 tag，對原來 <code>elfeed-feeds</code> 中沒有的還會加上 <code>new-feeds</code> 的 tag，便於過濾)</small>。</li>
 </ul>
 </div>
 <div id="postamble" class="status">
@@ -383,7 +415,7 @@ Elisp 代碼主要用到了：
 </div>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建於 <time class="dt-published" datetime="2026-08-02 Sun 23:40">2026-08-02 Sun 23:40</time>，更新於 <time class="dt-updated" datetime="2026-08-03 Mon 18:26">2026-08-03 Mon 18:26</time>，</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-08-02 Sun 23:40">2026-08-02 Sun 23:40</time>，更新於 <time class="dt-updated" datetime="2026-08-04 Tue 18:10">2026-08-04 Tue 18:10</time>，</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
 <p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
 <p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Blaugust 2026 Feeds 以及我是如何用 Elisp 製作的&body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>

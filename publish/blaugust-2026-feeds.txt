@@ -16,8 +16,8 @@ _________________
 
 
 
-生成了一份 (更新於 2026-08-03)，如果你需要可以點擊下載，然後导入到你的 RSS 閱讀器中。如
-果你想 [參加 Blaugust]
+生成了一份 (更新於 2026-08-04，137 / 148)，如果你需要可以點擊下載，然後导入到你的 RSS 閱
+讀器中。如果你想 [參加 Blaugust]
 (<https://docs.google.com/forms/d/e/1FAIpQLScouIfF_RGkOPhWbyDjAhGTnxJ0smWfhZEiZRiAeLnvzPuO9g/viewform?usp=send_form>)
 ，現在就是最好的時間！
 
@@ -132,19 +132,49 @@ _________________
 |      (message "Request failed: %S" _err)
 |      (funcall callback nil))))
 | 
-| (defun spike-leung/blaugust--save-blogroll (blogroll output-file start-time)
+| (defun spike-leung/blaugust--save-blogroll (blogroll output-file start-time &optional old-blogroll)
 |   "Save BLOGROLL to OUTPUT-FILE.
-| Calc duration with START-TIME."
-|   (let ((elapsed (float-time (time-subtract (current-time) start-time)))
-|         (sorted-blogroll (sort (copy-sequence blogroll)
-|                                (lambda (a b)
-|                                  (string< (downcase (plist-get a :title))
-|                                           (downcase (plist-get b :title)))))))
+| Calc duration with START-TIME.
+| If OLD-BLOGROLL not nil, merge BLOGROLL with EXSITING-BLOGROLL."
+|   (let* ((elapsed (float-time (time-subtract (current-time) start-time)))
+|          (merged-blogroll
+|           (if old-blogroll
+|               (spike-leung/blaugust--merge-blogroll blogroll old-blogroll)
+|             blogroll))
+|          (sorted-blogroll (sort (copy-sequence merged-blogroll)
+|                                 (lambda (a b)
+|                                   (string< (downcase (plist-get a :title))
+|                                            (downcase (plist-get b :title)))))))
 |     (message "Collect finish (%.1fs). Write result to %s..." elapsed output-file)
 |     (make-directory (file-name-directory output-file) t)
 |     (with-temp-file output-file
 |       (insert (pp-to-string sorted-blogroll)))
 |     (message "Wrote blogroll to %s (%.1fs)" output-file elapsed)))
+| 
+| (defun spike-leung/blaugust--merge-blogroll (new old)
+|   "Merge curated OLD blogroll into NEW by :domain.
+| If a NEW entry has no :feeds but OLD has :feeds for the same domain,
+| reuse OLD's :feeds.  Also keep OLD entries not present in NEW."
+|   (let ((old-table (make-hash-table :test #'equal))
+|         result)
+|     ;; init table
+|     (dolist (o old)
+|       (puthash (plist-get o :domain) o old-table))
+|     (dolist (n new)
+|       ;; if n's feeds is nil while o's feeds not, merge
+|       (let* ((key (plist-get n :domain))
+|              (old-entry (gethash key old-table))
+|              (old-feeds (and old-entry (plist-get old-entry :feeds)))
+|              (new-feeds (plist-get n :feeds)))
+|         (when (and old-feeds (null new-feeds))
+|           (message "Reusing curated feeds for %s" key)
+|           (setq n (plist-put (copy-sequence n) :feeds old-feeds)))
+|         (push n result)
+|         (remhash key old-table)))
+|     ;; Any old entries whose domain did not appear in new are pushed into result too.
+|     (maphash (lambda (_key o) (push o result)) old-table)
+|     ;; Reverse result because push builds it backwards.
+|     (nreverse result)))
 | 
 | (defun spike-leung/blaugust--collect-feed-for-participant (participant callback)
 |   "Collect feeds for PARTICIPANT.
@@ -176,11 +206,14 @@ _________________
 |    (lambda (_err)
 |      (funcall callback nil))))
 | 
-| (defun spike-leung/blaugust--collect-blaugust-feeds (participant-list-url output-file)
+| (defun spike-leung/blaugust--collect-feeds (participant-list-url output-file)
 |   "Collect feeds from PARTICIPANT-LIST-URL.
 | Save data to OUTPUT-FILE."
 |   (interactive "sParticipant List URL: \nFOutput File:")
-|   (let ((start-time (current-time)))
+|   (let ((start-time (current-time))
+|         (existing-blogroll (and (file-exists-p output-file)
+|                                 (ignore-errors
+|                                   (spike-leung/blaugust--read-blogroll output-file)))))
 |     (message "Start collecting Blaugust feeds...")
 |     (condition-case err
 |         (spike-leung/blaugust--collect-participant-links
@@ -200,7 +233,7 @@ _________________
 |                     (cl-incf completed)
 |                     (message "Collected %d/%d: %s" completed total (plist-get participant :title))
 |                     (when (= completed total)
-|                       (spike-leung/blaugust--save-blogroll blogroll output-file start-time)))))))))
+|                       (spike-leung/blaugust--save-blogroll blogroll output-file start-time existing-blogroll)))))))))
 |       (error
 |        (message "Failed to fetch participant page: %s" participant-list-url)
 |        nil))))
@@ -216,7 +249,7 @@ _________________
 | (defun spike-leung/blaugust--export-opml (title input-file output-file)
 |   "Export feeds from INPUT-FILE plist to OPML-formatted OUTPUT-FILE.
 | TITLE is the title in opml file.
-| Use `spike-leung/blaugust--collect-blaugust-feeds' to generate INPUT-FILE."
+| Use `spike-leung/blaugust--collect-feeds' to generate INPUT-FILE."
 |   (declare (completion elfeed--mode-p))
 |   (interactive "sTitle in OPML file: \nFInput file: \nFOutput OPML file: ")
 |   (let* ((feeds (spike-leung/blaugust--read-blogroll input-file)))
@@ -237,10 +270,10 @@ _________________
 |                                                      (title . ,title)
 |                                                      (text . ,title))))))))))))
 | 
-| (defun spike-leung/blaugust--generate-blaugust-elfeed-feeds (input-file)
+| (defun spike-leung/blaugust--generate-elfeed-feeds (input-file)
 |   "Generate elfeed feeds from blaugust feeds.
 | INPUT-FILE is the blaugust feeds generated
-| by `spike-leung/blaugust--collect-blaugust-feeds'."
+| by `spike-leung/blaugust--collect-feeds'."
 |   (interactive "FInput file:")
 |   (let* ((feeds (spike-leung/blaugust--read-blogroll input-file))
 |          (existing-feed-urls
@@ -298,15 +331,15 @@ Elisp 代碼主要用到了：
   + `dom-attr' 等获取 DOM 信息
 
 使用時：
-- 用 `spike-leung/blaugust--collect-blaugust-feeds' ，輸入 [Blaugust 2026 – Meet the
-  Mentors & Participant List]
+- 用 `spike-leung/blaugust--collect-feeds' ，輸入 [Blaugust 2026 – Meet the Mentors &
+  Participant List]
   (<https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/>)
   的連結和一個文件名，就會從連結拉取所有的 participant 的信息保存到文件中。
 - 檢查文件中的信息(可以通過 `consult-line' 和 `embark-export' 過濾出 `:feeds nil' 的部分)，
   补全沒拉取到的博客信息。沒拉取到的博客，會顯示成 `:feeds nil' 。
 - 用 `spike-leung/blaugust--export-opml' ，基於上面生成的文件生成 OPML 文件。
 - 如果你用 [elfeed] <https://taxodium.ink/elfeed-4-0-0-usage-sharing.html>，還可以調用
-  `spike-leung/blaugust--generate-blaugust-elfeed-feeds' ，這會和己有的 `elfeed-feeds'
-  比對，顯示一個临時 buffer，列出哪些己經在 `elfeed-feeds' 裡、哪些是新的，數據格式和
+  `spike-leung/blaugust--generate-elfeed-feeds' ，這會和己有的 `elfeed-feeds' 比對，顯示
+  一個临時 buffer，列出哪些己經在 `elfeed-feeds' 裡、哪些是新的，數據格式和
   `elfeed-feeds' 是一樣的，可以方便地添加到 elfeed 里 (默認會加上 `blaugust2026' 的 tag，
   對原來 `elfeed-feeds' 中沒有的還會加上 `new-feeds' 的 tag，便於過濾)。
