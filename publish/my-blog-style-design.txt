@@ -26,22 +26,23 @@ _________________
 ..... 10. 链接 / link
 ..... 11. 段落 paragraph
 ..... 12. target
-..... 13. markup
-..... 14. hr
-..... 15. kbd
-..... 16. ruby
-..... 17. 代码块
-..... 18. 引用 blockquote、verse
-..... 19. figure
-..... 20. details
-..... 21. iframe
-..... 22. select
-..... 23. button
-..... 24. table
-..... 25. list
-..... 26. search
-..... 27. postamble
-..... 28. layer end
+..... 13. selection
+..... 14. markup
+..... 15. hr
+..... 16. kbd
+..... 17. ruby
+..... 18. 代码块
+..... 19. 引用 blockquote、verse
+..... 20. figure
+..... 21. details
+..... 22. iframe
+..... 23. select
+..... 24. button
+..... 25. table
+..... 26. list
+..... 27. search
+..... 28. postamble
+..... 29. layer end
 .. 2. @layer print
 .. 3. @layer function
 ..... 1. layer start
@@ -162,6 +163,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   |   --color-fucus-visible-outline: oklch(from var(--color-link) l c h / 0.8);
   |   --color-bg-mark: #FFEDAB;
   |   --color-bg-target: oklch(from #FFEDAB calc(l + .5) c h / .8);
+  |   --color-bg-selection: oklch(from var(--dark-color-taxodium-purple) l c h / .2);
   | 
   |   --dark-flexoki-base-200: #CECDC3;
   |   --dark-flexoki-base-300: #B7B5AC;
@@ -185,6 +187,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   |   --dark-color-fucus-visible-outline: oklch(from var(--dark-color-link) l c h / 0.8);
   |   --dark-color-bg-mark: oklch(from var(--color-bg-mark) l c h / .8);
   |   --dark-color-bg-target: oklch(from var(--dark-color-taxodium-purple) l c h / .35);
+  |   --dark-color-bg-selection: oklch(from var(--dark-color-taxodium-purple) l c h / .35);
   | 
   |   --table-border: 2px solid var(--color-text);
   |   --table-cell-border: 1px solid var(--color-border);
@@ -654,7 +657,18 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.13 markup
+1.1.13 selection
+----------------
+
+  ,----
+  | ::selection {
+  |   background: var(--color-bg-selection);
+  |   background: light-dark(var(--color-bg-selection), var(--dark-color-bg-selection));
+  | }
+  `----
+
+
+1.1.14 markup
 -------------
 
   一些常用标记的样式。
@@ -716,7 +730,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.14 hr
+1.1.15 hr
 ---------
 
   分割线样式，将分割线设置为 `§' 而不是一根直线，主要是因为页面上有不少的线条，例如
@@ -740,7 +754,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.15 kbd
+1.1.16 kbd
 ----------
 
   ,----
@@ -765,7 +779,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.16 ruby
+1.1.17 ruby
 -----------
 
   适当放大 [<rt>]
@@ -778,7 +792,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.17 代码块
+1.1.18 代码块
 -------------
 
   参考了 [Protesilaos Stavrou] (<https://protesilaos.com/>) 的样式 。
@@ -801,7 +815,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.18 引用 blockquote、verse
+1.1.19 引用 blockquote、verse
 -----------------------------
 
   blockquote 和 verse 样式都是一样的，左侧有边框，颜色比正文淡一些，正文区分开。
@@ -835,7 +849,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.19 figure
+1.1.20 figure
 -------------
 
   移除 figure 的左右边距，使得 figure 能够占满 body 的宽度，让图片显示得更大一些。
@@ -860,7 +874,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.20 details
+1.1.21 details
 --------------
 
   details 添加 border，便于在内容很多的时候，能够知道哪些内容是属于 details 的。
@@ -906,7 +920,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.21 iframe
+1.1.22 iframe
 -------------
 
   iframe 一般我会用来展示一些 HTML 示例，添加边框使其和内容区分开。
@@ -921,7 +935,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.22 select
+1.1.23 select
 -------------
 
   博客下拉框很少，主要就是导航栏的主题下拉框。
@@ -937,7 +951,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.23 button
+1.1.24 button
 -------------
 
   给按钮的点击添加一个效果，使得点击这个动作更明显。
@@ -976,7 +990,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.24 table
+1.1.25 table
 ------------
 
   参考了 [Styling Tables the Modern CSS Way]
@@ -1045,7 +1059,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.25 list
+1.1.26 list
 -----------
 
   给 `<li>' 增加一些边距，避免过分拥挤；同时淡化 list marker 的颜色，降低 list marker 的
@@ -1110,7 +1124,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.26 search
+1.1.27 search
 -------------
 
   主要用于 [搜索] <https://taxodium.ink/search.html> 页面的搜索框。
@@ -1138,7 +1152,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.27 postamble
+1.1.28 postamble
 ----------------
 
   底部内容样式，设置了一个分割线，内容可以自定义，偶尔换换。
@@ -1176,7 +1190,7 @@ Naked Day 期间将博客样式重写一次，减少一些不必要的样式，�
   `----
 
 
-1.1.28 layer end
+1.1.29 layer end
 ----------------
 
   ,----
