@@ -2936,7 +2936,27 @@ figure 需要添加一些下边距，避免图片和下方文字贴合过近。
 <div id="outline-container-69F1F32B-3AB5-4D13-9999-C845095329C3" class="outline-3">
 <h3 id="69F1F32B-3AB5-4D13-9999-C845095329C3"><a href="#69F1F32B-3AB5-4D13-9999-C845095329C3">good-articles</a></h3>
 <div class="outline-text-3" id="text-69F1F32B-3AB5-4D13-9999-C845095329C3"><div class="org-src-container">
-<pre class="src src-css"><code><span class="org-css-property">li</span>:has(
+<pre class="src src-css"><code><span class="org-css-selector">.light</span> {
+  <span class="org-variable-name">--filter-pin</span>: grayscale(1) opacity(.2);
+}
+
+<span class="org-builtin">@media</span> (prefers-color-scheme: light) {
+  <span class="org-css-selector">:root</span> {
+    <span class="org-variable-name">--filter-pin</span>: grayscale(1) opacity(.2);
+  }
+}
+
+<span class="org-css-selector">.dark</span> {
+  <span class="org-variable-name">--filter-pin</span>: grayscale(1) opacity(1);
+}
+
+<span class="org-builtin">@media</span> (prefers-color-scheme: dark) {
+  <span class="org-css-selector">:root</span> {
+    <span class="org-variable-name">--filter-pin</span>: grayscale(1) opacity(1);
+  }
+}
+
+<span class="org-css-property">li</span>:has(
   :where(<span class="org-comment-delimiter">/*</span><span class="org-comment">others</span><span class="org-comment-delimiter">*/</span>
     [href*=<span class="org-string">'google-turn-on-javascript-to-keep-searching'</span>],
     [href*=<span class="org-string">'emoji-regexp'</span>],
@@ -2963,16 +2983,7 @@ figure 需要添加一些下边距，避免图片和下方文字贴合过近。
     [href*=<span class="org-string">"%E8%AF%BB%E3%80%8A%E5%AD%A6%E6%9C%9F%E4%BD%9C%E4%B8%9A%E6%8A%A5%E5%91%8A%E3%80%8B"</span>],
   ))::after {
   <span class="org-css-property">content</span>: <span class="org-string">'&#128204;'</span><span class="org-builtin">!important</span>;
-  <span class="org-css-property">filter</span>: grayscale(1);
-  <span class="org-css-property">opacity</span>: .2;
-
-  <span class="org-builtin">@media</span> (prefers-color-scheme: dark) {
-    <span class="org-css-property">opacity</span>: .8;
-  }
-}
-
-.dark li:has(a)::after {
-  <span class="org-css-property">opacity</span>: .8;
+  <span class="org-css-property">filter</span>: var(<span class="org-variable-name">--filter-pin</span>, opacity(.2) grayscale(1));
 }
 </code></pre>
 </div>
@@ -3634,7 +3645,7 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
 </div>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建於 <time class="dt-published" datetime="2026-04-10 Fri 09:52">2026-04-10 Fri 09:52</time>，更新於 <time class="dt-updated" datetime="2026-08-05 Wed 20:05">2026-08-05 Wed 20:05</time>，</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-04-10 Fri 09:52">2026-04-10 Fri 09:52</time>，更新於 <time class="dt-updated" datetime="2026-08-05 Wed 22:01">2026-08-05 Wed 22:01</time>，</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
 <p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
 <p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 博客样式设计 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
