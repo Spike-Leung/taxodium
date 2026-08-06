@@ -21,7 +21,7 @@
       function setColorScheme() {
         colorSchemeMeta.setAttribute("content", scheme);
         localStorage.setItem("color-scheme", mode);
-        mode && setBodyClass(mode);
+        setBodyClass(mode);
         switchIframeColorScheme();
       }
 
@@ -34,7 +34,7 @@
   function setBodyClass(mode) {
     if (document.body) {
       document.body.classList.remove("light", "dark");
-      document.body.classList.add(mode);
+      mode && document.body.classList.add(mode);
     }
   }
 
