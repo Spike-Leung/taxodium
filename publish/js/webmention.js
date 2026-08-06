@@ -7,13 +7,15 @@
   async function loadWebmentionContent() {
     try {
       const target = getTargetUrl();
+      const targetUrl = new URL(target)
+      const baseTarget = `${targetUrl.origin}${targetUrl.pathname}`
       const targetsWithFragments = TargetFragments[target] ? TargetFragments[target].map((hash) => `${target}${hash}`) : []
       const targetsWithQueries = TargetQueries.map((q) => `${target}?${q}`)
-      const allTarget = [target, ...targetsWithFragments, ...targetsWithQueries];
+      const allTarget = [baseTarget, target, ...targetsWithFragments, ...targetsWithQueries];
       const searchParams = allTarget.map((t) => `target[]=${encodeURIComponent(t)}`).join("&")
       const response = await fetch(`https://webmention.io/api/mentions.jf2?${searchParams}`,);
       const feed = await response.json();
-      const feedList = feed?.children?.filter((c) => c["wm-target"].indexOf(target) !== -1)
+      const feedList = feed?.children?.filter((c) => c["wm-target"].indexOf(baseTarget) !== -1)
       document.querySelector(".webmention__count").innerText = `(${feedList.length})`;
       const container = document.querySelector(".webmention__list");
       renderWebmentions(feedList, container);
