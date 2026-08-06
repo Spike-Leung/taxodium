@@ -34,18 +34,12 @@
     <li><a href="/search.html">搜索</a></li>
     <li><a href="/shuffle.html" class="js-required">隨機</a></li>
   </ul>
-  <!--
-  <span class="snow-toggle-container">
-    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
-    <label for="snow-toggle" class="snow-icon"></label>
-  </span>
-  -->
-  <select id="lightdark" class="js-required" aria-label="切換明暗主題">
-    <option value="auto">Auto</option>
-    <option value="light">Light</option>
-    <option value="dark">Dark</option>
-    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
-  </select>
+  <button id="lightdark" class="js-required" aria-label="點擊切換當前頁面明暗主題">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+      <path d="M0 0h512v512H0z" fill="none" />
+      <path fill="currentColor" fill-rule="evenodd" d="M277.333 405.333v85.333h-42.667v-85.333zm99.346-58.824l60.34 60.34l-30.17 30.17l-60.34-60.34zm-241.359 0l30.17 30.17l-60.34 60.34l-30.17-30.17zM256 139.353c64.422 0 116.647 52.224 116.647 116.647c0 64.422-52.225 116.647-116.647 116.647A116.427 116.427 0 0 1 139.352 256c0-64.423 52.225-116.647 116.648-116.647m0 42.666c-40.859 0-73.981 33.123-73.981 74.062a73.76 73.76 0 0 0 21.603 52.296c13.867 13.867 32.685 21.64 52.378 21.603zm234.666 52.647v42.667h-85.333v-42.667zm-384 0v42.667H21.333v-42.667zM105.15 74.98l60.34 60.34l-30.17 30.17l-60.34-60.34zm301.7 0l30.169 30.17l-60.34 60.34l-30.17-30.17zM277.332 21.333v85.333h-42.667V21.333z" />
+    </svg>
+  </button>
 </nav>
 </div>
 <div id="content" class="content e-content">
@@ -71,16 +65,16 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code><span class="org-keyword">function</span> <span class="org-function-name">getMonth</span>(<span class="org-variable-name">startDate</span>, <span class="org-variable-name">endDate</span>) {
-  <span class="org-keyword">const</span> <span class="org-variable-name">endSeconds</span> = <span class="org-keyword">new</span> <span class="org-type">Date</span>(endDate).<span class="org-function-call">getTime</span>() / 1000
-  <span class="org-keyword">const</span> <span class="org-variable-name">startSeconds</span> = <span class="org-keyword">new</span> <span class="org-type">Date</span>(startDate).<span class="org-function-call">getTime</span>() / 1000
-  <span class="org-keyword">const</span> <span class="org-variable-name">SECONDS_IN_A_MONTH</span> = 30 * 24 * 60 * 60
+<pre class="src src-typescript"><code>function getMonth(startDate, endDate) {
+  const endSeconds = new Date(endDate).getTime() / 1000
+  const startSeconds = new Date(startDate).getTime() / 1000
+  const SECONDS_IN_A_MONTH = 30 * 24 * 60 * 60
 
-  <span class="org-keyword">return</span> Math.<span class="org-function-call">floor</span>((endSeconds - startSeconds) / SECONDS_IN_A_MONTH)
+  return Math.floor((endSeconds - startSeconds) / SECONDS_IN_A_MONTH)
 }
 
-<span class="org-function-call">getMonth</span>(<span class="org-string">'2023-03'</span>, <span class="org-string">'2024-03-25 01:00:00'</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">12</span>
-<span class="org-function-call">getMonth</span>(<span class="org-string">'2023-03'</span>, <span class="org-string">'2024-03-25 08:00:00'</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">13</span>
+getMonth('2023-03', '2024-03-25 01:00:00') // 12
+getMonth('2023-03', '2024-03-25 08:00:00') // 13
 </code></pre>
 </div>
 
@@ -101,8 +95,8 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code><span class="org-keyword">new</span> <span class="org-type">Date</span>(<span class="org-string">'2024-01-01'</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">Mon Jan 01 2024 08:00:00 GMT+0800 (China Standard </span><span class="org-variable-name">Time</span><span class="org-comment">)</span>
-<span class="org-keyword">new</span> <span class="org-type">Date</span>(<span class="org-string">'2024-01-01 00:00:00'</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">Mon Jan 01 2024 00:00:00 GMT+0800 (China Standard </span><span class="org-variable-name">Time</span><span class="org-comment">)</span>
+<pre class="src src-typescript"><code>new Date('2024-01-01') // Mon Jan 01 2024 08:00:00 GMT+0800 (China Standard Time)
+new Date('2024-01-01 00:00:00') // Mon Jan 01 2024 00:00:00 GMT+0800 (China Standard Time)
 </code></pre>
 </div>
 
@@ -149,23 +143,23 @@ Parser – A Web Reality Issue.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code><span class="org-comment-delimiter">// </span><span class="org-comment">&#36820;&#22238;&#26412;&#22320;&#26102;&#38388;</span>
-<span class="org-comment-delimiter">// </span><span class="org-comment">date-only forms are interpreted as a UTC time</span>
-<span class="org-keyword">new</span> <span class="org-type">Date</span>(<span class="org-string">'2023-03'</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard </span><span class="org-variable-name">Time</span><span class="org-comment">)</span>
-<span class="org-keyword">new</span> <span class="org-type">Date</span>(<span class="org-string">'2023-03-01'</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard </span><span class="org-variable-name">Time</span><span class="org-comment">)</span>
+<pre class="src src-typescript"><code>// 返回本地时间
+// date-only forms are interpreted as a UTC time
+new Date('2023-03') // Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard Time)
+new Date('2023-03-01') // Wed Mar 01 2023 08:00:00 GMT+0800 (China Standard Time)
 
-<span class="org-comment-delimiter">// </span><span class="org-comment">date-time forms are interpreted as local time</span>
-<span class="org-keyword">new</span> <span class="org-type">Date</span>(<span class="org-string">'2023-03-01T00:00:00'</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard </span><span class="org-variable-name">Time</span><span class="org-comment">)</span>
-<span class="org-keyword">new</span> <span class="org-type">Date</span>(<span class="org-string">'2023-03-01 00:00:00'</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard </span><span class="org-variable-name">Time</span><span class="org-comment">)</span>
+// date-time forms are interpreted as local time
+new Date('2023-03-01T00:00:00') // Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard Time)
+new Date('2023-03-01 00:00:00') // Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard Time)
 
-<span class="org-comment-delimiter">// </span><span class="org-comment">&#36820;&#22238; UTC &#26102;&#38388;</span>
-<span class="org-comment-delimiter">// </span><span class="org-comment">date-only forms are interpreted as a UTC time</span>
-<span class="org-keyword">new</span> <span class="org-type">Date</span>(<span class="org-string">'2023-03'</span>).<span class="org-function-call">toUTCString</span>() <span class="org-comment-delimiter">// </span><span class="org-comment">'</span><span class="org-variable-name">Wed</span><span class="org-comment">, 01 Mar 2023 00:00:00 GMT'</span>
-<span class="org-keyword">new</span> <span class="org-type">Date</span>(<span class="org-string">'2023-03-01'</span>).<span class="org-function-call">toUTCString</span>() <span class="org-comment-delimiter">// </span><span class="org-comment">'</span><span class="org-variable-name">Wed</span><span class="org-comment">, 01 Mar 2023 00:00:00 GMT'</span>
+// 返回 UTC 时间
+// date-only forms are interpreted as a UTC time
+new Date('2023-03').toUTCString() // 'Wed, 01 Mar 2023 00:00:00 GMT'
+new Date('2023-03-01').toUTCString() // 'Wed, 01 Mar 2023 00:00:00 GMT'
 
-<span class="org-comment-delimiter">// </span><span class="org-comment">date-time forms are interpreted as local time</span>
-<span class="org-keyword">new</span> <span class="org-type">Date</span>(<span class="org-string">'2023-03-01T00:00:00'</span>).<span class="org-function-call">toUTCString</span>() <span class="org-comment-delimiter">// </span><span class="org-comment">'</span><span class="org-variable-name">Tue</span><span class="org-comment">, 28 Feb 2023 16:00:00 GMT'</span>
-<span class="org-keyword">new</span> <span class="org-type">Date</span>(<span class="org-string">'2023-03-01 00:00:00'</span>).<span class="org-function-call">toUTCString</span>() <span class="org-comment-delimiter">// </span><span class="org-comment">'</span><span class="org-variable-name">Tue</span><span class="org-comment">, 28 Feb 2023 16:00:00 GMT'</span>
+// date-time forms are interpreted as local time
+new Date('2023-03-01T00:00:00').toUTCString() // 'Tue, 28 Feb 2023 16:00:00 GMT'
+new Date('2023-03-01 00:00:00').toUTCString() // 'Tue, 28 Feb 2023 16:00:00 GMT'
 </code></pre>
 </div>
 
@@ -187,9 +181,9 @@ midnight at the beginning of January 1, 1970, UTC.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code><span class="org-keyword">new</span> <span class="org-type">Date</span>(<span class="org-string">'2023-03'</span>).<span class="org-function-call">toUTCString</span>() <span class="org-comment-delimiter">// </span><span class="org-comment">'</span><span class="org-variable-name">Wed</span><span class="org-comment">, 01 Mar 2023 00:00:00 GMT'</span>
-<span class="org-keyword">new</span> <span class="org-type">Date</span>(<span class="org-string">'2024-03-25 01:00:00'</span>).<span class="org-function-call">toUTCString</span>() <span class="org-comment-delimiter">// </span><span class="org-comment">'</span><span class="org-variable-name">Sun</span><span class="org-comment">, 24 Mar 2024 17:00:00 GMT'</span>
-<span class="org-keyword">new</span> <span class="org-type">Date</span>(<span class="org-string">'2024-03-25 08:00:00'</span>).<span class="org-function-call">toUTCString</span>() <span class="org-comment-delimiter">// </span><span class="org-comment">'</span><span class="org-variable-name">Mon</span><span class="org-comment">, 25 Mar 2024 00:00:00 GMT'</span>
+<pre class="src src-typescript"><code>new Date('2023-03').toUTCString() // 'Wed, 01 Mar 2023 00:00:00 GMT'
+new Date('2024-03-25 01:00:00').toUTCString() // 'Sun, 24 Mar 2024 17:00:00 GMT'
+new Date('2024-03-25 08:00:00').toUTCString() // 'Mon, 25 Mar 2024 00:00:00 GMT'
 </code></pre>
 </div>
 
@@ -204,8 +198,8 @@ midnight at the beginning of January 1, 1970, UTC.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-typescript"><code><span class="org-comment-delimiter">// </span><span class="org-comment">Remember (and accept) that month is zero-indexed in JavaScript.</span>
-<span class="org-keyword">new</span> <span class="org-type">Date</span>(2023, 02, 01) <span class="org-comment-delimiter">// </span><span class="org-comment">Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard </span><span class="org-variable-name">Time</span><span class="org-comment">)</span>
+<pre class="src src-typescript"><code>// Remember (and accept) that month is zero-indexed in JavaScript.
+new Date(2023, 02, 01) // Wed Mar 01 2023 00:00:00 GMT+0800 (China Standard Time)
 </code></pre>
 </div>
 </div>
@@ -258,20 +252,6 @@ midnight at the beginning of January 1, 1970, UTC.
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>
-<!--
-<script src="/js/snow-fall.js" defer type="module"></script>
-<snow-fall></snow-fall>
-<div id="caravan">
-  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
-  <div style="animation-delay:-0.5s; left:20px;"></div>
-  <div style="animation-delay:-1.0s; left:40px;"></div>
-  <div style="animation-delay:-1.5s; left:60px;"></div>
-  <div style="animation-delay:-2.0s; left:80px;"></div>
-  <div style="animation-delay:-2.5s; left:100px;"></div>
-  <div style="animation-delay:-3.0s; left:120px;"></div>
-  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
-</div>
--->
 <noscript>
   <style>
     .js-required {

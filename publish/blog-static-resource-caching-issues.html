@@ -34,18 +34,12 @@
     <li><a href="/search.html">搜索</a></li>
     <li><a href="/shuffle.html" class="js-required">隨機</a></li>
   </ul>
-  <!--
-  <span class="snow-toggle-container">
-    <input type="checkbox" id="snow-toggle" aria-label="切换雪花效果" checked>
-    <label for="snow-toggle" class="snow-icon"></label>
-  </span>
-  -->
-  <select id="lightdark" class="js-required" aria-label="切換明暗主題">
-    <option value="auto">Auto</option>
-    <option value="light">Light</option>
-    <option value="dark">Dark</option>
-    <option value="dark-retro" aria-lable="复古 Dark">Dark 👾</option>
-  </select>
+  <button id="lightdark" class="js-required" aria-label="點擊切換當前頁面明暗主題">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+      <path d="M0 0h512v512H0z" fill="none" />
+      <path fill="currentColor" fill-rule="evenodd" d="M277.333 405.333v85.333h-42.667v-85.333zm99.346-58.824l60.34 60.34l-30.17 30.17l-60.34-60.34zm-241.359 0l30.17 30.17l-60.34 60.34l-30.17-30.17zM256 139.353c64.422 0 116.647 52.224 116.647 116.647c0 64.422-52.225 116.647-116.647 116.647A116.427 116.427 0 0 1 139.352 256c0-64.423 52.225-116.647 116.648-116.647m0 42.666c-40.859 0-73.981 33.123-73.981 74.062a73.76 73.76 0 0 0 21.603 52.296c13.867 13.867 32.685 21.64 52.378 21.603zm234.666 52.647v42.667h-85.333v-42.667zm-384 0v42.667H21.333v-42.667zM105.15 74.98l60.34 60.34l-30.17 30.17l-60.34-60.34zm301.7 0l30.169 30.17l-60.34 60.34l-30.17-30.17zM277.332 21.333v85.333h-42.667V21.333z" />
+    </svg>
+  </button>
 </nav>
 </div>
 <div id="content" class="content e-content">
@@ -69,7 +63,7 @@ TL;DR
 前些天在折腾 <a href="https://imagemagick.org/">ImageMagick</a>，看看能不能把 <a href="album-wall.html">Album Wall</a> 的图片再优化一下。尝试了很多参数，可能还是对参数理解不够，也没能折腾出什么有趣的风格，不过也做了一点点小的优化，例如现在专辑上的一些字可以显示出来了。
 </p>
 
-<section role="note" id="org8d60732">
+<section role="note" id="orge4db5a2">
 <p>
 目前用来转换图片的命令：
 </p>
@@ -169,7 +163,7 @@ bundle.js?v=YsAIAAAA-QG4G6kCMAMBAAAAAAAoK
 针对我现在的问题，首先我会修改 URL，在 URL 最后添加 <code>?timestamp=xxxx</code> ，从而让读者能马上看到更新；然后我也会将 max-age 改成一个更短的时间，一年实在是太长了。
 </p>
 
-<section role="note" id="orga86b530">
+<section role="note" id="org52a767c">
 <p>
 使用 <code>?timestamp=xxxx</code> 是因为时间戳一般来说都会不一样，每次获取一个新的时间戳就好，获取时间戳也相对简单。
 </p>
@@ -183,7 +177,7 @@ bundle.js?v=YsAIAAAA-QG4G6kCMAMBAAAAAAAoK
 如果是一些确定极少变化的静态资源，可以考虑设置 <code>cache-control public,max-age=31536000,immutable</code> ，可以很大程度改善这些资源的加载速度。例如我看到有的网站，每次访问或者切换页面，字体都需要等一阵子然后切换，或许就是因为字体文件没有被缓存，总是需要重新加载，设置缓存就能改善读者的访问体验。
 </p>
 
-<section role="note" id="orgae0d699">
+<section role="note" id="org57c66db">
 <p>
 除了改善用户的体验，缓存也减少了发给服务器的请求，减少了服务器的压力；因为不需要重复传输缓存过的资源，也减少了带宽的使用。
 </p>
@@ -197,7 +191,7 @@ bundle.js?v=YsAIAAAA-QG4G6kCMAMBAAAAAAAoK
 就算什么都不做，浏览器本身也有 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching#heuristic_caching">默认的缓存机制</a>，不确定怎么弄，依赖浏览器默认行为就好。
 </p>
 
-<section role="note" id="org0d93b97">
+<section role="note" id="org1b5f87c">
 <p>
 如果你想了解 HTTP Cache，MDN 的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching">HTTP caching</a> 是份不错的文档。
 </p>
@@ -239,20 +233,6 @@ bundle.js?v=YsAIAAAA-QG4G6kCMAMBAAAAAAAoK
 <script src="/js/sidenote.js" defer></script>
 <script src="/js/purify.min.js" defer></script>
 <script src="/js/webmention.js" defer></script>
-<!--
-<script src="/js/snow-fall.js" defer type="module"></script>
-<snow-fall></snow-fall>
-<div id="caravan">
-  <div style="animation-delay:-0.0s; left:0px;" id="sleigh"></div>
-  <div style="animation-delay:-0.5s; left:20px;"></div>
-  <div style="animation-delay:-1.0s; left:40px;"></div>
-  <div style="animation-delay:-1.5s; left:60px;"></div>
-  <div style="animation-delay:-2.0s; left:80px;"></div>
-  <div style="animation-delay:-2.5s; left:100px;"></div>
-  <div style="animation-delay:-3.0s; left:120px;"></div>
-  <div style="animation-delay:-3.5s; left:140px;" id="rudolph"></div>
-</div>
--->
 <noscript>
   <style>
     .js-required {
