@@ -2,12 +2,14 @@
   const TargetFragments = {
     'https://taxodium.ink/43.html': ['#82F4E24E-345E-48C9-9A3B-567A81BC40A0']
   }
+  const TargetQueries = ['ref=powrss.com']
 
   async function loadWebmentionContent() {
     try {
       const target = getTargetUrl();
       const targetsWithFragments = TargetFragments[target] ? TargetFragments[target].map((hash) => `${target}${hash}`) : []
-      const allTarget = [target, ...targetsWithFragments];
+      const targetsWithQueries = TargetQueries.map((q) => `${target}?${q}`)
+      const allTarget = [target, ...targetsWithFragments, ...targetsWithQueries];
       const searchParams = allTarget.map((t) => `target[]=${encodeURIComponent(t)}`).join("&")
       const response = await fetch(`https://webmention.io/api/mentions.jf2?${searchParams}`,);
       const feed = await response.json();
