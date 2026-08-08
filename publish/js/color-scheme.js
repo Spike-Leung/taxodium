@@ -21,7 +21,8 @@
       function setColorScheme() {
         colorSchemeMeta.setAttribute("content", scheme);
         localStorage.setItem("color-scheme", mode);
-        setBodyClass(mode);
+        // body may not exist when page load first time
+        setTimeout(() => setBodyClass(mode));
         switchIframeColorScheme();
       }
 
