@@ -74,6 +74,7 @@
           ["inline-start", "inline-end"].forEach((classname) =>
             footnoteElement.classList.remove(classname),
           );
+          footnoteElement.classList.add("is-sidenote");
           const margin = -1 * (footnoteContentWidth + FootnoteOffset) + "px";
           if (isFootnoteRefNearInlineStart) {
             footnoteElement.classList.add("inline-start");
@@ -84,6 +85,7 @@
           }
           footnoteElement.style.removeProperty("display");
         } else {
+          footnoteElement.classList.remove("is-sidenote");
           ["margin-inline-start", "margin-inline-end"].forEach((prop) =>
             footnoteElement.style.removeProperty(prop),
           );
