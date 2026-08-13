@@ -63,10 +63,13 @@
 
   博客紙質備份。
 
+- [[https://michaelharley.net/posts/2026/08/02/relationship-advice-id-give-to-my-younger-self/][Relationship advice I'd give to my younger self]] by Michael Harley
+
+  Michael 給年輕自己的感情建議。關於「唯一」和共同財產的部分蠻有啟發。
 
 - 用錢去投票
   + [[https://daverupert.com/2026/07/number-chart-go-up/][Before I go: Double your business with companies you like - daverupert.com]]
-  +
+  + [[https://82mhz.net/posts/2026/08/tech-sucks-you-have-to-vote-with-your-wallet-or-nothing-will-change/][Tech sucks: You have to vote with your wallet, or nothing will change - 82MHz]]
 
 * Cool Bit
 :PROPERTIES:
@@ -128,6 +131,36 @@
 :PROPERTIES:
 :CUSTOM_ID: C207377C-B8FB-4EA5-8D82-B310C59CB4EB
 :END:
+- [[https://nickwignall.com/how-to-take-feedback-without-getting-defensive/][How to Take Feedback without Getting Defensive]] by Nick Wignall
+
+  在收到負面回饋和批評時，難免會有些不開心，產生一些負面情緒，可能還會有一些防禦性的行為。
+  情緒是難以控制的，但是否要順著情緒做出行為是可以控制的。
+  會出現負面情緒，往往是因為：
+
+  #+begin_quote
+  我們在被批評或收到負面回饋後感受到的情緒痛苦，大多來自於一種微妙的心態，
+  _將批評視為對我們人格、核心信念或自我價值的攻擊。_
+  因而產生大量痛苦情緒是合理的：
+  如果真的有人在批評你本質的存在，你自然會感到憤怒、悲傷、恐懼或羞恥。
+
+  [[https://nickwignall.com/how-to-take-feedback-without-getting-defensive/#:~:text=Much,ashamed][Source]]
+  #+end_quote
+
+  不過作者認為，大多時候人們都不是在人身攻擊，他們只是表遠的比較笨拙，依然是出於善意的。
+  此時，把批評看作是一次讓自己變得更好的機會，也許負面情緒就會少一些。
+
+  #+begin_quote
+  但大多數情況下並非如此。
+  _大多數批評與回饋——即使表達方式拙劣或缺乏同理心——最終都是出於善意。_
+  _無論你是否相信這一點，將其視為事實來處理，通常是面對批評與回饋最務實的方式。_
+  為此，我的建議如下：
+
+  *將批評重新框定為學習與成長的機會，而非攻擊。*
+
+  從這個角度看，無論批評多麼負面（或意圖多麼好或壞），最終都是正面的，因為它提供了讓你變得更好、成長的機會。
+
+  [[https://nickwignall.com/how-to-take-feedback-without-getting-defensive/#:~:text=But%20the,grow,-%2E][Source]]
+  #+end_quote
 
 * Code Related
 :PROPERTIES:
@@ -140,6 +173,51 @@
 - [[https://2026.stateofcss.com/en-US/][State of CSS 2026]]
 
   另見： [[https://patrickbrosset.com/articles/2026-08-07-state-of-css-2026/][State of CSS 2026]] by Patrick
+
+- [[https://www.bram.us/2026/07/30/styling-the-navigation-declarative-route-and-navigation-matching-in-css/][Styling the Navigation: Declarative Route and Navigation Matching in CSS – Bram.us]]
+
+  一份 CSS 草案，可以基於頁面路由變化設置不同 CSS。
+
+  #+begin_details
+  #+html: <summary>語法</summary>
+
+  #+begin_src css
+    @route --home { pathname: url-pattern('/'); }
+    @route --about { pathname: url-pattern('/about'); }
+    @route --detail { pathname: url-pattern('/detail/:id'); }
+
+    /* Going from home to about? Slide left! */
+    @navigation (from: --home) and (to: --about) {
+      @view-transition {
+        navigation: auto;
+        types: slide-all-to-left;
+      }
+    }
+
+    /* Going back from about to home? Slide right! */
+    @navigation (from: --about) and (to: --home) {
+      @view-transition {
+        navigation: auto;
+        types: slide-all-to-right;
+      }
+    }
+  #+end_src
+  #+end_details
+
+- [[https://www.joshtumath.uk/posts/2026-07-02-lets-fix-the-webs-text-size/][Talk: Let's fix the web's text size]] by Josh Tumath
+
+  如果你好奇為什麼系統字體調大後，瀏覧器的字體却沒有跟著變大，這篇文章可以給你解答。
+
+  在頁面上可以用下面兩個方法解决這個問題：
+
+  - [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/text-scale][<meta name="text-scale">]]: ~<meta name="text-scale" content="scale">~ ，目前瀏覧器支持度一般。
+  - [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env#preferred-text-scale][preferred-text-scale]] : ~font-size: calc(16px * env(preferred-text-scale));~
+
+  文章裡還分享了一些頁面文字縮放的注意事項。
+
+- [[https://master.dev/blog/something-nobody-told-you-about-the-image-element-it-can-overflow/#an-image-can-overflow][Something Nobody Told You About The Image Element (It Can Overflow!)]] by Temani Afif
+
+  你知道嗎，就算只有一個 ~<img>~ ，裡面的圖片也可能會溢出 ~<img>~ ([[https://codepen.io/t_afif/pen/xbgydXM/22b48d72cecc0e4cb01c625c66707065][例子]])。
 
 * AI Related
 :PROPERTIES:
@@ -173,6 +251,24 @@
   EWW 不支持 JS 和 CSS，如果你的網站用 EWW 打開能正常瀏覧，
   說明你的網站 HTML 寫得比較標準，文章也分享了如何編寫 HTML 使其能在 EWW 中表現更好。
 
+- [[https://protesilaos.com/codelog/2026-08-05-emacs-speedbar-file-explorer/][Emacs: the ‘speedbar’ built-in file explorer (Emacs 31)]] by Protesilaos
+
+  speedbar 可以充當目录󠄃，也可以充當代碼文件的索引。
+
+- [[https://protesilaos.com/codelog/2026-08-13-emacs-themes-solarized-wallpapers/][About Emacs themes, Solarized, and wallpapers]] by Protesilaos
+
+  #+begin_quote
+  主題是個人選擇，影響個人需求的因素很多。
+  請記住，可讀性也取決於字體大小、環境光以及你使用的螢幕亮度。
+
+  [...]
+
+  不過一般來說，人們常忘記調整螢幕亮度，所以請務必調整，並利用環境光來避免眼睛疲勞。
+
+  [[https://protesilaos.com/codelog/2026-08-13-emacs-themes-solarized-wallpapers/#:~:text=I%20should,eyes][Source]]
+  #+end_quote
+
+- [[https://taonaw.com/2026/08/05/emacs-config-gems-part.html][Emacs Config Gems - Part 3]] by The Art Of Not Asking Why
 
 * 一些话 | 摘抄
 :PROPERTIES:
@@ -246,6 +342,24 @@
 
   [[https://francescrossley.com/conversations-with-a-six-year-old-about-the-world-cup/#:~:text=When%20they,bits%2E%22][Source]]
   #+end_quote
+
+- [[https://herman.bearblog.dev/creativity/][Committing to creativity]]
+
+  #+begin_quote
+  論點很清楚：
+  _依賴動機是一場失敗的遊戲。動機是一種感受，而承諾是一個超越感受的決定。_
+
+  我在自己的生活中也發現這點，無論是創作還是人際關係、運動。
+  很少有人能一直保持運動的熱情，所以需要承諾才能持之以恆。
+  同樣地，良好的人際關係不能依賴短暫的熱情，因為人生本就坎坷。
+
+  好在隨著時間推移，承諾會變得更容易。[...]
+
+  _行動孕育動機，而非相反。_
+
+  [[https://herman.bearblog.dev/creativity/#:~:text=The%20thesis,around][Source]]
+  #+end_quote
+
 * 多媒体
 :PROPERTIES:
 :CUSTOM_ID: 57351850-2C24-4391-AD50-397FBAAC238F
