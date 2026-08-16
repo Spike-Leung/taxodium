@@ -40,51 +40,51 @@ _________________
 2 如何将 PDF 渲染出来
 =====================
 
-  我想这类需求，应该别人也碰到过，说不定有现成的方案，果不其然，找到了 [pdf-editor]
-  (<https://github.com/ShizukuIchi/pdf-editor>) 这个仓库。
+  我想这类需求，应该别人也碰到过，说不定有现成的方案，果不其然，找到了 [pdf-editor] 这个
+  仓库。
 
   渲染的思路是：
 
-  - 用 [pdf.js] (<https://github.com/mozilla/pdf.js>) 去解析 PDF 文件，得到一个解析后的
-    PDF 对象，通过它可以得到 PDF 的每一页
+  - 用 [pdf.js] 去解析 PDF 文件，得到一个解析后的 PDF 对象，通过它可以得到 PDF 的每一页
 
 
-  - 接着用 Canvas 去将每一页 PDF 画出来，可以参考官方的 [Hello World Walkthrough]
-    (<https://mozilla.github.io/pdf.js/examples/>)。
+  - 接着用 Canvas 去将每一页 PDF 画出来，可以参考官方的 [Hello World Walkthrough]。
 
   这样就完成了 PDF 的渲染。
 
   在使用 pdf.js 的时候，由于实际开发的技术栈比较旧，不支持 ES6 的一些语法，配置和调整
   babel 也没整明白，还需要升级 NodeJS 版本。
 
-  虽然官方提供了 Legend biuld，但依然是包含了不支持的语法，甚至提了一个 [issue]
-  (<https://github.com/mozilla/pdf.js/issues/17082>) 去问。
+  虽然官方提供了 Legend biuld，但依然是包含了不支持的语法，甚至提了一个 [issue] 去问。
 
-  后来是一直降低 pdf.js 的版本，下了一个和 [pdf-editor]
-  (<https://github.com/ShizukuIchi/pdf-editor>) 一样的版本 (2.3.2)，终于是能集成到项目了。
+  后来是一直降低 pdf.js 的版本，下了一个和 [pdf-editor] 一样的版本 (2.3.2)，终于是能集成
+  到项目了。
 
   所幸功能基本够用。
+
+
+[pdf-editor] <https://github.com/ShizukuIchi/pdf-editor>
+
+[pdf.js] <https://github.com/mozilla/pdf.js>
+
+[Hello World Walkthrough] <https://mozilla.github.io/pdf.js/examples/>
+
+[issue] <https://github.com/mozilla/pdf.js/issues/17082>
 
 
 3 如何将字段放到 PDF 上对应的位置
 =================================
 
-  可以参考 [pdf-editor] (<https://github.com/ShizukuIchi/pdf-editor>) 的实现，也可以使用
-  [Drag and Drop API]
-  (<https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations#draggableattribute>)
-  将需要的元素拖拽到 PDF 上。
+  可以参考 [pdf-editor] 的实现，也可以使用 [Drag and Drop API] 将需要的元素拖拽到 PDF 上。
 
   我的实现思路是：
 
   - 将每一页 PDF 看作一个容器，设置 `position: relative;'
 
 
-  - 通过 [Drag and Drop API]
-    (<https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations#draggableattribute>)
-    将字段元素，拖拽到对应的页上，计算对应的 x，y 坐标，设置 `positon: absolute;' ，这样
-    元素就能相对每一页的 PDF 定位。在实现时，借助 [getBoundingClientRect()]
-    (<https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect>)
-    以及鼠标事件返回的位置，可以很容易的计算到 x，y。
+  - 通过 [Drag and Drop API] 将字段元素，拖拽到对应的页上，计算对应的 x，y 坐标，设置
+    `positon: absolute;' ，这样元素就能相对每一页的 PDF 定位。在实现时，借助
+    [getBoundingClientRect()] 以及鼠标事件返回的位置，可以很容易的计算到 x，y。
 
 
   - 接着将拖拽到 PDF 上的元素，以二维数组的形式存储， 数组元素对应每一页包含的字段。
@@ -92,13 +92,22 @@ _________________
   实现的时候，碰到一个问题，当将元素拖拽到和自身重合的时候，会导致位置计算错误，元素被挪
   动到页面的左上角。
 
-  原因是我基于 [drop 事件]
-  (<https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/drop_event>) 返回的
-  target 计算 x，y，而我实际的 target 应该是对应的 PDF 页容器。
+  原因是我基于 [drop 事件] 返回的 target 计算 x，y，而我实际的 target 应该是对应的 PDF
+  页容器。
 
-  因此，只需要找到对应的 PDF 页元素作为 target，再使用 [getBoundingClientRect()]
-  (<https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect>) 去
-  计算一个准确的 x，y 就能解决了。
+  因此，只需要找到对应的 PDF 页元素作为 target，再使用 [getBoundingClientRect()] 去计算
+  一个准确的 x，y 就能解决了。
+
+
+[pdf-editor] <https://github.com/ShizukuIchi/pdf-editor>
+
+[Drag and Drop API]
+<https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations#draggableattribute>
+
+[getBoundingClientRect()]
+<https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect>
+
+[drop 事件] <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/drop_event>
 
 
 4 字段如何写入到 PDF 中
@@ -110,16 +119,21 @@ _________________
 
   两个数组的下标是一一对应的。
 
-  只需要遍历其中一个数组，使用 [pdf-lib] (<https://github.com/Hopding/pdf-lib>) 这个库，
-  就可以将元素写入到 PDF 中。
+  只需要遍历其中一个数组，使用 [pdf-lib] 这个库，就可以将元素写入到 PDF 中。
 
-  这里我是用 [createTextField]
-  (<https://pdf-lib.js.org/docs/api/classes/pdfform#createtextfield>) API 添加字段，后端
-  可以根据字段的 id 找到对应的字段，得到字段信息 (x, y, id 等)。
+  这里我是用 [createTextField] API 添加字段，后端可以根据字段的 id 找到对应的字段，得到
+  字段信息 (x, y, id 等)。
 
   需要注意的是，使用 createTextField 生成的 text field 自带一个白色背景，可能会覆盖 PDF
   的文字。
 
-  参考 [[Feature Request] Transparent Fields #605]
-  (<https://github.com/Hopding/pdf-lib/issues/605>)，将 backgroundColor 和 borderColor
-  置为 undefined 就好了。
+  参考 [[Feature Request] Transparent Fields #605]，将 backgroundColor 和 borderColor 置
+  为 undefined 就好了。
+
+
+[pdf-lib] <https://github.com/Hopding/pdf-lib>
+
+[createTextField] <https://pdf-lib.js.org/docs/api/classes/pdfform#createtextfield>
+
+[[Feature Request] Transparent Fields #605]
+<https://github.com/Hopding/pdf-lib/issues/605>

@@ -26,17 +26,22 @@ _________________
 搜索引擎搜索。文章的內容是我之前集成 pagefind 的經驗，如果你打算集成 pagefind，應該能給
 你提供一些参考。
 
-这周用 [pagefind] (<https://pagefind.app/>) 给博客添加了一个 [搜索页面]
-(<https://taxodium.ink/search>)，如果你感兴趣可以搜索看看。
+这周用 [pagefind] 给博客添加了一个 [搜索页面]，如果你感兴趣可以搜索看看。
 
 一直都想给博客添加一个搜索功能，加上最近开始写周刊，里面整理了不少的链接，有时候我想找点
 东西，能够搜索的话就会方便很多。
 
-以前尝试过 [algolia] (<https://www.algolia.com/>) ，但配置起来有点麻烦，也显得很重，效果
-并不满意。
+以前尝试过 [algolia] ，但配置起来有点麻烦，也显得很重，效果并不满意。
 
-这周看到了一个开源项目 [pagefind] (<https://pagefind.app/>)，它可以对构建好的 HTML 进行
-索引和搜索，配置简单，开箱即用，没有额外的第三方服务，很符合我的需要。
+这周看到了一个开源项目 [pagefind]，它可以对构建好的 HTML 进行索引和搜索，配置简单，开箱
+即用，没有额外的第三方服务，很符合我的需要。
+
+
+[pagefind] <https://pagefind.app/>
+
+[搜索页面] <https://taxodium.ink/search>
+
+[algolia] <https://www.algolia.com/>
 
 
 1 关于 pagefind
@@ -45,7 +50,7 @@ _________________
     Pagefind 是一个完全 静态 的搜索库，其目标是在大型网站上运行良好，同时 尽可能少地占
     用用户带宽 ，并且无需托管任何基础设施。
 
-    [pagefind] (<https://pagefind.app/>)
+    [pagefind]
 
   pagefind 的一些特点：
 
@@ -54,6 +59,9 @@ _________________
   - 以相同的低带宽占用提供所有功能
 
   对我来说，它最大的优点就是配置简单，不依赖第三方服务，而且搜索效果也不错。
+
+
+[pagefind] <https://pagefind.app/>
 
 
 2 配置 pagefind
@@ -84,8 +92,8 @@ _________________
 2.1 CI/CD 中添加索引指令
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-  我的博客[1]是部署在 [Netlify] (<https://www.netlify.com/>)，我只需要在构建的最后，添加
-  一行执行索引的指令 就完成索引了。
+  我的博客[1]是部署在 [Netlify]，我只需要在构建的最后，添加 一行执行索引的指令 就完成索
+  引了。
 
   ,----
   | #!/bin/bash
@@ -108,14 +116,19 @@ _________________
   如果你仔细看的话，会发现我的指令添加了 `--force-language zh-CN' 的 option，这会告诉
   pagefind 要将不同语言的页面都生成到同一个索引里。
 
-  [pagefind 的默认逻辑是按照语言各自建立索引]
-  (<https://pagefind.app/docs/multilingual/#:~:text=When%20indexing%2C%20Pagefind%20will%20look%20for%20a%20lang%20attribute%20on%20your%20html%20element.%20Indexing%20will%20then%20run%20independently%20for%20each%20detected%20language.%20When%20Pagefind%20initializes%20in%20the%20browser%20it%20will%20check%20the%20same%20lang%20attribute%20and%20load%20the%20appropriate%20index.>)
-  ，当你的页面的 [lang]
-  (<https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang>) 是 en 的
-  时候，它只会检索 en 页面对应的索引，而不会检索 zh-CN 页面的索引。
+  [pagefind 的默认逻辑是按照语言各自建立索引]，当你的页面的 [lang] 是 en 的时候，它只会
+  检索 en 页面对应的索引，而不会检索 zh-CN 页面的索引。
 
   但是我希望在一个统一的地方，能够搜索到我博客所有的内容，因此我需要它将不同语言的页面索
   引放到一起。
+
+
+[Netlify] <https://www.netlify.com/>
+
+[pagefind 的默认逻辑是按照语言各自建立索引]
+<https://pagefind.app/docs/multilingual/#:~:text=When%20indexing%2C%20Pagefind%20will%20look%20for%20a%20lang%20attribute%20on%20your%20html%20element.%20Indexing%20will%20then%20run%20independently%20for%20each%20detected%20language.%20When%20Pagefind%20initializes%20in%20the%20browser%20it%20will%20check%20the%20same%20lang%20attribute%20and%20load%20the%20appropriate%20index.>
+
+[lang] <https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang>
 
 
 2.2 引用 pagefind 资源
@@ -151,17 +164,22 @@ _________________
 
   页面上我设置了 lang="zh-CN" ，pagefind 会基于 lang 去匹配索引和组件的多语言文字。之前
   我的页面都是 `lang="en"' ，pagefind 将页面按照 en 索引，导致我搜索不到任何内容。因此我
-  也更新了博客页面的 [lang]
-  (<https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang>) 属性，从
-  en 改为了 zh-CN，这样 [对于使用屏幕阅读器的人也会友好一点]
-  (<https://www.youtube.com/watch?v=NP94u7y_KkQ>)。
+  也更新了博客页面的 [lang] 属性，从 en 改为了 zh-CN，这样 [对于使用屏幕阅读器的人也会友
+  好一点]。
 
   showImages 我设置成了 false，因为我的博客文章基本没有封面图，图片还会增加搜索时的带宽
   消耗。
 
   excerptLength 可以考虑设置一个大一点值，这样关键字附近的上下文会多一些。
 
-  页面完整代码你可以查看 [搜索页面] (<file:search.html>) 的源码。
+  页面完整代码你可以查看 [搜索页面] 的源码。
+
+
+[lang] <https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang>
+
+[对于使用屏幕阅读器的人也会友好一点] <https://www.youtube.com/watch?v=NP94u7y_KkQ>
+
+[搜索页面] <file:search.html>
 
 
 3 自定义样式
@@ -170,9 +188,8 @@ _________________
 3.1 调整 excerpt 的样式
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-  参考 [Vanilla CSS is all you need]
-  (<https://www.zolkos.com/2025/12/03/vanilla-css-is-all-you-need>)，可以给 `<mark>' 添
-  加一个样式，看起来像是用记号笔圈起来一样。
+  参考 [Vanilla CSS is all you need]，可以给 `<mark>' 添加一个样式，看起来像是用记号笔圈
+  起来一样。
 
   <file:images/use-pagefind-to-search-blog/pagefind-mark-style.webp>
 
@@ -244,15 +261,23 @@ _________________
   `----
 
 
+[Vanilla CSS is all you need]
+<https://www.zolkos.com/2025/12/03/vanilla-css-is-all-you-need>
+
+
 4 一些建议
 ==========
 
   由于 pagefind 依赖 JS，但是用户可能禁用了 JS，或者某些原因导致 pagefind 的 JS 加载错误，
   此时搜索就失效了。针对这种场景，考虑添加一段文本，引导用户使用搜索引擎搜索：
 
-    如果你未启用 JavaScript，也可以使用你喜欢的搜索引擎进行搜索。例如：[Kagi]
-    (<https://kagi.com/search?q=site%3Ataxodium.ink>)、[Google]
-    (<https://www.google.com/search?q=site%3Ataxodium.ink>)。
+    如果你未启用 JavaScript，也可以使用你喜欢的搜索引擎进行搜索。例如：[Kagi]、
+    [Google]。
+
+
+[Kagi] <https://kagi.com/search?q=site%3Ataxodium.ink>
+
+[Google] <https://www.google.com/search?q=site%3Ataxodium.ink>
 
 
 5 写在最后

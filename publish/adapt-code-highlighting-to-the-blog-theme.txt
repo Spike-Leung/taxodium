@@ -18,9 +18,8 @@ _________________
 我的博客是用 `org-publish' 生成的，后面我给博客添加了主题切换（见 [给博客添加 dark mode]
 <https://taxodium.ink/setup-blog-color-scheme.html#0E86BEB5-D1F9-451D-8271-B63E836FE0A3>
 ）， 当时留下了一个问题 ⸺ `org-publish' 生成的代码高亮是内联在 HTML 标签里的，我没法通过
-[light-dark]
-(<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark>)
-去设置亮色/暗色主题下不同的颜色，只能选择一种代码高亮主题，要么是亮色，要么是暗色。
+[light-dark] 去设置亮色/暗色主题下不同的颜色，只能选择一种代码高亮主题，要么是亮色，要么
+是暗色。
 
 如果你好奇博客是如何用 `org-publish' 构建的：
 
@@ -58,9 +57,7 @@ _________________
 
 最近又在折腾博客样式，就顺便去看了一下 `org-publish' 中代码块的高亮是如何实现的，于是看
 到了 `org-html-htmlize-output-type' 这个参数，将其设置为 `css' ，代码高亮就会使用添加类
-名的方式实现，而不是内联，这样我就可以基于类名去应用 [light-dark]
-(<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark>)
-了。
+名的方式实现，而不是内联，这样我就可以基于类名去应用 [light-dark] 了。
 
 (ﾉ>ω<)ﾉ 好耶！
 
@@ -169,12 +166,8 @@ definitions 尽可能齐全。
 | (advice-add 'org-html-htmlize-generate-css :after #'spike-leung/save-org-html-htmlize-generate-css)
 `----
 
-接着，写一个 [脚本]
-(<https://github.com/Spike-Leung/taxodium/blob/b777de19ab27ac41bdb9681d3e1838d88d3c1593/scripts/generate-fontify-code-css.js>)
-，合并 `light.txt' 和 `dark.txt' ，生成一份 CSS 文件，将两个主题的颜色合并，使用
-[light-dark]
-(<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark>)
-定义亮色/暗色主题下的颜色。
+接着，写一个 [脚本]，合并 `light.txt' 和 `dark.txt' ，生成一份 CSS 文件，将两个主题的颜
+色合并，使用 [light-dark] 定义亮色/暗色主题下的颜色。
 
 如果你打算使用这个脚本，你可能需要调整一下代码中文件的路径。或者你可以找 LLM 写一个。
 
@@ -249,11 +242,23 @@ definitions 尽可能齐全。
 `----
 
 [Source]
-(<https://github.com/Spike-Leung/taxodium/blob/b777de19ab27ac41bdb9681d3e1838d88d3c1593/scripts/generate-fontify-code-css.js>)
 
 最后，在博客中引用生成好的 CSS 文件就好了。
 
 Happy hacking - [Emacs] <https://taxodium.ink/how-to-get-started-with-emacs.html> ♥ you!
 
-如果你有什么想法，也可以在 [让 org-publish 生成的代码高亮，基于亮色/暗色主题切换]
-(<https://emacs-china.org/t/org-publish/31096>) 参与讨论。
+如果你有什么想法，也可以在 [让 org-publish 生成的代码高亮，基于亮色/暗色主题切换] 参与讨
+论。
+
+
+[light-dark]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark>
+
+[脚本]
+<https://github.com/Spike-Leung/taxodium/blob/b777de19ab27ac41bdb9681d3e1838d88d3c1593/scripts/generate-fontify-code-css.js>
+
+[Source]
+<https://github.com/Spike-Leung/taxodium/blob/b777de19ab27ac41bdb9681d3e1838d88d3c1593/scripts/generate-fontify-code-css.js>
+
+[让 org-publish 生成的代码高亮，基于亮色/暗色主题切换]
+<https://emacs-china.org/t/org-publish/31096>

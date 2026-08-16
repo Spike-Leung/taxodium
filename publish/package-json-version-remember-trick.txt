@@ -19,8 +19,7 @@ _________________
 5. Refs
 
 
-如果你做过前端开发，那么对 [pacakge.json]
-(<https://docs.npmjs.com/cli/v11/configuring-npm/package-json>) 一定不陌生，它描述了：
+如果你做过前端开发，那么对 [pacakge.json] 一定不陌生，它描述了：
 
 - 项目名称、版本等基本信息
 - 项目依赖的外部工具/库
@@ -45,6 +44,9 @@ _________________
 享一个我的记忆方法，或许对你有帮助。
 
 
+[pacakge.json] <https://docs.npmjs.com/cli/v11/configuring-npm/package-json>
+
+
 1 TL;DR
 =======
 
@@ -61,7 +63,7 @@ _________________
 2 关于版本号
 ============
 
-  package.json 的版本号遵循 [语义化版本 2.0.0] (<https://semver.org/lang/zh-CN/>)：
+  package.json 的版本号遵循 [语义化版本 2.0.0]：
 
     版本格式： `主版本号.次版本号.修订号' ，版本号递增规则如下：
 
@@ -75,44 +77,56 @@ _________________
     先行版本号 (pre-release) 及版本编译信息 (build metadata)可以加到 `主版本号.次版本
     号.修订号' 的后面，作为延伸。
 
-  package.json 中 [关于版本号范围的定义]
-  (<https://docs.npmjs.com/cli/v11/configuring-npm/package-json#git-urls-as-dependencies>)
-  是这样的:
+  package.json 中 [关于版本号范围的定义] 是这样的:
 
     - version : 必须完全匹配 `version'
     - >version : 必须大于 `version'
     - >=version : 大于等于 `version'
     - <version : 必须小于 `version'
     - <=version : 小于等于 `version'
-    - ~version : 大致相当于 `version' (参见 [semver]
-      (<https://github.com/npm/node-semver#versions>))
-    - ^version : 与 `version' 兼容 (参见 [semver]
-      (<https://github.com/npm/node-semver#versions>))
+    - ~version : 大致相当于 `version' (参见 [semver])
+    - ^version : 与 `version' 兼容 (参见 [semver])
     - 1.2.x : `1.2.0', `1.2.1', 等等，但不包括 `1.3.0'
     - * : 匹配任何版本
     - "" : (空字符串) 等同于 `*'
     - version1 - version2 : 等同于 `>=version1 <=version2'
     - range1 || range2 : 如果 `range1' 或 `range2' 满足，则通过。
     - <http://>... : 参见 [URLs as Dependencies]
-      (<https://docs.npmjs.com/cli/v11/configuring-npm/package-json#urls-as-dependencies>)
     - git... : 参见 [Git URLs as Dependencies]
-      (<https://docs.npmjs.com/cli/v11/configuring-npm/package-json#git-urls-as-dependencies>)
     - user/repo : 参见 [GitHub URLs]
-      (<https://docs.npmjs.com/cli/v11/configuring-npm/package-json#github-urls>)
-    - tag : 一个特定的版本，被标记并发布为 `tag' (参见 [npm dist-tag]
-      (<https://docs.npmjs.com/cli/v11/commands/npm-dist-tag>))
+    - tag : 一个特定的版本，被标记并发布为 `tag' (参见 [npm dist-tag])
     - path/path/path : 参见 [本地路径]
-      (<https://docs.npmjs.com/cli/v11/using-npm/package-spec#aliases>)
-    - npm:@scope/pkg@version : 包的自定义别名 (参见 [package-spec]
-      (<https://docs.npmjs.com/cli/v11/using-npm/package-spec#aliases>))
+    - npm:@scope/pkg@version : 包的自定义别名 (参见 [package-spec])
 
   除了 `^' 和 `~' 其实都是比较容易明白的。
+
+
+[语义化版本 2.0.0] <https://semver.org/lang/zh-CN/>
+
+[关于版本号范围的定义]
+<https://docs.npmjs.com/cli/v11/configuring-npm/package-json#git-urls-as-dependencies>
+
+[semver] <https://github.com/npm/node-semver#versions>
+
+[URLs as Dependencies]
+<https://docs.npmjs.com/cli/v11/configuring-npm/package-json#urls-as-dependencies>
+
+[Git URLs as Dependencies]
+<https://docs.npmjs.com/cli/v11/configuring-npm/package-json#git-urls-as-dependencies>
+
+[GitHub URLs] <https://docs.npmjs.com/cli/v11/configuring-npm/package-json#github-urls>
+
+[npm dist-tag] <https://docs.npmjs.com/cli/v11/commands/npm-dist-tag>
+
+[本地路径] <https://docs.npmjs.com/cli/v11/using-npm/package-spec#aliases>
+
+[package-spec] <https://docs.npmjs.com/cli/v11/using-npm/package-spec#aliases>
 
 
 3 ^ (Caret Ranges) 和 ~ (Tilde Ranges)
 ======================================
 
-  [^ (Caret Ranges)] (<https://github.com/npm/node-semver?tab=readme-ov-file#caret-ranges-123-025-004>)
+  [^ (Caret Ranges)]
     允许不修改 `[major, minor, patch]' 元组中最左边非零元素的更改。(Allows changes that
     do not modify the left-most non-zero element in the `[major, minor, patch]' tuple.)
 
@@ -141,7 +155,7 @@ _________________
   特殊的 ，当 3 位版本号都是 0 的时候，即 `^0.0.0' , 此时从头往后找不到非 0 的版本号，则
   固定第一位，即固定主版本号，其他版本号随意，范围是 `>=0.0.0 <1.0.0' 。
 
-  [~ (Tilde Ranges)] (<https://github.com/npm/node-semver?tab=readme-ov-file#tilde-ranges-123-12-1>) 
+  [~ (Tilde Ranges)] 
     如果存在 `次版本号' ，则允许进行 `修订号' 修改。如果没有，则允许 `次版本号' 的更改。
 
     + `~1.2.3' := `>=1.2.3 <1.3.0-0'
@@ -168,6 +182,13 @@ _________________
   例如 `~0', 不存在第二位，因此可以修改第二位，固定第一位，范围是 `>=0.0.0 <1.0.0' 。
 
 
+[^ (Caret Ranges)]
+<https://github.com/npm/node-semver?tab=readme-ov-file#caret-ranges-123-025-004>
+
+[~ (Tilde Ranges)]
+<https://github.com/npm/node-semver?tab=readme-ov-file#tilde-ranges-123-12-1>
+
+
 4 写在最后
 ==========
 
@@ -183,5 +204,10 @@ _________________
 ======
 
   - [package.json - dependencies]
-    (<https://docs.npmjs.com/cli/v11/configuring-npm/package-json#dependencies>)
-  - [node-semver#versions] (<https://github.com/npm/node-semver#versions>)
+  - [node-semver#versions]
+
+
+[package.json - dependencies]
+<https://docs.npmjs.com/cli/v11/configuring-npm/package-json#dependencies>
+
+[node-semver#versions] <https://github.com/npm/node-semver#versions>

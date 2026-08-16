@@ -17,15 +17,12 @@ _________________
 
 
 生成了一份 (更新於 2026-08-05，137 / 162)，如果你需要可以點擊下載，然後导入到你的 RSS 閱
-讀器中。如果你想 [參加 Blaugust]
-(<https://docs.google.com/forms/d/e/1FAIpQLScouIfF_RGkOPhWbyDjAhGTnxJ0smWfhZEiZRiAeLnvzPuO9g/viewform?usp=send_form>)
-，現在就是最好的時間！
+讀器中。如果你想 [參加 Blaugust]，現在就是最好的時間！
 
-這份 OMPL 文件裡沒有完全包擴 [Blaugust 2026 – Meet the Mentors & Participant List]
-(<https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/>)
-中的博客，因為有的博客無法訪問，有的在頁面上找不到訂閱連結，所以缺失了几個博客。如果在連
-結裡找不到你的博客，歡迎邮件聯系我，我很樂意更新進去。連結我會定期更新（可能每隔 7 天），
-你可以看連結後的更新日期了解是否更新過。
+這份 OMPL 文件裡沒有完全包擴 [Blaugust 2026 – Meet the Mentors & Participant List] 中的
+博客，因為有的博客無法訪問，有的在頁面上找不到訂閱連結，所以缺失了几個博客。如果在連結裡
+找不到你的博客，歡迎邮件聯系我，我很樂意更新進去。連結我會定期更新（可能每隔 7 天），你
+可以看連結後的更新日期了解是否更新過。
 
 ----------------------------------------------------------------------------------------
 
@@ -56,9 +53,8 @@ _________________
 的博客不提供我就沒辦法了，如果你的博客也是這樣的，我請求你加上 `<link>' 以及在頁面上提供
 明顯的訂閱連結。
 
-另外 owls 也製作了一份 OPML 訂閱文件 ⸺ [The Blaugust 2026 Post Firehose]
-(<https://godless-internets.org/2026/07/19/the-blaugust-2026-post-firehose>)，他也分享了
-他是如何製作的，可以去看看。
+另外 owls 也製作了一份 OPML 訂閱文件 ⸺ [The Blaugust 2026 Post Firehose]，他也分享了他是
+如何製作的，可以去看看。
 
 ----------------------------------------------------------------------------------------
 
@@ -68,15 +64,14 @@ _________________
 
 大體的流程是這樣的：
 
-- 拉取 [Blaugust 2026 – Meet the Mentors & Participant List]
-  (<https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/>)
-  的 HTML，解析所有參加者的域名和博客名字。
+- 拉取 [Blaugust 2026 – Meet the Mentors & Participant List] 的 HTML，解析所有參加者的域
+  名和博客名字。
 - 遍歷所有參加者的域名，获取主頁的 HTML，從中查找 `<link ref="alternative"
   type="application/rss+xml">' 和 `<link ref="alternative" type="application/atom+xml">'
   ，获取到訂閱 URL。(有的博客沒提供，或者有的做了爬虫防护，可能會获取不到；另外也可能會
   获取到多個連結，除了文章的，還有評論的；有的是 `/feed/' ，還要拼接上域名。)
 - 生成一份文件，包含所有訂閱數據，我會檢查一遍，处理找不到訂閱連結的博客。
-- 用文件數據按照 [OPML] (<https://en.wikipedia.org/wiki/OPML>) 格式生成 OPML 文件。
+- 用文件數據按照 [OPML] 格式生成 OPML 文件。
 
 ----------------------------------------------------------------------------------------
 
@@ -323,8 +318,8 @@ _________________
 
 Elisp 代碼主要用到了：
 
-- [alphapapa/plz.el] (<https://github.com/alphapapa/plz.el>)，用來發起請求，plz 提供了回
-  調方法，也提供了多種返回體格式，讓处理請求更容易。
+- [alphapapa/plz.el]，用來發起請求，plz 提供了回調方法，也提供了多種返回體格式，讓处理請
+  求更容易。
 - `dom.el' 是 Emacs 內置的，提供了一些处理 DOM 的方法：
   + `libxml-parse-html-region' 解析 HTML
   + `dom-by-class' 等方法查找 DOM
@@ -332,9 +327,8 @@ Elisp 代碼主要用到了：
 
 使用時：
 - 用 `spike-leung/blaugust--collect-feeds' ，輸入 [Blaugust 2026 – Meet the Mentors &
-  Participant List]
-  (<https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/>)
-  的連結和一個文件名，就會從連結拉取所有的 participant 的信息保存到文件中。
+  Participant List] 的連結和一個文件名，就會從連結拉取所有的 participant 的信息保存到文
+  件中。
 - 檢查文件中的信息(可以通過 `consult-line' 和 `embark-export' 過濾出 `:feeds nil' 的部分)，
   补全沒拉取到的博客信息。沒拉取到的博客，會顯示成 `:feeds nil' 。
 - 用 `spike-leung/blaugust--export-opml' ，基於上面生成的文件生成 OPML 文件。
@@ -343,3 +337,17 @@ Elisp 代碼主要用到了：
   一個临時 buffer，列出哪些己經在 `elfeed-feeds' 裡、哪些是新的，數據格式和
   `elfeed-feeds' 是一樣的，可以方便地添加到 elfeed 里 (默認會加上 `blaugust2026' 的 tag，
   對原來 `elfeed-feeds' 中沒有的還會加上 `new-feeds' 的 tag，便於過濾)。
+
+
+[參加 Blaugust]
+<https://docs.google.com/forms/d/e/1FAIpQLScouIfF_RGkOPhWbyDjAhGTnxJ0smWfhZEiZRiAeLnvzPuO9g/viewform?usp=send_form>
+
+[Blaugust 2026 – Meet the Mentors & Participant List]
+<https://nerdgirlthoughts.game.blog/2026/08/01/blaugust-2026-meet-the-mentors-participant-list/>
+
+[The Blaugust 2026 Post Firehose]
+<https://godless-internets.org/2026/07/19/the-blaugust-2026-post-firehose>
+
+[OPML] <https://en.wikipedia.org/wiki/OPML>
+
+[alphapapa/plz.el] <https://github.com/alphapapa/plz.el>

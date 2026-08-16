@@ -17,10 +17,9 @@ _________________
 
 <file:images/use-elfeed-to-read-feed-in-emacs/elfeed.webp>
 
-在 Emacs 里，可以用 [skeeto/elfeed] (<https://github.com/skeeto/elfeed>) 阅读订阅流（[关
-于订阅流] <https://taxodium.ink/about-feeds.html>），为了方便管理订阅流，我还会结合
-[remyhonig/elfeed-org] (<https://github.com/remyhonig/elfeed-org>) 一起用，在一个 org 文
-件里维护所有的订阅。
+在 Emacs 里，可以用 [skeeto/elfeed] 阅读订阅流（[关于订阅流]
+<https://taxodium.ink/about-feeds.html>），为了方便管理订阅流，我还会结合
+[remyhonig/elfeed-org] 一起用，在一个 org 文件里维护所有的订阅。
 
 在 Emacs 中可以这样配置：
 
@@ -40,14 +39,10 @@ _________________
 如果使用 `elfeed-org' ，注意在执行 `elfeed' 前先执行 `elfeed-org' ，让 `elfeed-org' 将
 org 文件的订阅流转换成 `elfeed' 需要的格式，可以通过 hook 实现。
 
-[elfeed.org]
-(<https://github.com/Spike-Leung/Spikemacs/blob/f57261be4b32121e86dc4e37e60f932e2b15cfd8/elfeed.org>)
-是我的 `elfeed-org' 配置文件，基于 Kedara 分享的 [Organising my feeds using Permaculture
-principles] (<https://kedara.eu/organising-feeds-permaculture/>) 整理。
+[elfeed.org] 是我的 `elfeed-org' 配置文件，基于 Kedara 分享的 [Organising my feeds using
+Permaculture principles] 整理。
 
-[elfeed.org]
-(<https://github.com/Spike-Leung/Spikemacs/blob/f57261be4b32121e86dc4e37e60f932e2b15cfd8/elfeed.org>)
-的结构大致如下：
+[elfeed.org] 的结构大致如下：
 
 ,----
 | * feed :elfeed:
@@ -62,9 +57,7 @@ principles] (<https://kedara.eu/organising-feeds-permaculture/>) 整理。
 是 `elfeed' ）作为 tag。tag 会被下一层级的 heading 继承，可以方便地归类订阅流。
 
 配置好之后，在 Emacs 里只需要执行 `M-x elfeed' ，就可以看到所有的订阅流了。另外，可以看
-看 [elfeed 的过滤条件]
-(<https://github.com/skeeto/elfeed?tab=readme-ov-file#filter-syntax>)，方便过滤想看的订
-阅流。
+看 [elfeed 的过滤条件]，方便过滤想看的订阅流。
 
 下面再分享一些方法，可以让 `elfeed' 的使用体验更好。
 
@@ -111,8 +104,7 @@ feed 更好看] <https://taxodium.ink/pretty-feed.html>）。
 | (advice-add 'org-open-at-point :around #'spike-leung/org-open-rss-feed-as-site-in-elfeed-org-files)
 `----
 
-`org-mode' 中打开链接的方式是 `org-open-at-point' ，可以给这个方法 添加 一个 [advice]
-(<https://protesilaos.com/emacs/emacs-lisp-elements#h:hooks-and-the-advice-mechanism>)，
+`org-mode' 中打开链接的方式是 `org-open-at-point' ，可以给这个方法 添加 一个 [advice]，
 如果 当前是 elfeed-org 文件，并且链接是 订阅流链接，则从中 解析域名，然后 调用
 browse-url 跳转访问。
 
@@ -122,11 +114,10 @@ browse-url 跳转访问。
 部内容。也可以用 `elfeed-update-feed' 找到感興趣的 feed 更新。如果 Elfeed 本身的功能已经
 满足需要，或许你并不需要下面这个功能。
 
-`elfeed' 支持很多 [过滤条件]
-(<https://github.com/skeeto/elfeed?tab=readme-ov-file#filter-syntax>)，可以使用
-`elfeed-search-live-filter' 设置过滤器并实时预览过滤结果。我最常设置的过滤条件是过滤博客
-名字，但现在我订阅了 300 多个订阅流，很多名字我都记不下来。我想到的一个办法是把所有订阅
-流的名字罗列出来，然后让我从中选择，这样我就不需要记了。
+`elfeed' 支持很多 [过滤条件]，可以使用 `elfeed-search-live-filter' 设置过滤器并实时预览
+过滤结果。我最常设置的过滤条件是过滤博客名字，但现在我订阅了 300 多个订阅流，很多名字我
+都记不下来。我想到的一个办法是把所有订阅流的名字罗列出来，然后让我从中选择，这样我就不需
+要记了。
 
 下面我分享一下是如何实现的。
 
@@ -204,17 +195,13 @@ browse-url 跳转访问。
 `----
 
 在 Emacs 中，可以通过 `completing-read' 来做这件事，给它传入一个选项列表，然后在
-[Minibuffer]
-(<https://www.gnu.org/software/emacs/manual/html_node/emacs/Minibuffer.html>) 中选择选项，
-再基于选择的值做后续的处理。
+[Minibuffer] 中选择选项，再基于选择的值做后续的处理。
 
-Emacs 里我安装了 [minad/consult] (<https://github.com/minad/consult>)，它是一个基于
-`completing-read' 的补全扩展，提供了很多方便的方法，可以理解为 `completing-read' 的增强
-版本。`consult' 提供了 `consult--read' ，和 `completing-read' 功能一样，但支持实时预览；
-`consult--read' 默认返回的是字符串，但有时我还要一些额外的信息，例如订阅流的 URL、订阅流
-的描述等，字符串无法携带这些信息，这时可以用 `consult--multi' ，返回一个 [plist]
-(<https://www.gnu.org/software/emacs/manual/html_node/elisp/Property-Lists.html>)
-(Property Lists)。
+Emacs 里我安装了 [minad/consult]，它是一个基于 `completing-read' 的补全扩展，提供了很多
+方便的方法，可以理解为 `completing-read' 的增强版本。`consult' 提供了 `consult--read' ，
+和 `completing-read' 功能一样，但支持实时预览；`consult--read' 默认返回的是字符串，但有
+时我还要一些额外的信息，例如订阅流的 URL、订阅流的描述等，字符串无法携带这些信息，这时可
+以用 `consult--multi' ，返回一个 [plist] (Property Lists)。
 
 具体的实现可以拆成几步：
 1. 从 `elfeed.org' 中解析出所有的订阅流名字，作为选项列表
@@ -272,8 +259,7 @@ Emacs 里我安装了 [minad/consult] (<https://github.com/minad/consult>)，它
 |    rmh-elfeed-org-files))
 `----
 
-其中 description 是通过 `org-mode' 的 [Property]
-(<https://orgmode.org/manual/Property-Syntax.html>) 定义的，需要将 字段 包裹在
+其中 description 是通过 `org-mode' 的 [Property] 定义的，需要将 字段 包裹在
 `:PROPERTIES:' 和 `:END:' 之间：
 
 ,----
@@ -287,10 +273,8 @@ Emacs 里我安装了 [minad/consult] (<https://github.com/minad/consult>)，它
 
 通过给订阅添加描述，可以提醒自己这个订阅是关于什么的。
 
-安装 [orderless] (<https://github.com/oantolin/orderless>) 之后还可以用 `&' 关键字来 [搜
-索 Annotation]
-(<https://github.com/oantolin/orderless?tab=readme-ov-file#style-dispatchers:~:text=%26%20modifies%20the%20component%20with%20orderless%2Dannotation%2E%20The%20pattern%20will%20match%20against%20the%20candidate%E2%80%99s%20annotation%20%28cheesy%20mnemonic%3A%20andnotation%21%29%2E>)
-，例如上图中的 `&作者' 就会匹配到包含「作者」的 Annotation。
+安装 [orderless] 之后还可以用 `&' 关键字来 [搜索 Annotation]，例如上图中的 `&作者' 就会
+匹配到包含「作者」的 Annotation。
 
 得到一个选项列表之后，就可以将列表丢给 `consult--multi' 处理。
 
@@ -405,10 +389,8 @@ string，用于给选项添加注释内容。
 
 ----------------------------------------------------------------------------------------
 
-利用 [Kagi Website Translate]
-(<https://help.kagi.com/kagi/translate/#website-translation>)，可以在打开链接的时候，添
-加 `translate.kagi.com/' 作为前缀，这样就可以获得一个翻译后的页面了，对于阅读外文应该会
-有所帮助。
+利用 [Kagi Website Translate]，可以在打开链接的时候，添加 `translate.kagi.com/' 作为前缀，
+这样就可以获得一个翻译后的页面了，对于阅读外文应该会有所帮助。
 
 ,----
 | (defun spike-leung/elfeed-search-browse-url-with-kagi-translate ()
@@ -456,9 +438,7 @@ string，用于给选项添加注释内容。
 
 - 面对一个问题不知道怎么处理，可以问 LLM 获取一些思路和方向
 - 如果要做的事情，在 Emacs 中见过类似的实现，可以去看看（通过 `describe-function' 、
-  `describe-key' ）它们的实现逻辑，抄过来改一下，或者用 [advice]
-  (<https://protesilaos.com/emacs/emacs-lisp-elements#h:hooks-and-the-advice-mechanism>)
-  去调整它们的行为
+  `describe-key' ）它们的实现逻辑，抄过来改一下，或者用 [advice] 去调整它们的行为
 - 有时看到一下 message，不知道哪里来的，可以用 `(setq debug-on-message "your message
   regexp")' 调试
 - 利用 `debug-on-entry' 去调试一些函数
@@ -468,8 +448,43 @@ string，用于给选项添加注释内容。
 如果你打算入门 Emacs，可以看看： [如何上手 Emacs]
 <https://taxodium.ink/how-to-get-started-with-emacs.html>
 
-如果你有什么想法，你可以在 [分享一些提升 elfeed 使用体验的方法]
-(<https://emacs-china.org/t/elfeed/31141>) 进行讨论，或者给我邮件 :)
+如果你有什么想法，你可以在 [分享一些提升 elfeed 使用体验的方法] 进行讨论，或者给我邮件
+:)
+
+
+[skeeto/elfeed] <https://github.com/skeeto/elfeed>
+
+[remyhonig/elfeed-org] <https://github.com/remyhonig/elfeed-org>
+
+[elfeed.org]
+<https://github.com/Spike-Leung/Spikemacs/blob/f57261be4b32121e86dc4e37e60f932e2b15cfd8/elfeed.org>
+
+[Organising my feeds using Permaculture principles]
+<https://kedara.eu/organising-feeds-permaculture/>
+
+[elfeed 的过滤条件] <https://github.com/skeeto/elfeed?tab=readme-ov-file#filter-syntax>
+
+[advice]
+<https://protesilaos.com/emacs/emacs-lisp-elements#h:hooks-and-the-advice-mechanism>
+
+[过滤条件] <https://github.com/skeeto/elfeed?tab=readme-ov-file#filter-syntax>
+
+[Minibuffer] <https://www.gnu.org/software/emacs/manual/html_node/emacs/Minibuffer.html>
+
+[minad/consult] <https://github.com/minad/consult>
+
+[plist] <https://www.gnu.org/software/emacs/manual/html_node/elisp/Property-Lists.html>
+
+[Property] <https://orgmode.org/manual/Property-Syntax.html>
+
+[orderless] <https://github.com/oantolin/orderless>
+
+[搜索 Annotation]
+<https://github.com/oantolin/orderless?tab=readme-ov-file#style-dispatchers:~:text=%26%20modifies%20the%20component%20with%20orderless%2Dannotation%2E%20The%20pattern%20will%20match%20against%20the%20candidate%E2%80%99s%20annotation%20%28cheesy%20mnemonic%3A%20andnotation%21%29%2E>
+
+[Kagi Website Translate] <https://help.kagi.com/kagi/translate/#website-translation>
+
+[分享一些提升 elfeed 使用体验的方法] <https://emacs-china.org/t/elfeed/31141>
 
 
 

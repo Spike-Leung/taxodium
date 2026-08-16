@@ -17,9 +17,8 @@ _________________
 
 开发中碰到一个问题，有一个信息字段，label 不换行，value 如果比较长就换行。
 
-一直以为只要设置 [word-break: break-all;]
-(<https://developer.mozilla.org/en-US/docs/Web/CSS/word-break#break-all>) 就万事大吉，但
-碰到恰好全是英文句号(`.' )的时候，失效了。
+一直以为只要设置 [word-break: break-all;] 就万事大吉，但碰到恰好全是英文句号(`.' )的时候，
+失效了。
 
 ,----
 | <!DOCTYPE html>
@@ -52,12 +51,9 @@ break-all;' 在标点之间不会考虑换行：
   This value does not affect whether there are soft wrap opportunities around
   punctuation characters.  To allow breaks anywhere, see line-break: anywhere.
 
-  [Source] (<https://drafts.csswg.org/css-text/#word-break-property>)
+  [Source]
 
-为了解决，可以使用 [line-break: anywhere;]
-(<https://developer.mozilla.org/en-US/docs/Web/CSS/line-break#anywhere>) 或者
-[overflow-wrap: anywhere;]
-(<https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-wrap#anywhere>)。
+为了解决，可以使用 [line-break: anywhere;] 或者 [overflow-wrap: anywhere;]。
 
 ,----
 | <!DOCTYPE html>
@@ -145,14 +141,29 @@ break-all;' 在标点之间不会考虑换行：
   word-break: normal and overflow-wrap: anywhere', regardless of the actual value of
   the overflow-wrap property.
 
-  [Source] (<https://drafts.csswg.org/css-text/#word-break-property>)
+  [Source]
 
 也就是说， `word-break: break-word;' 相当于设置了 `overflow-wrap: anywhere;' ，所以即使
 是标点符号，也能换行。
 
-关于文本换行，[Wrapping and breaking text]
-(<https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_text/Wrapping_breaking_text>) 讲
-得很详细，里面还介绍了 [<wbr>]
-(<https://developer.mozilla.org/en-US/docs/Web/HTML/Element/wbr>) (标记一个可换行的位置)，
-[hyphens] (<https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens>) (换行增加连接符
-`-')，推荐阅读一下。
+关于文本换行，[Wrapping and breaking text] 讲得很详细，里面还介绍了 [<wbr>] (标记一个可
+换行的位置)，[hyphens] (换行增加连接符 `-')，推荐阅读一下。
+
+
+[word-break: break-all;]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/word-break#break-all>
+
+[Source] <https://drafts.csswg.org/css-text/#word-break-property>
+
+[line-break: anywhere;]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/line-break#anywhere>
+
+[overflow-wrap: anywhere;]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-wrap#anywhere>
+
+[Wrapping and breaking text]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_text/Wrapping_breaking_text>
+
+[<wbr>] <https://developer.mozilla.org/en-US/docs/Web/HTML/Element/wbr>
+
+[hyphens] <https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens>

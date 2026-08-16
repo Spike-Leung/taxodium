@@ -45,28 +45,22 @@ _________________
      URL 也是依赖文件名的，URL 也会跟着变，但我希望文章一旦发布之后，URL 就尽量固定下来，
      避免有人引用后跳转出现 404
 
-  关于命名规则，我觉得 [denote] (<https://protesilaos.com/emacs/denote>) 的命名规则很好，
-  我也一直在用 denote 来记笔记，所以打算用 denote 来解决命名规则的问题。
+  关于命名规则，我觉得 [denote] 的命名规则很好，我也一直在用 denote 来记笔记，所以打算用
+  denote 来解决命名规则的问题。
 
   于是我就搜索了一下有没有用 denote 写博客，还真找到了一些：
 
   - [Generating a Blog Site from Denote Entries | System Crafters]
-    (<https://systemcrafters.net/live-streams/september-9-2022/>)
   - [Blogging with Denote and Hugo | Jiewawa's blog]
-    (<https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/>)
   - [Blogging using Denote and Hugo | Yejun Su]
-    (<https://yejun.dev/posts/blogging-using-denote-and-hugo/>)
   - [Blogging with Org Mode and Denote | Uncharted Mind Space]
-    (<https://merrick.luois.me/posts/blog-redecoration-2025>)
 
-  我先是尝试了一下 [Generating a Blog Site from Denote Entries | System Crafters]
-  (<https://systemcrafters.net/live-streams/september-9-2022/>) 里的方法，这篇文章使用
-  [weblorg] (<https://github.com/emacs-love/weblorg>) 构建博客。
+  我先是尝试了一下 [Generating a Blog Site from Denote Entries | System Crafters] 里的方
+  法，这篇文章使用 [weblorg] 构建博客。
 
-  weblorg 看起来挺不错，足够简单，而且更重要的是它支持一个 [slug]
-  (<https://emacs.love/weblorg/doc/file-properties.html#slug>) 属性，slug 优先于 title，
-  如果存在 slug 就会用 slug 生成 HTML 的文件名，这正好解决了我的第二个问题，即固定 URL，
-  不随着标题等变化。
+  weblorg 看起来挺不错，足够简单，而且更重要的是它支持一个 [slug] 属性，slug 优先于
+  title，如果存在 slug 就会用 slug 生成 HTML 的文件名，这正好解决了我的第二个问题，即固
+  定 URL，不随着标题等变化。
 
   除此之外，weblorg 的 template 系统看起来也比 org-publish 用起来简单；它还有一直想要的
   文章分类 (category) 功能。
@@ -89,7 +83,6 @@ _________________
     based on the backend format.
 
     [Source]
-    (<https://orgmode.org/manual/Export-Settings.html#index-EXPORT_005fFILE_005fNAME_002c-keyword>)
 
   也就是说，通过 `EXPORT_FILE_NAME' 我可以改变导出的 HTML 的文件名。
 
@@ -108,12 +101,33 @@ _________________
   改动以及博客文章的改动。
 
 
+[denote] <https://protesilaos.com/emacs/denote>
+
+[Generating a Blog Site from Denote Entries | System Crafters]
+<https://systemcrafters.net/live-streams/september-9-2022/>
+
+[Blogging with Denote and Hugo | Jiewawa's blog]
+<https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/>
+
+[Blogging using Denote and Hugo | Yejun Su]
+<https://yejun.dev/posts/blogging-using-denote-and-hugo/>
+
+[Blogging with Org Mode and Denote | Uncharted Mind Space]
+<https://merrick.luois.me/posts/blog-redecoration-2025>
+
+[weblorg] <https://github.com/emacs-love/weblorg>
+
+[slug] <https://emacs.love/weblorg/doc/file-properties.html#slug>
+
+[Source]
+<https://orgmode.org/manual/Export-Settings.html#index-EXPORT_005fFILE_005fNAME_002c-keyword>
+
+
 2 denote
 ========
 
-    [Denote] (<https://protesilaos.com/emacs/denote>) 是由 Protesilaos Stavrou（也称
-    Prot）创建的一个简单记笔记工具，其理念是笔记文件名应遵循一种可预测且具描述性的命名
-    方案。
+    [Denote] 是由 Protesilaos Stavrou（也称 Prot）创建的一个简单记笔记工具，其理念是笔
+    记文件名应遵循一种可预测且具描述性的命名方案。
 
     默认格式是 `DATE==SIGNATURE--TITLE__KEYWORDS.EXTENSION' ，例如
     `20231007T104700--static-website-with-hugo-and-nix__hugo_nix.org' 。
@@ -121,7 +135,6 @@ _________________
     这种格式既适合用于 URL，又便于搜索。
 
     [Source]
-    (<https://yejun.dev/posts/blogging-using-denote-and-hugo/#:~:text=Denote%20is%20a,easy%20to%20search.>)
 
   denote 这样的命名方案，通过看文件名就能获取很多信息。
 
@@ -144,13 +157,12 @@ _________________
      而不是 denote 本身的文件名。
 
   对于 slios 的到处问题，Prot 已经考虑到了，参考 [5.7.1. Make Org export work with
-  silos] (<https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8>)。
+  silos]。
 
   对于 `denote:' 链接问题，需要覆盖 `denote-link-ol-export' 的实现，在生成链接的时候，通
   过 `denote:' 找到文件后，获取文件中的 `export_file_name' 作为最终的链接名称。
 
-  源文件见：[init-denote.el]
-  (<https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-denote.el>)。
+  源文件见：[init-denote.el]。
 
   ,----
   | ;;; https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8
@@ -202,6 +214,18 @@ _________________
   `----
 
 
+[Denote] <https://protesilaos.com/emacs/denote>
+
+[Source]
+<https://yejun.dev/posts/blogging-using-denote-and-hugo/#:~:text=Denote%20is%20a,easy%20to%20search.>
+
+[5.7.1. Make Org export work with silos]
+<https://protesilaos.com/emacs/denote#h:fed09992-7c43-4237-b48f-f654bc29d1d8>
+
+[init-denote.el]
+<https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-denote.el>
+
+
 3 博客文章
 ==========
 
@@ -243,9 +267,8 @@ _________________
   匹配 denote 文件名上的 keyword，所以我目前只能用 `:exclude' 关键字，将不需要的 keyword
   排除掉。
 
-  感谢 [Tommie Mami 的回复]
-  (<https://emacs-china.org/t/denote-org-publish/30027/2?u=spike-leung>)，可以先 exlucde
-  所有文件，再 include 对应的 keyword，从而过滤需要的文件。
+  感谢 [Tommie Mami 的回复]，可以先 exlucde 所有文件，再 include 对应的 keyword，从而过
+  滤需要的文件。
 
   `:include' 需要传入一个文件列表，可以通过 denote 提供的方法 `denote-diretory-files' 获
   得，不过由于我用了 silos， `denote-diretory-files' 是不会去找 silos 中的文件的，我还需
@@ -256,8 +279,7 @@ _________________
 
   因此，还需要在执行 `org-publish' 之前，再次更新 `org-publish-project-alist' 。
 
-  源代码见: [init-org-publish.el]
-  (<https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-org-publish.el>)。
+  源代码见: [init-org-publish.el]。
 
   重点关注 include 部分。
 
@@ -363,9 +385,9 @@ _________________
   |           (car (cdr (assoc normalized-keyword keywords))))))))
   `----
 
-  [Denote Org] (<https://protesilaos.com/emacs/denote-org>) 可以使用 dynamic blocks 插入
-  denote 链接，我现在的 sitemap（主页）是手工编写的，通过 dynamic blocks 插入对应的链接
-  内容（你可以将首页 `index.html' 替换为 `index.org' 查看 org 文件）。
+  [Denote Org] 可以使用 dynamic blocks 插入 denote 链接，我现在的 sitemap（主页）是手工
+  编写的，通过 dynamic blocks 插入对应的链接内容（你可以将首页 `index.html' 替换为
+  `index.org' 查看 org 文件）。
 
   有的文章我会设置 `#+subtitle' ，我需要 `denote' 插入链接的时候能够将 subtitle 也显示在
   链接里。这可以通过自定义 `denote-link-description-format' 实现。
@@ -421,8 +443,7 @@ _________________
   |       (string-trim (match-string-no-properties 1))))))
   `----
 
-  完整的 `denote' 设置见 [init-denote.el]
-  (<https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-denote.el>)。
+  完整的 `denote' 设置见 [init-denote.el]。
 
   将 `index.org' 转换成 `index.html' 时，我还希望将 subtitle 从链接中移除，放到链接下面
   呈现。我是通过在导出之后，修改 HTML 内容实现的。
@@ -470,8 +491,19 @@ _________________
   |     output-filename))
   `----
 
-  完整的 org-publish 实现见： [init-org-publish.el]
-  (<https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-org-publish.el>)。
+  完整的 org-publish 实现见： [init-org-publish.el]。
+
+
+[Tommie Mami 的回复]
+<https://emacs-china.org/t/denote-org-publish/30027/2?u=spike-leung>
+
+[init-org-publish.el]
+<https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-org-publish.el>
+
+[Denote Org] <https://protesilaos.com/emacs/denote-org>
+
+[init-denote.el]
+<https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-denote.el>
 
 
 5 Tips
@@ -531,19 +563,28 @@ _________________
 
   好啦，博客构建就折腾到这，要开始多写内容了！
 
-  关于文章内容，你可以 Emacs China 中讨论：[结合 denote 和 org-publish 写博客]
-  (<https://emacs-china.org/t/denote-org-publish/30027>)。
+  关于文章内容，你可以 Emacs China 中讨论：[结合 denote 和 org-publish 写博客]。
+
+
+[结合 denote 和 org-publish 写博客] <https://emacs-china.org/t/denote-org-publish/30027>
 
 
 7 其他你可以参考的文章
 ======================
 
-  - [emacs-用 denote 配合 ox-publish 导出博客]
-    (<https://tomoemami.github.io/20250321T180117--emacs-%E7%94%A8denote%E9%85%8D%E5%90%88ox-publish%E5%AF%BC%E5%87%BA%E5%8D%9A%E5%AE%A2__blog.html>)
-    by Tomoe Mami
-  - [使用 org-mode 写博客]
-    (<https://gsj987.github.io/use-org-mode-publish-blog.html#org36c61a7>) by gsj987
-  - [Creating a blog] (<https://tusharhero.codeberg.page/creating_a_blog.html>) by
-    tusharher
-  - [Blogging with Denote and Hugo]
-    (<https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/>) by Jiewawa
+  - [emacs-用 denote 配合 ox-publish 导出博客] by Tomoe Mami
+  - [使用 org-mode 写博客] by gsj987
+  - [Creating a blog] by tusharher
+  - [Blogging with Denote and Hugo] by Jiewawa
+
+
+[emacs-用 denote 配合 ox-publish 导出博客]
+<https://tomoemami.github.io/20250321T180117--emacs-%E7%94%A8denote%E9%85%8D%E5%90%88ox-publish%E5%AF%BC%E5%87%BA%E5%8D%9A%E5%AE%A2__blog.html>
+
+[使用 org-mode 写博客]
+<https://gsj987.github.io/use-org-mode-publish-blog.html#org36c61a7>
+
+[Creating a blog] <https://tusharhero.codeberg.page/creating_a_blog.html>
+
+[Blogging with Denote and Hugo]
+<https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/>

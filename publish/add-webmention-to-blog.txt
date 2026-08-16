@@ -33,7 +33,6 @@ _________________
     知她的文章被回复了，Alice 的软件可以将该回复显示为原始帖子上的评论。
 
     [Source]
-    (<https://www.w3.org/TR/webmention/#introduction-p-1:~:text=A%20Webmention%20is,the%20original%20post.>)
 
   Webmention 和评论差不多，只是它的门槛相对高一点，需要你写一篇文章，并链接到你想评论的
   文章。(或者在社交媒体如 BlueSky、Mastodon 上发一个帖子，引用文章的链接)
@@ -41,6 +40,10 @@ _________________
   如果对方支持了 Webmention，你发送 Webmention 通知后，对方就会将你的内容显示出来。
 
   <file:../images/add-webmention-to-blog/mermaid.png>
+
+
+[Source]
+<https://www.w3.org/TR/webmention/#introduction-p-1:~:text=A%20Webmention%20is,the%20original%20post.>
 
 
 2 为什么接入 Webmention
@@ -51,13 +54,12 @@ _________________
     你就实现了从一个站点到另一个站点的对话！
 
     [Source]
-    (<https://indieweb.org/Webmention#:~:text=Enables%20cross%2Dsite%20conversations.%20When%20you%20link%20to%20a%20website%2C%20you%20can%20send%20it%20a%20Webmention%20to%20notify%20it.%20If%20it%20supports%20Webmentions%2C%20then%20that%20website%20may%20display%20your%20post%20as%20a%20comment%2C%20like%2C%20or%20other%20response%2C%20and%20presto%2C%20you%E2%80%99re%20having%20a%20conversation%20from%20one%20site%20to%20another!>)
 
   我觉得 Webmention 和集成在博客中的评论系统是类似的。
 
   如果你要回应一篇文章，通过 Webmention，你需要写一篇文章链接到这篇文章，并发送一个
-  Webmention 通知。通过如 [Bridgy] (<https://brid.gy/>) 之类的服务，也可以收集社交网络上
-  （Blusky、Mastodon 等）关于文章的回应，例如点赞、转发等。
+  Webmention 通知。通过如 [Bridgy] 之类的服务，也可以收集社交网络上（Blusky、Mastodon 等）
+  关于文章的回应，例如点赞、转发等。
 
   但我觉得并没有比集成于博客的评论系统更方便。
 
@@ -66,33 +68,49 @@ _________________
 
   所以我为什么要接入 Webmention？
 
-  最开始是在 [我想让自己说话不那么“端着” | Owen Young]
-  (<https://www.owenyoung.com/blog/de-roboticization/#2-xie-bo-ke%20:~:text=%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%B2%A1%E6%9C%89%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%EF%BC%8C%E5%9B%A0%E4%B8%BA%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E4%BC%9A%E5%85%B6%E5%AE%9E%E4%BC%9A%E8%AE%A9%E6%88%91%E5%BC%95%E5%85%A5%E7%A4%BE%E4%BA%A4%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8C%85%E8%A2%B1%E6%84%9F%E3%80%82%E6%88%91%E8%A7%89%E5%BE%97%E8%A7%A3%E5%86%B3%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98%E7%9A%84%E5%A5%BD%E5%8A%9E%E6%B3%95%E6%98%AF%E5%BC%95%E5%85%A5webmention%E7%9A%84%E5%8A%9F%E8%83%BD%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%9C%89%E4%BA%BA%E6%83%B3%E8%A6%81%E5%9B%9E%E5%BA%94%EF%BC%8C%E5%BE%97%E6%8F%90%E4%BA%A4%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%9E%E5%BA%94%E7%BD%91%E5%9D%80%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E5%9C%A8%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E8%AF%84%E8%AE%BA%E6%A1%86%E9%87%8C%E7%95%99%E4%B8%8B%E4%B8%89%E8%A8%80%E4%B8%A4%E8%AF%AD%E3%80%82%E8%BF%99%E6%8F%90%E9%AB%98%E4%BA%86%E8%AF%84%E8%AE%BA%E7%9A%84%E6%88%90%E6%9C%AC%EF%BC%8C%E9%BC%93%E5%8A%B1%E6%83%B3%E8%A6%81%E7%95%99%E8%A8%80%E7%9A%84%E4%BA%BA%E6%8B%A5%E6%9C%89%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%86%99%E4%B8%80%E4%BA%9B%E7%BB%8F%E8%BF%87%E6%80%9D%E8%80%83%E7%9A%84%E8%AF%9D%E8%AF%AD%E3%80%82%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B7%B2%E7%BB%8F%E6%94%AF%E6%8C%81%E4%BA%86%20Webmention%EF%BC%8C%E6%88%91%E5%9C%A8Now%2C%20I%E2%80%99m%20in%20IndieWeb%3F%E9%87%8C%E6%9C%89%E8%AE%B0%E5%BD%95%E6%88%91%E7%9A%84%E5%AE%9E%E7%8E%B0%E3%80%82>)
-  中了解到 Webmention，当时觉得有些麻烦。
+  最开始是在 [我想让自己说话不那么“端着” | Owen Young] 中了解到 Webmention，当时觉得有些
+  麻烦。
 
-  最近网上冲浪的时候，看到不少博客都有集成 Webmention，然后了解了一下 [webmention.io]
-  (<https://webmention.io/>) 的使用，看起来不麻烦，就想着集成看看。
+  最近网上冲浪的时候，看到不少博客都有集成 Webmention，然后了解了一下 [webmention.io] 的
+  使用，看起来不麻烦，就想着集成看看。
 
   非要找个理由的话，就是折腾一下，好玩吧。
+
+
+[Source]
+<https://indieweb.org/Webmention#:~:text=Enables%20cross%2Dsite%20conversations.%20When%20you%20link%20to%20a%20website%2C%20you%20can%20send%20it%20a%20Webmention%20to%20notify%20it.%20If%20it%20supports%20Webmentions%2C%20then%20that%20website%20may%20display%20your%20post%20as%20a%20comment%2C%20like%2C%20or%20other%20response%2C%20and%20presto%2C%20you%E2%80%99re%20having%20a%20conversation%20from%20one%20site%20to%20another!>
+
+[Bridgy] <https://brid.gy/>
+
+[我想让自己说话不那么“端着” | Owen Young]
+<https://www.owenyoung.com/blog/de-roboticization/#2-xie-bo-ke%20:~:text=%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%B2%A1%E6%9C%89%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%EF%BC%8C%E5%9B%A0%E4%B8%BA%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD%E4%BC%9A%E5%85%B6%E5%AE%9E%E4%BC%9A%E8%AE%A9%E6%88%91%E5%BC%95%E5%85%A5%E7%A4%BE%E4%BA%A4%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8C%85%E8%A2%B1%E6%84%9F%E3%80%82%E6%88%91%E8%A7%89%E5%BE%97%E8%A7%A3%E5%86%B3%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98%E7%9A%84%E5%A5%BD%E5%8A%9E%E6%B3%95%E6%98%AF%E5%BC%95%E5%85%A5webmention%E7%9A%84%E5%8A%9F%E8%83%BD%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%9C%89%E4%BA%BA%E6%83%B3%E8%A6%81%E5%9B%9E%E5%BA%94%EF%BC%8C%E5%BE%97%E6%8F%90%E4%BA%A4%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%9E%E5%BA%94%E7%BD%91%E5%9D%80%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E5%9C%A8%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E8%AF%84%E8%AE%BA%E6%A1%86%E9%87%8C%E7%95%99%E4%B8%8B%E4%B8%89%E8%A8%80%E4%B8%A4%E8%AF%AD%E3%80%82%E8%BF%99%E6%8F%90%E9%AB%98%E4%BA%86%E8%AF%84%E8%AE%BA%E7%9A%84%E6%88%90%E6%9C%AC%EF%BC%8C%E9%BC%93%E5%8A%B1%E6%83%B3%E8%A6%81%E7%95%99%E8%A8%80%E7%9A%84%E4%BA%BA%E6%8B%A5%E6%9C%89%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%86%99%E4%B8%80%E4%BA%9B%E7%BB%8F%E8%BF%87%E6%80%9D%E8%80%83%E7%9A%84%E8%AF%9D%E8%AF%AD%E3%80%82%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B7%B2%E7%BB%8F%E6%94%AF%E6%8C%81%E4%BA%86%20Webmention%EF%BC%8C%E6%88%91%E5%9C%A8Now%2C%20I%E2%80%99m%20in%20IndieWeb%3F%E9%87%8C%E6%9C%89%E8%AE%B0%E5%BD%95%E6%88%91%E7%9A%84%E5%AE%9E%E7%8E%B0%E3%80%82>
+
+[webmention.io] <https://webmention.io/>
 
 
 3 如何接入 Webmention
 =====================
 
-  如果自己搭建的话，可以参照 [Webmention 规范] (<https://www.w3.org/TR/webmention>) 实现；
-  或者找现成的工具，你可以在 [Webmention | IndieWeb] (<https://indieweb.org/Webmention>)
-  找到很多工具和服务。
+  如果自己搭建的话，可以参照 [Webmention 规范] 实现；或者找现成的工具，你可以在
+  [Webmention | IndieWeb] 找到很多工具和服务。
 
-  我目前实现很简单，接收依赖 webmention.io 提供的服务，需要编写一点 [脚本]
-  (<file:js/webmention.js>) 调用 API；发送通过手动触发；麻烦一些的地方是给博客添加
-  [microformats] (<https://microformats.org/wiki/Main_Page>) 。
+  我目前实现很简单，接收依赖 webmention.io 提供的服务，需要编写一点 [脚本] 调用 API；发
+  送通过手动触发；麻烦一些的地方是给博客添加 [microformats] 。
 
+
+[Webmention 规范] <https://www.w3.org/TR/webmention>
+
+[Webmention | IndieWeb] <https://indieweb.org/Webmention>
+
+[脚本] <file:js/webmention.js>
+
+[microformats] <https://microformats.org/wiki/Main_Page>
 
 3.1 作为接收方
 ~~~~~~~~~~~~~~
 
   接收我使用 webmention.io 提供的服务，按照 [How to Set Up Your Website for
-  IndieLogin.com] (<https://indielogin.com/setup>) 的说明进行设置。
+  IndieLogin.com] 的说明进行设置。
 
   我用 GitHub 进行验证，需要在 GitHub Profile 中包含我的网站，同时在网站添加一个链接。
 
@@ -109,40 +127,61 @@ _________________
   这样就能通过 webmention.io 的验证了。
 
   接下来按照 webmention.io 提供的 API 获取 Webmentions 的数量和内容，需要在页面上添加
-  HTML 元素，写 [一些 JS 代码] (<file:js/webmention.js>) 调用 API 渲染数据（也可以用
-  [webmention.js] (<https://github.com/PlaidWeb/webmention.js>)），再写点 CSS 优化一下样
-  式。
+  HTML 元素，写 [一些 JS 代码] 调用 API 渲染数据（也可以用 [webmention.js]），再写点 CSS
+  优化一下样式。
 
-  如果你打算渲染 Webmentions 返回的 HTML，需要注意 [Cross-site scripting (XSS)]
-  (<https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS>) 攻击。
+  如果你打算渲染 Webmentions 返回的 HTML，需要注意 [Cross-site scripting (XSS)] 攻击。
 
-  防止 XSS 攻击，[Trusted Types API]
-  (<https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API#using_a_csp_to_enforce_trusted_types>)
-  看起来不错，可惜浏览器支持度不够。
+  防止 XSS 攻击，[Trusted Types API] 看起来不错，可惜浏览器支持度不够。
 
   防御 XSS 主要从两方面入手：
-  - 净化 (sanitize) 用户输入的内容。可以使用 [DOMPurify]
-    (<https://github.com/cure53/DOMPurify>) 处理。
-  - 使用 [Content Security Policy (CSP)]
-    (<https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP>) 限制执行。[Netlify
-    有插件支持]
-    (<https://www.netlify.com/blog/general-availability-content-security-policy-csp-nonce-integration/>)
-    ，倒是方便了许多。要注意的是，当开启了 CSP，一些行内的脚本，如写在元素上的 `onclick'
-    、 `onchange' 等会被阻止执行，需要将他们挪动到 JS 文件里。
+  - 净化 (sanitize) 用户输入的内容。可以使用 [DOMPurify] 处理。
+  - 使用 [Content Security Policy (CSP)] 限制执行。[Netlify 有插件支持]，倒是方便了许多。
+    要注意的是，当开启了 CSP，一些行内的脚本，如写在元素上的 `onclick' 、 `onchange' 等
+    会被阻止执行，需要将他们挪动到 JS 文件里。
 
-  也可以期待一下 [Element: setHTML() method]
-  (<https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML>) 被广泛支持，它提
-  供了一种 XSS 安全的方法用于插入 HTML 内容到页面中。
+  也可以期待一下 [Element: setHTML() method] 被广泛支持，它提供了一种 XSS 安全的方法用于
+  插入 HTML 内容到页面中。
 
-  搭建好之后，可以用 [Webmention Rocks!]
-  (<https://webmention.rocks/#:~:text=Testing%20your%20Receiver>) 提供的服务进行测试。
+  搭建好之后，可以用 [Webmention Rocks!] 提供的服务进行测试。
 
   至于查看 Webmentions 也有几种方法：
   - 到对应的页面下看
-  - 订阅 webmention.io 提供的 [Mentions Feed] (<https://webmention.io/settings>)
-  - 使用 webmention.io 提供的 [Web Hook] (<https://webmention.io/settings/webhooks>) 通
-    知自己
-  - 到 webmention.io 的 [Dashbaord] (<https://webmention.io/dashboard>) 查看
+  - 订阅 webmention.io 提供的 [Mentions Feed]
+  - 使用 webmention.io 提供的 [Web Hook] 通知自己
+  - 到 webmention.io 的 [Dashbaord] 查看
+
+
+[How to Set Up Your Website for IndieLogin.com] <https://indielogin.com/setup>
+
+[一些 JS 代码] <file:js/webmention.js>
+
+[webmention.js] <https://github.com/PlaidWeb/webmention.js>
+
+[Cross-site scripting (XSS)]
+<https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS>
+
+[Trusted Types API]
+<https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API#using_a_csp_to_enforce_trusted_types>
+
+[DOMPurify] <https://github.com/cure53/DOMPurify>
+
+[Content Security Policy (CSP)]
+<https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP>
+
+[Netlify 有插件支持]
+<https://www.netlify.com/blog/general-availability-content-security-policy-csp-nonce-integration/>
+
+[Element: setHTML() method]
+<https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML>
+
+[Webmention Rocks!] <https://webmention.rocks/#:~:text=Testing%20your%20Receiver>
+
+[Mentions Feed] <https://webmention.io/settings>
+
+[Web Hook] <https://webmention.io/settings/webhooks>
+
+[Dashbaord] <https://webmention.io/dashboard>
 
 
 3.2 作为发送方
@@ -150,9 +189,8 @@ _________________
 
   作为发送方，你只需要在你的文章中包含对方的链接，就可以向对方发送 Webmention 了。
 
-  但是如果你想让你发送的内容更丰富一些，就需要通过 [microformats]
-  (<https://microformats.org/wiki/Main_Page>) 标记网站信息，如用户名、头像、内容、你要提
-  及的链接等，从而让 Webmention 解析展示。
+  但是如果你想让你发送的内容更丰富一些，就需要通过 [microformats] 标记网站信息，如用户名、
+  头像、内容、你要提及的链接等，从而让 Webmention 解析展示。
 
   按理说只要包含了对方链接，对方就能收到 Webmention。
 
@@ -162,71 +200,42 @@ _________________
   可能是因为我使用 microformats 标记了内容，此时需要确保 microformats 解析后的内容中，包
   含对方的 URL。
 
-  最主要的标记是 [h-card] (<https://microformats.org/wiki/h-card>) 和 [h-entry]
-  (<https://microformats.org/wiki/h-entry>)， `h-card' 标记信息；`h-entry' 标记信息，标
-  记的部分会作为 Webmention 的内容呈现。
+  最主要的标记是 [h-card] 和 [h-entry]， `h-card' 标记信息；`h-entry' 标记信息，标记的部
+  分会作为 Webmention 的内容呈现。
 
-  关于 `h-card' 和 `h-entry' 的作用，推荐看 [Sending your First Webmention from Scratch]
-  (<https://aaronparecki.com/2018/06/30/11/your-first-webmention>)，文章循序渐进地引导你
-  添加相应的标记，并且有对应的示例，同时文章本身也可以用来测试 Webmention 的发送。
+  关于 `h-card' 和 `h-entry' 的作用，推荐看 [Sending your First Webmention from Scratch]，
+  文章循序渐进地引导你添加相应的标记，并且有对应的示例，同时文章本身也可以用来测试
+  Webmention 的发送。
 
   microformats 这些标记，可以和 HTML 做类比，它也是有层级关系的，最终会解析成一个 JSON
-  的树形结构。在你测试的时候，可以从 [Microformats Parsers]
-  (<https://microformats.org/wiki/parsers>) 找一个 parser 检查你的文章解析出来的内容。
+  的树形结构。在你测试的时候，可以从 [Microformats Parsers] 找一个 parser 检查你的文章解
+  析出来的内容。
 
   关于 h-entry
 
-  [what is the bare minimum list of required properties on an h-entry]
-  (<https://microformats.org/wiki/h-entry#:~:text=the%20%22datetime%22%20property.-,what%20is%20the%20bare%20minimum%20list%20of%20required%20properties%20on%20an,a%20nested%20h%2Dcard%20with%20author%20details%20like%20name%2C%20photo%2C%20url.,-Examples%20in%20the>)
-  中回答道，没有任何 `h-entry' 的属性是强制要求的。
+  [what is the bare minimum list of required properties on an h-entry] 中回答道，没有任
+  何 `h-entry' 的属性是强制要求的。
 
   但推荐至少包含：
-  - [e-content]
-    (<https://microformats.org/wiki/h-entry#:~:text=e%2Dcontent%20%2D%20full%20content%20of%20the%20entry>)
-    标记文章内容，被标记的内容会作为 Webmention 的内容被发送
-  - [p-name]
-    (<https://microformats.org/wiki/h-entry#:~:text=p%2Dname%20%2D%20entry%20name/title>)
-    标记文章标题
-  - [p-author]
-    (<https://microformats.org/wiki/h-entry#:~:text=p%2Dauthor%20%2D%20who%20wrote%20the%20entry%2C%20optionally%20embedded%20h%2Dcard(s)>)
-    标记作者信息，一般会和 h-card 结合使用
+  - [e-content] 标记文章内容，被标记的内容会作为 Webmention 的内容被发送
+  - [p-name] 标记文章标题
+  - [p-author] 标记作者信息，一般会和 h-card 结合使用
 
   一些我建议加上的：
-  - [u-in-reply-to]
-    (<https://microformats.org/wiki/h-entry#:~:text=u%2Din%2Dreply%2Dto%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20reply%20to%20(i.e.%20doesn%E2%80%99t%20make%20sense%20without%20context%2C%20could%20show%20up%20in%20comment%20thread)%2C%20optionally%20an%20embedded%20h%2Dcite%20(reply%2Dcontext)%20(example)>)
-    标记你回应的链接。此外 [u-like-of]
-    (<https://microformats.org/wiki/h-entry#:~:text=u%2Dlike%2Dof%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20a%20%E2%80%9Clike%E2%80%9D%20(favorite%2C%20star)%20of.%20Optionally%20an%20embedded%20h%2Dcite>)
-    、[u-report-of]
-    (<https://microformats.org/wiki/h-entry#:~:text=u%2Drepost%2Dof%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20a%20%E2%80%9Crepost%E2%80%9D%20of.%20Optionally%20an%20embedded%20h%2Dcite>)
-    等可以用于标记不同的引用目的
-  - [dt-published]
-    (<https://microformats.org/wiki/h-entry#:~:text=dt%2Dpublished%20%2D%20when%20the%20entry%20was%20published>)
-    标记文章的发布日期
-  - [dt-updated]
-    (<https://microformats.org/wiki/h-entry#:~:text=dt%2Dupdated%20%2D%20when%20the%20entry%20was%20updated>)
-    标记文章的更新日期
+  - [u-in-reply-to] 标记你回应的链接。此外 [u-like-of]、[u-report-of] 等可以用于标记不同
+    的引用目的
+  - [dt-published] 标记文章的发布日期
+  - [dt-updated] 标记文章的更新日期
 
   关于 h-card
 
   h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
-  - [p-name]
-    (<https://microformats.org/wiki/h-card#:~:text=p%2Dname%20%2D%20The%20full/formatted%20name%20of%20the%20person%20or%20organization>)
-    标记个人或组织的全称
-  - [u-email]
-    (<https://microformats.org/wiki/h-card#:~:text=u%2Demail%20%2D%20email%20address>)
-    标记邮箱，一般标记在 mailto 链接上
-  - [u-logo]
-    (<https://microformats.org/wiki/h-card#:~:text=u%2Dlogo%20%2D%20a%20logo%20representing%20the%20person%20or%20organization%20(e.g.%20a%20face%20icon)>)
-    标记你的 logo，一般标记在 `<img>' 标签上
-  - [u-photo]
-    (<https://microformats.org/wiki/h-card#:~:text=u%2Dphoto%20%2D%20a%20photo%20of%20the%20person%20or%20organization>)
-    标记你的头像，一般标记在 `<img>' 标签上
-  - [u-url]
-    (<https://microformats.org/wiki/h-card#:~:text=u%2Durl%20%2D%20home%20page%20or%20other%20URL%20representing%20the%20person%20or%20organization>)
-    标记你的主页，一般标记在一个链接上
-  - [p-note]
-    (<https://microformats.org/wiki/h-card#:~:text=p%2Dnote%20%2D%20additional%20notes>)
-    标记额外信息，有人会用来写自我介绍
+  - [p-name] 标记个人或组织的全称
+  - [u-email] 标记邮箱，一般标记在 mailto 链接上
+  - [u-logo] 标记你的 logo，一般标记在 `<img>' 标签上
+  - [u-photo] 标记你的头像，一般标记在 `<img>' 标签上
+  - [u-url] 标记你的主页，一般标记在一个链接上
+  - [p-note] 标记额外信息，有人会用来写自我介绍
 
   除了这些，还有标记地址、性别、国籍、出生日期、工作等，感兴趣可以自行探索。
 
@@ -261,16 +270,75 @@ _________________
   `----
 
   具体如何标记，要看你博客中的 HTML 标记是如何排布的，在标记时注意层级关系就好。测试阶段
-  可以多利用 [Microformats Parsers] (<https://microformats.org/wiki/parsers>) 解析你的文
-  章，检查解析出来的内容是否符合需要。
+  可以多利用 [Microformats Parsers] 解析你的文章，检查解析出来的内容是否符合需要。
 
   都设置好之后就可以向集成了 Webmention 的网站发送通知了，你可以：
   - 找到引用文章的 Webmention 入口，填写你的文章 URL 并提交
-  - 自己构建 POST 请求，或用第三方服务，如 [Telegraph] (<https://telegraph.p3k.io/>) 手
-    动发送
-  - 考虑集成 [webmention.app] (<https://webmention.app/>) 等实现自动发送
+  - 自己构建 POST 请求，或用第三方服务，如 [Telegraph] 手动发送
+  - 考虑集成 [webmention.app] 等实现自动发送
 
   一般发送之后都会有响应，如果你的 Webmention 没有展示出来，可以基于返回信息进行问题排查。
+
+
+[microformats] <https://microformats.org/wiki/Main_Page>
+
+[h-card] <https://microformats.org/wiki/h-card>
+
+[h-entry] <https://microformats.org/wiki/h-entry>
+
+[Sending your First Webmention from Scratch]
+<https://aaronparecki.com/2018/06/30/11/your-first-webmention>
+
+[Microformats Parsers] <https://microformats.org/wiki/parsers>
+
+[what is the bare minimum list of required properties on an h-entry]
+<https://microformats.org/wiki/h-entry#:~:text=the%20%22datetime%22%20property.-,what%20is%20the%20bare%20minimum%20list%20of%20required%20properties%20on%20an,a%20nested%20h%2Dcard%20with%20author%20details%20like%20name%2C%20photo%2C%20url.,-Examples%20in%20the>
+
+[e-content]
+<https://microformats.org/wiki/h-entry#:~:text=e%2Dcontent%20%2D%20full%20content%20of%20the%20entry>
+
+[p-name]
+<https://microformats.org/wiki/h-entry#:~:text=p%2Dname%20%2D%20entry%20name/title>
+
+[p-author]
+<https://microformats.org/wiki/h-entry#:~:text=p%2Dauthor%20%2D%20who%20wrote%20the%20entry%2C%20optionally%20embedded%20h%2Dcard(s)>
+
+[u-in-reply-to]
+<https://microformats.org/wiki/h-entry#:~:text=u%2Din%2Dreply%2Dto%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20reply%20to%20(i.e.%20doesn%E2%80%99t%20make%20sense%20without%20context%2C%20could%20show%20up%20in%20comment%20thread)%2C%20optionally%20an%20embedded%20h%2Dcite%20(reply%2Dcontext)%20(example)>
+
+[u-like-of]
+<https://microformats.org/wiki/h-entry#:~:text=u%2Dlike%2Dof%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20a%20%E2%80%9Clike%E2%80%9D%20(favorite%2C%20star)%20of.%20Optionally%20an%20embedded%20h%2Dcite>
+
+[u-report-of]
+<https://microformats.org/wiki/h-entry#:~:text=u%2Drepost%2Dof%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20a%20%E2%80%9Crepost%E2%80%9D%20of.%20Optionally%20an%20embedded%20h%2Dcite>
+
+[dt-published]
+<https://microformats.org/wiki/h-entry#:~:text=dt%2Dpublished%20%2D%20when%20the%20entry%20was%20published>
+
+[dt-updated]
+<https://microformats.org/wiki/h-entry#:~:text=dt%2Dupdated%20%2D%20when%20the%20entry%20was%20updated>
+
+[p-name]
+<https://microformats.org/wiki/h-card#:~:text=p%2Dname%20%2D%20The%20full/formatted%20name%20of%20the%20person%20or%20organization>
+
+[u-email]
+<https://microformats.org/wiki/h-card#:~:text=u%2Demail%20%2D%20email%20address>
+
+[u-logo]
+<https://microformats.org/wiki/h-card#:~:text=u%2Dlogo%20%2D%20a%20logo%20representing%20the%20person%20or%20organization%20(e.g.%20a%20face%20icon)>
+
+[u-photo]
+<https://microformats.org/wiki/h-card#:~:text=u%2Dphoto%20%2D%20a%20photo%20of%20the%20person%20or%20organization>
+
+[u-url]
+<https://microformats.org/wiki/h-card#:~:text=u%2Durl%20%2D%20home%20page%20or%20other%20URL%20representing%20the%20person%20or%20organization>
+
+[p-note]
+<https://microformats.org/wiki/h-card#:~:text=p%2Dnote%20%2D%20additional%20notes>
+
+[Telegraph] <https://telegraph.p3k.io/>
+
+[webmention.app] <https://webmention.app/>
 
 
 4 一些问题
@@ -282,23 +350,33 @@ _________________
 4.1 常见问题
 ~~~~~~~~~~~~
 
-  大部分疑惑 [Webmention-faq | IndieWeb] (<https://indieweb.org/Webmention-faq>) 中都有
-  解答。
+  大部分疑惑 [Webmention-faq | IndieWeb] 中都有解答。
 
   分享一些比较常见的问题：
 
   - [Do webmentions work only when both sites use webmentions?]
-    (<https://indieweb.org/Webmention-faq#Do_webmentions_work_only_when_both_sites_use_webmentions?>)
   - [How do you know if a website uses webmentions?]
-    (<https://indieweb.org/Webmention-faq#How_do_you_know_if_a_website_uses_webmentions?>)
   - [Which links should webmentions be sent to]
-    (<https://indieweb.org/Webmention-faq#Which_links_should_webmentions_be_sent_to>)
   - [Should webmentions be sent for removals]
-    (<https://indieweb.org/Webmention-faq#Should_webmentions_be_sent_for_removals>)
 
 
-4.2 关于 [u-in-reply-to] (<https://microformats.org/wiki/h-entry#:~:text=u%2Din%2Dreply%2Dto%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20reply%20to%20(i.e.%20doesn%E2%80%99t%20make%20sense%20without%20context%2C%20could%20show%20up%20in%20comment%20thread)%2C%20optionally%20an%20embedded%20h%2Dcite%20(reply%2Dcontext)%20(example)>) 的使用
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[Webmention-faq | IndieWeb] <https://indieweb.org/Webmention-faq>
+
+[Do webmentions work only when both sites use webmentions?]
+<https://indieweb.org/Webmention-faq#Do_webmentions_work_only_when_both_sites_use_webmentions?>
+
+[How do you know if a website uses webmentions?]
+<https://indieweb.org/Webmention-faq#How_do_you_know_if_a_website_uses_webmentions?>
+
+[Which links should webmentions be sent to]
+<https://indieweb.org/Webmention-faq#Which_links_should_webmentions_be_sent_to>
+
+[Should webmentions be sent for removals]
+<https://indieweb.org/Webmention-faq#Should_webmentions_be_sent_for_removals>
+
+
+4.2 关于 [u-in-reply-to] 的使用
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   `u-in-reply-to' 用于标记 `h-entry' 中要回复的链接，应该结合 `e-content' 标记回应的内容。
 
@@ -306,8 +384,12 @@ _________________
   发送 Webmention 就好了。
 
 
-4.3 关于 [h-entry] (<https://microformats.org/wiki/h-entry>) 的使用
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[u-in-reply-to]
+<https://microformats.org/wiki/h-entry#:~:text=u%2Din%2Dreply%2Dto%20%2D%20the%20URL%20which%20the%20h%2Dentry%20is%20considered%20reply%20to%20(i.e.%20doesn%E2%80%99t%20make%20sense%20without%20context%2C%20could%20show%20up%20in%20comment%20thread)%2C%20optionally%20an%20embedded%20h%2Dcite%20(reply%2Dcontext)%20(example)>
+
+
+4.3 关于 [h-entry] 的使用
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
   尽管可以设置多个 `h-entry' ，但我觉得一篇文章一个 `h-entry' 就够了。
 
@@ -315,9 +397,7 @@ _________________
   容是刚好对应上的。
 
   如果标记多个 `h-entry' ，比较难保证每个 `h-entry' 都有这些信息，尽管 [h-entry 不要求包
-  含任一属性]
-  (<https://microformats.org/wiki/h-entry#:~:text=the%20%22datetime%22%20property.-,what%20is%20the%20bare%20minimum%20list%20of%20required%20properties%20on%20an,a%20nested%20h%2Dcard%20with%20author%20details%20like%20name%2C%20photo%2C%20url.,-Examples%20in%20the>)
-  。
+  含任一属性]。
 
   我的建议是：
 
@@ -333,30 +413,35 @@ _________________
     主页，你可以放到某个路径下，例如 `/webmentions' ，或者 `/reply' ；也可以放到一个子域
     名下。参考：
 
-    - [回复：Ready, Steady, Go…?] (<https://ink.v1sta.xyz/archives/227>)
-    - [来往信件] (<https://jar.geedea.pro/reply/>)
+    - [回复：Ready, Steady, Go…?]
+    - [来往信件]
+
+
+[h-entry] <https://microformats.org/wiki/h-entry>
+
+[h-entry 不要求包含任一属性]
+<https://microformats.org/wiki/h-entry#:~:text=the%20%22datetime%22%20property.-,what%20is%20the%20bare%20minimum%20list%20of%20required%20properties%20on%20an,a%20nested%20h%2Dcard%20with%20author%20details%20like%20name%2C%20photo%2C%20url.,-Examples%20in%20the>
+
+[回复：Ready, Steady, Go…?] <https://ink.v1sta.xyz/archives/227>
+
+[来往信件] <https://jar.geedea.pro/reply/>
 
 
 4.4 webmention.io 的 target 需要完全匹配
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  见 [When URL has hash，webmention.io'a API not reponse data #229]
-  (<https://github.com/aaronpk/webmention.io/issues/229#issuecomment-3602563563>)。
+  见 [When URL has hash，webmention.io'a API not reponse data #229]。
 
   有的 webmention 的发送时的 URL 是 `https://domain/page.html#abc' ，通过 webmention.io
-  的 [API] (<https://github.com/aaronpk/webmention.io?tab=readme-ov-file#api>)，target
-  参数设置为 `https://domain/page.html' 是无法获取到数据的，需要将 target 设置为
-  `https://domain/page.html#abc' ，完全匹配才行，因为目前存储的就是完整的 URL。
+  的 [API]，target 参数设置为 `https://domain/page.html' 是无法获取到数据的，需要将
+  target 设置为 `https://domain/page.html#abc' ，完全匹配才行，因为目前存储的就是完整的
+  URL。
 
-  如果 target 是 `https://domain/page.html#abc' ，注意需要将 `#' [转义]
-  (<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent>)
-  成 `%23' 。
+  如果 target 是 `https://domain/page.html#abc' ，注意需要将 `#' [转义] 成 `%23' 。
 
-  我目前的处理方法是 用 [基于域名获取所有数据的 API]
-  (<https://github.com/aaronpk/webmention.io?tab=readme-ov-file#find-all-links-to-your-domain>)
-  先获取所有的数据，然后基于页面的 URL 进行过滤。用 [請求多個 target 的 API]
-  (<https://github.com/aaronpk/webmention.io#find-links-of-a-specific-type-to-a-specific-page>)
-  同時請求頁面的 URL 和帯有 fragments 的 URL，手動維护帯有 fragments 的 URL。
+  我目前的处理方法是 用 [基于域名获取所有数据的 API] 先获取所有的数据，然后基于页面的
+  URL 进行过滤。用 [請求多個 target 的 API] 同時請求頁面的 URL 和帯有 fragments 的 URL，
+  手動維护帯有 fragments 的 URL。
 
   ,----
   | const TargetFragments = {
@@ -383,6 +468,21 @@ _________________
 
   虽然不优雅，但不用請求全量数据，很多頁面其實都没有 Webmention，這可以减少這些頁面需要
   加載的数据。
+
+
+[When URL has hash，webmention.io'a API not reponse data #229]
+<https://github.com/aaronpk/webmention.io/issues/229#issuecomment-3602563563>
+
+[API] <https://github.com/aaronpk/webmention.io?tab=readme-ov-file#api>
+
+[转义]
+<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent>
+
+[基于域名获取所有数据的 API]
+<https://github.com/aaronpk/webmention.io?tab=readme-ov-file#find-all-links-to-your-domain>
+
+[請求多個 target 的 API]
+<https://github.com/aaronpk/webmention.io#find-links-of-a-specific-type-to-a-specific-page>
 
 
 4.5 发送了 webmention 但是没有显示出来
@@ -415,12 +515,20 @@ _________________
 6 其他参考文章
 ==============
 
-  - [透過 webmention 來搜集 blog 的社群迴響]
-    (<https://jason-memo.dev/posts/webmention/>) by Jason Chen
-  - [Webmention 实现参考]
-    (<https://blog.xiang578.com/note/641ea60f-a31e-4979-9327-c50509c146e3.html>) by
-    Runye
-  - [Now, I'm in IndieWeb?] (<https://www.owenyoung.com/en/blog/indieweb/>) by Owen
-    Young
-  - [在 Hexo 项目中添加 Webmention] (<https://blog.cytrogen.icu/posts/1de>) by Cytrogen
-  - [Webmention 简明指南] (<https://www.geedea.pro/article/webmention/>) by Eltrac
+  - [透過 webmention 來搜集 blog 的社群迴響] by Jason Chen
+  - [Webmention 实现参考] by Runye
+  - [Now, I'm in IndieWeb?] by Owen Young
+  - [在 Hexo 项目中添加 Webmention] by Cytrogen
+  - [Webmention 简明指南] by Eltrac
+
+
+[透過 webmention 來搜集 blog 的社群迴響] <https://jason-memo.dev/posts/webmention/>
+
+[Webmention 实现参考]
+<https://blog.xiang578.com/note/641ea60f-a31e-4979-9327-c50509c146e3.html>
+
+[Now, I'm in IndieWeb?] <https://www.owenyoung.com/en/blog/indieweb/>
+
+[在 Hexo 项目中添加 Webmention] <https://blog.cytrogen.icu/posts/1de>
+
+[Webmention 简明指南] <https://www.geedea.pro/article/webmention/>

@@ -165,8 +165,7 @@ _________________
 
   也即 `flex-grow: 0; flex-shrink: 1: flex-basic: auto;'
 
-  这个[默认值] (<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#flex-initial>)的
-  效果是：
+  这个[默认值]的效果是：
 
   flex-grow: 0
     item 无法延伸尺寸
@@ -176,8 +175,7 @@ _________________
     根据 item 的 width/height 来设置尺寸，如果 width/height 没有指定，则会根据内容去计算
     尺寸。
 
-  最小尺寸的计算，在 [4.5. Automatic Minimum Size of Flex Items]
-  (<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#min-size-auto>) 中有描述：
+  最小尺寸的计算，在 [4.5. Automatic Minimum Size of Flex Items] 中有描述：
 
     To provide a more reasonable default minimum size for flex items,
 
@@ -187,10 +185,8 @@ _________________
     for scroll containers the automatic minimum size is zero, as usual.
 
     [Source]
-    (<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#min-size-auto:~:text=To%20provide%20a%20more%20reasonable%20default%20minimum%20size%20for%20flex%20items%2C%20the%20used%20value%20of%20a%20main%20axis%20automatic%20minimum%20size%20on%20a%20flex%20item%20that%20is%20not%20a%20scroll%20container%20is%20a%20content%2Dbased%20minimum%20size%3B%20for%20scroll%20containers%20the%20automatic%20minimum%20size%20is%20zero%2C%20as%20usual>)
 
-  也就是说，如果 flex item 是一个滚动容器（[scroll container]
-  (<https://www.w3.org/TR/css-overflow-3/#scroll-container>)，即设置了 overflow 属性），
+  也就是说，如果 flex item 是一个滚动容器（[scroll container]，即设置了 overflow 属性），
   那么最小尺寸就是 0。
 
   所以，当设置了 `overflow' 后，flex item 可以尽可能地缩小直到刚好填满 flex container。
@@ -212,17 +208,14 @@ _________________
     content-based minimum size is the content size suggestion.
 
     [Source]
-    (<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#min-size-auto:~:text=To%20provide%20a%20more%20reasonable%20default%20minimum%20size%20for%20flex%20items%2C%20the%20used%20value%20of%20a%20main%20axis%20automatic%20minimum%20size%20on%20a%20flex%20item%20that%20is%20not%20a%20scroll%20container%20is%20a%20content%2Dbased%20minimum%20size%3B%20for%20scroll%20containers%20the%20automatic%20minimum%20size%20is%20zero%2C%20as%20usual>)
 
   specified size suggestion 的定义：
 
-    If the item’s computed [main size property]
-    (<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#main-size-property>) is
-    definite, then the specified size suggestion is that size (clamped by its max main
-    size property if it’s definite). It is otherwise undefined.
+    If the item’s computed [main size property] is definite, then the specified size
+    suggestion is that size (clamped by its max main size property if it’s
+    definite). It is otherwise undefined.
 
     [Source]
-    (<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#min-size-auto:~:text=If%20the%20item%E2%80%99s%20computed%20main%20size%20property%20is%20definite%2C%20then%20the%20specified%20size%20suggestion%20is%20that%20size%20(clamped%20by%20its%20max%20main%20size%20property%20if%20it%E2%80%99s%20definite).%20It%20is%20otherwise%20undefined>)
 
   也就是说，只要给 flex item 设置 `width' 或者 `min-width' ，那么从这些值上去计算最小尺
   寸。
@@ -240,17 +233,14 @@ _________________
 
   如果都不设置，那么 flex item 此时的最小尺寸由 content size suggestion 决定：
 
-    The content size suggestion is the [min-content size]
-    (<https://www.w3.org/TR/css-sizing-3/#min-content>) in the main axis, clamped, if
-    it has an aspect ratio, by any definite min and max cross size properties
+    The content size suggestion is the [min-content size] in the main axis, clamped,
+    if it has an aspect ratio, by any definite min and max cross size properties
     converted through the aspect ratio, and then further clamped by the max main size
     property if that is definite.
 
     [Source]
-    (<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#min-size-auto:~:text=The%20content%20size%20suggestion%20is%20the%20min%2Dcontent%20size%20in%20the%20main%20axis%2C%20clamped%2C%20if%20it%20has%20an%20aspect%20ratio%2C%20by%20any%20definite%20min%20and%20max%20cross%20size%20properties%20converted%20through%20the%20aspect%20ratio%2C%20and%20then%20further%20clamped%20by%20the%20max%20main%20size%20property%20if%20that%20is%20definite>)
 
-  min-content size 最终会由 [CSS2.1§10.3.5]
-  (<https://www.w3.org/TR/CSS2/visudet.html#float-width>) 确定最小尺寸的计算，具体来说是：
+  min-content size 最终会由 [CSS2.1§10.3.5] 确定最小尺寸的计算，具体来说是：
 
     Calculation of the shrink-to-fit width is similar to calculating the width of a
     table cell using the automatic table layout algorithm.
@@ -268,7 +258,6 @@ _________________
     widths of any relevant scroll bars.
 
     [Source]
-    (<https://www.w3.org/TR/CSS2/visudet.html#float-width:~:text=to%2Dfit%22%20width.-,Calculation%20of%20the%20shrink%2Dto%2Dfit%20width%20is%20similar%20to%20calculating,width%20is%3A%20min(max(preferred%20minimum%20width%2C%20available%20width)%2C%20preferred%20width).,-10.3.6%20Floating%2C%20replaced>)
 
     Then the shrink-to-fit width is: `min(max(preferred minimum width, available
     width), preferred width)'.
@@ -288,6 +277,33 @@ _________________
   <file:./images/flex-box-with-overflow/layout-default.webp>
 
 
+[默认值] <https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#flex-initial>
+
+[4.5. Automatic Minimum Size of Flex Items]
+<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#min-size-auto>
+
+[Source]
+<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#min-size-auto:~:text=To%20provide%20a%20more%20reasonable%20default%20minimum%20size%20for%20flex%20items%2C%20the%20used%20value%20of%20a%20main%20axis%20automatic%20minimum%20size%20on%20a%20flex%20item%20that%20is%20not%20a%20scroll%20container%20is%20a%20content%2Dbased%20minimum%20size%3B%20for%20scroll%20containers%20the%20automatic%20minimum%20size%20is%20zero%2C%20as%20usual>
+
+[scroll container] <https://www.w3.org/TR/css-overflow-3/#scroll-container>
+
+[main size property]
+<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#main-size-property>
+
+[Source]
+<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#min-size-auto:~:text=If%20the%20item%E2%80%99s%20computed%20main%20size%20property%20is%20definite%2C%20then%20the%20specified%20size%20suggestion%20is%20that%20size%20(clamped%20by%20its%20max%20main%20size%20property%20if%20it%E2%80%99s%20definite).%20It%20is%20otherwise%20undefined>
+
+[min-content size] <https://www.w3.org/TR/css-sizing-3/#min-content>
+
+[Source]
+<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#min-size-auto:~:text=The%20content%20size%20suggestion%20is%20the%20min%2Dcontent%20size%20in%20the%20main%20axis%2C%20clamped%2C%20if%20it%20has%20an%20aspect%20ratio%2C%20by%20any%20definite%20min%20and%20max%20cross%20size%20properties%20converted%20through%20the%20aspect%20ratio%2C%20and%20then%20further%20clamped%20by%20the%20max%20main%20size%20property%20if%20that%20is%20definite>
+
+[CSS2.1§10.3.5] <https://www.w3.org/TR/CSS2/visudet.html#float-width>
+
+[Source]
+<https://www.w3.org/TR/CSS2/visudet.html#float-width:~:text=to%2Dfit%22%20width.-,Calculation%20of%20the%20shrink%2Dto%2Dfit%20width%20is%20similar%20to%20calculating,width%20is%3A%20min(max(preferred%20minimum%20width%2C%20available%20width)%2C%20preferred%20width).,-10.3.6%20Floating%2C%20replaced>
+
+
 4 推论
 ======
 
@@ -300,10 +316,15 @@ _________________
 5 Refs
 ======
 
-  - [Basic concepts of flexbox]
-    (<https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox>)
-    @MDN
-  - [CSS Flexible Box Layout Module Level 1]
-    (<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#flex-basis-property>) @W3C
-  - [如何解决flex文本溢出问题] (<https://juejin.cn/post/7118267018918232072>) @掘金/安迪
-    five
+  - [Basic concepts of flexbox] @MDN
+  - [CSS Flexible Box Layout Module Level 1] @W3C
+  - [如何解决flex文本溢出问题] @掘金/安迪five
+
+
+[Basic concepts of flexbox]
+<https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox>
+
+[CSS Flexible Box Layout Module Level 1]
+<https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#flex-basis-property>
+
+[如何解决flex文本溢出问题] <https://juejin.cn/post/7118267018918232072>
