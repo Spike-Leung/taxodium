@@ -50,41 +50,16 @@
 </p>
 
 <p>
-Emacs 中可以集成 <a href="https://github.com/jrblevin/markdown-mode">markdown-mode</a> 扩展编辑 markdown 的能力，它默认用 <a href="https://www.gnu.org/software/emacs/manual/html_mono/eww.html">EWW</a> 进行预览，但 EWW 的样式相对比较简单。
+Emacs 中可以集成 <a href="https://github.com/jrblevin/markdown-mode">markdown-mode</a> 扩展编辑 markdown 的能力，它默认用 <a href="https://www.gnu.org/software/emacs/manual/html_mono/eww.html">EWW</a> 进行预览，但 EWW 的样式相对比较简单。我希望预览的 markdown 样式和实际在 GitHub/GitLab 上看到是差不多的，这样可以提前发现一些排版问题。
 </p>
 
 <p>
-我希望预览的 markdown 样式和实际在 GitHub/GitLab 上看到是差不多的，这样可以提前发现一些排版问题。
-</p>
-
-<p>
-最早的时候，我参考 <a href="https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type">Live preview as you type</a>，使用 <a href="https://github.com/skeeto/impatient-mode">Impatient Mode</a> 和 <a href="https://github.com/Naereen/Strapdown.js/">StrapDown.js</a> 渲染。
-</p>
-
-<p>
-它的原理是开启一个 HTTP 服务，将 Emacs 中的 buffer 渲染成 HTML 进行预览，每当 buffer 的内容变化，就主动发送新的 HTML 内容进行更新。
-</p>
-
-<section role="note" id="org90505e3">
-<p>
-buffer 可以简单理解为文件内容，感兴趣可以看 <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html">Buffers</a>。
-</p>
-</section>
-
-<p>
+最早的时候，我参考 <a href="https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type">Live preview as you type</a>，使用 <a href="https://github.com/skeeto/impatient-mode">Impatient Mode</a> 和 <a href="https://github.com/Naereen/Strapdown.js/">StrapDown.js</a> 渲染。它的原理是开启一个 HTTP 服务，将 Emacs 中的 <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Buffers.html">buffer</a> 渲染成 HTML 进行预览，每当 buffer 的内容变化，就主动发送新的 HTML 内容进行更新。
 HTML 中加载 <a href="https://github.com/markedjs/marked">Marked</a>，将 markdown 内容转换 HTML 标签展示。
 </p>
 
 <p>
-尽管 StrapDown.js 提供了不少 <a href="https://bootswatch.com/">主题</a>，但都和 GitHub 上的样式有差异。
-</p>
-
-<p>
-主题其实就是加载 CSS，所以，通过替换对应的 CSS 文件，就可以实现 GitHub 的 markdown 样式，例如使用 <a href="https://github.com/sindresorhus/github-markdown-css">github-markdown-css</a>。
-</p>
-
-<p>
-最终，我就得到这样一个 <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-my-markdown.el">markdown 的实时预览方法</a>:
+尽管 StrapDown.js 提供了不少 <a href="https://bootswatch.com/">主题</a>，但都和 GitHub 上的样式有差异。主题其实就是加载 CSS，所以，通过替换对应的 CSS 文件，就可以实现 GitHub 的 markdown 样式，例如使用 <a href="https://github.com/sindresorhus/github-markdown-css">github-markdown-css</a>。最终，我就得到这样一个 <a href="https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-my-markdown.el">markdown 的实时预览方法</a>:
 </p>
 
 <details>
@@ -209,7 +184,7 @@ HTML 中加载 <a href="https://github.com/markedjs/marked">Marked</a>，将 mar
 </div>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建於 <time class="dt-published" datetime="2025-06-20 Fri 21:39">2025-06-20</time>，更新於 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21</time>，</p>
+<p>文章创建於 <time class="dt-published" datetime="2025-06-20 Fri 21:39">2025-06-20</time>，更新於 <time class="dt-updated" datetime="2026-08-19 Wed 17:55">2026-08-19</time>，</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
 <p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
 <p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Emacs 实时预览 markdown &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
