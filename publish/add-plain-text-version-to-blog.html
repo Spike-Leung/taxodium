@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>給博客添加純文本版本</title>
+<meta name="author" content="Spike Leung">
+<meta name="description" content="給博客添加純文本版本">
+<meta name="generator" content="Org Mode">
+
+<meta name="color-scheme" content="light dark" />
+<link rel="preload" href="/styles/main.css" as="style" />
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="preload" href="/js/color-scheme.js" as="script"/>
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<script src="/js/color-scheme.js"></script>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主頁</a></li>
+    <li><a href="/subscribe.html">訂閱</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/shuffle.html" class="js-required">隨機</a></li>
+  </ul>
+  <button id="lightdark" class="js-required" aria-label="點擊切換當前頁面明暗主題">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+      <path d="M0 0h512v512H0z" fill="none" />
+      <path fill="currentColor" fill-rule="evenodd" d="M277.333 405.333v85.333h-42.667v-85.333zm99.346-58.824l60.34 60.34l-30.17 30.17l-60.34-60.34zm-241.359 0l30.17 30.17l-60.34 60.34l-30.17-30.17zM256 139.353c64.422 0 116.647 52.224 116.647 116.647c0 64.422-52.225 116.647-116.647 116.647A116.427 116.427 0 0 1 139.352 256c0-64.423 52.225-116.647 116.648-116.647m0 42.666c-40.859 0-73.981 33.123-73.981 74.062a73.76 73.76 0 0 0 21.603 52.296c13.867 13.867 32.685 21.64 52.378 21.603zm234.666 52.647v42.667h-85.333v-42.667zm-384 0v42.667H21.333v-42.667zM105.15 74.98l60.34 60.34l-30.17 30.17l-60.34-60.34zm301.7 0l30.169 30.17l-60.34 60.34l-30.17-30.17zM277.332 21.333v85.333h-42.667V21.333z" />
+    </svg>
+  </button>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">給博客添加純文本版本</h1>
+</header><p>
+看了 wiwi 的 <a href="https://wiwi.blog/blog/low-key-features/">偷偷加入的功能</a> (另見 <a href="54.html#:~:text=%E5%81%B7%E5%81%B7%E5%8A%A0%E5%85%A5%E7%9A%84%E5%8A%9F%E8%83%BD%20by%20Wiwi">Zine#54</a>)
+我也給博客的文章添加了純文本版本，你可以在每篇文章的底部找到純文本版本的連結，也可以將頁面 URL 的 <code>.html</code> 換成 <code>.txt</code> 訪問純文本版本 <small>(如果換成 <code>.org</code> 就能看到文章的原始文件)</small>。最近看到 <a href="https://wiwi.blog/blog/wiwi-blog-txt/">Wiwi.Blog 純文字版</a>，我也跟著做了一個 <a href="txt.html">純文本版本的索引頁</a>。
+</p>
+
+<p>
+純文本的好处是極簡，基本上就是文字，沒有其它干擾元素，其次是體積小，在網絡不好時也能較快的加載 <small>(不過網絡條件不好，和服務器建立連結也需要時間，能節省的是頁面需要的流量)</small>。
+</p>
+
+<p>
+製作純文本版本，只要將原始文件想辦法轉成 txt 版本就好了 <small>(現在只是轉換成了 HTML)</small>，然後給所有的 txt 文件做一個索引頁 <small>(建議掛載在 <code>/txt</code> 這個路徑下)</small>，基本上就够用了。
+</p>
+
+<p>
+我的博客是用 <a href="org-publish-blog.html">org-publish</a> 和 <a href="blog-with-denote-and-org-publish.html">denote</a> 構建的，接下來我會分享我是如何通過它們給博客添加純文本版本的，包擴：
+</p>
+<ul class="org-ul">
+<li>將原始 org 文件轉換出一個 txt 版本</li>
+<li>給每個頁面添加對應的純文本版本連結</li>
+<li>製作索引頁</li>
+</ul>
+
+<p>
+相關代碼可以在 <a href="https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-org-publish.el">init-org-publish.el</a> 和 <a href="https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-denote.el">init-denote.el</a> 找到。
+</p>
+
+<hr>
+
+<p>
+<b>將原始 org 文件轉換出一個 txt 版本</b>
+</p>
+
+<p>
+因為我是用 <code>org-publish</code> 構建的，要構建純文本版本，可以向 <code>org-publish-project-alist</code> 添加一個 project 來實現。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><code>(<span class="org-keyword">setq</span> org-publish-project-alist
+      `(
+        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#30465;&#30053;&#20854;&#23427;</span>
+
+        (<span class="org-string">"plain-text-all"</span>
+         <span class="org-builtin">:base-directory</span> <span class="org-string">"~/git/taxodium/posts"</span>
+         <span class="org-builtin">:base-extension</span> <span class="org-string">"org"</span>
+         <span class="org-builtin">:exclude</span> <span class="org-string">".*"</span>
+         <span class="org-builtin">:with-toc</span> nil
+<span id="coderef-include" class="coderef-off">         <span class="org-builtin">:include</span>  ,(spike-leung/get-file-list-from-denote-silo <span class="org-string">"~/git/taxodium/posts"</span> (<span class="org-keyword">rx</span> (<span class="org-keyword">or</span> <span class="org-string">"_blackhole"</span> <span class="org-string">"_published"</span>)))</span>
+         <span class="org-builtin">:publishing-directory</span> ,spike-leung/org-publish-default-publishing-directory
+         <span class="org-builtin">:publishing-function</span> spike-leung/org-publish-plain-text)
+
+        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#30465;&#30053;&#20854;&#23427;</span>
+        ))
+</code></pre>
+</div>
+
+<p>
+這個 project 做的事就是 <a href="#coderef-include" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-include');" onmouseout="CodeHighlightOff(this, 'coderef-include');">找到所有文章的文件</a>，用 <code>spike-leung/org-publish-plain-text</code> 处理成純文本版本。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/org-publish-plain-text</span> (_plist filename pub-dir)
+  <span class="org-doc">"Publish a org file and use export_file_name as filename.</span>
+
+<span class="org-doc">FILENAME is the filename of the Org file to be published.  PLIST</span>
+<span class="org-doc">is the property list for the given project.  PUB-DIR is the</span>
+<span class="org-doc">publishing directory.</span>
+
+<span class="org-doc">Return output file name."</span>
+  (<span class="org-keyword">unless</span> (file-directory-p pub-dir)
+    (make-directory pub-dir t))
+<span id="coderef-export-file-name" class="coderef-off">  (<span class="org-keyword">let*</span> ((export-file-name</span>
+          (<span class="org-keyword">or</span> (spike-leung/org-publish-get-org-keyword nil nil <span class="org-string">"export_file_name"</span> filename) filename))
+         (base-filename (expand-file-name (file-name-nondirectory export-file-name) pub-dir))
+         (org-file (file-name-with-extension base-filename <span class="org-string">"org"</span>))
+         (text-file (file-name-with-extension base-filename <span class="org-string">"txt"</span>)))
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">generate .txt file</span>
+    (org-publish-org-to 'ascii filename <span class="org-string">".txt"</span> _plist pub-dir)
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">copy original org file to pub-dir</span>
+    (copy-file filename org-file t)
+    <span class="org-comment-delimiter">;; </span><span class="org-comment">Return file name.</span>
+    org-file))
+</code></pre>
+</div>
+
+<p>
+<code>spike-leung/org-publish-plain-text</code> 會從文章的 org 文件裡找到 URL (<a href="#coderef-export-file-name" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-export-file-name');" onmouseout="CodeHighlightOff(this, 'coderef-export-file-name');">export-file-name</a>)，然後用 <code>org-publish-org-to</code> 导出一個 ascii 版本到用於發布的目录󠄃，這樣就很到了每篇文章對應的純文本版本了。
+</p>
+
+<p>
+另外為了讓純文本版本的內容看起來更簡洁，我還覆盖了 <code>ox-ascii</code> 的一些實現，移除了加粗等標記。
+</p>
+
+<details>
+<summary>ox-ascii 的改動</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">use-package</span> ox-ascii
+  <span class="org-builtin">:straight</span> nil
+  <span class="org-builtin">:custom</span>
+  (org-ascii-text-width 88)
+  (org-ascii-quote-margin 2)
+  (org-ascii-charset 'ascii)
+  (org-ascii-links-to-notes t)
+  <span class="org-builtin">:config</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">do not interpret *word*, /word/, _word_ and +word+</span>
+  (<span class="org-keyword">defun</span> <span class="org-function-name">org-ascii-bold</span> (_bold contents _info) contents)
+  (<span class="org-keyword">defun</span> <span class="org-function-name">org-ascii-italic</span> (_italic contents _info) contents)
+  (<span class="org-keyword">defun</span> <span class="org-function-name">org-ascii-underline</span> (_underline contents _info) contents)
+  (<span class="org-keyword">defun</span> <span class="org-function-name">org-ascii-strike-through</span> (_strike-through contents _info) contents)
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">override `</span><span class="org-comment"><span class="org-constant">org-ascii-template--document-title</span></span><span class="org-comment">', change center align to left align</span>
+  (<span class="org-keyword">defun</span> <span class="org-function-name">org-ascii-template--document-title</span> (info)
+    <span class="org-doc">"Return document title, as a string.</span>
+<span class="org-doc">INFO is a plist used as a communication channel."</span>
+    (<span class="org-keyword">let*</span> ((text-width (plist-get info <span class="org-builtin">:ascii-text-width</span>))
+           <span class="org-comment-delimiter">;; </span><span class="org-comment">Links in the title will not be resolved later, so we make</span>
+           <span class="org-comment-delimiter">;; </span><span class="org-comment">sure their path is located right after them.</span>
+           (info (org-combine-plists info '(<span class="org-builtin">:ascii-links-to-notes</span> nil)))
+           (with-title (plist-get info <span class="org-builtin">:with-title</span>))
+           (title (org-export-data
+                   (<span class="org-keyword">when</span> with-title (plist-get info <span class="org-builtin">:title</span>)) info))
+           (subtitle (org-export-data
+                      (<span class="org-keyword">when</span> with-title (plist-get info <span class="org-builtin">:subtitle</span>)) info))
+           (author (<span class="org-keyword">and</span> (plist-get info <span class="org-builtin">:with-author</span>)
+                        (<span class="org-keyword">let</span> ((auth (plist-get info <span class="org-builtin">:author</span>)))
+                          (<span class="org-keyword">and</span> auth (org-export-data auth info)))))
+           (email (<span class="org-keyword">and</span> (plist-get info <span class="org-builtin">:with-email</span>)
+                       (org-export-data (plist-get info <span class="org-builtin">:email</span>) info)))
+           (date (<span class="org-keyword">and</span> (plist-get info <span class="org-builtin">:with-date</span>)
+                      (org-export-data (org-export-get-date info) info))))
+      <span class="org-comment-delimiter">;; </span><span class="org-comment">There are two types of title blocks depending on the presence</span>
+      <span class="org-comment-delimiter">;; </span><span class="org-comment">of a title to display.</span>
+      (<span class="org-keyword">if</span> (string= title <span class="org-string">""</span>)
+          <span class="org-comment-delimiter">;; </span><span class="org-comment">Title block without a title.  DATE is positioned at the top</span>
+          <span class="org-comment-delimiter">;; </span><span class="org-comment">right of the document, AUTHOR to the top left and EMAIL</span>
+          <span class="org-comment-delimiter">;; </span><span class="org-comment">just below.</span>
+          (<span class="org-keyword">cond</span>
+           ((<span class="org-keyword">and</span> (org-string-nw-p date) (org-string-nw-p author))
+            (concat
+             author
+             (make-string (- text-width (string-width date) (string-width author))
+                          ?\s)
+             date
+             (<span class="org-keyword">when</span> (org-string-nw-p email) (concat <span class="org-string">"\n"</span> email))
+             <span class="org-string">"\n\n\n"</span>))
+           ((<span class="org-keyword">and</span> (org-string-nw-p date) (org-string-nw-p email))
+            (concat
+             email
+             (make-string (- text-width (string-width date) (string-width email))
+                          ?\s)
+             date <span class="org-string">"\n\n\n"</span>))
+           ((org-string-nw-p date)
+            (concat
+             (org-ascii--justify-lines date text-width 'right)
+             <span class="org-string">"\n\n\n"</span>))
+           ((<span class="org-keyword">and</span> (org-string-nw-p author) (org-string-nw-p email))
+            (concat author <span class="org-string">"\n"</span> email <span class="org-string">"\n\n\n"</span>))
+           ((org-string-nw-p author) (concat author <span class="org-string">"\n\n\n"</span>))
+           ((org-string-nw-p email) (concat email <span class="org-string">"\n\n\n"</span>)))
+        <span class="org-comment-delimiter">;; </span><span class="org-comment">Title block with a title.  Document's TITLE, along with the</span>
+        <span class="org-comment-delimiter">;; </span><span class="org-comment">AUTHOR and its EMAIL are both overlined and an underlined,</span>
+        <span class="org-comment-delimiter">;; </span><span class="org-comment">centered.  Date is just below, also centered.</span>
+        (<span class="org-keyword">let*</span> ((utf8p (eq (plist-get info <span class="org-builtin">:ascii-charset</span>) 'utf-8))
+               <span class="org-comment-delimiter">;; </span><span class="org-comment">Format TITLE.  It may be filled if it is too wide,</span>
+               <span class="org-comment-delimiter">;; </span><span class="org-comment">that is wider than the two thirds of the total width.</span>
+               (title-len (min (apply #'max
+                                      (mapcar #'string-width
+                                              (org-split-string
+                                               (concat title <span class="org-string">"\n"</span> subtitle) <span class="org-string">"\n"</span>)))
+                               (/ (* 2 text-width) 3)))
+               (formatted-title (org-ascii--fill-string title title-len info))
+               (formatted-subtitle (<span class="org-keyword">when</span> (org-string-nw-p subtitle)
+                                     (org-ascii--fill-string subtitle title-len info)))
+               (line
+                (make-string
+                 (min (+ (max title-len
+                              (string-width (<span class="org-keyword">or</span> author <span class="org-string">""</span>))
+                              (string-width (<span class="org-keyword">or</span> email <span class="org-string">""</span>)))
+                         2)
+                      text-width) <span class="org-warning">(</span><span class="org-keyword"><span class="org-warning">if</span></span><span class="org-warning"> utf8p ?&#9473; ?_))))</span>
+          (org-ascii--justify-lines
+           (concat (upcase formatted-title)
+                   (<span class="org-keyword">and</span> formatted-subtitle (concat <span class="org-string">" - "</span> formatted-subtitle))
+                   (<span class="org-keyword">when</span> (org-string-nw-p date) (concat <span class="org-string">"\n\n"</span> date))
+                   <span class="org-string">"\n"</span> line <span class="org-string">"\n\n"</span>)
+           text-width 'left))))))
+</code></pre>
+</div>
+</details>
+
+<p>
+<b>給每個頁面添加對應的純文本版本連結</b>
+</p>
+
+<p>
+接下來要給文章添加純文本連結，只要获取到文章的 URL，然後加上 <code>.txt</code> 後輟就行。連結我放在了頁脚，頁脚的內容是通過 <code>:html-postamble spike-leung/html-postamble</code> 指定的
+(<code>:html-postamble</code> 是 <code>org-publish-project-alist</code> 裡的一個配置項，用於配置頁脚)。
+</p>
+
+<p>
+<code>spike-leung/html-postamble</code> 是一個函數：
+</p>
+
+<details>
+<summary>spike-leung/html-postamble</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/html-postamble</span> (info)
+  <span class="org-doc">"Return a string for html-postamble.</span>
+<span class="org-doc">INFO is a plist holding contextual information."</span>
+  (<span class="org-keyword">let*</span> ((timestamp-format <span class="org-string">"%Y-%m-%d %a %H:%M"</span>)
+         (display-timestamp-format <span class="org-string">"%Y-%m-%d"</span>)
+         (input-file (plist-get info <span class="org-builtin">:input-file</span>))
+         (output-file (plist-get info <span class="org-builtin">:output-file</span>))
+         (title (org-export-data (plist-get info <span class="org-builtin">:title</span>) info))
+         (subtitle (org-export-data (plist-get info <span class="org-builtin">:subtitle</span>) info))
+         (create-date (org-export-data (org-export-get-date info timestamp-format) info))
+         (modified-date (format-time-string timestamp-format
+                                            (<span class="org-keyword">and</span> input-file (file-attribute-modification-time
+                                                             (file-attributes input-file)))))
+         (create-date-display (org-export-data (org-export-get-date info display-timestamp-format) info))
+         (modified-date-display (format-time-string display-timestamp-format
+                                                    (<span class="org-keyword">and</span> input-file (file-attribute-modification-time
+                                                                     (file-attributes input-file)))))
+         (output-filename (file-name-base output-file)))
+    (concat
+     <span class="org-comment-delimiter">;; </span><span class="org-comment">webmention</span>
+     <span class="org-string">"&lt;details class=\"webmention\"&gt;</span>
+<span class="org-string">&lt;summary&gt;Webmentions &lt;span class=\"webmention__count js-required\"&gt;(&#21152;&#36733;&#20013;...)&lt;/span&gt;&lt;/summary&gt;</span>
+<span class="org-string">&lt;p class=\"webmention__tip\"&gt;</span>
+<span class="org-string">&#22914;&#26524;&#20320;&#24819;&#22238;&#24212;&#36825;&#31687;&#25991;&#31456;&#65292;&#21487;&#20197;&#22312;&#20320;&#30340;&#25991;&#31456;&#25110;&#31038;&#20132;&#23186;&#20307;&#24086;&#23376;&#20013;&#38142;&#25509;&#36825;&#31687;&#25991;&#31456;&#65292;&#28982;&#21518;&#25552;&#20132;&#20320;&#30340; URL&#65292;&#20320;&#30340;&#22238;&#24212;&#38543;&#21518;&#20250;&#26174;&#31034;&#22312;&#27492;&#39029;&#38754;&#19978;&#12290;</span>
+<span class="org-string">(&lt;a href=\"https://taxodium.ink/add-webmention-to-blog.html\"&gt;&#20851;&#20110; Webmention&lt;/a&gt;)</span>
+<span class="org-string">&lt;/p&gt;</span>
+<span class="org-string">&lt;noscript&gt;&lt;p class=\"webmention__tip\"&gt;&#20320;&#21487;&#20197;&#30332;&#36865; Webmention&#65292;&#20294;&#21152;&#36617;&#25976;&#25818;&#38656;&#35201;&#38283;&#21855; JS&#12290;&lt;/p&gt;&lt;/noscript&gt;</span>
+<span class="org-string">&lt;form action=\"https://webmention.io/taxodium.ink/webmention\" method=\"post\"&gt;</span>
+<span class="org-string">&lt;label for=\"source\"&gt;&#20320;&#25991;&#31456;&#25110;&#24086;&#23376;&#30340; URL:&lt;/label&gt;</span>
+<span class="org-string">&lt;input type=\"url\" name=\"source\" id=\"source\" placeholder=\"https://example.com/post.html\"/&gt;</span>
+<span class="org-string">&lt;input type=\"hidden\" name=\"target\" id=\"target\" readonly /&gt;</span>
+<span class="org-string">&lt;input type=\"submit\" class=\"button\" value=\"&#25552;&#20132;\"/&gt;</span>
+<span class="org-string">&lt;/form&gt;</span>
+<span class="org-string">&lt;hr&gt;&lt;/hr&gt;</span>
+<span class="org-string">&lt;ul class=\"webmention__list js-required\"&gt;&lt;/ul&gt;</span>
+<span class="org-string">&lt;/details&gt;"</span>
+     <span class="org-comment-delimiter">;; </span><span class="org-comment">microformat</span>
+     <span class="org-string">"&lt;div class=\"h-card p-author\" aria-hidden=\"true\"&gt;</span>
+<span class="org-string">&lt;img src=\"https://taxodium.ink/favicon.ico\" class=\"u-logo\"/&gt;</span>
+<span class="org-string">&lt;img src=\"https://taxodium.ink/images/common/avatar.png\" class=\"u-photo\"/&gt;</span>
+<span class="org-string">&lt;a href=\"https://taxodium.ink\" class=\"u-url p-name\"&gt;Spike Leung&lt;/a&gt;</span>
+<span class="org-string">&lt;a href=\"mailto:l-yanlei@hotmail.com\" class=\"u-email\"&gt;Spike Leung&lt;/a&gt;</span>
+<span class="org-string">&lt;/div&gt;"</span>
+     <span class="org-comment-delimiter">;; </span><span class="org-comment">footer</span>
+     (format-spec <span class="org-string">"</span>
+<span class="org-string">&lt;footer&gt;</span>
+<span class="org-string">&lt;p&gt;&#24863;&#35874;&#20320;&#30340;&#38405;&#35835;&#65281;(&#180;&#65377;&#8226; &#7509; &#8226;&#65377;`) &#9825;&lt;/p&gt;</span>
+<span class="org-string">&lt;p&gt;&#25991;&#31456;&#21019;&#24314;&#26044; &lt;time class=\"dt-published\" datetime=\"%c\"&gt;%C&lt;/time&gt;&#65292;&#26356;&#26032;&#26044; &lt;time class=\"dt-updated\" datetime=\"%m\"&gt;%M&lt;/time&gt;&#65292;&lt;/p&gt;</span>
+<span class="org-string">&lt;p&gt;&#25152;&#26377;&#21407;&#21019;&#20839;&#23481;&#22343;&#36981;&#24490; &lt;a href=\"https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans\"&gt;&#32626;&#21517;&#12289;&#38750;&#21830;&#19994;&#24615;&#20351;&#29992;&#12289;&#30456;&#21516;&#26041;&#24335;&#20849;&#20139;&lt;/a&gt;&#65292;&lt;/p&gt;</span>
+<span class="org-string">&lt;p&gt;&#25152;&#26377;&#28304;&#20195;&#30908;&#20197;&#21450;&#20869;&#32852;&#25991;&#27284;&#36981;&#24490; &lt;a href=\"https://www.gnu.org/licenses/agpl-3.0.en.html\"&gt;AGPL v3&lt;/a&gt;&#12290;&lt;/p&gt;</span>
+<span class="org-string">&lt;p&gt;&#22914;&#26524;&#20320;&#26377;&#20160;&#20040;&#24819;&#35828;&#30340;&#65292;&#23613;&#31649;&#32473; &lt;a href=\"mailto:l-yanlei@hotmail.com?subject=&#22238;&#24489;: %t %s&amp;body=Hi Spike,\"&gt;Spike Leung&lt;/a&gt; &#21457;&#19968;&#23553; &lt;a href=\"https://useplaintext.email\"&gt;&#32020;&#25991;&#26412;&#37038;&#20214;&lt;/a&gt; :)&lt;/p&gt;</span>
+<span class="org-string">&lt;p&gt;&#22914;&#26524;&#25991;&#31456;&#23545;&#20320;&#26377;&#24110;&#21161;&#65292;&#35831;&#32771;&#34385; &lt;a href=\"https://taxodium.ink/support-me.html\"&gt;&#29992;&#20320;&#21916;&#27426;&#30340;&#26041;&#24335;&lt;/a&gt; &#25903;&#25345;&#25105;&#12290;&lt;/p&gt;</span>
+<span class="org-string">&lt;a href=\"/%u.txt\"&gt;&#32020;&#25991;&#26412;&#29256;&#26412;&lt;/a&gt; &lt;a href=\"/%u.org\"&gt;&#21407;&#22987; org &#25991;&#20214;&lt;/a&gt;</span>
+<span class="org-string">&lt;/footer&gt;"</span>
+                  `((?c . ,create-date)
+                    (?C . ,create-date-display)
+                    (?m . ,modified-date)
+                    (?M . ,modified-date-display)
+                    (?t . ,title)
+                    (?s . ,subtitle)
+                    (?u . ,output-filename)))
+     <span class="org-comment-delimiter">;; </span><span class="org-comment">scripts</span>
+     <span class="org-string">"&lt;script src=\"/js/code-enhanced.js\" defer&gt;&lt;/script&gt;</span>
+<span class="org-string">&lt;script src=\"/js/code-highlighted.js\" defer&gt;&lt;/script&gt;</span>
+<span class="org-string">&lt;script src=\"/js/backtop.js\" defer&gt;&lt;/script&gt;</span>
+<span class="org-string">&lt;script src=\"/js/sidenote.js\" defer&gt;&lt;/script&gt;</span>
+<span class="org-string">&lt;script src=\"/js/purify.min.js\" defer&gt;&lt;/script&gt;</span>
+<span class="org-string">&lt;script src=\"/js/webmention.js\" defer&gt;&lt;/script&gt;</span>
+<span class="org-string">&lt;noscript&gt;</span>
+<span class="org-string">  &lt;style&gt;</span>
+<span class="org-string">    .js-required {</span>
+<span class="org-string">       display: none;</span>
+<span class="org-string">     }</span>
+<span class="org-string">  &lt;/style&gt;</span>
+<span class="org-string">&lt;/noscript&gt;"</span>)))
+</code></pre>
+</div>
+</details>
+
+<p>
+函數的參數 <code>info</code> 是一個包含了 org-publish 相關上下文的 <a href="https://www.gnu.org/software/emacs/manual/html_mono/elisp.html#Plists-and-Alists">plist</a>，其中的 <code>:output-file</code> 對應的就是最終导出的文件名字，也就是 URL，用這個 URL 拼接上 <code>.txt</code> ，展示成一個 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a">&lt;a&gt;</a> 元素，就得到了文章的純文本版本連結。
+</p>
+
+<p>
+<b>製作索引頁</b>
+</p>
+
+<p>
+<a href="txt.html">純文本索引頁</a> 和 <a href="index.html">首頁</a> 基本是一樣的，都是用 <a href="https://protesilaos.com/emacs/denote-org">Denote Org</a> 获取文章的 denote 連結 (<code>denote:</code>)，不同之处在於，首頁是將 denote 的的連結轉換成 <code>.html</code> 的連結，而純文本索引頁需要轉換成 <code>.txt</code> 的連結，這需要覆盖 <code>denote:</code> 連結的导出函數。
+</p>
+
+<details>
+<summary>denote 相關改動</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">make denote-link-ol-export support #+export_file_name</span>
+<span class="org-comment-delimiter">;; </span><span class="org-comment">see also: https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/</span>
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/my-denote--get-export-file-name</span> (file)
+  <span class="org-doc">"Find #+export_file_name in FILE and return its value.</span>
+<span class="org-doc">Return nil if not found or FILE does not exist."</span>
+  (<span class="org-keyword">when</span> (<span class="org-keyword">and</span> file (file-exists-p file))
+    (<span class="org-keyword">with-temp-buffer</span>
+      (insert-file-contents file)
+      (goto-char (point-min))
+      (<span class="org-keyword">when</span> (re-search-forward <span class="org-string">"^#\\+export_file_name: </span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">(</span></span><span class="org-string">.*</span><span class="org-string"><span class="org-regexp-grouping-backslash">\\</span></span><span class="org-string"><span class="org-regexp-grouping-construct">)</span></span><span class="org-string">$"</span> nil t)
+        (string-trim (match-string-no-properties 1))))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/denote-link-ol-export</span> (link description format)
+  <span class="org-doc">"Export a `</span><span class="org-doc"><span class="org-constant">denote:</span></span><span class="org-doc">' link from Org files.</span>
+<span class="org-doc">The LINK, DESCRIPTION, and FORMAT are handled by the export</span>
+<span class="org-doc">backend."</span>
+  (<span class="org-keyword">pcase-let*</span> ((`(,path ,query ,file-search) (denote-link--ol-resolve-link-to-target link <span class="org-builtin">:full-data</span>))
+               (export-file-name (<span class="org-keyword">when</span> path (spike-leung/my-denote--get-export-file-name path)))
+               (anchor (<span class="org-keyword">if</span> export-file-name
+                           export-file-name
+                         (<span class="org-keyword">when</span> path (file-relative-name (file-name-sans-extension path)))))
+               (desc (<span class="org-keyword">cond</span>
+                      (description)
+                      (file-search (format <span class="org-string">"denote:%s::%s"</span> query file-search))
+                      (t (concat <span class="org-string">"denote:"</span> query))))
+               (ext org-html-extension))
+    (<span class="org-keyword">if</span> path
+        (<span class="org-keyword">pcase</span> format
+          ('html (<span class="org-keyword">if</span> file-search
+                     (format <span class="org-string">"&lt;a href=\"%s.%s%s\"&gt;%s&lt;/a&gt;"</span> (url-encode-url anchor) ext file-search desc)
+                   (format <span class="org-string">"&lt;a href=\"%s.%s\"&gt;%s&lt;/a&gt;"</span> (url-encode-url anchor) ext desc)))
+          ('latex (format <span class="org-string">"\\href{%s}{%s}"</span> (replace-regexp-in-string <span class="org-string">"[\\{}$%&amp;_#~^]"</span> <span class="org-string">"\\\\\\&amp;"</span> path) desc))
+          ('texinfo (format <span class="org-string">"@uref{%s,%s}"</span> path desc))
+          ('ascii (<span class="org-keyword">if</span> file-search
+                      (format <span class="org-string">"[%s] <a href="https://taxodium.ink/%s.html%s&gt;&quot; desc (url-encode-url anchor) file-search )
+                    (format &quot;[%s] &lt;https://taxodium.ink/%s.html">&lt;https://taxodium.ink/%s.html%s&gt;"</a></span><a href="https://taxodium.ink/%s.html%s&gt;&quot; desc (url-encode-url anchor) file-search )
+                    (format &quot;[%s] &lt;https://taxodium.ink/%s.html"> desc (url-encode-url anchor) file-search )
+                    (format </a><span class="org-string"><a href="https://taxodium.ink/%s.html%s&gt;&quot; desc (url-encode-url anchor) file-search )
+                    (format &quot;[%s] &lt;https://taxodium.ink/%s.html">"[%s] &lt;https://taxodium.ink/%s.html&gt;</a>"</span>  desc (url-encode-url anchor))))
+          ('md (format <span class="org-string">"[%s](%s)"</span> desc path))
+          (_ path))
+      (format-message <span class="org-string">"[[Denote query for `</span><span class="org-string"><span class="org-constant">%s</span></span><span class="org-string">']]"</span> query))))
+
+<span class="org-comment-delimiter">;; </span><span class="org-comment">&#20462;&#25913; `</span><span class="org-comment"><span class="org-constant">denote:</span></span><span class="org-comment">' &#38142;&#25509;&#30340;&#23548;&#20986;&#65292;&#20351;&#20854;&#35835;&#21462; `#+export_file_name'</span>
+(add-hook 'org-export-before-processing-hook
+          #'(<span class="org-keyword">lambda</span> (backend)
+              (org-link-set-parameters <span class="org-string">"denote"</span> <span class="org-builtin">:export</span> #'spike-leung/denote-link-ol-export)))
+</code></pre>
+</div>
+
+<p>
+更多見： <a href="https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-denote.el">init-denote.el</a>。
+</p>
+</details>
+
+<p>
+主要的改動是讓 <code>denote:</code> 在导出時讀取 <code>org-html-extension</code> 作為後輟，默認是 <code>html</code> ，在純文本索引頁我會添加一個 <a href="https://www.gnu.org/software/emacs/manual/html_mono/emacs.html#File-Variables">File Variables</a>：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-org"><code><span class="org-comment"># Local Variables&#58;</span>
+<span class="org-comment"># org-html-extension: "txt"</span>
+<span class="org-comment"># End:</span>
+</code></pre>
+</div>
+
+<p>
+將 <code>org-html-extension</code> 的默認值覆盖為 <code>txt</code> ，然後將索引頁用 <code>org-publish</code> 导出就行。
+</p>
+
+<p>
+除此之外就是移除了頁頭、頁脚和樣式，讓索引頁盡可能精簡一些，索引頁目前資源大小只有 35K，HTML 只有 8K，應該足够小了，網絡不好時應該也能較快地加載。
+</p>
+
+<hr>
+
+<p>
+如果你是博客作者，也可以考慮加一下純文本版本。如果你是讀者，要是在網絡不好時你還想看我的博客，你可以訪問 <code>https://taxodium.ink/txt.html</code> ；至於頁面，網絡不好時，你可以將 URL 上的 <code>.html</code> 換成 <code>.txt</code> ，先湊合看著。
+</p>
+</div>
+<div id="postamble" class="status">
+<details class="webmention">
+<summary>Webmentions <span class="webmention__count js-required">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回应这篇文章，可以在你的文章或社交媒体帖子中链接这篇文章，然后提交你的 URL，你的回应随后会显示在此页面上。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<noscript><p class="webmention__tip">你可以發送 Webmention，但加載數據需要開啟 JS。</p></noscript>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章或帖子的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention__list js-required"></ul>
+</details><div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-08-24 Mon 00:44">2026-08-24</time>，更新於 <time class="dt-updated" datetime="2026-08-24 Mon 01:06">2026-08-24</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 給博客添加純文本版本 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本邮件</a> :)</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+<a href="/add-plain-text-version-to-blog.txt">純文本版本</a> <a href="/add-plain-text-version-to-blog.org">原始 org 文件</a>
+</footer><script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

@@ -1,0 +1,364 @@
+給博客添加純文本版本
+
+[2026-08-24 Mon 00:44]
+______________________
+
+看了 wiwi 的 [偷偷加入的功能] (另見 [Zine#54]
+<https://taxodium.ink/54.html#:~:text=%E5%81%B7%E5%81%B7%E5%8A%A0%E5%85%A5%E7%9A%84%E5%8A%9F%E8%83%BD%20by%20Wiwi>)
+我也給博客的文章添加了純文本版本，你可以在每篇文章的底部找到純文本版本的連結，也可以將頁
+面 URL 的 `.html' 換成 `.txt' 訪問純文本版本 (如果換成 `.org' 就能看到文章的原始文件)。
+最近看到 [Wiwi.Blog 純文字版]，我也跟著做了一個 [純文本版本的索引頁]
+<https://taxodium.ink/txt.html>。
+
+純文本的好处是極簡，基本上就是文字，沒有其它干擾元素，其次是體積小，在網絡不好時也能較快
+的加載 (不過網絡條件不好，和服務器建立連結也需要時間，能節省的是頁面需要的流量)。
+
+製作純文本版本，只要將原始文件想辦法轉成 txt 版本就好了 (現在只是轉換成了 HTML)，然後給
+所有的 txt 文件做一個索引頁 (建議掛載在 `/txt' 這個路徑下)，基本上就够用了。
+
+我的博客是用 [org-publish] <https://taxodium.ink/org-publish-blog.html> 和 [denote]
+<https://taxodium.ink/blog-with-denote-and-org-publish.html> 構建的，接下來我會分享我是
+如何通過它們給博客添加純文本版本的，包擴：
+- 將原始 org 文件轉換出一個 txt 版本
+- 給每個頁面添加對應的純文本版本連結
+- 製作索引頁
+
+相關代碼可以在 [init-org-publish.el] 和 [init-denote.el] 找到。
+
+----------------------------------------------------------------------------------------
+
+將原始 org 文件轉換出一個 txt 版本
+
+因為我是用 `org-publish' 構建的，要構建純文本版本，可以向 `org-publish-project-alist' 添
+加一個 project 來實現。
+
+,----
+| (setq org-publish-project-alist
+|       `(
+|         ;; 省略其它
+| 
+|         ("plain-text-all"
+|          :base-directory "~/git/taxodium/posts"
+|          :base-extension "org"
+|          :exclude ".*"
+|          :with-toc nil
+|          :include  ,(spike-leung/get-file-list-from-denote-silo "~/git/taxodium/posts" (rx (or "_blackhole" "_published")))
+|          :publishing-directory ,spike-leung/org-publish-default-publishing-directory
+|          :publishing-function spike-leung/org-publish-plain-text)
+| 
+|         ;; 省略其它
+|         ))
+`----
+
+這個 project 做的事就是 找到所有文章的文件，用 `spike-leung/org-publish-plain-text' 处理
+成純文本版本。
+
+,----
+| (defun spike-leung/org-publish-plain-text (_plist filename pub-dir)
+|   "Publish a org file and use export_file_name as filename.
+| 
+| FILENAME is the filename of the Org file to be published.  PLIST
+| is the property list for the given project.  PUB-DIR is the
+| publishing directory.
+| 
+| Return output file name."
+|   (unless (file-directory-p pub-dir)
+|     (make-directory pub-dir t))
+|   (let* ((export-file-name
+|           (or (spike-leung/org-publish-get-org-keyword nil nil "export_file_name" filename) filename))
+|          (base-filename (expand-file-name (file-name-nondirectory export-file-name) pub-dir))
+|          (org-file (file-name-with-extension base-filename "org"))
+|          (text-file (file-name-with-extension base-filename "txt")))
+|     ;; generate .txt file
+|     (org-publish-org-to 'ascii filename ".txt" _plist pub-dir)
+|     ;; copy original org file to pub-dir
+|     (copy-file filename org-file t)
+|     ;; Return file name.
+|     org-file))
+`----
+
+`spike-leung/org-publish-plain-text' 會從文章的 org 文件裡找到 URL (export-file-name)，
+然後用 `org-publish-org-to' 导出一個 ascii 版本到用於發布的目录󠄃，這樣就很到了每篇文章對
+應的純文本版本了。
+
+另外為了讓純文本版本的內容看起來更簡洁，我還覆盖了 `ox-ascii' 的一些實現，移除了加粗等標
+記。
+
+,----
+| (use-package ox-ascii
+|   :straight nil
+|   :custom
+|   (org-ascii-text-width 88)
+|   (org-ascii-quote-margin 2)
+|   (org-ascii-charset 'ascii)
+|   (org-ascii-links-to-notes t)
+|   :config
+|   ;; do not interpret *word*, /word/, _word_ and +word+
+|   (defun org-ascii-bold (_bold contents _info) contents)
+|   (defun org-ascii-italic (_italic contents _info) contents)
+|   (defun org-ascii-underline (_underline contents _info) contents)
+|   (defun org-ascii-strike-through (_strike-through contents _info) contents)
+|   ;; override `org-ascii-template--document-title', change center align to left align
+|   (defun org-ascii-template--document-title (info)
+|     "Return document title, as a string.
+| INFO is a plist used as a communication channel."
+|     (let* ((text-width (plist-get info :ascii-text-width))
+|            ;; Links in the title will not be resolved later, so we make
+|            ;; sure their path is located right after them.
+|            (info (org-combine-plists info '(:ascii-links-to-notes nil)))
+|            (with-title (plist-get info :with-title))
+|            (title (org-export-data
+|                    (when with-title (plist-get info :title)) info))
+|            (subtitle (org-export-data
+|                       (when with-title (plist-get info :subtitle)) info))
+|            (author (and (plist-get info :with-author)
+|                         (let ((auth (plist-get info :author)))
+|                           (and auth (org-export-data auth info)))))
+|            (email (and (plist-get info :with-email)
+|                        (org-export-data (plist-get info :email) info)))
+|            (date (and (plist-get info :with-date)
+|                       (org-export-data (org-export-get-date info) info))))
+|       ;; There are two types of title blocks depending on the presence
+|       ;; of a title to display.
+|       (if (string= title "")
+|           ;; Title block without a title.  DATE is positioned at the top
+|           ;; right of the document, AUTHOR to the top left and EMAIL
+|           ;; just below.
+|           (cond
+|            ((and (org-string-nw-p date) (org-string-nw-p author))
+|             (concat
+|              author
+|              (make-string (- text-width (string-width date) (string-width author))
+|                           ?\s)
+|              date
+|              (when (org-string-nw-p email) (concat "\n" email))
+|              "\n\n\n"))
+|            ((and (org-string-nw-p date) (org-string-nw-p email))
+|             (concat
+|              email
+|              (make-string (- text-width (string-width date) (string-width email))
+|                           ?\s)
+|              date "\n\n\n"))
+|            ((org-string-nw-p date)
+|             (concat
+|              (org-ascii--justify-lines date text-width 'right)
+|              "\n\n\n"))
+|            ((and (org-string-nw-p author) (org-string-nw-p email))
+|             (concat author "\n" email "\n\n\n"))
+|            ((org-string-nw-p author) (concat author "\n\n\n"))
+|            ((org-string-nw-p email) (concat email "\n\n\n")))
+|         ;; Title block with a title.  Document's TITLE, along with the
+|         ;; AUTHOR and its EMAIL are both overlined and an underlined,
+|         ;; centered.  Date is just below, also centered.
+|         (let* ((utf8p (eq (plist-get info :ascii-charset) 'utf-8))
+|                ;; Format TITLE.  It may be filled if it is too wide,
+|                ;; that is wider than the two thirds of the total width.
+|                (title-len (min (apply #'max
+|                                       (mapcar #'string-width
+|                                               (org-split-string
+|                                                (concat title "\n" subtitle) "\n")))
+|                                (/ (* 2 text-width) 3)))
+|                (formatted-title (org-ascii--fill-string title title-len info))
+|                (formatted-subtitle (when (org-string-nw-p subtitle)
+|                                      (org-ascii--fill-string subtitle title-len info)))
+|                (line
+|                 (make-string
+|                  (min (+ (max title-len
+|                               (string-width (or author ""))
+|                               (string-width (or email "")))
+|                          2)
+|                       text-width) (if utf8p ?━ ?_))))
+|           (org-ascii--justify-lines
+|            (concat (upcase formatted-title)
+|                    (and formatted-subtitle (concat " - " formatted-subtitle))
+|                    (when (org-string-nw-p date) (concat "\n\n" date))
+|                    "\n" line "\n\n")
+|            text-width 'left))))))
+`----
+
+給每個頁面添加對應的純文本版本連結
+
+接下來要給文章添加純文本連結，只要获取到文章的 URL，然後加上 `.txt' 後輟就行。連結我放在
+了頁脚，頁脚的內容是通過 `:html-postamble spike-leung/html-postamble' 指定的
+(`:html-postamble' 是 `org-publish-project-alist' 裡的一個配置項，用於配置頁脚)。
+
+`spike-leung/html-postamble' 是一個函數：
+
+,----
+| (defun spike-leung/html-postamble (info)
+|   "Return a string for html-postamble.
+| INFO is a plist holding contextual information."
+|   (let* ((timestamp-format "%Y-%m-%d %a %H:%M")
+|          (display-timestamp-format "%Y-%m-%d")
+|          (input-file (plist-get info :input-file))
+|          (output-file (plist-get info :output-file))
+|          (title (org-export-data (plist-get info :title) info))
+|          (subtitle (org-export-data (plist-get info :subtitle) info))
+|          (create-date (org-export-data (org-export-get-date info timestamp-format) info))
+|          (modified-date (format-time-string timestamp-format
+|                                             (and input-file (file-attribute-modification-time
+|                                                              (file-attributes input-file)))))
+|          (create-date-display (org-export-data (org-export-get-date info display-timestamp-format) info))
+|          (modified-date-display (format-time-string display-timestamp-format
+|                                                     (and input-file (file-attribute-modification-time
+|                                                                      (file-attributes input-file)))))
+|          (output-filename (file-name-base output-file)))
+|     (concat
+|      ;; webmention
+|      "<details class=\"webmention\">
+| <summary>Webmentions <span class=\"webmention__count js-required\">(加载中...)</span></summary>
+| <p class=\"webmention__tip\">
+| 如果你想回应这篇文章，可以在你的文章或社交媒体帖子中链接这篇文章，然后提交你的 URL，你的回应随后会显示在此页面上。
+| (<a href=\"https://taxodium.ink/add-webmention-to-blog.html\">关于 Webmention</a>)
+| </p>
+| <noscript><p class=\"webmention__tip\">你可以發送 Webmention，但加載數據需要開啟 JS。</p></noscript>
+| <form action=\"https://webmention.io/taxodium.ink/webmention\" method=\"post\">
+| <label for=\"source\">你文章或帖子的 URL:</label>
+| <input type=\"url\" name=\"source\" id=\"source\" placeholder=\"https://example.com/post.html\"/>
+| <input type=\"hidden\" name=\"target\" id=\"target\" readonly />
+| <input type=\"submit\" class=\"button\" value=\"提交\"/>
+| </form>
+| <hr></hr>
+| <ul class=\"webmention__list js-required\"></ul>
+| </details>"
+|      ;; microformat
+|      "<div class=\"h-card p-author\" aria-hidden=\"true\">
+| <img src=\"https://taxodium.ink/favicon.ico\" class=\"u-logo\"/>
+| <img src=\"https://taxodium.ink/images/common/avatar.png\" class=\"u-photo\"/>
+| <a href=\"https://taxodium.ink\" class=\"u-url p-name\">Spike Leung</a>
+| <a href=\"mailto:l-yanlei@hotmail.com\" class=\"u-email\">Spike Leung</a>
+| </div>"
+|      ;; footer
+|      (format-spec "
+| <footer>
+| <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+| <p>文章创建於 <time class=\"dt-published\" datetime=\"%c\">%C</time>，更新於 <time class=\"dt-updated\" datetime=\"%m\">%M</time>，</p>
+| <p>所有原创內容均遵循 <a href=\"https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans\">署名、非商业性使用、相同方式共享</a>，</p>
+| <p>所有源代碼以及内联文檔遵循 <a href=\"https://www.gnu.org/licenses/agpl-3.0.en.html\">AGPL v3</a>。</p>
+| <p>如果你有什么想说的，尽管给 <a href=\"mailto:l-yanlei@hotmail.com?subject=回復: %t %s&body=Hi Spike,\">Spike Leung</a> 发一封 <a href=\"https://useplaintext.email\">純文本邮件</a> :)</p>
+| <p>如果文章对你有帮助，请考虑 <a href=\"https://taxodium.ink/support-me.html\">用你喜欢的方式</a> 支持我。</p>
+| <a href=\"/%u.txt\">純文本版本</a> <a href=\"/%u.org\">原始 org 文件</a>
+| </footer>"
+|                   `((?c . ,create-date)
+|                     (?C . ,create-date-display)
+|                     (?m . ,modified-date)
+|                     (?M . ,modified-date-display)
+|                     (?t . ,title)
+|                     (?s . ,subtitle)
+|                     (?u . ,output-filename)))
+|      ;; scripts
+|      "<script src=\"/js/code-enhanced.js\" defer></script>
+| <script src=\"/js/code-highlighted.js\" defer></script>
+| <script src=\"/js/backtop.js\" defer></script>
+| <script src=\"/js/sidenote.js\" defer></script>
+| <script src=\"/js/purify.min.js\" defer></script>
+| <script src=\"/js/webmention.js\" defer></script>
+| <noscript>
+|   <style>
+|     .js-required {
+|        display: none;
+|      }
+|   </style>
+| </noscript>")))
+`----
+
+函數的參數 `info' 是一個包含了 org-publish 相關上下文的 [plist]，其中的 `:output-file'
+對應的就是最終导出的文件名字，也就是 URL，用這個 URL 拼接上 `.txt' ，展示成一個 [<a>] 元
+素，就得到了文章的純文本版本連結。
+
+製作索引頁
+
+[純文本索引頁] <https://taxodium.ink/txt.html> 和 [首頁] 基本是一樣的，都是用 [Denote
+Org] 获取文章的 denote 連結 (`denote:')，不同之处在於，首頁是將 denote 的的連結轉換成
+`.html' 的連結，而純文本索引頁需要轉換成 `.txt' 的連結，這需要覆盖 `denote:' 連結的导出
+函數。
+
+,----
+| ;;; make denote-link-ol-export support #+export_file_name
+| ;; see also: https://jiewawa.me/2024/03/blogging-with-denote-and-hugo/
+| (defun spike-leung/my-denote--get-export-file-name (file)
+|   "Find #+export_file_name in FILE and return its value.
+| Return nil if not found or FILE does not exist."
+|   (when (and file (file-exists-p file))
+|     (with-temp-buffer
+|       (insert-file-contents file)
+|       (goto-char (point-min))
+|       (when (re-search-forward "^#\\+export_file_name: \\(.*\\)$" nil t)
+|         (string-trim (match-string-no-properties 1))))))
+| 
+| (defun spike-leung/denote-link-ol-export (link description format)
+|   "Export a `denote:' link from Org files.
+| The LINK, DESCRIPTION, and FORMAT are handled by the export
+| backend."
+|   (pcase-let* ((`(,path ,query ,file-search) (denote-link--ol-resolve-link-to-target link :full-data))
+|                (export-file-name (when path (spike-leung/my-denote--get-export-file-name path)))
+|                (anchor (if export-file-name
+|                            export-file-name
+|                          (when path (file-relative-name (file-name-sans-extension path)))))
+|                (desc (cond
+|                       (description)
+|                       (file-search (format "denote:%s::%s" query file-search))
+|                       (t (concat "denote:" query))))
+|                (ext org-html-extension))
+|     (if path
+|         (pcase format
+|           ('html (if file-search
+|                      (format "<a href=\"%s.%s%s\">%s</a>" (url-encode-url anchor) ext file-search desc)
+|                    (format "<a href=\"%s.%s\">%s</a>" (url-encode-url anchor) ext desc)))
+|           ('latex (format "\\href{%s}{%s}" (replace-regexp-in-string "[\\{}$%&_#~^]" "\\\\\\&" path) desc))
+|           ('texinfo (format "@uref{%s,%s}" path desc))
+|           ('ascii (if file-search
+|                       (format "[%s] <https://taxodium.ink/%s.html%s>" desc (url-encode-url anchor) file-search )
+|                     (format "[%s] <https://taxodium.ink/%s.html>"  desc (url-encode-url anchor))))
+|           ('md (format "[%s](%s)" desc path))
+|           (_ path))
+|       (format-message "[[Denote query for `%s']]" query))))
+| 
+| ;; 修改 `denote:' 链接的导出，使其读取 `#+export_file_name'
+| (add-hook 'org-export-before-processing-hook
+|           #'(lambda (backend)
+|               (org-link-set-parameters "denote" :export #'spike-leung/denote-link-ol-export)))
+`----
+
+更多見： [init-denote.el]。
+
+主要的改動是讓 `denote:' 在导出時讀取 `org-html-extension' 作為後輟，默認是 `html' ，在
+純文本索引頁我會添加一個 [File Variables]：
+
+,----
+| # Local Variables:
+| # org-html-extension: "txt"
+| # End:
+`----
+
+將 `org-html-extension' 的默認值覆盖為 `txt' ，然後將索引頁用 `org-publish' 导出就行。
+
+除此之外就是移除了頁頭、頁脚和樣式，讓索引頁盡可能精簡一些，索引頁目前資源大小只有 35K，
+HTML 只有 8K，應該足够小了，網絡不好時應該也能較快地加載。
+
+----------------------------------------------------------------------------------------
+
+如果你是博客作者，也可以考慮加一下純文本版本。如果你是讀者，要是在網絡不好時你還想看我的
+博客，你可以訪問 `https://taxodium.ink/txt.html' ；至於頁面，網絡不好時，你可以將 URL 上
+的 `.html' 換成 `.txt' ，先湊合看著。
+
+
+[偷偷加入的功能] <https://wiwi.blog/blog/low-key-features/>
+
+[Wiwi.Blog 純文字版] <https://wiwi.blog/blog/wiwi-blog-txt/>
+
+[init-org-publish.el]
+<https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-org-publish.el>
+
+[init-denote.el]
+<https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-denote.el>
+
+[plist] <info:elisp#Plists and Alists>
+
+[<a>] <https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a>
+
+[首頁] <file:index.org>
+
+[Denote Org] <https://protesilaos.com/emacs/denote-org>
+
+[File Variables] <info:emacs#File Variables>
