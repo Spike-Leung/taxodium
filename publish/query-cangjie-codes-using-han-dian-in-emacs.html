@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>在 Emacs 中用漢典查詢倉頡碼</title>
+<meta name="author" content="Spike Leung">
+<meta name="description" content="在 Emacs 中用漢典查詢倉頡碼">
+<meta name="generator" content="Org Mode">
+
+<meta name="color-scheme" content="light dark" />
+<link rel="preload" href="/styles/main.css" as="style" />
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="preload" href="/js/color-scheme.js" as="script"/>
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<script src="/js/color-scheme.js"></script>
+<link rel="stylesheet" href="/styles/image-enhance.css" />
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主頁</a></li>
+    <li><a href="/subscribe.html">訂閱</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/shuffle.html" class="js-required">隨機</a></li>
+  </ul>
+  <button id="lightdark" class="js-required" aria-label="點擊切換當前頁面明暗主題">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+      <path d="M0 0h512v512H0z" fill="none" />
+      <path fill="currentColor" fill-rule="evenodd" d="M277.333 405.333v85.333h-42.667v-85.333zm99.346-58.824l60.34 60.34l-30.17 30.17l-60.34-60.34zm-241.359 0l30.17 30.17l-60.34 60.34l-30.17-30.17zM256 139.353c64.422 0 116.647 52.224 116.647 116.647c0 64.422-52.225 116.647-116.647 116.647A116.427 116.427 0 0 1 139.352 256c0-64.423 52.225-116.647 116.648-116.647m0 42.666c-40.859 0-73.981 33.123-73.981 74.062a73.76 73.76 0 0 0 21.603 52.296c13.867 13.867 32.685 21.64 52.378 21.603zm234.666 52.647v42.667h-85.333v-42.667zm-384 0v42.667H21.333v-42.667zM105.15 74.98l60.34 60.34l-30.17 30.17l-60.34-60.34zm301.7 0l30.169 30.17l-60.34 60.34l-30.17-30.17zM277.332 21.333v85.333h-42.667V21.333z" />
+    </svg>
+  </button>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">在 Emacs 中用漢典查詢倉頡碼</h1>
+</header><p>
+<a href="get-started-with-cangjie-input-method.html">倉頡輸入法</a> 我已經用了很長時間，通過強迫自己在日常中使用，現在日常打字已經沒什麼問題。我最近寫的文章都是用䌓體，是因為倉頡打繁體更容易，而且我也喜歡繁體字 <small>(繁體字更容易反映字形，從而更好的理解一個字的含義)</small>。不過我的用法可能有點怪，現在用䌓體的更多是香港和臺灣的人，他們的用字有各自的習慣偏好，但由於我不了解，我大多時候只是將簡體字換成䌓體字，但我想閱讀起來應該也沒什麼問題。或許有的讀者閲讀䌓體會有點困難，我只能說聲抱歉了。
+</p>
+
+<p>
+儘管常用字基本會打了，但還是會有一些字不知道怎麼打，有的字我不知道對應的繁體是什麼，這時我會用 <a href="https://zdic.net">漢典</a> 去查。
+</p>
+
+<p>
+我有兩種用法，一種是利用 Zen 瀏覧器的快捷查詢 (Shortcut)，我綁定在了 <code>@h</code> ，在我需要查一個字時，例如「倉」，我就在 Zen 瀏覧器的搜索框中輸入 <code>@h 倉</code> 就可以跳到漢典查詢。
+</p>
+
+
+<figure>
+<a href="images/get-started-with-cangjie-input-method/handian-shortcut.webp"><img src="images/get-started-with-cangjie-input-method/handian-shortcut.webp" alt="handian-shortcut.webp" loading="lazy" class="center"></a>
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>Zen 上的漢典 shortcut 配置截图。</figcaption>
+</figure>
+
+<p>
+另一個用法是在 Emacs 裡 <small>(我用 Emacs 寫博客，在 Emacs 裡打字是最多的)</small>，我將漢典的連結寫進了 <a href="emacs-use-webjump-to-search-symbol-at-point.html">webjump</a> 裡，webjump 的功能和 Zen 瀏覧器的快捷查詢是類似的，也可以自定義查詢，通過 <code>M-x webjump</code> 就能調用。更方便的做法是將 webjump 綁定在 <a href="https://github.com/oantolin/embark">embark</a> 上，embark 相當於 Emacs 中的右鍵菜單，這樣我可以選中一個字後，通過 embark 調用 webjump，然後選擇漢典進行查詢。關於這部分的設定可以看 <a href="emacs-use-webjump-to-search-symbol-at-point.html">Emacs: 封装 webjump 搜索 symbol-at-point</a>。
+</p>
+
+<p>
+這兩種方法本質上都是跳轉到漢典查詢，只是調用的入口不同，我也用了很長一段時間。但漢典頁面的信息太多了，很多信息是我不關心的，而我比較關心的倉頡碼在頁面底部，每次都要滾動到底部才能看，有點麻煩。前陣子在 <a href="blaugust-2026-feeds.html">Blaugust 2026 Feeds - 以及我是如何用 Elisp 製作的</a> 中我學會了如何在 Emacs 中抓取一個頁面的 HTML，并用 Emacs 內置的 dom.el 处理 HTML 中的元素，於是我想，我也可以用相同的方法去抓取漢典的 HTML，只保留那些我關心的內容，然後在 Emacs 的 buffer 裡展示，這樣在 Emacs 中查字時會更方便。
+</p>
+
+<p>
+折騰了好一會儿，我已經實現了，功能的大體邏輯是這樣的：
+</p>
+<ul class="org-ul">
+<li>從選中的區域 (region) 或用戶輸入获取要查詢的字</li>
+<li>拼接漢典的查詢連結： <a href="https://zdic.net/hans/%E5%AD%97">https://zdic.net/hans/%E5%AD%97</a></li>
+<li>用 <a href="https://github.com/alphapapa/plz.el">plz.el</a> 發起請求，获取到頁面的 HTML</li>
+<li>用 dom.el 获取我需要的信息：字的圖片、拼音、倉頡碼、對應的簡體或䌓體的圖片、倉頡碼、說文解字中的文字圖片 <small>(用於了解字的原始形狀)</small></li>
+<li>將信息拼裝好，用 Emacs 內置的瀏覧器 EWW 展示，這是因為組裝好的信息也是一份 DOM tree，適合用瀏覧器來渲染，同時如果想看原始頁面，也可以在 EWW 中用 <code>eww-browse-with-external-browser</code> 把 URL 用外部瀏覧器打開</li>
+</ul>
+
+<details>
+<summary>源碼</summary>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code><span class="org-comment-delimiter">;;; </span><span class="org-comment">init-handian.el --- &#29992;&#28450;&#20856;&#26597;&#35426;&#28450;&#23383;&#30340;&#20489;&#38945;&#30908; -*- lexical-binding: t -*-</span>
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">Commentary:</span>
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">Code:</span>
+(<span class="org-keyword">require</span> '<span class="org-constant">plz</span>)
+(<span class="org-keyword">require</span> '<span class="org-constant">dom</span>)
+(<span class="org-keyword">require</span> '<span class="org-constant">cl-lib</span>)
+(<span class="org-keyword">require</span> '<span class="org-constant">eww</span>)
+(<span class="org-keyword">require</span> '<span class="org-constant">url-util</span>)
+(<span class="org-keyword">require</span> '<span class="org-constant">subr-x</span>)
+
+(<span class="org-keyword">defcustom</span> <span class="org-variable-name">spike-leung/handian--url</span> <span class="org-string">"https://zdic.net/hans/"</span>
+  <span class="org-doc">"&#28450;&#20856;  URL."</span>
+  <span class="org-builtin">:type</span> 'string)
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/handian--char-url</span> (char)
+  <span class="org-doc">"&#28450;&#20856; URL&#65292;&#25340;&#25509;&#19978;&#35201;&#26597;&#35426;&#30340; CHAR."</span>
+  (concat spike-leung/handian--url (url-hexify-string char)))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/handian--img-with-bg</span> (img)
+  <span class="org-doc">"&#25226; IMG &#21253;&#36914;&#19968;&#20491;&#28154;&#33394;&#32972;&#26223;&#30340; span&#65292;&#36991;&#20813;&#26263;&#33394;&#20027;&#38988;&#30475;&#19981;&#28165;&#40657;&#23383;."</span>
+  (<span class="org-keyword">when</span> img
+    `(span ((style . <span class="org-string">"background-color: #fff;"</span>))
+           ,img)))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/handian--variants-p</span> (dom)
+  <span class="org-doc">"&#21028;&#26039;&#26159;&#21542;&#22312;&#12300;&#32321;&#20307;&#12301;&#25110;&#12300;&#31616;&#20307;&#12301;.</span>
+<span class="org-doc">DOM &#26159;&#38913;&#38754;&#25991;&#27284;&#30340; DOM &#27193;."</span>
+  (<span class="org-keyword">let</span> ((variants (dom-by-class dom <span class="org-string">"char-card__variants"</span>)))
+    (<span class="org-keyword">and</span> variants
+         (<span class="org-keyword">let</span> ((text (dom-texts variants)))
+           (<span class="org-keyword">or</span> (string-match-p <span class="org-string">"&#32321;&#20307;"</span> text)
+               (string-match-p <span class="org-string">"&#31616;&#20307;"</span> text))))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/handian--variants</span> (dom)
+  <span class="org-doc">"&#33719;&#21462;&#23383;&#30340;&#12300;&#32321;&#20307;&#12301;&#25110;&#12300;&#31616;&#20307;&#12301;&#65292;&#26597;&#35426;&#20854;&#20489;&#38945;&#30908;&#65292;&#36820;&#22238;&#23565;&#25033;&#30340; DOM.</span>
+<span class="org-doc">DOM &#26159;&#38913;&#38754;&#25991;&#27284;&#30340; DOM &#27193;."</span>
+  (<span class="org-keyword">when</span> (spike-leung/handian--variants-p dom)
+    (<span class="org-keyword">let*</span> ((variants (dom-by-class dom <span class="org-string">"char-card__variants"</span>))
+           (link (dom-by-class (car (dom-by-tag variants 'ul)) <span class="org-string">"variant-link"</span>))
+           (variant-char (<span class="org-keyword">dom-attr</span> link 'title)))
+      (spike-leung/handian--query-char variant-char t))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/handian--swjz-img</span> (dom)
+  <span class="org-doc">"&#33659;&#21462;&#12300;&#35498;&#25991;&#35299;&#23383;&#12301;&#37096;&#20998;&#30340;&#22294;&#29255;.</span>
+<span class="org-doc">DOM &#26159;&#38913;&#38754;&#25991;&#27284;&#30340; DOM &#27193;."</span>
+  (<span class="org-keyword">let*</span> ((swjz (dom-by-id dom <span class="org-string">"swjz"</span>)))
+    (list (car (dom-by-tag swjz 'img)))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/handian--build-document</span> (dom url <span class="org-type">&amp;optional</span> is-variant)
+  <span class="org-doc">"&#27083;&#24314;&#39023;&#31034;&#30340;&#32080;&#26524;.</span>
+<span class="org-doc">URL &#26159;&#28450;&#20856;&#30340; URL&#65292;&#23383;&#20316;&#28858;&#26597;&#35426;&#21443;&#25976;.</span>
+<span class="org-doc">DOM &#26159;&#38913;&#38754;&#25991;&#27284;&#30340; DOM &#27193;.</span>
+<span class="org-doc">&#22914;&#26524; IS-VARIANT &#26159; nil&#65292;&#21063;&#38989;&#22806;&#26597;&#35426;&#19968;&#27425;&#36889;&#20491;&#23383;&#23565;&#25033;&#30340;&#12300;&#32321;&#20307;&#12301;&#25110;&#12300;&#31616;&#20307;&#12301;."</span>
+  (<span class="org-keyword">let*</span> ((glyph-img (dom-by-id dom <span class="org-string">"glyph-img"</span>))
+         (pinyin (dom-text (dom-by-class dom <span class="org-string">"meta-pinyin"</span>)))
+         (info-extra (dom-by-class dom <span class="org-string">"char-card__info-extra"</span>))
+         (cangjie (nth 3 (dom-by-tag info-extra 'span)))
+         <span class="org-comment-delimiter">;; </span><span class="org-comment">&#26597;&#35426;&#21407;&#23383;&#26178;&#65292;&#38989;&#22806;&#26597;&#35426;&#20854;&#35722;&#39636;&#65307;&#22914;&#26524;&#26159;&#26597;&#35426;&#30340;&#26159;&#35722;&#39636;&#21063;&#19981;&#38656;&#35201;&#38989;&#22806;&#26597;&#35426;&#20854;&#35722;&#39636;&#65292;&#21542;&#21063;&#23601;&#24490;&#29872;&#20102;&#12290;</span>
+         (swjz-img (<span class="org-keyword">unless</span> is-variant (spike-leung/handian--swjz-img dom)))
+         (variants (<span class="org-keyword">unless</span> is-variant (spike-leung/handian--variants dom))))
+    (append (list 'base (list (cons 'href url))
+                  (spike-leung/handian--img-with-bg glyph-img)
+                  '(span nil <span class="org-string">"&#25340;&#38899;&#65306;"</span>) pinyin
+                  '(span nil <span class="org-string">"&#20489;&#38945;&#30908;&#65306;"</span>) cangjie
+                  '(hr nil))
+            (<span class="org-keyword">and</span> variants (list variants))
+            `(,(spike-leung/handian--img-with-bg swjz-img)))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/handian--query-char</span> (char <span class="org-type">&amp;optional</span> is-variant)
+  <span class="org-doc">"&#21521;&#28450;&#20856;&#30332;&#36215;&#35531;&#27714;&#65292;&#24471;&#21040;&#36820;&#22238;&#30340; HTML&#65292;&#35299;&#26512;&#25104; DOM&#65292;&#24182;&#27083;&#24314;&#29992;&#26044;&#39023;&#31034;&#30340; DOM.</span>
+<span class="org-doc">CHAR &#26159;&#35201;&#26597;&#35426;&#30340;&#28450;&#23383;.</span>
+<span class="org-doc">&#22914;&#26524; IS-VARIANT &#26159; nil&#65292;&#21063;&#38989;&#22806;&#26597;&#35426;&#19968;&#27425;&#36889;&#20491;&#23383;&#23565;&#25033;&#30340;&#12300;&#32321;&#20307;&#12301;&#25110;&#12300;&#31616;&#20307;&#12301;."</span>
+  (<span class="org-keyword">let*</span> ((url (concat <span class="org-string">"https://zdic.net/hans/"</span> (url-hexify-string char)))
+         (dom (plz 'get url
+                <span class="org-builtin">:as</span> (<span class="org-keyword">lambda</span> () (libxml-parse-html-region (point-min) (point-max)))
+                <span class="org-builtin">:then</span> 'sync)))
+    (spike-leung/handian--build-document dom url is-variant)))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/handian--display</span> (char document)
+  <span class="org-doc">"&#29992; EWW &#23637;&#31034;&#26597;&#35426;&#32080;&#26524;.</span>
+<span class="org-doc">CHAR &#26159;&#35201;&#26597;&#35426;&#30340;&#28450;&#23383;.</span>
+<span class="org-doc">DOCUMENT &#27083;&#24314;&#22909;&#30340;&#29992;&#26044;&#23637;&#31034;&#30340; DOM&#65292;&#26684;&#24335;&#35201;&#21512; EWW &#35201;&#27714;&#30340;&#26684;&#24335;."</span>
+  (<span class="org-keyword">let*</span> ((url (spike-leung/handian--char-url char))
+         (buf-name (format <span class="org-string">"*[Han]&#28450;&#20856;:&#12300;%s&#12301;*"</span> char))
+         (buf (get-buffer-create buf-name)))
+    (<span class="org-keyword">with-current-buffer</span> buf
+      (eww-mode)
+      (plist-put eww-data <span class="org-builtin">:url</span> url)
+      (plist-put eww-data <span class="org-builtin">:title</span> buf-name))
+    (pop-to-buffer buf)
+    (eww-display-document document nil buf)
+    (eww--after-page-change)))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/handian--query</span> (char)
+  <span class="org-doc">"&#29992;&#12300;&#28450;&#20856;&#12301;(`</span><span class="org-doc"><span class="org-constant">spike-leung/handian--url</span></span><span class="org-doc">') &#26597;&#35426;&#28450;&#23383; CHAR.</span>
+<span class="org-doc">&#39023;&#31034;&#28450;&#23383;&#30340;&#31777;&#39636;&#21644;&#32321;&#39636;&#65292;&#23427;&#20497;&#30340;&#25340;&#38899;&#21644;&#20489;&#38945;&#30908;&#31561;&#20449;&#24687;&#12290;</span>
+<span class="org-doc">&#32080;&#26524;&#20351;&#29992; `</span><span class="org-doc"><span class="org-constant">eww-mode</span></span><span class="org-doc">'&#65292;</span>
+<span class="org-doc">&#21487;&#20197;&#22312;&#32080;&#26524; buffer &#20013;&#29992; `</span><span class="org-doc"><span class="org-constant">eww-browse-with-external-browser</span></span><span class="org-doc">' &#25171;&#38283;&#21407;&#32178;&#31449;&#26597;&#38321;&#26356;&#22810;&#20449;&#24687;."</span>
+  (<span class="org-keyword">interactive</span>
+   (list
+    (<span class="org-keyword">let</span> ((s (<span class="org-keyword">if</span> (use-region-p)
+                 (string-trim
+                  (buffer-substring-no-properties (region-beginning) (region-end)))
+               (read-string <span class="org-string">"&#36664;&#20837;&#35201;&#26597;&#35426;&#30340;&#28450;&#23383;: "</span>))))
+      (<span class="org-keyword">if</span> (&gt; (length s) 1)
+          (<span class="org-warning">user-error</span> <span class="org-string">"&#12300;%s&#12301;&#21547;&#22810;&#20491;&#23383;&#65292;&#20677;&#25509;&#21463;&#21934;&#19968;&#28450;&#23383;"</span> s)
+        s))))
+  (<span class="org-keyword">setq</span> deactivate-mark t)
+  (<span class="org-keyword">let</span> ((document (spike-leung/handian--query-char char)))
+    (spike-leung/handian--display char document)))
+
+(<span class="org-keyword">provide</span> '<span class="org-constant">init-handian</span>)
+<span class="org-comment-delimiter">;;; </span><span class="org-comment">init-handian.el ends here</span>
+</code></pre>
+</div>
+
+<p>
+上面的代碼可能更新不及時，最新的可以看 <a href="https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-handian.el">init-handian.el</a>。
+</p>
+</details>
+
+
+<figure>
+<a href="images/query-cangjie-codes-using-han-dian-in-emacs/handiam-query-result.webp"><img src="images/query-cangjie-codes-using-han-dian-in-emacs/handiam-query-result.webp" alt="handiam-query-result.webp" loading="lazy"></a>
+
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>在 Emacs 中用 handian.el 查詢「開」字的結果</figcaption>
+</figure>
+
+<p>
+使用時，有几種用法：
+</p>
+<ul class="org-ul">
+<li>直接調用 <code>spike-leung/handian--query</code> ，輸入要查詢的字查詢</li>
+<li>在 Emacs 中選中一個字後，調用 <code>spike-leung/handian--query</code> 查詢</li>
+<li><p>
+將 <code>spike-leung/handian--query</code> 綁定到 embark 中，在 Emacs 中選中一個字後，調用 embark 的快捷鍵查詢 <small>(我最常用的方法)</small>
+</p>
+
+<details>
+<summary>我的相關配置</summary>
+
+<p>
+<a href="#coderef-embark-act" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-embark-act');" onmouseout="CodeHighlightOff(this, 'coderef-embark-act');">embark-act</a> 綁定在 <kbd>C-.</kbd>，然後 <a href="#coderef-handian--query" class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-handian--query');" onmouseout="CodeHighlightOff(this, 'coderef-handian--query');">將 spike-leung/handian&ndash;query 綁定到 embark-region-map</a>，快捷鍵是 <kbd>H</kbd>。這樣，在選中一個字後，就可以用 <kbd>C-.</kbd> 喚起 embark，再按一下 <kbd>H</kbd> 就會調用 <code>spike-leung/handian--query</code> 查詢漢典并顯示相關信息。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp"><code>(<span class="org-keyword">use-package</span> embark
+  <span class="org-builtin">:hook</span> (after-init . embark-auto-prefix-help-mode)
+  <span class="org-builtin">:diminish</span> embark-auto-prefix-help-mode
+  <span class="org-builtin">:after</span> (vertico)
+  <span class="org-builtin">:bind</span>
+<span id="coderef-embark-act" class="coderef-off">  ((<span class="org-string">"C-."</span> . embark-act)</span>
+   (<span class="org-string">"M-."</span> . embark-dwim)
+   (<span class="org-string">"C-h B"</span> . embark-bindings)) <span class="org-comment-delimiter">;; </span><span class="org-comment">alternative for `</span><span class="org-comment"><span class="org-constant">describe-bindings</span></span><span class="org-comment">'</span>
+  <span class="org-builtin">:config</span>
+  (keymap-set embark-general-map <span class="org-string">"W"</span> #'spike-leung/webjump-symbol-at-point)
+  (keymap-set embark-region-map <span class="org-string">"W"</span> #'spike-leung/webjump-symbol-at-point)
+<span id="coderef-handian--query" class="coderef-off">  (keymap-set embark-region-map <span class="org-string">"H"</span> #'spike-leung/handian--query)</span>
+  (add-to-list 'vertico-multiform-categories '(embark-keybinding grid))
+  (<span class="org-keyword">setq</span> prefix-help-command #'embark-prefix-help-command
+        embark-auto-prefix-help-delay 1.5
+        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#40664;&#35469;&#19981;&#24392;&#20986; Embark Actions &#33756;&#21934;&#65292;&#21487;&#20197;&#36890;&#36942; C-h &#21914;&#37266;</span>
+        embark-indicators '(embark-minimal-indicator
+                            embark-highlight-indicator
+                            embark-isearch-highlight-indicator)))
+</code></pre>
+</div>
+</details></li>
+</ul>
+
+<p>
+查詢的結果會在一個 buffer 中打開，設置成了 <code>eww-mode</code> ，打開時這個 buffer 是激活狀態，此時按 <kbd>q</kbd> (<code>quit-window</code>) 可以關閉 buffer；按 <kbd>&</kbd> (<code>eww-browse-with-external-browser</code>)
+可以用外部瀏覧器打開原始頁面，查看更詳細的信息。
+</p>
+
+<p>
+功能對我來說挺方便的，也够用了，如果你也在 Emacs 中使用倉頡輸入法，希望對你有所帮助 :)
+</p>
+</div>
+<div id="postamble" class="status">
+<details class="webmention">
+<summary>Webmentions <span class="webmention__count js-required">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回应这篇文章，可以在你的文章或社交媒体帖子中链接这篇文章，然后提交你的 URL，你的回应随后会显示在此页面上。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<noscript><p class="webmention__tip">你可以發送 Webmention，但加載數據需要開啟 JS。</p></noscript>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章或帖子的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention__list js-required"></ul>
+</details><div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-08-23 Sun 18:00">2026-08-23</time>，更新於 <time class="dt-updated" datetime="2026-08-23 Sun 18:09">2026-08-23</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 在 Emacs 中用漢典查詢倉頡碼 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本</a> 邮件 :)</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+<a href="/query-cangjie-codes-using-han-dian-in-emacs.txt">純文本版本</a> <a href="/query-cangjie-codes-using-han-dian-in-emacs.org">原始 org 文件</a>
+</footer><script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
