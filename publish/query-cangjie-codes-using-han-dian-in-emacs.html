@@ -102,6 +102,25 @@
   <span class="org-doc">"&#28450;&#20856;  URL."</span>
   <span class="org-builtin">:type</span> 'string)
 
+(<span class="org-keyword">defvar</span> <span class="org-variable-name">spike-leung/handian--cangjie-char-table</span>
+  (<span class="org-keyword">let</span> ((tbl (make-char-table nil)))
+    (<span class="org-keyword">pcase-dolist</span> (`(,key . ,val)
+                   '((?a . <span class="org-string">"&#26085;"</span>) (?b . <span class="org-string">"&#26376;"</span>) (?c . <span class="org-string">"&#37329;"</span>) (?d . <span class="org-string">"&#26408;"</span>) (?e . <span class="org-string">"&#27700;"</span>) (?f . <span class="org-string">"&#28779;"</span>) (?g . <span class="org-string">"&#22303;"</span>)
+                     (?h . <span class="org-string">"&#31481;"</span>) (?i . <span class="org-string">"&#25096;"</span>) (?j . <span class="org-string">"&#21313;"</span>) (?k . <span class="org-string">"&#22823;"</span>) (?l . <span class="org-string">"&#20013;"</span>) (?m . <span class="org-string">"&#19968;"</span>) (?n . <span class="org-string">"&#24339;"</span>)
+                     (?o . <span class="org-string">"&#20154;"</span>) (?p . <span class="org-string">"&#24515;"</span>) (?q . <span class="org-string">"&#25163;"</span>) (?r . <span class="org-string">"&#21475;"</span>)
+                     (?s . <span class="org-string">"&#23608;"</span>) (?t . <span class="org-string">"&#24319;"</span>) (?u . <span class="org-string">"&#23665;"</span>) (?v . <span class="org-string">"&#22899;"</span>) (?w . <span class="org-string">"&#30000;"</span>) (?y . <span class="org-string">"&#21340;"</span>)
+                     (?x . <span class="org-string">"&#38627;"</span>) (?z . <span class="org-string">"&#37325;"</span>)))
+      (aset tbl key val))
+    tbl))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/handian--convert-to-cangjie-char</span> (cangjie-code)
+  <span class="org-doc">"&#23559;&#20489;&#38945;&#30908;&#36681;&#25104;&#20489;&#38945;&#23383;&#27597; abc -&gt; &#26085;&#26376;&#37329;.</span>
+<span class="org-doc">CANGJIE-CODE &#26159;&#20489;&#38945;&#30908;."</span>
+  (mapconcat (<span class="org-keyword">lambda</span> (code)
+               (<span class="org-keyword">or</span> (aref spike-leung/handian--cangjie-char-table code)
+                   (char-to-string code)))
+             (string-to-list cangjie-code)))
+
 (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/handian--char-url</span> (char)
   <span class="org-doc">"&#28450;&#20856; URL&#65292;&#25340;&#25509;&#19978;&#35201;&#26597;&#35426;&#30340; CHAR."</span>
   (concat spike-leung/handian--url (url-hexify-string char)))
@@ -151,7 +170,8 @@
     (append (list 'base (list (cons 'href url))
                   (spike-leung/handian--img-with-bg glyph-img)
                   '(span nil <span class="org-string">"&#25340;&#38899;&#65306;"</span>) pinyin
-                  '(span nil <span class="org-string">"&#20489;&#38945;&#30908;&#65306;"</span>) cangjie
+                  '(span nil <span class="org-string">"&#20489;&#38945;&#30908;&#65306;"</span>)
+                  `(span nil ,(concat (spike-leung/handian--convert-to-cangjie-char (dom-texts cangjie)) <span class="org-string">" / "</span> )) cangjie
                   '(hr nil))
             (<span class="org-keyword">and</span> variants (list variants))
             `(,(spike-leung/handian--img-with-bg swjz-img)))))
@@ -171,7 +191,7 @@
 <span class="org-doc">CHAR &#26159;&#35201;&#26597;&#35426;&#30340;&#28450;&#23383;.</span>
 <span class="org-doc">DOCUMENT &#27083;&#24314;&#22909;&#30340;&#29992;&#26044;&#23637;&#31034;&#30340; DOM&#65292;&#26684;&#24335;&#35201;&#21512; EWW &#35201;&#27714;&#30340;&#26684;&#24335;."</span>
   (<span class="org-keyword">let*</span> ((url (spike-leung/handian--char-url char))
-         (buf-name (format <span class="org-string">"*[Han]&#28450;&#20856;:&#12300;%s&#12301;*"</span> char))
+         (buf-name (format <span class="org-string">"* [H] &#28450;&#20856;:&#12300;%s&#12301;*"</span> char))
          (buf (get-buffer-create buf-name)))
     (<span class="org-keyword">with-current-buffer</span> buf
       (eww-mode)
@@ -211,9 +231,9 @@
 
 
 <figure>
-<a href="images/query-cangjie-codes-using-han-dian-in-emacs/handiam-query-result.webp"><img src="images/query-cangjie-codes-using-han-dian-in-emacs/handiam-query-result.webp" alt="handiam-query-result.webp" loading="lazy"></a>
+<a href="images/query-cangjie-codes-using-han-dian-in-emacs/handiam-query-result-ai.webp"><img src="images/query-cangjie-codes-using-han-dian-in-emacs/handiam-query-result-ai.webp" alt="handiam-query-result-ai.webp" loading="lazy"></a>
 
-<figcaption><span class="figure-number">&#22270;2&nbsp; </span>在 Emacs 中用 handian.el 查詢「開」字的結果</figcaption>
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>在 Emacs 中用 handian.el 查詢「愛」字的結果</figcaption>
 </figure>
 
 <p>
@@ -291,7 +311,7 @@
 </div>
 <footer>
 <p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
-<p>文章创建於 <time class="dt-published" datetime="2026-08-23 Sun 18:00">2026-08-23</time>，更新於 <time class="dt-updated" datetime="2026-08-23 Sun 18:09">2026-08-23</time>，</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-08-23 Sun 18:00">2026-08-23</time>，更新於 <time class="dt-updated" datetime="2026-08-23 Sun 21:42">2026-08-23</time>，</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
 <p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
 <p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 在 Emacs 中用漢典查詢倉頡碼 &body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本邮件</a> :)</p>
