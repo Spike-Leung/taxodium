@@ -9,18 +9,28 @@
 #+language: zh-CN
 #+author: Spike Leung
 #+email: l-yanlei@hotmail.com
-#+options: ^:{} toc:1
+#+options: ^:{} toc:nil
 #+startup: content hideblocks
 #+html_head_extra: <link rel="stylesheet" href="/styles/image-enhance.css" />
+
+#+begin_details
+#+html: <summary>目录󠄃</summary>
+
+#+TOC: headlines 1 local
+#+end_details
 
 訂閱了全部的 Blaugust 參加者的博客，每天都有大量文章更新。
 大多數都是英文的博客，也有少量中文、日語、法語、葡萄牙語的博客。
 因為發起人 Belghast 主要關注的是遊戱，所以 Blaugust 中也有大量寫遊戱相關的博客。
-不過我對遊戱相關的文章興趣不大，後面我移除了很多不感興趣的博客，
+不過我對遊戱相關的文章興趣不大，
+後面我移除了很多不感興趣的博客@@html:<small>@@(有的樣式看得難受也不想看了)@@html:</small>@@，
 移除是有的會舍不得，也可能是怕錯過一些有趣的內容，
 但我想有緣的話，下次 Blaugust 還是會再次看到的，也算是一種「一期一會」吧。
 除了遊戱，還看到很多關於 AI 使用的討論，還有高温和山火，温室效應的後果似乎正慢慢顯現，
 有時也會想，[[https://zh.wikipedia.org/zh-cn/%E6%98%8E%E6%97%A5%E4%B9%8B%E5%BE%8C_(%E9%9B%BB%E5%BD%B1)][后天 (The Day After Tomorrow)]] 的劇情會不會真的成為現實。
+
+算法會使得接收到的內容變得單調、趋同，而訂閱 Blaugust 的博客，則是一種讓接收的信息變得多樣的辦法。
+這些博客都不是算法推給我的，我不知道會看到什麼，有時也會看到一些比較小眾的內容。
 
 因為 Blaugust 是以英文為主的，其他語言的關注度就很低，我想很多英文母語者，看到是外語就不想看了。
 多虧了 AI 翻譯，不管是什麼語言，我都能大致看看。
@@ -48,7 +58,9 @@
 - [[https://indiewebispunk.net/][The IndieWeb Is Punk Manifesto]] by Jim Mitchell
 
   很喜歡這篇文章@@html:<small>@@(如果有明亮主題切換就更好了)@@html:</small>@@，推薦一讀！
-  (via [[https://danq.me/2026/08/24/the-indieweb-is-punk-manifesto/][The IndieWeb Is Punk Manifesto]] by Dan Q)
+  一起加入 IndieWeb，一起 Punk！
+
+  via [[https://danq.me/2026/08/24/the-indieweb-is-punk-manifesto/][The IndieWeb Is Punk Manifesto]] by Dan Q
 
   #+begin_details
   #+html: <summary>摘录</summary>
@@ -191,8 +203,6 @@
   @@html:<mark>@@独立网络就是朋克。嘿！@@html:</mark>@@
   #+end_details
 
-  一起加入 IndieWeb，一起 Punk！
-
 - [[https://welshtroll.co.uk/post/2026-resized-for-readers-comfort.html][Resized For Readers Comfort]] by Kris
 
   適當將字體調大可以讓文章閱讀起來更輕鬆舒服，
@@ -277,7 +287,7 @@
 
 - [[https://monocyte.blog/using-an-old-android-phone-as-a-music-player/][using an old android phone as a music player]] by monocyte
 
-  如果你也有一台閑置的旧手機，你也可以做成一個音樂播放器。[[https://www.raptitude.com/2017/12/go-deeper-not-wider/][好好利用己有的物件]]。
+  如果你有一台閑置的旧手機，可以把它做成一個音樂播放器。[[https://www.raptitude.com/2017/12/go-deeper-not-wider/][好好利用己有的物件]]。
 
 - [[https://heartsoulmachine.com/blog/2026/08-09-some-people-say/][Some People Say]] by Tim Klapdor
 
@@ -305,11 +315,27 @@
 
   你分享出去的照片包含了大量的元信息，包擴時間、地點、設備信息等。
 
-    #+begin_quote
+  #+begin_quote
   無論出於何種意圖和目的，你都應該在分享數位內容後立即將其視為公開內容，即使你是私下分享的。
 
   [[https://chrismaiorana.com/your-metadata-and-you/#:~:text=However,privately][Source]]
   #+end_quote
+
+  我放在博客的圖會用 [[https://imagemagick.org/][ImageMagick]] 轉成 webp 并壓縮體積，現在我又多加了一個 ~-strip~ 參數移除圖片裡的元信息。
+
+  #+begin_details
+  #+html: <summary>ZSH 函數</summary>
+
+  #+begin_src zsh
+    convert_to_webp() {
+        local qscale="${1:-75}"
+        local format="${2:-webp}"
+        for img in *.(jpg|jpeg|png|heic|HEIC|JPG|JPEG|PNG); do
+            magick "$img" -strip -quality "$qscale" "${img%.*}.$format"
+        done
+    }
+  #+end_src
+  #+end_details
 
 - [[https://seths.blog/2026/08/give-me-one-reason/][Give me one reason]] by Seth Godin
 
@@ -518,116 +544,115 @@
   - [[https://unattributed.cc/2026/08/12/tech-sucks-victim-in-denial/][Tech Sucks! Victim in Denial! | Unattributed]]
   - [[https://daverupert.com/2026/07/number-chart-go-up/][Before I go: Double your business with companies you like - daverupert.com]]
 
-- 其他也不錯的文章
-  + [[https://wrywriter.ca/posts/i-can-do-this][I Can Do This!]] by Alex
-  + [[https://wrywriter.ca/posts/the-act-of-forgetting][The Act of Forgetting]] by Alex
-  + [[https://lameazoid.com/mini-brands-vinyl-player/][Mini Brands Vinyl Player]] by Ramen Junkie
-  + [[https://www.raptitude.com/2026/08/how-to-look-the-sky-in-the-face/][How to Look the Sky in the Face]] by David
-  + [[https://www.crosenthal.com/chrome/2026/08/13/the-ghost-of-retirement-future.html][The ghost of retirement future]] by Courtney Rosenthal
-  + [[https://hollie.eilloh.net/posts/family-vacay-day-5-deer-a-new-guitar-bad-fire-good-fire-etc][Family Vacay Day 5 - Deer, a new guitar, bad fire, good fire, etc.]] by Hollie
+- [[https://wrywriter.ca/posts/i-can-do-this][I Can Do This!]] by Alex
+- [[https://wrywriter.ca/posts/the-act-of-forgetting][The Act of Forgetting]] by Alex
+- [[https://lameazoid.com/mini-brands-vinyl-player/][Mini Brands Vinyl Player]] by Ramen Junkie
+- [[https://www.raptitude.com/2026/08/how-to-look-the-sky-in-the-face/][How to Look the Sky in the Face]] by David
+- [[https://www.crosenthal.com/chrome/2026/08/13/the-ghost-of-retirement-future.html][The ghost of retirement future]] by Courtney Rosenthal
+- [[https://hollie.eilloh.net/posts/family-vacay-day-5-deer-a-new-guitar-bad-fire-good-fire-etc][Family Vacay Day 5 - Deer, a new guitar, bad fire, good fire, etc.]] by Hollie
 
-    喜歡看 Hollie 分享的生活，丰富多彩。
-  + [[https://hollie.eilloh.net/posts/rip-seb][RIP Seb]] by Hollie
-  + [[https://divergentrays.com/blog/posts/2026-08-14-Scarabs-from-Heaven][Scarabs from Heaven]] by Divergent Rays
-  + [[https://fyr.io/post/feeds-are-critical][RSS/Atom Feeds are Critical]] by fyr.io
-  + [[https://marisabel.nl/public/blog/The_Purpose_of_Paper][The Purpose of Paper]] by Marisabel Munoz
-  + [[https://protesilaos.com/commentary/2026-08-14-desire-authenticity-moderation/][About desire, authenticity, and moderation]] by Protesilaos
-  + [[https://vhbelvadi.com/entrance-to-the-wood][Painting exchange: Entrance to the Wood]] by V.H. Belvadi
-  + [[https://vhbelvadi.com/the-sea-in-a-drought][The sea in a drought]] by V.H. Belvadi
-  + [[https://brennan.day/webmaster-a-manifesto-for-everyone/][WEBMASTER@ a manifesto for everyone]] by Brennan Kenneth Brown
-  + [[https://brennan.day/in-defence-of-vent-posting/][In Defence of Vent Posting]] by Brennan Kenneth Brown
+  喜歡看 Hollie 分享的生活，丰富多彩。
+- [[https://hollie.eilloh.net/posts/rip-seb][RIP Seb]] by Hollie
+- [[https://divergentrays.com/blog/posts/2026-08-14-Scarabs-from-Heaven][Scarabs from Heaven]] by Divergent Rays
+- [[https://fyr.io/post/feeds-are-critical][RSS/Atom Feeds are Critical]] by fyr.io
+- [[https://marisabel.nl/public/blog/The_Purpose_of_Paper][The Purpose of Paper]] by Marisabel Munoz
+- [[https://protesilaos.com/commentary/2026-08-14-desire-authenticity-moderation/][About desire, authenticity, and moderation]] by Protesilaos
+- [[https://vhbelvadi.com/entrance-to-the-wood][Painting exchange: Entrance to the Wood]] by V.H. Belvadi
+- [[https://vhbelvadi.com/the-sea-in-a-drought][The sea in a drought]] by V.H. Belvadi
+- [[https://brennan.day/webmaster-a-manifesto-for-everyone/][WEBMASTER@ a manifesto for everyone]] by Brennan Kenneth Brown
+- [[https://brennan.day/in-defence-of-vent-posting/][In Defence of Vent Posting]] by Brennan Kenneth Brown
 
-    #+begin_details
-    #+html: <summary>摘录</summary>
+  #+begin_details
+  #+html: <summary>摘录</summary>
 
-    #+begin_quote
-    人們之所以最後會單方面傾倒自己的情緒包袱與創傷，有時甚至事先都沒詢問對方，是因為他們的杯子已經滿了。
-    裡面確實再也沒有空間，無法繼續容納這一切。
+  #+begin_quote
+  人們之所以最後會單方面傾倒自己的情緒包袱與創傷，有時甚至事先都沒詢問對方，是因為他們的杯子已經滿了。
+  裡面確實再也沒有空間，無法繼續容納這一切。
 
-    [[https://brennan.day/in-defence-of-vent-posting/#:~:text=The%20reason,longer][Source]]
-    #+end_quote
-    #+end_details
-  + [[https://eyu.at/posts/567.202608.html][寻猫记]] by 鹅玉
-  + [[https://www.joanwestenberg.com/p/neo-etiquette-basics-the-new-rules][Neo-Etiquette Basics: The New Rules of Being Human]] by JA Westenberg
-  + [[https://blog.ikukaroom.com/ban-pin-shan/][半屏山的冷知識]] by ikuka
-  + [[https://winnielim.org/journal/book-reviews/on-murakamis-conversations-with-seiji-ozawa-wavelength-appreciation-and-negative-space/][on Murakami’s conversations with Seiji Ozawa: wavelength, appreciation, and negative space]] by Winnie Lim
-  + [[https://divergentrays.com/blog/posts/2026-08-22-The-Brown-Eyes][The Brown Eyes]] by Divergent Rays
-  + [[https://protesilaos.com/commentary/2026-08-23-breadth-depth-personal-connection/][Breadth, depth, and personal connection]] by Protesilaos
-  + [[https://protesilaos.com/commentary/2026-08-24-independence-symbiosis-trance-music/][Independence, symbiosis, and trance music]] by Protesilaos
-  + [[https://lyonsinbeta.com/posts/case-for-my-case/][A case for my case]] by lyonsinbeta
+  [[https://brennan.day/in-defence-of-vent-posting/#:~:text=The%20reason,longer][Source]]
+  #+end_quote
+  #+end_details
+- [[https://eyu.at/posts/567.202608.html][寻猫记]] by 鹅玉
+- [[https://www.joanwestenberg.com/p/neo-etiquette-basics-the-new-rules][Neo-Etiquette Basics: The New Rules of Being Human]] by JA Westenberg
+- [[https://blog.ikukaroom.com/ban-pin-shan/][半屏山的冷知識]] by ikuka
+- [[https://winnielim.org/journal/book-reviews/on-murakamis-conversations-with-seiji-ozawa-wavelength-appreciation-and-negative-space/][on Murakami’s conversations with Seiji Ozawa: wavelength, appreciation, and negative space]] by Winnie Lim
+- [[https://divergentrays.com/blog/posts/2026-08-22-The-Brown-Eyes][The Brown Eyes]] by Divergent Rays
+- [[https://protesilaos.com/commentary/2026-08-23-breadth-depth-personal-connection/][Breadth, depth, and personal connection]] by Protesilaos
+- [[https://protesilaos.com/commentary/2026-08-24-independence-symbiosis-trance-music/][Independence, symbiosis, and trance music]] by Protesilaos
+- [[https://lyonsinbeta.com/posts/case-for-my-case/][A case for my case]] by lyonsinbeta
 
-    [TODO] 分享我的
-  + [[https://hamatti.org/posts/theres-no-membership-card-for-indieweb/][There’s no membership card for IndieWeb]] by Juha-Matti Santala
+  [TODO] 分享我的
+- [[https://hamatti.org/posts/theres-no-membership-card-for-indieweb/][There’s no membership card for IndieWeb]] by Juha-Matti Santala
 
-    #+begin_quote
-    我認為 IndieWeb 應該是一套可以努力實踐的理念。
-    你實踐了其中多少項？並不重要。
-    這不會讓你或你的網站變得更「IndieWeb」或更不「IndieWeb」。
-    我不認為我們應該列出任何檢核表，來評估某人是否屬於 IndieWeb。
+  #+begin_quote
+  我認為 IndieWeb 應該是一套可以努力實踐的理念。
+  你實踐了其中多少項？並不重要。
+  這不會讓你或你的網站變得更「IndieWeb」或更不「IndieWeb」。
+  我不認為我們應該列出任何檢核表，來評估某人是否屬於 IndieWeb。
 
-    我們應該專注於分享及討論想法，並協助打造工具，
-    讓更多想要實踐這些想法的人（不論出於何種原因）都能夠做到。
+  我們應該專注於分享及討論想法，並協助打造工具，
+  讓更多想要實踐這些想法的人（不論出於何種原因）都能夠做到。
 
-    [[https://hamatti.org/posts/theres-no-membership-card-for-indieweb/#:~:text=requirements%2E-,I,so%2E][Source]]
-    #+end_quote
+  [[https://hamatti.org/posts/theres-no-membership-card-for-indieweb/#:~:text=requirements%2E-,I,so%2E][Source]]
+  #+end_quote
 
-    #+begin_quote
-    嚴格的定義會排除許多可能「幾乎符合」的人，導致他們無法加入，
-    因為必須先滿足所有條件才能成為群體的一員，而一次完成所有步驟往往過於繁重。
+  #+begin_quote
+  嚴格的定義會排除許多可能「幾乎符合」的人，導致他們無法加入，
+  因為必須先滿足所有條件才能成為群體的一員，而一次完成所有步驟往往過於繁重。
 
-    [[https://hamatti.org/posts/theres-no-membership-card-for-indieweb/#:~:text=A%20strict,once%2E][Source]]
-    #+end_quote
+  [[https://hamatti.org/posts/theres-no-membership-card-for-indieweb/#:~:text=A%20strict,once%2E][Source]]
+  #+end_quote
 
-    自由軟件也是如此。
-    很多理念都很好，但對於新人來說，一下子全部做到并不容易。
-    對他們寬容一點，多分享相關信息，帮助他們入門，才能讓更多的人加入進來。
-  + [[https://alexhsu.com/last-time][「最後一次」冥想]] by Alex Hsu
-  + [[https://blog.absurdpirate.com/tea-as-a-cure-for-brainrot/][Tea as a Cure For Brainrot]] by Absurd Pirate
+  自由軟件也是如此。
+  很多理念都很好，但對於新人來說，一下子全部做到并不容易。
+  對他們寬容一點，多分享相關信息，帮助他們入門，才能讓更多的人加入進來。
+- [[https://alexhsu.com/last-time][「最後一次」冥想]] by Alex Hsu
+- [[https://blog.absurdpirate.com/tea-as-a-cure-for-brainrot/][Tea as a Cure For Brainrot]] by Absurd Pirate
 
-    #+begin_quote
-    我們很多人（包括我自己），都發現自己很難在沒有任何背景刺激的情況下做事。
-    無論是打掃房間時聽音樂、寫作業時聽 Podcast，還是吃飯時看 YouTube 影片。
-    然而，能夠靜下心來與自己獨處是很重要的。
-    一顆無法在寧靜中獨處的心，往往會錯失生活中細微的美好。
+  #+begin_quote
+  我們很多人（包括我自己），都發現自己很難在沒有任何背景刺激的情況下做事。
+  無論是打掃房間時聽音樂、寫作業時聽 Podcast，還是吃飯時看 YouTube 影片。
+  然而，能夠靜下心來與自己獨處是很重要的。
+  一顆無法在寧靜中獨處的心，往往會錯失生活中細微的美好。
 
-    [[https://blog.absurdpirate.com/tea-as-a-cure-for-brainrot/#:~:text=A%20lot,beauties][Source]]
-    #+end_quote
-  + [[https://defector.com/the-other-elephant][The Other Elephant]] by Sabrina Imbler
-  + [[https://portside.org/2026-08-02/sunday-science-most-ovarian-cancer-isnt-and-fact-can-save-lives][Sunday Science: Most ‘Ovarian Cancer’ Isn’t. And That Fact Can Save Lives.]] by Gina Kolata
+  [[https://blog.absurdpirate.com/tea-as-a-cure-for-brainrot/#:~:text=A%20lot,beauties][Source]]
+  #+end_quote
+- [[https://defector.com/the-other-elephant][The Other Elephant]] by Sabrina Imbler
+- [[https://portside.org/2026-08-02/sunday-science-most-ovarian-cancer-isnt-and-fact-can-save-lives][Sunday Science: Most ‘Ovarian Cancer’ Isn’t. And That Fact Can Save Lives.]] by Gina Kolata
 
-    #+begin_quote
-    「卵巢癌」是個誤稱，Stone 醫生說，幾乎所有的卵巢癌——以及幾乎所有致命的卵巢癌——其實都是輸卵管癌。
-    大約 20% 左右起源於卵巢的癌症則不同，Stone 醫生說，通常可以治癒。
+  #+begin_quote
+  「卵巢癌」是個誤稱，Stone 醫生說，幾乎所有的卵巢癌——以及幾乎所有致命的卵巢癌——其實都是輸卵管癌。
+  大約 20% 左右起源於卵巢的癌症則不同，Stone 醫生說，通常可以治癒。
 
-    女性如果切除輸卵管——這些像軟糖蠕蟲般的管道負責將卵子從卵巢運送到子宮——可將罹患卵巢癌的機率降低近 80％。
-    這是一個只需五分鐘的手術，幾乎可以在任何腹部手術中同時完成，
-    包括子宮切除術、輸卵管結紮、膽囊手術與疝氣修補。
+  女性如果切除輸卵管——這些像軟糖蠕蟲般的管道負責將卵子從卵巢運送到子宮——可將罹患卵巢癌的機率降低近 80％。
+  這是一個只需五分鐘的手術，幾乎可以在任何腹部手術中同時完成，
+  包括子宮切除術、輸卵管結紮、膽囊手術與疝氣修補。
 
-    [[https://portside.org/2026-08-02/sunday-science-most-ovarian-cancer-isnt-and-fact-can-save-lives#:~:text=%E2%80%9COvarian,repair][Source]]
-    #+end_quote
-  + [[https://kedara.eu/purpose-of-tear-water-tea/][The purpose of tear-water tea]] by Ruben Verweij
+  [[https://portside.org/2026-08-02/sunday-science-most-ovarian-cancer-isnt-and-fact-can-save-lives#:~:text=%E2%80%9COvarian,repair][Source]]
+  #+end_quote
+- [[https://kedara.eu/purpose-of-tear-water-tea/][The purpose of tear-water tea]] by Ruben Verweij
 
-    #+begin_quote
-    故事中，猫头鹰通过想着“那些令人悲伤的事”来泡一壶茶；
-    他的泪水开始自由流淌，他灵巧地将泪水接进茶壶里。
-    让我来演示一下这是如何运作的：
+  #+begin_quote
+  故事中，猫头鹰通过想着“那些令人悲伤的事”来泡一壶茶；
+  他的泪水开始自由流淌，他灵巧地将泪水接进茶壶里。
+  让我来演示一下这是如何运作的：
 
-    我怀念去露营旅行的日子。我怀念那趟火车：车站里的食物、气味、声响和风景。[...]
+  我怀念去露营旅行的日子。我怀念那趟火车：车站里的食物、气味、声响和风景。[...]
 
-    当他的罐子装满泪水后，猫头鹰开心地停止哭泣，准备泡茶：
+  当他的罐子装满泪水后，猫头鹰开心地停止哭泣，准备泡茶：
 
-    “好了，”猫头鹰说。“这样就够了！”猫头鹰停止了哭泣。
-    他把水壶放在炉子上烧水泡茶。
-    猫头鹰倒满杯子时，感到满心欢喜。
-     “尝起来有点咸，”他说，“但泪水茶总是很好喝的。”
+  “好了，”猫头鹰说。“这样就够了！”猫头鹰停止了哭泣。
+  他把水壶放在炉子上烧水泡茶。
+  猫头鹰倒满杯子时，感到满心欢喜。
+   “尝起来有点咸，”他说，“但泪水茶总是很好喝的。”
 
-    这是一个美丽的故事，也是一个我觉得非常有帮助的练习。
-    _通过为沉溺于悲伤分配有限的时间，通过装满茶壶再倒空它，之后的生活尝起来更加甜美。_
-    没有流下一滴眼泪，我已经感到轻松了许多。
-    痛苦的意义是否就在于通过它的存在来定义幸福？两者能否独立存在？
+  这是一个美丽的故事，也是一个我觉得非常有帮助的练习。
+  _通过为沉溺于悲伤分配有限的时间，通过装满茶壶再倒空它，之后的生活尝起来更加甜美。_
+  没有流下一滴眼泪，我已经感到轻松了许多。
+  痛苦的意义是否就在于通过它的存在来定义幸福？两者能否独立存在？
 
-    [[https://kedara.eu/purpose-of-tear-water-tea/#:~:text=In%20the%20story,other][Source]]
-    #+end_quote
+  [[https://kedara.eu/purpose-of-tear-water-tea/#:~:text=In%20the%20story,other][Source]]
+  #+end_quote
 
 * Cool Bit
 :PROPERTIES:
@@ -782,7 +807,7 @@
 
 - [[https://type.joohyunpark.com/][Type]]
 
-  輪入內容然後確認，內容就會掉落。中文會變成問號。
+  輸入內容然後確認，內容就會掉落。中文會變成問號。
 
 - [[https://printingfilms.com/][Printing Films Archive]]
 
@@ -830,6 +855,8 @@
   密室逃脫類遊戱。
 
 - [[https://mstdn.social/@rysiek/117077198717825135]["Human in the loop."]]
+
+  真正的 Human in the loop。
 
 - [[https://minghuaji.dpm.org.cn/][故宫名画记]]
 
@@ -939,6 +966,28 @@
 - [[https://kengocodes.itch.io/isle][isle by kengocodes]]
 
   遊戱會隨機生成一個島嶼，你化身一隻鳥在其中漫步。
+
+- [[https://leehenry.top/posts/words_in_wildness/ww-vol09/#%E5%BD%93%E8%AF%AD%E8%A8%80%E5%9B%A0%E7%86%9F%E6%82%89%E4%B8%8D%E8%A2%AB%E6%B3%A8%E8%A7%86][当语言因熟悉不被注视 |  漫想与杂谈 Iss.07 · 处暑]] by 伏枥
+
+  #+begin_quote
+  还有个很著名的读「喉、舌、齿、唇、口、鼻」这几个字的时候，感受一下发音的位置；
+  还有「前、中、后」这仨字；
+  接着读「绳、线、丝」时，又感受一下语气的粗细。
+
+  [[https://leehenry.top/posts/words_in_wildness/ww-vol09/#%E5%BD%93%E8%AF%AD%E8%A8%80%E5%9B%A0%E7%86%9F%E6%82%89%E4%B8%8D%E8%A2%AB%E6%B3%A8%E8%A7%86:~:text=%E8%BF%98%E6%9C%89%E4%B8%AA%E5%BE%88%E8%91%97%E5%90%8D%E7%9A%84%E8%AF%BB%E3%80%8C%E5%96%89%E3%80%81%E8%88%8C%E3%80%81%E9%BD%BF%E3%80%81%E5%94%87%E3%80%81%E5%8F%A3%E3%80%81%E9%BC%BB%E3%80%8D%E8%BF%99%E5%87%A0%E4%B8%AA%E5%AD%97%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E6%84%9F%E5%8F%97%E4%B8%80%E4%B8%8B%E5%8F%91%E9%9F%B3%E7%9A%84%E4%BD%8D%E7%BD%AE%EF%BC%9B%E8%BF%98%E6%9C%89%E3%80%8C%E5%89%8D%E3%80%81%E4%B8%AD%E3%80%81%E5%90%8E%E3%80%8D%E8%BF%99%E4%BB%A8%E5%AD%97%EF%BC%9B%E6%8E%A5%E7%9D%80%E8%AF%BB%E3%80%8C%E7%BB%B3%E3%80%81%E7%BA%BF%E3%80%81%E4%B8%9D%E3%80%8D%E6%97%B6%EF%BC%8C%E5%8F%88%E6%84%9F%E5%8F%97%E4%B8%80%E4%B8%8B%E8%AF%AD%E6%B0%94%E7%9A%84%E7%B2%97%E7%BB%86][Source]]
+  #+end_quote
+
+  試了一下，神奇！很好奇背後的故事，是巧合還是特意設計過的？
+
+  #+begin_quote
+ 「结束」是结衣束带的简写，把衣服整理好，腰带扎紧，正在进行的活动到此为止，该走人了。
+
+  有人觉得「马上」很浪漫吗？古人最快的交通工具，有一种迫不及待的，及时回应的浪漫。
+
+  [[https://leehenry.top/posts/words_in_wildness/ww-vol09/#%E5%BD%93%E8%AF%AD%E8%A8%80%E5%9B%A0%E7%86%9F%E6%82%89%E4%B8%8D%E8%A2%AB%E6%B3%A8%E8%A7%86:~:text=%E3%80%8C%E7%BB%93%E6%9D%9F,%E6%B5%AA%E6%BC%AB,-%E3%80%82][Source]]
+  #+end_quote
+
+  這麼一解讀，這兩個詞多了種美感。
 
 - 有趣的樣式
   + [[https://tabitha.computer/2026/08/movie-on-faust/][Movie on Faust]] 貼圖不錯，以後可以試試。
@@ -1068,8 +1117,8 @@
 
   在頁面上可以用下面兩個方法解决這個問題：
 
-  - [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/text-scale][<meta name="text-scale">]]: ~<meta name="text-scale" content="scale">~ ，目前瀏覧器支持度一般。
-  - [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env#preferred-text-scale][preferred-text-scale]] : ~font-size: calc(16px * env(preferred-text-scale));~
+  - [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/text-scale][<meta name="text-scale">]] :: ~<meta name="text-scale" content="scale">~ ，目前瀏覧器支持度一般。
+  - [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env#preferred-text-scale][preferred-text-scale]] :: ~font-size: calc(16px * env(preferred-text-scale));~
 
   文章裡還分享了一些頁面文字縮放的注意事項。
 
@@ -1092,6 +1141,7 @@
   三個狀態有的也會做成下拉框，用户需要點擊兩次才能完成切換，不如點擊一次方便。
 
   文章分享了一種更好的實踐，以及三個狀態的更合適的使用場景。
+  我的博客也基於文章的方法更新了實現。
 
 - [[https://master.dev/blog/typographic-css-tricks/][5 CSS Properties You Should Know for Better Text Designs]] by Preethi Sam
 
@@ -1151,9 +1201,29 @@
 
   讓 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-radius][border-radius]] 在屏幕隨著視口 (viewport) 寬度變化而變化。
 
-- [[https://shkspr.mobi/blog/2026/08/death-to-px-long-live-ch/][Death to px, long live ch!]] by Terence Eden
+- [[https://meyerweb.com/eric/thoughts/2018/06/28/what-is-the-css-ch-unit/][What is the CSS ‘ch’ Unit?]] by Eric A. Meyer
 
-  See also: [[https://meyerweb.com/eric/thoughts/2018/06/28/what-is-the-css-ch-unit/][What is the CSS ‘ch’ Unit?]] by Eric A. Meyer
+  ~1ch~ 并不對應 1 個字符的寬度，它的定義是：
+
+  #+begin_quote
+  等於用於渲染該元素的 @@html:<em>字體</em>@@中， @@html:<em>「0」</em>@@（ZERO, U+0030）字形的常用前進量。
+
+  [[https://drafts.csswg.org/css-values-3/#ch:~:text=unit-,Represents,count][Source]]
+  #+end_quote
+
+  也就是說， ~1ch~ 是 0 這個字符的寬度，而它的寬度也取决於字體。
+  作者透過隨機實驗發現，在比例字體中， ~1ch~ 通常比平均字元寬度更寬，通常大約寬出 *20-30%* 。
+
+  #+begin_quote
+  所以一般來說，如果你想要 80 個字元的欄寬，並且打算使用 ch 來設定其大小，
+  目標大約設為 60ch 即可，除非你特別使用的字體帶有偏瘦的零。
+  如果你同時使用多種字體，例如標題用一種，內文用另一種，那麼在設定 ch 度量並認為兩者等效時要非常小心。
+  機率極高、極高它們是不會等效的。
+
+  [[https://meyerweb.com/eric/thoughts/2018/06/28/what-is-the-css-ch-unit/#:~:text=So%20in,be,-%2E][Source]]
+  #+end_quote
+
+  如果用在中文，那要比較 0 和中文字的寬度。
 
 - [[https://blog.gaborkoos.com/posts/2026-08-14-Your-Modules-Are-Lying-to-You/][Your Modules Are Lying to You]] by Gabor Koos
 
@@ -1172,10 +1242,63 @@
 
   可以基於文章對自己的頁面查漏補缺，我也加了一些缺少的內容，
   如 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#canonical][<link ref="canonical">]]，當有多個 URL 指向同一個頁面時，這有助於搜索引擎去重。
+
+- [[https://ishadeed.com/article/flex-wrap-balance/][Balancing flex items with flex-wrap: balance]] by Ahmad Shadeed
+
+  讓 Flex 布局在換行時，子元素的排列均衡，
+  作者還分享了很多方法，其中 ~flex-wrap: balance~ 是最簡單的，
+  不過目前 Firefox 還不支持。
+
+- [[https://www.carmenansio.com/articles/3d-css-guide/][3D CSS Guide: perspective, preserve-3d and translateZ]] by Carmen Ansio
+
+  文章分享了如何用 CSS 實現 3D 效果，很詳盡。
+
+- [[https://sockpuppet.org/blog/2026/08/20/stop-making-tuis/][Stop Making TUIs]] by Thomas & Erin Ptacek
+
+  主要原因是，TUI 想實現的很多 UI 功能，在原生 UI (例如 Swift 應用) 裡是開箱即用的，
+  而在 TUI 裡要和終端搏門很久，也未必有原生應用做得好；
+  其次是複雜的 TUI 往往在無障礙上也做難做好，而原生在這方面也做得更好。
+
+  #+begin_details
+  #+html: <summary>摘录</summary>
+
+  #+begin_quote
+  但這就是 TUI（文本用戶界面）的問題之一：
+  即使有像 Ratatui、Textual 或 Bubbletea 這樣優秀的框架，
+  _你仍然在與終端機搏鬥，只為了漸近地接近任何原生框架開箱即用的表現。_
+  捲動和捲動目標就是一個明顯的例子。
+  拖放是另一個。
+  文本選擇——當你使用帶內信令來繪製視窗邊界時，這會變得很棘手！多個懸浮視窗。
+  而這些都還沒提到圖像處理。
+
+  你可以花一個小時在 TUI 框架中做出許多標準控制項的體面版本：
+  日期選擇器、加密文本框、進度條、文本編輯器。
+  但其中大多數都不會比同類組件的系統版本好，而且如果不投入更多工作，它們的組合效果也不理想。
+
+  _這一切在原生 UI 中都是開箱即用的。_
+
+  [[https://sockpuppet.org/blog/2026/08/20/stop-making-tuis/#:~:text=apps%2E-,But,UI][Source]]
+  #+end_quote
+
+  #+begin_quote
+  人們會告訴你文字使用者介面（TUI）是具備無障礙性的。
+
+  這個論點的問題在於它很 [[https://www.osnews.com/story/144892/the-text-mode-lie-why-modern-tuis-are-a-nightmare-for-accessibility/][可能是錯誤的]]。
+  我對這個論點保持謹慎，因為我並非無障礙功能的使用者。
+  我只能根據從事無障礙工作的人員經驗來判斷。
+  [[https://www.youtube.com/watch?v=jdF0TkZpMvk&t=991s][就像這位講者]] 描述螢幕閱讀器如何逐行讀取 TUI「介面框架」的所有更新；
+  井字號、井字號、井字號、井字號、橫線、橫線。看起來很糟！
+
+  [[https://sockpuppet.org/blog/2026/08/20/stop-making-tuis/#:~:text=People%20will,bad][Source]]
+  #+end_quote
+  #+end_details
+
 * AI Related
 :PROPERTIES:
 :CUSTOM_ID: 997465C9-195D-4D33-A9FB-5E4F0ABD0AE5
 :END:
+
+☞ [[denote:20260810T183148::#A95FABDC-EB43-4D71-88B1-4A4DDB37D6E9][我想跳過 AI 部分]]
 
 - [[https://shkspr.mobi/blog/2026/08/metadata-for-ai-generated-outputs/][Metadata for AI Generated Outputs]] by Terence Eden
 
@@ -1183,6 +1306,15 @@
   例如用 ~lang="ai"~ 、用 [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/samp][<samp>]] 元素、自定義元素如 ~<ai-generated>~ 。
 
 - [[https://lists.gnu.org/archive/html/emacs-devel/2026-07/msg00318.html][LLM Commit in upstream `master`?!]]
+
+  Emacs 的提交信息裡出現了 AI 引起的一些討論。
+  目前 Emacs 中是禁止用 LLM 生成的代碼的，因為會存在版權問題，但對提交信息的要求還有些模糊。
+  事件的經過是有開發者在開發時利用 AI 輔助，代碼是自己寫的，
+  只是提交信息裡 LLM 擅自加上了它的簽名 (Co-authored by Claude Fable 5)，
+  在一些討論後，負責人通過強制推送移除了相關提交信息。
+
+  討論串整體挺友好的，大家針對具體問題討論，快速解决問題，而不會有很多偏离主題的討論。
+  再次推薦 Richard Stallman 寫的 [[https://www.gnu.org/philosophy/kind-communication.html][GNU Kind Communications Guidelines]]。
 
 - [[https://www.aihero.dev/a-complete-guide-to-agents-md][A Complete Guide To AGENTS.md]] by Matt Pocock
 
@@ -1193,8 +1325,6 @@
 
   其他內容采用 *漸進式揭露* ，把內容拆分到不同文件中，在需要時提示 agent 去讀，
   例如「For TypeScript conventions, see docs/TYPESCRIPT.md」。
-
-- [[https://sockpuppet.org/blog/2026/08/20/stop-making-tuis/][Stop Making TUIs]] by Thomas & Erin Ptacek
 
 - [[https://wmyskxz.cn/wiki/whats_ai][AI 是怎么回事：开场白&目录]] by 我没有三颗心脏
 
@@ -1209,6 +1339,24 @@
   #+end_quote
 
   作者也寫 [[https://wmyskxz.cn/wiki/tags/%E4%BB%A3%E7%A0%81%E4%B9%8B%E5%A4%96%E5%91%A8%E5%88%8A/][周刊]]，感興趣也可以訂閱。
+
+- [[https://shkspr.mobi/blog/2026/08/asymmetric-agents/][Asymmetric Agents]] by Terence Eden
+
+  所謂的 AI 代理人承擔了很多角色：僕人、奴隸、溫順數位夥伴、管家、秘書⋯⋯以及隨機性笨蛋。
+
+- [[https://www.gatesnotes.com/home/home-page-topic/reader/a-turbulent-ai-era-and-critical-choices-to-make][The turbulent AI era is here. The choices we make now are critical.]] by Bill Gates
+
+  Bill Gates 認為 AI 有三大風險：
+
+  - 許多工作將永遠消失。@@html:<small>@@(AI 會取代很多工作，却沒有創造更多工作，AI 的帯來的收益只集中在少數人手中)@@html:</small>@@
+  - 人工智慧將賦予人類（甚至可能是人工智慧本身）更多造成傷害的能力。@@html:<small>@@(AI 是双刃劍，可以更好的助人，但帮助的也可能是惡人)@@html:</small>@@
+  - 人工智慧可能會阻礙孩子的發展，並取代人際關係。@@html:<small>@@(和 AI 相处是沒有摩擦的，但和人相处是有的，而正是在這些摩擦裡，人學會了如何其他人相处； AI 也會讓人更少思考)@@html:</small>@@
+
+  儘管有風險，但他也同意 AI 是很有用的，但需要確保能惠及所有人，而不是少數人，為此，他認為：
+
+  - 國家，以及國家之間，需要建立一套全新的過渡管理系統
+  - 刻意為人類保留一些工作
+  - 重新平衡我們對勞動力和資本的徵稅方式 @@html:<small>@@(應該對 AI 代幣和機器人徵稅)@@html:</small>@@
 
 - [[https://lucumr.pocoo.org/2026/8/24/anger-anxiety-agency/][Anger, Anxiety and Agency]] by Armin Ronacher
 
@@ -1293,10 +1441,6 @@
   [[https://emilkowal.ski/ui/friction-as-a-feature#:~:text=That%E2%80%99s%20why,exist][Source]]
   #+end_quote
 
-- [[https://shkspr.mobi/blog/2026/08/asymmetric-agents/][Asymmetric Agents]] by Terence Eden
-
-  所謂的 AI 代理人承擔了很多角色：僕人、奴隸、溫順數位夥伴、管家、秘書⋯⋯以及隨機性笨蛋。
-
 - [[https://zed.dev/blog/software-craftsmanship-in-the-era-of-vibes?ck_subscriber_id=3312975854][The Case for Software Craftsmanship in the Era of Vibes]] by Nathan Sobo
 
   #+begin_quote
@@ -1338,13 +1482,13 @@
 - [[https://github.com/dmno-dev/varlock][dmno-dev/varlock]]
 
   #+begin_quote
-  AI-safe .env files: Schemas for agents, Secrets for humans.
+  _AI-safe .env files_: Schemas for agents, Secrets for humans.
   #+end_quote
 
 - [[https://www.docker.com/products/docker-sandboxes/][Docker Sandboxes]]
 
   #+begin_quote
-  Run AI agents safely in local sandboxes.
+  Run AI agents safely in local _sandboxes_.
   #+end_quote
 
 - [[https://github.com/deepseek-ai/deepseek-harness][deepseek-ai/deepseek-harness]]
@@ -1372,20 +1516,21 @@
 - [[https://github.com/modem-dev/hunk][modem-dev/hunk]]
 
   #+begin_quote
-  Review-first terminal diff viewer for agentic coders.
+  Review-first terminal _diff viewer_ for agentic coders.
   #+end_quote
 
 - [[https://github.com/vectorize-io/hindsight][vectorize-io/hindsight]]
 
   #+begin_quote
-  Hindsight: Agent Memory That Learns.
+  Hindsight: Agent _Memory_ That Learns.
   #+end_quote
 
 - [[https://github.com/yetone/cumora][yetone/cumora]]
 
   #+begin_quote
-  代理小組聚集之地。
-  跨平台的團隊聊天空間，AI 代理在此是第一類隊友 —— 並搭載雲端或自備（Claude Code / Codex）大腦。
+  Where _agent teams_ gather.
+  Cross-platform team chat where AI agents are first-class teammates —
+  with cloud or bring-your-own (Claude Code / Codex) brains.
   #+end_quote
 
 * Tool | Library
@@ -1396,9 +1541,20 @@
 
   一個不錯的氣象工具。
 
-- [[https://www.csstypestudio.com/][CSS Type Studio]]
+- [[https://github.com/davatron5000/microlighter][davatron5000/microlighter]]
 
-  可以探索各種 CSS 字體屬性的作用。
+  #+begin_quote
+  一個專為網頁設計、極小且無依賴項的語法高亮工具。
+
+  MicroLighter 使用 [[https://developer.mozilla.org/en-US/docs/Web/API/CSS_Custom_Highlight_API][CSS Custom Highlight API]] 和 TextMate 語法規則。
+  它在不為每個標記添加 <span> 標籤的情況下高亮代碼，因此您的標記語言能保持整潔且易於編輯。
+  #+end_quote
+
+  不需要額外的 <span> 包裹
+
+- [[https://dither.neato.fun/][Dither — Vector Dither Tool]]
+
+  不錯的圖像 Dither 工具。
 
 - [[https://recipetables.com/][RecipeTables]]
 
@@ -1407,6 +1563,10 @@
   #+end_quote
 
   用表格呈現食譜確實很直觀！
+
+- [[https://www.csstypestudio.com/][CSS Type Studio]]
+
+  可以探索各種 CSS 字體屬性的作用。
 
 - [[https://github.com/inokawa/virtua][inokawa/virtua]]
 
@@ -1427,17 +1587,19 @@
   A feature-rich command-line audio/video downloader.
   #+end_quote
 
+  用來下載 YouTube，Bilibili 上的視頻、音頻。
+
 - [[https://github.com/firecrawl/anydoc][firecrawl/anydoc]]
 
   #+begin_quote
-  Convert Word, PowerPoint, Excel, OpenDocument, RTF, EPUB, CSV, and PDF to clean Markdown.
+  _Convert Word, PowerPoint, Excel, OpenDocument, RTF, EPUB, CSV, and PDF to clean Markdown._
   Built in Rust, with Node.js and Python bindings.
   #+end_quote
 
 - [[https://github.com/westpoint-io/lazyrsync][westpoint-io/lazyrsync]]
 
   #+begin_quote
-  A friendly terminal UI for rsync, written in Rust.
+  A friendly _terminal UI for rsync_, written in Rust.
   #+end_quote
 
 - [[https://gingham.ishamsu.com/][gingham]]
@@ -1448,20 +1610,25 @@
 
   一個隠藏敏感信息的瀏覧器插件。
 
-- [[https://github.com/davatron5000/microlighter][davatron5000/microlighter]]
+- [[https://github.com/anypost/emailmd][anypost/emailmd]]
 
   #+begin_quote
-  一個專為網頁設計、極小且無依賴項的語法高亮工具。
-
-  MicroLighter 使用 [[https://developer.mozilla.org/en-US/docs/Web/API/CSS_Custom_Highlight_API][CSS Custom Highlight API]] 和 TextMate 語法規則。
-  它在不為每個標記添加 <span> 標籤的情況下高亮代碼，因此您的標記語言能保持整潔且易於編輯。
+  emailmd _converts markdown into responsive, email-safe HTML_
+  that works across Gmail, Outlook, Apple Mail, Yahoo, and every other client.
   #+end_quote
 
-  不需要額外的 <span> 包裹
+- [[https://github.com/simoneamico-ux-dev/veil][simoneamico-ux-dev/veil]]
 
-- [[https://dither.neato.fun/][Dither — Vector Dither Tool]]
+  #+begin_quote
+  _Dark mode PDFs_ without destroying your images.
+  #+end_quote
 
-  不錯的圖像 Dither 工具。
+  #+begin_quote
+  veil uses PDF.js to render each page,
+  then applies CSS inversion for the dark background.
+  A second canvas restores the original image pixels over the inverted regions,
+  so photos, charts, and diagrams keep their true colors.
+  #+end_quote
 
 * Emacs
 :PROPERTIES:
@@ -1470,7 +1637,6 @@
 - [[https://en.andros.dev/blog/e0e00b4b/eww-the-emacs-browser-you-underestimate/][EWW, the Emacs browser you underestimate]] by Andros Fenollosa
 
   EWW 是 Emacs 內置的瀏覧器，完全用 Emacs Lisp 編寫，將 HTML 轉換成 Emacs 的中的文本格式。
-
   EWW 不支持 JS 和 CSS，如果你的網站用 EWW 打開能正常瀏覧，
   說明你的網站 HTML 寫得比較標準，文章也分享了如何編寫 HTML 使其能在 EWW 中表現更好。
 
@@ -1542,7 +1708,9 @@
 
 - [[https://codeberg.org/jamesendreshowell/gists/src/branch/master/jeh-transpose.el][gists/jeh-transpose.el]] by jamesendreshowell
 
+  #+begin_quote
   Transpose characters or words, reversibly, by not moving point.
+  #+end_quote
 
 - [[https://www.youtube.com/watch?v=IGQbp0JHi_I][How Prot Organizes Knowledge, Projects, and Tasks in Emacs]] (37:52) by linkarzu
 
@@ -1562,15 +1730,24 @@
 
 - [[https://www.jamescherti.com/emacs-eglot-performance/][Configuring Emacs Eglot for Optimal Performance]] by James Cherti
 
-  [TODO] 實作一下
+  抄了几個配置。
 
 - [[https://www.jamescherti.com/emacs-scrolling-better-performance-usability/][Configuring Emacs Scrolling for Better Usability]] by James Cherti
 
+  See also: [[https://irreal.org/blog/?p=14042][Tweaking Emacs Scrolling Behavior]] by Irreal
+
+  因為在 Emacs 裡禁用了鼠標，我也很少一直按行滾動，
+  我都沒太發現不對的地方，文中有的配置確實能帯來更好的使用體驗。
+
 - [[https://monadicsheep.org/blog/an-introduction-to-canvas-in-emacs.html][An Introduction to Canvas in GNU Emacs]] by Divya
+
+  Cool，給 Emacs 帯來了全新的圖形能力，我大概不會用到，但以後應該會有一些基於它的有趣的擴展。
 
 - [[https://en.andros.dev/blog/5fcf45a2/a-year-of-org-social-my-social-network/][A year of Org Social, my social network]] by Andros Fenollosa
 
 - [[https://www.masteringemacs.org/article/whats-new-in-emacs-311][What's New in Emacs 31.1?]] by Mickey Petersen
+
+- [[https://rahuljuliato.com/posts/markdown-ts-mode-emacs-31][An unofficial guide to markdown-ts-mode on Emacs 31]] by Rahul
 
 - [[https://github.com/KallDrexx/emacs-zero-to-ide-journey][KallDrexx/emacs-zero-to-ide-journey]]
 
@@ -1589,7 +1766,7 @@
 
 - [[https://joshblais.com/blog/i-made-my-phone-emacs/][My phone is now just an emacs interface]] by Joshua Blais
 
-- [[https://rahuljuliato.com/posts/markdown-ts-mode-emacs-31][An unofficial guide to markdown-ts-mode on Emacs 31]] by Rahul
+- [[https://www.chiply.dev/post-hyperbole-hyrolo][Hyperbole HyRolo: Search, Retrieve and Insert Records, Not Lines]] by Charlie Holland
 
 * 一些话 | 摘抄
 :PROPERTIES:
@@ -1681,9 +1858,9 @@
 
  「寫下故事的第一句話有種令人愉快的感覺。你永遠不知道它們會把你帶向何方。」
 
-  “If you can't annoy somebody, there is little point in writing.”  ⸺ Kingsley Amis
+  _“If you can't annoy somebody, there is little point in writing.”  ⸺ Kingsley Amis_
 
-  「如果寫作不能冒犯到誰，那寫作也沒什麼意義了。」
+  _「如果寫作不能冒犯到誰，那寫作也沒什麼意義了。」_
   #+end_quote
 
 - [[https://francescrossley.com/conversations-with-a-six-year-old-about-the-world-cup/][Conversations with a six-year-old about the World Cup]] by Frances
@@ -1741,9 +1918,9 @@
 
   #+begin_quote
   我沒有評論功能，即使平台自帶我也不會開啟。
-  我了解我自己，我不會給自己任何理由去為這些事情抓狂。
-  我不想解釋「言論自由」並不意味著你可以闖進我家來抱怨我如何擺放書籍，
-  然後再邀請成千上萬的陌生人來做同樣的事。
+  _我了解我自己，我不會給自己任何理由去為這些事情抓狂。_
+  _我不想解釋「言論自由」並不意味著你可以闖進我家來抱怨我如何擺放書籍，_
+  _然後再邀請成千上萬的陌生人來做同樣的事。_
 
   [[https://francescrossley.com/popularity-contests/#:~:text=off%2E-,I,same][Source]]
   #+end_quote
@@ -1850,28 +2027,29 @@
   #+begin_quote
   如今有一句常見的說法：「我不是要批評，但……」這是政治正確所產生的臆想，
   而且一旦一貫地套用，反而會傷害那些你在乎的人。
-  批評並不等同於說人壞話或故意爭辯：批評是一種有根據的意見，並且是在你的貢獻脈絡下提出的。
-  你能從批評中受益，因為它有助於你從不同的角度理解事物。
+  _批評並不等同於說人壞話或故意爭辯：批評是一種有根據的意見，並且是在你的貢獻脈絡下提出的。_
+  _你能從批評中受益，因為它有助於你從不同的角度理解事物。_
 
   [[https://protesilaos.com/commentary/2026-08-16-criticism-internet-friend/#:~:text=There,perspective][Source]]
   #+end_quote
 
   #+begin_quote
-  如果你的朋友從不給你任何稱得上批評的回饋，那他們就不是你的朋友。
+  _如果你的朋友從不給你任何稱得上批評的回饋，那他們就不是你的朋友。_
   他們可能是你的同事、隊友，或聊天夥伴。這些關係都很好。
   但他們不是朋友。
-  朋友會展現愛。
-  無論溫柔或嚴厲，愛都不打折扣。
+  _朋友會展現愛。_
+  _無論溫柔或嚴厲，愛都不打折扣。_
 
   [[https://protesilaos.com/commentary/2026-08-16-criticism-internet-friend/#:~:text=If%20your,tough][Source]]
   #+end_quote
 
   #+begin_quote
-  朋友有時什麼也不說。
-  他們的行動會替他們發聲。
-  你知道，只要我還做得到，我就會一直如此。
-  而且我會在那裡激勵你攀登至最高峰。
-  為什麼？因為我在乎的是你這個人。
+  _朋友有時什麼也不說。_
+  _他們的行動會替他們發聲。_
+  _你知道，只要我還做得到，我就會一直如此。_
+  _而且我會在那裡激勵你攀登至最高峰。_
+  _為什麼？_
+  _因為我在乎的是你這個人。_
 
   [[https://protesilaos.com/commentary/2026-08-16-criticism-internet-friend/#:~:text=to%2E-,A,particular][Source]]
   #+end_quote
@@ -1904,10 +2082,10 @@
   [[https://itsfridayimnotinlove.substack.com/p/its-friday-im-not-in-love-issue-256#:~:text=%E2%80%9CTutte,casa%2E%E2%80%9D][Source]]
   #+end_quote
 
-- [[https://blog.absurdpirate.com/rethings-to-do-after-your-dad-dies/][re:Things to do after your dad dies]]
+- [[https://blog.absurdpirate.com/rethings-to-do-after-your-dad-dies/][re:Things to do after your dad dies]] by Absurd Pirate
 
   #+begin_quote
-  有人說，悲傷就是無處可去的愛，而我覺得這說法很準確。
+  有人說， _悲傷就是無處可去的愛_ ，而我覺得這說法很準確。
   我們永遠會渴望那些已不在身邊的人能陪伴著我們。
   無論他們活著時我們曾與他們相處多久，我們仍會希望能和他們多相處一些時間。
 
@@ -1946,6 +2124,9 @@
 - [[https://www.bilibili.com/video/BV1jqVL6gEB5/][7 天探索彩虹之岛 La Palma，竟被一名隐士带回悬崖洞穴]] (1:23:59) by 蜀犬吠日 SCFR
 - [[https://www.bilibili.com/video/BV1UNuu6AERy/][一个野人的展览]] (09:13) by 想想工作室
 - [[https://www.youtube.com/watch?v=IwxkGdhkAGU][給我一點時間 Official Music Video]] (8:09) by SoftLipaOfficial
+- [[https://www.bilibili.com/video/BV1vm4f6bETN/][Grand Theft Auto VI：分量十足的一瞥]] (26:49) by RockstarGames
+
+  像是在看電影。
 
 # Local Variables:
 # org-cycle-include-plain-lists: integrate
