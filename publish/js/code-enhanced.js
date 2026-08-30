@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Create copy button
     const btn = document.createElement("button");
-    btn.textContent = "Copy";
+    const btnText = "複製";
+    btn.textContent = btnText;
     btn.className = "code-copy-btn";
 
     // Copy code on click
@@ -20,12 +21,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const code = pre.textContent;
       navigator.clipboard.writeText(code).then(
         () => {
-          btn.textContent = "Copied!";
-          setTimeout(() => (btn.textContent = "Copy"), 1200);
+          btn.textContent = "已複製 :)";
+          setTimeout(() => (btn.textContent = btnText), 1200);
         },
         () => {
-          btn.textContent = "Failed";
-          setTimeout(() => (btn.textContent = "Copy"), 1200);
+          btn.textContent = "複製失敗 :(";
+          setTimeout(() => (btn.textContent = btnText), 1200);
         }
       );
     });
