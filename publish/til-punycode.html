@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TIL:Punycode</title>
+<meta name="author" content="Spike Leung">
+<meta name="description" content="域名只支持 ASCII 字符，如果域名中有 Unicode 就要用轉成 Punycode 表示 (變回 ASCII)。">
+<meta name="generator" content="Org Mode">
+<meta name="color-scheme" content="light dark" />
+<meta property="og:url" content="/Users/spike/git/taxodium/publish/til-punycode.html">
+<link rel="preload" href="/styles/main.css" as="style" />
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="preload" href="/js/color-scheme.js" as="script"/>
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="canonical" href="/Users/spike/git/taxodium/publish/til-punycode.html">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<script src="/js/color-scheme.js"></script>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主頁</a></li>
+    <li><a href="/subscribe.html">訂閱</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/shuffle.html" class="js-required">隨機</a></li>
+  </ul>
+  <button id="lightdark" class="js-required" aria-label="點擊切換當前頁面明暗主題">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+      <path d="M0 0h512v512H0z" fill="none" />
+      <path fill="currentColor" fill-rule="evenodd" d="M277.333 405.333v85.333h-42.667v-85.333zm99.346-58.824l60.34 60.34l-30.17 30.17l-60.34-60.34zm-241.359 0l30.17 30.17l-60.34 60.34l-30.17-30.17zM256 139.353c64.422 0 116.647 52.224 116.647 116.647c0 64.422-52.225 116.647-116.647 116.647A116.427 116.427 0 0 1 139.352 256c0-64.423 52.225-116.647 116.648-116.647m0 42.666c-40.859 0-73.981 33.123-73.981 74.062a73.76 73.76 0 0 0 21.603 52.296c13.867 13.867 32.685 21.64 52.378 21.603zm234.666 52.647v42.667h-85.333v-42.667zm-384 0v42.667H21.333v-42.667zM105.15 74.98l60.34 60.34l-30.17 30.17l-60.34-60.34zm301.7 0l30.169 30.17l-60.34 60.34l-30.17-30.17zM277.332 21.333v85.333h-42.667V21.333z" />
+    </svg>
+  </button>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">TIL:Punycode</h1>
+<p class="subtitle" role="doc-subtitle">域名中的 Unicode</p>
+</header><p>
+之前看了 マリウス 的 <a href="https://マリウス.com/disable-javascript-org/">disable-javascript.org</a>，我就用 <a href="elfeed-4-0-0-usage-sharing.html">Elfeed</a> 訂閱了他的博客，但後面一直在 Elfeed 裡看到拉取报錯，錯誤信息如下：
+</p>
+
+<pre class="example">
+[error]: https://マリウス.com/index.xml: "(60) Peer certificate cannot be authenticated with known CA certificates."
+</pre>
+
+<p>
+Elfeed 是用 <a href="https://curl.se/">curl</a> 發請求的<small>(前提是 <code>elfeed-use-curl</code> 為 <code>t</code>)</small>，直接用 curl 請求的話，报錯是：
+</p>
+
+<pre class="example">
+curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to マリウス.com:443
+</pre>
+
+<p>
+之後我去問了 Kagi Assistant，經過一些排查後，終於找到了問題。
+</p>
+
+<hr>
+
+<p>
+留意請求的域名，你會發現 <del>你会讶异，你是我最压抑，最深处的秘密</del> ，我請求的域名是 <b>マリウス.com</b> 。但是 <a href="https://en.wikipedia.org/wiki/Domain_name#:~:text=30%5D-,A,period%29%2E">域名只支持 ASCII</a> ，而 <b>マリウス</b> 顯然不是 ASCII ，而是 <a href="https://en.wikipedia.org/wiki/Unicode">Unicode</a>。
+</p>
+
+<p>
+當你在瀏覧器中輸入域名包含 <b>非 ASCII</b> 字符時，瀏覧器會將其轉成 <a href="https://en.wikipedia.org/wiki/Punycode">Punycode</a> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>表示：
+</p>
+
+<blockquote>
+<p>
+Punycode 是 Unicode 在受限的 ASCII 字元子集下，用於網際網路主機名稱的表示方式。<span class="underline">使用 Punycode 時，包含 Unicode 字元的主機名稱會被轉換為僅由字母、數字與連字號組成的 ASCII 子集，</span><span class="underline">稱為字母‑數字‑連字號（letter–digit–hyphen, LDH）子集。</span>
+</p>
+</blockquote>
+
+<p>
+例如， <code>マリウス.com</code> 會被編碼為 <code>xn--gckvb8fzb.com</code> ，其中的 <code>gckvb8fzb</code> 是 <code>マリウス</code> 對應的 Punycode，<code>xn--</code> 是一個固定的 <a href="https://en.wikipedia.org/wiki/Internationalized_domain_name">國際化域名 (International Domain Names, IDN)</a> 前綴。
+</p>
+
+<p>
+檢查我現在的 curl (<code>curl -V</code>)，看到的是：
+</p>
+
+<pre class="example">
+Protocols: dict file ftp ftps gopher gophers http https imap imaps ipfs ipns ldap ldaps mqtt pop3 pop3s rtsp smb smbs smtp smtps telnet tftp
+Features: alt-svc AsynchDNS GSS-API HSTS HTTP2 HTTPS-proxy IPv6 Kerberos Largefile libz MultiSSL NTLM SPNEGO SSL threadsafe UnixSockets
+</pre>
+
+<p>
+裡面沒有 IDN 相關的功能，所以是無法处理 マリウス.com 這樣的 IDN 的。
+</p>
+
+<p>
+知道問題就好辦了，讓 curl 支持 IDN 就好，我用 <a href="https://brew.sh/">homebrew</a> 下載了新的 curl：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">&#20808;&#23433;&#35037;&#26032;&#29256;&#26412;</span>
+brew update
+brew install curl
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#35373;&#21040; PATH &#30340;&#21069;&#38754;&#65292;&#20248;&#20808;&#29992; homebrew &#30340;&#29256;&#26412;</span>
+<span class="org-builtin">export</span> <span class="org-variable-name">PATH</span>=<span class="org-string">"$(brew --prefix)/opt/curl/bin:$PATH"</span>
+</code></pre>
+</div>
+
+<p>
+裡面就包含 IDN：
+</p>
+
+<pre class="example">
+Protocols: dict file ftp ftps gopher gophers http https imap imaps ipfs ipns ldap ldaps mqtt mqtts pop3 pop3s rtsp scp sftp smtp smtps telnet tftp ws wss
+Features: alt-svc AppleSecTrust AsynchDNS brotli GSS-API HSTS HTTP2 HTTP3 HTTPS-proxy IDN IPv6 Kerberos Largefile libz PSL SPNEGO SSL threadsafe TLS-SRP UnixSockets zstd
+</pre>
+
+<p>
+用這個版本的 curl 進行請求，就能正常返回了。
+</p>
+
+<p>
+如果 curl 不支持 IDN 也不想更新，用 Ponycode 形式的域名 (xn&ndash;gckvb8fzb.com) 就好。
+</p>
+
+<hr>
+
+<p>
+另外 マリウス 也寫了篇文章解釋他的域名，感興趣也可以看看： <a href="https://マリウス.com/never-click-on-a-link-that-looks-like-that/">NEVER click on a link that looks like that</a>。
+</p>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+相關規𫈣：
+</p>
+<ul class="org-ul">
+<li><a href="https://datatracker.ietf.org/doc/html/rfc5891">RFC 5891 - Internationalized Domain Names in Applications (IDNA): Protocol</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc3492">RFC 3492 - Punycode: A Bootstring encoding of Unicode for Internationalized Domain Names in Applications (IDNA)</a></li>
+</ul></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<details class="webmention">
+<summary>Webmentions <span class="webmention__count js-required">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回应这篇文章，可以在你的文章或社交媒体帖子中链接这篇文章，然后提交你的 URL，你的回应随后会显示在此页面上。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<noscript><p class="webmention__tip">你可以發送 Webmention，但加載數據需要開啟 JS。</p></noscript>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章或帖子的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<ul class="webmention__list js-required"></ul>
+</details><div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<footer>
+<p>感谢你的阅读！(´｡• ᵕ •｡`) ♡</p>
+<p>文章创建於 <time class="dt-published" datetime="2026-09-01 Tue 18:30">2026-09-01</time>，更新於 <time class="dt-updated" datetime="2026-09-01 Tue 18:45">2026-09-01</time>，</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">署名、非商业性使用、相同方式共享</a>，</p>
+<p>所有源代碼以及内联文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p>如果你有什么想说的，尽管给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: TIL:Punycode 域名中的 Unicode&body=Hi Spike,">Spike Leung</a> 发一封 <a href="https://useplaintext.email">純文本邮件</a> :)</p>
+<p>如果文章对你有帮助，请考虑 <a href="https://taxodium.ink/support-me.html">用你喜欢的方式</a> 支持我。</p>
+<a href="/til-punycode.txt">純文本版本</a> <a href="/til-punycode.org">原始 org 文件</a>
+</footer><script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/purify.min.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

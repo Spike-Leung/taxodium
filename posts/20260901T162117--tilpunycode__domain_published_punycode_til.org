@@ -1,0 +1,88 @@
+#+title:      TIL:Punycode
+#+subtitle: 域名中的 Unicode
+#+export_file_name: til-punycode
+#+date:       [2026-09-01 Tue 18:30]
+#+filetags:   :domain:published:punycode:til:
+#+identifier: 20260901T162117
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 域名只支持 ASCII 字符，如果域名中有 Unicode 就要用轉成 Punycode 表示 (變回 ASCII)。
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content hideblocks
+
+之前看了 マリウス 的 [[https://マリウス.com/disable-javascript-org/][disable-javascript.org]]，
+我就用 [[denote:20260618T142353][Elfeed]] 訂閱了他的博客，但後面一直在 Elfeed 裡看到拉取报錯，錯誤信息如下：
+
+#+begin_example
+[error]: https://マリウス.com/index.xml: "(60) Peer certificate cannot be authenticated with known CA certificates."
+#+end_example
+
+Elfeed 是用 [[https://curl.se/][curl]] 發請求的@@html:<small>@@(前提是 ~elfeed-use-curl~ 為 ~t~)@@html:</small>@@，
+直接用 curl 請求的話，报錯是：
+
+#+begin_example
+curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to マリウス.com:443
+#+end_example
+
+之後我去問了 Kagi Assistant，經過一些排查後，終於找到了問題。
+
+-----
+
+留意請求的域名，你會發現 +你会讶异，你是我最压抑，最深处的秘密+ ，我請求的域名是 *マリウス.com* 。
+但是 [[https://en.wikipedia.org/wiki/Domain_name#:~:text=30%5D-,A,period%29%2E][域名只支持 ASCII]] ，而 *マリウス* 顯然不是 ASCII ，而是 [[https://en.wikipedia.org/wiki/Unicode][Unicode]]。
+
+當你在瀏覧器中輸入域名包含 *非 ASCII* 字符時，瀏覧器會將其轉成 [[https://en.wikipedia.org/wiki/Punycode][Punycode]] [fn:1]表示：
+
+#+begin_quote
+Punycode 是 Unicode 在受限的 ASCII 字元子集下，用於網際網路主機名稱的表示方式。
+_使用 Punycode 時，包含 Unicode 字元的主機名稱會被轉換為僅由字母、數字與連字號組成的 ASCII 子集，_
+_稱為字母‑數字‑連字號（letter–digit–hyphen, LDH）子集。_
+#+end_quote
+
+例如， =マリウス.com= 會被編碼為 =xn--gckvb8fzb.com= ，其中的 =gckvb8fzb= 是 =マリウス= 對應的 Punycode，
+=xn--= 是一個固定的 [[https://en.wikipedia.org/wiki/Internationalized_domain_name][國際化域名 (International Domain Names, IDN)]] 前綴。
+
+檢查我現在的 curl (~curl -V~)，看到的是：
+
+#+begin_example
+Protocols: dict file ftp ftps gopher gophers http https imap imaps ipfs ipns ldap ldaps mqtt pop3 pop3s rtsp smb smbs smtp smtps telnet tftp
+Features: alt-svc AsynchDNS GSS-API HSTS HTTP2 HTTPS-proxy IPv6 Kerberos Largefile libz MultiSSL NTLM SPNEGO SSL threadsafe UnixSockets
+#+end_example
+
+裡面沒有 IDN 相關的功能，所以是無法处理 マリウス.com 這樣的 IDN 的。
+
+知道問題就好辦了，讓 curl 支持 IDN 就好，我用 [[https://brew.sh/][homebrew]] 下載了新的 curl：
+
+#+begin_src bash
+  # 先安裝新版本
+  brew update
+  brew install curl
+  # 設到 PATH 的前面，优先用 homebrew 的版本
+  export PATH="$(brew --prefix)/opt/curl/bin:$PATH"
+#+end_src
+
+裡面就包含 IDN：
+
+#+begin_example
+Protocols: dict file ftp ftps gopher gophers http https imap imaps ipfs ipns ldap ldaps mqtt mqtts pop3 pop3s rtsp scp sftp smtp smtps telnet tftp ws wss
+Features: alt-svc AppleSecTrust AsynchDNS brotli GSS-API HSTS HTTP2 HTTP3 HTTPS-proxy IDN IPv6 Kerberos Largefile libz PSL SPNEGO SSL threadsafe TLS-SRP UnixSockets zstd
+#+end_example
+
+用這個版本的 curl 進行請求，就能正常返回了。
+
+如果 curl 不支持 IDN 也不想更新，用 Ponycode 形式的域名 (xn--gckvb8fzb.com) 就好。
+
+-----
+
+另外 マリウス 也寫了篇文章解釋他的域名，感興趣也可以看看： [[https://マリウス.com/never-click-on-a-link-that-looks-like-that/][NEVER click on a link that looks like that]]。
+
+* Footnotes
+:PROPERTIES:
+:CUSTOM_ID: 375BF84D-F448-46F2-81C7-F132F17F46E7
+:END:
+
+[fn:1] 相關規𫈣：
+- [[https://datatracker.ietf.org/doc/html/rfc5891][RFC 5891 - Internationalized Domain Names in Applications (IDNA): Protocol]]
+- [[https://datatracker.ietf.org/doc/html/rfc3492][RFC 3492 - Punycode: A Bootstring encoding of Unicode for Internationalized Domain Names in Applications (IDNA)]]
