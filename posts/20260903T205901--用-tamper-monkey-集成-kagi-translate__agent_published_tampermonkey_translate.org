@@ -1,8 +1,8 @@
 #+title:      用 Tamper-monkey 集成 Kagi Translate
 #+subtitle: 以及用 Docker Sandbox 使用 OpenCode 和 DeepSeek
 #+export_file_name: integrate-kagi-translate-with-tampermonkey
-#+date:       [2026-09-03 Thu 20:59]
-#+filetags:   :agent:draft:preview:tampermonkey:translate:
+#+date:       [2026-09-04 Fri 17:20]
+#+filetags:   :agent:published:tampermonkey:translate:
 #+identifier: 20260903T205901
 #+bind:       denote-directory "~/git/taxodium/posts"
 #+description: 分享如何用 Tampermonkey 集成 Kagi Translate，以及用 Docker Sandbox 使用 OpenCode 和 DeepSeek
@@ -43,7 +43,7 @@ Kagi Translate 的網頁功能倒是一直在更新，
 原來我需要複製單詞，打開網頁才能用，用起來有些麻煩，所以我也很少用。
 現在我可以在任意頁面上直接調用，方便多了，這兩天用下來，新增了上百個單詞
 @@html:<small>@@(不熟悉的單詞太多了)@@html:</small>@@。
-單詞是從我閱讀的文章中获取的，相比那些預製的單詞全集，
+單詞是從我閱讀的文章中获取的，相比那些預製的單詞集，
 它們更貼近我當前的水平，複習時也會更親切些，對它們還有一些印象。
 
 #+attr_html: :loading lazy
@@ -102,6 +102,7 @@ Kagi Translate 本身是支持用 URL 去調用的，拼接好查詢的 URL 就�
 需要符合 Tampermonkey 語法、調用 [[https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API][DOM API]] 實現 DOM 的生成和插入、還有樣式和拖動等交互，
 手寫還是有些工作量的，也要看不少文檔了解用法，就偷懶借助 OpenCode 先生成了一個原型，
 在文章的最後我還會分享一下如何用 Docker Sandbox 運行和配置 OpenCode 和 DeepSeek。
+
 生成的第一個原型是用 iframe 實現的，但因為 [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS][跨域]]，Kagi Translate 的網頁被瀏覧器攔截了，沒法加載出來。
 DeepSeek 給的另一個方法是用 [[https://developer.mozilla.org/en-US/docs/Web/API/Window/open][window.open()]] 打開一個彈窗去加載，因為是在一個新窗口，就不會有跨域問題。
 試了試，基本能用了，之後我就接手過來，一邊用，一邊調整代碼，目前基本滿足我的使用了。
@@ -163,26 +164,12 @@ as defined by the user's operating system where the new window will be generated
 最後分享一下如何用 [[https://www.docker.com/products/docker-sandboxes/][Docker Sandbox]] 使用 [[https://opencode.ai/][OpenCode]] 和 [[https://www.deepseek.com/][DeepSeek]]。
 
 我之前安裝過 OpenCode，但沒做沙箱隔离，總覺得很不安全。
-Simon Willison 之前提出過 [[https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/][AI 代理程式的致命三要素]]：
+Simon Willison 提出過 [[https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/][AI 代理程式的致命三要素]]：
+1）它能够訪問私有數據  2）它可能會接触到惡意內容 3) 它具備可用於竊取數據的外部通訊能力。
+如果滿足這三個條件，攻擊者就可以輕易地誘騙它存取您的私有數據並將其發送給該攻擊者。
 
-#+begin_quote
-如果您是使用工具的 LLM 系統（如果您願意，可以稱之為「AI 代理程式」）的使用者，
-那麼了解結合具有以下三種特性的工具所帶來的風險至關重要。
-如果不了解這一點，攻擊者就可能竊取您的數據。
-
-這組致命的能力要素包括：
-
-- *存取您的私有數據* ——這本來就是工具最常見的用途之一！
-- *接觸不可信內容* ——惡意攻擊者控制的文本（或圖像）可能被您的 LLM 獲取的任何機制。
-- *具備可用於竊取數據的外部通訊能力* （我通常稱之為「外洩」，但我不確定這個術語是否被廣泛理解。）
-
-如果您的代理程式結合了這三項功能，攻擊者就可以輕易地誘騙它存取您的私有數據並將其發送給該攻擊者。
-
-[[https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/#:~:text=If,attacker,-%2E][Source]]
-#+end_quote
-
-OpenCode 拥有我本地文件的讀寫能力，它還有 websearch 的能力，如果它在查詢資料時受到了提示詞注入攻擊，
-可能會在我不知情下，泄露了我的數據，所以後來我就卸載了。
+OpenCode 拥有我本地文件的讀寫能力，它還有 websearch 的能力，
+如果它在查詢資料時受到了提示詞注入攻擊，可能會在我不知情下，泄露了我的數據，所以後來我就卸載了。
 
 更安全的做法是把它隔离在一個沙箱裡，
 最好的沙箱是一台干净的、沒有敏感數據的電脑，隨它怎麼折騰也不會有太大風險。
@@ -249,13 +236,15 @@ sbx policy allow network api.deepseek.com
 #+end_src
 
 在 OpenCode 裡選 DeepSeek 的 Model 就能正常用了。
-但它的網絡是受限的，你可以將 Sandbox Policy 的 [[https://docs.docker.com/ai/sandboxes/governance/access-controls/local/#default-preset][Default Preset]] 設為 Balanced，
-這樣默認是拒絕網絡訪問，
-但常見的 package managers (NPM, PyPI 等), code hosts (GitHub, GitLab 等) 等是允許的。
+
+默認它的網絡是受限的，你可以將 Sandbox Policy 的 [[https://docs.docker.com/ai/sandboxes/governance/access-controls/local/#default-preset][Default Preset]] 設為 Balanced，
+默認拒絕網絡訪問，
+但允許常見的 package managers (NPM, PyPI 等), code hosts (GitHub, GitLab 等) 等訪問網絡。
+
 如果要放開更多的網絡訪問，就用 ~sbx policy allow network <domain>~  去設置。
 也可以直接用 ~sbx~ 喚起一個可交互的 TUI，在裡面設置 (推薦)。
 
-Sandbox 點認只能訪問你掛載的目录󠄃，例如你在 =~/git/repo= 下運行 ~sbx run opencode~ ，
+Sandbox 默認只能訪問你掛載的目录󠄃，例如你在 =~/git/repo= 下運行 ~sbx run opencode~ ，
 那它就只能訪問 =~/git/repo= 目录󠄃，有讀寫能力。
 如果你還不放心，也可以用 [[https://docs.docker.com/ai/sandboxes/workflows/git/#clone-mode][Clone Mode]]，
 這樣 OpenCode 會將倉庫 Clone 到 Sandbox 裡改，改好了你再从 Sandbox 裡 fetch 到本地，會更安全些。
