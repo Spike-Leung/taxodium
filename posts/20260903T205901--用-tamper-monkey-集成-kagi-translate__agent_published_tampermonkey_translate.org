@@ -29,7 +29,7 @@ Kagi Translate 提供了 [[https://translate.kagi.com/extension][瀏覧器插件
 
 Kagi Translate 的網頁功能倒是一直在更新，
 每過几天就提示我刷新頁面获取新版本，網頁上也有一些插件上沒有的功能。
-於是我就想，網頁是相對稳定的，我能不能用就用網頁功能呢？
+於是我就想，網頁是相對稳定的，我能不能就用網頁功能呢？
 借助 [[https://www.tampermonkey.net/][Tampermonkey]]，我把 Kagi Translate 網頁塞在一個彈窗裡，通過快捷鍵調用，我用下來還挺滿意的。
 
 下面分享一下整體功能。
@@ -40,11 +40,11 @@ Kagi Translate 的網頁功能倒是一直在更新，
 
 使用網頁版的字典可以看到更多信息，也支持將單詞存到 [[https://apps.ankiweb.net/][Anki]] 裡複習。
 我挺喜歡集成的 Anki 功能的，但是插件裡沒有這個功能，只有網頁版有。
-原來我需要複製單詞，打開網頁才能用，用起來有些麻煩，所以我也很少用。
+之前我需要複製單詞，打開網頁才能用，用起來有些麻煩，所以我也很少用。
 現在我可以在任意頁面上直接調用，方便多了，這兩天用下來，新增了上百個單詞
 @@html:<small>@@(不熟悉的單詞太多了)@@html:</small>@@。
 單詞是從我閱讀的文章中获取的，相比那些預製的單詞集，
-它們更貼近我當前的水平，複習時也會更親切些，對它們還有一些印象。
+它們更貼近我當前的水平，複習時也會更親切些，對它們也還留有一些印象。
 
 #+attr_html: :loading lazy
 #+CAPTION: 在頁面上使用 Kagi Translate 的 Dictionary 中的 Anki 功能
@@ -100,19 +100,19 @@ Kagi Translate 本身是支持用 URL 去調用的，拼接好查詢的 URL 就�
 
 用 Tampermonkey 寫，
 需要符合 Tampermonkey 語法、調用 [[https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API][DOM API]] 實現 DOM 的生成和插入、還有樣式和拖動等交互，
-手寫還是有些工作量的，也要看不少文檔了解用法，就偷懶借助 OpenCode 先生成了一個原型，
+手寫還是有些工作量的，也要看不少文檔了解用法，就偷懶借助 OpenCode 生成了一個原型，
 在文章的最後我還會分享一下如何用 Docker Sandbox 運行和配置 OpenCode 和 DeepSeek。
 
 生成的第一個原型是用 iframe 實現的，但因為 [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS][跨域]]，Kagi Translate 的網頁被瀏覧器攔截了，沒法加載出來。
 DeepSeek 給的另一個方法是用 [[https://developer.mozilla.org/en-US/docs/Web/API/Window/open][window.open()]] 打開一個彈窗去加載，因為是在一個新窗口，就不會有跨域問題。
-試了試，基本能用了，之後我就接手過來，一邊用，一邊調整代碼，目前基本滿足我的使用了。
+試了試，基本能用了，之後我就接手過來，一邊用，一邊調整代碼，直到滿足我的使用。
 
 我花時間比較多的是調整 window.open 的效果。
 
 ~window.open~ 的第二個參數是 [[https://developer.mozilla.org/en-US/docs/Web/API/Window/open#target][target]]，要求是沒有空格的字符串。
 當存在相同 target 的 Window 實例時， ~window.open~ 就可以複用這個實例，
 這樣一個頁面就只有一個實例，也就只有一個彈窗，避免多次調用產生一堆不同的彈窗。
-如果你希望用多個彈窗呈現，把 target 置空就好。
+如果你希望用多個彈窗呈現，那就在調用 ~window.open~ 時，讓 target 的值每次都不一樣。
 
 想要 ~window.open~ 用彈窗而不是在一個新的 Tab 打開，
 需要設置第三個參數 [[https://developer.mozilla.org/en-US/docs/Web/API/Window/open#windowfeatures][windowFeatures]]，這也是一個字符串，
@@ -146,7 +146,7 @@ as defined by the user's operating system where the new window will be generated
 
 - 集成了 [[https://kagi.com/summarizer][Kagi Summarizer]]，但它沒法用彈窗呈現@@html:<small>@@(不會出現)@@html:</small>@@，
   總是會在新的 Tab 打開。
-  具體原因我還不清楚，如果你知道原因請告訴我 @@html:<small>@@(我很好奇.gif)@@html:</small>@@。
+  具體原因我還不清楚，如果你知道原因請告訴我 @@html:<small>@@(我很好奇！.gif)@@html:</small>@@。
   我用 OpenCode 和 DeepSeek Pro 排查了一些可能，它給的方案我都試了，都不能用彈窗打開，還是會用 Tab 打開。
   我猜測是 Kagi 收到請求後做了什麼处理，但不清楚原理。
 - 集成了 [[https://help.kagi.com/kagi/translate/url-parameters.html#website-translation-options][website]]，即頁面全文翻譯，當翻譯的 URL 帯有 query 參數時，
@@ -154,10 +154,13 @@ as defined by the user's operating system where the new window will be generated
   website 的參數如 ~?to=zh~ 或 ~&to=zh~ Kagi Translate 識別不了，這些參數會被當作要翻譯的 URL 的參數
   @@html:<small>@@(如果安裝了 Kagi Translate 的插件的話，website 的功能會被插件接管，插件倒是能处理)@@html:</small>@@。
 
+這個方法也是有缺陷的：
+1) 它可能會產生很多臨時的窗口，需要手動去關閉維护；
+2) 反复訪問 Kagi Translate 的 URL，也會產生很多 Kagi Translate 的歷史記录󠄃；
+3) 彈窗也可能會被瀏覧器攔截，需要允許彈窗。
+
 回頋一下，其實做的事很簡單：選擇頁面內容，拼接成目標 URL，然後彈窗展示結果。
 這裡的 URL 可以是 Kagi Translate，也可以是任意支持參數查詢的 URL，例如 [[https://en.wikipedia.org/wiki/Wikipedia][Wikipedia]]、[[https://developer.mozilla.org/en-US/][MDN]]。
-這個方法的缺陷是，它可能會產生很多臨時的窗口，需要手動去關閉維护。
-彈窗也可能會被瀏覧器攔截，需要允許彈窗。
 
 -----
 
