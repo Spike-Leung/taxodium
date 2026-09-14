@@ -3,8 +3,24 @@ FLEX 布局下，元素溢出的问题
 [2022-09-28 Wed 21:40]
 _____________________________
 
-1 问题
-======
+Table of Contents
+_________________
+
+问题
+.. 非 flex 布局的表现
+解决方案
+.. 给 flex item 设置 overflow 属性
+.. 给 flex item 设置 width: 0 & flex-grow: 1
+.. 给 flex item 设置 min-width: 0
+原因
+.. TL;DR
+.. 详细分析
+推论
+Refs
+
+
+问题
+====
 
   有一个 flex box，宽度是 400px，里面有一个 item，item 中有一段很长的文字，文字不换行。
 
@@ -45,8 +61,8 @@ _____________________________
   `----
 
 
-1.1 非 flex 布局的表现
-~~~~~~~~~~~~~~~~~~~~~~
+非 flex 布局的表现
+~~~~~~~~~~~~~~~~~~
 
   如果去除 flex 布局，用默认的 `display:block;' 的盒子，文本是会受限于外层容器宽度，从而
   溢出隐藏显示。
@@ -84,11 +100,11 @@ _____________________________
   `----
 
 
-2 解决方案
-==========
+解决方案
+========
 
-2.1 给 flex item 设置 overflow 属性
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+给 flex item 设置 overflow 属性
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   ,----
   | .item {
@@ -97,8 +113,8 @@ _____________________________
   `----
 
 
-2.2 给 flex item 设置 width: 0 & flex-grow: 1
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+给 flex item 设置 width: 0 & flex-grow: 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   ,----
   | .item {
@@ -108,8 +124,8 @@ _____________________________
   `----
 
 
-2.3 给 flex item 设置 min-width: 0
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+给 flex item 设置 min-width: 0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   ,----
   | .item {
@@ -118,11 +134,11 @@ _____________________________
   `----
 
 
-3 原因
-======
+原因
+====
 
-3.1 TL;DR
-~~~~~~~~~
+TL;DR
+~~~~~
 
   会溢出是因为在这个例子中，flex item 的 最小尺寸(minimum size) 是文本的长度，flex item
   只能缩小到文本长度，而文本越长，flex item 就越长，也就溢出了。
@@ -136,8 +152,8 @@ _____________________________
   需要设置 `flex-grow: 1' ，让 flex item 延伸容器剩余空间。
 
 
-3.2 详细分析
-~~~~~~~~~~~~
+详细分析
+~~~~~~~~
 
   当 flex item 没有设置 flex 属性时，默认值是 `flex: initial' ，相当于 `flex: 0 1 auto',
 
@@ -282,8 +298,8 @@ _____________________________
 <https://www.w3.org/TR/CSS2/visudet.html#float-width:~:text=to%2Dfit%22%20width.-,Calculation%20of%20the%20shrink%2Dto%2Dfit%20width%20is%20similar%20to%20calculating,width%20is%3A%20min(max(preferred%20minimum%20width%2C%20available%20width)%2C%20preferred%20width).,-10.3.6%20Floating%2C%20replaced>
 
 
-4 推论
-======
+推论
+====
 
   使用 flex 布局的时候，可以给 flex item 设置 `min-width: 0' ，从而保证 flex item 能够尽
   可能地收缩，避免溢出 flex container。
@@ -291,8 +307,8 @@ _____________________________
   当碰到 flex item 的尺寸和预想中不一样时，可以考虑是不是这个原因导致的。
 
 
-5 Refs
-======
+Refs
+====
 
   - [Basic concepts of flexbox] @MDN
   - [CSS Flexible Box Layout Module Level 1] @W3C

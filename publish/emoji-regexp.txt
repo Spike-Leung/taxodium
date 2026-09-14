@@ -3,8 +3,21 @@ EMOJI 正则匹配
 [2024-05-09 Thu 10:15]
 ________________
 
-1 TL;DR
-=======
+Table of Contents
+_________________
+
+TL;DR
+需求
+解决过程
+Emoji 在 JS 中到底是什么？
+一些注意点
+.. 字符串长度
+.. Lone surrogates
+擴展閱讀
+
+
+TL;DR
+=====
 
   如果你想匹配 Emoji，可以考虑使用 [emoji-regex] 这个库。
 
@@ -22,8 +35,8 @@ ________________
 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicodeSets>
 
 
-2 需求
-======
+需求
+====
 
   要求输入框能输入除了特殊表情外的任意字符。我的理解就是将 Emoji 排除掉，通过 [RegExp]
   匹配 Emoji 判断是否存在特殊表情。
@@ -33,8 +46,8 @@ ________________
 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp>
 
 
-3 解决过程
-==========
+解决过程
+========
 
   对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道 Emoji 和
   Unicode 相关，但怎么用正则描述它呢？ 我的第一步是 Google，得到一个这样的正则：
@@ -168,8 +181,8 @@ ________________
 [Emoji Sequence] <https://emojipedia.org/emoji-sequence>
 
 
-4 Emoji 在 JS 中到底是什么？
-============================
+Emoji 在 JS 中到底是什么？
+==========================
 
   现在，已经知道怎么匹配 Emoji 了，但是为什么一开始找到的正则
   `/(\ud83c[\udf00-\udfff].../u' 无法匹配 🉐 呢？为此，首先需要知道 🉐 在 JS 中到底是什
@@ -341,11 +354,11 @@ ________________
 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint>
 
 
-5 一些注意点
-============
+一些注意点
+==========
 
-5.1 字符串长度
-~~~~~~~~~~~~~~
+字符串长度
+~~~~~~~~~~
 
   有的字符是由代理对组成的，是两个 UTF-16 编码单元，例如 Emoji。当需要计算他们长度的时候，
   需要意识到他们是代理对，取决于具体需求去统计长度。
@@ -367,8 +380,8 @@ ________________
 <https://blog.sangeeth.dev/posts/accurate-text-lengths-with-intl-segmenter-api/>
 
 
-5.2 Lone surrogates
-~~~~~~~~~~~~~~~~~~~
+Lone surrogates
+~~~~~~~~~~~~~~~
 
   代理对是由高代理和低代理组成的，如果单独把高代理拎出来，或者高代理和高代理组成代理对，
   是无法表达有含意的 Unicode 字符的。
@@ -380,8 +393,8 @@ ________________
 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters>
 
 
-6 擴展閱讀
-==========
+擴展閱讀
+========
 
   - [My Favorite Bugs: Invalid Surrogate Pairs] by George Mandis
 

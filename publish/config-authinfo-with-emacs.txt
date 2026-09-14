@@ -3,6 +3,16 @@ EMACS 中配置 .AUTHINFO.GPG
 [2025-02-27 Thu 14:29]
 ____________________________
 
+Table of Contents
+_________________
+
+authinfo
+GnuPG 加密
+配置 Emacs 读取 ~/.authinfo.gpg
+Bonus: The Unix password store (pass)
+写在最后
+
+
 之前我写过一篇 [在 Emacs 中集成翻译插件] 的文章，插件依赖一些 LLM 服务，LLM 服务需要配置
 对应的 API key，它们是定义在 `~/.authinfo' 中的。
 
@@ -18,8 +28,8 @@ ____________________________
 [GnuPG] <https://www.gnupg.org/documentation/manuals/gnupg/index.html>
 
 
-1 authinfo
-==========
+authinfo
+========
 
     有些连接到其他服务的 Emacs 软件包需要身份验证，由于反复提供相同的用户名和密码可能
     会令人烦恼，Emacs 通过 [auth-source] 库提供了持久化信息。
@@ -174,8 +184,8 @@ ____________________________
 <https://github.com/Spike-Leung/Spikemacs/blob/5c2c68f8a338c3a1de0d325b06183b5ca58eb063/lisp/init-ai.el>
 
 
-2 GnuPG 加密
-============
+GnuPG 加密
+==========
 
   我对 GnuPG 研究得不多，简单分享一下如何创建 gpg 密钥，如何加密文件。
 
@@ -216,8 +226,8 @@ ____________________________
 <https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/>
 
 
-3 配置 Emacs 读取 ~/.authinfo.gpg
-=================================
+配置 Emacs 读取 ~/.authinfo.gpg
+===============================
 
   原来 `~/.authinfo' 是未加密的，Emacs 里可以随便访问，现在加密了，那么在访问前就要先解
   密才能访问了。
@@ -241,8 +251,8 @@ ____________________________
   这样 Emacs 会从 minibuffer 读取密码，输入更流畅一些。
 
 
-4 Bonus: The Unix password store (pass)
-=======================================
+Bonus: The Unix password store (pass)
+=====================================
 
   除了 EasyPG Assistant，你也可以用 [The Unix password store (pass)]，这是一个简单的密码
   管理程序。
@@ -273,7 +283,7 @@ ____________________________
 [pass] <https://www.passwordstore.org/>
 
 
-5 写在最后
-==========
+写在最后
+========
 
   我对 GnuPG 其实不太熟悉，文章中如果有什么错误，欢迎留言指正~

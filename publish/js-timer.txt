@@ -3,8 +3,22 @@ JS 中的定时任务
 [2022-02-14 Mon 21:39]
 _________________
 
-1 setTimeout
-============
+Table of Contents
+_________________
+
+setTimeout
+setTimeout(callback, 0) 零延迟的 setTimeout
+setInterval
+.. 对于长时间的同步任务
+.. 对于长时间的异步任务
+嵌套的 setTimeout
+requestAnimationFrame
+requestIdleCallback
+参考
+
+
+setTimeout
+==========
 
   [ setTimeout()] 可以设置一个延迟，延迟多少秒将一个 callback 放入到[宏任务队列]。
 
@@ -22,8 +36,8 @@ _________________
 <https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide#tasks_vs_microtasks>
 
 
-2 setTimeout(callback, 0) 零延迟的 setTimeout
-=============================================
+setTimeout(callback, 0) 零延迟的 setTimeout
+===========================================
 
   这里的 0 其实是放入到宏任务队列的延迟，而不是放入调用栈的延迟。
 
@@ -32,8 +46,8 @@ _________________
   如果调用栈内的任务执行需要很久，那 callback 也可能等很久才会被执行。
 
 
-3 setInterval
-=============
+setInterval
+===========
 
   [setInterval()] 是每隔一段时间，就把 callback 加入到任务队列。
 
@@ -56,8 +70,8 @@ _________________
 
 [setInterval()] <https://developer.mozilla.org/en-US/docs/Web/API/setInterval>
 
-3.1 对于长时间的同步任务
-~~~~~~~~~~~~~~~~~~~~~~~~
+对于长时间的同步任务
+~~~~~~~~~~~~~~~~~~~~
 
   ,----
   | var fakeTimeIntensiveOperation = function() {
@@ -76,8 +90,8 @@ _________________
   时间很长的同步任务会阻塞 setInerval 的执行，并没有按照每一秒的频率去执行。
 
 
-3.2 对于长时间的异步任务
-~~~~~~~~~~~~~~~~~~~~~~~~
+对于长时间的异步任务
+~~~~~~~~~~~~~~~~~~~~
 
   ,----
   | let counter = 0;
@@ -101,8 +115,8 @@ _________________
   想保持 callback 每隔一段时间执行，可以使用嵌套的 setTimeout 实现。
 
 
-4 嵌套的 setTimeout
-===================
+嵌套的 setTimeout
+=================
 
   ,----
   | (function loop() {
@@ -137,8 +151,8 @@ _________________
   `----
 
 
-5 requestAnimationFrame
-=======================
+requestAnimationFrame
+=====================
 
   [Window.requestAnimationFrame()] 主要是用来做动画的。
 
@@ -169,8 +183,8 @@ _________________
 <https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame>
 
 
-6 requestIdleCallback
-=====================
+requestIdleCallback
+===================
 
   [window.requestIdleCallback()] 用于在浏览器空闲的时候，去调用 callback。
 
@@ -199,8 +213,8 @@ _________________
 <https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback>
 
 
-7 参考
-======
+参考
+====
 
   - [Cooperative asynchronous JavaScript: Timeouts and intervals] - MDN
   - [调度：setTimeout 和 setInterval] - javascript.info

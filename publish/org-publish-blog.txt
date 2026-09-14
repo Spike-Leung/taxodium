@@ -3,6 +3,28 @@
 [2024-09-27 Fri 21:40]
 ___________________________
 
+Table of Contents
+_________________
+
+动机
+相比之前的变化
+org-publish 的使用
+.. 构建后代码块的高亮
+.. RSS 的设置
+.. index 文件的设置
+.. `#+date' 的设置
+.. 缓存问题
+.. `:time-stamp-file nil'
+.. `:html-head' ， `:html-preamble' ， `:html-postamble' 的复用
+.. id 问题
+一些缺点
+Tricks
+.. Snippet
+.. 内容的收起展开
+.. 行内图片的插入
+Refs
+
+
 另见：[结合 denote 和 org-publish 写博客]
 <https://taxodium.ink/blog-with-denote-and-org-publish.html>
 
@@ -47,8 +69,8 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
 <https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-org-publish.el>
 
 
-1 动机
-======
+动机
+====
 
   在很早之前看过几篇文章：
 
@@ -71,8 +93,8 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
 [perfect mother fucking website] <https://perfectmotherfuckingwebsite.com>
 
 
-2 相比之前的变化
-================
+相比之前的变化
+==============
 
   - 极大的简化了博客内容，没有主题，没有模板，只有博客内容的 org 文件、css 文件、字体、
     图片，以及最终转换出来的 HTML 文件
@@ -95,8 +117,8 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
 [Atkinson Hyperlegible] <https://www.brailleinstitute.org/freefont/>
 
 
-3 org-publish 的使用
-====================
+org-publish 的使用
+==================
 
   org-publish 的使用有点像 [gulp]，你可以定义很多个任务，每个任务指定处理什么文件，怎么
   处理，处理之后放到什么地方。你可以单独地执行某个任务，也可以将任务串联起来执行。
@@ -106,8 +128,8 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
 
 [gulp] <https://gulpjs.com/>
 
-3.1 构建后代码块的高亮
-~~~~~~~~~~~~~~~~~~~~~~
+构建后代码块的高亮
+~~~~~~~~~~~~~~~~~~
 
   高亮的颜色是基于 Emacs 当前的主题的，而我的博客整体是亮色的，因此需要 Emacs 中也使用亮
   色的主题才能得到合适的高亮颜色。
@@ -139,8 +161,8 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
   `----
 
 
-3.2 RSS 的设置
-~~~~~~~~~~~~~~
+RSS 的设置
+~~~~~~~~~~
 
   [ox-rss] 可以生成 RSS 文件，但它是针对一个 org 文件的，对于多个 org 文件，它会分别生成
   RSS。但是我需要的是把多个 org 文件生成为一个 RSS 文件。
@@ -169,8 +191,8 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
 [Org mode blogging: RSS feed] <https://writepermission.com/org-blogging-rss-feed.html>
 
 
-3.3 index 文件的设置
-~~~~~~~~~~~~~~~~~~~~
+index 文件的设置
+~~~~~~~~~~~~~~~~
 
   设置 `:makeindex t' 可以生成 index 文件，需要在 org 文件中设置 `#+INDEX' keyword。
 
@@ -183,8 +205,8 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
 [Home] <https://taxodium.ink/index.html>
 
 
-3.4 `#+date' 的设置
-~~~~~~~~~~~~~~~~~~~
+`#+date' 的设置
+~~~~~~~~~~~~~~~
 
   原来 Hugo 生成的日期 (`2023-05-31T13:38:39+08:00') 在转换成 sitemap 的时候似乎不能识别，
 
@@ -195,8 +217,8 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
   date 格式。
 
 
-3.5 缓存问题
-~~~~~~~~~~~~
+缓存问题
+~~~~~~~~
 
   执行 org-publish 之后，会在 `org-publish-timestamp-directory'指定的目录下生成缓存，有
   时调整了页眉页脚，可能需要清除缓存才能看到效果。
@@ -204,15 +226,15 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
   不过可以执行 `C-u M-x org-publish' 忽略缓存进行构建。
 
 
-3.6 `:time-stamp-file nil'
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+`:time-stamp-file nil'
+~~~~~~~~~~~~~~~~~~~~~~
 
   设置 `:time-stamp-file nil' 可以避免每次执行 org-publish 的时候都往 HTML 插入最新的时
   间戳，导致每次变更的文件很多。
 
 
-3.7 `:html-head' ， `:html-preamble' ， `:html-postamble' 的复用
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`:html-head' ， `:html-preamble' ， `:html-postamble' 的复用
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   最开始定义 `org-publish-project-alist' ， 我是这么写的，导致一直无法使用变量抽象一些公
   用的 string：
@@ -290,8 +312,8 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
 [Backquote] <https://www.gnu.org/software/emacs/manual/html_node/elisp/Backquote.html>
 
 
-3.8 id 问题
-~~~~~~~~~~~
+id 问题
+~~~~~~~
 
   org publish 的时候会给 heading、figure、details、pre 等元素生成 id，如果没有主动设置
   id，则会使用 org-export 的默认 id 生成策略，生成一个形如 `org123456' 的 id。
@@ -355,8 +377,8 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
 [用 rx 写正则表达式，太舒服了！] <https://emacs-china.org/t/rx/30034>
 
 
-4 一些缺点
-==========
+一些缺点
+========
 
   - 在执行 org-publish 时，如果内容多，可能会很慢，此时会阻塞 Emacs，不能做其他事情
   - 由于依赖 Emacs，[Netlify] 等平台上没有开箱即用的构建命令，集成 CI/CD 相对麻烦
@@ -366,11 +388,11 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
 [Netlify] <https://www.netlify.com/>
 
 
-5 Tricks
-========
+Tricks
+======
 
-5.1 Snippet
-~~~~~~~~~~~
+Snippet
+~~~~~~~
 
   为了方便，可以通过 [YASnippet] 或其他方式，设置 org 文件共用内容。
 
@@ -413,8 +435,8 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
 <https://github.com/Spike-Leung/emacs.d/blob/windows/snippets/org-mode/weekly>
 
 
-5.2 内容的收起展开
-~~~~~~~~~~~~~~~~~~
+内容的收起展开
+~~~~~~~~~~~~~~
 
   需要开启 `org-html-html5-fancy' ([13.9.3 HTML doctypes ¶])，从而可以使用 [<details>]
 
@@ -440,8 +462,8 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
 [<details>] <https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details>
 
 
-5.3 行内图片的插入
-~~~~~~~~~~~~~~~~~~
+行内图片的插入
+~~~~~~~~~~~~~~
 
   如果你想在文字中间插入一张图片 <file:./images/org-publish-blog/avatar.jpg>，同时你希望
   控制图片的大小，可以这样：
@@ -463,8 +485,8 @@ markdown 迁移到了 [org-mode]，然后使用 [Hugo] 发布。
   `----
 
 
-6 Refs
-======
+Refs
+====
 
   文章可以在 Emacs China 上讨论：[使用 org-publish 构建博客]。
 

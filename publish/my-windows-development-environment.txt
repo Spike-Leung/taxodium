@@ -3,8 +3,32 @@ WINDOWS 下个人开发环境搭建
 [2022-10-27 Thu 21:39]
 ____________________________
 
-1 前言
-======
+Table of Contents
+_________________
+
+前言
+代理工具
+Emacs & 环境
+.. WSL
+.. Windows Terminal
+..... 安装字体
+..... 配置 Terminal
+.. 按键绑定
+.. WSL 和 Windows 之间的复制粘贴
+..... Windows -> WSL
+..... WSL -> Windows
+.. Ubuntu 环境配置
+..... Git
+..... systemd
+..... zsh
+..... NodeJS
+..... Emacs
+其他工具
+碎碎念
+
+
+前言
+====
 
   工作关系，公司提供了一台 Windows 电脑进行开发，本来是用 Macbook 的，但懒得上下班来回背，
   于是就得在 Windows 上配置一下开发环境。
@@ -24,8 +48,8 @@ ____________________________
 [Arc] <https://arc.net/download>
 
 
-2 代理工具
-==========
+代理工具
+========
 
   下载 [2dust/v2rayN]，然后配置即可。
 
@@ -36,8 +60,8 @@ ____________________________
 [2dust/v2rayN] <https://github.com/2dust/v2rayN>
 
 
-3 Emacs & 环境
-==============
+Emacs & 环境
+============
 
   最开始的时候，是直接下载 Windows 版本的 Git，NodeJS，Emacs，然后用 git bash 作为终端。
 
@@ -51,8 +75,8 @@ ____________________________
 
 [WSL] <https://learn.microsoft.com/en-us/windows/wsl/about>
 
-3.1 WSL
-~~~~~~~
+WSL
+~~~
 
   按照 [Install Linux on Windows with WSL] 安装即可，看看文档了解点基本用法。
 
@@ -67,8 +91,8 @@ ____________________________
 <https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/>
 
 
-3.2 Windows Terminal
-~~~~~~~~~~~~~~~~~~~~
+Windows Terminal
+~~~~~~~~~~~~~~~~
 
   WSL 文档中推荐搭配 [microsoft/terminal] 使用，相比于 Powershell，git bash，确实好用很
   多。
@@ -78,8 +102,8 @@ ____________________________
 
 [microsoft/terminal] <https://github.com/microsoft/terminal>
 
-3.2.1 安装字体
---------------
+安装字体
+--------
 
   参考 [How to install Powerline fonts in Windows]，步骤如下：
 
@@ -98,16 +122,16 @@ ____________________________
 [powerline/fonts] <https://github.com/powerline/fonts>
 
 
-3.2.2 配置 Terminal
--------------------
+配置 Terminal
+-------------
 
   - 将 Ubuntu 作为默认 Profiles
 
   - 设置 Ubuntu Profiles 的字体为 Fira, Nerd 之类的字体
 
 
-3.3 按键绑定
-~~~~~~~~~~~~
+按键绑定
+~~~~~~~~
 
   Windows 有一些默认的全局绑定键，Terminal 里也有一些，按自己需要禁用。
 
@@ -118,11 +142,11 @@ ____________________________
 [PowerToys] <https://github.com/microsoft/PowerToys>
 
 
-3.4 WSL 和 Windows 之间的复制粘贴
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+WSL 和 Windows 之间的复制粘贴
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-3.4.1 Windows -> WSL
---------------------
+Windows -> WSL
+--------------
 
   Windows 上 Ctrl-C 复制，然后可以在 WSL Ctrl-V 粘贴，但是因为我使用 Emacs，Ctrl-V 在
   Emacs 中是常用的翻页功能。
@@ -132,8 +156,8 @@ ____________________________
   在 Ternimal 中 `Ctrl+Shift+P' 呼出 command panel，然后找到 `paste' 命令执行即可。
 
 
-3.4.2 WSL -> Windows
---------------------
+WSL -> Windows
+--------------
 
   同样，在 Terminal 中用 Emacs，选中文字复制没法传递到 Windows 的剪贴板， 目前还没找到方
   便的操作。
@@ -161,17 +185,17 @@ ____________________________
   了。
 
 
-3.5 Ubuntu 环境配置
-~~~~~~~~~~~~~~~~~~~
+Ubuntu 环境配置
+~~~~~~~~~~~~~~~
 
-3.5.1 Git
----------
+Git
+---
 
   Ubuntu 自带，直接用
 
 
-3.5.2 systemd
--------------
+systemd
+-------
 
   配置过程中，提示 systemd 不可用，导致一些安装无法进行。
 
@@ -193,8 +217,8 @@ ____________________________
 <http://wiki.webperfect.ch/index.php?title=WSL:_System_has_not_been_booted_with_systemd_as_init_system_(PID_1)>
 
 
-3.5.3 zsh
----------
+zsh
+---
 
   参考 [How to Install and Setup Zsh in Ubuntu 20.04]:
 
@@ -223,8 +247,8 @@ ____________________________
 [antfu/dotfiles] <https://github.com/antfu/dotfiles/blob/main/.zshrc>
 
 
-3.5.4 NodeJS
-------------
+NodeJS
+------
 
   下载 [Volta] 进行配置：
 
@@ -243,8 +267,8 @@ ____________________________
 [Volta] <https://volta.sh/>
 
 
-3.5.5 Emacs
------------
+Emacs
+-----
 
   默认 apt 安装的是 Emacs 26 的版本，但是我的配置需要 27 以上
 
@@ -287,7 +311,7 @@ ____________________________
 
 [How to Install Emacs on Ubuntu] <https://learnubuntu.com/install-emacs/>
 
-* 3.5.5.1 org-mode 打开链接， WSL 中找不到浏览器
+* org-mode 打开链接， WSL 中找不到浏览器
 
   ,----
   | ;;; Package --- Summary
@@ -308,14 +332,14 @@ ____________________________
   `----
 
 
-* 3.5.5.2 终端没有 GUI，因此一些 GUI 相关的显示会有些问题
+* 终端没有 GUI，因此一些 GUI 相关的显示会有些问题
 
   - fringe: 左侧显示的一些标志消失了，flycheck 找不到错误标志，不过可以通过其他方式显示
     错误，虽然不那么直观，但能接受
 
 
-4 其他工具
-==========
+其他工具
+========
 
   [Listary]
     主要用于打开应用和打开一些常用网页
@@ -340,8 +364,8 @@ ____________________________
 [网易云音乐] <https://music.163.com/>
 
 
-5 碎碎念
-========
+碎碎念
+======
 
   相对在 Windows 里开发，通过 WSL 用 Ubuntu 进行开发，要舒服很多，一些命令执行起来更方便，
   速度也不慢。
