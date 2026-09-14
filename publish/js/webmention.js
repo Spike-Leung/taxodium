@@ -66,20 +66,22 @@
       let textFragments = ''
       let quotes
       if (entry.content && entry.content.html) {
-        const match = entry.content.html.match(/<a.*href=.*taxodium.ink[^>]*>([^<]*)<\/a>/)
+        const match = entry.content.html.match(/(.{2})<a.*href=.*taxodium.ink[^>]*>([^<]*)<\/a>(.{2})/)
         if (match && match[1]) {
-          const matchText = match[1].trim()
+          const [prefixText, matchText, suffixText] = match.slice(1)
           const originalText = entry.content.text
-          const index = originalText.indexOf(matchText)
+          const index = originalText.indexOf(prefixText + matchText + suffixText)
 
           if (index !== -1) {
+            const matchTextIndex = index + prefixText.length
             const offset = 100
-            const contextBefore = originalText.slice(Math.max(0, index - offset), index)
-            const contextAfter = originalText.slice(index + matchText.length, Math.min(index + matchText.length + offset, originalText.length))
+            const contextBefore = originalText.slice(Math.max(0, matchTextIndex - offset), matchTextIndex)
+            const contextAfter = originalText.slice(matchTextIndex + matchText.length, Math.min(matchTextIndex + matchText.length + offset, originalText.length))
             quotes = `[...]${contextBefore}<mark>${matchText}</mark>${contextAfter}[...]`
-            const encodedMatch = encodeURIComponent(matchText)
 
-            textFragments = `#:~:text=${encodedMatch}`
+            // @see: https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments#syntax
+            const fragments = `${encodeURIComponent(prefixText)}-,${encodeURIComponent(matchText)}`
+            textFragments = `#:~:text=${fragments}`
           }
         }
       }
