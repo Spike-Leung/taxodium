@@ -1712,12 +1712,11 @@ org-publish 支持标记代码行，并能够通过链接指向代码行，使�
   <span class="org-css-property">list-style</span>: none;
   <span class="org-css-property">padding-inline</span>: 0;
   <span class="org-css-property">display</span>: flex;
-  <span class="org-css-property">flex-direction</span>: column;
-  <span class="org-css-property">margin-block</span>: 0;
-  <span class="org-css-property">gap</span>: 1lh;
+  <span class="org-css-property">margin-block</span>: 1lh;
+  <span class="org-css-property">gap</span>: .5rem;
 
-  &amp; blockquote {
-    <span class="org-css-property">padding-inline</span>: 1rem;
+  &amp; a {
+    <span class="org-css-property">border-radius</span>: 0.5rem;
   }
 
   <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
@@ -1726,62 +1725,32 @@ org-publish 支持标记代码行，并能够通过链接指向代码行，使�
   }
 }
 
-<span class="org-css-selector">.webmention__profile</span> {
-  <span class="org-css-property">display</span>: grid;
-  <span class="org-css-property">grid-template-columns</span>: max-content auto;
-  <span class="org-css-property">grid-template-areas</span>:
-    <span class="org-string">"avatar author"</span>
-    <span class="org-string">"avatar source"</span>;
-  <span class="org-css-property">column-gap</span>: 1rem;
-}
-
-<span class="org-css-selector">.webmention__item</span> {
-  <span class="org-css-property">margin-block</span>: 0;
-}
-
-<span class="org-css-selector">.webmention__item:nth-child(odd) .webmention__avatar</span> {
-  <span class="org-css-property">transform</span>: rotate(-1deg);
-}
-
-<span class="org-css-selector">.webmention__item:nth-child(even) .webmention__avatar</span> {
-  <span class="org-css-property">transform</span>: rotate(1deg);
-}
 
 <span class="org-css-selector">.webmention__avatar</span> {
+  <span class="org-variable-name">--webmention-avatar-size</span>: 3.5rem;
+  <span class="org-css-property">width</span>: var(<span class="org-variable-name">--webmention-avatar-size</span>);
+  <span class="org-css-property">height</span>: var(<span class="org-variable-name">--webmention-avatar-size</span>);
   <span class="org-css-property">object-fit</span>: contain;
+  <span class="org-css-property">display</span>: flex;
   <span class="org-css-property">border-radius</span>: 0.5rem;
-  <span class="org-css-property">width</span>: 3.5rem;
-  <span class="org-css-property">align-self</span>: start;
-  <span class="org-css-property">grid-area</span>: avatar;
+  <span class="org-css-property">place-content</span>: center;
+  <span class="org-css-property">align-items</span>: center;
   <span class="org-css-property">box-shadow</span>: none<span class="org-builtin">!important</span>;
   <span class="org-css-property">border</span>: 1px solid;
   <span class="org-css-property">border-color</span>: var(<span class="org-variable-name">--color-border</span>);
   <span class="org-css-property">border-color</span>: light-dark(var(<span class="org-variable-name">--color-border</span>), var(<span class="org-variable-name">--dark-color-border</span>));
 
   <span class="org-builtin">@media</span> screen and (width &lt;= 400px) {
-    <span class="org-css-property">width</span>: 2.5rem;
+    <span class="org-variable-name">--webmention-avatar-size</span>: 2.5rem;
   }
 }
 
-<span class="org-css-selector">.webmention__author</span> {
-  <span class="org-css-property">margin-inline-end</span>: 1rem;
-  <span class="org-css-property">grid-area</span>: author;
-  <span class="org-css-property">width</span>: fit-content;
+<span class="org-css-selector">.webmention__list a:nth-child(odd)</span> {
+  <span class="org-css-property">transform</span>: rotate(-1deg);
 }
 
-<span class="org-css-selector">.webmention__source</span> {
-  <span class="org-css-property">word-break</span>: break-all;
-  <span class="org-css-property">grid-area</span>: source;
-  <span class="org-css-property">margin</span>: 0;
-  <span class="org-css-property">align-self</span>: end;
-}
-
-<span class="org-css-selector">.webmention__date</span> {
-  <span class="org-css-property">margin-block</span>: .5rem 0;
-  <span class="org-css-property">font-size</span>: .75rem;
-  <span class="org-css-property">color</span>: var(<span class="org-variable-name">--color-text-secondary</span>);
-  <span class="org-css-property">color</span>: light-dark(var(<span class="org-variable-name">--color-text-secondary</span>), var(<span class="org-variable-name">--dark-color-text-secondary</span>));
-  <span class="org-css-property">word-break</span>: break-all;
+<span class="org-css-selector">.webmention__list a:nth-child(even)</span> {
+  <span class="org-css-property">transform</span>: rotate(1deg);
 }
 
 <span class="org-css-selector">.h-card[aria-hidden=</span><span class="org-string">"true"</span><span class="org-css-selector">]</span> {
@@ -3714,7 +3683,7 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
 <p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
 <p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p><time class="dt-published" datetime="2026-04-10 Fri 09:52">2026-04-10</time> 〜 <time class="dt-updated" datetime="2026-09-15 Tue 16:26">2026-09-15</time></p>
+<p><time class="dt-published" datetime="2026-04-10 Fri 09:52">2026-04-10</time> 〜 <time class="dt-updated" datetime="2026-09-15 Tue 17:09">2026-09-15</time></p>
 <a href="/my-blog-style-design.txt">純文本版本</a> <a href="/my-blog-style-design.org">原始 org 文件</a>
 </footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>

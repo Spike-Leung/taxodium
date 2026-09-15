@@ -42,68 +42,37 @@
     return href;
   }
 
-  function generateProfileHTMLFragments(entry) {
-    const divProfile = document.createElement("div");
-    divProfile.className = "webmention__profile";
-
-    const { name, url, photo } = entry.author || {};
-
-    const imgAvatar = document.createElement("img");
-    imgAvatar.className = "webmention__avatar";
-    imgAvatar.src = photo || "/images/common/no-profile-photo.png";
-
+  function generateWebmenionItemHTMlFragments(entry) {
+    const { name, photo } = entry.author || {};
     const wmSourceUrl = new URL(entry["wm-source"]);
+    const authorName = name || wmSourceUrl.host || "Unknown";
 
-    const aAuthor = document.createElement("a");
-    aAuthor.href = url || wmSourceUrl.origin;
-    aAuthor.className = "webmention__author";
-    aAuthor.textContent = name || wmSourceUrl.host || "Unknown";
+    let avatar;
+
+    if (photo) {
+      avatar = document.createElement("img");
+      avatar.className = "webmention__avatar";
+      avatar.src = photo;
+      avatar.loading = "lazy";
+      avatar.alt = authorName;
+    } else {
+      avatar = document.createElement("span");
+      avatar.className = "webmention__avatar";
+      avatar.textContent = authorName[0].toUpperCase();
+    }
 
     const aSource = document.createElement("a");
     aSource.href = wmSourceUrl.href;
-    aSource.textContent = entry.name || wmSourceUrl.href;
-    aSource.rel = "noopener";
+    aSource.title = authorName;
+    aSource.rel = "noopener noreferrer";
+    aSource.appendChild(avatar);
 
-    const pSource = document.createElement("p");
-    pSource.className = "webmention__source";
-    pSource.innerText = "☞ ";
-    pSource.appendChild(aSource);
-
-    Array.from([imgAvatar, aAuthor, pSource]).forEach((child) =>
-      divProfile.appendChild(child),
-    );
-
-    return divProfile;
+    return aSource;
   }
 
-  function generateDateHTMLFragments(entry) {
-    const pReceivedDate = document.createElement("p");
+  function renderWebmentions(feedList = []) {
+    const container = document.querySelector(".webmention__list")
 
-    pReceivedDate.textContent = new Intl.DateTimeFormat("zh-CN", {
-      dateStyle: "full",
-      timeStyle: "long",
-      timeZone: "Asia/Shanghai",
-    }).format(new Date(entry["wm-received"]));
-    pReceivedDate.className = "webmention__date";
-
-    return pReceivedDate;
-  }
-
-  function generateWebmenionItemHTMlFragments(entry) {
-    const li = document.createElement("li");
-    li.className = "webmention__item";
-
-    const divProfile = generateProfileHTMLFragments(entry);
-    const pReceivedDate = generateDateHTMLFragments(entry);
-
-    Array.from([divProfile, pReceivedDate]).forEach((child) =>
-      li.appendChild(child),
-    );
-
-    return li;
-  }
-
-  function renderWebmentions(feedList = [], container) {
     if (feedList.length === 0 || !container) return;
 
     const frag = document.createDocumentFragment();
@@ -124,8 +93,7 @@
       const feedList = await fetchWebmentionFeedList();
       document.querySelector(".webmention__count").innerText =
         `(${feedList.length})`;
-      const container = document.querySelector(".webmention__list");
-      renderWebmentions(feedList, container);
+      renderWebmentions(feedList);
     } catch (err) {
       console.error(err);
     }
