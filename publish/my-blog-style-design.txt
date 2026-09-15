@@ -1519,6 +1519,20 @@ Webmentions
   | .webmention {
   |   font-size: 0.9rem;
   | 
+  |   summary {
+  |     cursor: pointer;
+  | 
+  |     &::marker,
+  |     :is(::-webkit-details-marker) {
+  |       content: "📫 ";
+  |     }
+  |   }
+  | 
+  |   &[open] summary::marker,
+  |   &[open] summary::-webkit-details-marker {
+  |     content: "📬 ";
+  |   }
+  | 
   |   & form {
   |     display: grid;
   |     grid-template-columns: max-content auto max-content;
@@ -1560,9 +1574,6 @@ Webmentions
   | 
   |   & hr {
   |     margin-block: 1lh .5lh;
-  |     &::before {
-  |      content: "@";
-  |     }
   |   }
   | 
   |   &:not(:has(.webmention__list a)) {
