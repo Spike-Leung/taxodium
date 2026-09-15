@@ -241,11 +241,13 @@
   所以，我想我要做的，是去找一些喜歡的，感興趣的小說來看看，Read what you love until you love to read。
 
   之前看到 Sol 的 [[https://blog.solazy.me/20260729/][承认吧，你其实根本不爱看书]]，說實話，我有點被說中了，
-  在 Zine 裡要罗列自己看過的書，看完了要求自己得寫出一些讀後感發佈出來，多多少少有些想營造自己喜歡閱讀的設定。
-  但我也確實希望能多讀點書，我覺得書和網絡文章還是不同的，
-  寫成書要比發一篇博客文章要困難得多，需要作者付出大量的時間和心力。
-  倒不是說付出更多就一定更好，但大體上來說，書確實有更好的文笔，有充足的篇幅論證觀點，觀點也更成體系。
-  [TODO]
+  在 Zine 裡要罗列自己看過的書，看完了要求自己得寫出一些讀後感發佈出來，
+  多多少少有些想營造自己喜歡閱讀的設定。
+
+  不管如何，我還是想多讀几本書，完成一年計劃的讀書量。
+  為此我會嘗試每天劃出一段時間來閱讀 @@html:<small>@@(也許是睡前)@@html:</small>@@，
+  然後先去讀一些真的很想讀的，而不是那些我覺得應該讀的。
+  [[denote:20250504T213941][读书应该是一种享受]] 早就說過了，但到頭來還只是說說，但沒落實到行動，那就再試一次。
 
 - [[https://ohhelloana.blog/tell-the-speakers/][Tell the speakers that you liked their talks]] by Ana Rodrigues
 
@@ -500,6 +502,57 @@
 
   文章介紹了 ~<img>~ 上的 [[https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/isMap][ismap]] 屬性值，挺有趣的，第一次知道。
 
+- [[https://alexwlchan.net/2026/glancecast/][Abusing ID3 chapters to turn videos into glanceable podcasts]] by alexwlchan
+
+  作者分享了他如何將視頻播客轉成音頻播客的。
+  他利用 FFmpeg 將視頻轉成 MP3 格式，同時按一定間隔從視頻中截圖，存儲在 MP3 格式的 [[https://en.wikipedia.org/wiki/ID3][ID3]] 元素據中，
+  這樣在聴的時候，手機上也會切換音頻的封面圖片。
+  這樣既方便聴，在需要時也能看到一些視頻裡的畫面信息。
+
+- [[https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/][The Law of Leaky Abstractions]] by Joel Spolsky
+
+  抽象把複雜度封裝了起來，使得上层用數起來更簡單，也不用關注內部許多細節。
+  但抽象是會「泄漏」的，可能存在一些情况沒考慮到，也可能是一些抽象本身無法处理的事，
+  當出現這種情况，到頭來還是要去關注底层的細節。
+
+  #+begin_quote
+  回到 TCP。
+  早些時候為了簡化起見，我撒了一個小謊，現在你們中有些人可能已經氣到七竅生煙了，因為這個謊言快讓你們瘋掉。
+  我說過 TCP 保證你的訊息一定會送達。事實上，它做不到。
+  如果你的寵物蛇咬斷了連接電腦的網路線，導致任何 IP 封包都無法通過，
+  那麼 TCP 也無能為力，你的訊息就不會送達。
+  如果你對公司的系統管理員態度傲慢，而他們為了懲罰你，把你接在一個超載的集線器上，
+  那麼只有部分 IP 封包能通過，TCP 雖然還能運作，但一切都會變得非常緩慢。
+
+  這就是我所說的「漏洞百出的抽象」（leaky abstraction）。
+  TCP 試圖對底層不可靠的網路提供一個完整的抽象化，
+  但有時網路問題會從這個抽象層中滲漏出來，讓你感受到那些抽象層無法完全保護你的問題。
+  這只是我所謂的「抽象滲漏法則」（Law of Leaky Abstractions）的一個例子：
+
+  凡是具有一定複雜度的抽象，多多少少都存在漏洞。
+  (All non-trivial abstractions, to some degree, are leaky.)
+
+  [[https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/#:~:text=Back,leaky,-%2E][Source]]
+  #+end_quote
+
+  #+begin_quote
+  抽象洩漏法則（law of leaky abstractions）之所以令人頭痛，
+  其中一個原因在於它意味著抽象化並沒有像預期中那樣真正簡化我們的生活。
+
+  [[https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/#:~:text=One%20reason%20the%20law%20of%20leaky%20abstractions%20is%20problematic%20is%20that%20it%20means%20that%20abstractions%20do%20not%20really%20simplify%20our%20lives%20as%20much%20as%20they%20were%20meant%20to%2E][Source]]
+  #+end_quote
+
+  #+begin_quote
+  抽象洩漏法則（The law of leaky abstractions）意味著，
+  _每當有人開發出一個號稱能讓我們效率倍增的超強新代碼生成工具時，你總會聽到很多人說：_
+  _「先學會手動操作，再用那個工具來節省時間。」_
+  _代碼生成工具試圖將某些東西抽象化，但就像所有抽象化一樣，它們都會發生洩漏；_
+  _而能稱職處理這些洩漏的唯一方法，就是去了解這些抽象化是如何運作的，以及它們究竟抽象化了什麼。_
+  _因此，抽象化雖然節省了我們工作的時間，卻無法節省我們學習的時間。_
+
+  [[https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/#:~:text=wrong%2E-,The,learning][Source]]
+  #+end_quote
+
 * AI Related
 :PROPERTIES:
 :CUSTOM_ID: 568113E3-FAFD-4DF5-A9BF-57AF834868BE
@@ -608,6 +661,36 @@
   其他所有人只是在製造工作，並稱之為生產力。
 
   [[https://www.robinwieruch.de/ai-output-someone-elses-input/#:~:text=The%20argument,productivity][Source]]
+  #+end_quote
+
+- [[https://www.seangoedecke.com/tell-agents-the-why/][Tell agents the why, not just the how]] by sean goedecke
+
+  多給 agents 一些背景信息，讓它知道做什麼，也讓它知道為什麼，也許能讓它更凖確地完成任務。
+
+- [[https://seldo.com/posts/we-are-all-product-engineers-now/][We are all Product Engineers now]] by Laurie Voss
+
+  #+begin_quote
+  我想說的兩件事並非安慰，只是觀察。
+  第一，對於相當多自認熱愛敲代碼的人來說，他們真正熱愛的其實是敲代碼之前的那一刻——
+  當腦中模糊混亂的問題突然化作精確輪廓的瞬間。
+  那一刻，就是現在這份工作的核心。
+  如果你熱愛的是這個，那你會過得很好，甚至可能比以前更好，因為業界即將對你這種人才求賢若渴。
+  第二，這門手藝會像木工在家具工廠時代倖存下來一樣延續下去，
+  成為人們因為熱愛而去做、且偶爾能獲得高額報酬的事情。
+  開發者編寫軟體就像歌手唱歌一樣。當它是免費時如此，當它被自動化時亦然；
+  熱愛它的人會繼續做下去，而一些最優秀的軟體也將持續誕生於他們之手。
+  只不過，這不再會是一份常規的工作了。
+
+  [[https://seldo.com/posts/we-are-all-product-engineers-now/#:~:text=Two%20things,job,-%2E][Source]]
+  #+end_quote
+
+  #+begin_quote
+  編寫程式碼的成本已經大幅下降，而審查、修復和運行程式碼的成本也正隨之降低，我假設最終也會降到極低。
+  開發軟體所剩下的工作就是找出人們真正的需求、對其進行精確定義，並使其易於使用。
+  這項成本是針對每一件軟體獨立存在的，且無法轉移，
+  因此隨著軟體數量趨向無限（由於需求沒有上限，這必然會發生），這項成本將會變成整個工作的核心。
+
+  [[https://seldo.com/posts/we-are-all-product-engineers-now/#:~:text=review%2E-,The,job][Source]]
   #+end_quote
 
 - [[https://opusfived.dev/][Opusfived]]
@@ -842,6 +925,34 @@
   而不是非得每個月更新兩次、試圖讓它看起來很活躍，結果反而讓自己心裡不好受。
 
   [[https://binarydigit.net/posts/the-paused-web#:~:text=For,about%20it][Source]]
+  #+end_quote
+
+- [[https://brennan.day/proper-english-is-a-myth-theres-no-correct-way-to-write/][Proper English is a Myth: There's No 'Correct…]] by Brennan Kenneth Brown
+
+  #+begin_quote
+  不要試圖去糾正別人的書寫或說話方式。
+  未經請求的糾正是一種微侵略，這是在向邊緣化群體暗示他們的母語或社群語言是次等的。
+
+  [[https://brennan.day/proper-english-is-a-myth-theres-no-correct-way-to-write/#:~:text=Do%20not%20try%20to%20police%20how%20other%20people%20write%20or%20speak%2E%20Unsolicited%20corrections%20are%20microaggressions%2C%20and%20they%20signal%20to%20marginalized%20speakers%20that%20their%20native%20or%20community%20language%20is%20inferior][Source]]
+  #+end_quote
+
+  #+begin_quote
+  當你認為寫作是錯誤的且需要修正時，你其實做了很多假設。
+  正如 itsme 所假設的，這純粹是因為作者粗心大意，急於將部落格文章發表出來，正所謂「欲速則不達」。
+  但除此之外還有無數其他原因，
+  首先，這可能是閱讀理解障礙，可能是視力受損，
+  也可能是因為他們成長的環境以及對特定語言機制運作方式的理解所致。
+
+  [[https://brennan.day/proper-english-is-a-myth-theres-no-correct-way-to-write/#:~:text=There%20are,works][Source]]
+  #+end_quote
+
+  #+begin_quote
+  你能做的最好的事情就是專注於意義。
+  優先理解訊息，而不是去糾結具體的技術細節。
+  如果有人寫了一篇部落格文章，而你覺得自己不明白他們想表達什麼，你猜怎麼著？
+  這給了你一個絕佳的藉口去給他們發郵件，開啟對話與交流，而不是躲在自己的部落格裡隔空對他們進行含糊的指責。
+
+  [[https://brennan.day/proper-english-is-a-myth-theres-no-correct-way-to-write/#:~:text=The%20best,distance][Source]]
   #+end_quote
 
 * 多媒体
