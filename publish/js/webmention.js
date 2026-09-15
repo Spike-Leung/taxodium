@@ -66,7 +66,7 @@
 
     const pSource = document.createElement("p");
     pSource.className = "webmention__source";
-    pSource.innerText = "原文：";
+    pSource.innerText = "☞ ";
     pSource.appendChild(aSource);
 
     Array.from([imgAvatar, aAuthor, pSource]).forEach((child) =>
