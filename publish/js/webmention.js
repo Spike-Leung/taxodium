@@ -29,7 +29,7 @@
     return href;
   }
 
-  function generateProfileHTMLFragments(entry, textFragments) {
+  function generateProfileHTMLFragments(entry) {
     const divProfile = document.createElement("div");
     divProfile.className = "webmention__profile"
 
@@ -47,7 +47,7 @@
     aAuthor.textContent = name || wmSourceUrl.host || "Unknown"
 
     const aSource = document.createElement("a");
-    aSource.href = wmSourceUrl.href + textFragments
+    aSource.href = wmSourceUrl.href
     aSource.textContent = entry.name || wmSourceUrl.href
     aSource.rel = "noopener"
 
@@ -59,14 +59,6 @@
     Array.from([imgAvatar, aAuthor, pSource]).forEach((child) => divProfile.appendChild(child))
 
     return divProfile
-  }
-
-  function generateContentHTMLFragments(content) {
-    const divContent = document.createElement("blockquote");
-    divContent.className = "webmention__content"
-    divContent.innerHTML = DOMPurify.sanitize(content) || ""
-
-    return divContent
   }
 
   function generateDateHTMLFragments(entry) {
@@ -82,57 +74,14 @@
     return pReceivedDate
   }
 
-  function getQuotesAndTextFragments(entry) {
-    let textFragments = ''
-    let quotes
-
-    if (entry.content && entry.content.html) {
-      const regexp = new RegExp(`<a[^>]*taxodium.ink${location.pathname}[^>]*>([^<]*)<\/a>`, "g")
-
-      // 可能會存在多個匹配值
-      const matches = [...entry.content.html.matchAll(regexp)]
-
-      if (matches.length > 0) {
-        const fragments = matches.map((match) => {
-          const [prefixText, matchText, suffixText] = ['', match[1], '']
-          const originalText = entry.content.text
-          const index = originalText.indexOf(prefixText + matchText + suffixText)
-
-          if (index !== -1) {
-            const matchTextIndex = index + prefixText.length
-            const offset = 100
-            const contextBefore = originalText.slice(Math.max(0, matchTextIndex - offset), matchTextIndex)
-            const contextAfter = originalText.slice(matchTextIndex + matchText.length, Math.min(matchTextIndex + matchText.length + offset, originalText.length))
-            quotes = `[...]${contextBefore}<mark>${matchText}</mark>${contextAfter}[...]`
-
-            // @see: https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments#syntax
-            return `${encodeURIComponent(prefixText)}-,${encodeURIComponent(matchText)}`
-          }
-        }).join("&")
-
-        textFragments = `#:~:text=${fragments}`
-      }
-    }
-
-
-    // fallback to full content
-    if (!quotes) {
-      quotes = entry?.content?.html || entry?.content?.text
-    }
-
-    return { quotes, textFragments }
-  }
-
   function generateWebmenionItemHTMlFragments(entry) {
     const li = document.createElement("li");
     li.className = "webmention__item"
 
-    const { quotes, textFragments } = getQuotesAndTextFragments(entry)
-    const divProfile = generateProfileHTMLFragments(entry, textFragments)
+    const divProfile = generateProfileHTMLFragments(entry)
     const pReceivedDate = generateDateHTMLFragments(entry)
-    const divContent = generateContentHTMLFragments(quotes)
 
-    Array.from([divProfile, divContent, pReceivedDate]).forEach((child) => li.appendChild(child))
+    Array.from([divProfile, pReceivedDate]).forEach((child) => li.appendChild(child))
 
     return li
   }
