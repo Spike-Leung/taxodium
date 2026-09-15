@@ -33,13 +33,13 @@
   }
 
   function getTargetUrl() {
-    const { href, hostname, pathname } = location;
+    let { origin, pathname } = location;
 
-    if (hostname !== "taxodium.ink") {
-      return `https://taxodium.ink${pathname}`;
+    if (origin !== "https://taxodium.ink") {
+      origin = "https://taxodium.ink"
     }
 
-    return href;
+    return origin + pathname;
   }
 
   function generateWebmenionItemHTMlFragments(entry) {
