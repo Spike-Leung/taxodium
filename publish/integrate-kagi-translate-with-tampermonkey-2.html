@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>用 Tamper-monkey 集成 Kagi Translate (2)</title>
+<meta name="author" content="Spike Leung">
+<meta name="description" content="分享如何用 Tampermonkey 集成 Kagi Translate，結合 Zen 瀏覧器的分屏功能">
+<meta name="generator" content="Org Mode">
+<meta name="color-scheme" content="light dark" />
+<meta property="og:url" content="/Users/spike/git/taxodium/publish/integrate-kagi-translate-with-tampermonkey-2.html">
+<link rel="preload" href="/styles/main.css" as="style" />
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="preload" href="/js/color-scheme.js" as="script"/>
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="canonical" href="/Users/spike/git/taxodium/publish/integrate-kagi-translate-with-tampermonkey-2.html">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<script src="/js/color-scheme.js"></script>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主頁</a></li>
+    <li><a href="/subscribe.html">訂閱</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/shuffle.html" class="js-required">隨機</a></li>
+  </ul>
+  <button id="lightdark" class="js-required" aria-label="點擊切換當前頁面明暗主題">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+      <path d="M0 0h512v512H0z" fill="none" />
+      <path fill="currentColor" fill-rule="evenodd" d="M277.333 405.333v85.333h-42.667v-85.333zm99.346-58.824l60.34 60.34l-30.17 30.17l-60.34-60.34zm-241.359 0l30.17 30.17l-60.34 60.34l-30.17-30.17zM256 139.353c64.422 0 116.647 52.224 116.647 116.647c0 64.422-52.225 116.647-116.647 116.647A116.427 116.427 0 0 1 139.352 256c0-64.423 52.225-116.647 116.648-116.647m0 42.666c-40.859 0-73.981 33.123-73.981 74.062a73.76 73.76 0 0 0 21.603 52.296c13.867 13.867 32.685 21.64 52.378 21.603zm234.666 52.647v42.667h-85.333v-42.667zm-384 0v42.667H21.333v-42.667zM105.15 74.98l60.34 60.34l-30.17 30.17l-60.34-60.34zm301.7 0l30.169 30.17l-60.34 60.34l-30.17-30.17zM277.332 21.333v85.333h-42.667V21.333z" />
+    </svg>
+  </button>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">用 Tamper-monkey 集成 Kagi Translate (2)</h1>
+<p class="subtitle" role="doc-subtitle">結合 Zen 瀏覧器的分屏功能</p>
+</header><p>
+之前分享了 <a href="integrate-kagi-translate-with-tampermonkey.html">用 Tamper-monkey 集成 Kagi Translate</a>，誰能想到還有續集 :P
+</p>
+
+<p>
+上次分享後，我又基於我的使用習慣做了一些調整，例如將字典和翻譯用不同窗口呈現，不再複用同一個窗口，這樣在翻譯的同時也能查字典；通過檢測原始頁面關閉，自動關閉臨時窗口，减少一些手動操作。
+</p>
+
+<p>
+自動關閉窗口是用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event">visibilitychange event</a> 實現的，也試過 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event">beforeunload event</a> 和 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/pagehide_event">pagehide event</a>，但都不如 <code>visibilitychange</code> 穩定。<code>visibilitychange</code> 的問題是，一旦离開一個頁面就會触發，對於字典和段落翻譯來說沒問題，因為它們都翻譯得比較快，就是一些很臨時的窗口。但網頁翻譯時間相對比較長，我也需要一些時間才能看完，過程中如果我不小心切換了頁面或應用，窗口也會被關閉，就不太方便。
+</p>
+
+<p>
+後來我想，也許在新的 Tab 打開會更好，這樣就沒有額外窗口，我也能利用 <a href="nichijou-8.html">Zen 瀏覧器</a> 的分屏功能，將 Tab 拖動過來分屏看，也方便對照原文。但在 Zen 瀏覧器中，無論用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/open">window.open()</a> 還是創建一個臨時的連結 (<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a">&lt;a&gt;</a>) 并触發 click 事件，都沒法在新 Tab 打開，它總是會打開一個新的 Zen 瀏覧器的窗口。也許是特性，也許是個 Bug。
+</p>
+
+<p>
+既然用代碼触發不能在新 Tab 打開，那我生成一個連結，手動触發呢？欸嘿，是可以的！再利用 Zen 瀏覧器的 Glance 功能，我就可以快速地打開網頁翻譯連結，并將它分屏并列在原始頁面的邊上。
+</p>
+
+<figure>
+  <video autoplay loop muted playsinline loading="lazy">
+    <source src="/images/integrate-kagi-translate-with-tampermonkey-2/kagi-website-translate-use-zen-brwoser-glance.webm" type="video/webm">
+  </video>
+  <figcaption>在頁面的右上角有一個生成的翻譯連結，在 Zen 瀏覧器中用 Glance 的方式以小窗口的形式打開，
+  再將頁面分屏到右側，和原頁面并列顯示，同時看原文和翻譯。</figcaption>
+</figure>
+
+<p>
+我用下來還挺方便的。如果你感興趣，相關代碼在這：<a href="https://gist.github.com/Spike-Leung/eab7cb6a3d005e5f3e119c2b657c4589">kagi-translate.user.js</a>。要用的話，你需要注冊 <a href="maybe-you-want-to-try-kagi.html">Kagi</a> 和安裝 Zen 瀏覧器才行。
+</p>
+
+<p>
+<a href="https://translate.kagi.com/extension">Kagi Translate 瀏覧器插件</a> 最近也更新了，或許修複了我之前碰到的一些問題，插件好像還能翻譯 YouTube 字幕，你也可以試試插件。
+</p>
+
+<hr>
+
+<p>
+最近 <a href="https://blog.kagi.com/translate-is-back">Kagi 終於宣布 Kagi Translate 的付費計劃</a> 了，所有 Kagi 用户都有一個免費額度，當超過這個額度後，可以選擇花 8 美元訂閱 <a href="https://translate.kagi.com/pricing">Translate Individual</a> 或者升級到 25 美元的 <a href="https://help.kagi.com/kagi/plans/ultimate-plan.html">Ultimate Plan</a>。說實話，我覺得還是有點貴的，我現在用的是 10 美元的 Professional Plan，如果再訂閱 Translate Individual，差不多就是兩倍的訂閱價格了。後面先看看免費額度够不够用，再决定要不要訂閱。
+Kagi Translate 其實也是用 AI 翻譯的，Kagi Assistant 也是 AI，如果 Kagi Translate 能用 Kagi Assistant 的 AI 額度來抵就好了 :(
+</p>
+
+<p>
+或者有沒有人和我一起開 <a href="https://help.kagi.com/kagi/plans/family-plan.html">Family Plan</a>? <small>(或者分我個坑位？)</small>兩人的 Duo Plan 是 14 美元，六人的 Family 是 20 美元，一起訂閱就能將訂閱費用分摊掉一些，如果你有意願的話不妨郵件聯系我 :)
+</p>
+
+<p>
+如果你不確定要不要用 Kagi，也可以看看我寫的 <a href="maybe-you-want-to-try-kagi.html">也许你想试试 Kagi？</a> 和 <a href="my-experience-with-kagi-translate.html">Kagi Translate 使用分享</a>，然後先免費試用一下，再决定要不要用。
+</p>
+</div>
+<div id="postamble" class="status">
+<details class="webmention">
+<summary>Webmentions <span class="webmention__count js-required">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回應这篇文章，可以在你的文章或社交媒體帖子中連結这篇文章，然後提交你的 URL，你的回應随后会顯示在此頁面上。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<noscript><p class="webmention__tip">你可以發送 Webmention，但加載數據需要開啟 JS。</p></noscript>
+<form action="https://webmention.io/taxodium.ink/webmention" method="post">
+<label for="source">你文章或帖子的 URL:</label>
+<input type="url" name="source" id="source" placeholder="https://example.com/post.html"/>
+<input type="hidden" name="target" id="target" readonly />
+<input type="submit" class="button" value="提交"/>
+</form>
+<hr></hr>
+<div class="webmention__list js-required"></div>
+</details><div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<footer>
+<p>感謝你的閱讀！(´｡• ᵕ •｡`) ♡</p>
+<p>若有話想說，請给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 用 Tamper-monkey 集成 Kagi Translate (2) 結合 Zen 瀏覧器的分屏功能&body=Hi Spike,">我</a> 發一封 <a href="https://useplaintext.email">純文本郵件</a> :)</p>
+<p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
+<p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p><time class="dt-published" datetime="2026-09-16 Wed 21:41">2026-09-16</time> 〜 <time class="dt-updated" datetime="2026-09-16 Wed 23:50">2026-09-16</time></p>
+<a href="/integrate-kagi-translate-with-tampermonkey-2.txt">純文本版本</a> <a href="/integrate-kagi-translate-with-tampermonkey-2.org">原始 org 文件</a>
+</footer><script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

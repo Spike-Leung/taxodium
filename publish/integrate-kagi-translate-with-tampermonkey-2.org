@@ -1,0 +1,70 @@
+#+title:      用 Tamper-monkey 集成 Kagi Translate (2)
+#+subtitle:  結合 Zen 瀏覧器的分屏功能
+#+export_file_name: integrate-kagi-translate-with-tampermonkey-2
+#+date:       [2026-09-16 Wed 21:41]
+#+filetags:   :kagi:published:tampermonkey:translate:
+#+identifier: 20260916T214108
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 分享如何用 Tampermonkey 集成 Kagi Translate，結合 Zen 瀏覧器的分屏功能
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content hideblocks
+
+之前分享了 [[denote:20260903T205901][用 Tamper-monkey 集成 Kagi Translate]]，誰能想到還有續集 :P
+
+上次分享後，我又基於我的使用習慣做了一些調整，
+例如將字典和翻譯用不同窗口呈現，不再複用同一個窗口，這樣在翻譯的同時也能查字典；
+通過檢測原始頁面關閉，自動關閉臨時窗口，减少一些手動操作。
+
+自動關閉窗口是用 [[https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event][visibilitychange event]] 實現的，
+也試過 [[https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event][beforeunload event]] 和 [[https://developer.mozilla.org/en-US/docs/Web/API/Window/pagehide_event][pagehide event]]，但都不如 ~visibilitychange~ 穩定。
+~visibilitychange~ 的問題是，一旦离開一個頁面就會触發，
+對於字典和段落翻譯來說沒問題，因為它們都翻譯得比較快，就是一些很臨時的窗口。
+但網頁翻譯時間相對比較長，我也需要一些時間才能看完，
+過程中如果我不小心切換了頁面或應用，窗口也會被關閉，就不太方便。
+
+後來我想，也許在新的 Tab 打開會更好，這樣就沒有額外窗口，
+我也能利用 [[denote:20251126T154004][Zen 瀏覧器]] 的分屏功能，將 Tab 拖動過來分屏看，也方便對照原文。
+但在 Zen 瀏覧器中，無論用 [[https://developer.mozilla.org/en-US/docs/Web/API/Window/open][window.open()]] 還是創建一個臨時的連結 ([[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a][<a>]]) 并触發 click 事件，
+都沒法在新 Tab 打開，它總是會打開一個新的 Zen 瀏覧器的窗口。
+也許是特性，也許是個 Bug。
+
+既然用代碼触發不能在新 Tab 打開，那我生成一個連結，手動触發呢？欸嘿，是可以的！
+再利用 Zen 瀏覧器的 Glance 功能，我就可以快速地打開網頁翻譯連結，并將它分屏并列在原始頁面的邊上。
+
+#+begin_export html
+<figure>
+  <video autoplay loop muted playsinline loading="lazy">
+    <source src="/images/integrate-kagi-translate-with-tampermonkey-2/kagi-website-translate-use-zen-brwoser-glance.webm" type="video/webm">
+  </video>
+  <figcaption>在頁面的右上角有一個生成的翻譯連結，在 Zen 瀏覧器中用 Glance 的方式以小窗口的形式打開，
+  再將頁面分屏到右側，和原頁面并列顯示，同時看原文和翻譯。</figcaption>
+</figure>
+#+end_export
+
+我用下來還挺方便的。
+如果你感興趣，相關代碼在這：[[https://gist.github.com/Spike-Leung/eab7cb6a3d005e5f3e119c2b657c4589][kagi-translate.user.js]]。
+要用的話，你需要注冊 [[denote:20260201T142809][Kagi]] 和安裝 Zen 瀏覧器才行。
+
+[[https://translate.kagi.com/extension][Kagi Translate 瀏覧器插件]] 最近也更新了，
+或許修複了我之前碰到的一些問題，插件好像還能翻譯 YouTube 字幕，你也可以試試插件。
+
+-----
+
+最近 [[https://blog.kagi.com/translate-is-back][Kagi 終於宣布 Kagi Translate 的付費計劃]] 了，所有 Kagi 用户都有一個免費額度，
+當超過這個額度後，可以選擇花 8 美元訂閱 [[https://translate.kagi.com/pricing][Translate Individual]] 或者升級到 25 美元的 [[https://help.kagi.com/kagi/plans/ultimate-plan.html][Ultimate Plan]]。
+說實話，我覺得還是有點貴的，我現在用的是 10 美元的 Professional Plan，
+如果再訂閱 Translate Individual，差不多就是兩倍的訂閱價格了。
+後面先看看免費額度够不够用，再决定要不要訂閱。
+Kagi Translate 其實也是用 AI 翻譯的，Kagi Assistant 也是 AI，
+如果 Kagi Translate 能用 Kagi Assistant 的 AI 額度來抵就好了 :(
+
+或者有沒有人和我一起開 [[https://help.kagi.com/kagi/plans/family-plan.html][Family Plan]]? @@html:<small>@@(或者分我個坑位？)@@html:</small>@@
+兩人的 Duo Plan 是 14 美元，六人的 Family 是 20 美元，
+一起訂閱就能將訂閱費用分摊掉一些，如果你有意願的話不妨郵件聯系我 :)
+
+如果你不確定要不要用 Kagi，
+也可以看看我寫的 [[denote:20260201T142809][也许你想试试 Kagi？]] 和 [[denote:20260323T141944][Kagi Translate 使用分享]]，
+然後先免費試用一下，再决定要不要用。
