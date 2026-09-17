@@ -12,6 +12,7 @@
 #+options: ^:{} toc:nil
 #+startup: content hideblocks
 #+html_head_extra: <link rel="stylesheet" href="/styles/neat-annotations.css" />
+#+html_head_extra: <link rel="stylesheet" href="/styles/image-enhance.css" />
 
 #+begin_details
 #+html: <summary>目錄</summary>
@@ -41,6 +42,32 @@
 - [[https://hollie.eilloh.net/posts/knitting-and-beastie-boys-a-scale-of-illness-and-hope][Knitting and Beastie Boys, a scale of illness (and hope)]] by Hollie
 
   Hollie 和 Greg 製訂了一個標準，用來衡量當前的狀態，我覺得蠻不錯的。
+
+- [[https://www.david03.top/index.php/archives/454/][由南医大跳楼事件和各种事件引出的一些碎碎念]] by DavidYR
+
+  前陣子也看到了這個事件，
+  一個學生的父母出了事故，父親去世了，母親也還在重症監護室，他可能也有其它壓力，最終選擇跳樓輕生了。
+  我無法身同感受，無法想象他當時有多絕望，以至於生命也不要了。
+  願他安息吧。
+
+  事件中，有人造謠說學生的导師只給他 3 天假期，引导大家覺得导師和學業的壓力是壓跨學生的最後一根稻草。
+  後來相關親屬澄清了事實，导師其實給了學生足够的時間去处理和休息，也給了一些資金帮助。
+
+  也許造謠的人不是故意的，也許是因為自己有导師和學業方面壓力，所以猜測這個學生也是同樣的原因，
+  但這是很不負責任的，既然沒有實際證據就不應該胡亂猜測，
+  而其他人也沒有考慮過謠言的真假，一起推波助瀾，讓謠言越滾越大，也傷害了無辜的导師。
+
+  互聯網上謠言一直很多，
+  今天是這樣，明天可能就反轉了，後天可能又又又反轉，
+  分不清誰說的是真，誰說的是假。
+  負責任的做法應該是自己去抽丝剝繭，去調查事實@@html:<small>@@(也挺困難的)@@html:</small>@@，
+  如果自己無法查證事實，就不要去跟風傳播信息，未知全貌就不要妄下結論。
+
+  這些謠言多了，惡性事件看多了，人難免會受到影响，
+  可能會變得不敢相信別人，处处提防別人，人心會變得冷漠，
+  路上見到別人有困難也不敢或不願帮忙，怕惹上什麼麻煩。
+  我自己就有這樣的心理，
+  但這不是我想成為的人，我想成為的是看到別人有困難時，願意伸出手去帮一把的人。
 
 * Cool Bit
 :PROPERTIES:
@@ -90,6 +117,65 @@
 
   See also: [[https://www.bram.us/2026/09/11/webkit-supports-interactive-widget-and-hopefully-safari-will-too/][WebKit supports interactive-widget … and hopefully Safari will too?]] by Bramus
 
+- [[https://vincent.bernat.ch/en/blog/2026-css-sidenotes][Sidenotes with CSS anchor positioning]] by Vincent Bernat
+
+  文章分享了如何用 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Anchor_positioning][CSS anchor positioning]] 實現旁注，純 CSS 的實現，效果挺好的，整體實現也比較簡洁。
+
+- [[https://ishadeed.com/article/aligning-list-icons/][Better Icon and Label Alignment]] by Ahmad Shadeed
+
+  當文字換行時，想讓 icon 保持在第一行，且在第一行居中，可以利用 [[https://ishadeed.com/article/lh-unit/][lh]] (單位行高) 去計算 icon 的偏移量。
+
+  #+begin_details
+  #+html: <summary>代碼</summary>
+
+  #+begin_src html
+    <style>
+    .list-item {
+      display: flex;
+      /* 讓 icon 保持在第一行 */
+      align-items: start;
+      gap: 0.5rem;
+    }
+
+    .icon {
+      /* --icon-size is defined via JS. */
+      --size: var(--icon-size);
+      --offset: calc((1lh - var(--size)) / 2);
+      /* 偏移使 icon 居中 */
+      transform: translateY(var(--offset));
+    }
+    </style>
+
+    <ul class="list">
+      <li class="list-item">
+        <svg class="icon"></svg>
+        <span class="label">How to align an icon to a label.</span>
+      </li>
+      <!-- Other items -->
+    </ul>
+
+  #+end_src
+  #+end_details
+
+- [[https://underreacted.leaflet.pub/3mdjygm2p5s2c][slop lasagna]] by Dan Abramov
+
+  #+begin_quote
+  對我來說通常有效的方法是，嘗試建立具有正確約束且大致合理的層級，但允許在這些層級內部存在爛代碼。
+  有些爛代碼是可以接受的，但有些則不然：
+
+  - _我關心數據如何在系統中流動、什麼是由什麼派生的、輸入和輸出，以及任何被存儲的東西。_
+  - _我關心最終體驗。明顯的錯誤、糟糕的性能和不一致的行為都是壞事，需要深入調查。_
+  - _我關心對基礎抽象的誤用。如果 React 用錯了或數據庫用錯了等等，那就不妙了。_
+
+  除此之外，我不太在乎盒子裡裝了什麼。
+  它可能過於冗長，可能抽象不足或過度抽象，可能不夠優雅或有待清理，甚至可能有點不靠譜。
+  但如果它在末端節點運行良好，並且在邊界處受到約束，我就不太擔心那些中間管理層。
+
+  如果它易於重寫且不傷害用戶，那就沒問題。
+
+  [[https://underreacted.leaflet.pub/3mdjygm2p5s2c#:~:text=what,fine][Source]]
+  #+end_quote
+
 * AI Related
 :PROPERTIES:
 :CUSTOM_ID: A30056D2-8A31-4365-8677-ECF6EE044B33
@@ -108,6 +194,14 @@
   to help humans and agents create better interfaces.
   #+end_quote
 
+- [[https://github.com/herdrdev/herdr][herdrdev/herdr]]
+
+  #+begin_quote
+  the runtime your coding agents live on.
+  #+end_quote
+
+  (via [[https://sals.place/blog/search-tmux-vs-herdr/][Beware the side quest: tmux vs. herdr]] by Sal)
+
 * Tool | Library
 :PROPERTIES:
 :CUSTOM_ID: 192CFB06-BAD0-412C-A076-727CFE1AF234
@@ -122,7 +216,7 @@
 
   #+attr_html: :class ann ann-w
   #+attr_html: :data-note 好看嗎？
-  #+attr_html: :style --ann-color: var(--color-taxodium-purple);
+  #+attr_html: :style --ann-color: light-dark(var(--color-taxodium-yellow), var(--color-taxodium-purple));
   挺好看的標記。
 
 - [[https://github.com/spiritov/ds.css][spiritov/ds.css]]
@@ -152,6 +246,10 @@
 
   用 Emacs 就是有很多這種小發現的時刻，你遇到一個問題，然後發現有人考慮過且已經集成在了 Emacs 中。
 
+- [[https://www.jamescherti.com/prevent-emacs-freeze-so-long-files-very-long-lines/][Preventing Emacs from Freezing on Files with Very Long Lines (e.g, minified JavaScript or CSS, SQL dumps, large JSON files...)]] by James Cherti
+
+  訪問大文件可以啟用 Emacs 內置的 ~so-long-mode~ 避免卡頓，文章分享了一些 ~so-long-mode~ 的优化項。
+
 * 一些话 | 摘抄
 :PROPERTIES:
 :CUSTOM_ID: 4F70B35A-48C9-435F-938F-22ADA0585838
@@ -174,6 +272,16 @@
 :PROPERTIES:
 :CUSTOM_ID: B4294072-448F-4BE7-B703-13C386829CCE
 :END:
+- [[https://www.bilibili.com/video/BV1WHe16sEor/][原来莫文蔚最好的 9 首情歌，都藏在滚石唱片。好痛！特别痛！]] (29:41) by Hopico
+
+  #+attr_html: :loading lazy
+  #+CAPTION: 視頻截圖，裡面有一段文字，內容是：
+  #+CAPTION: 情歌是想念变成了 / 一个在夜晚撑船的人 / 但它找不到接它的对岸 / 然后想念常常像一个赶路的人
+  #+CAPTION: 它永远在追一个 / 追不上的背影 / 情歌也是 / 永远在唱夕 / 已经不在这首歌里的人
+  #+CAPTION: 情歌很奇妙它没有见过我们爱过的人 / 却能让一些已经模糊的日子 / 重新有了细节
+  #+CAPTION: 情歌什么时候变成想念的呢 / 是曾经吵闹的地方 / 突然变安静的那一天
+  [[file:images/zine/59/hopico.webp]]
+
 ** 播客
 :PROPERTIES:
 :CUSTOM_ID: 8E33148A-6D4E-48D0-968B-5BD287FFA2CF
