@@ -229,7 +229,28 @@ Emacs 里我目前最喜欢的主题是 [modus-themes] 和 [ef-themes]，它们�
 | (add-hook 'desktop-after-read-hook #'spike-leung/themes-load-random)
 `----
 
-[Source]
+`spike-leung/load-theme-by-time' 除了指定時間，也可以基於日出日落時間：
+
+,----
+| (defun spike-leung/load-theme-by-time (light-fn dark-fn)
+|   "Call LIGHT-FN between sunrise and sunset, otherwise DARK-FN."
+| 
+|   (let* ((calendar-longitude 114.158283) ;; Hong Kong
+|          (calendar-latitude 22.281833)
+|          (calendar-time-zone 480)
+|          (l (solar-sunrise-sunset (calendar-current-date)))
+|          (hour (lambda (x) (and x (if (consp x) (car x) x))))
+|          (sunrise (funcall hour (car l)))
+|          (sunset (funcall hour (cadr l)))
+|          (t0 (decode-time))
+|          (now (+ (nth 2 t0) (/ (nth 1 t0) 60.0))))
+|     (funcall (if (and (car l) (cadr l)
+|                       (>= now sunrise)
+|                       (<  now sunset))
+|                  light-fn dark-fn))))
+`----
+
+最新的代碼見： [init-ui.el]
 
 另外，我平时写博客会用到 [Olivetti]，`ef-themes' 和 `doric-themes' 没有设置 fringe 的颜
 色，导致 Olivetti 主体和 fringe 无法区分。所以我写了个函数，在切换主题之后，获取一个和
@@ -287,8 +308,7 @@ Olivetti 主体接近的颜色作为 `olivetti-fringe' 的颜色。
 [Source]
 <https://github.com/Spike-Leung/Spikemacs/blob/89772555ee975cdac276b0678d758cbac7bfdbc8/lisp/init-ui.el#L48-L76>
 
-[Source]
-<https://github.com/Spike-Leung/Spikemacs/blob/65b9510858af876df69ed38a00aa3916a9b83280/lisp/init-ui.el#L51-L115>
+[init-ui.el] <https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-ui.el>
 
 [Olivetti] <https://github.com/rnkn/olivetti>
 

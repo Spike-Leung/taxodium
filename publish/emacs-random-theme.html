@@ -50,7 +50,7 @@
 Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/modus-themes">modus-themes</a> 和 <a href="https://github.com/protesilaos/ef-themes">ef-themes</a>，它们都是出自 <a href="https://github.com/protesilaos">protesilaos</a>。
 </p>
 
-<section role="note" id="org23b8a48">
+<section role="note" id="org29f2fb5">
 <p>
 后续可能还会加入 <a href="https://github.com/protesilaos/doric-themes">doric-themes</a>，也是 Prot 的写的主题，这个主题的颜色比较单一，写作的时候用感觉不错。
 </p>
@@ -167,7 +167,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 へ(゜∇、°)へ へ(゜∇、°)へ
 </p>
 
-<section role="note" id="orga91061c">
+<section role="note" id="orgfeb41d1">
 <p>
 说起来奇怪，如果是我自己主动切换的主题，可能切换后我马上就想换了。
 </p>
@@ -323,7 +323,31 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 </div>
 
 <p>
-<a href="https://github.com/Spike-Leung/Spikemacs/blob/65b9510858af876df69ed38a00aa3916a9b83280/lisp/init-ui.el#L51-L115">Source</a>
+<code>spike-leung/load-theme-by-time</code> 除了指定時間，也可以基於日出日落時間：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/load-theme-by-time</span> (light-fn dark-fn)
+  <span class="org-doc">"Call LIGHT-FN between sunrise and sunset, otherwise DARK-FN."</span>
+
+  (<span class="org-keyword">let*</span> ((calendar-longitude 114.158283) <span class="org-comment-delimiter">;; </span><span class="org-comment">Hong Kong</span>
+         (calendar-latitude 22.281833)
+         (calendar-time-zone 480)
+         (l (solar-sunrise-sunset (calendar-current-date)))
+         (hour (<span class="org-keyword">lambda</span> (x) (<span class="org-keyword">and</span> x (<span class="org-keyword">if</span> (consp x) (car x) x))))
+         (sunrise (funcall hour (car l)))
+         (sunset (funcall hour (cadr l)))
+         (t0 (decode-time))
+         (now (+ (nth 2 t0) (/ (nth 1 t0) 60.0))))
+    (funcall (<span class="org-keyword">if</span> (<span class="org-keyword">and</span> (car l) (cadr l)
+                      (&gt;= now sunrise)
+                      (&lt;  now sunset))
+                 light-fn dark-fn))))
+</code></pre>
+</div>
+
+<p>
+最新的代碼見： <a href="https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-ui.el">init-ui.el</a>
 </p>
 </details>
 
@@ -400,7 +424,7 @@ Emacs 里我目前最喜欢的主题是 <a href="https://github.com/protesilaos/
 <p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
 <p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p><time class="dt-published" datetime="2025-05-21 Wed 21:40">2025-05-21</time> 〜 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21</time></p>
+<p><time class="dt-published" datetime="2025-05-21 Wed 21:40">2025-05-21</time> 〜 <time class="dt-updated" datetime="2026-09-19 Sat 11:34">2026-09-19</time></p>
 <a href="/emacs-random-theme.txt">純文本版本</a> <a href="/emacs-random-theme.org">原始 org 文件</a>
 </footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>

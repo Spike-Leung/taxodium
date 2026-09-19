@@ -254,7 +254,28 @@ Emacs 里我目前最喜欢的主题是 [[https://github.com/protesilaos/modus-t
   (add-hook 'desktop-after-read-hook #'spike-leung/themes-load-random)
 #+end_src
 
-[[https://github.com/Spike-Leung/Spikemacs/blob/65b9510858af876df69ed38a00aa3916a9b83280/lisp/init-ui.el#L51-L115][Source]]
+~spike-leung/load-theme-by-time~ 除了指定時間，也可以基於日出日落時間：
+
+#+begin_src emacs-lisp
+  (defun spike-leung/load-theme-by-time (light-fn dark-fn)
+    "Call LIGHT-FN between sunrise and sunset, otherwise DARK-FN."
+
+    (let* ((calendar-longitude 114.158283) ;; Hong Kong
+           (calendar-latitude 22.281833)
+           (calendar-time-zone 480)
+           (l (solar-sunrise-sunset (calendar-current-date)))
+           (hour (lambda (x) (and x (if (consp x) (car x) x))))
+           (sunrise (funcall hour (car l)))
+           (sunset (funcall hour (cadr l)))
+           (t0 (decode-time))
+           (now (+ (nth 2 t0) (/ (nth 1 t0) 60.0))))
+      (funcall (if (and (car l) (cadr l)
+                        (>= now sunrise)
+                        (<  now sunset))
+                   light-fn dark-fn))))
+#+end_src
+
+最新的代碼見： [[https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-ui.el][init-ui.el]]
 #+end_details
 
 另外，我平时写博客会用到 [[https://github.com/rnkn/olivetti][Olivetti]]，
