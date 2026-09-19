@@ -13,20 +13,12 @@
     try {
       const { scheme, mode } = convertColorScheme(isInit);
 
-      if (!document.startViewTransition) {
-        setColorScheme();
-        return;
-      }
+      colorSchemeMeta.setAttribute("content", scheme);
+      localStorage.setItem("color-scheme", mode);
 
-      function setColorScheme() {
-        colorSchemeMeta.setAttribute("content", scheme);
-        localStorage.setItem("color-scheme", mode);
-        // body may not exist when page load first time
-        setTimeout(() => setBodyClass(mode));
-        switchIframeColorScheme();
-      }
-
-      isInit ? setColorScheme() : document.startViewTransition(setColorScheme);
+      // body may not exist when page load first time
+      setTimeout(() => setBodyClass(mode));
+      switchIframeColorScheme();
     } catch (err) {
       console.error(err);
     }
