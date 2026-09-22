@@ -22,6 +22,20 @@
 :PROPERTIES:
 :CUSTOM_ID: EBB2E7CF-BC7E-41E3-8EDF-37C8F1DE91FC
 :END:
+- [[https://danq.me/2026/09/21/browser-vertical-tabs/#attachment_30262][Browser vertical tabs are great (and they’re older than you think!)]] by Dan Q
+
+  #+begin_quote
+  無論垂直分頁起源於何處，它們都非常棒，我超級喜歡。以下是垂直分頁之所以厲害的原因：
+
+  - 如果你（像我一樣）傾向於開啟大量分頁，垂直分頁捲動起來會更容易。
+  - 同樣地：假設你使用的是橫向閱讀的語言，你可以更輕鬆地閱讀標題。
+  - 在寬螢幕（甚至是超寬螢幕！）顯示器上，你很可能會有剩餘的水平空間，因此垂直空間相對珍貴：
+    垂直分頁有助於最大化你的可用螢幕空間。
+
+  [[https://danq.me/2026/09/21/browser-vertical-tabs/#attachment_30262:~:text=Wherever,estate%2E][Source]]
+  #+end_quote
+
+  「俺也一樣！」[fn:1]
 
 * Cool Bit
 :PROPERTIES:
@@ -52,10 +66,16 @@
 
   (via [[https://e89295.com/blog/2026-09-20.html][二十年前部落格圈的簡體繁體議論]] by 我)
 
+- [[https://stitchcraft.wasmer.app/][StitchCraft]]
+
+  刺綉風格的作畫網站，挺好看的。
+
 * Tutorial | Resource
 :PROPERTIES:
 :CUSTOM_ID: 97DFDEA4-B909-4BB4-815F-6314AC7AECC8
 :END:
+
+- [[https://brennan.day/static-site-generators-for-beginners/][Static Site Generators for Beginners]] by Brennan Kenneth Brown
 
 * Code Related
 :PROPERTIES:
@@ -80,6 +100,29 @@
   這裡每個人，從 L1 到 L7 工程師，簡直所有人都在做同樣的事情：跟 Claude 對話。
   #+end_quote
 
+- [[https://simonwillison.net/2026/Sep/21/jev/][Jev introduces a new shape of LLM—System One, aka Decision Models]] by Simon Willison
+
+  關於 [[https://docs.typesafe.ai/introduction][Jev]] 的介紹。
+
+  #+begin_quote
+  關於 Jev，我發現有些令人不安的地方在於，它在很大程度上代表了向黑箱機器學習系統的進一步倒退。
+
+  大型語言模型（LLM）本身就已經是黑箱了——
+  你可以要求它們為自己的決定辯護，但你無法保證它們所說的話是有用或準確的。
+
+  Jev 甚至連這點都不給你：
+  輸入你想要的所有文本，你唯一能得到的只是一個浮點數。
+  如果 Jev 將某個內容標記為垃圾訊息，究竟是哪些內容信號觸發了它？
+
+  這也意味著對偏見的擔憂應該被放在首要位置。
+  我真心希望沒有人用 Jev 來篩選求職者——
+  那個浮點數可能隱藏了模型中各種看不見的偏見，而要透過實驗來拆解這些偏見將會是一件棘手的事情。
+
+  [[https://simonwillison.net/2026/Sep/21/jev/#:~:text=Something,cents][Source]]
+  #+end_quote
+
+  這確實是個問題，它能給你完成分類，但你可能不清楚它的分類邏輯。
+
 * Tool | Library
 :PROPERTIES:
 :CUSTOM_ID: FA9B4D3D-2C3A-4768-AAB0-E0478B3C8A3A
@@ -89,6 +132,44 @@
 :PROPERTIES:
 :CUSTOM_ID: A081C396-8A75-46C7-966D-AC2A42194AEC
 :END:
+- [[https://blog.prayhand13013.top/20260921T102942--emacs-%E4%B8%BA%E9%87%8D%E5%A4%8D%E4%BB%BB%E5%8A%A1%E6%B7%BB%E5%8A%A0%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B7%A5%E4%BD%9C%E6%97%A5%E5%88%A4%E5%AE%9A__blog.html][emacs-为重复任务添加自定义工作日判定]] by TomoeMami
+- [[https://www.reddit.com/r/emacs/comments/1wj30nh/repeat_mode_finally_made_emacs_navigation_click/][Repeat mode finally made Emacs navigation click]]
+
+  給 ~forward-char~ 、 ~forward-word~ 等開啟 ~repeat-mode~ ，
+  使得重複使用時更方便，
+  就不用一直按著 @@html:<kbd>Ctrl</kbd>@@ 或 @@html:<kbd>Meta</kbd>@@。
+
+  我也加上了，但用起來還不習慣。
+
+  #+begin_details
+  #+html: <summary>配置</summary>
+
+  #+begin_src emacs-lisp
+    (use-package repeat
+      :hook (after-init . repeat-mode)
+      :config
+      (defvar-keymap spike-leung/char-repeat-map
+        :doc "Repeat map for char related commands."
+        :repeat t
+        "b" #'backward-char
+        "f" #'forward-char)
+      (defvar-keymap spike-leung/word-repeat-map
+        :doc "Repeat map for word related commands."
+        :repeat t
+        "b" #'backward-word
+        "f" #'forward-word)
+      (defvar-keymap spike-leung/paragraph-repeat-map
+        :doc "Repeat map for paragraph related commands."
+        :repeat t
+        "{" #'backward-paragraph
+        "}" #'forward-paragraph)
+      (defvar-keymap spike-leung/sexp-repeat-map
+        :doc "Repeat map for sexp related commands."
+        :repeat t
+        "b" #'backward-sexp
+        "f" #'forward-sexp))
+  #+end_src
+  #+end_details
 
 * 一些话 | 摘抄
 :PROPERTIES:
@@ -107,6 +188,22 @@
 
   [[https://letters.thedankoe.com/p/how-to-launch-into-a-completely-new-ef8#:~:text=Rockets,it,-%2E][Source]]
   #+end_quote
+
+- [[https://elpa.gnu.org/packages/typewriter.html][typewriter]]
+
+  #+begin_quote
+  此套件提供了 typewriter-mode，這是一個小型的輔助模式 (minor mode)，
+  它刻意極度限制 Emacs 的功能，
+  _以提供盡可能接近嚴格「只能向前」的打字機體驗。_
+  有些人發現，缺乏編輯功能反而能促進專注，讓某些類型的創意寫作變得更加充實。
+  #+end_quote
+
+  可以配合 [[https://github.com/rnkn/olivetti][rnkn/olivetti]] 一起用。
+
+- [[https://notxor.nueva-actitud.org/2026/09/13/gptel-emacs-y-la-ia.html][gptel: Emacs y la IA]]
+
+  用 [[https://github.com/karthink/gptel][karthink/gptel]] 、[[https://github.com/ggml-org/llama.cpp/tree/master][ggml-org/llama.cpp]] 來使用本地模型。
+
 * 多媒体
 :PROPERTIES:
 :CUSTOM_ID: 1449FE1C-B5B2-4549-9D76-40BB33E0B81D
@@ -137,6 +234,22 @@
 :CUSTOM_ID: 6D119F45-BFCD-4263-BDEE-9750BB2943FF
 :END:
 
+* Footnotes
+:PROPERTIES:
+:CUSTOM_ID: 64C1E8BC-FE1C-4BF0-8548-245009EFAA63
+:END:
+
+[fn:1] [[https://zh.wikipedia.org/zh-hant/Wikipedia:%E4%BF%BA%E4%B9%9F%E4%B8%80%E6%A0%B7][維基百科:俺也一樣]]
+
+#+begin_quote
+俺也一樣是一個網絡迷因，出自央視版《三國演義》第一集桃園結義的劇情。
+關羽三次用得體的語言向劉備表達自己心意，而張飛三次附和道「俺也一樣」。
+
+「俺也一樣」是不是表達意見？是。
+那麼「俺也一樣」對討論有沒有幫助？沒有。
+因為它不提供任何新信息，而討論想要獲得進展，需要的是事實和論述。
+所以不要在討論裡說「俺也一樣」。
+#+end_quote
 # Local Variables:
 # org-cycle-include-plain-lists: integrate
 # End:

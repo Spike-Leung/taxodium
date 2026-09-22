@@ -12,36 +12,375 @@
 #+options: ^:{}
 #+startup: content hideblocks
 
-unstory 寫了篇 [[https://unstory.eu/cmz/][Links, URLs and garbage]]，他的觀點是文章中的連結應該直接完整顯示出來，像這樣：
+unstory 寫了篇 [[https://unstory.eu/cmz/][Links, URLs and garbage]]，老樣子，請你先去讀一篇原文再回來看吧，等你。
 
-[[https://www.youtube.com/watch?v=dQw4w9WgXcQ][https://taxodium.ink]]
+-----
 
-而不是這樣：
-
-[[https://taxodium.ink][Taxodium]]
-
-他的理由是：
+接下來針對 unstory 的觀點，我來說說我的看法。
 
 #+begin_quote
-對於像我這樣進階、經驗豐富且高度聰明的網路大師來說，第一個版本乾淨、易於導航、理解和閱讀。
-我知道點擊後會跳轉到哪裡。
-沒有任何隱藏，腐爛的東西沒有噴香水。
-它是透明的，並且尊重訪客。
-頁面上有足夠的空間，如果需要可以使用兩行。
-這種使用可見的短路徑和乾淨路徑的方法客觀上更優越。
+SEO 網址是 2000 年代初期搜尋引擎演算法的產物。
+人們為了機器優化網址，卻讓網址對人類極不友善。
+然後再把那些垃圾隱藏在錨點文字。
 
-[[https://unstory.eu/cmz/#:~:text=hidden-,For,superior][Source]]
+網路上標準的網址看起來像這樣：
+https://longdomainname.com/blog/2026/09/09/how-i-fucked-up-links-on-my-website
+
+如果他們連結到這種過時的產物，會把那團亂象隱藏在某些錨點文字後面，
+所以清楚可見的只有像「我網站上的連結」這樣的文字。
+
+在可點擊文字的深處，是冗長且醜陋的網址。
 #+end_quote
 
-我大體上是同意的，能直接看到 URL，很容易看到點擊後會去到什麼網站，
-上面的各種參數也能清晰看到，包擴那些用於追踪你的參數。
+我不認為長連結是個問題，例如作者提到的：
 
-但真的是沒有任何隱藏嗎？
-如果你毫不怀疑地點開了 [[https://www.youtube.com/watch?v=dQw4w9WgXcQ][https://taxodium.ink]]，你會發現你去到的網站根本不是 =https://taxodium.ink= 。
-它實際的樣子是這樣的：
+https://longdomainname.com/blog/2026/09/09/how-i-fucked-up-links-on-my-website
+
+從中我可以知道域名、類型(blog)，日期、文章標題和大概的內容。
+
+而作者的這篇文章的連結呢：
+
+https://unstory.eu/cmz/
+
+我只知道域名，不知道 =cmz= 是什麼。
+[[https://en.wikipedia.org/wiki/URL][URLs]] 本身只是個標識，能通過它找到對應的資源即可，長一些也好，短一些也好，我覺得都沒問題。
+相比之下我更傾向於那些能傳遠更多信息的 URL，而不是一味追求簡短。
+
+#+begin_quote
+連結的去向並不明確。
+它可能導向同一個網站的某個頁面、其他網站、社群媒體、付費牆、電商平台、公司官網或其他任何地方。
+我經常點擊後才發現進入了某個已知的故障網站、需要帳號的社群媒體，或是某個熱門的宣傳網站。
+如果連結清晰可見，我就不會造訪那些地方。
+#+end_quote
+
+我想這裡作者說的「去向」，想表達的是通過 URL 知道會去到什麼網站。
+有的域名是自己熟知的，
+例如 https://taxodium.ink、 https://kagi.com，
+這種情况下顯示出 URL 確實能知道去向，也能輕鬆分辨出內部連結和外部連結。
+有的人也許不喜歡看 X 上的內容，那麼他看到 URL 是 https://x.com/， 他就可以不點開看。
+但如果域名是自己不熟知的，其實還是不知道去向，此時顯示 URL 和不顯示 URL 也沒什麼區別。
+
+細究的話，無論是 [[https://unstory.eu/cmz/][Links, URLs and garbage]] 還是 [[https://www.youtube.com/watch?v=dQw4w9WgXcQ][https://unstory.eu/cmz/]] ，連結的去向都是不明確的。
+後者虽然能看見 URL，但跳過去也未必就是顯示的 URL @@html:<small>@@(不信你點點看 :P)@@html:</small>@@。
+因為連結是由實際 URL 和顯示的文字構成的，別有用心的人可以這麼寫：
 
 #+begin_src html
-<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">https://taxodium.ink</a>
+<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">https://unstory.eu/cmz/<a>
 #+end_src
 
-是不是更具迷惑性？
+你看到的是 https://unstory.eu/cmz/， 但實際你點擊的是 https://www.youtube.com/watch?v=dQw4w9WgXcQ。
+如果這是一個有害的連結，它更具迷惑性，也更容易讓人掉以輕心。
+
+如果是出於安全考慮，最保險的作法是在每次點擊連結前檢查實際 URL 是什麼，
+在桌面瀏覧器上，一般把鼠標悬在連結上就能看到；
+在手機上，你可以將連結複製出來檢查，相對會麻煩點。
+
+如果顯示 URL 是為了安全，那就別把 URL 渲染成連結，應該用純文本：
+
+=https://unstory.eu/cmz/=
+
+這樣才是所見即所得，缺點就是，它不再是一個可點擊的連結了。
+
+#+attr_html: :role note
+#+begin_section
+我的每篇文章都有純文本版本，你可以在頁脚找到連結，或者把當前頁面 URL 中的 =.html= 換成 =.txt= 即可。
+裡面的所有的 URL 都是以純文本展示的。
+#+end_section
+
+另外，就算跳轉的 URL 和顯示的 URL 一樣，
+你也不能確定 URL 指向的內容會是什麼，也許是一篇文章，也許是一則廣告，不打開看看是不知道的。
+
+如果直接點一個連結會有什麼風險呢？
+我能想到的是 [[https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/CSRF][跨站請求偽造 (Cross-site request forgery, CSRF)]]、
+釣魚網站(騙你輸入信息)、自動下載、自動拉起應用，
+規避的方法是每次打開連結前都先檢查一下 URL，打開後如果涉及個人信息也再檢查一下 URL，確保是安全的。
+
+總結一下，作者的主要觀點是：
+
+1. 短 URL 优於 長 URL
+
+   我不認同，我喜歡能傳遞充足信息的 URL，長短無所謂，沒必要非要很簡洁，也沒必要追求复雜，需要多長就多長。
+
+2. 直接顯示 URL 就沒有隱藏、連結清晰可見、去向可預測
+
+   如果作者沒使壞，看到的 URL 就是實際的 URL，確實可以讓實際的 URL 清晰可見，沒有隱藏。
+   但如果作者有意攻擊用戶，看到的 URL 多半和實際的 URL 是不同的，用戶如果想保护自己，還得自己留意檢查。
+
+   至於去向可預測，顯式的 URL 也只是能知道域名和 URL 參數而已，實際跳轉會看到什麼也還是不確定的。
+   而且作者在文章裡提倡的是極簡的 URL，這樣的 URL 除了域名，也沒有更多信息了。
+
+   顯式連結在無障碍上也有問題，如果用户要用工具朗讀文本了解內容，
+   顯式的 URL 如 https://unstory.eu/ 讀起來是這樣的
+   「visited, link, HTTPS colon slash slash unstory dot eu slash」，
+   如果 URL 再長一點，我懷疑讀者能不能記住 URL。
+   而 [[https://unstory.eu/][Unstory hidden]] 讀起來是這樣的「visited, link, unstory hidden」，
+   讀出來的文字會相對更好記 @@html:<small>@@(當然，有的文字也可能很長)@@html:</small>@@。
+
+綜上，我并不認為顯式的 URL 比有錨點文字的 URL 更好，
+我也不反感用顯式的 URL，看起來也確實挺清晰的，
+選擇用顯式 URL 或是有錨點文字的 URL 更多還是個人喜好。
+
+-----
+
+如果你打算用顯式的 URL，還要考慮的是怎麼呈現。
+
+以一段有錨點文字的 URL 為例：
+
+Taxodium is a [[https://en.wikipedia.org/wiki/Genus][genus]] of one to three species (depending on [[https://en.wikipedia.org/wiki/Taxonomy_(biology)][taxonomic]] opinion)
+of extremely [[https://en.wikipedia.org/wiki/Flood][flood]]-tolerant [[https://en.wikipedia.org/wiki/Conifer][conifers]] in the cypress family, [[https://en.wikipedia.org/wiki/Cupressaceae][Cupressaceae]].
+The name is derived from the [[https://en.wikipedia.org/wiki/Latin][Latin]] word taxus '[[https://en.wikipedia.org/wiki/Taxus][yew]]' and the [[https://en.wikipedia.org/wiki/Greek_language][Greek]] word εἶδος (eidos) 'similar to'.
+Within the family,
+Taxodium is most closely related to [[https://en.wikipedia.org/wiki/Glyptostrobus][Chinese swamp cypress]] (Glyptostrobus pensilis)
+and [[https://en.wikipedia.org/wiki/Cryptomeria][sugi]] (Cryptomeria japonica).
+
+比較常見的做法是在段落的下面，將連結列出來，一個連接一行。
+
+Taxodium is a genus
+of one to three species (depending on taxonomic opinion)
+of extremely flood-tolerant conifers in the cypress family, Cupressaceae.
+The name is derived from the Latin word taxus 'yew' and the Greek word εἶδος (eidos) 'similar to'.
+Within the family,
+Taxodium is most closely related to Chinese swamp cypress (Glyptostrobus pensilis)
+and sugi (Cryptomeria japonica).
+
+https://en.wikipedia.org/wiki/Genus
+
+https://en.wikipedia.org/wiki/Taxonomy_(biology)
+
+https://en.wikipedia.org/wiki/Flood
+
+https://en.wikipedia.org/wiki/Conifer
+
+https://en.wikipedia.org/wiki/Cupressaceae
+
+https://en.wikipedia.org/wiki/Latin
+
+https://en.wikipedia.org/wiki/Taxus
+
+https://en.wikipedia.org/wiki/Greek_language
+
+https://en.wikipedia.org/wiki/Glyptostrobus
+
+https://en.wikipedia.org/wiki/Cryptomeria
+
+當連結多時其實不好閲讀，連結太占空間了，而且讀者還要自己映射連結和內容。
+為了方便映射，倒是可以做點標記：
+
+Taxodium is a [genus]
+of one to three species (depending on [taxonomic] opinion)
+of extremely [flood]-tolerant [conifers] in the cypress family, [Cupressaceae].
+The name is derived from the [Latin] word taxus '[yew]' and the [Greek] word εἶδος (eidos) 'similar to'.
+Within the family,
+Taxodium is most closely related to Chinese swamp [cypress] (Glyptostrobus pensilis)
+and [sugi] (Cryptomeria japonica).
+
+[genus](https://en.wikipedia.org/wiki/Genus)
+
+[taxonomic](https://en.wikipedia.org/wiki/Taxonomy_(biology))
+
+[flood](https://en.wikipedia.org/wiki/Flood)
+
+[conifers](https://en.wikipedia.org/wiki/Conifer)
+
+[Cupressaceae](https://en.wikipedia.org/wiki/Cupressaceae)
+
+[Latin](https://en.wikipedia.org/wiki/Latin)
+
+[yew](https://en.wikipedia.org/wiki/Taxus)
+
+[Greek](https://en.wikipedia.org/wiki/Greek_language)
+
+[cypress](https://en.wikipedia.org/wiki/Glyptostrobus)
+
+[sugi](https://en.wikipedia.org/wiki/Cryptomeria)
+
+但也不是很好讀，更好的做法也許是在合適的地方拆分段落，在段落下面放連結，
+讓連結和內容靠近，不用讀者費勁找映射關係，也能把多個連結分散在不同段落下，避免連結的大量堆積。
+
+Taxodium is a genus of one to three species (depending on taxonomic opinion)
+of extremely flood-tolerant conifers in the cypress family, Cupressaceae.
+
+https://en.wikipedia.org/wiki/Genus
+
+https://en.wikipedia.org/wiki/Taxonomy_(biology)
+
+https://en.wikipedia.org/wiki/Flood
+
+https://en.wikipedia.org/wiki/Conifer
+
+https://en.wikipedia.org/wiki/Cupressaceae
+
+The name is derived from the Latin word taxus 'yew' and the Greek word εἶδος (eidos) 'similar to'.
+
+https://en.wikipedia.org/wiki/Latin
+
+https://en.wikipedia.org/wiki/Taxus
+
+https://en.wikipedia.org/wiki/Greek_language
+
+Within the family,
+Taxodium is most closely related to Chinese swamp cypress (Glyptostrobus pensilis)
+and sugi (Cryptomeria japonica).
+
+https://en.wikipedia.org/wiki/Glyptostrobus
+
+https://en.wikipedia.org/wiki/Cryptomeria
+
+在我看來，如果在一個段落裡連結比較多，是不適合用顯示連結的，很影響閱讀，
+如果連結較少倒無所謂，一個例子是 [[https://pluralistic.net/][Pluralistic]]，
+這個網站中的文章大多都是顯式連結，但因為段落都比較長，連結也不多，就不影響閱讀。
+
+-----
+
+最後，分享一些關於連結的建議吧。
+
+*內容相關*
+
+- 在分享連結前，可以停下來先想想要不要分享。
+  你的每一次分享都會給連結帶來一定的點擊量，你希望這個連結被傳播嗎？它值得被傳播嗎？
+  有時不分享也許是更好的選擇。
+- 分享時考慮移除多余的參數，例如：
+
+  https://www.bilibili.com/video/BV1854y1h72K/?spm_id_from=333.1387.favlist.content.click
+
+  spm_id_from 是一些追蹤相關的參數，如果想分享連結，https://www.bilibili.com/video/BV1854y1h72K/ 就够了。
+- 考慮加上署名，標明連結的來源
+- 如果是音頻或視頻，考慮加上時長，例如：
+
+  [[https://www.bilibili.com/video/BV1854y1h72K/][【4K】方大同「15」Live in HK 2011香港演唱会]] (2:25:04) by 德文宝宝
+
+  這樣讀者可以知道這大概率是一個音視頻連結，知道時長，如果讀者覺得長，他可能會選擇晚點有時間再點開看。
+
+*樣式相關*
+
+- *不要隱藏下劃綫* 。
+  你可能覺得下劃綫丑，所以隱藏起來，只使用顏色來提示讀者，
+  但這是不够的，有的人可能對色彩不敏感，如果僅用顏色，他是無法區分普通文字和連結的。
+
+  如果你隱藏了下劃綫，有的人看到的是這樣的，你知道連結在哪嗎？
+
+  #+attr_html: :class hidden-link
+  有少數人是[[https://zh.wikipedia.org/wiki/%E5%85%A8%E8%89%B2%E7%9B%B2][全色盲]]，他們完全没有色觉只有灰度知觉，所以沒法通過顏色的不同區分普通文字和連結。
+
+  #+attr_html: :role note
+  #+begin_section
+  你也可以故意去隱藏連結，用來藏一些彩蛋 :P
+  #+end_section
+
+  如果你覺得默認的下劃綫不好看，你可以 Jeremy 的 [[https://adactio.com/journal/22084][Style your underlines]] 去美化下劃綫。
+  這裡的重點是用頻色之外的視覺元素，讓讀者能簡單明了的知道哪裡有連結，
+  下劃綫不是唯一的選擇，但它是最被廣泛接受的連結樣式。
+
+- 增加 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:hover][:hover]] 樣式。
+  悬在連結上面時，可以考慮增加背景色，把 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/cursor][指針形狀]] 變成 ~pointer~ ，
+  用明顯的視覺變化讓讀者知道他當前悬浮在一個連結上。
+
+  #+attr_html: :role note
+  #+begin_section
+  在類似手機的設備上是沒有悬浮操作的，大多是點擊和長按，有時悬浮反而變成了干擾。
+
+  你可以把悬浮樣式限制在 ~@media (pointer: fine) and (hover: hover) {}~ ，
+  使其只在支持悬浮的設備上生效，如電腦、使用了触控笔的平板等。
+  #+end_section
+
+- 考慮增加 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:visited][:visited]] 樣式。
+  ~:visited~ 可以給已訪問過的連結添加樣式，例如設置不同的顏色，
+  這樣讀者點擊了頁面上的連結後，他就知道哪些他是訪問過的，哪些他還沒看過。
+  這在我的 [[denote:20240727T191042][Zine]] 系列文章中就很有用，裡面有大量的連結，
+  設置了 ~:visited~ 後，可以方便讀者清楚看到哪些看過、哪些沒看過，避免重複訪問。
+
+  #+attr_html: :role note
+  #+begin_section
+  出於隱私安全考慮， ~:visited~ 支持設置的樣式是有限制的，見 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:visited#privacy_restrictions][Privacy restrictions]]。
+  另外，如果想重置 ~:visited~ 標記，清空瀏覧器歷史記录󠄃即可。
+  #+end_section
+
+*進階樣式*
+
+以下的樣式可以讓連結更有趣，但當連結比較多時，我覺得也會造成視覺上的干擾，請慎重使用。
+
+- 標記內部連結和外部連結。
+
+- 顯示連結的 favicon。
+
+  可以通過判斷域名 (~a[href=<domain>]~) 和 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::before][::before]]、[[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::after][::after]] 偽類元素顯示連結的 favicon。
+  favicon 可以用 [[https://favicon.im/][Favicon.im]] 快速获取。
+
+  #+begin_src css
+    a[href*="bilibili.com"],
+    a[href*="youtube.com"],
+    a[href*="wikipedia.org"],
+    a[href*="developer.mozilla.org"]
+    {
+      &::before {
+        content: '';
+        display: inline-block;
+        inline-size: 1em;
+        block-size: 1em;
+        margin-inline-end: .2em;
+        vertical-align: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+    }
+
+    a[href*="developer.mozilla.org"]::before {
+      background-image: url("/images/common/favicon/developer.mozilla.org.ico");
+    }
+    a[href*="wikipedia.org"]::before {
+      background-image: url("/images/common/favicon/wikipedia.org.ico");
+    }
+    a[href*="youtube.com"]::before {
+      background-image: url("/images/common/favicon/youtube.com.ico");
+    }
+    a[href*="bilibili.com"]::before {
+      background-image: url("/images/common/favicon/bilibili.com.ico");
+    }
+  #+end_src
+
+  TODO: sync export and src
+
+  #+begin_export html
+  <style>
+  @scope{
+    a[href*="bilibili.com"],
+    a[href*="youtube.com"],
+    a[href*="wikipedia.org"],
+    a[href*="developer.mozilla.org"]
+    {
+      &::before {
+        content: '';
+        display: inline-block;
+        inline-size: 1em;
+        block-size: 1em;
+        margin-inline-end: .2em;
+        vertical-align: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+    }
+
+    a[href*="developer.mozilla.org"]::before {
+      background-image: url("/images/common/favicon/developer.mozilla.org.ico");
+    }
+    a[href*="wikipedia.org"]::before {
+      background-image: url("/images/common/favicon/wikipedia.org.ico");
+    }
+    a[href*="youtube.com"]::before {
+      background-image: url("/images/common/favicon/youtube.com.ico");
+    }
+    a[href*="bilibili.com"]::before {
+      background-image: url("/images/common/favicon/bilibili.com.ico");
+    }
+  }
+  </style>
+  #+end_export
+
+  效果：
+
+  + [[https://www.bilibili.com/video/BV1854y1h72K/][【4K】方大同「15」Live in HK 2011香港演唱会]] (2:25:04) by 德文宝宝
+  + [[https://www.youtube.com/watch?v=PHGO000ZxCI][The National - Vanderlyle Crybaby Geeks (Live in London)]] (4:11) by Rairun
+  + [[https://en.wikipedia.org/wiki/Taxodium][Taxodium - Wikipedia]]
+  + [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a][<a> HTML anchor element - HTML | MDN]]
