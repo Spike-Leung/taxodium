@@ -99,14 +99,7 @@
     }
   }
 
-  function initFormTargetUrl() {
-    const target = getTargetUrl();
-    document.querySelector(".webmention form input[name='target']").value =
-      target;
-  }
-
   document.addEventListener("DOMContentLoaded", function () {
     loadWebmentionContent();
-    initFormTargetUrl();
   });
 })();
