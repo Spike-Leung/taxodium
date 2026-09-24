@@ -190,7 +190,7 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 接下来按照 webmention.io 提供的 API 获取 Webmentions 的数量和内容，需要在页面上添加 HTML 元素，写 <a href="js/webmention.js">一些 JS 代码</a> 调用 API 渲染数据（也可以用 <a href="https://github.com/PlaidWeb/webmention.js">webmention.js</a>），再写点 CSS 优化一下样式。
 </p>
 
-<section role="note" id="orge7fa985">
+<section role="note" id="orge83c411">
 <p>
 如果你打算渲染 Webmentions 返回的 HTML，需要注意 <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS">Cross-site scripting (XSS)</a> 攻击。
 </p>
@@ -240,7 +240,7 @@ Webmention 和评论差不多，只是它的门槛相对高一点，需要你写
 但是如果你想让你发送的内容更丰富一些，就需要通过 <a href="https://microformats.org/wiki/Main_Page">microformats</a> 标记网站信息，如用户名、头像、内容、你要提及的链接等，从而让 Webmention 解析展示。
 </p>
 
-<section role="note" id="orgd0b26c7">
+<section role="note" id="orgb700fbf">
 <p>
 按理说只要包含了对方链接，对方就能收到 Webmention。
 </p>
@@ -428,7 +428,7 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 好处是，只要在文章中的链接都能被发现，不需要额外再标记什么。缺点是， <code>e-content</code> 标记的内容可能太多，导致实际回复的部分被淹没其中。
 </p>
 
-<section role="note" id="orgf039e79">
+<section role="note" id="org4a5ce72">
 <p>
 因为文章中既包括自己的文章部分，也包括提及对方网站的部分，所以会导致提及内容被淹没。
 </p>
@@ -455,7 +455,7 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 有的 webmention 的发送时的 URL 是 <code>https://domain/page.html#abc</code> ，通过 webmention.io 的 <a href="https://github.com/aaronpk/webmention.io?tab=readme-ov-file#api">API</a>，target 参数设置为 <code>https://domain/page.html</code> 是无法获取到数据的，需要将 target 设置为 <code>https://domain/page.html#abc</code> ，完全匹配才行，因为目前存储的就是完整的 URL。
 </p>
 
-<section role="note" id="org0acdc2b">
+<section role="note" id="org37f6d79">
 <p>
 如果 target 是 <code>https://domain/page.html#abc</code> ，注意需要将 <code>#</code> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent">转义</a> 成 <code>%23</code> 。
 </p>
@@ -495,6 +495,20 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 
 <p>
 虽然不优雅，但不用請求全量数据，很多頁面其實都没有 Webmention，這可以减少這些頁面需要加載的数据。
+</p>
+
+<p>
+<a href="https://github.com/aaronpk/webmention.io#which-url-a-mention-is-filed-under">2026 年 9 月往後</a>，這個問題應該解决了，作者用 php 重寫了 webmention.io，現在會讀取頁面上的 <a href="https://en.wikipedia.org/wiki/Canonical_link_element">Canonical</a> (可以用於指定頁面的標凖 URL)：
+</p>
+
+<blockquote>
+<p>
+一則提及會歸檔在目標的標準網址下。首次看到某個目標時，服務會擷取該頁面、跟隨你網站的重新導向，並遵循其 <code>rel="canonical"</code> ；只要最後抵達的網址位於你其中一個網站上，就會將這則提及歸檔在該網址下。判斷提及屬於哪個頁面時，會忽略目標網址中的 <code>#片段</code> (#fragment)，但仍會記錄該片段：查詢 <code>target=…/post#photo-2</code> 只會傳回指向該片段的提及，每則都會帶有 <code>wm-fragment</code> ；而查詢 <code>…/post</code> 則會傳回所有提及。
+</p>
+</blockquote>
+
+<p>
+所以你應該設置好每個頁面的 <a href="https://en.wikipedia.org/wiki/Canonical_link_element">Canonical</a>，然後用 Canonical 作為 target 請求 webmention.io 的 API，就能得到所有這個 Canonical 相關的數據了，裡面也包括了那些帶有 #fragment 的 webmentions。
 </p>
 </div>
 </div>
@@ -570,7 +584,7 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 <p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
 <p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p><time class="dt-published" datetime="2025-09-25 Thu 21:24">2025-09-25</time> 〜 <time class="dt-updated" datetime="2026-08-06 Thu 12:08">2026-08-06</time></p>
+<p><time class="dt-published" datetime="2025-09-25 Thu 21:24">2025-09-25</time> 〜 <time class="dt-updated" datetime="2026-09-24 Thu 20:36">2026-09-24</time></p>
 <a href="/add-webmention-to-blog.txt">純文本版本</a> <a href="/add-webmention-to-blog.org">原始 org 文件</a>
 </footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>

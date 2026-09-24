@@ -351,6 +351,21 @@ h-card 是用来标记用户信息的，介绍一些我觉得比较有用的：
 
 虽然不优雅，但不用請求全量数据，很多頁面其實都没有 Webmention，這可以减少這些頁面需要加載的数据。
 
+[[https://github.com/aaronpk/webmention.io#which-url-a-mention-is-filed-under][2026 年 9 月往後]]，這個問題應該解决了，作者用 php 重寫了 webmention.io，
+現在會讀取頁面上的 [[https://en.wikipedia.org/wiki/Canonical_link_element][Canonical]] (可以用於指定頁面的標凖 URL)：
+
+#+begin_quote
+一則提及會歸檔在目標的標準網址下。
+首次看到某個目標時，服務會擷取該頁面、跟隨你網站的重新導向，並遵循其 ~rel="canonical"~ ；
+只要最後抵達的網址位於你其中一個網站上，就會將這則提及歸檔在該網址下。
+判斷提及屬於哪個頁面時，會忽略目標網址中的 ~#片段~ (#fragment)，但仍會記錄該片段：
+查詢 ~target=…/post#photo-2~ 只會傳回指向該片段的提及，每則都會帶有 ~wm-fragment~ ；
+而查詢 ~…/post~ 則會傳回所有提及。
+#+end_quote
+
+所以你應該設置好每個頁面的 [[https://en.wikipedia.org/wiki/Canonical_link_element][Canonical]]，然後用 Canonical 作為 target 請求 webmention.io 的 API，
+就能得到所有這個 Canonical 相關的數據了，裡面也包括了那些帶有 #fragment 的 webmentions。
+
 ** 发送了 webmention 但是没有显示出来
 :PROPERTIES:
 :CUSTOM_ID: D0EECE7A-2BD9-44C0-BA90-668373F5746E
