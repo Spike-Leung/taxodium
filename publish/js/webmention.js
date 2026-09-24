@@ -1,21 +1,11 @@
 (function () {
-  const TargetFragments = {
-    "https://taxodium.ink/43.html": ["#82F4E24E-345E-48C9-9A3B-567A81BC40A0"],
-  };
   const TargetQueries = ["ref=powrss.com"];
 
   async function fetchWebmentionFeedList() {
     const target = getTargetUrl();
-    const targetUrl = new URL(target);
-    const baseTarget = `${targetUrl.origin}${targetUrl.pathname}`;
-    const targetsWithFragments = TargetFragments[target]
-      ? TargetFragments[target].map((hash) => `${target}${hash}`)
-      : [];
     const targetsWithQueries = TargetQueries.map((q) => `${target}?${q}`);
     const allTarget = [
-      baseTarget,
       target,
-      ...targetsWithFragments,
       ...targetsWithQueries,
     ];
     const searchParams = allTarget
@@ -26,7 +16,7 @@
     );
     const feed = await response.json();
     const feedList = feed?.children?.filter(
-      (c) => c["wm-target"].indexOf(baseTarget) !== -1,
+      (c) => c["wm-target"].indexOf(target) !== -1,
     );
 
     return feedList;
