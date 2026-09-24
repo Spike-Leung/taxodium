@@ -12,6 +12,7 @@
 #+options: ^:{}
 #+startup: content hideblocks
 
+
 unstory 寫了篇 [[https://unstory.eu/cmz/][Links, URLs and garbage]]，老樣子，請你先去讀一篇原文再回來看吧，等你。
 
 -----
@@ -239,6 +240,9 @@ https://en.wikipedia.org/wiki/Cryptomeria
 - 在分享連結前，可以停下來先想想要不要分享。
   你的每一次分享都會給連結帶來一定的點擊量，你希望這個連結被傳播嗎？它值得被傳播嗎？
   有時不分享也許是更好的選擇。
+- 讓連結的文字有意義，即使脫離上下文，連結中的文字也應該能說明該連結會前往何處。
+  + 錯誤示範：我的博客是 [[denote:20260907T220128][這個]]。
+  + 正確示範：我的博客是 [[denote:20260907T220128][Taxodium]]。
 - 分享時考慮移除多余的參數，例如：
 
   https://www.bilibili.com/video/BV1854y1h72K/?spm_id_from=333.1387.favlist.content.click
@@ -298,15 +302,59 @@ https://en.wikipedia.org/wiki/Cryptomeria
 *進階樣式*
 
 以下的樣式可以讓連結更有趣，但當連結比較多時，我覺得也會造成視覺上的干擾，請慎重使用。
+下面的樣式只是其中一種實現方式，還有很多其他方式，這就留結讀者自行探索了。
 
 - 標記內部連結和外部連結。
+
+  #+name: css-external-link
+  #+begin_src css :exports none
+    #content a[href^='http']:not([href^='http://taxodium.ink']):not([href^='https://taxodium.ink']) {
+      &::after {
+        /* content: '↗'; */
+        content: "​" / " (external)";
+        font-size: 1em;
+        display: inline-block;
+        margin-inline-start: .2em;
+        position: relative;
+        top: .2em;
+        height: 1em;
+        width: 1em;
+        mask-image: url("/images/common/external-link.svg");
+        mask-size: cover;
+        mask-repeat: no-repeat;
+        color: currentColor;
+        background-color: currentcolor;
+      }
+    }
+
+
+  #+end_src
+
+
+  #+begin_src css :noweb yes :exports code
+    <<css-external-link>>
+  #+end_src
+
+  #+begin_src shell :noweb yes :exports results :results output html
+    cat <<'CSS_EOF'
+    <style>
+    <<css-external-link>>
+    </style>
+    CSS_EOF
+#+end_src
+
+  效果：
+
+  - [[denote:20260907T220128][Taxodium]]
+  - [[https://en.wikipedia.org/wiki/Taxodium][Taxodium - Wikipedia]]
 
 - 顯示連結的 favicon。
 
   可以通過判斷域名 (~a[href=<domain>]~) 和 [[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::before][::before]]、[[https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::after][::after]] 偽類元素顯示連結的 favicon。
   favicon 可以用 [[https://favicon.im/][Favicon.im]] 快速获取。
 
-  #+begin_src css
+  #+name: css-link-with-favicon
+  #+begin_src css :exports none
     a[href*="bilibili.com"],
     a[href*="youtube.com"],
     a[href*="wikipedia.org"],
@@ -318,7 +366,7 @@ https://en.wikipedia.org/wiki/Cryptomeria
         inline-size: 1em;
         block-size: 1em;
         margin-inline-end: .2em;
-        vertical-align: center;
+        vertical-align: middle;
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center center;
@@ -339,44 +387,19 @@ https://en.wikipedia.org/wiki/Cryptomeria
     }
   #+end_src
 
-  TODO: sync export and src
+  #+begin_src css :noweb yes :exports code
+    <<css-link-with-favicon>>
+  #+end_src
 
-  #+begin_export html
-  <style>
-  @scope{
-    a[href*="bilibili.com"],
-    a[href*="youtube.com"],
-    a[href*="wikipedia.org"],
-    a[href*="developer.mozilla.org"]
-    {
-      &::before {
-        content: '';
-        display: inline-block;
-        inline-size: 1em;
-        block-size: 1em;
-        margin-inline-end: .2em;
-        vertical-align: center;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center center;
-      }
-    }
-
-    a[href*="developer.mozilla.org"]::before {
-      background-image: url("/images/common/favicon/developer.mozilla.org.ico");
-    }
-    a[href*="wikipedia.org"]::before {
-      background-image: url("/images/common/favicon/wikipedia.org.ico");
-    }
-    a[href*="youtube.com"]::before {
-      background-image: url("/images/common/favicon/youtube.com.ico");
-    }
-    a[href*="bilibili.com"]::before {
-      background-image: url("/images/common/favicon/bilibili.com.ico");
-    }
-  }
-  </style>
-  #+end_export
+  #+begin_src shell :noweb yes :exports results :results output html
+    cat <<'CSS_EOF'
+    <style>
+    @scope {
+    <<css-link-with-favicon>>
+           }
+    </style>
+    CSS_EOF
+#+end_src
 
   效果：
 
@@ -384,3 +407,8 @@ https://en.wikipedia.org/wiki/Cryptomeria
   + [[https://www.youtube.com/watch?v=PHGO000ZxCI][The National - Vanderlyle Crybaby Geeks (Live in London)]] (4:11) by Rairun
   + [[https://en.wikipedia.org/wiki/Taxodium][Taxodium - Wikipedia]]
   + [[https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a][<a> HTML anchor element - HTML | MDN]]
+
+
+# Local Variables:
+# org-confirm-babel-evaluate: nil
+# End:
