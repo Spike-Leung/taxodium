@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>使用 Emacs Everywhere，把任意輸入框用 Emacs 接管</title>
+<meta name="author" content="Spike Leung">
+<meta name="description" content="分享 Emacs Everywhere 的使用">
+<meta name="generator" content="Org Mode">
+<meta name="color-scheme" content="light dark" />
+<meta property="og:url" content="https://taxodium.ink/use-emacs-everywhere-to-take-over-any-input-field-with-emacs.html">
+<link rel="preload" href="/styles/main.css" as="style" />
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="preload" href="/js/color-scheme.js" as="script"/>
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="canonical" href="https://taxodium.ink/use-emacs-everywhere-to-take-over-any-input-field-with-emacs.html">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<script src="/js/color-scheme.js"></script>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主頁</a></li>
+    <li><a href="/subscribe.html">訂閱</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/shuffle.html" class="js-required">隨機</a></li>
+  </ul>
+  <button id="lightdark" class="js-required" aria-label="點擊切換當前頁面明暗主題">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+      <path d="M0 0h512v512H0z" fill="none" />
+      <path fill="currentColor" fill-rule="evenodd" d="M277.333 405.333v85.333h-42.667v-85.333zm99.346-58.824l60.34 60.34l-30.17 30.17l-60.34-60.34zm-241.359 0l30.17 30.17l-60.34 60.34l-30.17-30.17zM256 139.353c64.422 0 116.647 52.224 116.647 116.647c0 64.422-52.225 116.647-116.647 116.647A116.427 116.427 0 0 1 139.352 256c0-64.423 52.225-116.647 116.648-116.647m0 42.666c-40.859 0-73.981 33.123-73.981 74.062a73.76 73.76 0 0 0 21.603 52.296c13.867 13.867 32.685 21.64 52.378 21.603zm234.666 52.647v42.667h-85.333v-42.667zm-384 0v42.667H21.333v-42.667zM105.15 74.98l60.34 60.34l-30.17 30.17l-60.34-60.34zm301.7 0l30.169 30.17l-60.34 60.34l-30.17-30.17zM277.332 21.333v85.333h-42.667V21.333z" />
+    </svg>
+  </button>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">使用 Emacs Everywhere，把任意輸入框用 Emacs 接管</h1>
+</header><p>
+<a href="https://github.com/tecosaur/emacs-everywhere">tecosaur/emacs-everywhere</a> 是一個 Emacs 的擴展，它可以在任意輸入框輸入時，打開一個 Emacs Frame，把輸入框的內容複製到 Emacs 裡編輯， 編輯完成後，再把內容粘貼回原來的輸入框。
+</p>
+
+<p>
+這樣相當於把任意輸入框「變成」Emacs，利用 Emacs 來更好的編輯，在一些需要輸入大量文本的場景我就會用 Emacs Everywhere，例如在 Thunderbird 寫郵件、寫 issue、寫評論、在 LLM 對話頁寫較長的 prompt 等。
+</p>
+
+<figure>
+  <video controls loop muted playsinline loading="lazy">
+    <source src="/images/use-emacs-everywhere-to-take-over-any-input-field-with-emacs/emacs-everywhere.webm" type="video/webm">
+  </video>
+  <figcaption>
+  一段录󠄃屏，在 Kagi Assistant 頁面的輸入框裡有一些文字，
+  全選後，打開 Raycast，找到 Emacs Everywhere 的脚本命令并执行，
+  脚本打開了一個 Emacs 的 Frame，裡面是輸入框中的文字，
+  在 Emacs 裡輸入了一些新的文字，保存退出 Emacs，新增的文字更新到了輸入框中。
+  </figcaption>
+</figure>
+
+<p>
+在 macOS 上使用的話，首先要在 Emacs 裡安裝 emacs-everywhere。我現在是 macOS 27，<a href="https://github.com/tecosaur/emacs-everywhere">tecosaur/emacs-everywhere</a> 有一些兼容問題，有人提了 <a href="https://github.com/tecosaur/emacs-everywhere/issues/112">Issue</a>，暂時還沒有修複，但這個人提交了 <a href="https://github.com/tecosaur/emacs-everywhere/pull/113">PR</a>，後面我又碰到了一些問題，基於這個人的 Fork，我也改了些源碼，現在我用的是 <a href="https://github.com/Spike-Leung/emacs-everywhere">我自己 fork 的版本</a>。
+</p>
+
+<p>
+在 Emacs 裡，我用 <a href="https://github.com/radian-software/straight.el">radian-software/straight.el</a> 和 <a href="https://www.gnu.org/software/emacs/manual/html_mono/use-package.html">use-package</a> 管理擴展，<code>straight.el</code> 指定 fork 很簡單，如果你不用這些，也可以把 <code>emacs-everywhere.el</code> 下載下來後，放在 Emacs 的配置文件中加載。
+</p>
+
+<details>
+<summary>我的配置</summary>
+
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">use-package</span> emacs-everywhere
+  <span class="org-builtin">:straight</span> (emacs-everywhere
+             <span class="org-builtin">:type</span> git
+             <span class="org-builtin">:host</span> github
+             <span class="org-builtin">:repo</span> <span class="org-string">"tecosaur/emacs-everywhere"</span>
+             <span class="org-builtin">:fork</span> t)
+  <span class="org-builtin">:custom</span>
+  (emacs-everywhere-frame-parameters
+   '((name . <span class="org-string">"emacs-everywhere"</span>) (fullscreen) (width . 105) (height . 25)))
+  (emacs-everywhere-markdown-windows
+   '(
+     <span class="org-comment-delimiter">;; </span><span class="org-comment">Sites</span>
+     <span class="org-string">"Reddit"</span> <span class="org-string">"Stack Exchange"</span> <span class="org-string">"Stack Overflow"</span> <span class="org-string">"Emacs China"</span>
+     <span class="org-comment-delimiter">;; </span><span class="org-comment">Web Apps</span>
+     <span class="org-string">"Discord"</span> <span class="org-string">"Element"</span> <span class="org-string">"Slack"</span> <span class="org-string">"HedgeDoc"</span> <span class="org-string">"HackMD"</span> <span class="org-string">"Zulip"</span>
+     <span class="org-comment-delimiter">;; </span><span class="org-comment">Github</span>
+     <span class="org-string">"Pull Request"</span> <span class="org-string">"Issue"</span> <span class="org-string">"Comparing .*\\.\\.\\."</span>
+     ))
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36969;&#30070;&#22686;&#21152;&#31561;&#24453;&#26178;&#38291;&#65292;&#23565;&#24453; focus &#23436;&#25104;&#20877; paste</span>
+  (emacs-everywhere-clipboard-sleep-delay 1)
+  <span class="org-builtin">:config</span>
+  (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/emacs-everywhere-set-frame-position</span> ()
+    <span class="org-doc">"Set the size and position of the emacs-everywhere frame."</span>
+    (set-frame-position (selected-frame) 550 550))
+  (advice-add 'emacs-everywhere-set-frame-position <span class="org-builtin">:override</span> #'spike-leung/emacs-everywhere-set-frame-position)
+
+  (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/emacs-everywhere-setup-fill</span> ()
+    <span class="org-doc">"Set `</span><span class="org-doc"><span class="org-constant">fill-column</span></span><span class="org-doc">' to 72 and enable the fill-column indicator."</span>
+    (<span class="org-keyword">setq-local</span> fill-column 72)
+    (display-fill-column-indicator-mode 1))
+  (add-hook 'emacs-everywhere-mode-hook #'spike-leung/emacs-everywhere-setup-fill)
+
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Add this to your config to exclude tempf file from recent files</span>
+  (<span class="org-keyword">with-eval-after-load</span> 'recentf
+    (<span class="org-keyword">dolist</span> (pattern emacs-everywhere-file-patterns)
+      (add-to-list 'recentf-exclude pattern)))
+
+  (<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/emacs-everywhere-clean-temp-file-from-recentf</span> ()
+    (<span class="org-keyword">interactive</span>)
+    (<span class="org-keyword">setq</span> recentf-list
+          (seq-remove (<span class="org-keyword">lambda</span> (f) (string-match-p <span class="org-string">"emacs-everywhere"</span> f))
+                      recentf-list))
+    (recentf-save-list)))
+</code></pre>
+</div>
+
+<p>
+配置裡我做了一些訂製：
+</p>
+<ul class="org-ul">
+<li>增加 <code>emacs-everywhere-clipboard-sleep-delay</code> ，延迟粘貼的時間，確保 focus 後再粘貼，一定程度解决修改後自動粘貼失效的問題。<small>(如果失效了，手動粘貼一下就好)</small></li>
+<li>按我的習慣調整了 Emacs Frame 的位置和大小。</li>
+<li>設置了較小的 <code>fill-column</code> ， 和純文本郵件的寛度保持一致，并啟用了 <code>display-fill-column-indicator-mode</code> ，提醒我在寫郵件時適當換行。</li>
+<li>把 emacs-everywhere 的临時文件從 <code>recentf</code> 中排除。</li>
+</ul>
+
+<p>
+最新改動見： <a href="https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-editing.el">init-editing.el</a>
+</p>
+</details>
+
+<p>
+配置好之後，還要定義一個快捷鍵喚起 emacs-everywhere：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh"><code>emacsclient --eval <span class="org-string">"(emacs-everywhere)"</span>
+</code></pre>
+</div>
+
+<p>
+我在 <a href="https://www.raycast.com/">Raycast</a> 裡定義了一個 Srcipt Commands，需要時用 Raycast 調用就行。
+</p>
+</div>
+<div id="postamble" class="status">
+<details class="webmention">
+<summary>Webmentions <span class="webmention__count js-required">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回應这篇文章，可以在你的文章或社交媒體帖子中連結这篇文章，
+然後在 <a href="https://webmention.io/taxodium.ink/webmention">Webmention Endpoint</a> 進行提交，
+其中 Source 對應你的文章 URL，Target 對應我的文章 URL，也即你引用的連結。
+提交成功後，你的回應就会顯示在此這裡，有任何問題請 <a href="mailto:l-yanlei@hotmail.com">郵件聯系我</a>。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<noscript><p class="webmention__tip">你可以發送 Webmention，但加載數據需要開啟 JS。</p></noscript>
+<hr></hr>
+<div class="webmention__list js-required"></div>
+</details><div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<footer>
+<p>感謝你的閱讀！(´｡• ᵕ •｡`) ♡</p>
+<p>若有話想說，請给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 使用 Emacs Everywhere，把任意輸入框用 Emacs 接管 &body=Hi Spike,">我</a> 發一封 <a href="https://useplaintext.email">純文本郵件</a> :)</p>
+<p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
+<p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p><time class="dt-published" datetime="2026-09-27 Sun 15:55">2026-09-27</time> 〜 <time class="dt-updated" datetime="2026-09-27 Sun 15:56">2026-09-27</time></p>
+<a href="/use-emacs-everywhere-to-take-over-any-input-field-with-emacs.txt">純文本版本</a> <a href="/use-emacs-everywhere-to-take-over-any-input-field-with-emacs.org">原始 org 文件</a>
+</footer><script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

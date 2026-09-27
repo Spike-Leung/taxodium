@@ -1,0 +1,102 @@
+使用 EMACS EVERYWHERE，把任意輸入框用 EMACS 接管
+
+2026-09-27
+__________________________________________________
+
+[tecosaur/emacs-everywhere] 是一個 Emacs 的擴展，它可以在任意輸入框輸入時，打開一個
+Emacs Frame，把輸入框的內容複製到 Emacs 裡編輯， 編輯完成後，再把內容粘貼回原來的輸入框。
+
+這樣相當於把任意輸入框「變成」Emacs，利用 Emacs 來更好的編輯，在一些需要輸入大量文本的場
+景我就會用 Emacs Everywhere，例如在 Thunderbird 寫郵件、寫 issue、寫評論、在 LLM 對話頁
+寫較長的 prompt 等。
+
+在 macOS 上使用的話，首先要在 Emacs 裡安裝 emacs-everywhere。我現在是 macOS 27，
+[tecosaur/emacs-everywhere] 有一些兼容問題，有人提了 [Issue]，暂時還沒有修複，但這個人提
+交了 [PR]，後面我又碰到了一些問題，基於這個人的 Fork，我也改了些源碼，現在我用的是 [我自
+己 fork 的版本]。
+
+在 Emacs 裡，我用 [radian-software/straight.el] 和 [use-package] 管理擴展，`straight.el'
+指定 fork 很簡單，如果你不用這些，也可以把 `emacs-everywhere.el' 下載下來後，放在 Emacs
+的配置文件中加載。
+
+,----
+| (use-package emacs-everywhere
+|   :straight (emacs-everywhere
+|              :type git
+|              :host github
+|              :repo "tecosaur/emacs-everywhere"
+|              :fork t)
+|   :custom
+|   (emacs-everywhere-frame-parameters
+|    '((name . "emacs-everywhere") (fullscreen) (width . 105) (height . 25)))
+|   (emacs-everywhere-markdown-windows
+|    '(
+|      ;; Sites
+|      "Reddit" "Stack Exchange" "Stack Overflow" "Emacs China"
+|      ;; Web Apps
+|      "Discord" "Element" "Slack" "HedgeDoc" "HackMD" "Zulip"
+|      ;; Github
+|      "Pull Request" "Issue" "Comparing .*\\.\\.\\."
+|      ))
+|   ;; 適當增加等待時間，對待 focus 完成再 paste
+|   (emacs-everywhere-clipboard-sleep-delay 1)
+|   :config
+|   (defun spike-leung/emacs-everywhere-set-frame-position ()
+|     "Set the size and position of the emacs-everywhere frame."
+|     (set-frame-position (selected-frame) 550 550))
+|   (advice-add 'emacs-everywhere-set-frame-position :override #'spike-leung/emacs-everywhere-set-frame-position)
+| 
+|   (defun spike-leung/emacs-everywhere-setup-fill ()
+|     "Set `fill-column' to 72 and enable the fill-column indicator."
+|     (setq-local fill-column 72)
+|     (display-fill-column-indicator-mode 1))
+|   (add-hook 'emacs-everywhere-mode-hook #'spike-leung/emacs-everywhere-setup-fill)
+| 
+|   ;; Add this to your config to exclude tempf file from recent files
+|   (with-eval-after-load 'recentf
+|     (dolist (pattern emacs-everywhere-file-patterns)
+|       (add-to-list 'recentf-exclude pattern)))
+| 
+|   (defun spike-leung/emacs-everywhere-clean-temp-file-from-recentf ()
+|     (interactive)
+|     (setq recentf-list
+|           (seq-remove (lambda (f) (string-match-p "emacs-everywhere" f))
+|                       recentf-list))
+|     (recentf-save-list)))
+`----
+
+配置裡我做了一些訂製：
+- 增加 `emacs-everywhere-clipboard-sleep-delay' ，延迟粘貼的時間，確保 focus 後再粘貼，
+  一定程度解决修改後自動粘貼失效的問題。(如果失效了，手動粘貼一下就好)
+- 按我的習慣調整了 Emacs Frame 的位置和大小。
+- 設置了較小的 `fill-column' ， 和純文本郵件的寛度保持一致，并啟用了
+  `display-fill-column-indicator-mode' ，提醒我在寫郵件時適當換行。
+- 把 emacs-everywhere 的临時文件從 `recentf' 中排除。
+
+最新改動見： [init-editing.el]
+
+配置好之後，還要定義一個快捷鍵喚起 emacs-everywhere：
+
+,----
+| emacsclient --eval "(emacs-everywhere)"
+`----
+
+我在 [Raycast] 裡定義了一個 Srcipt Commands，需要時用 Raycast 調用就行。
+
+
+[tecosaur/emacs-everywhere] <https://github.com/tecosaur/emacs-everywhere>
+
+[Issue] <https://github.com/tecosaur/emacs-everywhere/issues/112>
+
+[PR] <https://github.com/tecosaur/emacs-everywhere/pull/113>
+
+[我自己 fork 的版本] <https://github.com/Spike-Leung/emacs-everywhere>
+
+[radian-software/straight.el] <https://github.com/radian-software/straight.el>
+
+[use-package] <https://www.gnu.org/software/emacs/manual/html_mono/use-package.html>
+
+[init-editing.el]
+<https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-editing.el>
+
+[Raycast] <https://www.raycast.com/>

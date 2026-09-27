@@ -1,0 +1,113 @@
+#+title:      使用 Emacs Everywhere，把任意輸入框用 Emacs 接管
+#+export_file_name: use-emacs-everywhere-to-take-over-any-input-field-with-emacs
+#+date:       [2026-09-27 Sun 15:55]
+#+filetags:   :emacs:published:
+#+identifier: 20260927T145157
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 分享 Emacs Everywhere 的使用
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content hideblocks
+
+[[https://github.com/tecosaur/emacs-everywhere][tecosaur/emacs-everywhere]] 是一個 Emacs 的擴展，
+它可以在任意輸入框輸入時，打開一個 Emacs Frame，
+把輸入框的內容複製到 Emacs 裡編輯， 編輯完成後，再把內容粘貼回原來的輸入框。
+
+這樣相當於把任意輸入框「變成」Emacs，利用 Emacs 來更好的編輯，
+在一些需要輸入大量文本的場景我就會用 Emacs Everywhere，
+例如在 Thunderbird 寫郵件、寫 issue、寫評論、在 LLM 對話頁寫較長的 prompt 等。
+
+#+begin_export html
+<figure>
+  <video controls loop muted playsinline loading="lazy">
+    <source src="/images/use-emacs-everywhere-to-take-over-any-input-field-with-emacs/emacs-everywhere.webm" type="video/webm">
+  </video>
+  <figcaption>
+  一段录󠄃屏，在 Kagi Assistant 頁面的輸入框裡有一些文字，
+  全選後，打開 Raycast，找到 Emacs Everywhere 的脚本命令并执行，
+  脚本打開了一個 Emacs 的 Frame，裡面是輸入框中的文字，
+  在 Emacs 裡輸入了一些新的文字，保存退出 Emacs，新增的文字更新到了輸入框中。
+  </figcaption>
+</figure>
+#+end_export
+
+在 macOS 上使用的話，首先要在 Emacs 裡安裝 emacs-everywhere。
+我現在是 macOS 27，[[https://github.com/tecosaur/emacs-everywhere][tecosaur/emacs-everywhere]] 有一些兼容問題，
+有人提了 [[https://github.com/tecosaur/emacs-everywhere/issues/112][Issue]]，暂時還沒有修複，但這個人提交了 [[https://github.com/tecosaur/emacs-everywhere/pull/113][PR]]，
+後面我又碰到了一些問題，基於這個人的 Fork，我也改了些源碼，現在我用的是 [[https://github.com/Spike-Leung/emacs-everywhere][我自己 fork 的版本]]。
+
+在 Emacs 裡，我用 [[https://github.com/radian-software/straight.el][radian-software/straight.el]] 和 [[https://www.gnu.org/software/emacs/manual/html_mono/use-package.html][use-package]] 管理擴展，
+=straight.el= 指定 fork 很簡單，
+如果你不用這些，也可以把 =emacs-everywhere.el= 下載下來後，放在 Emacs 的配置文件中加載。
+
+#+begin_details
+#+html: <summary>我的配置</summary>
+
+
+#+begin_src emacs-lisp
+  (use-package emacs-everywhere
+    :straight (emacs-everywhere
+               :type git
+               :host github
+               :repo "tecosaur/emacs-everywhere"
+               :fork t)
+    :custom
+    (emacs-everywhere-frame-parameters
+     '((name . "emacs-everywhere") (fullscreen) (width . 105) (height . 25)))
+    (emacs-everywhere-markdown-windows
+     '(
+       ;; Sites
+       "Reddit" "Stack Exchange" "Stack Overflow" "Emacs China"
+       ;; Web Apps
+       "Discord" "Element" "Slack" "HedgeDoc" "HackMD" "Zulip"
+       ;; Github
+       "Pull Request" "Issue" "Comparing .*\\.\\.\\."
+       ))
+    ;; 適當增加等待時間，對待 focus 完成再 paste
+    (emacs-everywhere-clipboard-sleep-delay 1)
+    :config
+    (defun spike-leung/emacs-everywhere-set-frame-position ()
+      "Set the size and position of the emacs-everywhere frame."
+      (set-frame-position (selected-frame) 550 550))
+    (advice-add 'emacs-everywhere-set-frame-position :override #'spike-leung/emacs-everywhere-set-frame-position)
+
+    (defun spike-leung/emacs-everywhere-setup-fill ()
+      "Set `fill-column' to 72 and enable the fill-column indicator."
+      (setq-local fill-column 72)
+      (display-fill-column-indicator-mode 1))
+    (add-hook 'emacs-everywhere-mode-hook #'spike-leung/emacs-everywhere-setup-fill)
+
+    ;; Add this to your config to exclude tempf file from recent files
+    (with-eval-after-load 'recentf
+      (dolist (pattern emacs-everywhere-file-patterns)
+        (add-to-list 'recentf-exclude pattern)))
+
+    (defun spike-leung/emacs-everywhere-clean-temp-file-from-recentf ()
+      (interactive)
+      (setq recentf-list
+            (seq-remove (lambda (f) (string-match-p "emacs-everywhere" f))
+                        recentf-list))
+      (recentf-save-list)))
+#+end_src
+
+配置裡我做了一些訂製：
+- 增加 ~emacs-everywhere-clipboard-sleep-delay~ ，
+  延迟粘貼的時間，確保 focus 後再粘貼，一定程度解决修改後自動粘貼失效的問題。
+  @@html:<small>@@(如果失效了，手動粘貼一下就好)@@html:</small>@@
+- 按我的習慣調整了 Emacs Frame 的位置和大小。
+- 設置了較小的 ~fill-column~ ， 和純文本郵件的寛度保持一致，
+  并啟用了 ~display-fill-column-indicator-mode~ ，提醒我在寫郵件時適當換行。
+- 把 emacs-everywhere 的临時文件從 ~recentf~ 中排除。
+
+最新改動見： [[https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-editing.el][init-editing.el]]
+#+end_details
+
+配置好之後，還要定義一個快捷鍵喚起 emacs-everywhere：
+
+#+begin_src sh
+  emacsclient --eval "(emacs-everywhere)"
+#+end_src
+
+我在 [[https://www.raycast.com/][Raycast]] 裡定義了一個 Srcipt Commands，需要時用 Raycast 調用就行。
