@@ -14,7 +14,7 @@
 在寫博客時，有時我需要顯示代碼，同時把代碼导出成 HTML，放在頁面裡用。
 例如在 [[denote:20260918T113703::#7CE96E67-87D4-44F1-9612-7418BA836BE6][一些關於連結的建議::進階樣式]] 裡，我要介紹外部連結的樣式，同時要將樣式應用在頁面上，原來我會這麼做：
 
-一份用於顯示代碼 (~#+begin_src css~)：
+一個代碼块 (~#+begin_src css~) 用於顯示代碼：
 
 #+begin_example
   ,#+begin_src css
@@ -26,7 +26,7 @@
   ,#+end_src
 #+end_example
 
-然後複製相同的內容，把它导出 (~#+begin_export html~)：
+一個导出块 (~#+begin_export html~)，複製和代碼块相同的內容，把它导出到 HTML：
 
 #+name: html-example
 #+begin_src example
@@ -78,12 +78,14 @@
   ,#+end_src
 #+end_example
 
-在代碼块上開啟 noweb，即 ~:noweb yes~ ，
-然後就可以用 ~<<css-external-link>>~ 引用名字為 ~css-external-link~ 的代碼块。
-由於最終希望將代碼导出成 HTML 嵌在頁面中，
-需要設置 ~:exports results~ [fn:1]，這樣代碼的 *执行結果* 才會导出到頁面裡。
-而 ~:results output html~ [fn:2]，其中 ~output~ 指定代碼以脚本運行，并把標準輸出作為結果返回；
-~html~ 會把結果用 =BEGIN_EXPORT html= 包裹。
+- 在代碼块上開啟 noweb，即 ~:noweb yes~ ，
+  然後就可以用 ~<<css-external-link>>~ 引用名字為 ~css-external-link~ 的代碼块。
+- 由於最終希望將代碼导出成 HTML 嵌在頁面中，需要設置 ~:exports results~ [fn:1]，
+  這樣代碼的 *执行結果* 才會导出到頁面裡。
+- ~:results output html~ [fn:2]，其中 ~output~ 指定代碼以脚本運行，并把標準輸出作為結果返回；
+  ~html~ 會把結果用 =BEGIN_EXPORT html= 包裹。
+- 代碼中的 ='CSS_EOF'= 是 [[https://en.wikipedia.org/wiki/Here_document][heredoc]]，用來輸入多行字符串用的。
+  開頭的 ='CSS_EOF'= 標記起始，最後單獨一行的 =CSS_EOF= 標記結束，中間的多行是實際輸入的字符。
 
 最終就會變成這樣：
 
