@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emacs 代碼块导出复用</title>
+<meta name="author" content="Spike Leung">
+<meta name="description" content="Emacs 代碼块导出复用">
+<meta name="generator" content="Org Mode">
+<meta name="color-scheme" content="light dark" />
+<meta property="og:url" content="https://taxodium.ink/reusing-emacs-code-block-when-export.html">
+<link rel="preload" href="/styles/main.css" as="style" />
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="preload" href="/js/color-scheme.js" as="script"/>
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="canonical" href="https://taxodium.ink/reusing-emacs-code-block-when-export.html">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<script src="/js/color-scheme.js"></script>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主頁</a></li>
+    <li><a href="/subscribe.html">訂閱</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/shuffle.html" class="js-required">隨機</a></li>
+  </ul>
+  <button id="lightdark" class="js-required" aria-label="點擊切換當前頁面明暗主題">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+      <path d="M0 0h512v512H0z" fill="none" />
+      <path fill="currentColor" fill-rule="evenodd" d="M277.333 405.333v85.333h-42.667v-85.333zm99.346-58.824l60.34 60.34l-30.17 30.17l-60.34-60.34zm-241.359 0l30.17 30.17l-60.34 60.34l-30.17-30.17zM256 139.353c64.422 0 116.647 52.224 116.647 116.647c0 64.422-52.225 116.647-116.647 116.647A116.427 116.427 0 0 1 139.352 256c0-64.423 52.225-116.647 116.648-116.647m0 42.666c-40.859 0-73.981 33.123-73.981 74.062a73.76 73.76 0 0 0 21.603 52.296c13.867 13.867 32.685 21.64 52.378 21.603zm234.666 52.647v42.667h-85.333v-42.667zm-384 0v42.667H21.333v-42.667zM105.15 74.98l60.34 60.34l-30.17 30.17l-60.34-60.34zm301.7 0l30.169 30.17l-60.34 60.34l-30.17-30.17zM277.332 21.333v85.333h-42.667V21.333z" />
+    </svg>
+  </button>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">Emacs 代碼块导出复用</h1>
+</header><p>
+在寫博客時，有時我需要顯示代碼，同時把代碼导出成 HTML，放在頁面裡用。例如在 <a href="some-advice-about-links.html#7CE96E67-87D4-44F1-9612-7418BA836BE6">一些關於連結的建議::進階樣式</a> 裡，我要介紹外部連結的樣式，同時要將樣式應用在頁面上，原來我會這麼做：
+</p>
+
+<p>
+一份用於顯示代碼 (<code>#+begin_src css</code>)：
+</p>
+
+<pre class="example">
+#+begin_src css
+  a[href^='http']:not([href^='http://taxodium.ink']):not([href^='https://taxodium.ink']) {
+    &amp;::after {
+      /* 省略 */
+    }
+  }
+#+end_src
+</pre>
+
+<p>
+然後複製相同的內容，把它导出 (<code>#+begin_export html</code>)：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-example"><code>#+begin_export html
+&lt;style&gt;
+@scope {
+  a[href^='http']:not([href^='http://taxodium.ink']):not([href^='https://taxodium.ink']) {
+    &amp;::after {
+      /* 省略 */
+    }
+  }
+}
+&lt;style&gt;
+#+end_export
+</code></pre>
+</div>
+
+<p>
+但修改時就要改兩個地方，煩得很。那有沒有辦法可以复用代碼呢？當然是有的。
+</p>
+
+<p>
+在 Org Mode 裡可以利用 <a href="https://www.gnu.org/software/emacs/manual/html_mono/org.html#Noweb-Reference-Syntax">noweb</a> 去引用代碼块，給被引用的代碼块一個名字 (<code>#+name:</code>)，在引用的代碼块上設置 <code>:noweb yes</code> 就能實現引用了。
+</p>
+
+<p>
+於是上面的重复代碼就可以變成這樣：
+</p>
+
+<p>
+1.定義被引用的代碼块并命名
+</p>
+
+<pre class="example">
+#+name: css-external-link
+#+begin_src css
+  a[href^='http']:not([href^='http://taxodium.ink']):not([href^='https://taxodium.ink']) {
+    &amp;::after {
+      /* 省略 */
+    }
+  }
+#+end_src
+</pre>
+
+<p>
+2.在另一個代碼块上引用
+</p>
+
+<pre class="example">
+#+begin_src shell :noweb yes :exports results :results output html
+  cat &lt;&lt;'CSS_EOF'
+  &lt;style&gt;
+    @scope {
+      &lt;&lt;css-external-link&gt;&gt;
+    }
+  &lt;/style&gt;
+  CSS_EOF
+#+end_src
+</pre>
+
+<p>
+在代碼块上開啟 noweb，即 <code>:noweb yes</code> ，然後就可以用 <code>&lt;&lt;name&gt;&gt;</code> 引用名字為 <code>name</code> 的代碼块。由於最終希望將代碼导出成 HTML 嵌在頁面中，需要設置 <code>:exports results</code> <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>，這樣代碼的 <b>执行結果</b> 才會导出到頁面裡。而 <code>:results output html</code> <sup><a id="fnr.2" class="footref" href="#fn.2" role="doc-backlink">2</a></sup>，其中 <code>output</code> 指定代碼以脚本運行，并把標準輸出作為結果返回；<code>html</code> 會把結果用 <code>BEGIN_EXPORT html</code> 包裹。
+</p>
+
+<p>
+最終就會變成這樣：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-org"><code><span class="org-org-block-begin-line">#+begin_export html</span>
+<span class="org-org-block">&lt;</span><span class="org-org-block"><span class="org-function-name">style</span></span><span class="org-org-block">&gt;</span>
+<span class="org-org-block">@scope {</span>
+<span class="org-org-block">  a[href^='http']:not([href^='http://taxodium.ink']):not([href^='https://taxodium.ink']) {</span>
+<span class="org-org-block">    </span><span class="org-org-block"><span class="org-variable-name">&amp;::after</span></span><span class="org-org-block"> {</span>
+<span class="org-org-block">      /* &#30465;&#30053; */</span>
+<span class="org-org-block">    }</span>
+<span class="org-org-block">  }</span>
+<span class="org-org-block">}</span>
+<span class="org-org-block">&lt;</span><span class="org-org-block"><span class="org-function-name">style</span></span><span class="org-org-block">&gt;</span>
+<span class="org-org-block-end-line">#+end_export</span>
+</code></pre>
+</div>
+
+<p>
+這樣就不用寫重复代碼啦 (ﾉ&gt;ω&lt;)ﾉ
+</p>
+<div id="footnotes">
+<h2 class="footnotes">&#33050;&#27880;: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_mono/org.html#Exporting-Code-Blocks">org#Exporting Code Blocks</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2" role="doc-backlink">2</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+<a href="https://www.gnu.org/software/emacs/manual/html_mono/org.html#Results-of-Evaluation">org#Results of Evaluation</a>
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<details class="webmention">
+<summary>Webmentions <span class="webmention__count js-required">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回應这篇文章，可以在你的文章或社交媒體帖子中連結这篇文章，
+然後在 <a href="https://webmention.io/taxodium.ink/webmention">Webmention Endpoint</a> 進行提交，
+其中 Source 對應你的文章 URL，Target 對應我的文章 URL，也即你引用的連結。
+提交成功後，你的回應就会顯示在此這裡，有任何問題請 <a href="mailto:l-yanlei@hotmail.com">郵件聯系我</a>。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<noscript><p class="webmention__tip">你可以發送 Webmention，但加載數據需要開啟 JS。</p></noscript>
+<hr></hr>
+<div class="webmention__list js-required"></div>
+</details><div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo"/>
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<footer>
+<p>感謝你的閱讀！(´｡• ᵕ •｡`) ♡</p>
+<p>若有話想說，請给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: Emacs 代碼块导出复用 &body=Hi Spike,">我</a> 發一封 <a href="https://useplaintext.email">純文本郵件</a> :)</p>
+<p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
+<p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p><time class="dt-published" datetime="2026-09-27 Sun 16:45">2026-09-27</time> 〜 <time class="dt-updated" datetime="2026-09-27 Sun 16:46">2026-09-27</time></p>
+<a href="/reusing-emacs-code-block-when-export.txt">純文本版本</a> <a href="/reusing-emacs-code-block-when-export.org">原始 org 文件</a>
+</footer><script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>

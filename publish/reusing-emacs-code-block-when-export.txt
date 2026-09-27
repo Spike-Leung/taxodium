@@ -1,0 +1,106 @@
+EMACS 代碼块导出复用
+
+2026-09-27
+______________________
+
+在寫博客時，有時我需要顯示代碼，同時把代碼导出成 HTML，放在頁面裡用。例如在 [一些關於連
+結的建議::進階樣式]
+<https://taxodium.ink/some-advice-about-links.html#7CE96E67-87D4-44F1-9612-7418BA836BE6>
+裡，我要介紹外部連結的樣式，同時要將樣式應用在頁面上，原來我會這麼做：
+
+一份用於顯示代碼 (`#+begin_src css')：
+
+,----
+| #+begin_src css
+|   a[href^='http']:not([href^='http://taxodium.ink']):not([href^='https://taxodium.ink']) {
+|     &::after {
+|       /* 省略 */
+|     }
+|   }
+| #+end_src
+`----
+
+然後複製相同的內容，把它导出 (`#+begin_export html')：
+
+,----
+| #+begin_export html
+| <style>
+| @scope {
+|   a[href^='http']:not([href^='http://taxodium.ink']):not([href^='https://taxodium.ink']) {
+|     &::after {
+|       /* 省略 */
+|     }
+|   }
+| }
+| <style>
+| #+end_export
+`----
+
+但修改時就要改兩個地方，煩得很。那有沒有辦法可以复用代碼呢？當然是有的。
+
+在 Org Mode 裡可以利用 [noweb] 去引用代碼块，給被引用的代碼块一個名字 (`#+name:')，在引
+用的代碼块上設置 `:noweb yes' 就能實現引用了。
+
+於是上面的重复代碼就可以變成這樣：
+
+1.定義被引用的代碼块并命名
+
+,----
+| #+name: css-external-link
+| #+begin_src css
+|   a[href^='http']:not([href^='http://taxodium.ink']):not([href^='https://taxodium.ink']) {
+|     &::after {
+|       /* 省略 */
+|     }
+|   }
+| #+end_src
+`----
+
+2.在另一個代碼块上引用
+
+,----
+| #+begin_src shell :noweb yes :exports results :results output html
+|   cat <<'CSS_EOF'
+|   <style>
+|     @scope {
+|       <<css-external-link>>
+|     }
+|   </style>
+|   CSS_EOF
+| #+end_src
+`----
+
+在代碼块上開啟 noweb，即 `:noweb yes' ，然後就可以用 `<<name>>' 引用名字為 `name' 的代碼
+块。由於最終希望將代碼导出成 HTML 嵌在頁面中，需要設置 `:exports results' [1]，這樣代碼
+的 执行結果 才會导出到頁面裡。而 `:results output html' [2]，其中 `output' 指定代碼以脚
+本運行，并把標準輸出作為結果返回；`html' 會把結果用 `BEGIN_EXPORT html' 包裹。
+
+最終就會變成這樣：
+
+,----
+| #+begin_export html
+| <style>
+| @scope {
+|   a[href^='http']:not([href^='http://taxodium.ink']):not([href^='https://taxodium.ink']) {
+|     &::after {
+|       /* 省略 */
+|     }
+|   }
+| }
+| <style>
+| #+end_export
+`----
+
+這樣就不用寫重复代碼啦 (ﾉ>ω<)ﾉ
+
+
+[noweb] <info:org#Noweb Reference Syntax>
+
+
+
+Footnotes
+_________
+
+[1] [org#Exporting Code Blocks] (<info:org#Exporting Code Blocks>)
+
+[2] [org#Results of Evaluation] (<info:org#Results of Evaluation>)

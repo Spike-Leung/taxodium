@@ -1,0 +1,101 @@
+#+title:      Emacs 代碼块导出复用
+#+export_file_name: reusing-emacs-code-block-when-export
+#+date:       [2026-09-27 Sun 16:45]
+#+filetags:   :emacs:published:
+#+identifier: 20260927T155948
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: Emacs 代碼块导出复用
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content hideblocks
+
+在寫博客時，有時我需要顯示代碼，同時把代碼导出成 HTML，放在頁面裡用。
+例如在 [[denote:20260918T113703::#7CE96E67-87D4-44F1-9612-7418BA836BE6][一些關於連結的建議::進階樣式]] 裡，我要介紹外部連結的樣式，同時要將樣式應用在頁面上，原來我會這麼做：
+
+一份用於顯示代碼 (~#+begin_src css~)：
+
+#+begin_example
+  ,#+begin_src css
+    a[href^='http']:not([href^='http://taxodium.ink']):not([href^='https://taxodium.ink']) {
+      &::after {
+        /* 省略 */
+      }
+    }
+  ,#+end_src
+#+end_example
+
+然後複製相同的內容，把它导出 (~#+begin_export html~)：
+
+#+name: html-example
+#+begin_src example
+  ,#+begin_export html
+  <style>
+  @scope {
+    a[href^='http']:not([href^='http://taxodium.ink']):not([href^='https://taxodium.ink']) {
+      &::after {
+        /* 省略 */
+      }
+    }
+  }
+  <style>
+  ,#+end_export
+#+end_src
+
+但修改時就要改兩個地方，煩得很。那有沒有辦法可以复用代碼呢？當然是有的。
+
+在 Org Mode 裡可以利用 [[info:org#Noweb Reference Syntax][noweb]] 去引用代碼块，
+給被引用的代碼块一個名字 (~#+name:~)，在引用的代碼块上設置 ~:noweb yes~ 就能實現引用了。
+
+於是上面的重复代碼就可以變成這樣：
+
+1.定義被引用的代碼块并命名
+
+#+begin_example
+  ,#+name: css-external-link
+  ,#+begin_src css
+    a[href^='http']:not([href^='http://taxodium.ink']):not([href^='https://taxodium.ink']) {
+      &::after {
+        /* 省略 */
+      }
+    }
+  ,#+end_src
+#+end_example
+
+2.在另一個代碼块上引用
+
+#+begin_example
+  ,#+begin_src shell :noweb yes :exports results :results output html
+    cat <<'CSS_EOF'
+    <style>
+      @scope {
+        <<css-external-link>>
+      }
+    </style>
+    CSS_EOF
+  ,#+end_src
+#+end_example
+
+在代碼块上開啟 noweb，即 ~:noweb yes~ ，然後就可以用 ~<<name>>~ 引用名字為 ~name~ 的代碼块。
+由於最終希望將代碼导出成 HTML 嵌在頁面中，
+需要設置 ~:exports results~ [fn:1]，這樣代碼的 *执行結果* 才會导出到頁面裡。
+而 ~:results output html~ [fn:2]，其中 ~output~ 指定代碼以脚本運行，并把標準輸出作為結果返回；
+~html~ 會把結果用 =BEGIN_EXPORT html= 包裹。
+
+最終就會變成這樣：
+
+#+begin_src org :noweb yes
+<<html-example>>
+#+end_src
+
+這樣就不用寫重复代碼啦 (ﾉ>ω<)ﾉ
+
+* Footnotes
+:PROPERTIES:
+:CUSTOM_ID: 4F66EF7B-F54D-4623-8420-A105B6D96400
+:END:
+
+[fn:1] [[info:org#Exporting Code Blocks][org#Exporting Code Blocks]]
+
+[fn:2] [[info:org#Results of Evaluation][org#Results of Evaluation]]
