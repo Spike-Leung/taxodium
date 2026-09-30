@@ -15,11 +15,8 @@
       `https://webmention.io/api/mentions.jf2?${searchParams}`,
     );
     const feed = await response.json();
-    const feedList = feed?.children?.filter(
-      (c) => c["wm-target"].indexOf(target) !== -1,
-    );
 
-    return feedList;
+    return feed?.children || [];
   }
 
   function getTargetUrl() {
