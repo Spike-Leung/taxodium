@@ -29,10 +29,7 @@ const CONFIG = {
   outputFile: path.join(__dirname, "..", "publish/rss.xml"),
   postamble: `
 <hr>
-<p>感谢你的阅读！</p>
-<p>欢迎 <a href="mailto:l-yanlei@hotmail.com">邮件</a> 跟我分享你的想法 :)</p>
-<p>你也可以 <a href="https://taxodium.ink/subscribe.html">訂閱</a> 我的博客，保持更新 :P</p>
-<p>祝好，素未某面的读者。</p>
+<p>感谢你的閱讀和訂閱，有什麼想法歡迎 <a href="mailto:l-yanlei@hotmail.com">郵件</a> 跟我交流，祝好 :)</p>
 `
 };
 
