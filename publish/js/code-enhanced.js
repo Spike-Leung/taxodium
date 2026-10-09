@@ -21,11 +21,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const code = pre.textContent;
       navigator.clipboard.writeText(code).then(
         () => {
-          btn.textContent = "已複製 :)";
+          btn.textContent = "已複製";
           setTimeout(() => (btn.textContent = btnText), 1200);
         },
         () => {
-          btn.textContent = "複製失敗 :(";
+          btn.textContent = "複製失敗";
           setTimeout(() => (btn.textContent = btnText), 1200);
         }
       );
