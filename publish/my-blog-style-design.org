@@ -2231,15 +2231,82 @@ figure 需要添加一些下边距，避免图片和下方文字贴合过近。
 :END:
 
 #+begin_src css
-  header {
-    h1 {
-      transition: text-shadow 0.25s ease-in-out, color 0.25s ease-in-out;
-      &:hover {
-        color: transparent;
-        text-shadow: var(--color-taxodium-purple) -5px -5px 1px,
-                     var(--color-taxodium-yellow) 10px 10px 5px;
-        mix-blend-mode: plus-lighter;
+  /* header { */
+  /*   h1 { */
+  /*     transition: text-shadow 0.25s ease-in-out, color 0.25s ease-in-out; */
+  /*     &:hover { */
+  /*       color: transparent; */
+  /*       text-shadow: var(--color-taxodium-purple) -5px -5px 1px, */
+  /*                    var(--color-taxodium-yellow) 10px 10px 5px; */
+  /*       mix-blend-mode: plus-lighter; */
+  /*     } */
+  /*   } */
+  /* } */
+
+  .title {
+    cursor: not-allowed;
+
+    .letter-o {
+      &::after {
+        font-size: .75em;
+        content: "🎃";
+        display: inline-block;
+        position: relative;
+        inset-block-end: 3px;
+        transform: rotate(5deg);
       }
+    }
+
+    &:hover .letter-o {
+      &::after {
+        content: "👻";
+        transform: none;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .title:hover .letter-o::after {
+      animation: float 2s ease-in-out 1 alternate;
+    }
+  }
+
+  @keyframes float {
+    0% {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    51% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+    55% {
+      opacity: 1;
+      transform: translateY(50vh) rotate(0deg) scale(25);
+    }
+    65% {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg);
+    }
+    80% {
+      opacity: 1;
+      transform: translateY(-5px) rotate(0deg);
+    }
+    85% {
+      opacity: 1;
+      transform: translateY(5px) rotate(0deg);
+    }
+    90% {
+      opacity: 1;
+      transform: translateY(-5px) rotate(0deg);
+    }
+    95% {
+      opacity: 1;
+      transform: translateY(5px) rotate(0deg);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0px) rotate(0deg);
     }
   }
 

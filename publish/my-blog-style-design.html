@@ -2498,15 +2498,82 @@ figure 需要添加一些下边距，避免图片和下方文字贴合过近。
 <div id="outline-container-DA5A6350-73E4-49BC-AB4F-0A83F6FB8446" class="outline-3">
 <h3 id="DA5A6350-73E4-49BC-AB4F-0A83F6FB8446"><a href="#DA5A6350-73E4-49BC-AB4F-0A83F6FB8446">标题</a></h3>
 <div class="outline-text-3" id="text-DA5A6350-73E4-49BC-AB4F-0A83F6FB8446"><div class="org-src-container">
-<pre class="src src-css"><code><span class="org-css-selector">header</span> {
-  <span class="org-css-selector">h1</span> {
-    <span class="org-css-property">transition</span>: text-shadow 0.25s ease-in-out, color 0.25s ease-in-out;
-    &amp;:hover {
-      <span class="org-css-property">color</span>: transparent;
-      <span class="org-css-property">text-shadow</span>: var(<span class="org-variable-name">--color-taxodium-purple</span>) -5px -5px 1px,
-                   var(<span class="org-variable-name">--color-taxodium-yellow</span>) 10px 10px 5px;
-      <span class="org-css-property">mix-blend-mode</span>: plus-lighter;
+<pre class="src src-css"><code><span class="org-comment-delimiter">/* </span><span class="org-comment">header {</span><span class="org-comment-delimiter"> */</span>
+<span class="org-comment-delimiter">/*   </span><span class="org-comment">h1 {</span><span class="org-comment-delimiter"> */</span>
+<span class="org-comment-delimiter">/*     </span><span class="org-comment">transition: text-shadow 0.25s ease-in-out, color 0.25s ease-in-out;</span><span class="org-comment-delimiter"> */</span>
+<span class="org-comment-delimiter">/*     </span><span class="org-comment">&amp;:hover {</span><span class="org-comment-delimiter"> */</span>
+<span class="org-comment-delimiter">/*       </span><span class="org-comment">color: transparent;</span><span class="org-comment-delimiter"> */</span>
+<span class="org-comment-delimiter">/*       </span><span class="org-comment">text-shadow: var(--color-taxodium-purple) -5px -5px 1px,</span><span class="org-comment-delimiter"> */</span>
+<span class="org-comment-delimiter">/*                    </span><span class="org-comment">var(--color-taxodium-yellow) 10px 10px 5px;</span><span class="org-comment-delimiter"> */</span>
+<span class="org-comment-delimiter">/*       </span><span class="org-comment">mix-blend-mode: plus-lighter;</span><span class="org-comment-delimiter"> */</span>
+<span class="org-comment-delimiter">/*     </span><span class="org-comment">}</span><span class="org-comment-delimiter"> */</span>
+<span class="org-comment-delimiter">/*   </span><span class="org-comment">}</span><span class="org-comment-delimiter"> */</span>
+<span class="org-comment-delimiter">/* </span><span class="org-comment">}</span><span class="org-comment-delimiter"> */</span>
+
+<span class="org-css-selector">.title</span> {
+  <span class="org-css-property">cursor</span>: not-allowed;
+
+  <span class="org-css-selector">.letter-o</span> {
+    &amp;::after {
+      <span class="org-css-property">font-size</span>: .75em;
+      <span class="org-css-property">content</span>: <span class="org-string">"&#127875;"</span>;
+      <span class="org-css-property">display</span>: inline-block;
+      <span class="org-css-property">position</span>: relative;
+      <span class="org-css-property">inset-block-end</span>: 3px;
+      <span class="org-css-property">transform</span>: rotate(5deg);
     }
+  }
+
+  &amp;:hover .letter-o {
+    &amp;::after {
+      <span class="org-css-property">content</span>: <span class="org-string">"&#128123;"</span>;
+      <span class="org-css-property">transform</span>: none;
+    }
+  }
+}
+
+<span class="org-builtin">@media</span> (prefers-reduced-motion: no-preference) {
+  <span class="org-css-selector">.title:hover .letter-o::after</span> {
+    <span class="org-css-property">animation</span>: float 2s ease-in-out 1 alternate;
+  }
+}
+
+<span class="org-builtin">@keyframes</span> float {
+  <span class="org-css-selector">0%</span> {
+    <span class="org-css-property">opacity</span>: 0;
+    <span class="org-css-property">transform</span>: translateY(50px);
+  }
+  <span class="org-css-selector">51%</span> {
+    <span class="org-css-property">opacity</span>: 1;
+    <span class="org-css-property">transform</span>: translateY(0px);
+  }
+  <span class="org-css-selector">55%</span> {
+    <span class="org-css-property">opacity</span>: 1;
+    <span class="org-css-property">transform</span>: translateY(50vh) rotate(0deg) scale(25);
+  }
+  <span class="org-css-selector">65%</span> {
+    <span class="org-css-property">opacity</span>: 1;
+    <span class="org-css-property">transform</span>: translateY(0) rotate(0deg);
+  }
+  <span class="org-css-selector">80%</span> {
+    <span class="org-css-property">opacity</span>: 1;
+    <span class="org-css-property">transform</span>: translateY(-5px) rotate(0deg);
+  }
+  <span class="org-css-selector">85%</span> {
+    <span class="org-css-property">opacity</span>: 1;
+    <span class="org-css-property">transform</span>: translateY(5px) rotate(0deg);
+  }
+  <span class="org-css-selector">90%</span> {
+    <span class="org-css-property">opacity</span>: 1;
+    <span class="org-css-property">transform</span>: translateY(-5px) rotate(0deg);
+  }
+  <span class="org-css-selector">95%</span> {
+    <span class="org-css-property">opacity</span>: 1;
+    <span class="org-css-property">transform</span>: translateY(5px) rotate(0deg);
+  }
+  <span class="org-css-selector">100%</span> {
+    <span class="org-css-property">opacity</span>: 1;
+    <span class="org-css-property">transform</span>: translateY(0px) rotate(0deg);
   }
 }
 
@@ -3688,7 +3755,7 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
 <p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
 <p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p><time class="dt-published" datetime="2026-04-10 Fri 09:52">2026-04-10</time> 〜 <time class="dt-updated" datetime="2026-10-14 Wed 14:28">2026-10-14</time></p>
+<p><time class="dt-published" datetime="2026-04-10 Fri 09:52">2026-04-10</time> 〜 <time class="dt-updated" datetime="2026-10-14 Wed 21:29">2026-10-14</time></p>
 <a href="/my-blog-style-design.txt">純文本版本</a> <a href="/my-blog-style-design.org">原始 org 文件</a>
 </footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
