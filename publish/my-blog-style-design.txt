@@ -58,6 +58,7 @@ main.css
 .. @layer utils
 ..... layer start
 ..... .hidden-link
+..... visual-hidden
 ..... inline image
 ..... lyrics
 ..... image-list
@@ -1971,6 +1972,37 @@ layer start
   |   }
   | }
   `----
+
+
+visual-hidden
+-------------
+
+  See: [Everything you never wanted to know about visually-hidden] by David Bushell
+
+  ,----
+  | .visually-hidden {
+  |   /* 避免 border 和 padding 增加元素的尺寸 */
+  |   border: 0;
+  |   padding: 0;
+  |   /* 使用 clip 移除可点击区域 */
+  |   clip: rect(0 0 0 0);
+  |   clip-path: inset(50%);
+  |   /* 使其脱离文档流 */
+  |   position: absolute;
+  |   /* 让元素尺寸变成 0 */
+  |   width: 1px;
+  |   height: 1px;
+  |   margin: -1px;
+  |   /* 避免溢出 */
+  |   overflow: hidden;
+  |   /* 避免 1px 方框内的文本换行问题 */
+  |   white-space: nowrap;
+  | }
+  `----
+
+
+[Everything you never wanted to know about visually-hidden]
+<https://dbushell.com/2026/02/20/visually-hidden/>
 
 
 inline image
