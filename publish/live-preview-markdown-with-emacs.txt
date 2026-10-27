@@ -16,31 +16,24 @@ buffer 的内容变化，就主动发送新的 HTML 内容进行更新。HTML �
 
 尽管 StrapDown.js 提供了不少 [主题]，但都和 GitHub 上的样式有差异。主题其实就是加载 CSS，
 所以，通过替换对应的 CSS 文件，就可以实现 GitHub 的 markdown 样式，例如使用
-[github-markdown-css]。最终，我就得到这样一个 [markdown 的实时预览方法]:
+[github-markdown-css]。最终，我就得到这样一个 markdown 的实时预览方法:
 
 ,----
-| ;;; init-my-markdown.el --- use impatient-mode to preview markdown
-| ;;; Commentary:
-| ;;; @see:  https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type
-| ;;; Code:
-| 
-| (maybe-require-package 'impatient-mode)
-| 
-| (defun spike-leung/imp-markdown-filter (buffer)
-|   "Define imp markdown filter.
-| Wrap BUFFER with HTML, render with https://github.com/markedjs/marked and style with https://github.com/sindresorhus/github-markdown-css"
-|   (princ (with-current-buffer buffer
-|            (format "<!DOCTYPE html>
+| (use-package impatient-mode
+|   :commands (spike-leung/preview-markdown spike-leung/disable-preview-markdown)
+|   :config
+|   (defun spike-leung/imp-markdown-filter (buffer)
+|     "Define imp markdown filter.
+| Wrap BUFFER with HTML, render with https://github.com/markedjs/marked,
+| sanitize with https://github.com/cure53/DOMPurify and style with
+| https://github.com/sindresorhus/github-markdown-css."
+|     (princ (with-current-buffer buffer
+|              (format "<!DOCTYPE html>
 | <html>
-|   <title>Markdown Preview</title>
 |   <head>
-|     <link
-|       rel=\"stylesheet\"
-|       href=\"https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css\"
-|       integrity=\"sha512-BrOPA520KmDMqieeM7XFe6a3u3Sb3F1JBaQnrIAmWg3EYrciJ+Qqe6ZcKCdfPv26rGcgTrJnZ/IdQEct8h3Zhw==\"
-|       crossorigin=\"anonymous\"
-|       referrerpolicy=\"no-referrer\"
-|     />
+|     <meta charset=\"utf-8\">
+|     <title>Markdown Preview</title>
+|     <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.9.0/github-markdown.min.css\" integrity=\"sha512-Ouq1+UcR9ENXndFyd/YA9i+ETLJmX3WoaMBF/nDzdqJbipKGL/SAbkO+qjDoxfD/dhZs4ZqgR9vXkolrK77xmQ==\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\">
 |     <style>
 |           .markdown-body {
 |                   box-sizing: border-box;
@@ -56,46 +49,75 @@ buffer 的内容变化，就主动发送新的 HTML 内容进行更新。HTML �
 |                   }
 |           }
 |     </style>
-|     <script src=\"https://cdn.jsdelivr.net/npm/marked/marked.min.js\"></script>
+|     <script src=\"https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js\"></script>
+|     <script src=\"https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.4.17/purify.min.js\" integrity=\"sha512-2wT0W6vojz3cJuLoa/DxrPVQRinkfRjFWMWIDK4NghTqObEhpem1nEkeK0d9ZE+/hyvfMNuJZlfxM4LsRgeoSA==\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\"></script>
 |   </head>
 |   <body>
 |     <div id=\"markdown-body\" class=\"markdown-body\"></div>
 |     <script>
-|       document.getElementById('markdown-body').innerHTML = marked.parse(%s);
+|       // The markdown source is base64 encoded on the Emacs side, so it can
+|       // contain any character (quotes, backslashes, newlines, raw HTML tags,
+|       // ...) without breaking this script block.
+|       const bytes = Uint8Array.from(atob(\"%s\"), c => c.charCodeAt(0));
+|       const markdown = new TextDecoder('utf-8').decode(bytes);
+|       const body = document.getElementById('markdown-body');
+|       if (!window.marked || !window.DOMPurify) {
+|         body.textContent = 'Markdown preview assets failed to load (offline or SRI mismatch).';
+|       } else {
+|         body.innerHTML = DOMPurify.sanitize(marked.parse(markdown));
+|       }
 |     </script>
 |   </body>
 | </html>"
-|                    (json-encode (buffer-substring-no-properties (point-min) (point-max)))))
-|          (current-buffer)))
+|                      (base64-encode-string
+|                       (encode-coding-string
+|                        (save-restriction
+|                          (widen)
+|                          (buffer-substring-no-properties (point-min) (point-max)))
+|                        'utf-8)
+|                       t)))
+|            (current-buffer)))
 | 
-| (defun spike-leung/preview-markdown ()
-|   "Live Preview markdown."
-|   (interactive)
-|   (imp-visit-buffer)
-|   (imp-set-user-filter 'spike-leung/imp-markdown-filter))
+|   (defun spike-leung/preview-markdown ()
+|     "Live Preview markdown."
+|     (interactive)
+|     ;; Enabling `impatient-mode' resets the user filter, so install the
+|     ;; filter afterwards.
+|     (impatient-mode 1)
+|     (imp-set-user-filter #'spike-leung/imp-markdown-filter)
+|     (imp-visit-buffer))
 | 
-| (defun spike-leung/disable-preview-markdown ()
-|   "Disable preview markdown."
-|   (interactive)
-|   (progn
-|     (httpd-stop)
-|     (impatient-mode -1)
-|     (imp-remove-user-filter)))
-| 
-| (provide 'init-my-markdown)
-| ;;; init-my-markdown.el ends here
+|   (defun spike-leung/disable-preview-markdown ()
+|     "Disable preview markdown."
+|     (interactive)
+|     (when (bound-and-true-p impatient-mode)
+|       (impatient-mode -1))
+|     (imp-remove-user-filter)
+|     ;; `httpd-stop' shuts down the server for every buffer, so only stop it
+|     ;; when no other buffer is being previewed.
+|     (unless (seq-some (lambda (buf)
+|                         (with-current-buffer buf
+|                           (bound-and-true-p impatient-mode)))
+|                       (buffer-list))
+|       (ignore-errors (httpd-stop)))))
 `----
 
-效果图：
+最新代碼見 [init-prog.el] 中 markdown 部分。
+
+使用時，打開一個包含 markdown 內容的 buffer，执行 `spike-leung/preview-markdown' 即可。
+
+效果：
 
 <file:images/live-preview-markdown-with-emacs/screenshot.png>
 
-在 [Markdown 预览的效果有点差强人意] 里我还找了其他的一些方案，感兴趣可以看看：
+其他方案：
 
-- [vmd-mode.el] 快速的 Github 风格 Markdown 预览，与 emacs 缓冲区的更改同步（无需保存）。
-- [livedown.el] [Livedown] 的 Emacs 插件。
-- [FLYMD] 即时 Markdown 预览。
-- [grip-mode] 使用 [grip] 实时预览 Github 风格的 Markdown/Org 文件
+- 在 [Markdown 预览的效果有点差强人意] 里我还找了其他的一些方案，感兴趣可以看看：
+  + [vmd-mode.el] 快速的 Github 风格 Markdown 预览，与 emacs 缓冲区的更改同步（无需保存）。
+  + [livedown.el] [Livedown] 的 Emacs 插件。
+  + [FLYMD] 即时 Markdown 预览。
+  + [grip-mode] 使用 [grip] 实时预览 Github 风格的 Markdown/Org 文件
+- [makedown-ts-appear：一个基于 Treesitter 的 Markdown 高性能实时渲染包]
 
 
 [markdown-mode] <https://github.com/jrblevin/markdown-mode>
@@ -116,8 +138,7 @@ buffer 的内容变化，就主动发送新的 HTML 内容进行更新。HTML �
 
 [github-markdown-css] <https://github.com/sindresorhus/github-markdown-css>
 
-[markdown 的实时预览方法]
-<https://github.com/Spike-Leung/emacs.d/blob/main/lisp/my-lisp/init-my-markdown.el>
+[init-prog.el] <https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-prog.el>
 
 [Markdown 预览的效果有点差强人意] <https://emacs-china.org/t/topic/1549/5>
 
@@ -132,3 +153,6 @@ buffer 的内容变化，就主动发送新的 HTML 内容进行更新。HTML �
 [grip-mode] <https://github.com/seagle0128/grip-mode>
 
 [grip] <https://github.com/joeyespo/grip>
+
+[makedown-ts-appear：一个基于 Treesitter 的 Markdown 高性能实时渲染包]
+<https://emacs-china.org/t/makedown-ts-appear-treesitter-markdown/32038>
