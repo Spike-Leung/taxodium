@@ -115,7 +115,7 @@
               rect.top > prevRect.top
               && rect.top < prevRect.bottom) {
             // set clear to avoid overlap
-            sidenoteElement.style.clear = "inline-start";
+            sidenoteElement.style.clear = isSidenoteRefNearInlineStart ? "inline-start" : "inline-end";
           }
         }
       }
