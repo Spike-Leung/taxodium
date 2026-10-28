@@ -274,6 +274,7 @@
   <span class="org-variable-name">--scale-golden-ratio</span>: 1.618;
   <span class="org-comment-delimiter">/* </span><span class="org-comment">Active scale - change this to switch globally</span><span class="org-comment-delimiter"> */</span>
   <span class="org-variable-name">--typographic-scale</span>: var(<span class="org-variable-name">--scale-minor-third</span>);
+  <span class="org-variable-name">--heading-margin-scale</span>: var(<span class="org-variable-name">--scale-perfect-fourth</span>);
   <span class="org-comment-delimiter">/* </span><span class="org-comment">Base heading size</span><span class="org-comment-delimiter"> */</span>
   <span class="org-variable-name">--heading-base-size</span>: 1rem;
 }
@@ -535,105 +536,84 @@
 <div id="outline-container-99508F97-0E63-444F-82EF-D9514E4C2F5D" class="outline-4">
 <h4 id="99508F97-0E63-444F-82EF-D9514E4C2F5D"><a href="#99508F97-0E63-444F-82EF-D9514E4C2F5D">heading</a></h4>
 <div class="outline-text-4" id="text-99508F97-0E63-444F-82EF-D9514E4C2F5D"><p>
-设置标题的字号，默认都加粗。
-</p>
-
-<details>
-<summary>关于标题字号</summary>
-
-<blockquote>
-<p>
-排版比例使用的比例（大多）借鉴自音乐音程。这些比例创造了「和谐」的比例感，因为它们基于同样的数学关系，而正是这些关系让优秀的音乐听起来悦耳。
+设置标题的字号，按照比例設置字號，標題的上邊距會更大，下邊距更小，使得標題和屬於牠的內容視覺上聯系更紧密。
 </p>
 
 <p>
-常用比例：
+參考：
 </p>
 
 <ul class="org-ul">
-<li>小三度 (1.200) - 细微</li>
-<li>大三度 (1.250) - 均衡</li>
-<li>纯四度 (1.333) - 略显张力</li>
-<li>纯五度 (1.500) - 醒目</li>
-<li>黄金比例 (1.618) - 非音程，但常用</li>
+<li><a href="https://www.alwaystwisted.com/articles/building-typographic-scales-with-headings-sibling-index-and-pow">Building Typographic Scales in CSS with :heading(), sibling-index(), and pow()</a> by Stuart Robson</li>
+<li><a href="https://www.craigabbott.co.uk/blog/2026/using-maths-to-balance-your-heading-styles/">Using maths to balance your heading styles</a> by Craig Abbott</li>
 </ul>
-
-<p>
-这些比例是指数级的，而非线性的。每个标题级别都是在前一个级别的基础上乘以比例，而不是相加。
-</p>
-
-<p>
-以下是使用大三度比例 (1.25) 时，各标题级别的指数级增长情况：
-</p>
-
-<div class="org-src-container">
-<pre class="src src-text"><code>h6: 1rem &#215; 1.25&#8304; = 1rem
-h5: 1rem &#215; 1.25&#185; = 1.25rem
-h4: 1rem &#215; 1.25&#178; = 1.563rem
-h3: 1rem &#215; 1.25&#179; = 1.953rem
-h2: 1rem &#215; 1.25&#8308; = 2.441rem
-h1: 1rem &#215; 1.25&#8309; = 3.052rem
-</code></pre>
-</div>
-
-<p>
-其模式为：基础大小 × 比例 ^ 指数。
-</p>
-
-<p>
-这就是 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/pow">pow()</a> 发挥作用的地方。
-</p>
-
-<p>
-<a href="https://www.alwaystwisted.com/articles/building-typographic-scales-with-headings-sibling-index-and-pow">Building Typographic Scales in CSS with :heading(), sibling-index(), and pow()</a>
-</p>
-</blockquote>
-</details>
-
-<p>
-也可以參考： <a href="https://www.craigabbott.co.uk/blog/2026/using-maths-to-balance-your-heading-styles/">Using maths to balance your heading styles</a> by Craig Abbott
-</p>
 
 <p>
 因为标题本身字体就很大，行高太大，就会有很多多余的空白，所以将行高降低为 1.2。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-css"><code><span class="org-css-selector">h1,</span>
+<pre class="src src-css"><code><span class="org-comment-delimiter">/* </span><span class="org-comment">&#35373;&#32622;&#27161;&#38988;&#30340;&#22823;&#23567;&#21644;&#19978;&#37002;&#36317;</span><span class="org-comment-delimiter"> */</span>
+<span class="org-css-selector">h1,</span>
 <span class="org-css-selector">h2,</span>
 <span class="org-css-selector">h3,</span>
 <span class="org-css-selector">h4,</span>
 <span class="org-css-selector">h5,</span>
 <span class="org-css-selector">h6</span> {
   <span class="org-css-property">line-height</span>: 1.2;
-  <span class="org-css-property">font-weight</span>: 700;
   <span class="org-css-property">padding</span>: 0;
-  <span class="org-css-property">margin-block</span>: 1.5rem 0.5rem;
+  <span class="org-css-property">margin</span>: 0;
+  <span class="org-css-property">margin-block-start</span>: calc(var(<span class="org-variable-name">--heading-base-size</span>) * pow(var(<span class="org-variable-name">--heading-margin-scale</span>), var(<span class="org-variable-name">--heading-level</span>)));
   <span class="org-css-property">font-size</span>: calc(var(<span class="org-variable-name">--heading-base-size</span>) * pow(var(<span class="org-variable-name">--typographic-scale</span>), var(<span class="org-variable-name">--heading-level</span>)));
 }
 
 <span class="org-css-selector">h1</span> {
-  <span class="org-variable-name">--heading-level</span>: 5;
+  <span class="org-variable-name">--heading-level</span>: 4;
+  <span class="org-comment-delimiter">/* </span><span class="org-comment">h1 &#19968;&#33324;&#26159;&#38913;&#38754;&#30340;&#20027;&#27161;&#38988;&#65292;&#19978;&#37002;&#36317;&#22826;&#22823;&#26371;&#39023;&#24471;&#24456;&#31354;&#65292;&#23559;&#20854;&#35373;&#32622;&#24471;&#23567;&#19968;&#20123;</span><span class="org-comment-delimiter"> */</span>
+  <span class="org-css-property">margin-block-start</span>: calc(var(<span class="org-variable-name">--heading-base-size</span>) * pow(var(<span class="org-variable-name">--heading-margin-scale</span>), 2));
 }
 
 <span class="org-css-selector">h2</span> {
-  <span class="org-variable-name">--heading-level</span>: 4;
-}
-
-<span class="org-css-selector">h3</span> {
   <span class="org-variable-name">--heading-level</span>: 3;
 }
 
-<span class="org-css-selector">h4</span> {
+<span class="org-css-selector">h3</span> {
   <span class="org-variable-name">--heading-level</span>: 2;
 }
 
-<span class="org-css-selector">h5</span> {
+<span class="org-css-selector">h4</span> {
   <span class="org-variable-name">--heading-level</span>: 1;
+}
+
+<span class="org-css-selector">h5</span> {
+  <span class="org-variable-name">--heading-level</span>: 0;
+  <span class="org-css-property">font-weight</span>: 500;
 }
 
 <span class="org-css-selector">h6</span> {
   <span class="org-variable-name">--heading-level</span>: 0;
+}
+
+<span class="org-comment-delimiter">/* </span><span class="org-comment">&#35373;&#32622;&#27161;&#38988;&#19979;&#20839;&#23481;&#30340;&#38291;&#36317;</span><span class="org-comment-delimiter"> */</span>
+<span class="org-css-selector">:where(h1,h2,h3,h4,h5,h6) + [class*=</span><span class="org-string">"outline-text-"</span><span class="org-css-selector">] &gt; *</span> {
+  <span class="org-css-property">margin</span>: 0;
+  <span class="org-css-property">margin-block-start</span>: var(<span class="org-variable-name">--flow-space</span>);
+}
+
+<span class="org-css-selector">h1 + [class*=</span><span class="org-string">"outline-text-"</span><span class="org-css-selector">] &gt; *</span> {
+  <span class="org-variable-name">--flow-space</span>: calc(var(<span class="org-variable-name">--heading-base-size</span>) * pow(var(<span class="org-variable-name">--heading-margin-scale</span>), 1));
+}
+
+<span class="org-css-selector">:where(h2,h3,h4) + [class*=</span><span class="org-string">"outline-text-"</span><span class="org-css-selector">] &gt; *</span> {
+  <span class="org-variable-name">--flow-space</span>: calc(var(<span class="org-variable-name">--heading-base-size</span>) * pow(var(<span class="org-variable-name">--heading-margin-scale</span>), -1));
+}
+
+<span class="org-css-selector">h5 + [class*=</span><span class="org-string">"outline-text-"</span><span class="org-css-selector">] &gt; *</span> {
+  <span class="org-variable-name">--flow-space</span>: calc(var(<span class="org-variable-name">--heading-base-size</span>) * pow(var(<span class="org-variable-name">--heading-margin-scale</span>), -2));
+}
+
+<span class="org-css-selector">h6 + [class*=</span><span class="org-string">"outline-text-"</span><span class="org-css-selector">] &gt; *</span> {
+  <span class="org-variable-name">--flow-space</span>: calc(var(<span class="org-variable-name">--heading-base-size</span>) * pow(var(<span class="org-variable-name">--heading-margin-scale</span>), -3));
 }
 </code></pre>
 </div>
@@ -756,7 +736,8 @@ Heading 也是鏈接，但我希望顯示成字體顏色，從而和鏈接區分
 
 <div class="org-src-container">
 <pre class="src src-css"><code><span class="org-css-selector">p</span> {
-  <span class="org-css-property">margin</span>: 1lh 0;
+  <span class="org-css-property">margin</span>: 0;
+  <span class="org-css-property">margin-block-start</span>: 1lh;
 }
 </code></pre>
 </div>
@@ -1811,6 +1792,10 @@ note section 一般用于一些补充内容，设置一个特殊的样式，使�
 
   &amp; + section[role=<span class="org-string">"note"</span>] {
     <span class="org-css-property">margin-block-start</span>: 1rem;
+  }
+
+  &amp; p {
+    <span class="org-css-property">margin-block</span>: 1rem;
   }
 }
 </code></pre>
@@ -3759,7 +3744,7 @@ Album 页面会引用 88x31 的 lucida 图标，但是图标默认会包裹 figu
 <p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
 <p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p><time class="dt-published" datetime="2026-04-10 Fri 09:52">2026-04-10</time> 〜 <time class="dt-updated" datetime="2026-10-22 Thu 22:53">2026-10-22</time></p>
+<p><time class="dt-published" datetime="2026-04-10 Fri 09:52">2026-04-10</time> 〜 <time class="dt-updated" datetime="2026-10-28 Wed 15:25">2026-10-28</time></p>
 <a href="/my-blog-style-design.txt">純文本版本</a> <a href="/my-blog-style-design.org">原始 org 文件</a>
 </footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>

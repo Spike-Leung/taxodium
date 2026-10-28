@@ -69,6 +69,7 @@
   --scale-golden-ratio: 1.618;
   /* Active scale - change this to switch globally */
   --typographic-scale: var(--scale-minor-third);
+  --heading-margin-scale: var(--scale-perfect-fourth);
   /* Base heading size */
   --heading-base-size: 1rem;
 }
@@ -230,6 +231,7 @@ body {
   text-align: center;
 }
 
+/* 設置標題的大小和上邊距 */
 h1,
 h2,
 h3,
@@ -237,34 +239,59 @@ h4,
 h5,
 h6 {
   line-height: 1.2;
-  font-weight: 700;
   padding: 0;
-  margin-block: 1.5rem 0.5rem;
+  margin: 0;
+  margin-block-start: calc(var(--heading-base-size) * pow(var(--heading-margin-scale), var(--heading-level)));
   font-size: calc(var(--heading-base-size) * pow(var(--typographic-scale), var(--heading-level)));
 }
 
 h1 {
-  --heading-level: 5;
+  --heading-level: 4;
+  /* h1 一般是頁面的主標題，上邊距太大會顯得很空，將其設置得小一些 */
+  margin-block-start: calc(var(--heading-base-size) * pow(var(--heading-margin-scale), 2));
 }
 
 h2 {
-  --heading-level: 4;
-}
-
-h3 {
   --heading-level: 3;
 }
 
-h4 {
+h3 {
   --heading-level: 2;
 }
 
-h5 {
+h4 {
   --heading-level: 1;
+}
+
+h5 {
+  --heading-level: 0;
+  font-weight: 500;
 }
 
 h6 {
   --heading-level: 0;
+}
+
+/* 設置標題下內容的間距 */
+:where(h1,h2,h3,h4,h5,h6) + [class*="outline-text-"] > * {
+  margin: 0;
+  margin-block-start: var(--flow-space);
+}
+
+h1 + [class*="outline-text-"] > * {
+  --flow-space: calc(var(--heading-base-size) * pow(var(--heading-margin-scale), 1));
+}
+
+:where(h2,h3,h4) + [class*="outline-text-"] > * {
+  --flow-space: calc(var(--heading-base-size) * pow(var(--heading-margin-scale), -1));
+}
+
+h5 + [class*="outline-text-"] > * {
+  --flow-space: calc(var(--heading-base-size) * pow(var(--heading-margin-scale), -2));
+}
+
+h6 + [class*="outline-text-"] > * {
+  --flow-space: calc(var(--heading-base-size) * pow(var(--heading-margin-scale), -3));
 }
 
 img,
@@ -346,7 +373,8 @@ a {
 }
 
 p {
-  margin: 1lh 0;
+  margin: 0;
+  margin-block-start: 1lh;
 }
 
 p:empty {
@@ -1065,6 +1093,10 @@ section[role="note"] {
 
   & + section[role="note"] {
     margin-block-start: 1rem;
+  }
+
+  & p {
+    margin-block: 1rem;
   }
 }
 
