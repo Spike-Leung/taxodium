@@ -8,8 +8,14 @@
 #+language: zh-CN
 #+author: Spike Leung
 #+email: l-yanlei@hotmail.com
-#+options: ^:{} toc:1
+#+options: ^:{} toc:nil
 #+startup: content
+
+#+begin_details
+#+html: <summary>目錄</summary>
+
+#+TOC: headlines 1 local
+#+end_details
 
 * 前言
 :PROPERTIES:
@@ -43,7 +49,7 @@
 :CUSTOM_ID: f7592b92-a819-41b1-b35c-139deca38984
 :END:
 
-#+attr_html: :width 100%
+#+attr_html: :width 100% :alt 一個坚果外殼 (shell)
 https://effective-shell.com/assets/images/image-walnut-93cb9b0e2b015cbc5de26cd2c4483ecd.jpg
 
 我们平时说的 ~shell~ ，一般指的就是命令行。
@@ -56,7 +62,7 @@ about program.
 
 更具体的，shell 就是调用系统 kernel 的程序，他们的关系好比果核和果壳。
 
-#+attr_html: :width 100%
+#+attr_html: :width 100% :alt 終端、 Shell、操作系統之間的關係
 [[https://effective-shell.com/assets/images/diagram3-terminal-and-shell-31620f593a4c3838051a5a6dcea17577.png]]
 
 - [[https://effective-shell.com/part-2-core-skills/what-is-a-shell/#the-operating-system][The Operating System]]
@@ -329,9 +335,6 @@ One thing we might want to do is quickly move from one location to another, then
 - ~popd~ :: 'pops' the working directory off the top of the stack
 - ~dirs~ :: 查看 poshd 和 popd 操作后的堆栈情况
 
-#+attr_html: :width 100%
-https://effective-shell.com/assets/images/pushd-popd-stack-ccd34132d513841c5b1d97c842b0413f.png
-
 *** 文件 CRUD
 :PROPERTIES:
 :CUSTOM_ID: 0c8c4689-f86d-48d9-8fed-71e3cf76ef56
@@ -527,17 +530,17 @@ user.
 :CUSTOM_ID: ae665f11-3706-4952-b9d2-0fb923d96568
 :END:
 
-#+attr_html: :width 100%
+#+attr_html: :width 100% :alt 標凖輸入(stdin)，標準輸出(stdout)，標凖錯誤 (stderr)
 https://effective-shell.com/assets/images/diagram-stdin-stdout-stderr-702e578630d8d39c813d7d88c270c339.png
 
-#+attr_html: :width 100%
+#+attr_html: :width 100% :alt 鍵盤輸入，經過 pipelines 处理後，結果輸出到屏幕
 https://effective-shell.com/assets/images/diagram-shell-keyboard-terminal-0475940cdf40bbcc8a329c090aa9e76a.png
 
 #+begin_src bash
   cat ~/effective-shell/text/simpsons-characters.txt | sort | uniq
 #+end_src
 
-#+attr_html: :width 100%
+#+attr_html: :width 100% :alt cat pipeline
 https://effective-shell.com/assets/images/diagram-cat-sort-uniq-pipeline-8c8d76566f351b4b9b900dde52af86b3.png
 
 #+attr_html: :width 100%
@@ -552,7 +555,7 @@ https://effective-shell.com/assets/images/diagram-cat-sort-uniq-pipeline-8c8d765
 :CUSTOM_ID: 2654d543-dda2-4fae-878f-39f3924763f7
 :END:
 
-#+attr_html: :width 100%
+#+attr_html: :width 100% :alt 標準輸入示例
 https://effective-shell.com/assets/images/diagram-input-examples-e014dd4998bee0b50a94849ad55b01ce.png
 
 ** [[https://effective-shell.com/part-2-core-skills/thinking-in-pipelines/#common-patterns---standard-output][Common Patterns - Standard Output]]
@@ -560,7 +563,7 @@ https://effective-shell.com/assets/images/diagram-input-examples-e014dd4998bee0b
 :CUSTOM_ID: add400ba-cdd4-4efe-8131-4d7bca02c28f
 :END:
 
-#+attr_html: :width 100%
+#+attr_html: :width 100% :alt 標準輸出示例
 https://effective-shell.com/assets/images/diagram-output-examples-27e30c4a4036b2591e10e8c4fca7dc73.png
 
 ** [[https://effective-shell.com/part-2-core-skills/thinking-in-pipelines/#common-patterns---standard-error][Common Patterns - Standard Error]]
@@ -568,21 +571,21 @@ https://effective-shell.com/assets/images/diagram-output-examples-27e30c4a4036b2
 :CUSTOM_ID: a98449f1-6c3a-42b7-be83-037326870c5c
 :END:
 
-#+attr_html: :width 100%
+#+attr_html: :width 100% :alt 標準錯誤示例
 https://effective-shell.com/assets/images/diagram-stderr-options-a2cde4aa6177249c25dd9e5c0c62667a.png
 
 #+begin_src bash
   mkdir ~/effective-shell/new-folder | tr '[:lower:]' '[:upper:]'
 #+end_src
 
-#+attr_html: :width 100%
+#+attr_html: :width 100% :alt mkdir 管道到 tr
 https://effective-shell.com/assets/images/diagram-stderr-d0845508087975a7d58ebac63e3a8cd5.png
 
 #+begin_src bash
   mkdir ~/effective-shell/new-folder 2>&1 | tr '[:lower:]' '[:upper:]'
 #+end_src
 
-#+attr_html: :width 100%
+#+attr_html: :width 100% :alt mkdir 管道到 tr，但將標準錯誤重定向到標準輸出中
 https://effective-shell.com/assets/images/diagram-stderr-redirect-c7d8fe2d93a8cdb248924cc13027b59e.png
 
 *** [[https://stackoverflow.com/questions/818255/what-does-21-mean][2>&1]]
@@ -630,7 +633,7 @@ right/, [[https://www.brianstorti.com/understanding-shell-script-idiom-redirect/
 :CUSTOM_ID: 7bb2ca5b-d397-49ba-bd28-e6314ccc3f19
 :END:
 
-#+attr_html: :width 100%
+#+attr_html: :width 100% :alt T Pipe
 https://effective-shell.com/assets/images/diagram-tee-6ad6dadcfa804f75f96b36807ffd688b.png
 
 #+begin_src bash
@@ -648,7 +651,7 @@ The =tee= command is like a T-pipe in plumbing - it lets the stream of data go i
 :CUSTOM_ID: d72b519d-1ceb-4ffa-8901-11c0f5c1179f
 :END:
 
-#+attr_html: :width 100%
+#+attr_html: :width 100% :alt 命令行移動、編輯、搜索的快捷鍵
 [[https://effective-shell.com/assets/images/command-line-a47c08acd86b732173b3f6dfc1955bb1.png]]
 
 * [[https://effective-shell.com/part-2-core-skills/job-control][Job Control]]
@@ -706,7 +709,7 @@ The =tee= command is like a T-pipe in plumbing - it lets the stream of data go i
 The most obvious one is that all jobs write to the same output,
 meaning you can quickly get garbled output like this:
 
-#+attr_html: :width 100%
+#+attr_html: :width 100% :alt 來回切換 job 輸出的結果
 https://effective-shell.com/assets/images/output-c59dac752d60566d856c3f01b4ef0ffb.png
 #+end_quote
 
