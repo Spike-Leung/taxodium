@@ -24,6 +24,7 @@
 <link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
 <link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
 <script src="/js/color-scheme.js"></script>
+<link rel="stylesheet" href="/styles/image-enhance.css" />
 </head>
 <body class="h-entry">
 <div id="preamble" class="status">
@@ -48,9 +49,9 @@
 <h1 class="title p-name">Advent of Code 2025 day11</h1>
 </header>
 <figure>
-<a href="images/aoc-2025-day-11/aoc-day11-meme.webp"><img src="images/aoc-2025-day-11/aoc-day11-meme.webp" alt="aoc-day11-meme.webp" class="center" id="aoc-day11-meme"></a>
+<a href="images/aoc-2025-day-11/aoc-day11-meme.webp"><img src="images/aoc-2025-day-11/aoc-day11-meme.webp" alt="Advent Of Code 梗圖" class="center" id="aoc-day11-meme"></a>
 
-<figcaption><span class="figure-number">&#22270;1&nbsp; </span>一张梗图，从左到右分成 3 个部分； 第一部分，day1 到 day8 是一只开心的金毛； 第二部分：day9 和 day10 是一只黑色的抓狂的怪物； 第三部分：day11 又变回了开心的金毛，底下写着「我是一个图论专家」。 (图片来源：<a href="https://www.reddit.com/r/adventofcode/comments/1pjq48p/2025_day_11_throwback_to_the_2023_aoc_memes/">[2025 Day 11] Throwback to the 2023 AoC Memes</a>)</figcaption>
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>从左到右分成 3 个部分； 第一部分，day1 到 day8 是一只开心的金毛； 第二部分：day9 和 day10 是一只黑色的抓狂的怪物； 第三部分：day11 又变回了开心的金毛，底下写着「我是一个图论专家」。 (图片来源：<a href="https://www.reddit.com/r/adventofcode/comments/1pjq48p/2025_day_11_throwback_to_the_2023_aoc_memes/">[2025 Day 11] Throwback to the 2023 AoC Memes</a>)</figcaption>
 </figure>
 
 <p>
@@ -90,9 +91,8 @@ part1 的问题是，从 you 出发，渠道 out，总共有几条路径？
 
 
 <figure>
-<a href="images/aoc-2025-day-11/graph.webp"><img src="images/aoc-2025-day-11/graph.webp" alt="graph.webp"></a>
+<a href="images/aoc-2025-day-11/graph.webp"><img src="images/aoc-2025-day-11/graph.webp" alt="按照输入连接起来的一张图"></a>
 
-<figcaption><span class="figure-number">&#22270;2&nbsp; </span>按照输入连接起来的一张图</figcaption>
 </figure>
 
 <p>
@@ -121,25 +121,25 @@ path(you-&gt;out)
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><code><span class="org-keyword">def</span> <span class="org-function-name">count_path_to_out</span>(graph, node, memo <span class="org-operator">=</span> <span class="org-constant">None</span>):
+<pre class="src src-python"><code><span class="org-keyword">def</span> <span class="org-function-name">count_path_to_out</span>(<span class="org-variable-name">graph</span>, <span class="org-variable-name">node</span>, <span class="org-variable-name">memo</span> = <span class="org-constant">None</span>):
   <span class="org-keyword">if</span> memo <span class="org-keyword">is</span> <span class="org-constant">None</span>:
-    <span class="org-variable-name">memo</span> <span class="org-operator">=</span> {}
-  <span class="org-comment-delimiter"># </span><span class="org-comment">&#22914;&#26524;&#33410;&#28857;&#35745;&#31639;&#36807;&#20102;&#65292;&#30452;&#25509;&#36820;&#22238;&#35745;&#31639;&#32467;&#26524;</span>
+    <span class="org-variable-name">memo</span> = {}
+  <span class="org-comment"># &#22914;&#26524;&#33410;&#28857;&#35745;&#31639;&#36807;&#20102;&#65292;&#30452;&#25509;&#36820;&#22238;&#35745;&#31639;&#32467;&#26524;</span>
   <span class="org-keyword">if</span> node <span class="org-keyword">in</span> memo:
     <span class="org-keyword">return</span> memo[node]
 
-  <span class="org-comment-delimiter"># </span><span class="org-comment">&#25269;&#36798; out&#65292;&#25214;&#21040;&#19968;&#26465;&#36335;&#24452;&#65292;&#36820;&#22238; 1</span>
-  <span class="org-keyword">if</span> node <span class="org-operator">==</span> <span class="org-string">'out'</span>:
-    <span class="org-variable-name">memo</span>[node] <span class="org-operator">=</span> 1
+  <span class="org-comment"># &#25269;&#36798; out&#65292;&#25214;&#21040;&#19968;&#26465;&#36335;&#24452;&#65292;&#36820;&#22238; 1</span>
+  <span class="org-keyword">if</span> node == <span class="org-string">'out'</span>:
+    memo[node] = <span class="org-number">1</span>
     <span class="org-keyword">return</span> memo[node]
 
-  <span class="org-variable-name">count</span> <span class="org-operator">=</span> 0
-  <span class="org-variable-name">next_paths</span> <span class="org-operator">=</span> graph[node]
+  <span class="org-variable-name">count</span> = <span class="org-number">0</span>
+  <span class="org-variable-name">next_paths</span> = graph[node]
 
-  <span class="org-comment-delimiter"># </span><span class="org-comment">&#36941;&#21382;&#30456;&#37051;&#30340;&#33410;&#28857;&#65292;&#32047;&#35745;&#21040;&#36798; out &#30340;&#36335;&#24452;&#25968;&#37327;</span>
-  <span class="org-keyword">for</span> path <span class="org-keyword">in</span> next_paths:
-    <span class="org-variable-name">count</span> <span class="org-operator">+=</span> count_path_to_out(graph, path, memo)
-  <span class="org-variable-name">memo</span>[node] <span class="org-operator">=</span> count
+  <span class="org-comment"># &#36941;&#21382;&#30456;&#37051;&#30340;&#33410;&#28857;&#65292;&#32047;&#35745;&#21040;&#36798; out &#30340;&#36335;&#24452;&#25968;&#37327;</span>
+  <span class="org-keyword">for</span> <span class="org-variable-name">path</span> <span class="org-keyword">in</span> next_paths:
+    <span class="org-variable-name">count</span> += count_path_to_out(graph, path, memo)
+  memo[node] = count
   <span class="org-keyword">return</span> memo[node]
 
 count_path_to_out(graph, <span class="org-string">'start'</span>)
@@ -233,36 +233,36 @@ svr,aaa, <b>fft</b>,ccc,eee, <b>dac</b>,fff,hhh,out &lt;&ndash;<br>
 </p>
 
 <div class="org-src-container">
-<pre class="src src-python"><code><span class="org-keyword">def</span> <span class="org-function-name">count_path_to_out_with_ftt_dac</span>(graph, node, memo <span class="org-operator">=</span> <span class="org-constant">None</span>, fft_seen <span class="org-operator">=</span> <span class="org-constant">False</span>, dac_seen <span class="org-operator">=</span> <span class="org-constant">False</span>):
+<pre class="src src-python"><code><span class="org-keyword">def</span> <span class="org-function-name">count_path_to_out_with_ftt_dac</span>(<span class="org-variable-name">graph</span>, <span class="org-variable-name">node</span>, <span class="org-variable-name">memo</span> = <span class="org-constant">None</span>, <span class="org-variable-name">fft_seen</span> = <span class="org-constant">False</span>, <span class="org-variable-name">dac_seen</span> = <span class="org-constant">False</span>):
   <span class="org-keyword">if</span> memo <span class="org-keyword">is</span> <span class="org-constant">None</span>:
-    <span class="org-variable-name">memo</span> <span class="org-operator">=</span> {}
-  <span class="org-comment-delimiter"># </span><span class="org-comment">&#23558; fft_seen &#21644; dac_seen &#28155;&#21152;&#21040; key &#20013;&#65292;&#21306;&#20998;&#19981;&#21516;&#29366;&#24577;&#30340; node</span>
-  <span class="org-variable-name">key</span> <span class="org-operator">=</span> (node, fft_seen, dac_seen)
+    <span class="org-variable-name">memo</span> = {}
+  <span class="org-comment"># &#23558; fft_seen &#21644; dac_seen &#28155;&#21152;&#21040; key &#20013;&#65292;&#21306;&#20998;&#19981;&#21516;&#29366;&#24577;&#30340; node</span>
+  <span class="org-variable-name">key</span> = (node, fft_seen, dac_seen)
 
-  <span class="org-comment-delimiter"># </span><span class="org-comment">&#22914;&#26524;&#33410;&#28857;&#35745;&#31639;&#36807;&#20102;&#65292;&#30452;&#25509;&#36820;&#22238;&#35745;&#31639;&#32467;&#26524;</span>
+  <span class="org-comment"># &#22914;&#26524;&#33410;&#28857;&#35745;&#31639;&#36807;&#20102;&#65292;&#30452;&#25509;&#36820;&#22238;&#35745;&#31639;&#32467;&#26524;</span>
   <span class="org-keyword">if</span> key <span class="org-keyword">in</span> memo:
     <span class="org-keyword">return</span> memo[key]
 
-  <span class="org-comment-delimiter"># </span><span class="org-comment">&#21028;&#26029;&#26159;&#21542;&#32463;&#36807;&#20102; fft &#21644; dac</span>
-  <span class="org-variable-name">fft_seen</span> <span class="org-operator">=</span> node <span class="org-operator">==</span> <span class="org-string">'fft'</span> <span class="org-keyword">or</span> fft_seen
-  <span class="org-variable-name">dac_seen</span> <span class="org-operator">=</span> node <span class="org-operator">==</span> <span class="org-string">'dac'</span> <span class="org-keyword">or</span> dac_seen
+  <span class="org-comment"># &#21028;&#26029;&#26159;&#21542;&#32463;&#36807;&#20102; fft &#21644; dac</span>
+  <span class="org-variable-name">fft_seen</span> = node == <span class="org-string">'fft'</span> <span class="org-keyword">or</span> fft_seen
+  <span class="org-variable-name">dac_seen</span> = node == <span class="org-string">'dac'</span> <span class="org-keyword">or</span> dac_seen
 
-  <span class="org-comment-delimiter"># </span><span class="org-comment">&#25269;&#36798; out</span>
-  <span class="org-keyword">if</span> node <span class="org-operator">==</span> <span class="org-string">'out'</span>:
-    <span class="org-comment-delimiter"># </span><span class="org-comment">&#24403;&#36335;&#24452;&#21253;&#21547; fft &#21644; dac&#65292;&#25214;&#21040;&#19968;&#26465;&#31526;&#21512;&#30340;&#36335;&#24452;&#65292;&#36820;&#22238; 1</span>
+  <span class="org-comment"># &#25269;&#36798; out</span>
+  <span class="org-keyword">if</span> node == <span class="org-string">'out'</span>:
+    <span class="org-comment"># &#24403;&#36335;&#24452;&#21253;&#21547; fft &#21644; dac&#65292;&#25214;&#21040;&#19968;&#26465;&#31526;&#21512;&#30340;&#36335;&#24452;&#65292;&#36820;&#22238; 1</span>
     <span class="org-keyword">if</span> fft_seen <span class="org-keyword">and</span> dac_seen:
-      <span class="org-variable-name">memo</span>[key] <span class="org-operator">=</span> 1
+      memo[key] = <span class="org-number">1</span>
     <span class="org-keyword">else</span>:
-      <span class="org-variable-name">memo</span>[key] <span class="org-operator">=</span> 0
+      memo[key] = <span class="org-number">0</span>
     <span class="org-keyword">return</span> memo[key]
 
-  <span class="org-variable-name">count</span> <span class="org-operator">=</span> 0
-  <span class="org-variable-name">next_paths</span> <span class="org-operator">=</span> graph[node]
+  <span class="org-variable-name">count</span> = <span class="org-number">0</span>
+  <span class="org-variable-name">next_paths</span> = graph[node]
 
-  <span class="org-comment-delimiter"># </span><span class="org-comment">&#36941;&#21382;&#30456;&#37051;&#30340;&#33410;&#28857;&#65292;&#32047;&#35745;&#21040;&#36798; out &#30340;&#36335;&#24452;&#25968;&#37327;</span>
-  <span class="org-keyword">for</span> path <span class="org-keyword">in</span> next_paths:
-    <span class="org-variable-name">count</span> <span class="org-operator">+=</span> count_path_to_out_with_ftt_dac(graph, path, memo, fft_seen, dac_seen)
-  <span class="org-variable-name">memo</span>[key] <span class="org-operator">=</span> count
+  <span class="org-comment"># &#36941;&#21382;&#30456;&#37051;&#30340;&#33410;&#28857;&#65292;&#32047;&#35745;&#21040;&#36798; out &#30340;&#36335;&#24452;&#25968;&#37327;</span>
+  <span class="org-keyword">for</span> <span class="org-variable-name">path</span> <span class="org-keyword">in</span> next_paths:
+    <span class="org-variable-name">count</span> += count_path_to_out_with_ftt_dac(graph, path, memo, fft_seen, dac_seen)
+  memo[key] = count
   <span class="org-keyword">return</span> memo[key]
 
 count_path_to_out_with_ftt_dac(graph, <span class="org-string">'svr'</span>)
@@ -280,14 +280,13 @@ day11 的 part1 是很简单的，因为 <code>you</code> 到 <code>out</code> �
 </p>
 
 <p>
-reddit 上有人做了<a href="https://www.reddit.com/r/adventofcode/search/?q=day11+&amp;cId=90ed8e33-3154-484c-8206-d9a5e1a184fa&amp;iId=87c28d15-516a-447a-9bec-6ff75cff7a25">路径的可视化</a>， <code>svr</code> 到 <code>out</code> 的路径比 <code>you</code> 到 <code>out</code> 的路径多了很多。
+reddit 上有人做了 <a href="https://www.reddit.com/r/adventofcode/search/?q=day11+&amp;cId=90ed8e33-3154-484c-8206-d9a5e1a184fa&amp;iId=87c28d15-516a-447a-9bec-6ff75cff7a25">路径的可视化</a>， <code>svr</code> 到 <code>out</code> 的路径比 <code>you</code> 到 <code>out</code> 的路径多了很多。
 </p>
 
 
 <figure>
-<a href="images/aoc-2025-day-11/graph-svr.webp"><img src="images/aoc-2025-day-11/graph-svr.webp" alt="graph-svr.webp"></a>
+<a href="images/aoc-2025-day-11/graph-svr.webp"><img src="images/aoc-2025-day-11/graph-svr.webp" alt="Day 11 謎題的可視化"></a>
 
-<figcaption><span class="figure-number">&#22270;3&nbsp; </span>day11 的图的可视化</figcaption>
 </figure>
 
 <p>
@@ -323,7 +322,7 @@ part2 最开始我不是那么做的，而是尝试拼接路径，然后判断 f
 <p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
 <p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p><time class="dt-published" datetime="2025-12-15 Mon 18:15">2025-12-15</time> 〜 <time class="dt-updated" datetime="2026-04-21 Tue 23:28">2026-04-21</time></p>
+<p><time class="dt-published" datetime="2025-12-15 Mon 18:15">2025-12-15</time> 〜 <time class="dt-updated" datetime="2026-10-29 Thu 13:42">2026-10-29</time></p>
 <a href="/aoc-2025-day-11.txt">純文本版本</a> <a href="/aoc-2025-day-11.org">原始 org 文件</a>
 </footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
