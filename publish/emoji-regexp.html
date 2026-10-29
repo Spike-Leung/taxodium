@@ -78,24 +78,20 @@
 <div id="content" class="content e-content">
 <header>
 <h1 class="title p-name">Emoji 正则匹配</h1>
-</header><nav id="table-of-contents" role="doc-toc">
-<h2>&#30446;&#24405;</h2>
+</header><details>
+<summary>目錄</summary>
+
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
 <li><a href="#052D35CE-BA3F-4E12-A0E4-AEE13967B83D">TL;DR</a></li>
 <li><a href="#958F607C-8D52-4FBF-BF22-20DEE094942D">需求</a></li>
 <li><a href="#4DBDB35F-3BFB-4693-86EB-1AC2A75524D0">解决过程</a></li>
 <li><a href="#6B39F3DA-4DC5-4079-A5C0-2D50846588FE">Emoji 在 JS 中到底是什么？</a></li>
-<li><a href="#B1F0270A-ED43-44E0-AB4E-C33AE2B4787C">一些注意点</a>
-<ul>
-<li><a href="#EE6E5AC1-0200-4C0A-A490-78754F2A680B">字符串长度</a></li>
-<li><a href="#E0A57CA1-ED21-4C97-964F-04294BBD480D">Lone surrogates</a></li>
-</ul>
-</li>
+<li><a href="#B1F0270A-ED43-44E0-AB4E-C33AE2B4787C">一些注意点</a></li>
 <li><a href="#633B3BC1-EDB1-4501-A6EE-0D7DFF076F41">擴展閱讀</a></li>
 </ul>
 </div>
-</nav>
+</details>
 <div id="outline-container-052D35CE-BA3F-4E12-A0E4-AEE13967B83D" class="outline-2">
 <h2 id="052D35CE-BA3F-4E12-A0E4-AEE13967B83D"><a href="#052D35CE-BA3F-4E12-A0E4-AEE13967B83D">TL;DR</a></h2>
 <div class="outline-text-2" id="text-052D35CE-BA3F-4E12-A0E4-AEE13967B83D"><p>
@@ -214,7 +210,7 @@ console.log(
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode">/u</a> 只能匹配单个 Unicode，但是 <a href="https://emojipedia.org/emoji-sequence">有的表情</a> 是由多个 Unicode 组成的，例如 <a href="https://emojipedia.org/couple-with-heart-woman-man">👩‍❤️‍👨</a> 是由 👩、<a href="https://emojipedia.org/zero-width-joiner">ZWJ</a>、❤️、<a href="https://emojipedia.org/zero-width-joiner">ZWJ</a>、👨 一起组合得到的。<code>/u</code> 可以匹配 👩、❤️、👨，但是无法匹配 👩‍❤️‍👨，此时需要用到 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicodeSets">/v</a> ，它可以匹配 Unicode 序列。<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
 </p>
 
-<section role="note" id="orgb50245a">
+<section role="note" id="orgc9e780c">
 <p>
 按照字母顺序，v 在 u 的， <code>/v</code> 比 <code>/u</code> 更晚提出，它基本包含了 <code>/u</code> 的能力，是对 <code>/u</code> 的一次升级。
 </p>
@@ -269,7 +265,7 @@ console.log(
 概括来说，在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。而超出 65536 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
 </p>
 
-<section role="note" id="orgc7c2273">
+<section role="note" id="org852b7f7">
 <p>
 为什么 Unicode 要这么设计，参考 <a href="https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm">Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?</a>
 </p>
@@ -510,7 +506,7 @@ String.fromCharCode(55356, 56912) // '🉐'
 <p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
 <p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p><time class="dt-published" datetime="2024-05-09 Thu 10:15">2024-05-09</time> 〜 <time class="dt-updated" datetime="2026-05-19 Tue 13:30">2026-05-19</time></p>
+<p><time class="dt-published" datetime="2024-05-09 Thu 10:15">2024-05-09</time> 〜 <time class="dt-updated" datetime="2026-10-29 Thu 09:10">2026-10-29</time></p>
 <a href="/emoji-regexp.txt">純文本版本</a> <a href="/emoji-regexp.org">原始 org 文件</a>
 </footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>
