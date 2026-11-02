@@ -71,7 +71,7 @@ LLM 服务需要配置对应的 API key，它们是定义在 <code>~/.authinfo</
 这篇文章我会分享如何在 <code>~/.authinfo</code> 中定义 API key、如何使用 <a href="https://www.gnupg.org/documentation/manuals/gnupg/index.html">GnuPG</a> 对 <code>~/.authinfo</code> 加密，以及如何配置 Emacs 从加密后的 <code>~/.authinfo.gpg</code> 中读取 API key。
 </p>
 <div id="outline-container-9a14762b-a452-41a5-b65b-30df073e89af" class="outline-2">
-<h2 id="9a14762b-a452-41a5-b65b-30df073e89af"><a href="#9a14762b-a452-41a5-b65b-30df073e89af">authinfo</a></h2>
+<h2 id="9a14762b-a452-41a5-b65b-30df073e89af">authinfo</h2>
 <div class="outline-text-2" id="text-9a14762b-a452-41a5-b65b-30df073e89af"><blockquote>
 <p>
 有些连接到其他服务的 Emacs 软件包需要身份验证，由于反复提供相同的用户名和密码可能会令人烦恼，Emacs 通过 <a href="https://www.gnu.org/software/emacs/manual/html_mono/auth.html">auth-source</a> 库提供了持久化信息。
@@ -121,7 +121,7 @@ Emacs 是通过 <code>auth-source</code> 去实现身份验证的，一般将验
 <b>machine</b> 是服务器，可以是 DNS 名称或 IP 地址，对应 <code>auth-source-search</code> 中的 <code>:host</code> 。
 </p>
 
-<section role="note" id="org62bccf0">
+<section role="note" id="org2f2b640">
 <p>
 <code>auth-source-search</code> 是 Emacs 中的一个函数，可以基于条件查询返回用 <code>auth-source</code> 定义的密钥。
 </p>
@@ -262,7 +262,7 @@ machine api.openai.com login apikey password your_openai_api_key
 </div>
 </div>
 <div id="outline-container-d9c9b92d-705a-4fc3-8a18-2027f79a2788" class="outline-2">
-<h2 id="d9c9b92d-705a-4fc3-8a18-2027f79a2788"><a href="#d9c9b92d-705a-4fc3-8a18-2027f79a2788">GnuPG 加密</a></h2>
+<h2 id="d9c9b92d-705a-4fc3-8a18-2027f79a2788">GnuPG 加密</h2>
 <div class="outline-text-2" id="text-d9c9b92d-705a-4fc3-8a18-2027f79a2788"><p>
 我对 GnuPG 研究得不多，简单分享一下如何创建 gpg 密钥，如何加密文件。
 </p>
@@ -298,7 +298,7 @@ sub   rsa4096 2025-02-27 [E]
 <li><code>l-yanlei@hotmail.com</code> 是和这个 gpg 密钥关联的邮箱</li>
 </ul>
 
-<section role="note" id="org73b2250">
+<section role="note" id="org0a29c3e">
 <p>
 关于 GPG 密钥的更详细的解释，你可以看 <a href="https://davesteele.github.io/gpg/2014/09/20/anatomy-of-a-gpg-key/">Anatomy of a GPG Key</a>。
 </p>
@@ -322,7 +322,7 @@ sub   rsa4096 2025-02-27 [E]
 </div>
 </div>
 <div id="outline-container-14bd3095-f26b-4acb-8e8b-0510e9462424" class="outline-2">
-<h2 id="14bd3095-f26b-4acb-8e8b-0510e9462424"><a href="#14bd3095-f26b-4acb-8e8b-0510e9462424">配置 Emacs 读取 ~/.authinfo.gpg</a></h2>
+<h2 id="14bd3095-f26b-4acb-8e8b-0510e9462424">配置 Emacs 读取 ~/.authinfo.gpg</h2>
 <div class="outline-text-2" id="text-14bd3095-f26b-4acb-8e8b-0510e9462424"><p>
 原来 <code>~/.authinfo</code> 是未加密的，Emacs 里可以随便访问，现在加密了，那么在访问前就要先解密才能访问了。
 </p>
@@ -335,7 +335,7 @@ sub   rsa4096 2025-02-27 [E]
 Emacs 内置的 EasyPG Assistant 可以帮你 <b>自动</b> 完成加密解密，当需要访问 gpg 加密文件的时候它就会启用，你不需要额外做什么。
 </p>
 
-<section role="note" id="org6508003">
+<section role="note" id="orgb9c5fc6">
 <p>
 在 Emacs 中你可以通过 <code>C-h R epa</code> 查看 EasyPG Assistant 的文档。
 </p>
@@ -360,7 +360,7 @@ Emacs 内置的 EasyPG Assistant 可以帮你 <b>自动</b> 完成加密解密�
 </div>
 </div>
 <div id="outline-container-dfec6478-0e51-4c86-b802-5afbd1565889" class="outline-2">
-<h2 id="dfec6478-0e51-4c86-b802-5afbd1565889"><a href="#dfec6478-0e51-4c86-b802-5afbd1565889">Bonus: The Unix password store (pass)</a></h2>
+<h2 id="dfec6478-0e51-4c86-b802-5afbd1565889">Bonus: The Unix password store (pass)</h2>
 <div class="outline-text-2" id="text-dfec6478-0e51-4c86-b802-5afbd1565889"><p>
 除了 EasyPG Assistant，你也可以用 <a href="https://www.gnu.org/software/emacs/manual/html_node/auth/The-Unix-password-store.html">The Unix password store (pass)</a>，这是一个简单的密码管理程序。
 </p>
@@ -397,7 +397,7 @@ Emacs 内置的 EasyPG Assistant 可以帮你 <b>自动</b> 完成加密解密�
 </div>
 </div>
 <div id="outline-container-83699692-fcf3-404e-9697-6feafe4bf5c9" class="outline-2">
-<h2 id="83699692-fcf3-404e-9697-6feafe4bf5c9"><a href="#83699692-fcf3-404e-9697-6feafe4bf5c9">写在最后</a></h2>
+<h2 id="83699692-fcf3-404e-9697-6feafe4bf5c9">写在最后</h2>
 <div class="outline-text-2" id="text-83699692-fcf3-404e-9697-6feafe4bf5c9"><p>
 我对 GnuPG 其实不太熟悉，文章中如果有什么错误，欢迎留言指正~
 </p>

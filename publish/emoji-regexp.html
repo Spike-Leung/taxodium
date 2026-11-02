@@ -93,7 +93,7 @@
 </div>
 </details>
 <div id="outline-container-052D35CE-BA3F-4E12-A0E4-AEE13967B83D" class="outline-2">
-<h2 id="052D35CE-BA3F-4E12-A0E4-AEE13967B83D"><a href="#052D35CE-BA3F-4E12-A0E4-AEE13967B83D">TL;DR</a></h2>
+<h2 id="052D35CE-BA3F-4E12-A0E4-AEE13967B83D">TL;DR</h2>
 <div class="outline-text-2" id="text-052D35CE-BA3F-4E12-A0E4-AEE13967B83D"><p>
 如果你想匹配 Emoji，可以考虑使用 <a href="https://github.com/mathiasbynens/emoji-regex">emoji-regex</a> 这个库。
 </p>
@@ -112,14 +112,14 @@
 </div>
 </div>
 <div id="outline-container-958F607C-8D52-4FBF-BF22-20DEE094942D" class="outline-2">
-<h2 id="958F607C-8D52-4FBF-BF22-20DEE094942D"><a href="#958F607C-8D52-4FBF-BF22-20DEE094942D">需求</a></h2>
+<h2 id="958F607C-8D52-4FBF-BF22-20DEE094942D">需求</h2>
 <div class="outline-text-2" id="text-958F607C-8D52-4FBF-BF22-20DEE094942D"><p>
 要求输入框能输入除了特殊表情外的任意字符。我的理解就是将 Emoji 排除掉，通过 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a> 匹配 Emoji 判断是否存在特殊表情。
 </p>
 </div>
 </div>
 <div id="outline-container-4DBDB35F-3BFB-4693-86EB-1AC2A75524D0" class="outline-2">
-<h2 id="4DBDB35F-3BFB-4693-86EB-1AC2A75524D0"><a href="#4DBDB35F-3BFB-4693-86EB-1AC2A75524D0">解决过程</a></h2>
+<h2 id="4DBDB35F-3BFB-4693-86EB-1AC2A75524D0">解决过程</h2>
 <div class="outline-text-2" id="text-4DBDB35F-3BFB-4693-86EB-1AC2A75524D0"><p>
 对于 Emoji 这种正则，一开始想不到如何构建，理论上它也是属于 String，大致知道 Emoji 和 Unicode 相关，但怎么用正则描述它呢？ 我的第一步是 Google，得到一个这样的正则：
 </p>
@@ -209,7 +209,7 @@ console.log(
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode">/u</a> 只能匹配单个 Unicode，但是 <a href="https://emojipedia.org/emoji-sequence">有的表情</a> 是由多个 Unicode 组成的，例如 <a href="https://emojipedia.org/couple-with-heart-woman-man">👩‍❤️‍👨</a> 是由 👩、<a href="https://emojipedia.org/zero-width-joiner">ZWJ</a>、❤️、<a href="https://emojipedia.org/zero-width-joiner">ZWJ</a>、👨 一起组合得到的。<code>/u</code> 可以匹配 👩、❤️、👨，但是无法匹配 👩‍❤️‍👨，此时需要用到 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicodeSets">/v</a> ，它可以匹配 Unicode 序列。<sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup>
 </p>
 
-<section role="note" id="org06f31ed">
+<section role="note" id="orgad9cfb8">
 <p>
 按照字母顺序，v 在 u 的， <code>/v</code> 比 <code>/u</code> 更晚提出，它基本包含了 <code>/u</code> 的能力，是对 <code>/u</code> 的一次升级。
 </p>
@@ -247,7 +247,7 @@ console.log(
 </div>
 </div>
 <div id="outline-container-6B39F3DA-4DC5-4079-A5C0-2D50846588FE" class="outline-2">
-<h2 id="6B39F3DA-4DC5-4079-A5C0-2D50846588FE"><a href="#6B39F3DA-4DC5-4079-A5C0-2D50846588FE">Emoji 在 JS 中到底是什么？</a></h2>
+<h2 id="6B39F3DA-4DC5-4079-A5C0-2D50846588FE">Emoji 在 JS 中到底是什么？</h2>
 <div class="outline-text-2" id="text-6B39F3DA-4DC5-4079-A5C0-2D50846588FE"><p>
 现在，已经知道怎么匹配 Emoji 了，但是为什么一开始找到的正则 <code>/(\ud83c[\udf00-\udfff].../u</code> 无法匹配 🉐 呢？为此，首先需要知道 🉐 在 JS 中到底是什么。
 </p>
@@ -264,7 +264,7 @@ console.log(
 概括来说，在 JavaScript 的 String 中常用的字符（如字母，数字，汉字）是由 1 个 UTF-16 编码单元表示的。而超出 65536 (0xFFFF, U+FFFF, \uFFFF) 字符（如 Emoji），则由代理对表示（高代理+低代理，2 个 UTF-16 编码单元）。
 </p>
 
-<section role="note" id="org4ae1941">
+<section role="note" id="orgad3d55e">
 <p>
 为什么 Unicode 要这么设计，参考 <a href="https://stackoverflow.com/questions/42181070/why-does-code-points-between-ud800-and-udbff-generate-one-length-string-in-ecm">Why does code points between U+D800 and U+DBFF generate one-length string in ECMAScript 6?</a>
 </p>
@@ -430,10 +430,10 @@ String.fromCharCode(55356, 56912) // '🉐'
 </div>
 </div>
 <div id="outline-container-B1F0270A-ED43-44E0-AB4E-C33AE2B4787C" class="outline-2">
-<h2 id="B1F0270A-ED43-44E0-AB4E-C33AE2B4787C"><a href="#B1F0270A-ED43-44E0-AB4E-C33AE2B4787C">一些注意点</a></h2>
+<h2 id="B1F0270A-ED43-44E0-AB4E-C33AE2B4787C">一些注意点</h2>
 <div class="outline-text-2" id="text-B1F0270A-ED43-44E0-AB4E-C33AE2B4787C"></div>
 <div id="outline-container-EE6E5AC1-0200-4C0A-A490-78754F2A680B" class="outline-3">
-<h3 id="EE6E5AC1-0200-4C0A-A490-78754F2A680B"><a href="#EE6E5AC1-0200-4C0A-A490-78754F2A680B">字符串长度</a></h3>
+<h3 id="EE6E5AC1-0200-4C0A-A490-78754F2A680B">字符串长度</h3>
 <div class="outline-text-3" id="text-EE6E5AC1-0200-4C0A-A490-78754F2A680B"><p>
 有的字符是由代理对组成的，是两个 UTF-16 编码单元，例如 Emoji。当需要计算他们长度的时候，需要意识到他们是代理对，取决于具体需求去统计长度。
 </p>
@@ -451,7 +451,7 @@ String.fromCharCode(55356, 56912) // '🉐'
 </div>
 </div>
 <div id="outline-container-E0A57CA1-ED21-4C97-964F-04294BBD480D" class="outline-3">
-<h3 id="E0A57CA1-ED21-4C97-964F-04294BBD480D"><a href="#E0A57CA1-ED21-4C97-964F-04294BBD480D">Lone surrogates</a></h3>
+<h3 id="E0A57CA1-ED21-4C97-964F-04294BBD480D">Lone surrogates</h3>
 <div class="outline-text-3" id="text-E0A57CA1-ED21-4C97-964F-04294BBD480D"><p>
 代理对是由高代理和低代理组成的，如果单独把高代理拎出来，或者高代理和高代理组成代理对，是无法表达有含意的 Unicode 字符的。
 </p>
@@ -463,7 +463,7 @@ String.fromCharCode(55356, 56912) // '🉐'
 </div>
 </div>
 <div id="outline-container-633B3BC1-EDB1-4501-A6EE-0D7DFF076F41" class="outline-2">
-<h2 id="633B3BC1-EDB1-4501-A6EE-0D7DFF076F41"><a href="#633B3BC1-EDB1-4501-A6EE-0D7DFF076F41">擴展閱讀</a></h2>
+<h2 id="633B3BC1-EDB1-4501-A6EE-0D7DFF076F41">擴展閱讀</h2>
 <div class="outline-text-2" id="text-633B3BC1-EDB1-4501-A6EE-0D7DFF076F41"><ul class="org-ul">
 <li><a href="https://george.mand.is/2026/05/my-favorite-bugs-invalid-surrogate-pairs/">My Favorite Bugs: Invalid Surrogate Pairs</a> by George Mandis</li>
 </ul>
