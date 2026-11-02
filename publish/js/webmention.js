@@ -1,5 +1,6 @@
 (function () {
   const TargetQueries = ["ref=powrss.com"];
+  const webmentionList = document.querySelector(".webmention__list")
 
   async function fetchWebmentionFeedList() {
     const target = getTargetUrl();
@@ -29,7 +30,7 @@
     return origin + pathname;
   }
 
-  function generateWebmenionItemHTMlFragments(entry) {
+  function generateWebmenionItemHTMLFragments(entry) {
     const { name, photo } = entry.author || {};
     const wmSourceUrl = new URL(entry["wm-source"]);
     const authorName = name || wmSourceUrl.host || "Unknown";
@@ -54,13 +55,14 @@
     aSource.rel = "noopener noreferrer";
     aSource.appendChild(avatar);
 
-    return aSource;
+    const li = document.createElement("li")
+    li.appendChild(aSource)
+
+    return li;
   }
 
   function renderWebmentions(feedList = []) {
-    const container = document.querySelector(".webmention__list")
-
-    if (feedList.length === 0 || !container) return;
+    if (feedList.length === 0 || !webmentionList) return;
 
     const frag = document.createDocumentFragment();
 
@@ -68,19 +70,21 @@
       if (entry.type !== "entry") continue;
       if (entry["wm-private"] === true) continue;
 
-      const webmentionItem = generateWebmenionItemHTMlFragments(entry);
+      const webmentionItem = generateWebmenionItemHTMLFragments(entry);
       frag.appendChild(webmentionItem);
     }
 
-    container.appendChild(frag);
+    webmentionList.appendChild(frag);
   }
 
   async function loadWebmentionContent() {
     try {
+      webmentionList.setAttribute('aria-busy', 'true');
       const feedList = await fetchWebmentionFeedList();
       document.querySelector(".webmention__count").innerText =
         `(${feedList.length})`;
       renderWebmentions(feedList);
+      webmentionList.setAttribute('aria-busy', 'false');
     } catch (err) {
       console.error(err);
     }
