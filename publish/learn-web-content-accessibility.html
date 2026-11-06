@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>學習網頁內容無障礙</title>
+<meta name="author" content="Spike Leung">
+<meta name="description" content="分享一些學習網頁內容無障礙的資源和一個整體的學習脉絡">
+<meta name="generator" content="Org Mode">
+<meta name="color-scheme" content="light dark" />
+<meta property="og:url" content="https://taxodium.ink/learn-web-content-accessibility.html">
+<link rel="preload" href="/styles/main.css" as="style" />
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="preload" href="/js/color-scheme.js" as="script"/>
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="canonical" href="https://taxodium.ink/learn-web-content-accessibility.html">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<script src="/js/color-scheme.js"></script>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主頁</a></li>
+    <li><a href="/subscribe.html">訂閱</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/shuffle.html" class="js-required">隨機</a></li>
+  </ul>
+  <button id="lightdark" class="js-required" aria-label="切換當前頁面明暗主題">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512" alt="">
+      <path d="M0 0h512v512H0z" fill="none" />
+      <path fill="currentColor" fill-rule="evenodd" d="M277.333 405.333v85.333h-42.667v-85.333zm99.346-58.824l60.34 60.34l-30.17 30.17l-60.34-60.34zm-241.359 0l30.17 30.17l-60.34 60.34l-30.17-30.17zM256 139.353c64.422 0 116.647 52.224 116.647 116.647c0 64.422-52.225 116.647-116.647 116.647A116.427 116.427 0 0 1 139.352 256c0-64.423 52.225-116.647 116.648-116.647m0 42.666c-40.859 0-73.981 33.123-73.981 74.062a73.76 73.76 0 0 0 21.603 52.296c13.867 13.867 32.685 21.64 52.378 21.603zm234.666 52.647v42.667h-85.333v-42.667zm-384 0v42.667H21.333v-42.667zM105.15 74.98l60.34 60.34l-30.17 30.17l-60.34-60.34zm301.7 0l30.169 30.17l-60.34 60.34l-30.17-30.17zM277.332 21.333v85.333h-42.667V21.333z" />
+    </svg>
+  </button>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">學習網頁內容無障礙</h1>
+</header><details>
+<summary>目錄</summary>
+
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#1f94b43e-ab77-44d5-9f78-a0b4099e0acf">什麼是網頁內容無障礙，以及為什麼要實踐網頁內容無障礙</a></li>
+<li><a href="#b8deddc3-46ec-4758-8dce-b564570273fe">如何學習網頁內容無障礙</a>
+<ul>
+<li><a href="#a14e5fd9-0018-4f52-a657-ceb4f24ad3bf">學習目標</a></li>
+<li><a href="#91a31508-c298-44e5-9f8d-a348a70ae8a4">WACG</a></li>
+<li><a href="#d212eabe-2ff4-4dea-a8ec-ca6c0d672478">WAI-ARIA</a></li>
+<li><a href="#150292fd-3958-47da-ba2f-3de6abe6ec37">如何學習</a></li>
+</ul>
+</li>
+<li><a href="#9478d842-173c-44bb-9eb3-f4b1d48b6921">博客中常見的網頁內容無障礙問題</a>
+<ul>
+<li><a href="#8c941a7a-0693-43a9-983c-0d39e4e886bb">Tab 焦點和順序</a></li>
+<li><a href="#354b845f-752c-4f8a-9d59-7027f7b124ab">顏色和對比度</a></li>
+<li><a href="#6083a577-d870-4546-b413-3cd2ded33eac">圖片上的替代文本</a></li>
+<li><a href="#200c1e90-c070-4fa3-b809-25eef3963811">連結</a></li>
+<li><a href="#3df35e09-7e1c-4d5a-b62d-1db87052cf44">存在兩個方向的滾動條</a></li>
+<li><a href="#a546245e-1335-44cb-a25f-440ba16c8e83">頁面有一些閃烁的內容</a></li>
+<li><a href="#9292e852-bb6d-40b8-908b-de303ccd0509">頁要元素太多，太雜</a></li>
+<li><a href="#934d15a5-b313-46ce-8907-573c0ba399b5">必須依赖 JavaScript 才能查看內容</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</details>
+
+<p>
+我想你也許聴過「無障礙」這個詞，這個詞裡包含著同理心，它意味著多為他人考慮，盡可能地讓大多數的人都能無障礙地完成想做的事情。例如：
+</p>
+
+<ul class="org-ul">
+<li>地鐵站裡的電梯，它可以讓行走不便的人，例如脚受傷的人、坐輪椅的人、拖著行李箱的人，都能順利出入站台。</li>
+<li>有階梯的地方也會提供平坦的斜坡和扶手，這樣坐輪椅的人、騎自行車的人都能更容易地通過。</li>
+<li>視頻中的字幕、聲音、手語，它考慮了不同人的需要，聴力不好的人可看字幕，視力不好的人可以聴語音、習慣手語的人則可以看手語。字幕不僅方便了聴力不好的人，對於聴力正常的人，當处於吵雜的環境或是不方便有聲音發出的場景，字幕也會很有用。</li>
+<li>有的紅綠灯、扶梯會發出聲音，讓視力不好的人知道自己接近了這些設備。</li>
+<li>醫院裡的衛生間往往還會有扶手，可以方便那些站不穩的人，也可以讓他們用來借力站起來。</li>
+</ul>
+
+<p>
+無障礙不僅帮助那些身體障礙的人，也有利於每一個人。誰都會老去，身體機能會慢慢變差，做好無障礙，當我們老去時，當我們也成為有障礙的人時，我們也會從中受益。
+</p>
+
+<p>
+這篇文章主要聚焦於無障礙的一個細類 ⸺ 網頁內容的無障礙，例如：
+</p>
+
+<ul class="org-ul">
+<li>如何讓盲人、色盲、視力不好的人等也能正常訪問網頁？</li>
+<li>有的人無法用鼠標，衹會用鍵盤，如何讓他們僅用鍵盤也能正常訪問網頁？</li>
+<li>有的人患有 <a href="https://zh.wikipedia.org/zh-hant/%E5%85%89%E6%95%8F%E6%80%A7%E7%99%B2%E7%99%87">光敏性癲癇</a>，如何避免引發他們的病症？</li>
+<li>有的人的手會控制不住地震颤，他們無法精細地操作頁面元素，如何讓他們也能正常訪問網頁？</li>
+</ul>
+
+<p>
+也許你是網頁的開發者，也許你是一個博客作者，希望上面的內容能讓你意識到網頁無障礙的重要性，同時重視無障礙設計。<b>無障礙不是可有可無的，而是應讓在網頁設計之初就應該考慮在內的，是作為網頁開發者要力求保證的。</b>無障礙設計可以讓盡可能多地人無障礙地訪問你的網頁，讓我們一起讓網絡世界變得更好。
+</p>
+
+<section role="note" id="org9cb498d">
+<p>
+網頁無障礙對 <abbr title="Large language model ">LLM</abbr> 也有帮助，語義化好的頁面，也可以讓 <abbr title="Large language model ">LLM</abbr> 更容易定位頁面的內容。
+</p>
+</section>
+
+<p>
+這篇文章我主要分享一些網頁無障礙的學習連結，給你提供一個整體的學習脉絡，具體如何實踐，還需要你花時間去閱讀和學習。
+</p>
+
+<section role="note" id="org4559be8">
+<p>
+連結內容都是英文的，有的會提供多語言選項，有的可能還沒有翻譯，如果你閱讀英文有困難，可以試試 <a href="my-experience-with-kagi-translate.html">Kagi Translate</a>。
+</p>
+</section>
+<div id="outline-container-1f94b43e-ab77-44d5-9f78-a0b4099e0acf" class="outline-2">
+<h2 id="1f94b43e-ab77-44d5-9f78-a0b4099e0acf">什麼是網頁內容無障礙，以及為什麼要實踐網頁內容無障礙</h2>
+<div class="outline-text-2" id="text-1f94b43e-ab77-44d5-9f78-a0b4099e0acf"><ul class="org-ul">
+<li><p>
+<a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/What_is_accessibility">What is accessibility?</a> by MDN
+</p>
+
+<blockquote>
+<p>
+無障礙設計是讓盡可能多的人都能使用網站的一種做法。傳統上，我們會認為這主要是為身心障礙者而設，但讓網站更容易使用，也能使其他族群受益，例如使用行動裝置的人，或網路連線速度較慢的人。
+</p>
+
+<p>
+<b>你也可以把無障礙設計理解為平等對待每個人，無論其能力或處境如何，都讓他們享有平等的機會。</b>就像因為某人坐輪椅，就不讓他進入實體建築物是不對的（現代公共建築通常設有輪椅坡道或電梯），因為某人有視覺障礙就不讓他使用網站，同樣也不妥。<b>我們各不相同，但都是人，因此享有相同的人權。</b>
+</p>
+
+<p>
+<a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/What_is_accessibility#:~:text=Accessibility%20is%20the,rights">Source</a>
+</p>
+</blockquote></li>
+
+<li><a href="https://www.w3.org/WAI/fundamentals/accessibility-intro/">Introduction to Web Accessibility</a> by WAI</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-b8deddc3-46ec-4758-8dce-b564570273fe" class="outline-2">
+<h2 id="b8deddc3-46ec-4758-8dce-b564570273fe">如何學習網頁內容無障礙</h2>
+<div class="outline-text-2" id="text-b8deddc3-46ec-4758-8dce-b564570273fe"><p>
+主要的學習資料來自 <a href="https://www.w3.org/WAI/">Web Accessibility Initiative (WAI)</a> 和 <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility">MDN 的 Accessibility</a>。
+</p>
+</div>
+<div id="outline-container-a14e5fd9-0018-4f52-a657-ceb4f24ad3bf" class="outline-3">
+<h3 id="a14e5fd9-0018-4f52-a657-ceb4f24ad3bf">學習目標</h3>
+<div class="outline-text-3" id="text-a14e5fd9-0018-4f52-a657-ceb4f24ad3bf"><ul class="org-ul">
+<li>能熟練一個屏幕閲讀器的使用，能够僅用屏幕閲讀器完成一些平時常用的操作</li>
+<li>熟知 WCAG (Web Content Accessibility Guidelines, 網頁內容無障礙指引)，知道為什麼、以及怎麼做</li>
+<li>能熟練使用 WAI-ARIA (Accessible Rich Internet Applications, 無障礙豐富網際網路應用程式)</li>
+<li>能找到頁面問題并修复</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-91a31508-c298-44e5-9f8d-a348a70ae8a4" class="outline-3">
+<h3 id="91a31508-c298-44e5-9f8d-a348a70ae8a4">WACG</h3>
+<div class="outline-text-3" id="text-91a31508-c298-44e5-9f8d-a348a70ae8a4"><p>
+網頁無障礙的內容大多都出自 Web Content Accessibility Guidelines (WACG)，目前最新的版本是 <a href="https://www.w3.org/TR/2024/REC-WCAG22-20241212/">Web Content Accessibility Guidelines (WCAG) 2.2</a>，在學習網頁無障礙時，你可能會碰到很多裡面的概念，搞清楚它們的定義和關係，在閱讀文檔時就不容易暈頭轉向。
+</p>
+
+<p>
+根據 <a href="https://www.w3.org/TR/2024/REC-WCAG22-20241212/#wcag-2-layers-of-guidance">WCAG 2 Layers of Guidance</a>，在 <abbr title="Web Content Accessibility Guidelines">WACG</abbr> 裡，首先定義了 4 個原則 (Principles)，分別是：
+</p>
+
+<ul class="org-ul">
+<li>可感知 (perceivable)</li>
+<li>可操作 (operable)</li>
+<li>易於理解 (understandable)</li>
+<li>穩健 (robust)</li>
+</ul>
+
+<section role="note" id="org9a43f70">
+<p>
+你可以用 <abbr title="Perceivable, Operable, Understandable, Robust">POUR</abbr> 這個單詞來記憶 4 個原則。
+</p>
+</section>
+
+<p>
+在每個原則下，又派生了 13 個指導原則 (Guidelines)，進一步定義了目標，但它們本身不能測試。
+13 個指導原則，又進一步擴展成許多的成功準則 (Success Criteria, SC)，它們是具體的，可被測試的指標。每個成功準則會 <a href="https://www.w3.org/WAI/WCAG22/Understanding/conformance#levels">分成 A、AA、AAA 三個等級</a>，A 是最低的等級，意味著這個成功準則很容易實現，也很容易測試；而 AAA 是最高等級，意味著這個成功準則實現要求更苛刻，判斷是否通過測試更困難（有時帶有主觀性）。要注意的是這些等級不是优先級，也不表示重要程度，每項成功準則對一個或多個使用者群體都很重要。具體要做到什麼程度，要基於自己的需要取舍，例如一個搶票功能，對時間有很高要求，就不容易滿足 <a href="https://w3c.github.io/wcag/understanding/enough-time">Guideline 2.2: Enough Time</a> 中的成功凖則。因為 A 等級的容易實現也容易測試，我認為至少滿足所有 A 等級的準則是一個比較好的起點。
+</p>
+
+<section role="note" id="orgd2ddd33">
+<p>
+你可以在 <a href="https://www.w3.org/WAI/WCAG22/quickref/">How to Meet WCAG (Quickref Reference)</a> 查看所有的成功準則，也可以基於等級對它們進行過濾。
+</p>
+
+<p>
+成功準則 (Success Criteria) 的縮寫是 SC，當你看到如 <code>SC 1.1.1</code> ，你就可以知道這是一條成功準則。
+</p>
+</section>
+
+<p>
+為了方便開發者去滿足成功準則，<abbr title="Web Content Accessibility Guidelines">WACG</abbr> 還提供了很多 <a href="https://www.w3.org/WAI/WCAG22/Understanding/understanding-techniques">技術 (Techniques)</a>，它們是一些示例，告訴你怎樣做會符合成功標凖，怎樣做是錯誤的。
+</p>
+
+<section role="note" id="orgc8291a0">
+<p>
+你可以在 <a href="https://www.w3.org/WAI/WCAG22/Techniques/">All WCAG 2.2 Techniques</a> 查看所有的技術，不同的技術會用不同的縮寫，如 ARIA1 是 ARIA 相關技術，H2 是 HTML 相關技術。
+</p>
+</section>
+
+<p>
+以上就是 <abbr title="Web Content Accessibility Guidelines">WACG</abbr> 的組成，分別是：
+</p>
+
+<ul class="org-ul">
+<li>原則 (Principles)</li>
+<li>指導原則 (Guidelines)</li>
+<li>成功準則 (Success Criteria)</li>
+<li>技術 (Techniques)</li>
+</ul>
+
+<p>
+它們是層層递進擴展的。
+</p>
+</div>
+</div>
+<div id="outline-container-d212eabe-2ff4-4dea-a8ec-ca6c0d672478" class="outline-3">
+<h3 id="d212eabe-2ff4-4dea-a8ec-ca6c0d672478">WAI-ARIA</h3>
+<div class="outline-text-3" id="text-d212eabe-2ff4-4dea-a8ec-ca6c0d672478"><p>
+提到網頁內容無障礙，你可能會想到 <code>role</code> 和 <code>aria-*</code> 屬性，它們都是 <a href="https://www.w3.org/WAI/standards-guidelines/aria/">WAI-ARIA</a> 中的一部分。
+</p>
+
+<section role="note" id="orga83db22">
+<p>
+WAI-ARIA 的全称是 Web Accessibility Initiative – Accessible Rich Internet Applications,
+即網頁無障礙倡議組織－無障礙豐富網際網路應用程式。
+</p>
+</section>
+
+<p>
+一般來說，應該盡可能用現有的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements">HTML 元素</a> 去表達頁面的語義，例如导航用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/nav">&lt;nav&gt;</a>，搜索框用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/search">&lt;search&gt;</a>，按鈕用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button">&lt;button&gt;</a> (而不是 div)。但有的頁面寫於語義元素出現之前；有的功能沒有對應的語義元素，例如 Tab、Carousel (輪播圖)；有的虽然有對應的語義元素，但它們的功能、樣式、可擴展性都不符合需要，例如 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/date">&lt;input type="date"&gt;</a> 的功能有限，想實現功能更封富的日期選擇器。由於没有使用語義元素，所以它們是缺少語義的，這樣屏幕閱讀器就沒法很好的識別它們，於是 <abbr title="Web Accessibility Initiative">WAI</abbr> 就提出了 <abbr title="Accessible Rich Internet Applications">ARIA</abbr>，用來在 <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/WAI-ARIA_basics#when_should_you_use_wai-aria">這些情况下</a> 補充語義信息。
+</p>
+
+<p>
+<abbr title="Accessible Rich Internet Applications">ARIA</abbr> 由三個部分組成：
+</p>
+
+<dl class="org-dl">
+<dt><a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles">Roles</a></dt><dd>定義了元素是什麼或能做什麼，例如 <code>role="navigation"</code> 可以標記导航連結，你也可以用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/nav">&lt;nav&gt;</a> 來實現。一般來說，能用 <code>&lt;nav&gt;</code> 就用 <code>&lt;nav&gt;</code> ，不能用時才用 <code>role="navigation"</code> 去補充語義。</dd>
+
+<dt><a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes">Properties</a></dt><dd>這些屬性用來定義元素的特性，可賦予元素額外的意義或語義。例如 <code>aria-required="true"</code> 表示表單輸入欄位必須填寫才算有效。</dd>
+
+<dt><a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes">States</a></dt><dd>用來描述元素目前狀態的特殊屬性，例如 <code>aria-busy="true"</code> 會告知螢幕閱讀器某個元素正在被修改。</dd>
+</dl>
+
+<p>
+使用 <abbr title="Accessible Rich Internet Applications">ARIA</abbr> 時，要確保你理解它的作用，<a href="https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/">宁可不加 ARIA，也不要用錯 ARIA</a>。錯誤地使用 ARIA，屏幕閱讀器就會識別到錯誤的語義，反而會誤导別人。
+</p>
+
+<details>
+<summary>WAI-ARIA 學習連結</summary>
+
+<ul class="org-ul">
+<li><a href="https://w3c.github.io/aria/">Accessible Rich Internet Applications (WAI-ARIA) 1.3</a> 規範</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/WAI-ARIA_basics">WAI-ARIA basics</a> MDN 的教程，可以讓你快速了解 <abbr title="Accessible Rich Internet Applications">ARIA</abbr></li>
+<li><a href="https://www.w3.org/WAI/ARIA/apg/">ARIA Authoring Practices Guide | APG</a> 提供了一些示例，指导你正確地應用 <abbr title="Accessible Rich Internet Applications">ARIA</abbr></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements">HTML elements reference</a> 所有的語義化 HTML 元素</li>
+<li><a href="https://w3c.github.io/aria/#introroles">4.1 WAI-ARIA Roles</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles">WAI-ARIA Roles</a> 所有的 Roles</li>
+<li><a href="https://w3c.github.io/aria/#introstates">4.2 WAI-ARIA States and Properties</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes">ARIA states and properties (attributes)</a> 所有的 Properties 和 States</li>
+</ul>
+</details>
+</div>
+</div>
+<div id="outline-container-150292fd-3958-47da-ba2f-3de6abe6ec37" class="outline-3">
+<h3 id="150292fd-3958-47da-ba2f-3de6abe6ec37">如何學習</h3>
+<div class="outline-text-3" id="text-150292fd-3958-47da-ba2f-3de6abe6ec37"></div>
+<div id="outline-container-5ea3f44c-6ff2-43f6-8dc5-4c5236c4d6c6" class="outline-4">
+<h4 id="5ea3f44c-6ff2-43f6-8dc5-4c5236c4d6c6">熟悉無障礙工具與輔助技術</h4>
+<div class="outline-text-4" id="text-5ea3f44c-6ff2-43f6-8dc5-4c5236c4d6c6"><p>
+在開始學習前，請閱讀 <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/Tooling">Accessibility tooling and assistive technology</a> 了解無障礙工具與輔助技術，挑選一些工具去熟悉它的操作，實際使用它們去瀏覧網頁。這樣你就能體會那些使用這些工具訪問網頁的人的感受，了解他們可能碰到的困難，也能發現自己網頁上的無障礙問題。
+</p>
+
+<p>
+請不要跳過這一步，有的問題不去實際操作是無法體會的，自動化檢驗工具發現的問題也無法涵盖所有操作的問題，而且學會一種無障礙工具也許以後也會用到。我建議至少學會一個屏幕閱讀器的使用、瀏覧器自帶的無障礙檢查工具的使用，以及了解一些第三方檢測工具和網站。
+</p>
+</div>
+</div>
+<div id="outline-container-d979b06d-9958-409a-a86b-facd4654104e" class="outline-4">
+<h4 id="d979b06d-9958-409a-a86b-facd4654104e">教程資料</h4>
+<div class="outline-text-4" id="text-d979b06d-9958-409a-a86b-facd4654104e"><p>
+在你掌握了工具的使用後，可以閱讀：
+</p>
+
+<ul class="org-ul">
+<li><abbr title="Mozilla Developer Network">MDN</abbr> 的教程：<a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility">Accessibility on the web</a></li>
+<li><abbr title="Web Accessibility Initiative">WAI</abbr> 的教程：<a href="https://www.w3.org/WAI/tutorials/">Tutorials</a></li>
+</ul>
+
+<p>
+這兩個教程是不錯的起點，讀完應讓就對網頁內容無障礙有比較全面的了解了。還可以去讀一讀 <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides">Accessibility guides</a>，裡面關於 <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Colors_and_Luminance#overview">顏色</a>、<a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Accessible_web_applications_and_widgets#keyboard_navigation">鍵盤操作</a>、<a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Cognitive_accessibility">認知無障礙</a>、<a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Seizure_disorders">癲癇發作與身體反應的網頁無障礙設計</a> 的內容都很值得一讀。
+</p>
+
+<p>
+之後建議把 <abbr title="Web Content Accessibility Guidelines">WACG</abbr> 所有成功準則通讀一遍：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Understanding_WCAG">Understanding the Web Content Accessibility Guidelines (WCAG)</a></li>
+<li><a href="https://w3c.github.io/wcag/understanding/">Understanding WCAG 2.2</a></li>
+</ul>
+
+<p>
+之後就是勤加實踐，在你的網頁上去應用學到的無障礙知識。
+</p>
+
+<p>
+最重要的還是要有無障礙的意識、重視無障礙，也許你記不住那麼多的成功準則，但衹要你意識到當前的實現缺少無障礙考量，借助 <abbr title="Large language model ">LLM</abbr> 你也可以快速地了解應該如何實踐。
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-9478d842-173c-44bb-9eb3-f4b1d48b6921" class="outline-2">
+<h2 id="9478d842-173c-44bb-9eb3-f4b1d48b6921">博客中常見的網頁內容無障礙問題</h2>
+<div class="outline-text-2" id="text-9478d842-173c-44bb-9eb3-f4b1d48b6921"><p>
+最後在這裡整理一些我常看到的博客中的無障礙問題，如果你也是一位博客作者，希望對你有帮助。
+</p>
+</div>
+<div id="outline-container-8c941a7a-0693-43a9-983c-0d39e4e886bb" class="outline-3">
+<h3 id="8c941a7a-0693-43a9-983c-0d39e4e886bb">Tab 焦點和順序</h3>
+<div class="outline-text-3" id="text-8c941a7a-0693-43a9-983c-0d39e4e886bb"><p>
+有的讀者會有鍵盤訪問你的頁面，他們可能會用 <kbd>Tab</kbd> 在頁面中移動，每次按 <kbd>Tab</kbd> 都會聚焦在一些可交互的元素上，如按鈕、連結、輸入框等，默認會用 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/outline">outline</a> 標記出來。
+</p>
+
+<p>
+但是有的博客的 outline 很不明顯，甚至有的還隱藏了，這樣讀者按 <kbd>Tab</kbd> 時就不知道當前焦點在哪，<kbd>Tab</kbd> 就不可用了。
+</p>
+
+<p>
+關於 outline 的樣式設置，你可以參考 Thomas Günther 的 <a href="https://medienbaecker.com/articles/focus-outlines">Beautiful focus outlines</a>。
+</p>
+
+<p>
+另外還有個問題是聚焦的順序是否符合直覺，一般來說從上到下，從左到右 <small>(這也取决於語言的 <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/writing-mode">書寫方向</a>)</small> 是比較符合直覺的。如果你的焦點跳轉沒有規律，就可能讓讀者感到迷惑。你可以自己用 <kbd>Tab</kbd> 在頁面上測試一下。
+</p>
+
+<p>
+相關成功準則： <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible">Understanding Success Criterion 2.4.7: Focus Visible</a>
+</p>
+</div>
+</div>
+<div id="outline-container-354b845f-752c-4f8a-9d59-7027f7b124ab" class="outline-3">
+<h3 id="354b845f-752c-4f8a-9d59-7027f7b124ab">顏色和對比度</h3>
+<div class="outline-text-3" id="text-354b845f-752c-4f8a-9d59-7027f7b124ab"><p>
+有的博客的文字顏色和背景色的對比度很小，字體也不大，對於視力正常的你或許能看清，但對視力低下或對比感知受損的人來說就很難看清了。可以考慮更換顏色，使對比度更高；也可以考慮適當調大字體，使文字更容易看清。
+</p>
+
+<p>
+相關成功準則：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://w3c.github.io/wcag/understanding/contrast-minimum">Understanding Success Criterion 1.4.3: Contrast (Minimum)</a></li>
+<li><a href="https://w3c.github.io/wcag/understanding/contrast-enhanced">Understanding Success Criterion 1.4.6: Contrast (Enhanced)</a></li>
+<li><a href="https://w3c.github.io/wcag/understanding/non-text-contrast">Understanding Success Criterion 1.4.11: Non-text Contrast</a></li>
+</ul>
+
+<p>
+除了 <abbr title="Web Content Accessibility Guidelines">WACG</abbr> 對比度標準，還有另一個對比度標準 ⸺ <a href="https://git.apcacontrast.com/documentation/APCAeasyIntro">APCA (Accessible Perceptual Contrast Algorithm, 可访问感知对比算法)</a>，它更符合人的感知，另見 <a href="31.html#C2A253A1-C12E-4ED0-A9DD-1D8BFED8A8AD">Zine#31::The Easy Intro to the APCA Contrast Method</a>。
+</p>
+</div>
+</div>
+<div id="outline-container-6083a577-d870-4546-b413-3cd2ded33eac" class="outline-3">
+<h3 id="6083a577-d870-4546-b413-3cd2ded33eac">圖片上的替代文本</h3>
+<div class="outline-text-3" id="text-6083a577-d870-4546-b413-3cd2ded33eac"><p>
+如果你的內容依赖圖片傳達信息，那麼圖片上應該用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/alt">alt</a> 寫上合適的替代文字，屏幕閱讀器會朗讀替代文字，讓讀者了解圖片內容。有的博客放了圖片但沒寫替代文字，屏幕閱讀器就會朗讀圖片文件名，讀者不僅無法了解圖片內容，朗讀長串的文件名也會給他帶來干擾。
+</p>
+
+<p>
+除了圖片，圖標、顏文字、Logo 等圖形類頁面內容都是要注意的地方。
+</p>
+
+<p>
+關於如何加替代文字，推薦閲讀 <abbr title="Web Accessibility Initiative">WAI</abbr> 的 <a href="https://www.w3.org/WAI/tutorials/images/">Images Tutorial</a>。
+</p>
+
+<p>
+相關成功準則：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://w3c.github.io/wcag/understanding/non-text-content">Understanding Success Criterion 1.1.1: Non-text Content</a></li>
+<li><a href="https://w3c.github.io/wcag/understanding/images-of-text">Understanding Success Criterion 1.4.5: Images of Text</a></li>
+<li><a href="https://w3c.github.io/wcag/understanding/images-of-text-no-exception">Understanding Success Criterion 1.4.9: Images of Text (No Exception)</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-200c1e90-c070-4fa3-b809-25eef3963811" class="outline-3">
+<h3 id="200c1e90-c070-4fa3-b809-25eef3963811">連結</h3>
+<div class="outline-text-3" id="text-200c1e90-c070-4fa3-b809-25eef3963811"><p>
+有的博客的連結和文字的差別衹有顏色，但有的人可能對顏色不敏感，<a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Colors_and_Luminance#:~:text=to%20colors%2E-,For,sensitive%2E">的人會因為色彩而誘發癲癇，他們會將頁面設置成灰階</a>，對於他們來說，就無法區分正文和連結了。
+</p>
+
+<p>
+所以連結 <a href="https://w3c.github.io/wcag/understanding/use-of-color">不應該衹用顏色來區分</a>，還應該加上其它視覺元素，最常見的就是下劃綫。
+</p>
+
+<p>
+另外連結的文字要有意義，最好是單獨把連結拎出來也能知道連結是做什麼的。在屏幕閱讀器裡有一個功能，可以列出頁面上所有連結，如果連結內容無法傳達它們是做什麼的，讀者也會感到困惑。
+</p>
+
+<p>
+相關成功準則：
+</p>
+
+<ul class="org-ul">
+<li><a href="https://w3c.github.io/wcag/understanding/use-of-color">Understanding Success Criterion 1.4.1: Use of Color</a></li>
+<li><a href="https://w3c.github.io/wcag/understanding/link-purpose-in-context">Understanding Success Criterion 2.4.4: Link Purpose (In Context)</a></li>
+<li><a href="https://w3c.github.io/wcag/understanding/link-purpose-link-only">Understanding Success Criterion 2.4.9: Link Purpose (Link Only)</a></li>
+</ul>
+
+<p>
+也可以看看我之前寫的 <a href="some-advice-about-links.html">一些關於連結的建議</a>。
+</p>
+</div>
+</div>
+<div id="outline-container-3df35e09-7e1c-4d5a-b62d-1db87052cf44" class="outline-3">
+<h3 id="3df35e09-7e1c-4d5a-b62d-1db87052cf44">存在兩個方向的滾動條</h3>
+<div class="outline-text-3" id="text-3df35e09-7e1c-4d5a-b62d-1db87052cf44"><p>
+有的頁面會同時出現橫向和緃向的滾動條，只滾動其中一個方向時，很容易造成另一個方向的偏移，給讀者的閱讀體驗很差。
+</p>
+
+<p>
+關於橫向滾動條的問題，你可以參考 Artyom Bologov 的 <a href="https://aartaka.me/easy-fixes.html">Easy (Horizontal Scrollbar) Fixes for Your Blog CSS</a> 進行修正。
+</p>
+
+<p>
+相關成功準則： <a href="https://w3c.github.io/wcag/understanding/reflow">Understanding Success Criterion 1.4.10: Reflow</a>
+</p>
+</div>
+</div>
+<div id="outline-container-a546245e-1335-44cb-a25f-440ba16c8e83" class="outline-3">
+<h3 id="a546245e-1335-44cb-a25f-440ba16c8e83">頁面有一些閃烁的內容</h3>
+<div class="outline-text-3" id="text-a546245e-1335-44cb-a25f-440ba16c8e83"><p>
+有的人可能患有 <a href="https://zh.wikipedia.org/zh-hant/%E5%85%89%E6%95%8F%E6%80%A7%E7%99%B2%E7%99%87">光敏性癲癇</a>，當他們受到特定頻率或強度的閃爍燈光刺激，或是瀏覧規律移動的圖案時，就可能會誘發癲癇，嚴重的時候是會危及生命的。
+</p>
+
+<p>
+不僅是動圖，一些高飽合、高對比的圖片也可能會誘發病症，你可以閲讀 <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Seizure_disorders">Web accessibility for seizures and physical reactions</a> 了解網頁中可能的誘因，以及相關的預防措施。
+</p>
+
+<p>
+作為博客作者，應該避免那些閃烁的內容，動圖、視頻等會動的內容應讓可以暂停，且默認是暂停的。如果非要顯示閃烁內容，請先顯示內容警告，再將其放在必須由使用者主動選擇才能觀看的位置（例如要求使用者點擊按鈕），或確保頁面連結上有清楚醒目的警告。
+</p>
+
+<p>
+相關成功準則：<a href="https://w3c.github.io/wcag/understanding/seizures-and-physical-reactions">Understanding Guideline 2.3: Seizures and Physical Reactions</a>
+</p>
+</div>
+</div>
+<div id="outline-container-9292e852-bb6d-40b8-908b-de303ccd0509" class="outline-3">
+<h3 id="9292e852-bb6d-40b8-908b-de303ccd0509">頁要元素太多，太雜</h3>
+<div class="outline-text-3" id="text-9292e852-bb6d-40b8-908b-de303ccd0509"><p>
+有的人有認知障礙，複雜的頁面布局、晦澀難懂的大段文字、自動播放的音視頻、不必要的頁面動效等都可能會給他們的閲讀造成干擾。你可以閲讀 <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Guides/Cognitive_accessibility">Cognitive accessibility</a> 了解更多。
+</p>
+</div>
+</div>
+<div id="outline-container-934d15a5-b313-46ce-8907-573c0ba399b5" class="outline-3">
+<h3 id="934d15a5-b313-46ce-8907-573c0ba399b5">必須依赖 JavaScript 才能查看內容</h3>
+<div class="outline-text-3" id="text-934d15a5-b313-46ce-8907-573c0ba399b5"><p>
+除了防爬虫以外，我認為博客不應該要求讀者加載 JavaScript 才能看，展示文章并不需要 JavaScript。
+</p>
+
+<p>
+有的博客也許是用 <a href="https://developer.mozilla.org/en-US/docs/Glossary/SPA">SPA (Single-page application)</a> 構建的，現在很多框架都支持 <a href="https://developer.mozilla.org/en-US/docs/Glossary/SSR">Server-side rendering (SSR)</a>，可以考慮改成服務端渲染，优先返回文章內容展示，一些交互等到用户允許 JavaScript 再啟󠄁用，體驗就會好得多。
+</p>
+
+<p>
+更多相關討論見 <a href="google-turn-on-javascript-to-keep-searching.html">請開啟 JavaScript 以繼續搜尋</a>。
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<details class="webmention">
+<summary>Webmentions <span class="webmention__count js-required">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回應这篇文章，可以在你的文章或社交媒體帖子中連結这篇文章，
+然後在 <a href="https://webmention.io/taxodium.ink/webmention">Webmention Endpoint</a> 進行提交，
+其中 Source 對應你的文章 URL，Target 對應我的文章 URL，也即你引用的連結。
+提交成功後，你的回應就会顯示在此這裡，有任何問題請 <a href="mailto:l-yanlei@hotmail.com">郵件聯系我</a>。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<noscript><p class="webmention__tip">你可以發送 Webmention，但加載數據需要開啟 JS。</p></noscript>
+<hr></hr>
+<ul class="webmention__list js-required" aria-live="polite" aria-atomic="false" aria-relevant="additions"></ul>
+</details><div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo" alt="Taxodium's favicon" />
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo" alt="Spike Leung's avatar"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<footer>
+<p>感謝你的閱讀！(´｡• ᵕ •｡`) ♡</p>
+<p>若有話想說，請给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 學習網頁內容無障礙 &body=Hi Spike,">我</a> 發一封 <a href="https://useplaintext.email">純文本郵件</a> :)</p>
+<p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
+<p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p><time class="dt-published" datetime="2026-11-06 Fri 13:20">2026-11-06</time> 〜 <time class="dt-updated" datetime="2026-11-06 Fri 13:24">2026-11-06</time></p>
+<a href="/learn-web-content-accessibility.txt">純文本版本</a> <a href="/learn-web-content-accessibility.org">原始 org 文件</a>
+</footer><script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
