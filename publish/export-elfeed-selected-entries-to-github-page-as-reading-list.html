@@ -76,7 +76,7 @@
 函数主要做的事情：
 </p>
 <ul class="org-ul">
-<li>获取选中的 elfeed 条目</li>
+<li>如果在 <code>*elfeed-search​*</code> 有選中條目，則获取選中的條目；否則获取 <code>*elfeed-search​*</code> 中的所有條目</li>
 <li>遍历所有条目，生成 org mode 的链接</li>
 <li>将所有连接放到一个临时 buffer 中，导出 HTML 文件到指定位置</li>
 <li>提交并推送到 GitHub</li>
@@ -88,15 +88,17 @@
 <ul class="org-ul">
 <li>添加了 <a href="my-experience-with-kagi-translate.html">Kagi Translate</a></li>
 <li>添加紅心功能</li>
+<li>在 Elfeed 中拉取更新後，自動全部推送</li>
 </ul>
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><code>(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/elfeed-reading-list</span> ()
-  <span class="org-doc">"Generate selected Elfeed entries as reading list. Auto push to git."</span>
+  <span class="org-doc">"Generate selected Elfeed entries as reading list.  Auto push to git."</span>
   (<span class="org-keyword">interactive</span> nil elfeed-search-mode)
-  (<span class="org-keyword">let</span> ((repo-dir (expand-file-name <span class="org-string">"~/git/reading-list"</span>)) <span class="org-comment-delimiter">;; </span><span class="org-comment">repo-dir is a git repo that save expoted HTML</span>
-        (entries (elfeed-search-selected))) <span class="org-comment-delimiter">;; </span><span class="org-comment">get all selected entries from elfeed</span>
-    <span class="org-comment-delimiter">;; </span><span class="org-comment">create a temp-buffer to insert links</span>
+  (<span class="org-keyword">let</span> ((repo-dir (expand-file-name <span class="org-string">"~/git/reading-list"</span>))
+        (entries (<span class="org-keyword">if</span> (use-region-p)
+                     (elfeed-search-selected)
+                   (elfeed-search-entries elfeed-search-filter))))
     (<span class="org-keyword">with-temp-buffer</span>
       (goto-char (point-min))
       (insert (format <span class="org-string">"#+title: Reading list\n"</span>))
@@ -108,7 +110,6 @@
       (insert <span class="org-string">"@@html:&lt;span&gt;&lt;input type=\"checkbox\" id=\"like\"/&gt;&lt;label for=\"like\" class=\"like-label\"&gt;&lt;/label&gt;&lt;/span&gt;@@"</span>)
       (insert <span class="org-string">"@@html:&lt;/div&gt;@@"</span>)
       (insert <span class="org-string">"\n\n"</span>)
-      <span class="org-comment-delimiter">;; </span><span class="org-comment">traverse elfeed entries, generate org mode link</span>
       (<span class="org-keyword">dolist</span> (entry entries)
         (<span class="org-keyword">let*</span> ((link (elfeed-entry-link entry))
                (title (elfeed-entry-title entry))
@@ -117,29 +118,40 @@
         (insert <span class="org-string">"\n"</span>))
       (insert <span class="org-string">"&#36889;&#26159;&#20174; [[https://github.com/emacs-elfeed/elfeed][elfeed]] &#23548;&#20986;&#30340;&#20010;&#20154;&#35330;&#38321;&#25968;&#25454;&#65292;&#20165;&#26041;&#20415;&#20010;&#20154;&#20351;&#29992;&#12290;\n\n</span>
 <span class="org-string">&#20855;&#20307;&#35211;&#65306; [[https://taxodium.ink/export-elfeed-selected-entries-to-github-page-as-reading-list.html][&#23548;&#20986; Elfeed &#36873;&#20013;&#26465;&#30446;&#21040; GitHub Page &#20316;&#20026; Reading List]]&#12290;\n\n"</span>)
-      <span class="org-comment-delimiter">;; </span><span class="org-comment">enable org mode</span>
       (org-mode)
-      <span class="org-comment-delimiter">;; </span><span class="org-comment">export to HTML</span>
       (org-export-to-file 'html <span class="org-string">"~/git/reading-list/index.html"</span>))
     (message <span class="org-string">"Entries export to index.html"</span>)
-    <span class="org-comment-delimiter">;; </span><span class="org-comment">you can push the HTML manual, or add auto push process below.</span>
     (<span class="org-keyword">let</span> ((default-directory repo-dir))
       (<span class="org-keyword">unless</span> (file-directory-p (expand-file-name <span class="org-string">".git"</span> repo-dir))
         (<span class="org-warning">user-error</span> <span class="org-string">"Not a git repository: %s"</span> repo-dir))
+      (message <span class="org-string">"Syncing elfeed entries to reading list..."</span>)
+      (<span class="org-keyword">if</span> (= 0 (shell-command <span class="org-string">"git pull --ff-only --no-rebase"</span>))
+          (message <span class="org-string">"Synced with origin."</span>)
+        (<span class="org-warning">user-error</span> <span class="org-string">"Git pull failed; resolve manually in %s"</span> repo-dir))
       (shell-command <span class="org-string">"git add index.html"</span>)
       (<span class="org-keyword">let</span> ((status (shell-command-to-string <span class="org-string">"git status --porcelain index.html"</span>)))
         (<span class="org-keyword">if</span> (string-empty-p status)
             (message <span class="org-string">"No changes to commit."</span>)
           (<span class="org-keyword">let</span> ((commit-msg <span class="org-string">":memo: update reading list"</span>))
             (shell-command (format <span class="org-string">"git commit -m \"%s\""</span> commit-msg))
-            (message <span class="org-string">"Sync with origin..."</span>)
-            (shell-command <span class="org-string">"git pull"</span> nil nil)
             (message <span class="org-string">"Pushing to origin..."</span>)
             (<span class="org-keyword">if</span> (= 0 (shell-command <span class="org-string">"git push"</span> nil nil))
                 (message <span class="org-string">"Add entries and pushed to origin."</span>)
               (message <span class="org-string">"Add entries but push failed."</span>))))))))
+
+(<span class="org-keyword">defun</span> <span class="org-function-name">spike-leung/elfeed-reading-list-update</span> (<span class="org-type">&amp;rest</span> _)
+  <span class="org-doc">"Auto push elfeed-search entries to reading list.</span>
+<span class="org-doc">Call in `</span><span class="org-doc"><span class="org-constant">elfeed-update-hook</span></span><span class="org-doc">', only push when `</span><span class="org-doc"><span class="org-constant">elfeed-queue-count-total</span></span><span class="org-doc">' is empty."</span>
+  (<span class="org-keyword">when</span> (= (elfeed-queue-count-total) 0)
+    (spike-leung/elfeed-reading-list)))
+
+(add-hook 'elfeed-update-hooks #'spike-leung/elfeed-reading-list-update)
 </code></pre>
 </div>
+
+<p>
+代碼可能更新不及時，最新的代碼可以在 <a href="https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-elfeed.el">init-elfeed.el</a> 中找到。
+</p>
 </details>
 
 <p>
@@ -151,7 +163,7 @@
 </p>
 
 <p>
-☞ <a href="https://spike-leung.github.io/reading-list/">Reading list</a>
+<span aria-hidden="true">☞</span> <a href="https://spike-leung.github.io/reading-list/">Reading list</a>
 </p>
 </div>
 <div id="postamble" class="status">
@@ -179,7 +191,7 @@
 <p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
 <p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
 <p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
-<p><time class="dt-published" datetime="2026-05-21 Thu 23:50">2026-05-21</time> 〜 <time class="dt-updated" datetime="2026-06-09 Tue 02:28">2026-06-09</time></p>
+<p><time class="dt-published" datetime="2026-05-21 Thu 23:50">2026-05-21</time> 〜 <time class="dt-updated" datetime="2026-11-19 Thu 15:18">2026-11-19</time></p>
 <a href="/export-elfeed-selected-entries-to-github-page-as-reading-list.txt">純文本版本</a> <a href="/export-elfeed-selected-entries-to-github-page-as-reading-list.org">原始 org 文件</a>
 </footer><script src="/js/code-enhanced.js" defer></script>
 <script src="/js/code-highlighted.js" defer></script>

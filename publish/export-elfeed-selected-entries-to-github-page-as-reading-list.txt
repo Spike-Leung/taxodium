@@ -31,7 +31,8 @@ elfeed 里，同时把 NetNewsWire 卸载了，避免没事总想着打开看看
 们导出一个 HTML 文件，推送到 GitHub Page 上阅读（或者任何 Web 服务器）。
 
 函数主要做的事情：
-- 获取选中的 elfeed 条目
+- 如果在 `*elfeed-search​*' 有選中條目，則获取選中的條目；否則获取 `*elfeed-search​*' 中的
+  所有條目
 - 遍历所有条目，生成 org mode 的链接
 - 将所有连接放到一个临时 buffer 中，导出 HTML 文件到指定位置
 - 提交并推送到 GitHub
@@ -39,14 +40,16 @@ elfeed 里，同时把 NetNewsWire 卸载了，避免没事总想着打开看看
 更新：
 - 添加了 [Kagi Translate] <https://taxodium.ink/my-experience-with-kagi-translate.html>
 - 添加紅心功能
+- 在 Elfeed 中拉取更新後，自動全部推送
 
 ,----
 | (defun spike-leung/elfeed-reading-list ()
-|   "Generate selected Elfeed entries as reading list. Auto push to git."
+|   "Generate selected Elfeed entries as reading list.  Auto push to git."
 |   (interactive nil elfeed-search-mode)
-|   (let ((repo-dir (expand-file-name "~/git/reading-list")) ;; repo-dir is a git repo that save expoted HTML
-|         (entries (elfeed-search-selected))) ;; get all selected entries from elfeed
-|     ;; create a temp-buffer to insert links
+|   (let ((repo-dir (expand-file-name "~/git/reading-list"))
+|         (entries (if (use-region-p)
+|                      (elfeed-search-selected)
+|                    (elfeed-search-entries elfeed-search-filter))))
 |     (with-temp-buffer
 |       (goto-char (point-min))
 |       (insert (format "#+title: Reading list\n"))
@@ -58,7 +61,6 @@ elfeed 里，同时把 NetNewsWire 卸载了，避免没事总想着打开看看
 |       (insert "@@html:<span><input type=\"checkbox\" id=\"like\"/><label for=\"like\" class=\"like-label\"></label></span>@@")
 |       (insert "@@html:</div>@@")
 |       (insert "\n\n")
-|       ;; traverse elfeed entries, generate org mode link
 |       (dolist (entry entries)
 |         (let* ((link (elfeed-entry-link entry))
 |                (title (elfeed-entry-title entry))
@@ -67,28 +69,37 @@ elfeed 里，同时把 NetNewsWire 卸载了，避免没事总想着打开看看
 |         (insert "\n"))
 |       (insert "這是从 [[https://github.com/emacs-elfeed/elfeed][elfeed]] 导出的个人訂閱数据，仅方便个人使用。\n\n
 | 具体見： [[https://taxodium.ink/export-elfeed-selected-entries-to-github-page-as-reading-list.html][导出 Elfeed 选中条目到 GitHub Page 作为 Reading List]]。\n\n")
-|       ;; enable org mode
 |       (org-mode)
-|       ;; export to HTML
 |       (org-export-to-file 'html "~/git/reading-list/index.html"))
 |     (message "Entries export to index.html")
-|     ;; you can push the HTML manual, or add auto push process below.
 |     (let ((default-directory repo-dir))
 |       (unless (file-directory-p (expand-file-name ".git" repo-dir))
 |         (user-error "Not a git repository: %s" repo-dir))
+|       (message "Syncing elfeed entries to reading list...")
+|       (if (= 0 (shell-command "git pull --ff-only --no-rebase"))
+|           (message "Synced with origin.")
+|         (user-error "Git pull failed; resolve manually in %s" repo-dir))
 |       (shell-command "git add index.html")
 |       (let ((status (shell-command-to-string "git status --porcelain index.html")))
 |         (if (string-empty-p status)
 |             (message "No changes to commit.")
 |           (let ((commit-msg ":memo: update reading list"))
 |             (shell-command (format "git commit -m \"%s\"" commit-msg))
-|             (message "Sync with origin...")
-|             (shell-command "git pull" nil nil)
 |             (message "Pushing to origin...")
 |             (if (= 0 (shell-command "git push" nil nil))
 |                 (message "Add entries and pushed to origin.")
 |               (message "Add entries but push failed."))))))))
+| 
+| (defun spike-leung/elfeed-reading-list-update (&rest _)
+|   "Auto push elfeed-search entries to reading list.
+| Call in `elfeed-update-hook', only push when `elfeed-queue-count-total' is empty."
+|   (when (= (elfeed-queue-count-total) 0)
+|     (spike-leung/elfeed-reading-list)))
+| 
+| (add-hook 'elfeed-update-hooks #'spike-leung/elfeed-reading-list-update)
 `----
+
+代碼可能更新不及時，最新的代碼可以在 [init-elfeed.el] 中找到。
 
 [reading-list] 很简单，一个 `index.html' 容纳所有导出的链接，一个 `main.css' 添加一些简
 单的样式，然后配置一下 GitHub Page 就行。
@@ -97,7 +108,7 @@ elfeed 里，同时把 NetNewsWire 卸载了，避免没事总想着打开看看
 读，出门了也能有一份链接列表可以看。我本来也倾向于去原网站阅读，所以一份简单的链接列表对
 我来说就足够了。我会使用一段时间看看效果，如果你想看看生成的 HTML 页面：
 
-☞ [Reading list]
+[Reading list]
 
 
 [elfeed] <https://github.com/emacs-elfeed/elfeed>
@@ -107,6 +118,9 @@ elfeed 里，同时把 NetNewsWire 卸载了，避免没事总想着打开看看
 [很多新功能] <https://github.com/emacs-elfeed/elfeed/blob/main/NEWS.org>
 
 [FreshRSS] <https://www.freshrss.org/>
+
+[init-elfeed.el]
+<https://github.com/Spike-Leung/Spikemacs/blob/main/lisp/init-elfeed.el>
 
 [reading-list] <https://github.com/Spike-Leung/reading-list>
 
