@@ -115,8 +115,8 @@
           if (
             prevRect &&
             rect &&
-            rect.top > prevRect.top &&
-            rect.top < prevRect.bottom
+            rect.top >= prevRect.top &&
+            rect.top <= prevRect.bottom
           ) {
             // set clear to avoid overlap
             sidenoteElement.style.clear = isSidenoteRefNearInlineStart
