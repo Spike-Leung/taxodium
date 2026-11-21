@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnText = "複製";
     btn.textContent = btnText;
     btn.className = "code-copy-btn";
+    btn.tabindex = 0;
 
     // Copy code on click
     btn.addEventListener("click", function (e) {
