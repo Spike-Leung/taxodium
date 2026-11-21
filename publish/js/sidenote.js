@@ -5,7 +5,7 @@
   function handleFootnoteMode() {
     mountSidenotes();
 
-    const footnotes = document.querySelector("#footnotes")
+    const footnotes = document.querySelector("#footnotes");
     if (footnotes) {
       footnotes.style.display = "none";
     }
@@ -93,34 +93,40 @@
       });
     });
 
-    isShowAsSidenote && avoidSidenoteOverlap()
+    isShowAsSidenote && avoidSidenoteOverlap();
   }
 
   function avoidSidenoteOverlap() {
     const sidenoteElements = document.querySelectorAll(".sidenote");
-    if (sidenoteElements.length === 0) return
+    if (sidenoteElements.length === 0) return;
 
-    let prevSidenoteElement = null
+    let prevSidenoteElement = null;
     Array.from(sidenoteElements).forEach((sidenoteElement, index) => {
       if (prevSidenoteElement) {
-        const isSidenoteRefNearInlineStart = sidenoteElement.classList.contains("inline-start")
-        const isPrevSidenoteRefNearInlineStart = prevSidenoteElement.classList.contains("inline-start")
+        const isSidenoteRefNearInlineStart =
+          sidenoteElement.classList.contains("inline-start");
+        const isPrevSidenoteRefNearInlineStart =
+          prevSidenoteElement.classList.contains("inline-start");
         if (isPrevSidenoteRefNearInlineStart === isSidenoteRefNearInlineStart) {
-          const prevRect = prevSidenoteElement.getBoundingClientRect()
-          const rect = sidenoteElement.getBoundingClientRect()
+          const prevRect = prevSidenoteElement.getBoundingClientRect();
+          const rect = sidenoteElement.getBoundingClientRect();
 
           // if prevSidenoteElement dimension contains sidenoteElement
-          if (prevRect &&
-              rect &&
-              rect.top > prevRect.top
-              && rect.top < prevRect.bottom) {
+          if (
+            prevRect &&
+            rect &&
+            rect.top > prevRect.top &&
+            rect.top < prevRect.bottom
+          ) {
             // set clear to avoid overlap
-            sidenoteElement.style.clear = isSidenoteRefNearInlineStart ? "inline-start" : "inline-end";
+            sidenoteElement.style.clear = isSidenoteRefNearInlineStart
+              ? "inline-start"
+              : "inline-end";
           }
         }
       }
-      prevSidenoteElement = sidenoteElement
-    })
+      prevSidenoteElement = sidenoteElement;
+    });
   }
 
   function highlightRefPair() {
@@ -157,7 +163,9 @@
 
     if (event.target.tagName === "A") {
       // hover on sup, find sidenote
-      return document.querySelector(`.${SIDENOTE_CLASS}[data-footnote-id="${CSS.escape(footnoteId)}"]`);
+      return document.querySelector(
+        `.${SIDENOTE_CLASS}[data-footnote-id="${CSS.escape(footnoteId)}"]`,
+      );
     } else {
       // hover on sitenote, find sup
       return document.querySelector(
@@ -198,9 +206,9 @@
       debounceTimer = setTimeout(arrangeSidenotePosition, 150);
     });
 
-    window.addEventListener('click', (e) => {
-      if (e.target.nodeName === 'SUMMARY') {
-        setTimeout(arrangeSidenotePosition, 0)
+    window.addEventListener("click", (e) => {
+      if (e.target.nodeName === "SUMMARY") {
+        setTimeout(arrangeSidenotePosition, 0);
       }
     });
   });
