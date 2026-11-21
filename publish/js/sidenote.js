@@ -15,8 +15,9 @@
     const footrefList = Array.from(document.querySelectorAll(".footref"));
 
     footrefList.forEach(function renderSidenote(footrefElement) {
-      const footrefHash = footrefElement.hash.slice(1);
-      const footrefId = footrefElement.id;
+      const footrefHash = footrefElement.hash.slice(1); // fn.1
+      const footrefId = footrefElement.id; // fnr.1
+      const footrefSerialNumber = footrefHash.slice(3)
       if (!footrefHash || !footrefId) return;
 
       footrefElement.dataset.footnoteId = footrefId;
@@ -33,9 +34,11 @@
       const button = document.createElement("button");
       // text variant of `ℹ`
       button.innerText = "\u2139\uFE0E";
-      button.ariaLabel = "脚注信息";
+      button.ariaLabel = `顯示旁注 ${footrefSerialNumber}`;
+      button.setAttribute("aria-expanded", "false");
       button.classList.add("sidenote-toggle-trigger");
       button.dataset.footnoteId = footrefId;
+      button.dataset.footrefSerialNumber = footrefSerialNumber;
       button.removeEventListener("click", toggleSidenote);
       button.addEventListener("click", toggleSidenote);
 
@@ -136,8 +139,12 @@
     Array.from(elements).forEach((element) => {
       element.removeEventListener("mouseenter", highlight);
       element.removeEventListener("mouseleave", cancelHighlight);
+      element.removeEventListener("focus", highlight);
+      element.removeEventListener("blue", cancelHighlight);
       element.addEventListener("mouseenter", highlight);
       element.addEventListener("mouseleave", cancelHighlight);
+      element.addEventListener("focus", highlight);
+      element.addEventListener("blur", cancelHighlight);
     });
   }
 
@@ -175,12 +182,16 @@
   }
 
   function toggleSidenote(event) {
-    const footnoteId = event.target.dataset.footnoteId;
+    const button = event.target
+    const footnoteId = button.dataset.footnoteId;
     const sidenote = document.querySelector(
       `.${SIDENOTE_CLASS}[data-footnote-id="${CSS.escape(footnoteId)}"]`,
     );
 
     if (!sidenote) return;
+
+    button.ariaLabel = `隱藏旁注 ${button.dataset.footrefSerialNumber}`;
+    button.setAttribute("aria-expanded", "true");
 
     sidenote.style.display =
       getComputedStyle(sidenote).display === "none" ? "grid" : "none";
