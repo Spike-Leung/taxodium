@@ -56,7 +56,7 @@ async function processPost(entry) {
     // Extract main content
     const contentDiv = root.querySelector("#content");
     if (!contentDiv) {
-      console.warn(`No content div found in ${entry.file}`);
+      console.warn(`No content div found in ${entry.file}, \n please use sgml-validate to check the html.`);
       return null;
     }
 
