@@ -73,10 +73,10 @@
           footnoteElement.getBoundingClientRect().width;
         const FootnoteOffset = footnoteElement.closest("details") ? 55 : 10;
 
+        ["inline-start", "inline-end"].forEach((classname) =>
+          footnoteElement.classList.remove(classname),
+        );
         if (isShowAsSidenote) {
-          ["inline-start", "inline-end"].forEach((classname) =>
-            footnoteElement.classList.remove(classname),
-          );
           footnoteElement.classList.add("is-sidenote");
           const margin = -1 * (footnoteContentWidth + FootnoteOffset) + "px";
           if (isFootnoteRefNearInlineStart) {
