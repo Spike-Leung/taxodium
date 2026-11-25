@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>用 gptel-annotate 檢查文章中的錯別字</title>
+<meta name="author" content="Spike Leung">
+<meta name="description" content="用 gptel-annotate 檢查文章中的錯別字">
+<meta name="generator" content="Org Mode">
+<meta name="color-scheme" content="light dark" />
+<meta property="og:url" content="https://taxodium.ink/use-gptel-annotate-to-proofread-the-article-for-typos.html">
+<link rel="preload" href="/styles/main.css" as="style" />
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="preload" href="/js/color-scheme.js" as="script"/>
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="canonical" href="https://taxodium.ink/use-gptel-annotate-to-proofread-the-article-for-typos.html">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<script src="/js/color-scheme.js"></script>
+<link rel="stylesheet" href="/styles/image-enhance.css" />
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主頁</a></li>
+    <li><a href="/subscribe.html">訂閱</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/shuffle.html" class="js-required">隨機</a></li>
+  </ul>
+  <button id="lightdark" class="js-required" aria-label="切換當前頁面明暗主題">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512" alt="">
+      <path d="M0 0h512v512H0z" fill="none" />
+      <path fill="currentColor" fill-rule="evenodd" d="M277.333 405.333v85.333h-42.667v-85.333zm99.346-58.824l60.34 60.34l-30.17 30.17l-60.34-60.34zm-241.359 0l30.17 30.17l-60.34 60.34l-30.17-30.17zM256 139.353c64.422 0 116.647 52.224 116.647 116.647c0 64.422-52.225 116.647-116.647 116.647A116.427 116.427 0 0 1 139.352 256c0-64.423 52.225-116.647 116.648-116.647m0 42.666c-40.859 0-73.981 33.123-73.981 74.062a73.76 73.76 0 0 0 21.603 52.296c13.867 13.867 32.685 21.64 52.378 21.603zm234.666 52.647v42.667h-85.333v-42.667zm-384 0v42.667H21.333v-42.667zM105.15 74.98l60.34 60.34l-30.17 30.17l-60.34-60.34zm301.7 0l30.169 30.17l-60.34 60.34l-30.17-30.17zM277.332 21.333v85.333h-42.667V21.333z" />
+    </svg>
+  </button>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">用 gptel-annotate 檢查文章中的錯別字</h1>
+</header><p>
+寫文章的時候難免會有一些錯別字，有的錯別字是無關緊要的，例如我用 <a href="get-started-with-cangjie-input-method.html">倉頡輸入法</a> 打字，傾向於打繁體字，但有的繁體字我不會，就會用簡體字，於是文章裡就會混著簡繁，對於看慣繁體的人來說，有的簡體字就是錯別字；而有的字是有異體字，例如「<a href="https://zdic.net/hans/%E8%A7%80">觀</a>」和「<a href="https://zdic.net/hans/%E8%A6%B3">観</a>」，讀音和含義都是一樣的，不影響閱讀。但有的錯別字是一定要修正的，例如我之前一直打錯了照顧的「<a href="https://zdic.net/hans/%E9%A1%A7">顧</a>」，我打的是「<a href="https://zdic.net/hans/%E9%A0%8B">頋</a>」，乍一看很像「<a href="https://zdic.net/hans/%E9%A1%BE">顾</a>」的繁體，但它實際讀「ě」，和「顧」風馬牛不相及。這樣的錯字會給屏幕閱讀器的用戶帶來困惑，也會讓我檢索文章內容時檢索失敗。
+</p>
+
+<p>
+自己閱讀檢查有時會遺漏，所以一直想找個工具輔助檢查。針對英文的檢查工具倒是有很多，像是 <a href="https://www.grammarly.com/">Grammarly</a> <small>(似乎也支持中文)</small>，Emacs 裡有 ispell 、<a href="https://github.com/minad/jinx">minad/jinx</a>，但針對中文的就比較少，尤其是能集成在 Emacs 裡的 <small>(也許有但我不知道，如果你知道不妨分享一下)</small>。
+</p>
+
+<p>
+<a href="my-experience-with-kagi-translate.html">Kagi Translate</a> 的 <a href="https://translate.kagi.com/proofread">Proofread</a> 倒也可以檢查多種語言，但也不是集成在 Emacs 裡的，平時寫英文回復時我會用來檢查一下拼寫和語法。
+</p>
+
+<p>
+最近看到了 <a href="https://github.com/karthink/gptel-annotate">karthink/gptel-annotate</a>，它可以從 Emacs 獲取上下文內容，通過 <a href="https://github.com/karthink/gptel">karthink/gptel</a> <small>(Emacs 中用於和 <abbr title="Large language model">LLM</abbr> 交互的擴展)</small> 發送給 LLM，讓 LLM 按照輸入的 prompt 進行處理，將 LLM 返回的結果轉換成 flymake <small>(Emacs 內置的語法檢查工具)</small> 的格式，再通過 flymake 在 buffer 中將返回顯示出來。
+</p>
+
+<p>
+利用 gptel-annotate，可以將文章內容作為上下文，提示詞是「檢查錯別字」，然後就可以得到這樣的結果：
+</p>
+
+
+<figure>
+<a href="images/use-gptel-annotate-to-proofread-the-article-for-typos/gptel-annotate-proofread.webp"><img src="images/use-gptel-annotate-to-proofread-the-article-for-typos/gptel-annotate-proofread.webp" alt="gptel-annotate 执行結果" loading="lazy"></a>
+
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>文章的錯別字下會有波浪線標記，同時在錯別字下面會顯示 flymake 的錯誤提示，提示應該如何修正。 錯別字和 flymake 提示有一根曲線將兩者連接起來。</figcaption>
+</figure>
+
+<p>
+怎麼樣，效果不錯吧？至少我挺滿意的 <small>(如果你心動了，想用 Emacs，請看 <a href="how-to-get-started-with-emacs.html">如何上手 Emacs</a>)</small>。
+</p>
+
+<p>
+將指針移動到錯別字上，還可以用 <code>gptel-annotate-accept</code> 來應用修改，這樣檢查和修正錯別字就方便多了。
+</p>
+
+<p>
+除了檢查錯別字，gptel-annotate 還可以做很多事，作者給了 <a href="https://www.youtube.com/watch?v=xHEnWvKmSKM&amp;t=1025s">幾個用例</a>，例如查找文章中出現的書或論文，聯網搜索它們的連結，然後顯示在文章中。
+</p>
+
+
+<figure>
+<a href="images/use-gptel-annotate-to-proofread-the-article-for-typos/gptel-annotate-elfeed-entry.webp"><img src="images/use-gptel-annotate-to-proofread-the-article-for-typos/gptel-annotate-elfeed-entry.webp" alt="用 gptel-annotate 查找文獻的效果" loading="lazy"></a>
+
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>文章中的文献下有波浪線標記，在下面顯示了文献的標題和連結。</figcaption>
+</figure>
+
+<p>
+gptel-annotate 相當於是讓 LLM 作為 <a href="https://en.wikipedia.org/wiki/Language_Server_Protocol">LSP (Language Server Protocol)</a>，給 LLM 一個 prompt，將 LLM 的結果作為提示顯示在對應的文本下。
+LSP 是針對特定編程語言的，有一套固定的規則，而 gptel-annotate 利用 LLM，可以处理各種語言，規則是通過 prompt 指定的；
+LSP 一般響應很快，而 gptel-annotate 要調用雲端 LLM 处理，就相對慢得多 <small>(不知道用本地模型如何)</small>。
+</p>
+
+<p>
+如果你想在 Emacs 中使用 gptel-annotate，這是相關的配置：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><code>(<span class="org-keyword">use-package</span> flymake
+  <span class="org-builtin">:config</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#19979;&#38754;&#36889;&#20491;&#37197;&#32622;&#35201; Emacs &#29256;&#26412;&#22823;&#26044; 30.1 &#25165;&#25903;&#25345;</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Emacs 32 &#21069;&#30340;&#29256;&#26412;&#35531;&#29992; `</span><span class="org-comment"><span class="org-constant">flymake-show-diagnostics-at-end-of-line</span></span><span class="org-comment">'</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#35731; flymake &#30340;&#25552;&#31034;&#30452;&#25509;&#39023;&#31034;&#20986;&#20358;&#65292;&#26377;&#22810;&#31278;&#27171;&#24335;</span>
+  (<span class="org-keyword">setq</span> flymake-inline-diagnostics 'fancy))
+
+(<span class="org-keyword">use-package</span> gptel
+  <span class="org-builtin">:config</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#20320;&#21487;&#20197;&#29992;&#33258;&#24049;&#21916;&#27489;&#30340;&#27169;&#22411;&#65292;&#37197;&#32622;&#35211;&#65306; https://github.com/karthink/gptel</span>
+  (<span class="org-keyword">setq</span> gptel-model   'deepseek-flash
+        gptel-backend (gptel-make-deepseek <span class="org-string">"DeepSeek"</span>
+                        <span class="org-builtin">:host</span> <span class="org-string">"api.deepseek.com"</span>
+                        <span class="org-builtin">:endpoint</span> <span class="org-string">"/chat/completions"</span>
+                        <span class="org-builtin">:stream</span> t
+                        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#36889;&#26159;&#25105;&#24478; authinfo &#33719;&#21462; API Key &#30340;&#26041;&#27861;&#65292;&#35201;&#25563;&#25104;&#20320;&#33258;&#24049;&#30340; API Key</span>
+                        <span class="org-comment-delimiter">;; </span><span class="org-comment">&#38364;&#26044; authinfo: https://taxodium.ink/config-authinfo-with-emacs.html</span>
+                        <span class="org-builtin">:key</span> (spike-leung/get-deepseek-api-key)
+                        <span class="org-builtin">:models</span> '(deepseek-flash deepseek-v4-pro))))
+
+(<span class="org-keyword">use-package</span> gptel-annotate
+  <span class="org-builtin">:straight</span> (<span class="org-builtin">:host</span> github <span class="org-builtin">:repo</span> <span class="org-string">"karthink/gptel-annotate"</span>)
+  <span class="org-builtin">:after</span> gptel
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">Emacs &#29256;&#26412;&#22823;&#26044; 30 &#35201;&#21152;&#19978;&#36889;&#20491;&#37197;&#32622;&#65292;&#21542;&#21063; flymake &#25298;&#32085; gptel-annotate-flymake</span>
+  <span class="org-comment-delimiter">;; </span><span class="org-comment">&#25110;&#32773;&#20320;&#20063;&#21487;&#20197;&#37197;&#32622; `</span><span class="org-comment"><span class="org-constant">trusted-content</span></span><span class="org-comment">'</span>
+  <span class="org-builtin">:config</span>
+  (put 'gptel-annotate-flymake 'flymake-always-safe t))
+</code></pre>
+</div>
+</div>
+<div id="postamble" class="status">
+<details class="webmention">
+<summary>Webmentions <span class="webmention__count js-required">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回應这篇文章，可以在你的文章或社交媒體帖子中連結这篇文章，
+然後在 <a href="https://webmention.io/taxodium.ink/webmention">Webmention Endpoint</a> 進行提交，
+其中 Source 對應你的文章 URL，Target 對應我的文章 URL，也即你引用的連結。
+提交成功後，你的回應就会顯示在此這裡，有任何問題請 <a href="mailto:l-yanlei@hotmail.com">郵件聯系我</a>。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<noscript><p class="webmention__tip">你可以發送 Webmention，但加載數據需要開啟 JS。</p></noscript>
+<hr></hr>
+<ul class="webmention__list js-required" aria-live="polite" aria-atomic="false" aria-relevant="additions"></ul>
+</details><div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo" alt="Taxodium's favicon" />
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo" alt="Spike Leung's avatar"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<footer>
+<p>感謝你的閱讀！(´｡• ᵕ •｡`) ♡</p>
+<p>若有話想說，請给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: 用 gptel-annotate 檢查文章中的錯別字 &body=Hi Spike,">我</a> 發一封 <a href="https://useplaintext.email">純文本郵件</a> :)</p>
+<p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
+<p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p><time class="dt-published" datetime="2026-11-25 Wed 10:00">2026-11-25</time> 〜 <time class="dt-updated" datetime="2026-11-25 Wed 09:59">2026-11-25</time></p>
+<a href="/use-gptel-annotate-to-proofread-the-article-for-typos.txt">純文本版本</a> <a href="/use-gptel-annotate-to-proofread-the-article-for-typos.org">原始 org 文件</a>
+</footer><script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
