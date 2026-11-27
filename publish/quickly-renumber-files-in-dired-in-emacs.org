@@ -1,0 +1,63 @@
+#+title:      TIL: 在 Emacs 中用 dired 快速調整文件序號
+#+export_file_name: quickly-renumber-files-in-dired-in-emacs
+#+date:       [2026-11-27 Fri 22:19]
+#+filetags:   :dired:emacs:published:regexp:til:
+#+identifier: 20261127T221956
+#+bind:       denote-directory "~/git/taxodium/posts"
+#+description: 在 Emacs 中用 dired 快速調整文件序號
+#+language: zh-CN
+#+author: Spike Leung
+#+email: l-yanlei@hotmail.com
+#+options: ^:{}
+#+startup: content hideblocks
+
+我經常下載專輯聽，有時一張專輯裡有幾十首歌，分在不同文件夾裡，
+我想把它們合併在一起，同時調整序號，使得它們排序正確。
+
+例如我要把下面的序號全部加 13（因為前面已經有 13 首歌了）：
+
+#+begin_example
+  -rw-r--r-- 1 spike staff 29090977 Feb 17 2016 01 星のかがやきよ.flac
+  -rw-r--r-- 1 spike staff 33418619 Feb 17 2016 02 夏を待つセイル(帆)のように.flac
+  -rw-r--r-- 1 spike staff 33363354 Feb 17 2016 03 君がいない.flac
+  -rw-r--r-- 1 spike staff 32461192 Feb 17 2016 04 心を開いて.flac
+  -rw-r--r-- 1 spike staff 35980121 Feb 17 2016 05 揺れる想い.flac
+  -rw-r--r-- 1 spike staff 33984064 Feb 17 2016 06 素直に言えなくて.flac
+  -rw-r--r-- 1 spike staff 37235927 Feb 17 2016 07 Oh my love.flac
+  -rw-r--r-- 1 spike staff 36838357 Feb 17 2016 08 雨に濡れて.flac
+  -rw-r--r-- 1 spike staff 44030994 Feb 17 2016 09 I still remember.flac
+  -rw-r--r-- 1 spike staff 34967825 Feb 17 2016 10 来年の夏も.flac
+  -rw-r--r-- 1 spike staff 42113404 Feb 17 2016 11 あなたに帰りたい.flac
+  -rw-r--r-- 1 spike staff 31998941 Feb 17 2016 12 愛が見えない.flac
+  -rw-r--r-- 1 spike staff 38246546 Feb 17 2016 13 果てしない夢を.flac
+#+end_example
+
+在 Emacs 裡可以這樣做：
+
+1. 用 ~dired~ 打開目錄
+2. 用 ~wdired-change-to-wdired-mode~ 讓 ~dired~ 變成可編輯狀態
+3. 選中所有文件
+4. 執行 ~query-replace-regexp~
+5. 把 =^\([0-9]+\)= 替換成 =\,(format "%02d" (+ 13 \#1))=
+
+   #+begin_details
+   #+html: <summary>正則解釋</summary>
+
+   - =^\([0-9]+\)= :: 匹配行首的序號，在 Emacs 29.1 之後，
+      ~wdired-search-replace-filenames~ 默認是 =t= ，只會匹配文件名，忽略前面的文件信息。
+      所以 ~^~ (行首) 能匹配到文件名的開頭。總之這裡的目的是匹配序號，並把序號作為一個分組捕獲。
+   - =\,(format "%02d" (+ 13 \#1))= :: 將匹配的內容替換成 ~format~ 的結果。
+     ~format~ 的格式是 =%02d= ，意思是兩位數字，不足兩位前面補 0。
+     =(+ 13 \#1)= 是要返回的數字，將前面捕获的第一個分組的內容 (即序號) 加上 13 後返回。
+     另外要注意的是要用 =\#1= 而不是 =\1= ，因為相加要用數字類型， =\#= 會用 ~string-to-number~ 將結果轉成數字。
+   #+end_details
+6. 全部替換後，執行 ~wdired-finish-edit~ 保存。
+
+#+begin_export html
+<figure>
+  <video controls loop muted playsinline loading="lazy">
+    <source src="/images/quickly-renumber-files-in-dired-in-emacs/demo.mp4" type="video/mp4">
+  </video>
+  <figcaption>在 Emacs 中的操作演示</figcaption>
+</figure>
+#+end_export

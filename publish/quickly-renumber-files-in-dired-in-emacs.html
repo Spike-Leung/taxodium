@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TIL: 在 Emacs 中用 dired 快速調整文件序號</title>
+<meta name="author" content="Spike Leung">
+<meta name="description" content="在 Emacs 中用 dired 快速調整文件序號">
+<meta name="generator" content="Org Mode">
+<meta name="color-scheme" content="light dark" />
+<meta property="og:url" content="https://taxodium.ink/quickly-renumber-files-in-dired-in-emacs.html">
+<link rel="preload" href="/styles/main.css" as="style" />
+<link rel="preload" href="/images/background/xv.png" as="image" type="image/png" />
+<link rel="preload" href="/js/color-scheme.js" as="script"/>
+<link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="webmention" href="https://webmention.io/taxodium.ink/webmention" />
+<link href="https://github.com/Spike-Leung" rel="me">
+<link rel="canonical" href="https://taxodium.ink/quickly-renumber-files-in-dired-in-emacs.html">
+<link rel="alternate" type="application/atom+xml" href="rss.xml" title="Feed for all blogs."/>
+<link rel="alternate" type="application/atom+xml" href="album.xml" title="Feed for all album."/>
+<link rel="alternate" type="application/atom+xml" href="emacs.xml" title="Feed for all Emacs."/>
+<link rel="alternate" type="application/atom+xml" href="nichijou.xml" title="Feed for 日常."/>
+<link rel="alternate" type="application/atom+xml" href="snippet.xml" title="Feed for Snippet."/>
+<link rel="alternate" type="application/atom+xml" href="zine.xml" title="Feed for Zine."/>
+<script src="/js/color-scheme.js"></script>
+</head>
+<body class="h-entry">
+<div id="preamble" class="status">
+<a id="skip-content" href="#content" class="a11y-nav">Skip to main content</a>
+<nav>
+  <ul>
+    <li><a href="/index.html">主頁</a></li>
+    <li><a href="/subscribe.html">訂閱</a></li>
+    <li><a href="/search.html">搜索</a></li>
+    <li><a href="/shuffle.html" class="js-required">隨機</a></li>
+  </ul>
+  <button id="lightdark" class="js-required" aria-label="切換當前頁面明暗主題">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512" alt="">
+      <path d="M0 0h512v512H0z" fill="none" />
+      <path fill="currentColor" fill-rule="evenodd" d="M277.333 405.333v85.333h-42.667v-85.333zm99.346-58.824l60.34 60.34l-30.17 30.17l-60.34-60.34zm-241.359 0l30.17 30.17l-60.34 60.34l-30.17-30.17zM256 139.353c64.422 0 116.647 52.224 116.647 116.647c0 64.422-52.225 116.647-116.647 116.647A116.427 116.427 0 0 1 139.352 256c0-64.423 52.225-116.647 116.648-116.647m0 42.666c-40.859 0-73.981 33.123-73.981 74.062a73.76 73.76 0 0 0 21.603 52.296c13.867 13.867 32.685 21.64 52.378 21.603zm234.666 52.647v42.667h-85.333v-42.667zm-384 0v42.667H21.333v-42.667zM105.15 74.98l60.34 60.34l-30.17 30.17l-60.34-60.34zm301.7 0l30.169 30.17l-60.34 60.34l-30.17-30.17zM277.332 21.333v85.333h-42.667V21.333z" />
+    </svg>
+  </button>
+</nav>
+</div>
+<div id="content" class="content e-content">
+<header>
+<h1 class="title p-name">TIL: 在 Emacs 中用 dired 快速調整文件序號</h1>
+</header><p>
+我經常下載專輯聽，有時一張專輯裡有幾十首歌，分在不同文件夾裡，我想把它們合併在一起，同時調整序號，使得它們排序正確。
+</p>
+
+<p>
+例如我要把下面的序號全部加 13（因為前面已經有 13 首歌了）：
+</p>
+
+<pre class="example">
+-rw-r--r-- 1 spike staff 29090977 Feb 17 2016 01 星のかがやきよ.flac
+-rw-r--r-- 1 spike staff 33418619 Feb 17 2016 02 夏を待つセイル(帆)のように.flac
+-rw-r--r-- 1 spike staff 33363354 Feb 17 2016 03 君がいない.flac
+-rw-r--r-- 1 spike staff 32461192 Feb 17 2016 04 心を開いて.flac
+-rw-r--r-- 1 spike staff 35980121 Feb 17 2016 05 揺れる想い.flac
+-rw-r--r-- 1 spike staff 33984064 Feb 17 2016 06 素直に言えなくて.flac
+-rw-r--r-- 1 spike staff 37235927 Feb 17 2016 07 Oh my love.flac
+-rw-r--r-- 1 spike staff 36838357 Feb 17 2016 08 雨に濡れて.flac
+-rw-r--r-- 1 spike staff 44030994 Feb 17 2016 09 I still remember.flac
+-rw-r--r-- 1 spike staff 34967825 Feb 17 2016 10 来年の夏も.flac
+-rw-r--r-- 1 spike staff 42113404 Feb 17 2016 11 あなたに帰りたい.flac
+-rw-r--r-- 1 spike staff 31998941 Feb 17 2016 12 愛が見えない.flac
+-rw-r--r-- 1 spike staff 38246546 Feb 17 2016 13 果てしない夢を.flac
+</pre>
+
+<p>
+在 Emacs 裡可以這樣做：
+</p>
+
+<ol class="org-ol">
+<li>用 <code>dired</code> 打開目錄</li>
+<li>用 <code>wdired-change-to-wdired-mode</code> 讓 <code>dired</code> 變成可編輯狀態</li>
+<li>選中所有文件</li>
+<li>執行 <code>query-replace-regexp</code></li>
+<li><p>
+把 <code>^\([0-9]+\)</code> 替換成 <code>\,(format "%02d" (+ 13 \#1))</code>
+</p>
+
+<details>
+<summary>正則解釋</summary>
+
+<dl class="org-dl">
+<dt><code>^\([0-9]+\)</code></dt><dd>匹配行首的序號，在 Emacs 29.1 之後，<code>wdired-search-replace-filenames</code> 默認是 <code>t</code> ，只會匹配文件名，忽略前面的文件信息。所以 <code>^</code> (行首) 能匹配到文件名的開頭。總之這裡的目的是匹配序號，並把序號作為一個分組捕獲。</dd>
+<dt><code>\,(format "%02d" (+ 13 \#1))</code></dt><dd>將匹配的內容替換成 <code>format</code> 的結果。<code>format</code> 的格式是 <code>%02d</code> ，意思是兩位數字，不足兩位前面補 0。<code>(+ 13 \#1)</code> 是要返回的數字，將前面捕获的第一個分組的內容 (即序號) 加上 13 後返回。另外要注意的是要用 <code>\#1</code> 而不是 <code>\1</code> ，因為相加要用數字類型， <code>\#</code> 會用 <code>string-to-number</code> 將結果轉成數字。</dd>
+</dl>
+</details></li>
+<li>全部替換後，執行 <code>wdired-finish-edit</code> 保存。</li>
+</ol>
+
+<figure>
+  <video controls loop muted playsinline loading="lazy">
+    <source src="/images/quickly-renumber-files-in-dired-in-emacs/demo.mp4" type="video/mp4">
+  </video>
+  <figcaption>在 Emacs 中的操作演示</figcaption>
+</figure>
+</div>
+<div id="postamble" class="status">
+<details class="webmention">
+<summary>Webmentions <span class="webmention__count js-required">(加载中...)</span></summary>
+<p class="webmention__tip">
+如果你想回應这篇文章，可以在你的文章或社交媒體帖子中連結这篇文章，
+然後在 <a href="https://webmention.io/taxodium.ink/webmention">Webmention Endpoint</a> 進行提交，
+其中 Source 對應你的文章 URL，Target 對應我的文章 URL，也即你引用的連結。
+提交成功後，你的回應就会顯示在此這裡，有任何問題請 <a href="mailto:l-yanlei@hotmail.com">郵件聯系我</a>。
+(<a href="https://taxodium.ink/add-webmention-to-blog.html">关于 Webmention</a>)
+</p>
+<noscript><p class="webmention__tip">你可以發送 Webmention，但加載數據需要開啟 JS。</p></noscript>
+<hr></hr>
+<ul class="webmention__list js-required" aria-live="polite" aria-atomic="false" aria-relevant="additions"></ul>
+</details><div class="h-card p-author" aria-hidden="true">
+<img src="https://taxodium.ink/favicon.ico" class="u-logo" alt="Taxodium's favicon" />
+<img src="https://taxodium.ink/images/common/avatar.png" class="u-photo" alt="Spike Leung's avatar"/>
+<a href="https://taxodium.ink" class="u-url p-name">Spike Leung</a>
+<a href="mailto:l-yanlei@hotmail.com" class="u-email">Spike Leung</a>
+</div>
+<footer>
+<p>感謝你的閱讀！(´｡• ᵕ •｡`) ♡</p>
+<p>若有話想說，請给 <a href="mailto:l-yanlei@hotmail.com?subject=回復: TIL: 在 Emacs 中用 dired 快速調整文件序號 &body=Hi Spike,">我</a> 發一封 <a href="https://useplaintext.email">純文本郵件</a> :)</p>
+<p>若文章對你有帮助，可以考慮 <a href="https://taxodium.ink/support-me.html">支持我</a>。</p>
+<p>所有原创內容均遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">CC BY-NC-SA 4.0</a>，</p>
+<p>所有源代碼以及内聯文檔遵循 <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>。</p>
+<p><time class="dt-published" datetime="2026-11-27 Fri 22:19">2026-11-27</time> 〜 <time class="dt-updated" datetime="2026-11-27 Fri 23:39">2026-11-27</time></p>
+<a href="/quickly-renumber-files-in-dired-in-emacs.txt">純文本版本</a> <a href="/quickly-renumber-files-in-dired-in-emacs.org">原始 org 文件</a>
+</footer><script src="/js/code-enhanced.js" defer></script>
+<script src="/js/code-highlighted.js" defer></script>
+<script src="/js/backtop.js" defer></script>
+<script src="/js/sidenote.js" defer></script>
+<script src="/js/webmention.js" defer></script>
+<noscript>
+  <style>
+    .js-required {
+       display: none;
+     }
+  </style>
+</noscript>
+</div>
+</body>
+</html>
