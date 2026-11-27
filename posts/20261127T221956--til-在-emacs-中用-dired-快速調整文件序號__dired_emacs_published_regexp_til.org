@@ -1,6 +1,6 @@
 #+title:      TIL: 在 Emacs 中用 dired 快速調整文件序號
 #+export_file_name: quickly-renumber-files-in-dired-in-emacs
-#+date:       [2026-11-27 Fri 22:19]
+#+date:       [2026-11-27 Fri 23:50]
 #+filetags:   :dired:emacs:published:regexp:til:
 #+identifier: 20261127T221956
 #+bind:       denote-directory "~/git/taxodium/posts"
@@ -48,7 +48,7 @@
       所以 ~^~ (行首) 能匹配到文件名的開頭。總之這裡的目的是匹配序號，並把序號作為一個分組捕獲。
    - =\,(format "%02d" (+ 13 \#1))= :: 將匹配的內容替換成 ~format~ 的結果。
      ~format~ 的格式是 =%02d= ，意思是兩位數字，不足兩位前面補 0。
-     =(+ 13 \#1)= 是要返回的數字，將前面捕获的第一個分組的內容 (即序號) 加上 13 後返回。
+     =(+ 13 \#1)= 是要返回的數字，將前面捕獲的第一個分組的內容 (即序號) 加上 13 後返回。
      另外要注意的是要用 =\#1= 而不是 =\1= ，因為相加要用數字類型， =\#= 會用 ~string-to-number~ 將結果轉成數字。
    #+end_details
 6. 全部替換後，執行 ~wdired-finish-edit~ 保存。
@@ -61,3 +61,8 @@
   <figcaption>在 Emacs 中的操作演示</figcaption>
 </figure>
 #+end_export
+
+#+attr_html: :role note
+#+begin_section
+看起來輸入正則得煩瑣，但衹要輸入一次，後面就有補全了，可以複用之前的，稍作修改就能用。
+#+end_section
